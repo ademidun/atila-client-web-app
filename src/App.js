@@ -6,7 +6,7 @@ import LandingPage from "./scenes/LandingPage/LandingPage";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Blog from "./scenes/Blog/Blog";
-import ScholarshipsList from "./scenes/Scholarship/ScholarshipsList/ScholarshipsList";
+import Scholarship from "./scenes/Scholarship/Scholarship";
 
 
 function App() {
@@ -16,7 +16,7 @@ function App() {
             <Navbar />
             <Route exact path="/" component={LandingPage} />
             <Route path="/blog" component={Blog} />
-            <Route path="/scholarship" component={ScholarshipsList} />
+            <Route path="/scholarship" component={Scholarship} />
             <Footer />
         </div>
       </Router>

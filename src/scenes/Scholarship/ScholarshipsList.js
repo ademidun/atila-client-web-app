@@ -1,9 +1,9 @@
 import React from 'react';
 import BarLoader from 'react-spinners/BarLoader';
 
-import {toTitleCase} from "../../../services/utils";
-import ScholarshipCard from "../ScholarshipCard";
-import ScholarshipsAPI from "../../../services/ScholarshipsAPI";
+import {toTitleCase} from "../../services/utils";
+import ScholarshipCard from "./ScholarshipCard";
+import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 class ScholarshipsList extends React.Component {
 
     constructor(props) {
@@ -23,6 +23,8 @@ class ScholarshipsList extends React.Component {
             },
             isLoadingScholarships: false,
             pageNumber: 1,
+            totalScholarshipsCount: 0,
+            totalFunding: null,
         }
     }
 
@@ -41,7 +43,11 @@ class ScholarshipsList extends React.Component {
             location : { search }
         } = this.props;
 
-        const { scholarships } = this.state;
+        const { scholarships, totalScholarshipsCount } = this.state;
+
+        if (totalScholarshipsCount && scholarships.length >= totalScholarshipsCount) {
+            return
+        }
 
         console.log({search});
         const params = new URLSearchParams(search);
@@ -60,8 +66,10 @@ class ScholarshipsList extends React.Component {
 
                 const scholarshipResults = scholarships;
                 scholarshipResults.push(...res.data.data);
-
+                this.setState({ totalFunding: res.data.funding });
+                this.setState({ totalScholarshipsCount: res.data.length });
                 console.log({ scholarshipResults});
+
                 if (scholarshipResults) {
                     this.setState({ scholarships: scholarshipResults });
                 }
@@ -74,7 +82,7 @@ class ScholarshipsList extends React.Component {
                 console.log('finished!');
                 this.setState({ isLoadingScholarships: false });
             });
-    }
+    };
 
     componentDidMount() {
         this.loadScholarships();
@@ -86,15 +94,23 @@ class ScholarshipsList extends React.Component {
         } = this.props;
         const params = new URLSearchParams(search);
 
-        const { scholarships, isLoadingScholarships } = this.state;
+        const { scholarships, isLoadingScholarships, totalScholarshipsCount, totalFunding } = this.state;
+
         const searchQuery = params.get('q');
 
         return (
             <div>
-                <h1>
+
+                <h1 className="text-center">
+                    {totalScholarshipsCount} {' '}
                     {searchQuery && `Scholarships for ${toTitleCase(searchQuery)}`}
                     {!searchQuery && 'Scholarships'}
+                    {' found'}
+                    <br />
                 </h1>
+                <h2 className="text-center text-muted">
+                    {totalFunding && `${totalFunding} in funding`}
+                </h2>
 
                 <div className="container mt-3">
                     {scholarships.map( scholarship => <ScholarshipCard key={scholarship.id} className="col-12" scholarship={scholarship} />)}
@@ -107,10 +123,13 @@ class ScholarshipsList extends React.Component {
                                    color={'#0b9ef5'} height={7} width={500}/>
                     </div>
                 </div>}
-
-                <button className="btn btn-primary center-block font-size-xl" onClick={this.loadMoreScholarships}>
-                    Load More
-                </button>
+                {
+                    scholarships.length < totalScholarshipsCount
+                    &&
+                    <button className="btn btn-primary center-block font-size-xl" onClick={this.loadMoreScholarships}>
+                        Load More
+                    </button>
+                }
             </div>
         );
     }
