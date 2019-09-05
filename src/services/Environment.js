@@ -8,7 +8,7 @@ const EnvironmentDev = {
 
 const EnvironmentStaging = {
     production: false,
-    apiUrl: 'https://atila-7.herokuapp.com/api',
+    apiUrl: 'https://atila-7-staging.herokuapp.com/api',
 };
 
 const EnvironmentProd = {
