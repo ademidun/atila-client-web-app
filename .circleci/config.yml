@@ -42,20 +42,13 @@ jobs:
             - v1-dependencies-
       - run: npm install
       - save_cache:
-          key: v1-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
+          key: v1-build-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
           paths:
-            - dist
+            - build
       - run:
-          name: Build Angular Project to dist/
-          # https://github.com/angular/angular-cli/issues/5618#issuecomment-348225508
+          name: Build React Project to build/ folder
           command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-                echo 'building for prod';
-                npm run ng-reg-mem -- build --target=production --progress=false
-            else
-                echo 'building for staging';
-                npm run ng-reg-mem -- build --target=production --env=staging --progress=false
-            fi
+            npm run build
       - run:
           name: Show current location
           command: pwd
@@ -65,7 +58,7 @@ jobs:
           paths:
             - "*"
             - node_modules
-            - dist
+            - build
   deploy:
     <<: *defaults
     working_directory: /tmp
@@ -93,10 +86,10 @@ jobs:
           name: Show current branch
           command: echo ${CIRCLE_BRANCH}
       # Restore cache from the build job which contains the
-      # dist folder that needs to be deployed
+      # build folder that needs to be deployed
       - restore_cache:
           keys:
-            - v1-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
+            - v1-build-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
             - v1-dependencies-{{ checksum "package.json" }}
             - v1-dependencies-
       - run:
