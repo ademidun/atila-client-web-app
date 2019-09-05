@@ -42,7 +42,7 @@ jobs:
             - ./node_modules
       - run: # build react
           name: react-build
-          command: npm build
+          command: npm run build
       - run: # todo change -P to default, to deploy to prod on master branch
           name: Deploy Firebase
           command: |
