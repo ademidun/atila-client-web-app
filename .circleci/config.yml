@@ -113,11 +113,10 @@ jobs:
           command: cd functions ; ls . ; npm install ; cd
       - run:
           name: Deploy Master to Firebase or Other Branch to Staging
-
+          # todo change deployment to prod when on master branch
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
                 echo 'deploying to prod';
-#            todo change deployment to prod when on master branch
                 /tmp/node_modules/.bin/firebase deploy --token=$FIREBASE_DEPLOY_TOKEN -P staging
             else
                 echo 'deploying to staging';
