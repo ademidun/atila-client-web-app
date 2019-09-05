@@ -11,6 +11,16 @@ class ScholarshipsAPI {
         });
 
         return apiCompletionPromise;
+    };
+
+    static getSlug = (slug) => {
+
+        const apiCompletionPromise = request({
+            method: 'get',
+            url: `${Environment.apiUrl}/scholarship-slug/?slug=${slug}`,
+        });
+
+        return apiCompletionPromise;
     }
 }
 

@@ -32,7 +32,6 @@ class ScholarshipsList extends React.Component {
         const { pageNumber } = this.state;
 
         this.setState({ pageNumber: pageNumber + 1 }, () => {
-            console.log(this.state.pageNumber);
             this.loadScholarships(this.state.pageNumber);
         })
     };
@@ -49,7 +48,6 @@ class ScholarshipsList extends React.Component {
             return
         }
 
-        console.log({search});
         const params = new URLSearchParams(search);
 
         const searchQuery = params.get('q');
@@ -62,13 +60,11 @@ class ScholarshipsList extends React.Component {
 
         ScholarshipsAPI.searchScholarships(searchPayload, page)
             .then(res => {
-                console.log({ res});
 
                 const scholarshipResults = scholarships;
                 scholarshipResults.push(...res.data.data);
                 this.setState({ totalFunding: res.data.funding });
                 this.setState({ totalScholarshipsCount: res.data.length });
-                console.log({ scholarshipResults});
 
                 if (scholarshipResults) {
                     this.setState({ scholarships: scholarshipResults });
@@ -79,7 +75,6 @@ class ScholarshipsList extends React.Component {
                 console.log({ err});
             })
             .finally(() => {
-                console.log('finished!');
                 this.setState({ isLoadingScholarships: false });
             });
     };
@@ -99,7 +94,7 @@ class ScholarshipsList extends React.Component {
         const searchQuery = params.get('q');
 
         return (
-            <div>
+            <div className="container ">
 
                 <h1 className="text-center">
                     {totalScholarshipsCount} {' '}
@@ -112,17 +107,19 @@ class ScholarshipsList extends React.Component {
                     {totalFunding && `${totalFunding} in funding`}
                 </h2>
 
-                <div className="container mt-3">
+                <div className="mt-3">
                     {scholarships.map( scholarship => <ScholarshipCard key={scholarship.id} className="col-12" scholarship={scholarship} />)}
                 </div>
-                {isLoadingScholarships &&
+                {
+                isLoadingScholarships &&
                 <div className="text-center">
-                    <h5>Loading Image Search Results...</h5>
+                    <h5>Loading Scholarships..</h5>
                     <div className="center-block" style={{ width: '500px' }}>
                         <BarLoader className="center-block"
                                    color={'#0b9ef5'} height={7} width={500}/>
                     </div>
-                </div>}
+                </div>
+                }
                 {
                     scholarships.length < totalScholarshipsCount
                     &&
