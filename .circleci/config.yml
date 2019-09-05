@@ -101,9 +101,6 @@ jobs:
           name: Show current location
           command: pwd
       - run:
-          name: Install firebase cloud functions
-          command: cd functions ; ls . ; npm install ; cd
-      - run:
           name: Deploy Master to Firebase or Other Branch to Staging
           # todo change deployment to prod when on master branch
           command: |
