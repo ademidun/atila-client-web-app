@@ -28,7 +28,7 @@ jobs:
           paths:
             - node_modules
       # Run tests
-      - run: npm run test-ci
+      - run: npm run test
   build:
     <<: *defaults
     steps:
