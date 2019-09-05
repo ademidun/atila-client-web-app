@@ -1,9 +1,9 @@
 import React from 'react';
-import BarLoader from 'react-spinners/BarLoader';
 
 import {toTitleCase} from "../../services/utils";
 import ScholarshipCard from "./ScholarshipCard";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
+import Loading from "../../components/Loading";
 class ScholarshipsList extends React.Component {
 
     constructor(props) {
@@ -21,6 +21,7 @@ class ScholarshipsList extends React.Component {
                 filter_by_user_show_eligible_only: true,
                 sort_by: 'relevance'
             },
+            errorGettingScholarships: null,
             isLoadingScholarships: false,
             pageNumber: 1,
             totalScholarshipsCount: 0,
@@ -73,6 +74,7 @@ class ScholarshipsList extends React.Component {
             })
             .catch(err => {
                 console.log({ err});
+                this.setState({errorGettingScholarships : err });
             })
             .finally(() => {
                 this.setState({ isLoadingScholarships: false });
@@ -89,9 +91,29 @@ class ScholarshipsList extends React.Component {
         } = this.props;
         const params = new URLSearchParams(search);
 
-        const { scholarships, isLoadingScholarships, totalScholarshipsCount, totalFunding } = this.state;
+        const { scholarships, isLoadingScholarships,
+            totalScholarshipsCount, totalFunding,
+            errorGettingScholarships} = this.state;
 
         const searchQuery = params.get('q');
+
+        if (errorGettingScholarships) {
+            return (
+                <div className="text-center container">
+                    <h1>
+                        Error Getting Scholarships
+                        <span role="img" aria-label="sad face emoji">😕</span>
+                    </h1>
+                    <h3>Please try again later </h3>
+                </div>)
+        }
+
+        if (scholarships.length === 0) {
+            return (
+                <Loading
+                    isLoading={isLoadingScholarships}
+                    title={'Loading Scholarships..'} />);
+        }
 
         return (
             <div className="container ">
@@ -110,16 +132,6 @@ class ScholarshipsList extends React.Component {
                 <div className="mt-3">
                     {scholarships.map( scholarship => <ScholarshipCard key={scholarship.id} className="col-12" scholarship={scholarship} />)}
                 </div>
-                {
-                isLoadingScholarships &&
-                <div className="text-center">
-                    <h5>Loading Scholarships..</h5>
-                    <div className="center-block" style={{ width: '500px' }}>
-                        <BarLoader className="center-block"
-                                   color={'#0b9ef5'} height={7} width={500}/>
-                    </div>
-                </div>
-                }
                 {
                     scholarships.length < totalScholarshipsCount
                     &&
