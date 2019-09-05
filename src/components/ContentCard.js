@@ -48,11 +48,11 @@ class ContentCard extends React.Component {
                 </div>
                 <div className="bg-light mb-3 p-1">
                     <Link to={`/profile/${user.username}`} >
-                    <img
-                        alt="user profile"
-                        style={{ height: '50px', maxWidth: 'auto' }}
-                        className="rounded-circle py-1 pr-1"
-                        src={user.profile_pic_url} />
+                        <img
+                            alt="user profile"
+                            style={{ height: '50px', maxWidth: 'auto' }}
+                            className="rounded-circle py-1 pr-1"
+                            src={user.profile_pic_url} />
                         {user.first_name} {user.last_name}
                     </Link>
                 </div>
@@ -65,7 +65,9 @@ class ContentCard extends React.Component {
                     </Link>
                 </div>
                 { descriptionText }
-                <a href="" onClick={this.togglePreview} >  Preview</a>
+                <button className="btn btn-link" onClick={this.togglePreview}>
+                    Preview
+                </button>
             </div>
         );
     }

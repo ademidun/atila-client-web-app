@@ -47,8 +47,7 @@ jobs:
             - build
       - run:
           name: Build React Project to build/ folder
-          command: |
-            npm run build
+          command: npm run build
       - run:
           name: Show current location
           command: pwd
