@@ -2,33 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from "react-router-dom";
 
-import {BlogPropType} from "../models/Blog";
-import {EssayPropType} from "../models/Essay";
 import './ContentDetail.scss';
 
 class ContentDetail extends React.Component {
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            model: null,
-            blogs: [],
-            searchPayload: {
-                location: { city :'', province :'', country :'', name :''},
-                education_level :[],
-                education_field :[],
-                searchString: '' ,
-                previewMode: 'universalSearch' ,
-                filter_by_user_show_eligible_only: true,
-                sort_by: 'relevance'
-            },
-            errorGettingBlogs: null,
-            isLoadingBLogs: false,
-            pageNumber: 1,
-        }
-    }
-
 
     render () {
 
@@ -67,7 +43,7 @@ ContentDetail.defaultProps = {
 
 ContentDetail.propTypes = {
     className: PropTypes.string,
-    content: PropTypes.oneOfType([BlogPropType, EssayPropType]).isRequired
+    content: PropTypes.shape({})
 };
 
 export default ContentDetail;

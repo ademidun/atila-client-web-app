@@ -12,11 +12,11 @@ class BlogsApi {
         return apiCompletionPromise;
     };
 
-    static getSlug = (username, slug) => {
+    static getSlug = (slug) => {
 
         const apiCompletionPromise = request({
             method: 'get',
-            url: `${Environment.apiUrl}/blog/blog/${username}/${slug}/`,
+            url: `${Environment.apiUrl}/blog/blog/${slug}/`,
         });
 
         return apiCompletionPromise;

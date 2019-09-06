@@ -15,7 +15,6 @@ class BlogDetail extends React.Component {
             blog: null,
             errorGettingBlogs: null,
             isLoadingBLog: false,
-            pageNumber: 1,
         }
     }
 
@@ -23,9 +22,8 @@ class BlogDetail extends React.Component {
 
         const {match: {params: {username, slug, }}} = this.props;
         this.setState({isLoadingBlog: true});
-        BlogsApi.getSlug(username, slug)
+        BlogsApi.getSlug(`${username}/${slug}`)
             .then(res => {
-                console.log({ res });
                 this.setState({blog: res.data.blog});
 
             })
