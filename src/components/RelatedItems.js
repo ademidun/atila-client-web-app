@@ -40,7 +40,6 @@ class RelatedItems extends React.Component {
         const { relatedItems, isLoadingRelatedItems  } = this.state;
         const { className  } = this.props;
 
-        console.log({ isLoadingRelatedItems });
         if (isLoadingRelatedItems) {
             return (
                 <div className={`${className}`}>

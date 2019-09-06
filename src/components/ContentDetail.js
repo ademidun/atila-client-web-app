@@ -21,7 +21,7 @@ class ContentDetail extends React.Component {
         this.loadContent();
     }
 
-    componentWillReceiveProps(nextProps, nextContext) {
+    UNSAFE_componentWillReceiveProps(nextProps, nextContext) {
         this.loadContent();
     }
 
@@ -66,7 +66,7 @@ class ContentDetail extends React.Component {
         const { title, body, header_image_url, user, id } = content;
 
         return (
-            <div className="container m-5">
+            <div className="m-5 p-md-5">
                 <div className={`${className} col-md-8 content-detail center-block`}>
                     <h1>{title}</h1>
                     {header_image_url &&

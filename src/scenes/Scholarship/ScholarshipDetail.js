@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 import moment from "moment";
 import {formatCurrency} from "../../services/utils";
 import Loading from "../../components/Loading";
+import RelatedItems from "../../components/RelatedItems";
 
 class ScholarshipDetail extends React.Component {
 
@@ -15,7 +16,8 @@ class ScholarshipDetail extends React.Component {
             isLoadingScholarship: true,
         }
     }
-    componentDidMount() {
+
+    loadContent = () => {
 
         const { match : { params : { slug }} } = this.props;
         ScholarshipsAPI.getSlug(slug)
@@ -29,8 +31,13 @@ class ScholarshipDetail extends React.Component {
             .finally(() => {
                 this.setState({ isLoadingScholarship: false });
             });
+    };
+    componentDidMount() {
+        this.loadContent();
     }
-
+    UNSAFE_componentWillReceiveProps(nextProps, nextContext) {
+        this.loadContent();
+    }
     goBack = (event) => {
         event.preventDefault();
         this.props.history.goBack();
@@ -44,7 +51,7 @@ class ScholarshipDetail extends React.Component {
                     isLoading={isLoadingScholarship}
                     title={'Loading Scholarships..'} />)
         }
-        const { name, description, deadline, funding_amount, slug, img_url, criteria_info, scholarship_url, application_form_url } = scholarship;
+        const { id, name, description, deadline, funding_amount, slug, img_url, criteria_info, scholarship_url, application_form_url } = scholarship;
 
         const deadlineString = moment(deadline).format('MMMM DD, YYYY');
         const fundingString = formatCurrency(Number.parseInt(funding_amount), true);
@@ -54,15 +61,16 @@ class ScholarshipDetail extends React.Component {
                 <div className="container">
                     <div className="row">
                         <div className="col-12">
+                            <h1 className="content-detail">{name}</h1>
                             <img
                                 style={{ maxHeight: '300px', width: 'auto'}}
                                 src={img_url}
                                 className="center-block"
                                 alt={name} />
                         </div>
-                        <div className="col-12">
-                            <div>
-                                <h1>{name}</h1>
+
+                        <div className="row">
+                            <div className="col-md-8">
                                 {scholarship_url &&
                                 <React.Fragment>
                                     <a href={scholarship_url} target="_blank" rel="noopener noreferrer">
@@ -93,10 +101,15 @@ class ScholarshipDetail extends React.Component {
                                     </small>
                                 </p>
                                 <p>{description}</p>
+
+                                {/*todo find a way to secure against XSS: https://stackoverflow.com/a/19277723*/}
+                                <div className="content-detail" dangerouslySetInnerHTML={{__html: criteria_info}} />
                             </div>
+                            <RelatedItems
+                                className="col-md-4"
+                                id={id}
+                                itemType={'scholarship'} />
                         </div>
-                        {/*todo find a way to secure against XSS: https://stackoverflow.com/a/19277723*/}
-                        <div dangerouslySetInnerHTML={{__html: criteria_info}} />
                     </div>
                 </div>
             </React.Fragment>

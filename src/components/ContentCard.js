@@ -52,7 +52,7 @@ class ContentCard extends React.Component {
                         {type}
                     </p>
                 </div>
-                <div className="bg-light mb-3 p-1">
+                {user && <div className="bg-light mb-3 p-1">
                     <Link to={`/profile/${user.username}`} >
                         <img
                             alt="user profile"
@@ -61,7 +61,7 @@ class ContentCard extends React.Component {
                             src={user.profile_pic_url} />
                         {user.first_name} {user.last_name}
                     </Link>
-                </div>
+                </div>}
                 <div  className="card-image ng-star-inserted mb-3">
                     {
                     !hideImage &&
