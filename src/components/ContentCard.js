@@ -30,16 +30,22 @@ class ContentCard extends React.Component {
         const { showPreview } = this.state;
         const { title, description, image, slug, type, user } = content;
 
-        let descriptionText = showPreview ? description : `${description.substring(0,100)}`;
-        if (!showPreview && description.length > 100) {
-            descriptionText +='...'
+        let descriptionText = description;
+
+        if (description) {
+            descriptionText = showPreview ? description : `${description.substring(0,100)}`;
+            if (!showPreview && description.length > 100) {
+                descriptionText +='...'
+            }
         }
         return (
             <div className={`${className} card shadow p-3`}>
                 <div  className="card-title">
-                    <Link  title="How to Get a Summer Internship" to={slug}>
-                        {title}
-                    </Link>
+                    <h3>
+                        <Link  title="How to Get a Summer Internship" to={slug}>
+                            {title}
+                        </Link>
+                    </h3>
                     <br />
                     <p  className="badge badge-secondary"
                         style={{ fontSize: 'small' }}>
