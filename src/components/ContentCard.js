@@ -26,13 +26,13 @@ class ContentCard extends React.Component {
 
     render() {
 
-        const { className, content } = this.props;
+        const { className, content, hideImage } = this.props;
         const { showPreview } = this.state;
         const { title, description, image, slug, type, user } = content;
 
         let descriptionText = description;
 
-        if (description) {
+        if (description && !hideImage) {
             descriptionText = showPreview ? description : `${description.substring(0,100)}`;
             if (!showPreview && description.length > 100) {
                 descriptionText +='...'
@@ -63,29 +63,36 @@ class ContentCard extends React.Component {
                     </Link>
                 </div>
                 <div  className="card-image ng-star-inserted mb-3">
+                    {
+                    !hideImage &&
                     <Link to={slug}>
                         <img  src={image}
                               alt={title}
                               style={{ width: '100%'}}
                         />
                     </Link>
+                    }
                 </div>
                 <div className="card-text">
                     { descriptionText }
                 </div>
-                <button className="btn btn-link" onClick={this.togglePreview}>
-                    Preview
-                </button>
+                {!hideImage &&
+                    <button className="btn btn-link" onClick={this.togglePreview}>
+                        Preview
+                    </button>
+                }
             </div>
         );
     }
 }
 
 ContentCard.defaultProps = {
-    className: ''
+    className: '',
+    hideImage: false
 };
 
 ContentCard.propTypes = {
+    hideImage: PropTypes.bool,
     className: PropTypes.string,
     content: PropTypes.shape({})
 };

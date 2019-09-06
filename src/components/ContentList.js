@@ -103,7 +103,12 @@ class ContentList extends React.Component {
                 </h1>
 
                 <div className="mt-3">
-                    {contentItems.map( content => <ContentCard key={content.id} content={genericItemTransform(content)} className="col-12 mb-3"/>)}
+                    {contentItems.map( content =>
+                        <ContentCard key={content.id} content={genericItemTransform(content)} className="col-12 mb-3"
+                                     hideImage={contentType==='Essays'}
+                        />
+
+                        )}
                 </div>
                 {
                     contentItems.length < totalContentCount
