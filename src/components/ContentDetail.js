@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 
 import './ContentDetail.scss';
 import Loading from "./Loading";
+import RelatedItems from "./RelatedItems";
 
 class ContentDetail extends React.Component {
 
@@ -43,7 +44,7 @@ class ContentDetail extends React.Component {
     
     render () {
 
-        const { className} = this.props;
+        const { className, contentType } = this.props;
         const { isLoadingContent, content } = this.state;
 
         if (isLoadingContent) {
@@ -56,30 +57,36 @@ class ContentDetail extends React.Component {
             return null;
         }
 
-        const { title, body, header_image_url, user } = content;
+        const { title, body, header_image_url, user, id } = content;
 
         return (
-            <div className={`${className} content-detail mt-5`}>
-                <h1>{title}</h1>
-                {header_image_url &&
-                <img src={header_image_url}
-                     alt={title}
-                     style={{ maxWidth: '100%' }}
-                />}
+            <div className="container row m-5">
+                <div className={`${className} col-md-8 content-detail`}>
+                    <h1>{title}</h1>
+                    {header_image_url &&
+                    <img src={header_image_url}
+                         alt={title}
+                         style={{ maxWidth: '100%' }}
+                    />}
 
 
-                <div className="bg-light my-3 p-1">
-                    <Link to={`/profile/${user.username}`} >
-                        <img
-                            alt="user profile"
-                            style={{ height: '50px', maxWidth: 'auto' }}
-                            className="rounded-circle py-1 pr-1"
-                            src={user.profile_pic_url} />
-                        {user.first_name} {user.last_name}
-                    </Link>
+                    <div className="bg-light my-3 p-1">
+                        <Link to={`/profile/${user.username}`} >
+                            <img
+                                alt="user profile"
+                                style={{ height: '50px', maxWidth: 'auto' }}
+                                className="rounded-circle py-1 pr-1"
+                                src={user.profile_pic_url} />
+                            {user.first_name} {user.last_name}
+                        </Link>
+                    </div>
+                    {/*todo find a way to secure against XSS: https://stackoverflow.com/a/19277723*/}
+                    <div dangerouslySetInnerHTML={{__html: body}} />
                 </div>
-                {/*todo find a way to secure against XSS: https://stackoverflow.com/a/19277723*/}
-                <div dangerouslySetInnerHTML={{__html: body}} />
+                <RelatedItems
+                    className="col-md-4"
+                    id={id}
+                    itemType={contentType} />
             </div>
         );
     }
@@ -90,6 +97,7 @@ ContentDetail.defaultProps = {
 
 ContentDetail.propTypes = {
     className: PropTypes.string,
+    contentType: PropTypes.string.isRequired,
     ContentAPI: PropTypes.func.isRequired,
     contentSlug: PropTypes.string.isRequired,
 };

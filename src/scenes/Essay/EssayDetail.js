@@ -9,13 +9,18 @@ function EssayDetail({ match }) {
     const {params: { username, slug, }} = match;
 
     return (
-        <div className="container">
+        <React.Fragment>
             <ContentDetail
                 contentSlug={`${username}/${slug}`}
-                ContentAPI={EssaysApi}/>
-        </div>
+                ContentAPI={EssaysApi}
+                contentType='essay'/>
+        </React.Fragment>
     );
 }
+
+EssayDetail.defaultProps = {
+    className: ''
+};
 
 EssayDetail.propTypes = {
     className: PropTypes.string,

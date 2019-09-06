@@ -9,11 +9,12 @@ function BlogDetail({ match }) {
     const {params: { username, slug, }} = match;
 
     return (
-        <div className="container">
+        <React.Fragment>
             <ContentDetail
                 contentSlug={`${username}/${slug}`}
-                ContentAPI={BlogsApi}/>
-        </div>
+                ContentAPI={BlogsApi}
+                contentType='blog'/>
+        </React.Fragment>
     );
 }
 

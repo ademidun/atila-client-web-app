@@ -96,13 +96,13 @@ class ContentList extends React.Component {
         }
 
         return (
-            <div className="container ">
+            <div className="container m-5 row">
 
                 <h1 className="text-center">
                     {contentType}
                 </h1>
 
-                <div className="mt-3">
+                <div>
                     {contentItems.map( content =>
                         <ContentCard key={content.id} content={genericItemTransform(content)} className="col-12 mb-3"
                                      hideImage={contentType==='Essays'}
