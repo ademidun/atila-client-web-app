@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import ContentCard from "./ContentCard";
 import {genericItemTransform} from "../services/utils";
 import SearchApi from "../services/SearchAPI";
-import EssayDetail from "../scenes/Essay/EssayDetail";
+import Loading from "./Loading";
 
 class RelatedItems extends React.Component {
 
@@ -20,6 +20,7 @@ class RelatedItems extends React.Component {
     componentDidMount() {
 
         const { itemType, id } = this.props;
+        this.setState({ isLoadingRelatedItems: true });
 
         SearchApi.relatedItems(`?type=${itemType}&id=${id}`)
             .then(res => {
@@ -36,12 +37,19 @@ class RelatedItems extends React.Component {
 
     render () {
 
-        const { relatedItems  } = this.state;
+        const { relatedItems, isLoadingRelatedItems  } = this.state;
         const { className  } = this.props;
 
-        if (!relatedItems) {
-            return null;
+        console.log({ isLoadingRelatedItems });
+        if (isLoadingRelatedItems) {
+            return (
+                <div className={`${className}`}>
+                    <Loading
+                        isLoading={isLoadingRelatedItems}
+                        title={'Loading Related Items..'} />
+                </div>);
         }
+
         return (
             <div className={`${className}`}>
                 <h3 className="text-center">Related</h3>
