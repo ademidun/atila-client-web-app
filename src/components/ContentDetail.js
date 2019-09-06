@@ -60,8 +60,8 @@ class ContentDetail extends React.Component {
         const { title, body, header_image_url, user, id } = content;
 
         return (
-            <div className="container row m-5">
-                <div className={`${className} col-md-8 content-detail`}>
+            <div className="container m-5">
+                <div className={`${className} col-md-8 content-detail center-block`}>
                     <h1>{title}</h1>
                     {header_image_url &&
                     <img src={header_image_url}
@@ -80,13 +80,16 @@ class ContentDetail extends React.Component {
                             {user.first_name} {user.last_name}
                         </Link>
                     </div>
-                    {/*todo find a way to secure against XSS: https://stackoverflow.com/a/19277723*/}
-                    <div dangerouslySetInnerHTML={{__html: body}} />
                 </div>
-                <RelatedItems
-                    className="col-md-4"
-                    id={id}
-                    itemType={contentType} />
+                    {/*todo find a way to secure against XSS: https://stackoverflow.com/a/19277723*/}
+                    <div className="row">
+                        <div className={`${className} col-md-8 content-detail`} dangerouslySetInnerHTML={{__html: body}} />
+                        <RelatedItems
+                            className="col-md-4"
+                            id={id}
+                            itemType={contentType} />
+                    </div>
+
             </div>
         );
     }

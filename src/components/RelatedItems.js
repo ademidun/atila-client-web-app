@@ -44,6 +44,7 @@ class RelatedItems extends React.Component {
         }
         return (
             <div className={`${className}`}>
+                <h3 className="text-center">Related</h3>
                 {relatedItems.map(item => <ContentCard key={item.id}
                                                        content={genericItemTransform(item)}
                                                        className="mb-3" />)}
