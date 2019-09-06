@@ -16,7 +16,7 @@ class BlogsApi {
 
         const apiCompletionPromise = request({
             method: 'get',
-            url: `${Environment.apiUrl}/blog/blog-slug/${username}/${slug}`,
+            url: `${Environment.apiUrl}/blog/blog/${username}/${slug}/`,
         });
 
         return apiCompletionPromise;
