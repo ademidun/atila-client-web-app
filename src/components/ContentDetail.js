@@ -3,14 +3,61 @@ import PropTypes from 'prop-types';
 import {Link} from "react-router-dom";
 
 import './ContentDetail.scss';
+import Loading from "./Loading";
 
 class ContentDetail extends React.Component {
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            content: null,
+            errorGettingContent: null,
+            isLoadingContent: false,
+        }
+    }
+
+    componentDidMount() {
+
+        const { ContentAPI, contentSlug } = this.props;
+        
+        this.setState({isLoadingContent: true});
+        ContentAPI.getSlug(`${contentSlug}`)
+            .then(res => {
+                
+                if (res.data.blog) {
+                    this.setState({content: res.data.blog});
+                }
+                else if( res.data.essay) {
+                    this.setState({content: res.data.essay});
+                }
+
+            })
+            .catch(err => {
+                console.log({err});
+            })
+            .finally(() => {
+                this.setState({isLoadingContent: false});
+            });
+    }
+    
     render () {
 
-        const { className, content} = this.props;
+        const { className} = this.props;
+        const { isLoadingContent, content } = this.state;
+
+        if (isLoadingContent) {
+            return (<Loading
+                isLoading={isLoadingContent}
+                title={'Loading...'} />)
+        }
+
+        if (!content) {
+            return null;
+        }
 
         const { title, body, header_image_url, user } = content;
+
         return (
             <div className={`${className} content-detail mt-5`}>
                 <h1>{title}</h1>
@@ -43,7 +90,8 @@ ContentDetail.defaultProps = {
 
 ContentDetail.propTypes = {
     className: PropTypes.string,
-    content: PropTypes.shape({})
+    ContentAPI: PropTypes.func.isRequired,
+    contentSlug: PropTypes.string.isRequired,
 };
 
 export default ContentDetail;
