@@ -17,15 +17,21 @@ class ContentDetail extends React.Component {
             isLoadingContent: false,
         }
     }
-
     componentDidMount() {
+        this.loadContent();
+    }
 
+    componentWillReceiveProps(nextProps, nextContext) {
+        this.loadContent();
+    }
+
+    loadContent = () => {
         const { ContentAPI, contentSlug } = this.props;
-        
+
         this.setState({isLoadingContent: true});
         ContentAPI.getSlug(`${contentSlug}`)
             .then(res => {
-                
+
                 if (res.data.blog) {
                     this.setState({content: res.data.blog});
                 }
