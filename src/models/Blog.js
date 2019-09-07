@@ -1,3 +1,4 @@
+import React from 'react';
 import PropTypes from 'prop-types';
 
 
@@ -15,3 +16,17 @@ export const BlogPropType = PropTypes.shape({
         profile_pic_url: PropTypes.string,
     }),
 });
+
+export const BlogWhatIsAtila = {
+    id: 1,
+    header_image_url: 'https://firebasestorage.googleapis.com/v0/b/atila-7.appspot.com/' +
+        'o/public%2Fatila-scholarship-default-image.jpeg?alt=media&token=cd789758-3400-43d5-9ea7-d2facf709ea2',
+    title: 'What is Atila?',
+    description: 'Scholarship only for awesome engineering students',
+    body:
+        <div>
+            A blog post explaining what Atila does is and why we created it.
+        </div>
+    ,
+
+};

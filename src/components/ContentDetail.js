@@ -86,7 +86,6 @@ class ContentDetail extends React.Component {
         }
 
         const { title, body, header_image_url, user, id } = content;
-
         return (
             <div className="m-5 px-md-5">
                 <div className={`${className} col-md-8 content-detail center-block`}>
@@ -95,9 +94,10 @@ class ContentDetail extends React.Component {
                     <img src={header_image_url}
                          alt={title}
                          style={{ maxWidth: '100%' }}
+                         className="header-image"
                     />}
 
-
+                    {user &&
                     <div className="bg-light my-3 p-1">
                         <Link to={`/profile/${user.username}`} >
                             <img
@@ -107,7 +107,7 @@ class ContentDetail extends React.Component {
                                 src={user.profile_pic_url} />
                             {user.first_name} {user.last_name}
                         </Link>
-                    </div>
+                    </div>}
                 </div>
                     {/*todo find a way to secure against XSS: https://stackoverflow.com/a/19277723*/}
                     <div className="row">
