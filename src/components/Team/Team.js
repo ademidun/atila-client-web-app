@@ -129,8 +129,8 @@ function Team() {
 
                 <div className="col-sm-12 col-md-8 px-0 pt-3" style={{ fontSize: 'larger' }}>
                     If you would like to join the team or help out in some way,
-                    <a href="mailto:info@atila.ca">send an email </a> to <a
-                    href="mailto:info@atila.ca">info@atila.ca</a> with your resume and/or links to cool stuff you've
+                    <a href="mailto:info@atila.ca" target="_blank" rel="noopener noreferrer">send an email </a> to <a
+                    href="mailto:info@atila.ca" target="_blank" rel="noopener noreferrer">info@atila.ca</a> with your resume and/or links to cool stuff you've
                     done.
                 </div>
             </div>

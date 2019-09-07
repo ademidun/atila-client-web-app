@@ -10,6 +10,7 @@ import Scholarship from "./scenes/Scholarship/Scholarship";
 import Essay from "./scenes/Essay/Essay";
 import Team from "./components/Team/Team";
 import TermsConditions from "./components/TermsConditions";
+import ContactUs from "./components/ContactUs";
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
             <Route path="/scholarship" component={Scholarship} />
             <Route path="/team" component={Team} />
             <Route path="/terms-and-conditions" component={TermsConditions} />
+            <Route path="/contact" component={ContactUs} />
             <Footer />
         </div>
       </Router>
