@@ -14,6 +14,7 @@ class ScholarshipDetail extends React.Component {
         this.state = {
             scholarship: null,
             isLoadingScholarship: true,
+            errorLoadingScholarship: false,
             prevSlug: null
         }
     }
@@ -40,8 +41,8 @@ class ScholarshipDetail extends React.Component {
         this.loadContent();
     }
     componentDidUpdate(prevProps, prevState) {
-        const { scholarship } = this.state;
-        if (scholarship === null) {
+        const { scholarship, errorLoadingScholarship } = this.state;
+        if (scholarship === null && !errorLoadingScholarship) {
             this.loadContent();
         }
     }
@@ -56,6 +57,7 @@ class ScholarshipDetail extends React.Component {
             })
             .catch(err => {
                 console.log({ err});
+                this.setState({ errorLoadingScholarship: true });
             })
             .finally(() => {
                 this.setState({ isLoadingScholarship: false });
@@ -67,9 +69,20 @@ class ScholarshipDetail extends React.Component {
         event.preventDefault();
         this.props.history.goBack();
     };
+
     render() {
 
-        const { isLoadingScholarship, scholarship } = this.state;
+        const { isLoadingScholarship, scholarship, errorLoadingScholarship} = this.state;
+
+        if (errorLoadingScholarship) {
+            return (<div className="text-center">
+                <h1>Error Getting Scholarship.</h1>
+                <h3>
+                    Please try again later
+                </h3>
+            </div>);
+        }
+
         if (!scholarship) {
             return (
                 <Loading

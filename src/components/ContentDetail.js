@@ -14,21 +14,40 @@ class ContentDetail extends React.Component {
         this.state = {
             content: null,
             errorGettingContent: null,
-            isLoadingContent: false,
+            prevSlug: null,
+
         }
     }
+    static getDerivedStateFromProps(props, state) {
+        // https://reactjs.org/blog/2018/03/27/update-on-async-rendering.html#fetching-external-data-when-props-change
+        const { contentSlug } = props;
+        const { prevSlug } = state;
+        if (contentSlug !== prevSlug) {
+            return {
+                ...state,
+                prevSlug: contentSlug,
+                errorGettingContent: null,
+                content: null
+            };
+        }
+
+        // No state update necessary
+        return null;
+    }
+
     componentDidMount() {
         this.loadContent();
     }
-
-    UNSAFE_componentWillReceiveProps(nextProps, nextContext) {
-        this.loadContent();
+    componentDidUpdate(prevProps, prevState) {
+        const { content, errorGettingContent } = this.state;
+        if (content === null && !errorGettingContent) {
+            this.loadContent();
+        }
     }
 
     loadContent = () => {
         const { ContentAPI, contentSlug } = this.props;
 
-        this.setState({isLoadingContent: true});
         ContentAPI.getSlug(`${contentSlug}`)
             .then(res => {
 
@@ -41,32 +60,35 @@ class ContentDetail extends React.Component {
 
             })
             .catch(err => {
-                console.log({err});
+                this.setState({errorGettingContent: { err }});
             })
             .finally(() => {
-                this.setState({isLoadingContent: false});
             });
-    }
+    };
     
     render () {
 
         const { className, contentType } = this.props;
-        const { isLoadingContent, content } = this.state;
+        const { errorGettingContent, content } = this.state;
 
-        if (isLoadingContent) {
-            return (<Loading
-                isLoading={isLoadingContent}
-                title={'Loading...'} />)
+        if (errorGettingContent) {
+            return (<div className="text-center">
+                <h1>Error Getting {contentType}.</h1>
+                <h3>
+                    Please try again later
+                </h3>
+            </div>);
         }
 
         if (!content) {
-            return null;
+            return (<Loading
+                title={'Loading...'} />)
         }
 
         const { title, body, header_image_url, user, id } = content;
 
         return (
-            <div className="m-5 p-md-5">
+            <div className="m-5 px-md-5">
                 <div className={`${className} col-md-8 content-detail center-block`}>
                     <h1>{title}</h1>
                     {header_image_url &&
