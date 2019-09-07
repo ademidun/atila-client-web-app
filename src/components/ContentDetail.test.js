@@ -6,7 +6,7 @@ import ContentDetail from "./ContentDetail";
 import {BlogWhatIsAtila} from "../models/Blog";
 import BlogsApi from "../services/BlogsAPI";
 import RelatedItems from "./RelatedItems";
-import ContentList from "./ContentList";
+import {MemoryRouter} from "react-router-dom";
 
 configure({ adapter: new Adapter() });
 
@@ -26,32 +26,37 @@ describe('<ContentDetail />', () => {
     it('renders What is Atila Blog', () => {
 
         const wrapper = mount(
-            <ContentDetail contentType={'blog'}
-                           contentSlug={'atila/what-is-atila'}
-                           ContentAPI={BlogsApi}
-            />
+            <MemoryRouter>
+                <ContentDetail contentType={'blog'}
+                               contentSlug={'atila/what-is-atila'}
+                               ContentAPI={BlogsApi}
+                />
+            </MemoryRouter>
         );
-        wrapper.setState({ content: BlogWhatIsAtila });
+        let childWrapper = wrapper.find(ContentDetail);
+        childWrapper.instance().setState({ content: BlogWhatIsAtila });
         wrapper.update();
 
-        expect(wrapper.html()).toContain(BlogWhatIsAtila.title);
-        expect(wrapper.find('img.header-image').prop('src')).toEqual(BlogWhatIsAtila.header_image_url);
+        expect(wrapper.find(ContentDetail).html()).toContain(BlogWhatIsAtila.title);
+        expect(wrapper.find(ContentDetail).find('img.header-image').prop('src')).toEqual(BlogWhatIsAtila.header_image_url);
 
     });
 
     it('renders Related Items', () => {
 
-        const wrapper = shallow(
-            <ContentDetail contentType={'blog'}
-                           contentSlug={'atila/what-is-atila'}
-                           ContentAPI={BlogsApi}
-            />
+        const wrapper = mount(
+            <MemoryRouter>
+                <ContentDetail contentType={'blog'}
+                               contentSlug={'atila/what-is-atila'}
+                               ContentAPI={BlogsApi}
+                />
+            </MemoryRouter>
         );
-        wrapper.setState({ content: BlogWhatIsAtila });
+        let childWrapper = wrapper.find(ContentDetail);
+        childWrapper.instance().setState({ content: BlogWhatIsAtila });
         wrapper.update();
 
-        console.log(wrapper.find(RelatedItems));
-        expect(wrapper.find(RelatedItems).length).toBe(1);
+        expect(wrapper.find(ContentDetail).find(RelatedItems).length).toBe(1);
 
     });
 

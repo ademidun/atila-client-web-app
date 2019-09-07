@@ -24,8 +24,6 @@ const relatedItems = [
         }
 });
 
-console.log({ relatedItems });
-
 jest.mock('../services/SearchAPI');
 SearchApi.relatedItems.mockImplementation(() => Promise.resolve({ data: { items: relatedItems } } ));
 
