@@ -112,17 +112,14 @@ class ScholarshipsList extends React.Component {
             return (
                 <Loading
                     isLoading={isLoadingScholarships}
-                    title={'Loading Scholarships..'} />);
+                    title={'Loading Scholarships...'} />);
         }
 
         return (
             <div className="container ">
 
                 <h1 className="text-center">
-                    {totalScholarshipsCount} {' '}
-                    {searchQuery && `Scholarships for ${toTitleCase(searchQuery)}`}
-                    {!searchQuery && 'Scholarships'}
-                    {' found'}
+                    {`${totalScholarshipsCount} Scholarships ${searchQuery ? `for ${toTitleCase(searchQuery)} ` : ''}found`}
                     <br />
                 </h1>
                 <h2 className="text-center text-muted">
