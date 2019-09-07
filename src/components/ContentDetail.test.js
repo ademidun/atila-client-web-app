@@ -7,10 +7,13 @@ import {BlogWhatIsAtila} from "../models/Blog";
 import BlogsApi from "../services/BlogsAPI";
 import RelatedItems from "./RelatedItems";
 import {MemoryRouter} from "react-router-dom";
+import SearchApi from "../services/SearchAPI";
+import {relatedItems} from "./RelatedItems.test";
 
 configure({ adapter: new Adapter() });
 
-
+jest.mock('../services/SearchAPI');
+SearchApi.relatedItems.mockImplementation(() => Promise.resolve({ data: { items: relatedItems } } ));
 
 describe('<ContentDetail />', () => {
 

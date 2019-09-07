@@ -13,7 +13,7 @@ import {EssayIveyApplication} from "../models/Essay";
 
 configure({ adapter: new Adapter() });
 
-const relatedItems = [
+export const relatedItems = [
     BlogWhatIsAtila,
     EssayIveyApplication,
     ScholarshipEngineering].map((item, index) => {
