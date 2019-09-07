@@ -25,7 +25,7 @@ describe('<ScholarshipsList />', () => {
         expect(wrapper.html()).toBeTruthy();
     });
 
-    it('renders scholarshipsFound title', async (done) => {
+    it('renders scholarshipsFound title', () => {
 
         const wrapper = mount(
             <MemoryRouter>
@@ -40,7 +40,6 @@ describe('<ScholarshipsList />', () => {
         expect(wrapper.find(ScholarshipsList).html()).toContain(scholarshipsFound);
         expect(wrapper.find(ScholarshipsList).html()).toContain(ScholarshipEngineering.name);
 
-        done();
     });
 
 });
