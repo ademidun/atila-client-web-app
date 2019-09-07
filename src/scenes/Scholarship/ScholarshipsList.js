@@ -116,13 +116,13 @@ class ScholarshipsList extends React.Component {
         }
 
         return (
-            <div className="container ">
+            <div className="container mt-5">
 
-                <h1 className="text-center">
+                <h1 className="text-center serif-font">
                     {`${totalScholarshipsCount} Scholarships ${searchQuery ? `for ${toTitleCase(searchQuery)} ` : ''}found`}
                     <br />
                 </h1>
-                <h2 className="text-center text-muted">
+                <h2 className="text-center text-muted serif-font">
                     {totalFunding && `${totalFunding} in funding`}
                 </h2>
 

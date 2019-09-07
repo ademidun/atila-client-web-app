@@ -188,7 +188,7 @@ class LandingPage extends React.Component {
             <React.Fragment>
                 <div className="background-image pt-5 pb-3">
 
-                    <h1 className="form-header" style={{marginBottom: 0}}>Easily Find and Apply to Scholarships</h1>
+                    <h1 className="form-header sans-serif-font" style={{marginBottom: 0}}>Easily Find and Apply to Scholarships</h1>
 
 
                     <form className="col-sm-12 p-3 search-box"
