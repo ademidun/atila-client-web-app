@@ -14,6 +14,35 @@ class ScholarshipDetail extends React.Component {
         this.state = {
             scholarship: null,
             isLoadingScholarship: true,
+            prevSlug: null
+        }
+    }
+
+    static getDerivedStateFromProps(props, state) {
+        // https://reactjs.org/blog/2018/03/27/update-on-async-rendering.html#fetching-external-data-when-props-change
+        // Store prevSlug in state so we can compare when props change.
+        // Clear out previously-loaded data (so we don't render stale stuff).
+        const { match : { params : { slug }} } = props;
+        const { prevSlug } = state;
+        if (slug !== prevSlug) {
+            return {
+                ...state,
+                prevSlug: slug,
+                scholarship: null
+            };
+        }
+
+        // No state update necessary
+        return null;
+    }
+
+    componentDidMount() {
+        this.loadContent();
+    }
+    componentDidUpdate(prevProps, prevState) {
+        const { scholarship } = this.state;
+        if (scholarship === null) {
+            this.loadContent();
         }
     }
 
@@ -30,14 +59,10 @@ class ScholarshipDetail extends React.Component {
             })
             .finally(() => {
                 this.setState({ isLoadingScholarship: false });
+                this.setState({ prevSlug: slug });
             });
     };
-    componentDidMount() {
-        this.loadContent();
-    }
-    UNSAFE_componentWillReceiveProps(nextProps, nextContext) {
-        this.loadContent();
-    }
+
     goBack = (event) => {
         event.preventDefault();
         this.props.history.goBack();
@@ -58,7 +83,7 @@ class ScholarshipDetail extends React.Component {
 
         return (
             <React.Fragment>
-                <div className="container">
+                <div className="container mt-5">
                     <div className="row">
                         <div className="col-12">
                             <h1 className="content-detail">{name}</h1>

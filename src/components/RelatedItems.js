@@ -24,7 +24,6 @@ class RelatedItems extends React.Component {
 
         SearchApi.relatedItems(`?type=${itemType}&id=${id}`)
             .then(res => {
-                console.log({ res });
                 this.setState({ relatedItems: res.data.items });
             })
             .catch(err => {
