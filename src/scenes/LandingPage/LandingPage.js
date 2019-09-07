@@ -193,7 +193,7 @@ class LandingPage extends React.Component {
 
                     <form className="col-sm-12 p-3 search-box"
                           onSubmit={this.onSubmit}>
-                        <div className="row justify-content-center preview-questions ng-star-inserted">
+                        <div className="row justify-content-center preview-questions">
 
                             <div className="search-box">
 

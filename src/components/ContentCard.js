@@ -42,7 +42,7 @@ class ContentCard extends React.Component {
             <div className={`${className} card shadow p-3`}>
                 <div  className="card-title">
                     <h3 className="serif-font">
-                        <Link  title="How to Get a Summer Internship" to={slug}>
+                        <Link  title={title} to={slug}>
                             {title}
                         </Link>
                     </h3>
@@ -62,7 +62,7 @@ class ContentCard extends React.Component {
                         {user.first_name} {user.last_name}
                     </Link>
                 </div>}
-                <div  className="card-image ng-star-inserted mb-3">
+                <div  className="card-image mb-3">
                     {
                     !hideImage &&
                     <Link to={slug}>
