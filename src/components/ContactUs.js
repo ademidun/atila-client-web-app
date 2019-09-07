@@ -48,7 +48,9 @@ class ContactUs extends  React.Component{
                         <a href="mailto:info@atila.ca" target="_blank" rel="noopener noreferrer">info@atila.ca
                         </a>
                     </p>
-
+                    {/*<form method="post"*/}
+                    {/*      className="probootstrap-form"*/}
+                    {/*      action="https://script.google.com/macros/s/AKfycbz-KUtAK4P51p-0bWJCne5USIlyCbLtwSSMpSBIK0BxkMFUG0w/exec">*/}
                     <form className="row p-3 form-group" onSubmit={this.submitContact}>
                         <input placeholder="Full Name"
                                className="col-12 mb-3 form-control"
