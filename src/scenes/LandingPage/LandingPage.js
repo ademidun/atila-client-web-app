@@ -188,12 +188,12 @@ class LandingPage extends React.Component {
             <React.Fragment>
                 <div className="background-image pt-5 pb-3">
 
-                    <h1 className="form-header" style={{marginBottom: 0}}>Easily Find and Apply to Scholarships</h1>
+                    <h1 className="form-header sans-serif-font" style={{marginBottom: 0}}>Easily Find and Apply to Scholarships</h1>
 
 
                     <form className="col-sm-12 p-3 search-box"
                           onSubmit={this.onSubmit}>
-                        <div className="row justify-content-center preview-questions ng-star-inserted">
+                        <div className="row justify-content-center preview-questions">
 
                             <div className="search-box">
 

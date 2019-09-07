@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from "react-router-dom";
 
-import './Footer.scss';
+import './Footer/Footer.scss';
 
 class ContentCard extends React.Component {
 
@@ -41,8 +41,8 @@ class ContentCard extends React.Component {
         return (
             <div className={`${className} card shadow p-3`}>
                 <div  className="card-title">
-                    <h3>
-                        <Link  title="How to Get a Summer Internship" to={slug}>
+                    <h3 className="serif-font">
+                        <Link  title={title} to={slug}>
                             {title}
                         </Link>
                     </h3>
@@ -62,7 +62,7 @@ class ContentCard extends React.Component {
                         {user.first_name} {user.last_name}
                     </Link>
                 </div>}
-                <div  className="card-image ng-star-inserted mb-3">
+                <div  className="card-image mb-3">
                     {
                     !hideImage &&
                     <Link to={slug}>

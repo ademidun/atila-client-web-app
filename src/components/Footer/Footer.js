@@ -23,13 +23,8 @@ function Footer() {
                             <li><Link to="/blog/atila/what-is-atila">About</Link></li>
                             <li><Link to="/team">Team</Link></li>
                             <li><Link to="/contact">Contact</Link></li>
-                            <li>
-                                <Link to="blog">
-                                    Blog
-                                </Link>
-                            </li>
-                            <li><Link to="/forum">Forum</Link></li>
-                            <li><Link to="/essays">Essays</Link></li>
+                            <li><Link to="blog">Blog</Link></li>
+                            <li><Link to="/essay">Essays</Link></li>
                             <li><Link to="/profile/atilaeng">Engineering</Link></li>
                             <li><Link to="https://tech.atila.ca" target="_blank">Atila Tech</Link></li>
                             <li><Link to="/terms-and-conditions">Terms and Conditions</Link></li>

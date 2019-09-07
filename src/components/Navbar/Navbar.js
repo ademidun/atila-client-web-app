@@ -39,7 +39,7 @@ class Navbar extends React.Component {
 
         return (
             <React.Fragment>
-                <NavbarBootstrap bg="white" expand="md" className="Navbar px-5">
+                <NavbarBootstrap bg="white" expand="md" className="Navbar px-5 serif-font">
                 <NavbarBootstrap.Brand className="nav-logo"><Link to="/">Atila</Link></NavbarBootstrap.Brand>
                 <NavbarBootstrap.Toggle aria-controls="basic-navbar-nav" />
                 <NavbarBootstrap.Collapse id="basic-navbar-nav">

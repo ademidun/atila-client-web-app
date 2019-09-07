@@ -36,7 +36,7 @@ class ContentCard extends React.Component {
         const deadlineString = moment(deadline).format('MMMM DD, YYYY');
         const fundingString = formatCurrency(Number.parseInt(funding_amount), true);
         return (
-            <div className={`${className} card shadow mb-3`}>
+            <div className={`${className} card shadow my-4`}>
                 <div className="row no-gutters">
                     <div className="col-md-4">
                         <img src={img_url} className="card-img" alt={name} />
@@ -44,7 +44,7 @@ class ContentCard extends React.Component {
                     <div className="col-md-8">
                         <div className="card-body">
                             <Link to={`/scholarship/${slug}`}>
-                                <h1 className="card-title text-left">{name}</h1>
+                                <h1 className="card-title text-left serif-font">{name}</h1>
                             </Link>
                             <p className="card-text">
                                 <small className="text-muted">

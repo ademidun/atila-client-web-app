@@ -24,7 +24,9 @@ class RelatedItems extends React.Component {
 
         SearchApi.relatedItems(`?type=${itemType}&id=${id}`)
             .then(res => {
-                this.setState({ relatedItems: res.data.items });
+
+                const relatedItems = (res.data.items.map(item => genericItemTransform(item)));
+                this.setState({ relatedItems });
             })
             .catch(err => {
                 console.log({ err});
@@ -51,8 +53,8 @@ class RelatedItems extends React.Component {
         return (
             <div className={`${className}`}>
                 <h3 className="text-center">Related</h3>
-                {relatedItems.map(item => <ContentCard key={item.id}
-                                                       content={genericItemTransform(item)}
+                {relatedItems.map(item => <ContentCard key={item.slug}
+                                                       content={item}
                                                        className="mb-3" />)}
             </div>
         );

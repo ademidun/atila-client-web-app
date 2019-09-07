@@ -3,11 +3,15 @@ import {BrowserRouter as Router, Route} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.css';
 
 import LandingPage from "./scenes/LandingPage/LandingPage";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
+import Navbar from "./components/Navbar/Navbar";
+import Footer from "./components/Footer/Footer";
 import Blog from "./scenes/Blog/Blog";
 import Scholarship from "./scenes/Scholarship/Scholarship";
 import Essay from "./scenes/Essay/Essay";
+import Team from "./components/Team/Team";
+import TermsConditions from "./components/TermsConditions";
+import ContactUs from "./components/ContactUs";
+import SiteMap from "./components/SiteMap";
 
 
 function App() {
@@ -19,6 +23,10 @@ function App() {
             <Route path="/blog" component={Blog} />
             <Route path="/essay" component={Essay} />
             <Route path="/scholarship" component={Scholarship} />
+            <Route path="/team" component={Team} />
+            <Route path="/terms-and-conditions" component={TermsConditions} />
+            <Route path="/contact" component={ContactUs} />
+            <Route path="/siteMap" component={SiteMap} />
             <Footer />
         </div>
       </Router>

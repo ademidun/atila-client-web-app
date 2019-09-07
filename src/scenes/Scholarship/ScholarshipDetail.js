@@ -99,7 +99,7 @@ class ScholarshipDetail extends React.Component {
                 <div className="container mt-5">
                     <div className="row">
                         <div className="col-12">
-                            <h1 className="content-detail">{name}</h1>
+                            <h1 className="serif-font">{name}</h1>
                             <img
                                 style={{ maxHeight: '300px', width: 'auto'}}
                                 src={img_url}

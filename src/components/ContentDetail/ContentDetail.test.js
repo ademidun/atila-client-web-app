@@ -3,16 +3,16 @@ import {configure, mount, shallow} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import "core-js/stable";
 import ContentDetail from "./ContentDetail";
-import {BlogWhatIsAtila} from "../models/Blog";
-import BlogsApi from "../services/BlogsAPI";
-import RelatedItems from "./RelatedItems";
+import {BlogWhatIsAtila} from "../../models/Blog";
+import BlogsApi from "../../services/BlogsAPI";
+import RelatedItems from "../RelatedItems";
 import {MemoryRouter} from "react-router-dom";
-import SearchApi from "../services/SearchAPI";
-import {relatedItems} from "./RelatedItems.test";
+import SearchApi from "../../services/SearchAPI";
+import {relatedItems} from "../RelatedItems.test";
 
 configure({ adapter: new Adapter() });
 
-jest.mock('../services/SearchAPI');
+jest.mock('../../services/SearchAPI');
 SearchApi.relatedItems.mockImplementation(() => Promise.resolve({ data: { items: relatedItems } } ));
 
 describe('<ContentDetail />', () => {

@@ -7,9 +7,7 @@ class BlogsList extends React.Component {
     render () {
 
         return (
-            <div className="container ">
-                <ContentList ContentAPI={BlogsAPI} contentType={'Blogs'} />
-            </div>
+            <ContentList ContentAPI={BlogsAPI} contentType={'Blogs'} />
         );
     }
 }
