@@ -11,6 +11,7 @@ import Essay from "./scenes/Essay/Essay";
 import Team from "./components/Team/Team";
 import TermsConditions from "./components/TermsConditions";
 import ContactUs from "./components/ContactUs";
+import SiteMap from "./components/SiteMap";
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
             <Route path="/team" component={Team} />
             <Route path="/terms-and-conditions" component={TermsConditions} />
             <Route path="/contact" component={ContactUs} />
+            <Route path="/siteMap" component={SiteMap} />
             <Footer />
         </div>
       </Router>
