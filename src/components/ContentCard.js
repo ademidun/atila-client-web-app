@@ -26,27 +26,33 @@ class ContentCard extends React.Component {
 
     render() {
 
-        const { className, content } = this.props;
+        const { className, content, hideImage } = this.props;
         const { showPreview } = this.state;
         const { title, description, image, slug, type, user } = content;
 
-        let descriptionText = showPreview ? description : `${description.substring(0,100)}`;
-        if (!showPreview && description.length > 100) {
-            descriptionText +='...'
+        let descriptionText = description;
+
+        if (description && !hideImage) {
+            descriptionText = showPreview ? description : `${description.substring(0,100)}`;
+            if (!showPreview && description.length > 100) {
+                descriptionText +='...'
+            }
         }
         return (
             <div className={`${className} card shadow p-3`}>
                 <div  className="card-title">
-                    <Link  title="How to Get a Summer Internship" to={slug}>
-                        {title}
-                    </Link>
+                    <h3>
+                        <Link  title="How to Get a Summer Internship" to={slug}>
+                            {title}
+                        </Link>
+                    </h3>
                     <br />
                     <p  className="badge badge-secondary"
                         style={{ fontSize: 'small' }}>
                         {type}
                     </p>
                 </div>
-                <div className="bg-light mb-3 p-1">
+                {user && <div className="bg-light mb-3 p-1">
                     <Link to={`/profile/${user.username}`} >
                         <img
                             alt="user profile"
@@ -55,29 +61,38 @@ class ContentCard extends React.Component {
                             src={user.profile_pic_url} />
                         {user.first_name} {user.last_name}
                     </Link>
-                </div>
+                </div>}
                 <div  className="card-image ng-star-inserted mb-3">
+                    {
+                    !hideImage &&
                     <Link to={slug}>
                         <img  src={image}
                               alt={title}
                               style={{ width: '100%'}}
                         />
                     </Link>
+                    }
                 </div>
-                { descriptionText }
-                <button className="btn btn-link" onClick={this.togglePreview}>
-                    Preview
-                </button>
+                <div className="card-text">
+                    { descriptionText }
+                </div>
+                {!hideImage &&
+                    <button className="btn btn-link" onClick={this.togglePreview}>
+                        Preview
+                    </button>
+                }
             </div>
         );
     }
 }
 
 ContentCard.defaultProps = {
-    className: ''
+    className: '',
+    hideImage: false
 };
 
 ContentCard.propTypes = {
+    hideImage: PropTypes.bool,
     className: PropTypes.string,
     content: PropTypes.shape({})
 };

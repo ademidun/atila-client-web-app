@@ -1,13 +1,12 @@
 import request from 'axios';
 import Environment from './Environment'
-class ScholarshipsAPI {
+class EssaysApi {
 
-    static searchScholarships = (searchPayload, page=1) => {
+    static list = (page=1) => {
 
         const apiCompletionPromise = request({
-            method: 'post',
-            data: searchPayload,
-            url: `${Environment.apiUrl}/scholarship-preview/?page=${page}`,
+            method: 'get',
+            url: `${Environment.apiUrl}/essay/essays/?page=${page}`,
         });
 
         return apiCompletionPromise;
@@ -17,11 +16,11 @@ class ScholarshipsAPI {
 
         const apiCompletionPromise = request({
             method: 'get',
-            url: `${Environment.apiUrl}/scholarship-slug/?slug=${slug}`,
+            url: `${Environment.apiUrl}/essay/essay/${slug}/`,
         });
 
         return apiCompletionPromise;
     }
 }
 
-export default ScholarshipsAPI;
+export default EssaysApi;
