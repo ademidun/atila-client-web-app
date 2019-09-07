@@ -8,6 +8,7 @@ import Footer from "./components/Footer";
 import Blog from "./scenes/Blog/Blog";
 import Scholarship from "./scenes/Scholarship/Scholarship";
 import Essay from "./scenes/Essay/Essay";
+import Team from "./components/Team/Team";
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
             <Route path="/blog" component={Blog} />
             <Route path="/essay" component={Essay} />
             <Route path="/scholarship" component={Scholarship} />
+            <Route path="/team" component={Team} />
             <Footer />
         </div>
       </Router>
