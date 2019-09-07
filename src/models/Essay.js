@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import React from "react";
 
 
 export const EssayPropType = PropTypes.shape({
@@ -15,3 +16,24 @@ export const EssayPropType = PropTypes.shape({
         profile_pic_url: PropTypes.string,
     }),
 });
+
+
+export const EssayIveyApplication = {
+    id: 789758,
+    essay_source_url: 'https://firebasestorage.googleapis.com/v0/b/atila-7.appspot.com/' +
+        'o/public%2Fatila-scholarship-default-image.jpeg?alt=media&token=cd789758-3400-43d5-9ea7-d2facf709ea2',
+    title: 'Ivey AEO Application 2017',
+    slug: 'ivey-aeo-application-2017',
+    description: 'How I got into Ivey',
+    body:
+        <div>
+            A blog post explaining what Atila does is and why we created it.
+        </div>
+    ,
+    user: {
+        first_name: 'Tomiwa',
+        username: 'tomiwa',
+        last_name: 'Ademidun',
+    }
+
+};

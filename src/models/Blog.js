@@ -18,15 +18,21 @@ export const BlogPropType = PropTypes.shape({
 });
 
 export const BlogWhatIsAtila = {
-    id: 1,
+    id: 789758,
     header_image_url: 'https://firebasestorage.googleapis.com/v0/b/atila-7.appspot.com/' +
         'o/public%2Fatila-scholarship-default-image.jpeg?alt=media&token=cd789758-3400-43d5-9ea7-d2facf709ea2',
     title: 'What is Atila?',
+    slug: 'what-is-atila',
     description: 'Scholarship only for awesome engineering students',
     body:
         <div>
             A blog post explaining what Atila does is and why we created it.
         </div>
     ,
+    user: {
+        first_name: 'Tomiwa',
+        username: 'tomiwa',
+        last_name: 'Ademidun',
+    }
 
 };

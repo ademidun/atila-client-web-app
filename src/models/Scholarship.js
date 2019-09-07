@@ -1,15 +1,17 @@
 export const ScholarshipGeneral = {
-    id: 0,
+    id: 200,
     name: 'General Scholarship',
     description: 'Anyone can secure the bag.',
-    amount: '200'
+    amount: '200',
+    slug: 'general-scholarship'
 };
 
 export const ScholarshipEngineering = {
-    id: 1,
+    id: 100,
     name: 'Engineering Scholarship',
     description: 'Scholarship only for awesome engineering students',
-    amount: '100'
+    amount: '100',
+    slug: 'engineering-scholarship'
 };
 
 export const scholarshipsListMockData = [
