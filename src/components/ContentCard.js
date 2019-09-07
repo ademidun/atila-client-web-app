@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from "react-router-dom";
 
-import './Footer.scss';
+import './Footer/Footer.scss';
 
 class ContentCard extends React.Component {
 

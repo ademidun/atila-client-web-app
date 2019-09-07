@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {EssayPropType} from "../../models/Essay";
-import ContentDetail from "../../components/ContentDetail";
+import ContentDetail from "../../components/ContentDetail/ContentDetail";
 import EssaysApi from "../../services/EssaysAPI";
 
 function EssayDetail({ match }) {

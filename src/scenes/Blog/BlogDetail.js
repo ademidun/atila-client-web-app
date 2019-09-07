@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {BlogPropType} from "../../models/Blog";
-import ContentDetail from "../../components/ContentDetail";
+import ContentDetail from "../../components/ContentDetail/ContentDetail";
 import BlogsApi from "../../services/BlogsAPI";
 
 function BlogDetail({ match }) {
