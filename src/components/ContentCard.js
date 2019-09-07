@@ -41,7 +41,7 @@ class ContentCard extends React.Component {
         return (
             <div className={`${className} card shadow p-3`}>
                 <div  className="card-title">
-                    <h3>
+                    <h3 className="serif-font">
                         <Link  title="How to Get a Summer Internship" to={slug}>
                             {title}
                         </Link>

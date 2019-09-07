@@ -98,7 +98,7 @@ class ContentList extends React.Component {
         return (
             <div className="container m-5 row">
 
-                <h1 className="text-center">
+                <h1 className="text-center serif-font center-block">
                     {contentType}
                 </h1>
 

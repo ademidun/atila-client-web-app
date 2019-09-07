@@ -7,9 +7,7 @@ class EssaysList extends React.Component {
     render () {
 
         return (
-            <div className="container ">
-                <ContentList ContentAPI={EssaysAPI} contentType={'Essays'} />
-            </div>
+            <ContentList ContentAPI={EssaysAPI} contentType={'Essays'} />
         );
     }
 }
