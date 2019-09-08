@@ -1,9 +1,8 @@
 import {makeXHRRequestAsPromise} from "./utils";
-
 class UtilsAPI {
 
     static sendContactUsForm = (formData) => {
-        const url = "https://scriptd.goddsogle.com/macros/s/AKfycbw4p2mFV_gCMvrmqj1lD372FtO6owagphSOHoCa/exec";
+        const url = "https://script.google.com/macros/s/AKfycbyXvhP_6VQWYI-BMetdwDKqyndhOwpx841YzOvW0OaAcdlwFwM/exec";
 
         return makeXHRRequestAsPromise('POST', url, formData)
     };

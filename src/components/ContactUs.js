@@ -10,6 +10,7 @@ class ContactUs extends  React.Component{
         this.state = {
             fullName: '',
             contactMessage: '',
+            email: '',
             isLoadingResponse: false,
             errorReceivingResponse: false,
             isReceivedResponse: false
@@ -19,10 +20,10 @@ class ContactUs extends  React.Component{
 
     submitContact = (event) => {
         event.preventDefault();
-        const { fullName, contactMessage } = this.state;
+        const { fullName, contactMessage, email } = this.state;
 
         this.setState({ isLoadingResponse: true });
-        UtilsAPI.sendContactUsForm({ name: fullName, message: contactMessage })
+        UtilsAPI.sendContactUsForm({ name: fullName, message: contactMessage, email })
             .then(res=> {
                 console.log({ res });
                 this.setState({ isReceivedResponse: true });
@@ -43,9 +44,13 @@ class ContactUs extends  React.Component{
 
     };
 
+    updateEmail = (event) => {
+        event.preventDefault();
+        this.setState({ email: event.target.value });
+    };
+
     updateMessage = (event) => {
         event.preventDefault();
-        console.log({event});
         if (event.key === 'Enter') {
             event.preventDefault();
             event.stopPropagation();
@@ -57,7 +62,8 @@ class ContactUs extends  React.Component{
     };
 
     render() {
-        const { fullName, contactMessage, isLoadingResponse, isReceivedResponse, errorReceivingResponse } = this.state;
+        const { fullName, email, contactMessage, isLoadingResponse,
+            isReceivedResponse, errorReceivingResponse } = this.state;
 
         let pageContent = null;
 
@@ -101,6 +107,13 @@ class ContactUs extends  React.Component{
                            className="col-12 mb-3 form-control"
                            value={fullName}
                            onChange={this.updateName}
+                    />
+                    <input placeholder="Email"
+                           name="email"
+                           type="email"
+                           className="col-12 mb-3 form-control"
+                           value={email}
+                           onChange={this.updateEmail}
                     />
                     <textarea
                         placeholder="Message"
