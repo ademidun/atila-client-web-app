@@ -1,5 +1,6 @@
 import React from "react";
-
+import UtilsAPI from "../services/UtilsAPI";
+import Loading from "./Loading";
 class ContactUs extends  React.Component{
 
 
@@ -9,14 +10,31 @@ class ContactUs extends  React.Component{
         this.state = {
             fullName: '',
             contactMessage: '',
+            isLoadingResponse: false,
+            errorReceivingResponse: false,
+            isReceivedResponse: false
         }
     }
 
 
     submitContact = (event) => {
         event.preventDefault();
-        const { state } = this;
-        console.log({ state });
+        const { fullName, contactMessage } = this.state;
+
+        this.setState({ isLoadingResponse: true });
+        UtilsAPI.sendContactUsForm({ name: fullName, message: contactMessage })
+            .then(res=> {
+                console.log({ res });
+                this.setState({ isReceivedResponse: true });
+            })
+            .catch(err=>{
+                console.log({ err });
+                this.setState({ errorReceivingResponse: err });
+
+            })
+            .finally(()=>{
+                this.setState({ isLoadingResponse: false });
+            })
     };
 
     updateName = (event) => {
@@ -39,37 +57,71 @@ class ContactUs extends  React.Component{
     };
 
     render() {
-        const { fullName, contactMessage } = this.state;
+        const { fullName, contactMessage, isLoadingResponse, isReceivedResponse, errorReceivingResponse } = this.state;
+
+        let pageContent = null;
+
+        if (isLoadingResponse) {
+            pageContent = (
+                <Loading
+                    isLoading={isLoadingResponse}
+                    title={`Sending Form Please wait...`} />);
+        }
+        else if (isReceivedResponse) {
+            pageContent = <div className="text-center" style={{ height: '300px', marginTop: '150px' }}>
+                <h4>
+                    Thanks for your Response
+                    <span role="img" aria-label="happy face emoji">🙂</span>
+                </h4>
+                <h6>We will get back to you within 1 business day</h6>
+            </div>
+        }
+        else if (errorReceivingResponse) {
+            pageContent = <div className="text-center" style={{ height: '300px', marginTop: '150px' }}>
+                <h4>
+                    Sorry, there was an error sending your form
+                    <span role="img" aria-label="sad face emoji">😕</span>
+                </h4>
+                <h6>Please send us an email at {' '}
+                    <a href="mailto:info@atila.ca" target="_blank" rel="noopener noreferrer">
+                        info@atila.ca
+                    </a></h6>
+            </div>
+        }
+        else {
+            pageContent = (<React.Fragment>
+                <h3>Contact Us</h3>
+                <p>Or send us an email at {' '}
+                    <a href="mailto:info@atila.ca" target="_blank" rel="noopener noreferrer">
+                        info@atila.ca
+                    </a>
+                </p>
+                <form className="row p-3 form-group" onSubmit={this.submitContact}>
+                    <input placeholder="Full Name"
+                           className="col-12 mb-3 form-control"
+                           value={fullName}
+                           onChange={this.updateName}
+                    />
+                    <textarea
+                        placeholder="Message"
+                        className="col-12 mb-3 form-control"
+                        value={contactMessage}
+                        onChange={this.updateMessage}
+                        rows="5"
+
+                    />
+                    <button className="btn btn-primary col-12 mb-3" type="submit">
+                        Send
+                    </button>
+
+                </form>
+            </React.Fragment>)
+        }
+
         return (
-            <div className="container m-3">
+            <div className="container mt-5">
                 <div className="card shadow p-3">
-                    <h3>Contact Us</h3>
-                    <p>Or send us an email at {' '}
-                        <a href="mailto:info@atila.ca" target="_blank" rel="noopener noreferrer">info@atila.ca
-                        </a>
-                    </p>
-                    {/*<form method="post"*/}
-                    {/*      className="probootstrap-form"*/}
-                    {/*      action="https://script.google.com/macros/s/AKfycbz-KUtAK4P51p-0bWJCne5USIlyCbLtwSSMpSBIK0BxkMFUG0w/exec">*/}
-                    <form className="row p-3 form-group" onSubmit={this.submitContact}>
-                        <input placeholder="Full Name"
-                               className="col-12 mb-3 form-control"
-                                value={fullName}
-                               onChange={this.updateName}
-                        />
-                        <textarea
-                            placeholder="Message"
-                            className="col-12 mb-3 form-control"
-                            value={contactMessage}
-                            onChange={this.updateMessage}
-                            rows="5"
-
-                        />
-                        <button className="btn btn-primary col-12 mb-3" type="submit">
-                            Send
-                        </button>
-
-                    </form>
+                    {pageContent}
                 </div>
             </div>
         );
