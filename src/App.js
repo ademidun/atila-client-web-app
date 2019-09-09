@@ -1,17 +1,33 @@
 import React from 'react';
 import {BrowserRouter as Router, Route} from "react-router-dom";
+import loadable from '@loadable/component';
 import 'bootstrap/dist/css/bootstrap.css';
 
 import LandingPage from "./scenes/LandingPage/LandingPage";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
-import Blog from "./scenes/Blog/Blog";
-import Scholarship from "./scenes/Scholarship/Scholarship";
-import Essay from "./scenes/Essay/Essay";
-import Team from "./components/Team/Team";
-import TermsConditions from "./components/TermsConditions";
-import ContactUs from "./components/ContactUs";
-import SiteMap from "./components/SiteMap";
+import Loading from "./components/Loading";
+const Scholarship = loadable(() => import('./scenes/Scholarship/Scholarship'), {
+    fallback: <Loading />,
+});
+const Blog = loadable(() => import('./scenes/Blog/Blog'), {
+    fallback: <Loading />,
+});
+const Essay = loadable(() => import('./scenes/Essay/Essay'), {
+    fallback: <Loading />,
+});
+const Team = loadable(() => import('./components/Team/Team'), {
+    fallback: <Loading />,
+});
+const TermsConditions = loadable(() => import('./components/TermsConditions'), {
+    fallback: <Loading />,
+});
+const SiteMap = loadable(() => import('./components/SiteMap'), {
+    fallback: <Loading />,
+});
+const ContactUs = loadable(() => import('./components/ContactUs'), {
+    fallback: <Loading />,
+});
 
 
 function App() {
