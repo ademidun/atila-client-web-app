@@ -13,6 +13,16 @@ class UserProfileAPI {
 
         return apiCompletionPromise;
     }
+
+    static getUserContent = (userId, contentType) => {
+
+        const apiCompletionPromise = request({
+            method: 'get',
+            url: `${this.usersEndPoint}/${userId}/${contentType}/`,
+        });
+
+        return apiCompletionPromise;
+    }
 }
 
 export default UserProfileAPI;

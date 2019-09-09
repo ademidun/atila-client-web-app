@@ -1,6 +1,7 @@
 import React from 'react';
 import Loading from "../../components/Loading";
 import UserProfileAPI from "../../services/UserProfileAPI";
+import UserProfileViewTabs from "./UserProfileViewTabs";
 
 class UserProfileView extends React.Component {
 
@@ -90,6 +91,8 @@ class UserProfileView extends React.Component {
                         </div>
                     </div>
                 </div>
+
+                <UserProfileViewTabs userProfile={userProfile} />
             </div>
         );
     }
