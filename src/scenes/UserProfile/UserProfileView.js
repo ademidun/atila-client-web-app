@@ -38,10 +38,9 @@ class UserProfileView extends React.Component {
             .finally(() => {
                 this.setState({ isLoadingUserProfile: false });
             });
-    }
+    };
 
     render () {
-        const { match : { params : { username }} } = this.props;
         const { errorGettingUserProfile, isLoadingUserProfile, userProfile } = this.state;
 
         if (errorGettingUserProfile) {
