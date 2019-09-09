@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Nav, Tab, Tabs} from "react-bootstrap";
+import {Tab, Tabs} from "react-bootstrap";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import ContentCard from "../../components/ContentCard";
 import {genericItemTransform} from "../../services/utils";
@@ -60,7 +60,7 @@ function TabItemContentList({ contentList, contentType }){
     if (!contentList) {
         return (<Loading />)
     }
-    return (<div className="col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+    return (<div className="col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-3">
         {contentList.map( content =>
             <ContentCard key={content.id} content={genericItemTransform(content)}
                          className="col-12 mb-3"
