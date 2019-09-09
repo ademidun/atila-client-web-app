@@ -63,9 +63,33 @@ class UserProfileView extends React.Component {
 
         return (
             <div className="text-center container mt-3">
-                <div className="card shadow">
-                    <h1>View Profile for { username }</h1>
-                    {JSON.stringify(userProfile)}
+
+                <div className="card shadow p-3">
+                    <div className="row">
+                        <div className="col-md-4 col-sm-12">
+                         <img
+                            alt="user profile"
+                            style={{ height: '250px', width: 'auto' }}
+                            className="rounded-circle"
+                            src={userProfile.profile_pic_url} />
+                        </div>
+                        <div className="col-md-8 col-sm-12">
+                                <h1>{ userProfile.first_name } { userProfile.last_name }</h1>
+                                <h3 className="text-muted">{ userProfile.title}
+                                    { userProfile.post_secondary_school && <br/> }
+                                    { userProfile.post_secondary_school}
+                                </h3>
+                            {userProfile.public_metadata && userProfile.public_metadata.profile_link_url &&
+                            <a href={userProfile.public_metadata.profile_link_url}
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               className="btn btn-primary"
+                            >
+                                {userProfile.public_metadata.profile_link_name}
+                            </a>
+                            }
+                        </div>
+                    </div>
                 </div>
             </div>
         );
