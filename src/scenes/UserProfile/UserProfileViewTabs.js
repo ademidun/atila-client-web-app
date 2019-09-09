@@ -14,7 +14,6 @@ class UserProfileViewTabs extends React.Component {
         this.state = {
             blogs: null,
             essays: null,
-            scholarships: null,
         }
     }
 
@@ -23,28 +22,13 @@ class UserProfileViewTabs extends React.Component {
         const { userProfile: {user : userId} } = this.props;
         UserProfileAPI.getUserContent(userId, 'blogs')
             .then(res => {
-                console.log(res);
-                console.log({ res });
                 this.setState({blogs: res.data.blogs });
             });
         UserProfileAPI.getUserContent(userId, 'essays')
             .then(res => {
-                console.log(res);
-                console.log({ res });
                 this.setState({essays: res.data.essays });
             });
-        UserProfileAPI.getUserContent(userId, 'scholarships')
-            .then(res => {
-                console.log(res);
-                console.log({ res });
-                this.setState({scholarships: res.data.scholarships });
-            });
     }
-
-    setActiveNav = (activeNavType, event) => {
-        console.log({ activeNavType, event });
-        this.setState({ activeNavType })
-    };
 
     render() {
 
