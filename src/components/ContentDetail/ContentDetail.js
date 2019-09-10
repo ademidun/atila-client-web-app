@@ -48,7 +48,7 @@ class ContentDetail extends React.Component {
     loadContent = () => {
         const { ContentAPI, contentSlug } = this.props;
 
-        ContentAPI.getSlug(`${contentSlug}`)
+        ContentAPI.getSlug(contentSlug)
             .then(res => {
 
                 if (res.data.blog) {
