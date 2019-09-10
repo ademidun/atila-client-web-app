@@ -74,14 +74,20 @@ function Footer() {
                             <br />
                             <div className="mt-3">
                                 <li className="mt-3">
-                                    <Link to="https://instagram.com/atilatech" className="twitter-follow-button" target="_blank" rel="noopener noreferrer">
+                                    <a href="https://instagram.com/atilatech"
+                                       className="twitter-follow-button"
+                                       target="_blank"
+                                       rel="noopener noreferrer">
                                         Follow @atilatech <FontAwesomeIcon icon={faInstagram} />
-                                    </Link>
+                                    </a>
                                 </li> <br />
                                 <li>Built with <span role="img" aria-label="clock emoji">
                                 ❤️
                             </span> By {' '}
-                                    <Link to="https://tech.atila.ca" target="_blank" style={{color: '#50eafd !important'}}>Atila Tech</Link>
+                                    <a href="https://tech.atila.ca"
+                                       target="_blank"
+                                       rel="noopener noreferrer"
+                                       style={{color: '#50eafd !important'}}>Atila Tech</a>
                                 </li>
                             </div>
                         </ul>

@@ -6,20 +6,9 @@ class BlogAddEdit extends React.Component {
         super(props);
 
         this.state = {
-            model: null,
-            blogs: [],
-            searchPayload: {
-                location: { city :'', province :'', country :'', name :''},
-                education_level :[],
-                education_field :[],
-                searchString: '' ,
-                previewMode: 'universalSearch' ,
-                filter_by_user_show_eligible_only: true,
-                sort_by: 'relevance'
-            },
-            errorGettingBlogs: null,
-            isLoadingBLogs: false,
-            pageNumber: 1,
+            blog: null,
+            errorGettingBlog: null,
+            isLoadingBlog: false,
         }
     }
 

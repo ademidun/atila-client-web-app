@@ -10,6 +10,9 @@ import Loading from "./components/Loading";
 const Scholarship = loadable(() => import('./scenes/Scholarship/Scholarship'), {
     fallback: <Loading />,
 });
+const UserProfile = loadable(() => import('./scenes/UserProfile/UserProfile'), {
+    fallback: <Loading />,
+});
 const Blog = loadable(() => import('./scenes/Blog/Blog'), {
     fallback: <Loading />,
 });
@@ -39,6 +42,7 @@ function App() {
             <Route path="/blog" component={Blog} />
             <Route path="/essay" component={Essay} />
             <Route path="/scholarship" component={Scholarship} />
+            <Route path="/profile" component={UserProfile} />
             <Route path="/team" component={Team} />
             <Route path="/terms-and-conditions" component={TermsConditions} />
             <Route path="/contact" component={ContactUs} />

@@ -4,13 +4,13 @@ import BarLoader from "react-spinners/BarLoader";
 /**
  * @return {null}
  */
-function Loading({isLoading = true, title = '' }) {
+function Loading({isLoading = true, title = "", className = "mt-3" }) {
 
     if (!isLoading) {
         return null;
     }
 
-    return (<div className="text-center">
+    return (<div className={`text-center ${className}`}>
         <h5>{title}</h5>
         <div className="center-block" style={{ width: '500px' }}>
             <BarLoader className="center-block"
