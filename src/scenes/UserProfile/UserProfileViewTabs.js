@@ -58,7 +58,7 @@ class UserProfileViewTabs extends React.Component {
 function TabItemContentList({ contentList, contentType }){
 
     if (!contentList) {
-        return (<Loading />)
+        return (<Loading title={`Loading ${contentType}s`} className="mt-3" />)
     }
     return (<div className="col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-3">
         {contentList.map( content =>

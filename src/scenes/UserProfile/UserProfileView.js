@@ -11,7 +11,6 @@ class UserProfileView extends React.Component {
         this.state = {
             userProfile: null,
             errorGettingUserProfile: null,
-            isLoadingUserProfile: false,
         }
     }
 
@@ -36,13 +35,10 @@ class UserProfileView extends React.Component {
             .catch(err => {
                 this.setState({errorGettingUserProfile: { err }});
             })
-            .finally(() => {
-                this.setState({ isLoadingUserProfile: false });
-            });
     };
 
     render () {
-        const { errorGettingUserProfile, isLoadingUserProfile, userProfile } = this.state;
+        const { errorGettingUserProfile, userProfile } = this.state;
 
         if (errorGettingUserProfile) {
             return (
@@ -57,7 +53,6 @@ class UserProfileView extends React.Component {
         if (!userProfile) {
             return (
                 <Loading
-                    isLoading={isLoadingUserProfile}
                     title={'Loading User Profile..'} />)
         }
 
