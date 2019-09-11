@@ -3,13 +3,14 @@ import axios from 'axios';
 import Environment from './Environment'
 class UserProfileAPI {
 
-    static usersEndPoint = `${Environment.apiUrl}/user-profiles`;
+    static userProfileEndPoint = `${Environment.apiUrl}/user-profiles`;
+    static userEndPoint = `${Environment.apiUrl}/users`;
 
     static getUsername = (username) => {
 
         const apiCompletionPromise = request({
             method: 'get',
-            url: `${this.usersEndPoint}/user-name/?username=${username}/`,
+            url: `${this.userProfileEndPoint}/user-name/?username=${username}/`,
         });
 
         return apiCompletionPromise;
@@ -19,7 +20,7 @@ class UserProfileAPI {
 
         const apiCompletionPromise = request({
             method: 'get',
-            url: `${this.usersEndPoint}/${userId}/${contentType}/`,
+            url: `${this.userProfileEndPoint}/${userId}/${contentType}/`,
         });
 
         return apiCompletionPromise;
@@ -34,7 +35,18 @@ class UserProfileAPI {
         });
 
         return apiCompletionPromise;
-    }
+    };
+
+    static createUser = (registrationData) => {
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: registrationData,
+            url: `${this.userEndPoint}/`,
+        });
+
+        return apiCompletionPromise;
+    };
 
     static authenticateRequests = () => {
 

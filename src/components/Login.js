@@ -1,6 +1,7 @@
 import React from 'react';
 import UserProfileAPI from "../services/UserProfileAPI";
 import Loading from "./Loading";
+import {Link} from "react-router-dom";
 
 class Login extends React.Component {
 
@@ -73,11 +74,17 @@ class Login extends React.Component {
                             }
                             {loadingResponse &&
                             <Loading title="Loading Response..." className="center-block my-3"/>}
-                            <button className="btn btn-primary col-12 mb-3"
-                                    type="submit"
-                                    disabled={loadingResponse}>
-                                Login
-                            </button>
+                            <div style={{ width: '100%' }}>
+                                <button className="btn btn-primary col-sm-12 col-md-5 float-left"
+                                        type="submit"
+                                        disabled={loadingResponse}>
+                                    Login
+                                </button>
+                                <Link to="/register"
+                                      className="btn btn-outline-primary col-sm-12 col-md-5 float-right">
+                                    Register
+                                </Link>
+                            </div>
 
                         </form>
                     </div>
