@@ -1,4 +1,6 @@
 import React from 'react';
+import UserProfileAPI from "../services/UserProfileAPI";
+import Loading from "./Loading";
 
 class Login extends React.Component {
 
@@ -7,29 +9,51 @@ class Login extends React.Component {
 
         this.state = {
             username: '',
-            password: ''
+            password: '',
+            loginError: null,
+            loadingResponse: null,
         };
     }
 
     updateForm = (event) => {
-        console.log({ event });
+        event.preventDefault();
+        this.setState({[event.target.name]: event.target.value})
     };
 
     submitForm = (event) => {
+        event.preventDefault();
         console.log({ event });
+        const { username, password } = this.state;
+        this.setState({ loadingResponse: true});
+        UserProfileAPI
+            .login({ username, password })
+            .then(res => {
+                console.log({ res });
+            })
+            .catch(err => {
+                console.log({ err });
+                if (err.response && err.response.data) {
+                    this.setState({ loginError: err.response.data});
+                }
+            })
+            .finally(res => {
+                console.log({ res });
+                this.setState({ loadingResponse: false});
+            })
     };
 
     render () {
 
-        const { username, password } = this.state;
+        const { username, password, loginError, loadingResponse } = this.state;
         return (
             <div className="container mt-5">
                 <div className="card shadow p-3">
                     <div>
                         <h3>Login</h3>
                         <form className="row p-3 form-group" onSubmit={this.submitForm}>
-                            <input placeholder="Username"
+                            <input placeholder="Username or Email"
                                    className="col-12 mb-3 form-control"
+                                   name="username"
                                    value={username}
                                    onChange={this.updateForm}
                             />
@@ -40,7 +64,16 @@ class Login extends React.Component {
                                    value={password}
                                    onChange={this.updateForm}
                             />
-                            <button className="btn btn-primary col-12 mb-3" type="submit">
+                            {loginError &&
+                            <p className="text-danger">
+                                {loginError.message}
+                            </p>
+                            }
+                            {loadingResponse &&
+                            <Loading title="Loading Response..." className="center-block my-3"/>}
+                            <button className="btn btn-primary col-12 mb-3"
+                                    type="submit"
+                                    disabled={loadingResponse}>
                                 Login
                             </button>
 

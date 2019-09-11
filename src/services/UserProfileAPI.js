@@ -23,6 +23,17 @@ class UserProfileAPI {
 
         return apiCompletionPromise;
     }
+
+    static login = (loginCredentials) => {
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: loginCredentials,
+            url: `${Environment.apiUrl}/login/`,
+        });
+
+        return apiCompletionPromise;
+    }
 }
 
 export default UserProfileAPI;
