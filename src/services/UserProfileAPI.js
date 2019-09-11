@@ -1,4 +1,5 @@
 import request from 'axios';
+import axios from 'axios';
 import Environment from './Environment'
 class UserProfileAPI {
 
@@ -33,6 +34,14 @@ class UserProfileAPI {
         });
 
         return apiCompletionPromise;
+    }
+
+    static authenticateRequests = () => {
+
+        const jwtToken = localStorage.getItem('token');
+        if (jwtToken) {
+            axios.defaults.headers.common['Authorization'] = `JWT ${jwtToken}`;
+        }
     }
 }
 

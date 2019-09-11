@@ -7,6 +7,7 @@ import Form from 'react-bootstrap/Form';
 import {Link} from "react-router-dom";
 
 import './Navbar.scss';
+import UserProfileAPI from "../../services/UserProfileAPI";
 
 class Navbar extends React.Component {
     constructor(props) {
@@ -21,6 +22,8 @@ class Navbar extends React.Component {
     }
 
     componentDidMount() {
+        console.log('Navbar.componentDidMount');
+        UserProfileAPI.authenticateRequests();
         const userImageUrl = localStorage.getItem('userImageUrl');
 
         if (userImageUrl) {

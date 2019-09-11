@@ -29,6 +29,8 @@ class Login extends React.Component {
             .login({ username, password })
             .then(res => {
                 console.log({ res });
+                localStorage.setItem('token', res.data.token);
+                UserProfileAPI.authenticateRequests();
             })
             .catch(err => {
                 console.log({ err });
