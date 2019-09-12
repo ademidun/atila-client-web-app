@@ -22,7 +22,6 @@ class Navbar extends React.Component {
     }
 
     componentDidMount() {
-        console.log('Navbar.componentDidMount');
         UserProfileAPI.authenticateRequests();
         const userImageUrl = localStorage.getItem('userImageUrl');
 

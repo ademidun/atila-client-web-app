@@ -2,6 +2,7 @@ import React from 'react';
 import UserProfileAPI from "../services/UserProfileAPI";
 import Loading from "./Loading";
 import {Link} from "react-router-dom";
+import {PasswordShowHide} from "./Register";
 
 class Login extends React.Component {
 
@@ -11,7 +12,7 @@ class Login extends React.Component {
         this.state = {
             username: '',
             password: '',
-            loginError: null,
+            isResponseError: null,
             loadingResponse: null,
         };
     }
@@ -26,6 +27,7 @@ class Login extends React.Component {
         console.log({ event });
         const { username, password } = this.state;
         this.setState({ loadingResponse: true});
+        this.setState({ isResponseError: null});
         UserProfileAPI
             .login({ username, password })
             .then(res => {
@@ -36,7 +38,7 @@ class Login extends React.Component {
             .catch(err => {
                 console.log({ err });
                 if (err.response && err.response.data) {
-                    this.setState({ loginError: err.response.data});
+                    this.setState({ isResponseError: err.response.data});
                 }
             })
             .finally(res => {
@@ -47,34 +49,29 @@ class Login extends React.Component {
 
     render () {
 
-        const { username, password, loginError, loadingResponse } = this.state;
+        const { username, password, isResponseError, loadingResponse } = this.state;
         return (
             <div className="container mt-5">
                 <div className="card shadow p-3">
                     <div>
-                        <h3>Login</h3>
+                        <h1>Login</h1>
                         <form className="row p-3 form-group" onSubmit={this.submitForm}>
                             <input placeholder="Username or Email"
                                    className="col-12 mb-3 form-control"
                                    name="username"
                                    value={username}
+                                   autoComplete="username"
                                    onChange={this.updateForm}
                             />
-                            <input placeholder="Password"
-                                   name="password"
-                                   type="password"
-                                   className="col-12 mb-3 form-control"
-                                   value={password}
-                                   onChange={this.updateForm}
-                            />
-                            {loginError &&
+                            <PasswordShowHide password={password} updateForm={this.updateForm} />
+                            {isResponseError &&
                             <p className="text-danger">
-                                {loginError.message}
+                                {isResponseError.message}
                             </p>
                             }
                             {loadingResponse &&
                             <Loading title="Loading Response..." className="center-block my-3"/>}
-                            <div style={{ width: '100%' }}>
+                            <div className="w-100">
                                 <button className="btn btn-primary col-sm-12 col-md-5 float-left"
                                         type="submit"
                                         disabled={loadingResponse}>

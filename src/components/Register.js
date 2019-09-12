@@ -1,6 +1,54 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import UserProfileAPI from "../services/UserProfileAPI";
 import Loading from "./Loading";
+import './LoginRegister.scss';
+
+export class PasswordShowHide extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            showPassword: false,
+        }
+    }
+
+    togglePassword = (event) => {
+        event.preventDefault();
+        const { showPassword } = this.state;
+        this.setState({showPassword: !showPassword})
+    };
+
+
+    render (){
+
+        const { password, updateForm } = this.props;
+        const { showPassword } = this.state;
+
+        return (
+            <div className="w-100 mb-3">
+                <input placeholder="Password"
+                       className="col-12 form-control"
+                       name="password"
+                       value={password}
+                       autoComplete="new-password"
+                       type={showPassword? 'text': 'password'}
+                       onChange={updateForm}
+                />
+                <span
+                    onClick={this.togglePassword}
+                    className="text-muted font-size-xm cursor-pointer pl-2">
+                                    {showPassword ? 'hide ' : 'show '} password
+                                </span>
+            </div>)
+    }
+}
+
+PasswordShowHide.propTypes = {
+    updateForm: PropTypes.func.isRequired,
+    password: PropTypes.string.isRequired,
+};
 
 class Register extends React.Component {
 
@@ -8,25 +56,32 @@ class Register extends React.Component {
         super(props);
 
         this.state = {
-            username: '',
-            password: '',
-            loginError: null,
+            userProfile: {
+                firstName: '',
+                lastName: '',
+                username: '',
+                email: '',
+                password: '',
+            },
+            isResponseError: null,
             loadingResponse: null,
         };
     }
 
     updateForm = (event) => {
         event.preventDefault();
-        this.setState({[event.target.name]: event.target.value})
+        const userProfile = {...this.state.userProfile};
+        userProfile[event.target.name] = event.target.value;
+        this.setState({ userProfile });
     };
 
     submitForm = (event) => {
         event.preventDefault();
         console.log({ event });
-        const { username, password } = this.state;
+        const { userProfile } = this.state;
         this.setState({ loadingResponse: true});
         UserProfileAPI
-            .createUser({ username, password })
+            .createUser({ userProfile })
             .then(res => {
                 console.log({ res });
                 localStorage.setItem('token', res.data.token);
@@ -35,7 +90,7 @@ class Register extends React.Component {
             .catch(err => {
                 console.log({ err });
                 if (err.response && err.response.data) {
-                    this.setState({ loginError: err.response.data});
+                    this.setState({ isResponseError: err.response.data});
                 }
             })
             .finally(res => {
@@ -46,29 +101,46 @@ class Register extends React.Component {
 
     render () {
 
-        const { username, password, loginError, loadingResponse } = this.state;
+        const { userProfile, isResponseError, loadingResponse } = this.state;
+        const { firstName, lastName, username, email, password } = userProfile;
         return (
             <div className="container mt-5">
                 <div className="card shadow p-3">
                     <div>
-                        <h3>Login</h3>
+                        <h1>Register</h1>
                         <form className="row p-3 form-group" onSubmit={this.submitForm}>
-                            <input placeholder="Username or Email"
+                            <input placeholder="First name"
+                                   className="col-12 mb-3 form-control"
+                                   name="firstName"
+                                   value={firstName}
+                                   onChange={this.updateForm}
+                            />
+                            <input placeholder="Last Name"
+                                   name="lastName"
+                                   type="lastName"
+                                   className="col-12 mb-3 form-control"
+                                   value={lastName}
+                                   onChange={this.updateForm}
+                            />
+                            <input placeholder="Email"
+                                   className="col-12 mb-3 form-control"
+                                   type="email"
+                                   name="email"
+                                   value={email}
+                                   autoComplete="email"
+                                   onChange={this.updateForm}
+                            />
+                            <input placeholder="Username"
                                    className="col-12 mb-3 form-control"
                                    name="username"
                                    value={username}
+                                   autoComplete="username"
                                    onChange={this.updateForm}
                             />
-                            <input placeholder="Password"
-                                   name="password"
-                                   type="password"
-                                   className="col-12 mb-3 form-control"
-                                   value={password}
-                                   onChange={this.updateForm}
-                            />
-                            {loginError &&
+                            <PasswordShowHide password={password} updateForm={this.updateForm} />
+                            {isResponseError &&
                             <p className="text-danger">
-                                {loginError.message}
+                                {isResponseError.message}
                             </p>
                             }
                             {loadingResponse &&
@@ -76,7 +148,7 @@ class Register extends React.Component {
                             <button className="btn btn-primary col-12 mb-3"
                                     type="submit"
                                     disabled={loadingResponse}>
-                                Login
+                                Register
                             </button>
 
                         </form>
