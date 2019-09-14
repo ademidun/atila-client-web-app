@@ -32,6 +32,19 @@ const ContactUs = loadable(() => import('./components/ContactUs'), {
     fallback: <Loading />,
 });
 
+import { createStore } from 'redux'
+import reducer from './redux/reducers'
+import {SET_LOGGED_IN_USER_PROFILE} from "./redux/actions";
+
+const store = createStore(reducer);
+console.log('store.getState()', store.getState());
+
+store.dispatch({
+    type: SET_LOGGED_IN_USER_PROFILE,
+    payload: {foo: 'bar'}
+});
+console.log('store.getState()', store.getState());
+
 
 function App() {
   return (
