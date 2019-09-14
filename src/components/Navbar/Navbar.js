@@ -7,6 +7,7 @@ import Form from 'react-bootstrap/Form';
 import {Link} from "react-router-dom";
 
 import './Navbar.scss';
+import UserProfileAPI from "../../services/UserProfileAPI";
 
 class Navbar extends React.Component {
     constructor(props) {
@@ -21,6 +22,7 @@ class Navbar extends React.Component {
     }
 
     componentDidMount() {
+        UserProfileAPI.authenticateRequests();
         const userImageUrl = localStorage.getItem('userImageUrl');
 
         if (userImageUrl) {
@@ -51,7 +53,7 @@ class Navbar extends React.Component {
                         </Form>
                         <Link to="/essay" className="nav-item">Essays</Link>
                         <Link to="/blog" className="nav-item">Blogs</Link>
-                        <Link to="/scholarship" className="nav-item">Login</Link>
+                        <Link to="/login" className="nav-item">Login</Link>
                         {authService.isLoggedIn &&
                         <NavDropdown title="Dropdown" id="basic-nav-dropdown">
                             <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>

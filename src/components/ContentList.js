@@ -52,7 +52,6 @@ class ContentList extends React.Component {
 
             })
             .catch(err => {
-                console.log({ err});
                 this.setState({errorGettingContent : err });
             })
             .finally(() => {
