@@ -78,7 +78,6 @@ class Register extends React.Component {
 
     submitForm = (event) => {
         event.preventDefault();
-        console.log({ event });
         const { userProfile } = this.state;
         const { email, username, password } = userProfile;
 
@@ -98,18 +97,15 @@ class Register extends React.Component {
                 locationData: null
             })
             .then(res => {
-                console.log({ res });
                 this.setState({ isResponseSuccess: true});
                 UserProfileAPI.authenticateRequests(res.data.token, res.data.id);
             })
             .catch(err => {
-                console.log({ err });
                 if (err.response && err.response.data) {
                     this.setState({ isResponseError: err.response.data});
                 }
             })
             .finally(res => {
-                console.log({ res });
                 this.setState({ loadingResponse: false});
             })
     };

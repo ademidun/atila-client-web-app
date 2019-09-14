@@ -24,25 +24,21 @@ class Login extends React.Component {
 
     submitForm = (event) => {
         event.preventDefault();
-        console.log({ event });
         const { username, password } = this.state;
         this.setState({ loadingResponse: true});
         this.setState({ isResponseError: null});
         UserProfileAPI
             .login({ username, password })
             .then(res => {
-                console.log({ res });
                 localStorage.setItem('token', res.data.token);
                 UserProfileAPI.authenticateRequests();
             })
             .catch(err => {
-                console.log({ err });
                 if (err.response && err.response.data) {
                     this.setState({ isResponseError: err.response.data});
                 }
             })
             .finally(res => {
-                console.log({ res });
                 this.setState({ loadingResponse: false});
             })
     };

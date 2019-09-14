@@ -28,7 +28,6 @@ class UserProfileView extends React.Component {
         const { match : { params : { username }} } = this.props;
         UserProfileAPI.getUsername(username)
             .then(res => {
-                console.log({ res });
                 this.setState({userProfile: res.data});
 
             })
