@@ -14,7 +14,7 @@ class UserProfileAPI {
         });
 
         return apiCompletionPromise;
-    }
+    };
 
     static getUserContent = (userId, contentType) => {
 
@@ -24,7 +24,7 @@ class UserProfileAPI {
         });
 
         return apiCompletionPromise;
-    }
+    };
 
     static login = (loginCredentials) => {
 
@@ -55,6 +55,11 @@ class UserProfileAPI {
         if (jwtToken) {
             axios.defaults.headers.common['Authorization'] = `JWT ${jwtToken}`;
         }
+    }
+
+    static logout = () => {
+        localStorage.setItem('token', null);
+        localStorage.setItem('userId', null);
     }
 }
 

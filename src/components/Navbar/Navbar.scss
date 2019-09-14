@@ -22,3 +22,16 @@
 .nav-item {
   padding: 0.5rem;
 }
+
+.dropdown-menu{
+  right: 0;
+  left: auto;
+  width: 100px;
+}
+.dropdown-toggle.btn-primary {
+  background-color: transparent;
+  border-color: $primary,
+}
+.dropdown-toggle::after {
+  display: none;
+}

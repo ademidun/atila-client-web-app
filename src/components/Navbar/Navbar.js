@@ -5,11 +5,14 @@ import * as NavbarBootstrap from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Form from 'react-bootstrap/Form';
 
-import {Link} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 
 import './Navbar.scss';
 import UserProfileAPI from "../../services/UserProfileAPI";
 import {setLoggedInUserProfile} from "../../redux/actions/user";
+import Dropdown from "react-bootstrap/Dropdown";
+import {faUser} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 class Navbar extends React.Component {
     constructor(props) {
@@ -36,6 +39,8 @@ class Navbar extends React.Component {
         event.preventDefault();
         const { setLoggedInUserProfile } = this.props;
         setLoggedInUserProfile(null);
+        UserProfileAPI.logout();
+        this.props.history.push("/");
     };
 
     render() {
@@ -60,9 +65,26 @@ class Navbar extends React.Component {
                             <Link to="/login" className="nav-item">Login</Link>}
                             {
                                 userProfile &&
-                                <button onClick={this.logout} className="btn btn-link nav-item"
-                                        style={{ display: 'inherit' }}
-                                >Logout</button>
+                                <React.Fragment>
+
+                                    <Dropdown>
+                                        <Dropdown.Toggle style={{ backgroundColor: 'trabsparent' }}>
+                                            <FontAwesomeIcon icon={faUser} />
+                                        </Dropdown.Toggle>
+
+                                        <Dropdown.Menu>
+                                            <Link to="/scholarship/add" className="dropdown-item">Add Scholarship</Link>
+                                            <Link to={`/profile/${userProfile.username}`} className="dropdown-item">View Profile</Link>
+                                            <Link to="/profile/edit" className="dropdown-item">Edit Profile</Link>
+                                            <Dropdown.Divider />
+                                            <button onClick={this.logout}
+                                                    className="btn btn-link dropdown-item"
+                                                    style={{ display: 'inherit' }}
+                                            >Logout</button>
+
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+                                </React.Fragment>
                             }
                         </Nav>
                     </NavbarBootstrap.Collapse>
@@ -89,4 +111,4 @@ const mapDispatchToProps = () => {
         setLoggedInUserProfile
     };
 };
-export default connect(mapStateToProps, mapDispatchToProps())(Navbar);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps())(Navbar));
