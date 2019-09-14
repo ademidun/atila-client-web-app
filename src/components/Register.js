@@ -64,6 +64,7 @@ class Register extends React.Component {
                 password: '',
             },
             isResponseError: null,
+            isResponseSuccess: null,
             loadingResponse: null,
         };
     }
@@ -79,13 +80,27 @@ class Register extends React.Component {
         event.preventDefault();
         console.log({ event });
         const { userProfile } = this.state;
+        const { email, username, password } = userProfile;
+
         this.setState({ loadingResponse: true});
+        this.setState({ isResponseError: null});
+
+        const userProfileSendData = {
+            first_name: userProfile.firstName,
+            last_name: userProfile.firstName,
+            email, username,
+        };
+
         UserProfileAPI
-            .createUser({ userProfile })
+            .createUser({
+                userProfile: userProfileSendData,
+                user: { email, username, password },
+                locationData: null
+            })
             .then(res => {
                 console.log({ res });
-                localStorage.setItem('token', res.data.token);
-                UserProfileAPI.authenticateRequests();
+                this.setState({ isResponseSuccess: true});
+                UserProfileAPI.authenticateRequests(res.data.token, res.data.id);
             })
             .catch(err => {
                 console.log({ err });
@@ -101,7 +116,7 @@ class Register extends React.Component {
 
     render () {
 
-        const { userProfile, isResponseError, loadingResponse } = this.state;
+        const { userProfile, isResponseError, isResponseSuccess, loadingResponse } = this.state;
         const { firstName, lastName, username, email, password } = userProfile;
         return (
             <div className="container mt-5">
@@ -138,9 +153,15 @@ class Register extends React.Component {
                                    onChange={this.updateForm}
                             />
                             <PasswordShowHide password={password} updateForm={this.updateForm} />
+                            {isResponseSuccess &&
+                            <p className="text-success">
+                                Registration successful!
+                                <span role="img" aria-label="happy face emoji">🙂</span>
+                            </p>
+                            }
                             {isResponseError &&
                             <p className="text-danger">
-                                {isResponseError.message}
+                                {isResponseError.message || isResponseError.error}
                             </p>
                             }
                             {loadingResponse &&

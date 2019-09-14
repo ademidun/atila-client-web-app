@@ -48,9 +48,10 @@ class UserProfileAPI {
         return apiCompletionPromise;
     };
 
-    static authenticateRequests = () => {
+    static authenticateRequests = (jwtToken, userId) => {
 
-        const jwtToken = localStorage.getItem('token');
+        localStorage.setItem('token', jwtToken);
+        localStorage.setItem('userId', userId);
         if (jwtToken) {
             axios.defaults.headers.common['Authorization'] = `JWT ${jwtToken}`;
         }
