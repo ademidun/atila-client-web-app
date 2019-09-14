@@ -16,6 +16,16 @@ class UserProfileAPI {
         return apiCompletionPromise;
     };
 
+    static get = (userId) => {
+
+        const apiCompletionPromise = request({
+            method: 'get',
+            url: `${this.userProfileEndPoint}/${userId}/`,
+        });
+
+        return apiCompletionPromise;
+    };
+
     static getUserContent = (userId, contentType) => {
 
         const apiCompletionPromise = request({
@@ -55,11 +65,12 @@ class UserProfileAPI {
         if (jwtToken) {
             axios.defaults.headers.common['Authorization'] = `JWT ${jwtToken}`;
         }
-    }
+    };
 
     static logout = () => {
-        localStorage.setItem('token', null);
-        localStorage.setItem('userId', null);
+        localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+        delete axios.defaults.headers.common['Authorization'];
     }
 }
 

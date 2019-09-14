@@ -37,16 +37,15 @@ class Login extends React.Component {
     submitForm = (event) => {
         event.preventDefault();
         const { username, password } = this.state;
+        const { setLoggedInUserProfile } = this.props;
         this.setState({ loadingResponse: true});
         this.setState({ isResponseError: null});
         UserProfileAPI
             .login({ username, password })
             .then(res => {
                 this.setState({ isResponseSuccess: true});
-                localStorage.setItem('token', res.data.token);
-                const { setLoggedInUserProfile } = this.props;
                 setLoggedInUserProfile(res.data.user_profile);
-                UserProfileAPI.authenticateRequests();
+                UserProfileAPI.authenticateRequests(res.data.token, res.data.id);
                 this.props.history.push(`/scholarship`);
             })
             .catch(err => {
@@ -93,7 +92,7 @@ class Login extends React.Component {
                             {loadingResponse &&
                             <Loading title="Loading Response..." className="center-block my-3"/>}
                             <div className="w-100">
-                                <button className="btn btn-primary col-sm-12 col-md-5 float-left"
+                                <button className="btn btn-primary col-sm-12 col-md-5 float-left mb-3"
                                         type="submit"
                                         disabled={loadingResponse}>
                                     Login
@@ -112,11 +111,11 @@ class Login extends React.Component {
     }
 }
 
-function mapDispatchToProps() {
+const mapDispatchToProps = () => {
     return {
         setLoggedInUserProfile
     };
-}
+};
 
 Login.propTypes = {
     setLoggedInUserProfile: PropTypes.func.isRequired,

@@ -13,6 +13,7 @@ import {setLoggedInUserProfile} from "../../redux/actions/user";
 import Dropdown from "react-bootstrap/Dropdown";
 import {faUser} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import Loading from "../Loading";
 
 class Navbar extends React.Component {
     constructor(props) {
@@ -22,12 +23,30 @@ class Navbar extends React.Component {
             authService: {
                 isLoggedIn: false
             },
-            searchQuery: ''
+            searchQuery: '',
+            isLoadingUserProfile: false,
         };
     }
 
     componentDidMount() {
-        UserProfileAPI.authenticateRequests();
+
+        const userId = localStorage.getItem('userId');
+        const token = localStorage.getItem('token');
+        if (userId && token && (userId !== "undefined" && token !== "undefined")) {
+            this.setState({isLoadingUserProfile: true});
+            UserProfileAPI.authenticateRequests(token, userId);
+
+            UserProfileAPI.get(userId)
+                .then(res => {
+                    const { setLoggedInUserProfile } = this.props;
+                    setLoggedInUserProfile(res.data);
+                })
+                .catch(err => {
+                })
+                .finally(()=>{
+                    this.setState({isLoadingUserProfile: false});
+                })
+        }
     }
 
     updateSearch = event => {
@@ -44,7 +63,7 @@ class Navbar extends React.Component {
     };
 
     render() {
-        const {searchQuery} = this.state;
+        const { searchQuery, isLoadingUserProfile } = this.state;
         const { userProfile } = this.props;
 
         return (
@@ -89,6 +108,10 @@ class Navbar extends React.Component {
                         </Nav>
                     </NavbarBootstrap.Collapse>
                 </NavbarBootstrap>
+                {
+                    isLoadingUserProfile &&
+                    <Loading className="col-12" title="Loading UserProfile..." />
+                }
                 <hr style={{ margin: 0 }}/>
             </React.Fragment>
         );
