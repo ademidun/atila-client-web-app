@@ -76,7 +76,7 @@ class Navbar extends React.Component {
                             <Form inline>
                                 <input value={searchQuery} className="form-control search-input" type="text" name="search"
                                        placeholder="Enter a search term" onChange={this.updateSearch}/>
-                                <Link to="search" className="nav-item">Search</Link>
+                                <Link to="/search" className="nav-item">Search</Link>
                             </Form>
                             <Link to="/essay" className="nav-item">Essays</Link>
                             <Link to="/blog" className="nav-item">Blogs</Link>
