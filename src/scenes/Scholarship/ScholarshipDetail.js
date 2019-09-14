@@ -56,7 +56,6 @@ class ScholarshipDetail extends React.Component {
 
             })
             .catch(err => {
-                console.log({ err});
                 this.setState({ errorLoadingScholarship: true });
             })
             .finally(() => {

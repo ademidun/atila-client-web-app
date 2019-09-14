@@ -31,6 +31,12 @@ const SiteMap = loadable(() => import('./components/SiteMap'), {
 const ContactUs = loadable(() => import('./components/ContactUs'), {
     fallback: <Loading />,
 });
+const Login = loadable(() => import('./components/Login'), {
+    fallback: <Loading />,
+});
+const Register = loadable(() => import('./components/Register'), {
+    fallback: <Loading />,
+});
 
 import { createStore } from 'redux'
 import reducer from './redux/reducers'
@@ -55,6 +61,8 @@ function App() {
             <Route path="/blog" component={Blog} />
             <Route path="/essay" component={Essay} />
             <Route path="/scholarship" component={Scholarship} />
+            <Route path="/login" component={Login} />
+            <Route path="/register" component={Register} />
             <Route path="/profile" component={UserProfile} />
             <Route path="/team" component={Team} />
             <Route path="/terms-and-conditions" component={TermsConditions} />

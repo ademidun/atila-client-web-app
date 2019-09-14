@@ -25,11 +25,9 @@ class ContactUs extends  React.Component{
         this.setState({ isLoadingResponse: true });
         UtilsAPI.sendContactUsForm({ name: fullName, message: contactMessage, email })
             .then(res=> {
-                console.log({ res });
                 this.setState({ isReceivedResponse: true });
             })
             .catch(err=>{
-                console.log({ err });
                 this.setState({ errorReceivingResponse: err });
 
             })
