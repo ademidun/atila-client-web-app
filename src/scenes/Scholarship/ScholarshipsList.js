@@ -4,6 +4,8 @@ import {toTitleCase} from "../../services/utils";
 import ScholarshipCard from "./ScholarshipCard";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
+import {connect} from "react-redux";
+
 class ScholarshipsList extends React.Component {
 
     constructor(props) {
@@ -40,7 +42,8 @@ class ScholarshipsList extends React.Component {
     loadScholarships = (page) => {
 
         const {
-            location : { search }
+            location : { search },
+            userProfile,
         } = this.props;
 
         const { scholarships, totalScholarshipsCount } = this.state;
@@ -53,8 +56,19 @@ class ScholarshipsList extends React.Component {
 
         const searchQuery = params.get('q');
 
-        const searchPayload = {...this.state.searchPayload};
+        let searchPayload = {...this.state.searchPayload};
         searchPayload.searchString = searchQuery;
+
+        if (userProfile) {
+            searchPayload = {
+                city: [{"id":14,"province":"Ontario","name":"Milton","country":"Canada"}],
+                education_level: ["University"],
+                education_field: ["STEM (Undergrad)","MBA"],
+                sort_by: "relevance_new",
+                filter_by_user_show_eligible_only: true
+            };
+        }
+
         this.setState({ searchPayload });
 
         this.setState({ isLoadingScholarships: true });
@@ -140,4 +154,7 @@ class ScholarshipsList extends React.Component {
     }
 }
 
-export default ScholarshipsList;
+const mapStateToProps = state => {
+    return { userProfile: state.data.user.loggedInUserProfile };
+};
+export default connect(mapStateToProps)(ScholarshipsList);
