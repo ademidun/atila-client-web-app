@@ -1,7 +1,5 @@
-// src/js/actions/index.js
+import * as userActions from './user';
 
-export const SET_LOGGED_IN_USER_PROFILE = "SET_LOGGED_IN_USER_PROFILE";
-
-export function addUserProfile(payload) {
-    return { type: SET_LOGGED_IN_USER_PROFILE, payload }
+export default {
+    userActions,
 }

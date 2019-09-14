@@ -1,11 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import {Link} from "react-router-dom";
+import {connect} from "react-redux";
+
 import UserProfileAPI from "../services/UserProfileAPI";
 import Loading from "./Loading";
-import {Link} from "react-router-dom";
 import {PasswordShowHide} from "./Register";
+import {setLoggedInUserProfile} from "../redux/actions/user";
 
 class Login extends React.Component {
 
+    _isMounted = false;
     constructor(props){
         super(props);
 
@@ -14,7 +19,14 @@ class Login extends React.Component {
             password: '',
             isResponseError: null,
             loadingResponse: null,
+            isResponseSuccess: null,
         };
+    }
+    componentDidMount() {
+        this._isMounted = true;
+    }
+    componentWillUnmount() {
+        this._isMounted = false;
     }
 
     updateForm = (event) => {
@@ -30,8 +42,12 @@ class Login extends React.Component {
         UserProfileAPI
             .login({ username, password })
             .then(res => {
+                this.setState({ isResponseSuccess: true});
                 localStorage.setItem('token', res.data.token);
+                const { setLoggedInUserProfile } = this.props;
+                setLoggedInUserProfile(res.data.user_profile);
                 UserProfileAPI.authenticateRequests();
+                this.props.history.push(`/scholarship`);
             })
             .catch(err => {
                 if (err.response && err.response.data) {
@@ -39,13 +55,16 @@ class Login extends React.Component {
                 }
             })
             .finally(res => {
-                this.setState({ loadingResponse: false});
+                if (this._isMounted) {
+                    this.setState({ loadingResponse: false});
+                }
             })
     };
 
     render () {
-
-        const { username, password, isResponseError, loadingResponse } = this.state;
+        const { username, password,
+            isResponseError, loadingResponse,
+            isResponseSuccess } = this.state;
         return (
             <div className="container mt-5">
                 <div className="card shadow p-3">
@@ -60,6 +79,12 @@ class Login extends React.Component {
                                    onChange={this.updateForm}
                             />
                             <PasswordShowHide password={password} updateForm={this.updateForm} />
+                            {isResponseSuccess &&
+                            <p className="text-success">
+                                Login successful! Redirecting...
+                                <span role="img" aria-label="happy face emoji">🙂</span>
+                            </p>
+                            }
                             {isResponseError &&
                             <p className="text-danger">
                                 {isResponseError.message}
@@ -87,4 +112,14 @@ class Login extends React.Component {
     }
 }
 
-export default Login;
+function mapDispatchToProps() {
+    return {
+        setLoggedInUserProfile
+    };
+}
+
+Login.propTypes = {
+    setLoggedInUserProfile: PropTypes.func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps())(Login);
