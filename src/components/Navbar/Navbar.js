@@ -1,13 +1,19 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from "react-redux";
 import * as NavbarBootstrap from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import NavDropdown from 'react-bootstrap/NavDropdown';
 import Form from 'react-bootstrap/Form';
 
-import {Link} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 
 import './Navbar.scss';
 import UserProfileAPI from "../../services/UserProfileAPI";
+import {initializeLoggedInUserProfile} from "../../redux/actions/user";
+import Dropdown from "react-bootstrap/Dropdown";
+import {faUser} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import Loading from "../Loading";
 
 class Navbar extends React.Component {
     constructor(props) {
@@ -17,17 +23,15 @@ class Navbar extends React.Component {
             authService: {
                 isLoggedIn: false
             },
-            searchQuery: ''
+            searchQuery: '',
+            isLoadingUserProfile: false,
         };
     }
 
     componentDidMount() {
-        UserProfileAPI.authenticateRequests();
-        const userImageUrl = localStorage.getItem('userImageUrl');
 
-        if (userImageUrl) {
-            this.setState({userImageUrl});
-        }
+        const { initializeLoggedInUserProfile } = this.props;
+        initializeLoggedInUserProfile();
     }
 
     updateSearch = event => {
@@ -35,40 +39,87 @@ class Navbar extends React.Component {
         this.setState({searchQuery: event.target.value});
     };
 
-    render() {
+    logout = event => {
+        event.preventDefault();
+        const { setLoggedInUserProfile } = this.props;
+        setLoggedInUserProfile(null);
+        UserProfileAPI.logout();
+        this.props.history.push("/");
+    };
 
-        const {searchQuery, authService} = this.state;
+    render() {
+        const { searchQuery } = this.state;
+        const { userProfile, isLoadingLoggedInUserProfile } = this.props;
 
         return (
             <React.Fragment>
                 <NavbarBootstrap bg="white" expand="md" className="Navbar px-5 serif-font">
-                <NavbarBootstrap.Brand className="nav-logo"><Link to="/">Atila</Link></NavbarBootstrap.Brand>
-                <NavbarBootstrap.Toggle aria-controls="basic-navbar-nav" />
-                <NavbarBootstrap.Collapse id="basic-navbar-nav">
-                    <Nav className="ml-auto">
-                        <Form inline>
-                            <input value={searchQuery} className="form-control search-input" type="text" name="search"
-                                   placeholder="Enter a search term" onChange={this.updateSearch}/>
-                            <Link to="search" className="nav-item">Search</Link>
-                        </Form>
-                        <Link to="/essay" className="nav-item">Essays</Link>
-                        <Link to="/blog" className="nav-item">Blogs</Link>
-                        <Link to="/login" className="nav-item">Login</Link>
-                        {authService.isLoggedIn &&
-                        <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                            <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                            <NavDropdown.Divider />
-                            <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-                        </NavDropdown>}
-                    </Nav>
-                </NavbarBootstrap.Collapse>
-            </NavbarBootstrap>
+                    <NavbarBootstrap.Brand className="nav-logo"><Link to="/">Atila</Link></NavbarBootstrap.Brand>
+                    <NavbarBootstrap.Toggle aria-controls="basic-navbar-nav" />
+                    <NavbarBootstrap.Collapse id="basic-navbar-nav">
+                        <Nav className="ml-auto">
+                            <Form inline>
+                                <input value={searchQuery} className="form-control search-input" type="text" name="search"
+                                       placeholder="Enter a search term" onChange={this.updateSearch}/>
+                                <Link to="/search" className="nav-item">Search</Link>
+                            </Form>
+                            <Link to="/essay" className="nav-item">Essays</Link>
+                            <Link to="/blog" className="nav-item">Blogs</Link>
+                            {!userProfile &&
+                            <Link to="/login" className="nav-item">Login</Link>}
+                            {
+                                userProfile &&
+                                <React.Fragment>
+
+                                    <Dropdown>
+                                        <Dropdown.Toggle style={{ backgroundColor: 'trabsparent' }}>
+                                            <FontAwesomeIcon icon={faUser} />
+                                        </Dropdown.Toggle>
+
+                                        <Dropdown.Menu>
+                                            <Link to="/scholarship/add" className="dropdown-item">Add Scholarship</Link>
+                                            <Link to={`/profile/${userProfile.username}`} className="dropdown-item">View Profile</Link>
+                                            <Link to="/profile/edit" className="dropdown-item">Edit Profile</Link>
+                                            <Dropdown.Divider />
+                                            <button onClick={this.logout}
+                                                    className="btn btn-link dropdown-item"
+                                                    style={{ display: 'inherit' }}
+                                            >Logout</button>
+
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+                                </React.Fragment>
+                            }
+                        </Nav>
+                    </NavbarBootstrap.Collapse>
+                </NavbarBootstrap>
+                {
+                    isLoadingLoggedInUserProfile &&
+                    <Loading className="col-12" title="Loading UserProfile..." />
+                }
                 <hr style={{ margin: 0 }}/>
             </React.Fragment>
         );
     }
 }
+Navbar.defaultProps = {
+    userProfile: null,
+};
 
-export default Navbar;
+Navbar.propTypes = {
+    initializeLoggedInUserProfile: PropTypes.func.isRequired,
+    userProfile: PropTypes.shape({}),
+};
+
+const mapStateToProps = state => {
+    return {
+        userProfile: state.data.user.loggedInUserProfile,
+        isLoadingLoggedInUserProfile: state.ui.user.isLoadingLoggedInUserProfile
+    };
+};
+const mapDispatchToProps = () => {
+    return {
+        initializeLoggedInUserProfile
+    };
+};
+export default withRouter(connect(mapStateToProps, mapDispatchToProps())(Navbar));

@@ -2,11 +2,14 @@ import React from 'react';
 import {BrowserRouter as Router, Route} from "react-router-dom";
 import loadable from '@loadable/component';
 import 'bootstrap/dist/css/bootstrap.css';
+import { Provider } from "react-redux";
+import store from "./redux/store/index";
 
 import LandingPage from "./scenes/LandingPage/LandingPage";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
 import Loading from "./components/Loading";
+
 const Scholarship = loadable(() => import('./scenes/Scholarship/Scholarship'), {
     fallback: <Loading />,
 });
@@ -38,9 +41,9 @@ const Register = loadable(() => import('./components/Register'), {
     fallback: <Loading />,
 });
 
-
 function App() {
   return (
+      <Provider store={store}>
       <Router>
         <div className="App">
             <Navbar />
@@ -58,6 +61,7 @@ function App() {
             <Footer />
         </div>
       </Router>
+      </Provider>
   );
 }
 
