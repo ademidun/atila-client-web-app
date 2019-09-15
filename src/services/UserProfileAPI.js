@@ -71,7 +71,7 @@ class UserProfileAPI {
         const decoded = jwtDecode(jwtToken);
         const currentDate = new Date();
 
-        if((decoded.exp) <= currentDate ) {
+        if((decoded.exp * 1000) <= currentDate ) {
             console.log('jwt expired');
             delete axios.defaults.headers.common['Authorization'];
             return false
