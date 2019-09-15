@@ -29,7 +29,7 @@ class ContentAddEditForm extends React.Component {
     render() {
 
         const { content : {
-            title, slug, description, body, essay_source_url, header_image_url
+            title, description
         } } = this.state;
         return (
             <form className="row p-3 form-group" onSubmit={this.submitForm}>
