@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Loading from "./Loading";
 import ContentCard from "./ContentCard";
 import {genericItemTransform} from "../services/utils";
+import {Link} from "react-router-dom";
 
 class ContentList extends React.Component {
 
@@ -94,16 +95,26 @@ class ContentList extends React.Component {
                     title={`Loading ${contentType}...`} />);
         }
 
+        const slugifyContent = contentType.substring(0, contentType.length - 1).toLowerCase();
+
         return (
             <div className="container mt-5">
 
                 <h1 className="text-center serif-font center-block">
                     {contentType}
                 </h1>
-
+                <div className="col-12 mb-3">
+                    <div className="card shadow">
+                        <Link to={`/${slugifyContent}/add`} className="btn btn-outline-primary">
+                            Add {slugifyContent}
+                        </Link>
+                    </div>
+                </div>
                 <div>
                     {contentItems.map( content =>
-                        <ContentCard key={content.id} content={genericItemTransform(content)} className="col-12 mb-3"
+                        <ContentCard key={content.id}
+                                     content={genericItemTransform(content)}
+                                     className="col-12 mb-3"
                                      hideImage={contentType==='Essays'}
                         />
 

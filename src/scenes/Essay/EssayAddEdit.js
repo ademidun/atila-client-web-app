@@ -1,4 +1,5 @@
 import React from 'react';
+import ContentAddEdit from "../../components/ContentAddEdit/ContentAddEdit";
 
 class EssayAddEdit extends React.Component {
 
@@ -15,7 +16,7 @@ class EssayAddEdit extends React.Component {
     render () {
         return (
             <div className="text-center container">
-                <h1>Essay Add Edit</h1>
+                <ContentAddEdit contentType="Essay" />
             </div>
         );
     }
