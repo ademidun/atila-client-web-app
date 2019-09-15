@@ -13,25 +13,18 @@ import {
 } from "../../models/Scholarship";
 import {MemoryRouter} from "react-router-dom";
 import configureStore from "redux-mock-store";
+import {initialReduxState} from "../../services/utils";
 jest.mock('../../services/ScholarshipsAPI');
 
 ScholarshipsAPI.searchScholarships.mockImplementation(() => Promise.resolve(scholarshipsListResponseMockData));
 
 configure({ adapter: new Adapter() });
-const initialState = {
-    data: {
-        user: {
-            loggedInUserProfile: null
-        }
-    },
-    ui: {}
-};
-const mockStore = configureStore(initialState);
+const mockStore = configureStore(initialReduxState);
 let store;
 describe('<ScholarshipsList />', () => {
 
     beforeEach(() => {
-        store = mockStore(initialState);
+        store = mockStore(initialReduxState);
     });
 
     it('renders without crashing', () => {

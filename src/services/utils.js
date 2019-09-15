@@ -132,3 +132,16 @@ export function toTitleCase(str) {
 export function formatCurrency(input) {
     return input.toLocaleString('en-ca', {style : 'currency', currency: 'CAD'});
 }
+
+
+export const initialReduxState = {
+    data: {
+        user: {
+            loggedInUserProfile: null
+        }
+    },
+    ui: {
+        user: {
+            isLoadingLoggedInUserProfile: false
+        }}
+};

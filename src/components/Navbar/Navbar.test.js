@@ -4,18 +4,11 @@ import {shallow, configure, mount} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import configureStore from 'redux-mock-store';
 configure({ adapter: new Adapter() });
-const initialState = {
-    data: {
-        user: {
-            loggedInUserProfile: null
-        }
-    },
-    ui: {}
-};
 const mockStore = configureStore();
 
 import Navbar from './Navbar';
 import {UserProfileTest1} from "../../models/UserProfile";
+import {initialReduxState} from "../../services/utils";
 
 describe('<Navbar />', () => {
     it('renders without crashing', () => {
@@ -23,7 +16,7 @@ describe('<Navbar />', () => {
     });
 
     it('renders searchLink', () => {
-        const store = mockStore(initialState);
+        const store = mockStore(initialReduxState);
         const wrapper = mount(
             <MemoryRouter>
                 <Navbar store={store} />
@@ -34,8 +27,8 @@ describe('<Navbar />', () => {
     });
 
     it('renders userprofile nav item', () => {
-        initialState.data.user.loggedInUserProfile = UserProfileTest1;
-        const store = mockStore(initialState);
+        initialReduxState.data.user.loggedInUserProfile = UserProfileTest1;
+        const store = mockStore(initialReduxState);
         const wrapper = mount(
             <MemoryRouter>
                 <Navbar store={store} />
