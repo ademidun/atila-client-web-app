@@ -62,6 +62,10 @@ class UserProfileAPI {
 
     static authenticateRequests = (jwtToken, userId) => {
 
+        if(!userId || !jwtToken || userId === "undefined" || jwtToken === "undefined") {
+            return false;
+        }
+
         localStorage.setItem('token', jwtToken);
         localStorage.setItem('userId', userId);
         const decoded = jwtDecode(jwtToken);

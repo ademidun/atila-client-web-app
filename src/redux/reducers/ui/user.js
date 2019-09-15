@@ -1,12 +1,14 @@
+import {SET_IS_LOADING_LOGGED_IN_USER_PROFILE_GET} from "../../actions/user";
+
 const initialState = {
-    isLoggedIn: false
+    isLoadingLoggedInUserProfile: false
 };
 
 export default function uiReducer(state = initialState, action) {
     switch (action.type) {
-        case 'SET_IS_LOGGED_IN':
+        case SET_IS_LOADING_LOGGED_IN_USER_PROFILE_GET:
             return Object.assign({}, state, {
-                isLoggedIn: action.payload
+                isLoadingLoggedInUserProfile: action.payload
             });
         default:
             return state

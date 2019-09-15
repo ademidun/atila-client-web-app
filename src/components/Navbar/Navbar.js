@@ -9,7 +9,7 @@ import {Link, withRouter} from "react-router-dom";
 
 import './Navbar.scss';
 import UserProfileAPI from "../../services/UserProfileAPI";
-import {setLoggedInUserProfile} from "../../redux/actions/user";
+import {initializeLoggedInUserProfile} from "../../redux/actions/user";
 import Dropdown from "react-bootstrap/Dropdown";
 import {faUser} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -30,26 +30,8 @@ class Navbar extends React.Component {
 
     componentDidMount() {
 
-        const userId = localStorage.getItem('userId');
-        const token = localStorage.getItem('token');
-        if (userId && token && (userId !== "undefined" && token !== "undefined")) {
-
-            if (UserProfileAPI.authenticateRequests(token, userId)) {
-                this.setState({isLoadingUserProfile: true});
-                UserProfileAPI.get(userId)
-                    .then(res => {
-                        const { setLoggedInUserProfile } = this.props;
-                        setLoggedInUserProfile(res.data);
-                    })
-                    .catch(err => {
-                    })
-                    .finally(()=>{
-                        this.setState({isLoadingUserProfile: false});
-                    })
-            }
-
-
-        }
+        const { initializeLoggedInUserProfile } = this.props;
+        initializeLoggedInUserProfile();
     }
 
     updateSearch = event => {
@@ -125,7 +107,7 @@ Navbar.defaultProps = {
 };
 
 Navbar.propTypes = {
-    setLoggedInUserProfile: PropTypes.func.isRequired,
+    initializeLoggedInUserProfile: PropTypes.func.isRequired,
     userProfile: PropTypes.shape({}),
 };
 
@@ -134,7 +116,7 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = () => {
     return {
-        setLoggedInUserProfile
+        initializeLoggedInUserProfile
     };
 };
 export default withRouter(connect(mapStateToProps, mapDispatchToProps())(Navbar));
