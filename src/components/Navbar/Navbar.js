@@ -48,8 +48,8 @@ class Navbar extends React.Component {
     };
 
     render() {
-        const { searchQuery, isLoadingUserProfile } = this.state;
-        const { userProfile } = this.props;
+        const { searchQuery } = this.state;
+        const { userProfile, isLoadingLoggedInUserProfile } = this.props;
 
         return (
             <React.Fragment>
@@ -94,7 +94,7 @@ class Navbar extends React.Component {
                     </NavbarBootstrap.Collapse>
                 </NavbarBootstrap>
                 {
-                    isLoadingUserProfile &&
+                    isLoadingLoggedInUserProfile &&
                     <Loading className="col-12" title="Loading UserProfile..." />
                 }
                 <hr style={{ margin: 0 }}/>
@@ -112,7 +112,10 @@ Navbar.propTypes = {
 };
 
 const mapStateToProps = state => {
-    return { userProfile: state.data.user.loggedInUserProfile };
+    return {
+        userProfile: state.data.user.loggedInUserProfile,
+        isLoadingLoggedInUserProfile: state.ui.user.isLoadingLoggedInUserProfile
+    };
 };
 const mapDispatchToProps = () => {
     return {

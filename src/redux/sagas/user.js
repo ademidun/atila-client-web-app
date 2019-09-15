@@ -8,12 +8,10 @@ import UserProfileAPI from "../../services/UserProfileAPI";
 
 function* initializeLoggedInUserProfileSaga() {
     try {
-        console.log('initializeLoggedInUserProfileSaga');
         const userId = localStorage.getItem('userId');
         const token = localStorage.getItem('token');
         if (UserProfileAPI.authenticateRequests(token, userId)) {
             yield put({ type: SET_IS_LOADING_LOGGED_IN_USER_PROFILE_GET, payload: true });
-            console.log('authenticateRequests');
             const payload = yield UserProfileAPI.get(userId);
             yield put({ type: SET_LOGGED_IN_USER_PROFILE, payload: payload.data });
         }

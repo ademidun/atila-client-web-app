@@ -7,7 +7,6 @@ const initialState = {
 export default function uiReducer(state = initialState, action) {
     switch (action.type) {
         case SET_IS_LOADING_LOGGED_IN_USER_PROFILE_GET:
-            console.log({ action });
             return Object.assign({}, state, {
                 isLoadingLoggedInUserProfile: action.payload
             });
