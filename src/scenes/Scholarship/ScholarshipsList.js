@@ -61,10 +61,7 @@ class ScholarshipsList extends React.Component {
 
         if (userProfile) {
             searchPayload = {
-                city: [{"id":14,"province":"Ontario","name":"Milton","country":"Canada"}],
-                education_level: ["University"],
-                education_field: ["STEM (Undergrad)","MBA"],
-                sort_by: "relevance_new",
+                sort_by: "deadline",
                 filter_by_user_show_eligible_only: true
             };
         }
