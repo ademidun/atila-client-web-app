@@ -33,19 +33,22 @@ class Navbar extends React.Component {
         const userId = localStorage.getItem('userId');
         const token = localStorage.getItem('token');
         if (userId && token && (userId !== "undefined" && token !== "undefined")) {
-            this.setState({isLoadingUserProfile: true});
-            UserProfileAPI.authenticateRequests(token, userId);
 
-            UserProfileAPI.get(userId)
-                .then(res => {
-                    const { setLoggedInUserProfile } = this.props;
-                    setLoggedInUserProfile(res.data);
-                })
-                .catch(err => {
-                })
-                .finally(()=>{
-                    this.setState({isLoadingUserProfile: false});
-                })
+            if (UserProfileAPI.authenticateRequests(token, userId)) {
+                this.setState({isLoadingUserProfile: true});
+                UserProfileAPI.get(userId)
+                    .then(res => {
+                        const { setLoggedInUserProfile } = this.props;
+                        setLoggedInUserProfile(res.data);
+                    })
+                    .catch(err => {
+                    })
+                    .finally(()=>{
+                        this.setState({isLoadingUserProfile: false});
+                    })
+            }
+
+
         }
     }
 

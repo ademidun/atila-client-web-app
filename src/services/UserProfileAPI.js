@@ -1,6 +1,8 @@
 import request from 'axios';
 import axios from 'axios';
 import Environment from './Environment'
+import jwtDecode from 'jwt-decode';
+
 class UserProfileAPI {
 
     static userProfileEndPoint = `${Environment.apiUrl}/user-profiles`;
@@ -62,8 +64,18 @@ class UserProfileAPI {
 
         localStorage.setItem('token', jwtToken);
         localStorage.setItem('userId', userId);
+        const decoded = jwtDecode(jwtToken);
+        const currentDate = new Date();
+
+        if((decoded.exp) <= currentDate ) {
+            console.log('jwt expired');
+            delete axios.defaults.headers.common['Authorization'];
+            return false
+        }
+
         if (jwtToken) {
             axios.defaults.headers.common['Authorization'] = `JWT ${jwtToken}`;
+            return true;
         }
     };
 

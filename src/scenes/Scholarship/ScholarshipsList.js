@@ -21,7 +21,7 @@ class ScholarshipsList extends React.Component {
                 searchString: '' ,
                 previewMode: 'universalSearch' ,
                 filter_by_user_show_eligible_only: true,
-                sort_by: 'relevance'
+                sort_by: 'relevance_new'
             },
             errorGettingScholarships: null,
             isLoadingScholarships: false,
@@ -100,7 +100,8 @@ class ScholarshipsList extends React.Component {
 
     render () {
         const {
-            location : { search }
+            location : { search },
+            userProfile,
         } = this.props;
         const params = new URLSearchParams(search);
 
@@ -130,7 +131,6 @@ class ScholarshipsList extends React.Component {
 
         return (
             <div className="container mt-5">
-
                 <h1 className="text-center serif-font">
                     {`${totalScholarshipsCount} Scholarships ${searchQuery ? `for ${toTitleCase(searchQuery)} ` : ''}found`}
                     <br />
@@ -138,6 +138,11 @@ class ScholarshipsList extends React.Component {
                 <h2 className="text-center text-muted serif-font">
                     {totalFunding && `${totalFunding} in funding`}
                 </h2>
+                {!userProfile && !searchQuery &&
+                <h6 className="text-center text-muted serif-font">
+                    No Search query. Displaying all valid Scholarships
+                </h6>
+                }
 
                 <div className="mt-3">
                     {scholarships.map( scholarship => <ScholarshipCard key={scholarship.id} className="col-12" scholarship={scholarship} />)}
