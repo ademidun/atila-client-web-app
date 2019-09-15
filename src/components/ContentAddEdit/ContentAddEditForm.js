@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import CKEditor from '@ckeditor/ckeditor5-react';
+import InlineEditor from '@ckeditor/ckeditor5-build-inline';
+
 class ContentAddEditForm extends React.Component {
 
     constructor(props) {
@@ -42,6 +45,25 @@ class ContentAddEditForm extends React.Component {
                        name="description"
                        value={description}
                        onChange={this.updateForm}
+                />
+
+                <CKEditor
+                    editor={ InlineEditor }
+                    data="<h1>Title</h1>&nbsp;<p>Enter some text here...</p>"
+                    onInit={ editor => {
+                        // You can store the "editor" and use when it is needed.
+                        console.log( 'Editor is ready to use!', editor );
+                    } }
+                    onChange={ ( event, editor ) => {
+                        const data = editor.getData();
+                        console.log( { event, editor, data } );
+                    } }
+                    onBlur={ ( event, editor ) => {
+                        console.log( 'Blur.', editor );
+                    } }
+                    onFocus={ ( event, editor ) => {
+                        console.log( 'Focus.', editor );
+                    } }
                 />
 
             </form>
