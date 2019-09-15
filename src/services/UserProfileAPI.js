@@ -1,6 +1,8 @@
 import request from 'axios';
 import axios from 'axios';
 import Environment from './Environment'
+import jwtDecode from 'jwt-decode';
+
 class UserProfileAPI {
 
     static userProfileEndPoint = `${Environment.apiUrl}/user-profiles`;
@@ -14,7 +16,17 @@ class UserProfileAPI {
         });
 
         return apiCompletionPromise;
-    }
+    };
+
+    static get = (userId) => {
+
+        const apiCompletionPromise = request({
+            method: 'get',
+            url: `${this.userProfileEndPoint}/${userId}/`,
+        });
+
+        return apiCompletionPromise;
+    };
 
     static getUserContent = (userId, contentType) => {
 
@@ -24,7 +36,7 @@ class UserProfileAPI {
         });
 
         return apiCompletionPromise;
-    }
+    };
 
     static login = (loginCredentials) => {
 
@@ -50,11 +62,31 @@ class UserProfileAPI {
 
     static authenticateRequests = (jwtToken, userId) => {
 
+        if(!userId || !jwtToken || userId === "undefined" || jwtToken === "undefined") {
+            return false;
+        }
+
         localStorage.setItem('token', jwtToken);
         localStorage.setItem('userId', userId);
+        const decoded = jwtDecode(jwtToken);
+        const currentDate = new Date();
+
+        if((decoded.exp * 1000) <= currentDate ) {
+            console.log('jwt expired');
+            delete axios.defaults.headers.common['Authorization'];
+            return false
+        }
+
         if (jwtToken) {
             axios.defaults.headers.common['Authorization'] = `JWT ${jwtToken}`;
+            return true;
         }
+    };
+
+    static logout = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+        delete axios.defaults.headers.common['Authorization'];
     }
 }
 

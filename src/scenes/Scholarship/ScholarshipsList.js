@@ -4,6 +4,8 @@ import {toTitleCase} from "../../services/utils";
 import ScholarshipCard from "./ScholarshipCard";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
+import {connect} from "react-redux";
+
 class ScholarshipsList extends React.Component {
 
     constructor(props) {
@@ -19,7 +21,7 @@ class ScholarshipsList extends React.Component {
                 searchString: '' ,
                 previewMode: 'universalSearch' ,
                 filter_by_user_show_eligible_only: true,
-                sort_by: 'relevance'
+                sort_by: 'relevance_new'
             },
             errorGettingScholarships: null,
             isLoadingScholarships: false,
@@ -40,7 +42,8 @@ class ScholarshipsList extends React.Component {
     loadScholarships = (page) => {
 
         const {
-            location : { search }
+            location : { search },
+            userProfile,
         } = this.props;
 
         const { scholarships, totalScholarshipsCount } = this.state;
@@ -53,8 +56,16 @@ class ScholarshipsList extends React.Component {
 
         const searchQuery = params.get('q');
 
-        const searchPayload = {...this.state.searchPayload};
+        let searchPayload = {...this.state.searchPayload};
         searchPayload.searchString = searchQuery;
+
+        if (userProfile) {
+            searchPayload = {
+                sort_by: "deadline",
+                filter_by_user_show_eligible_only: true
+            };
+        }
+
         this.setState({ searchPayload });
 
         this.setState({ isLoadingScholarships: true });
@@ -86,7 +97,8 @@ class ScholarshipsList extends React.Component {
 
     render () {
         const {
-            location : { search }
+            location : { search },
+            userProfile,
         } = this.props;
         const params = new URLSearchParams(search);
 
@@ -116,7 +128,6 @@ class ScholarshipsList extends React.Component {
 
         return (
             <div className="container mt-5">
-
                 <h1 className="text-center serif-font">
                     {`${totalScholarshipsCount} Scholarships ${searchQuery ? `for ${toTitleCase(searchQuery)} ` : ''}found`}
                     <br />
@@ -124,6 +135,11 @@ class ScholarshipsList extends React.Component {
                 <h2 className="text-center text-muted serif-font">
                     {totalFunding && `${totalFunding} in funding`}
                 </h2>
+                {!userProfile && !searchQuery &&
+                <h6 className="text-center text-muted serif-font">
+                    No Search query. Displaying all valid Scholarships
+                </h6>
+                }
 
                 <div className="mt-3">
                     {scholarships.map( scholarship => <ScholarshipCard key={scholarship.id} className="col-12" scholarship={scholarship} />)}
@@ -140,4 +156,7 @@ class ScholarshipsList extends React.Component {
     }
 }
 
-export default ScholarshipsList;
+const mapStateToProps = state => {
+    return { userProfile: state.data.user.loggedInUserProfile };
+};
+export default connect(mapStateToProps)(ScholarshipsList);
