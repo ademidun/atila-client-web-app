@@ -65,7 +65,8 @@ class UserProfileAPI {
         if(!this.isLoggedIn(userId, jwtToken)) {
             return false;
         }
-
+        localStorage.setItem('userId', userId);
+        localStorage.setItem('token', jwtToken);
         axios.defaults.headers.common['Authorization'] = `JWT ${jwtToken}`;
         return true;
     };
