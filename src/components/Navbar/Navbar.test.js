@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link, MemoryRouter} from "react-router-dom";
+import {MemoryRouter} from "react-router-dom";
 import {shallow, configure, mount} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import configureStore from 'redux-mock-store';

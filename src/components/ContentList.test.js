@@ -4,7 +4,6 @@ import Adapter from 'enzyme-adapter-react-16';
 import "core-js/stable";
 import ContentList from "./ContentList";
 import {BlogWhatIsAtila} from "../models/Blog";
-import RelatedItems from "./RelatedItems";
 import EssaysApi from "../services/EssaysAPI";
 import {EssayIveyApplication} from "../models/Essay";
 import {MemoryRouter} from "react-router-dom";

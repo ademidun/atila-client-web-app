@@ -1,5 +1,5 @@
 import React from 'react';
-import {configure, mount, shallow} from 'enzyme';
+import {configure, mount} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import "core-js/stable"; // needed otherwise .finally in promise does not work
 
@@ -7,8 +7,6 @@ import "core-js/stable"; // needed otherwise .finally in promise does not work
 import ScholarshipsList from './ScholarshipsList';
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import {
-    ScholarshipEngineering,
-    scholarshipsListMockData,
     scholarshipsListResponseMockData
 } from "../../models/Scholarship";
 import {MemoryRouter} from "react-router-dom";
