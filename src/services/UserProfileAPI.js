@@ -38,17 +38,6 @@ class UserProfileAPI {
         return apiCompletionPromise;
     };
 
-    static login = (loginCredentials) => {
-
-        const apiCompletionPromise = request({
-            method: 'post',
-            data: loginCredentials,
-            url: `${Environment.apiUrl}/login/`,
-        });
-
-        return apiCompletionPromise;
-    };
-
     static createUser = (registrationData) => {
 
         const apiCompletionPromise = request({
@@ -60,14 +49,40 @@ class UserProfileAPI {
         return apiCompletionPromise;
     };
 
+    static login = (loginCredentials) => {
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: loginCredentials,
+            url: `${Environment.apiUrl}/login/`,
+        });
+
+        return apiCompletionPromise;
+    };
+
     static authenticateRequests = (jwtToken, userId) => {
 
-        if(!userId || !jwtToken || userId === "undefined" || jwtToken === "undefined") {
+        if(!this.isLoggedIn(userId, jwtToken)) {
             return false;
         }
 
-        localStorage.setItem('token', jwtToken);
-        localStorage.setItem('userId', userId);
+        axios.defaults.headers.common['Authorization'] = `JWT ${jwtToken}`;
+        return true;
+    };
+
+    static isLoggedIn(userId=null, jwtToken=null) {
+
+        if(!userId) {
+            userId = localStorage.getItem('userId');
+        }if(!jwtToken) {
+            jwtToken = localStorage.getItem('token');
+        }
+
+        if(!userId || !jwtToken || userId === "undefined" || jwtToken === "undefined") {
+            delete axios.defaults.headers.common['Authorization'];
+            return false;
+        }
+
         const decoded = jwtDecode(jwtToken);
         const currentDate = new Date();
 
@@ -77,17 +92,17 @@ class UserProfileAPI {
             return false
         }
 
-        if (jwtToken) {
-            axios.defaults.headers.common['Authorization'] = `JWT ${jwtToken}`;
-            return true;
-        }
-    };
+        return true;
+
+    }
 
     static logout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('userId');
         delete axios.defaults.headers.common['Authorization'];
-    }
+    };
+
+
 }
 
 export default UserProfileAPI;
