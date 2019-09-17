@@ -40,23 +40,4 @@ describe('<ScholarshipsList />', () => {
         expect(wrapper.html()).toBeTruthy();
     });
 
-    xit('renders scholarshipsFound title', () => {
-
-        const wrapper = shallow(
-            <MemoryRouter>
-                <ScholarshipsList
-                    location={{ search: '?q=engineering' }}
-                    store={store}/>
-            </MemoryRouter>
-        );
-        let childWrapper = wrapper.find(ScholarshipsList).dive();
-        const scholarshipsFound = '3 Scholarships for Engineering found';
-        childWrapper.instance().setState({ scholarships: scholarshipsListMockData, totalScholarshipsCount: 3 });
-        childWrapper.update();
-
-        expect(wrapper.find(ScholarshipsList).html()).toContain(scholarshipsFound);
-        expect(wrapper.find(ScholarshipsList).html()).toContain(ScholarshipEngineering.name);
-
-    });
-
 });
