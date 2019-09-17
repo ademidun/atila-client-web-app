@@ -9,7 +9,7 @@ import {Link, withRouter} from "react-router-dom";
 
 import './Navbar.scss';
 import UserProfileAPI from "../../services/UserProfileAPI";
-import {initializeLoggedInUserProfile} from "../../redux/actions/user";
+import {initializeLoggedInUserProfile, setLoggedInUserProfile} from "../../redux/actions/user";
 import Dropdown from "react-bootstrap/Dropdown";
 import {faUser} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -104,11 +104,14 @@ class Navbar extends React.Component {
 }
 Navbar.defaultProps = {
     userProfile: null,
+    isLoadingLoggedInUserProfile: false,
 };
 
 Navbar.propTypes = {
     initializeLoggedInUserProfile: PropTypes.func.isRequired,
+    setLoggedInUserProfile: PropTypes.func.isRequired,
     userProfile: PropTypes.shape({}),
+    isLoadingLoggedInUserProfile: PropTypes.bool,
 };
 
 const mapStateToProps = state => {
@@ -119,7 +122,8 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = () => {
     return {
-        initializeLoggedInUserProfile
+        initializeLoggedInUserProfile,
+        setLoggedInUserProfile,
     };
 };
 export default withRouter(connect(mapStateToProps, mapDispatchToProps())(Navbar));
