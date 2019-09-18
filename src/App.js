@@ -51,7 +51,7 @@ function App(props) {
             <Router>
                 <div className="App">
                     <Navbar />
-                    {isLoadingLoggedInUserProfile && <Loading loaderType="beat" title=""/>}
+                    {isLoadingLoggedInUserProfile && <Loading loaderType="beat" title="" style={{ width: 'auto' }}/>}
                     {isFinishedLoadingLoggedInUserProfile &&
                     <React.Fragment>
                         <Route exact path="/" component={LandingPage} />

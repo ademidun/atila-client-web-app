@@ -6,7 +6,7 @@ import BeatLoader from "react-spinners/BeatLoader";
 /**
  * @return {null}
  */
-function Loading({isLoading , title, className, loaderType}) {
+function Loading({isLoading , title, className, loaderType, style}) {
 
     if (!isLoading) {
         return null;
@@ -20,7 +20,7 @@ function Loading({isLoading , title, className, loaderType}) {
 
     return (<div className={`text-center ${className}`}>
         <h5>{title}</h5>
-        <div className="center-block" style={{ width: '500px' }}>
+        <div className="center-block" style={style}>
             <LoadingComponent className="center-block"
                               color={'#0b9ef5'} height={7} width={500}/>
         </div>
@@ -32,11 +32,13 @@ Loading.defaultProps = {
     title: "Loading Application",
     className: "mt-3",
     loaderType: "bar",
+    style: { width: '500px' },
 };
 Loading.propTypes = {
     isLoading: PropType.bool,
     title: PropType.string,
     className: PropType.string,
+    style: PropType.shape({}),
     loaderType: PropType.oneOf(['bar', 'beat']),
 };
 export default Loading;
