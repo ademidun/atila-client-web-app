@@ -7,7 +7,7 @@ class ScholarshipAddEditForm extends React.Component {
 
         const { onUpdateForm, scholarship : {
             name, description,scholarship_url, img_url, deadline, funding_amount,
-            female_only,
+            female_only,international_students_eligible, no_essay_required,
         } } = this.props;
         return (
             <form className="row p-3 form-group" onSubmit={this.submitForm}>
@@ -54,16 +54,40 @@ class ScholarshipAddEditForm extends React.Component {
                        value={funding_amount}
                        onChange={onUpdateForm}
                 />
-                <label htmlFor="female_only">
-                    Female Only
-                </label>
-                <input placeholder="Female Only?"
-                       className="col-12 mb-3 form-control"
-                       name="female_only"
-                       type="checkbox"
-                       value={female_only}
-                       onChange={onUpdateForm}
-                />
+                <div className="col-12 mb-3">
+                    <label htmlFor="female_only" className="mr-3">
+                        Female Only
+                    </label>
+                    <input placeholder="Female Only?"
+                           name="female_only"
+                           type="checkbox"
+                           value={female_only}
+                           onChange={onUpdateForm}
+                    />
+                </div>
+                <div className="col-12 mb-3">
+                    <label htmlFor="international_students_eligible" className="mr-3">
+                        International students eligible?
+                    </label>
+                    <input placeholder="International students eligible?"
+                           name="international_students_eligible"
+                           type="checkbox"
+                           value={international_students_eligible}
+                           onChange={onUpdateForm}
+                    />
+
+                </div>
+                <div className="col-12 mb-3">
+                    <label htmlFor="no_essay_required" className="mr-3">
+                        No essay required?
+                    </label>
+                    <input placeholder="No essay required?"
+                           name="no_essay_required"
+                           type="checkbox"
+                           value={no_essay_required}
+                           onChange={onUpdateForm}
+                    />
+                </div>
             </form>
         )
     }

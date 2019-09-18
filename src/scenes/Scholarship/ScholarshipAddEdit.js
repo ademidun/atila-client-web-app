@@ -13,9 +13,12 @@ class ScholarshipAddEdit extends React.Component{
                 description: '',
                 img_url: '',
                 scholarship_url: '',
+                application_form_url:'',
                 deadline: '',
                 funding_amount: '',
                 female_only: false,
+                international_students_eligible: false,
+                no_essay_required: false,
             },
             isAddScholarshipMode: false,
         };
