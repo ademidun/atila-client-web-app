@@ -2,6 +2,7 @@ import { takeEvery, put } from "redux-saga/effects";
 import {
     INITIALIZE_LOGGED_IN_USER_PROFILE,
     SET_IS_LOADING_LOGGED_IN_USER_PROFILE_GET,
+    SET_IS_FINISHED_LOADING_LOGGED_IN_USER_PROFILE_GET,
     SET_LOGGED_IN_USER_PROFILE
 } from "../actions/user";
 import UserProfileAPI from "../../services/UserProfileAPI";
@@ -19,6 +20,7 @@ function* initializeLoggedInUserProfileSaga() {
         yield put({ type: "API_ERRORED", payload: e });
     }
     yield put({ type: SET_IS_LOADING_LOGGED_IN_USER_PROFILE_GET, payload: false });
+    yield put({ type: SET_IS_FINISHED_LOADING_LOGGED_IN_USER_PROFILE_GET, payload: true });
 
 
 }
