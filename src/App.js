@@ -2,9 +2,7 @@ import React from 'react';
 import {BrowserRouter as Router, Route} from "react-router-dom";
 import loadable from '@loadable/component';
 import 'bootstrap/dist/css/bootstrap.css';
-import { Provider } from "react-redux";
-import store from "./redux/store/index";
-
+import {connect} from "react-redux";
 import LandingPage from "./scenes/LandingPage/LandingPage";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
@@ -41,28 +39,53 @@ const Register = loadable(() => import('./components/Register'), {
     fallback: <Loading />,
 });
 
-function App() {
-  return (
-      <Provider store={store}>
-      <Router>
-        <div className="App">
-            <Navbar />
-            <Route exact path="/" component={LandingPage} />
-            <Route path="/blog" component={Blog} />
-            <Route path="/essay" component={Essay} />
-            <Route path="/scholarship" component={Scholarship} />
-            <Route path="/login" component={Login} />
-            <Route path="/register" component={Register} />
-            <Route path="/profile" component={UserProfile} />
-            <Route path="/team" component={Team} />
-            <Route path="/terms-and-conditions" component={TermsConditions} />
-            <Route path="/contact" component={ContactUs} />
-            <Route path="/siteMap" component={SiteMap} />
-            <Footer />
-        </div>
-      </Router>
-      </Provider>
-  );
+
+
+function App(props) {
+    const {
+        isLoadingLoggedInUserProfile,
+        isFinishedLoadingLoggedInUserProfile,
+    } = props;
+
+    return (
+            <Router>
+                <div className="App">
+                    <Navbar />
+                    {isLoadingLoggedInUserProfile && <Loading loaderType="beat" title="" style={{ width: 'auto' }}/>}
+                    {isFinishedLoadingLoggedInUserProfile &&
+                    <React.Fragment>
+                        <Route exact path="/" component={LandingPage} />
+                        <Route path="/blog" component={Blog} />
+                        <Route path="/essay" component={Essay} />
+                        <Route path="/scholarship" component={Scholarship} />
+                        <Route path="/login" component={Login} />
+                        <Route path="/register" component={Register} />
+                        <Route path="/profile" component={UserProfile} />
+                        <Route path="/team" component={Team} />
+                        <Route path="/terms-and-conditions" component={TermsConditions} />
+                        <Route path="/contact" component={ContactUs} />
+                        <Route path="/siteMap" component={SiteMap} />
+                    </React.Fragment>
+                    }
+                    <Footer />
+                </div>
+            </Router>
+    );
 }
 
-export default App;
+const mapStateToProps = state => {
+    const { ui :{
+        user : {
+            isLoadingLoggedInUserProfile,
+            isFinishedLoadingLoggedInUserProfile,
+        }
+    }
+    } = state;
+
+    return {
+        isLoadingLoggedInUserProfile,
+        isFinishedLoadingLoggedInUserProfile,
+    }
+};
+
+export default connect(mapStateToProps)(App);
