@@ -1,5 +1,6 @@
 import React from 'react';
 import ScholarshipAddEditForm from "./ScholarshipAddEditForm";
+import {Helmet} from "react-helmet";
 
 class ScholarshipAddEdit extends React.Component{
 
@@ -15,8 +16,10 @@ class ScholarshipAddEdit extends React.Component{
                 deadline: '',
                 funding_amount: '',
                 female_only: false,
-            }
-        }
+            },
+            isAddScholarshipMode: false,
+        };
+        console.log({props});
     }
 
     updateForm = (event) => {
@@ -28,17 +31,22 @@ class ScholarshipAddEdit extends React.Component{
 
     render() {
 
-        const { scholarship } = this.state;
+        const { scholarship, isAddScholarshipMode } = this.state;
         return (
-
-            <div className="container mt-5">
-                <div className="card shadow p-3">
-                <h2>Scholarship Add Edit: {scholarship.name}</h2>
-                <ScholarshipAddEditForm
-                    onUpdateForm={this.updateForm}
-                    scholarship={scholarship} />
-            </div>
-            </div>
+            <React.Fragment>
+                <Helmet>
+                    <meta charSet="utf-8" />
+                    <title>{isAddScholarshipMode ? 'Add': 'Edit'} Scholarship - Atila</title>
+                </Helmet>
+                <div className="container mt-5">
+                    <div className="card shadow p-3">
+                        <h2>Scholarship Add Edit: {scholarship.name}</h2>
+                        <ScholarshipAddEditForm
+                            onUpdateForm={this.updateForm}
+                            scholarship={scholarship} />
+                    </div>
+                </div>
+            </React.Fragment>
         );
 
     }
