@@ -2,6 +2,7 @@ import request from 'axios';
 import Environment from './Environment'
 class ScholarshipsAPI {
 
+    static scholarshipUrl = `${Environment.apiUrl}/scholarships`;
     static searchScholarships = (searchPayload, page=1) => {
 
         const apiCompletionPromise = request({
@@ -22,6 +23,17 @@ class ScholarshipsAPI {
 
         return apiCompletionPromise;
     }
+
+    static create = (scholarship) => {
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: scholarship,
+            url: `${ScholarshipsAPI.scholarshipUrl}/`,
+        });
+
+        return apiCompletionPromise;
+    };
 }
 
 export default ScholarshipsAPI;
