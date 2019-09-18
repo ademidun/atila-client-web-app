@@ -1,12 +1,12 @@
 import React from 'react'
-import PropType from 'prop-types';
+import PropTypes from 'prop-types';
 import BarLoader from "react-spinners/BarLoader";
 import BeatLoader from "react-spinners/BeatLoader";
 
 /**
  * @return {null}
  */
-function Loading({isLoading , title, className, loaderType, style}) {
+function Loading({isLoading , title, className, loaderType, width}) {
 
     if (!isLoading) {
         return null;
@@ -20,9 +20,9 @@ function Loading({isLoading , title, className, loaderType, style}) {
 
     return (<div className={`text-center ${className}`}>
         <h5>{title}</h5>
-        <div className="center-block" style={style}>
+        <div className="center-block">
             <LoadingComponent className="center-block"
-                              color={'#0b9ef5'} height={7} width={500}/>
+                              color={'#0b9ef5'} height={7} width={width}/>
         </div>
     </div>)
 }
@@ -32,13 +32,16 @@ Loading.defaultProps = {
     title: "Loading Application",
     className: "mt-3",
     loaderType: "bar",
-    style: { width: '500px' },
+    width: 'auto',
 };
 Loading.propTypes = {
-    isLoading: PropType.bool,
-    title: PropType.string,
-    className: PropType.string,
-    style: PropType.shape({}),
-    loaderType: PropType.oneOf(['bar', 'beat']),
+    isLoading: PropTypes.bool,
+    title: PropTypes.string,
+    className: PropTypes.string,
+    width: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+    ]),
+    loaderType: PropTypes.oneOf(['bar', 'beat']),
 };
 export default Loading;

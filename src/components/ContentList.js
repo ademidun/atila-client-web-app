@@ -88,11 +88,22 @@ class ContentList extends React.Component {
                 </div>)
         }
 
+        let contentList = null;
+
         if (contentItems.length === 0) {
-            return (
+            contentList = (
                 <Loading
                     isLoading={isLoadingContent}
                     title={`Loading ${contentType}...`} />);
+        }
+        else {
+            contentList = contentItems.map( content =>
+                    <ContentCard key={content.id}
+                                 content={genericItemTransform(content)}
+                                 className="col-12 mb-3"
+                                 hideImage={contentType==='Essays'}
+                    />
+                );
         }
 
         const slugifyContent = contentType.substring(0, contentType.length - 1).toLowerCase();
@@ -111,14 +122,7 @@ class ContentList extends React.Component {
                     </div>
                 </div>
                 <div>
-                    {contentItems.map( content =>
-                        <ContentCard key={content.id}
-                                     content={genericItemTransform(content)}
-                                     className="col-12 mb-3"
-                                     hideImage={contentType==='Essays'}
-                        />
-
-                        )}
+                    {contentList}
                 </div>
                 {
                     contentItems.length < totalContentCount
