@@ -3,19 +3,22 @@ import {Helmet} from "react-helmet";
 import FormDynamic from "../../components/FormDynamic";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import {connect} from "react-redux";
-
+import {slugify} from "../../services/utils";
 
 const scholarshipFormConfigs = [
     {
         key: 'name',
         placeholder: 'Scholarship Name',
         type: 'text',
+        html: (model) => (
+            <p className="text-muted">{model.slug}</p>
+        )
     },
     {
         key: 'description',
         type: 'textarea',
         placeholder: 'Scholarship Description',
-        html: (<label htmlFor="description">
+        html: () => (<label htmlFor="description">
             Short Description: Who is eligible for this scholarship?
             What should they do to apply?
             You will be able to give more details later.
@@ -45,7 +48,7 @@ const scholarshipFormConfigs = [
         key: 'deadline',
         placeholder: 'Deadline',
         type: 'datetime-local',
-        html: (<label htmlFor="deadline">
+        html: () =>(<label htmlFor="deadline">
             Deadline
         </label>),
     },
@@ -65,6 +68,14 @@ class ScholarshipAddEdit extends React.Component{
 
     constructor(props) {
         super(props);
+
+        const now = new Date();
+
+        const year = now.getFullYear();
+        const month = (now.getMonth() + 1).toString().length === 1 ? '0' + (now.getMonth() + 1).toString() : now.getMonth() + 1;
+        const date = now.getDate().toString().length === 1 ? '0'         + (now.getDate()).toString()      : now.getDate();
+
+        const formattedDateTime = year + '-' + month + '-' + date + 'T' + 23 + ':' + 59 + ':' + '00';
         this.state = {
             scholarship: {
                 name: '',
@@ -73,13 +84,15 @@ class ScholarshipAddEdit extends React.Component{
                 img_url: '',
                 scholarship_url: '',
                 form_url:'',
-                deadline: '',
+                deadline: formattedDateTime,
                 funding_amount: '',
+                funding_type: ['Scholarship'],
                 female_only: false,
                 international_students_eligible: false,
                 no_essay_required: false,
             },
             isAddScholarshipMode: false,
+            scholarshipPostError: null,
         };
     }
 
@@ -87,6 +100,7 @@ class ScholarshipAddEdit extends React.Component{
         console.log('componentDidMount');
 
         const { userProfile } = this.props;
+        console.log('this.props', this.props);
         const scholarship = this.state.scholarship;
         scholarship.owner = userProfile.user;
         this.setState({scholarship});
@@ -96,20 +110,25 @@ class ScholarshipAddEdit extends React.Component{
         event.preventDefault();
         const scholarship = this.state.scholarship;
         scholarship[event.target.name] = event.target.value;
+
+        if(event.target.name==='name') {
+            scholarship.slug = slugify(event.target.value,{lower: true});
+        }
         this.setState({scholarship});
     };
 
     submitForm = (event) => {
         event.preventDefault();
-        const scholarship = this.state.scholarship;
+        const scholarship = ScholarshipsAPI.cleanScholarshipBeforeCreate(this.state.scholarship);
         console.log({scholarship});
-
-        ScholarshipsAPI.create({scholarship, locationData: {}})
+        this.setState({scholarship});
+        ScholarshipsAPI.create({scholarship,locationData: {}})
             .then(res=> {
                 console.log({res});
             })
             .catch(err=> {
                 console.log({err});
+                this.setState({scholarshipPostError: err.response && err.response.data})
             })
             .finally(()=>{})
 
@@ -117,7 +136,7 @@ class ScholarshipAddEdit extends React.Component{
 
     render() {
 
-        const { scholarship, isAddScholarshipMode } = this.state;
+        const { scholarship, isAddScholarshipMode, scholarshipPostError } = this.state;
         return (
             <React.Fragment>
                 <Helmet>
@@ -130,6 +149,7 @@ class ScholarshipAddEdit extends React.Component{
                         <FormDynamic model={scholarship}
                                      inputConfigs={scholarshipFormConfigs}
                                      onUpdateForm={this.updateForm}
+                                     formError={scholarshipPostError}
                                      onSubmit={this.submitForm}/>
                     </div>
                 </div>

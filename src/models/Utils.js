@@ -4,5 +4,5 @@ export const InputConfigPropType = PropTypes.shape({
     type: PropTypes.string,
     key: PropTypes.string.isRequired,
     placeholder: PropTypes.string.isRequired,
-    html: PropTypes.element,
+    html: PropTypes.func,
 });

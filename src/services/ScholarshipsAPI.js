@@ -34,6 +34,13 @@ class ScholarshipsAPI {
 
         return apiCompletionPromise;
     };
+
+    static cleanScholarshipBeforeCreate = (scholarship) => {
+        if(!scholarship.funding_amount) {
+            scholarship.funding_amount = 0;
+        }
+        return scholarship;
+    }
 }
 
 export default ScholarshipsAPI;

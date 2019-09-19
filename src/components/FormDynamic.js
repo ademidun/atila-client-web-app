@@ -47,7 +47,7 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
     if (html) {
         inputForm = (
             <React.Fragment>
-                {html}
+                {html(model)}
                 {inputForm}
             </React.Fragment>
         )
@@ -62,7 +62,7 @@ FormDynamicInput.propTypes = {
     inputConfig: InputConfigPropType.isRequired,
 };
 
-function FormDynamic({model, onUpdateForm, inputConfigs, onSubmit}) {
+function FormDynamic({model, onUpdateForm, inputConfigs, onSubmit, formError}) {
     return (
         <form className="row p-3 form-group" onSubmit={onSubmit}>
             {inputConfigs.map(config => <FormDynamicInput key={config.key}
@@ -70,13 +70,29 @@ function FormDynamic({model, onUpdateForm, inputConfigs, onSubmit}) {
                                                           inputConfig={config}
                                                           onUpdateForm={onUpdateForm} /> )}
 
-            {onSubmit && <button type="submit" onClick={onSubmit}>Submit</button>}
+            {formError &&
+                <div className="text-danger">
+                    <h3>Errors with your Form</h3>
+                    <pre className="text-danger" style={{ whiteSpace: 'pre-wrap' }}>
+                            {JSON.stringify(formError, null, 4)}
+                        </pre>
+                </div>
+
+            }
+            {onSubmit &&
+            <div className="col-12">
+                <button type="submit"
+                        className="btn btn-primary"
+                        onClick={onSubmit}>Submit</button>
+            </div>
+            }
         </form>
     )
 }
 
 FormDynamic.defaultProps = {
-    onSubmit: (event) => event.preventDefault()
+    onSubmit: (event) => event.preventDefault(),
+    formError: null,
 };
 
 FormDynamic.propTypes = {
@@ -84,6 +100,7 @@ FormDynamic.propTypes = {
     onUpdateForm: PropTypes.func.isRequired,
     inputConfigs: PropTypes.arrayOf(InputConfigPropType).isRequired,
     onSubmit: PropTypes.func,
+    formError: PropTypes.shape({}),
 };
 
 export default FormDynamic
