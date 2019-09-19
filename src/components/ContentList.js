@@ -77,8 +77,11 @@ class ContentList extends React.Component {
             contentType
         } = this.props;
 
+        let contentList = null;
+
+
         if (errorGettingContent) {
-            return (
+            contentList = (
                 <div className="text-center container">
                     <h1>
                         Error Getting {contentType}
@@ -88,9 +91,7 @@ class ContentList extends React.Component {
                 </div>)
         }
 
-        let contentList = null;
-
-        if (contentItems.length === 0) {
+        else if (contentItems.length === 0) {
             contentList = (
                 <Loading
                     isLoading={isLoadingContent}

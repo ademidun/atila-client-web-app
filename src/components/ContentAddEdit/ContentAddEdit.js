@@ -4,6 +4,9 @@ import CKEditor from "@ckeditor/ckeditor5-react";
 import InlineEditor from "@ckeditor/ckeditor5-build-inline";
 import {Helmet} from "react-helmet";
 import {withRouter} from "react-router-dom";
+import TextareaAutosize from 'react-autosize-textarea';
+import {connect} from "react-redux";
+import {slugify} from "../../services/utils";
 
 class ContentAddEdit extends React.Component {
 
@@ -20,6 +23,7 @@ class ContentAddEdit extends React.Component {
                 header_image_url: '',
             },
             showPreview: false,
+            contentPostError: null,
             isAddContentMode: false,
         }
     }
@@ -30,10 +34,13 @@ class ContentAddEdit extends React.Component {
         const { contentType } = this.props;
         console.log('this.props', this.props);
 
-        const { match : { path }} = this.props;
+        const { userProfile, match : { path }} = this.props;
 
         if ( path===`/${contentType.toLowerCase()}/add` ) {
             this.setState({isAddContentMode: true});
+            const content = this.state.content;
+            content.user = userProfile.user;
+            this.setState({content});
         } else {
             // this.loadContent();
         }
@@ -42,7 +49,17 @@ class ContentAddEdit extends React.Component {
     updateForm = (event) => {
         event.preventDefault();
         const content = this.state.content;
+        if(event.target.name==='title') {
+            content.slug = slugify(event.target.value);
+        }
         content[event.target.name] = event.target.value;
+        this.setState({content});
+    };
+
+    togglePublish = (event) => {
+        event.preventDefault();
+        const content = this.state.content;
+        content.published = !content.published;
         this.setState({content});
     };
 
@@ -54,6 +71,18 @@ class ContentAddEdit extends React.Component {
         content.body = data;
 
         this.setState({content});
+    };
+
+    editorInit = editor => {
+        console.log( 'Editor is ready to use!', editor );
+    };
+
+    editorBlur = ( event, editor ) => {
+        console.log( 'Blur.', editor );
+    };
+
+    editorFocus = ( event, editor ) => {
+        console.log( 'Focus.', editor );
     };
 
     submitForm = (event) => {
@@ -68,9 +97,12 @@ class ContentAddEdit extends React.Component {
         postResponsePromise
             .then(res=> {
                 console.log({res});
+                this.setState({isAddContentMode: false});
+                this.setState({content: res.data});
             })
             .catch(err=> {
                 console.log({err});
+                this.setState({contentPostError: err.response && err.response.data})
             })
             .finally(()=>{});
 
@@ -79,29 +111,34 @@ class ContentAddEdit extends React.Component {
     render() {
 
         const { contentType } = this.props;
-        const { isAddContentMode} = this.state;
+        const { isAddContentMode, contentPostError} = this.state;
 
         const elementTitle = isAddContentMode ? `Add ${contentType}` : `Edit ${contentType}`;
 
         const { content : {
-            title, description
+            title, description, published
         } } = this.state;
 
         return (
-            <div>
+            <div className="mt-3">
                 <Helmet>
                     <meta charSet="utf-8" />
-                    <title>{title} - Atila</title>
+                    <title>{title} - {elementTitle} - Atila</title>
                 </Helmet>
-                <h1>{elementTitle}</h1>
                 <form className="row p-3 form-group" onSubmit={this.submitForm}>
-                    <input placeholder="Title"
-                           className="col-12 mb-3 form-control"
-                           name="title"
-                           value={title}
-                           onChange={this.updateForm}
-                    />
+                    {!isAddContentMode &&
+                    <h1>{elementTitle}: {title}</h1>}
+                    {isAddContentMode &&
 
+                    <TextareaAutosize placeholder="Title"
+                                      className="border-0 center-block serif-font text-center col-12"
+                                      name="title"
+                                      value={title}
+                                      onChange={this.updateForm}
+                                      style={{fontSize: '2.5rem'}}
+                                      maxLength="140"
+                    />
+                    }
                     <textarea placeholder="Description"
                               className="col-12 mb-3 form-control"
                               name="description"
@@ -111,24 +148,29 @@ class ContentAddEdit extends React.Component {
 
                     <CKEditor
                         editor={ InlineEditor }
-                        data="<h1>Title</h1>&nbsp;<p>Enter some text here...</p>"
-                        onInit={ editor => {
-                            // You can store the "editor" and use when it is needed.
-                            console.log( 'Editor is ready to use!', editor );
-                        } }
+                        data="<p>Write your story here...</p>"
+                        onInit={ this.editorInit }
                         onChange={ this.editorChange }
-                        onBlur={ ( event, editor ) => {
-                            console.log( 'Blur.', editor );
-                        } }
-                        onFocus={ ( event, editor ) => {
-                            console.log( 'Focus.', editor );
-                        } }
+                        onBlur={ this.editorBlur }
+                        onFocus={ this.editorFocus }
                     />
+                    {contentPostError &&
+                    <pre className="text-danger" style={{ whiteSpace: 'pre-wrap' }}>
+                        {JSON.stringify(contentPostError, null, 4)}
+                    </pre>
+                    }
 
-                    <div className="col-12">
+                    <div className="col-12 my-3">
                         <button type="submit"
                                 className="btn btn-primary center-block">
                             Save
+                        </button>
+                    </div>
+                    <div className="col-12">
+                        <button type="button"
+                                onClick={this.togglePublish}
+                                className="btn btn-primary center-block">
+                            { published ? 'Unpublish': 'Publish'}
                         </button>
                     </div>
 
@@ -151,6 +193,10 @@ ContentAddEdit.propTypes = {
     content: PropTypes.shape({}),
     contentType: PropTypes.string.isRequired,
     ContentAPI: PropTypes.func.isRequired,
+    userProfile: PropTypes.shape({}).isRequired,
 };
 
-export default withRouter(ContentAddEdit);
+const mapStateToProps = state => {
+    return { userProfile: state.data.user.loggedInUserProfile };
+};
+export default withRouter(connect(mapStateToProps)(ContentAddEdit));
