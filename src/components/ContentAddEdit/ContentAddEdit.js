@@ -21,10 +21,12 @@ class ContentAddEdit extends React.Component {
                 body: '',
                 essay_source_url: '',
                 header_image_url: '',
+                published: false,
             },
             showPreview: false,
             contentPostError: null,
             isAddContentMode: false,
+            showContentAddOptions: false
         }
     }
 
@@ -111,25 +113,24 @@ class ContentAddEdit extends React.Component {
     render() {
 
         const { contentType } = this.props;
-        const { isAddContentMode, contentPostError} = this.state;
+        const { isAddContentMode, contentPostError, showContentAddOptions} = this.state;
 
         const elementTitle = isAddContentMode ? `Add ${contentType}` : `Edit ${contentType}`;
 
         const { content : {
-            title, description, published
+            title, description, published, header_image_url
         } } = this.state;
 
         return (
             <div className="mt-3">
                 <Helmet>
                     <meta charSet="utf-8" />
-                    <title>{title} - {elementTitle} - Atila</title>
+                    <title>{title && `${title} - `}{elementTitle} - Atila</title>
                 </Helmet>
                 <form className="row p-3 form-group" onSubmit={this.submitForm}>
                     {!isAddContentMode &&
                     <h1>{elementTitle}: {title}</h1>}
                     {isAddContentMode &&
-
                     <TextareaAutosize placeholder="Title"
                                       className="border-0 center-block serif-font text-center col-12"
                                       name="title"
@@ -139,13 +140,32 @@ class ContentAddEdit extends React.Component {
                                       maxLength="140"
                     />
                     }
+                    {header_image_url &&
+                    <img  src={header_image_url}
+                          alt={title}
+                          style={{width: '100%' }}/>
+                    }
+                    <button className="btn btn-link col-12 right"
+                            type="button"
+                            onClick={()=> this.setState({showContentAddOptions: !showContentAddOptions})}>
+                        {showContentAddOptions && 'Hide'} Options
+                    </button>
+                    {showContentAddOptions &&
+                    <div className="col-12">
                     <textarea placeholder="Description"
                               className="col-12 mb-3 form-control"
                               name="description"
                               value={description}
                               onChange={this.updateForm}
                     />
-
+                    <input type="url"
+                           name="header_image_url"
+                           placeholder="Header Image Url"
+                           className="col-12 mb-3 form-control"
+                           onChange={this.updateForm}
+                           value={header_image_url} />
+                    </div>
+                    }
                     <CKEditor
                         editor={ InlineEditor }
                         data="<p>Write your story here...</p>"
