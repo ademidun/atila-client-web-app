@@ -24,6 +24,17 @@ class ScholarshipsAPI {
         return apiCompletionPromise;
     }
 
+    static put = (id, scholarship) => {
+
+        const apiCompletionPromise = request({
+            method: 'put',
+            data: scholarship,
+            url: `${ScholarshipsAPI.scholarshipUrl}/${id}/`,
+        });
+
+        return apiCompletionPromise;
+    };
+
     static create = (scholarship) => {
 
         const apiCompletionPromise = request({
