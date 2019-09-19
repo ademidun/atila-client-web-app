@@ -33,10 +33,8 @@ class ContentAddEdit extends React.Component {
     }
 
     componentDidMount() {
-        console.log('componentDidMount');
 
         const { contentType } = this.props;
-        console.log('this.props', this.props);
 
         const { userProfile, match : { path }} = this.props;
 
@@ -76,8 +74,6 @@ class ContentAddEdit extends React.Component {
 
     editorChange = ( event, editor ) => {
         const data = editor.getData();
-        console.log( { event, editor, data } );
-
         const content = this.state.content;
         content.body = data;
 
@@ -85,15 +81,12 @@ class ContentAddEdit extends React.Component {
     };
 
     editorInit = editor => {
-        console.log( 'Editor is ready to use!', editor );
     };
 
     editorBlur = ( event, editor ) => {
-        console.log( 'Blur.', editor );
     };
 
     editorFocus = ( event, editor ) => {
-        console.log( 'Focus.', editor );
     };
 
     submitForm = (event) => {
@@ -113,7 +106,6 @@ class ContentAddEdit extends React.Component {
         }
         postResponsePromise
             .then(res=> {
-                console.log({res});
                 this.setState({isAddContentMode: false});
                 this.setState({content: res.data});
             })

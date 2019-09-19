@@ -72,9 +72,6 @@ class ContentDetail extends React.Component {
         const { className, contentType, userProfile, contentSlug } = this.props;
         const { errorGettingContent, content } = this.state;
 
-        console.log(this.props);
-        console.log({userProfile, content});
-
         if (errorGettingContent) {
             return (<div className="text-center">
                 <h1>Error Getting {contentType}.</h1>

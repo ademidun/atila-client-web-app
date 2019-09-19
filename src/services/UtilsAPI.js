@@ -9,8 +9,6 @@ class UtilsAPI {
 
     static loadContent = (ContentClass) => {
 
-        console.log({ContentClass});
-
         const { ContentAPI } = ContentClass.props;
         const { match : { params : { slug, username }} } = ContentClass.props;
 

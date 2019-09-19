@@ -100,10 +100,8 @@ class ScholarshipAddEdit extends React.Component{
     }
 
     componentDidMount() {
-        console.log('componentDidMount');
 
         const { userProfile } = this.props;
-        console.log('this.props', this.props);
 
         const { match : { path }} = this.props;
 
@@ -150,7 +148,6 @@ class ScholarshipAddEdit extends React.Component{
     submitForm = (event) => {
         event.preventDefault();
         const scholarship = ScholarshipsAPI.cleanScholarshipBeforeCreate(this.state.scholarship);
-        console.log({scholarship});
         this.setState({scholarship});
 
         const { isAddScholarshipMode } = this.state;
@@ -165,7 +162,6 @@ class ScholarshipAddEdit extends React.Component{
         }
         postResponsePromise
             .then(res=> {
-                console.log({res});
             })
             .catch(err=> {
                 console.log({err});
