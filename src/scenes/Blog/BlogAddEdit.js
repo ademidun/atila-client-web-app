@@ -1,5 +1,6 @@
 import React from 'react';
 import ContentAddEdit from "../../components/ContentAddEdit/ContentAddEdit";
+import BlogsApi from "../../services/BlogsAPI";
 
 class BlogAddEdit extends React.Component {
 
@@ -16,7 +17,7 @@ class BlogAddEdit extends React.Component {
     render () {
         return (
             <div className="text-center container">
-                <ContentAddEdit contentType="Blog" />
+                <ContentAddEdit contentType="Blog" ContentAPI={BlogsApi} />
             </div>
         );
     }

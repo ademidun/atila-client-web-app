@@ -2,7 +2,7 @@ import request from 'axios';
 import Environment from './Environment'
 class ScholarshipsAPI {
 
-    static scholarshipUrl = `${Environment.apiUrl}/scholarships`;
+    static scholarshipsApiUrl = `${Environment.apiUrl}/scholarships`;
     static searchScholarships = (searchPayload, page=1) => {
 
         const apiCompletionPromise = request({
@@ -29,7 +29,7 @@ class ScholarshipsAPI {
         const apiCompletionPromise = request({
             method: 'put',
             data: scholarship,
-            url: `${ScholarshipsAPI.scholarshipUrl}/${id}/`,
+            url: `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/`,
         });
 
         return apiCompletionPromise;
@@ -40,7 +40,7 @@ class ScholarshipsAPI {
         const apiCompletionPromise = request({
             method: 'post',
             data: scholarship,
-            url: `${ScholarshipsAPI.scholarshipUrl}/`,
+            url: `${ScholarshipsAPI.scholarshipsApiUrl}/`,
         });
 
         return apiCompletionPromise;
