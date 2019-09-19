@@ -1,25 +1,14 @@
 import React from 'react';
 import ContentAddEdit from "../../components/ContentAddEdit/ContentAddEdit";
+import EssaysApi from "../../services/EssaysAPI";
 
-class EssayAddEdit extends React.Component {
+function EssayAddEdit(){
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            blog: null,
-            errorGettingEssay: null,
-            isLoadingEssay: false,
-        }
-    }
-
-    render () {
-        return (
-            <div className="text-center container">
-                <ContentAddEdit contentType="Essay" />
-            </div>
-        );
-    }
+    return (
+        <div className="text-center container">
+            <ContentAddEdit contentType="Essay" ContentAPI={EssaysApi} />
+        </div>
+    );
 }
 
 export default EssayAddEdit;

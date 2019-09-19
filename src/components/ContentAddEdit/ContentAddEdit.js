@@ -68,7 +68,7 @@ class ContentAddEdit extends React.Component {
         content.published = !content.published;
 
         this.setState({content},
-            () => {console.log(this.state); this.submitForm();}
+            () => {this.submitForm();}
         );
     };
 
@@ -125,7 +125,7 @@ class ContentAddEdit extends React.Component {
         const elementTitle = isAddContentMode ? `Add ${contentType}` : `Edit ${contentType}`;
 
         const { content : {
-            title, description, published, header_image_url, body
+            title, description, published, header_image_url, body, essay_source_url
         } } = this.state;
 
         const defaultBody = '<p>Write your story here...</p>';
@@ -151,8 +151,8 @@ class ContentAddEdit extends React.Component {
                         {showContentAddOptions && 'Hide'} Options
                     </button>
                     {slug && username &&
-                    <Link to={`/blog/${username}/${slug}`}>
-                        View Blog
+                    <Link to={`/${contentType.toLowerCase()}/${username}/${slug}`}>
+                        View {contentType}
                     </Link>
                     }
                     {showContentAddOptions &&
@@ -163,12 +163,20 @@ class ContentAddEdit extends React.Component {
                               value={description}
                               onChange={this.updateForm}
                     />
+                        {contentType === 'Blog' &&
                         <input type="url"
                                name="header_image_url"
                                placeholder="Header Image Url"
                                className="col-12 mb-3 form-control"
                                onChange={this.updateForm}
-                               value={header_image_url} />
+                               value={header_image_url} />}
+                        {contentType === 'Essay' &&
+                        <input type="url"
+                               name="essay_source_url"
+                               placeholder="Essay Source Url"
+                               className="col-12 mb-3 form-control"
+                               onChange={this.updateForm}
+                               value={essay_source_url} />}
                     </div>
                     }
                     {header_image_url &&

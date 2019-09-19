@@ -94,8 +94,8 @@ class ContentDetail extends React.Component {
                 <div className={`${className} serif-font center-block`}>
                     <h1>{title}</h1>
                     {canEditContent &&
-                    <Link to={`/blog/edit/${contentSlug}`} >
-                        Edit Blog
+                    <Link to={`/${contentType.toLowerCase()}/edit/${contentSlug}`} >
+                        Edit {contentType}
                     </Link>
                     }
                     {header_image_url &&
