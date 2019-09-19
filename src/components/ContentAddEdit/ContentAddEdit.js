@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import CKEditor from "@ckeditor/ckeditor5-react";
 import InlineEditor from "@ckeditor/ckeditor5-build-inline";
 import {Helmet} from "react-helmet";
-import {withRouter} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 import TextareaAutosize from 'react-autosize-textarea';
 import {connect} from "react-redux";
 import {slugify} from "../../services/utils";
+import UtilsAPI from "../../services/UtilsAPI";
 
 class ContentAddEdit extends React.Component {
 
@@ -25,6 +26,7 @@ class ContentAddEdit extends React.Component {
             },
             showPreview: false,
             contentPostError: null,
+            contentGetError: null,
             isAddContentMode: false,
             showContentAddOptions: false
         }
@@ -44,9 +46,13 @@ class ContentAddEdit extends React.Component {
             content.user = userProfile.user;
             this.setState({content});
         } else {
-            // this.loadContent();
+            this.loadContent();
         }
     }
+
+    loadContent = () => {
+        UtilsAPI.loadContent(this);
+    };
 
     updateForm = (event) => {
         event.preventDefault();
@@ -62,7 +68,10 @@ class ContentAddEdit extends React.Component {
         event.preventDefault();
         const content = this.state.content;
         content.published = !content.published;
-        this.setState({content});
+
+        this.setState({content},
+            () => {console.log(this.state); this.submitForm();}
+        );
     };
 
     editorChange = ( event, editor ) => {
@@ -88,13 +97,19 @@ class ContentAddEdit extends React.Component {
     };
 
     submitForm = (event) => {
-        event.preventDefault();
+        if(event){
+            event.preventDefault();
+        }
         const { ContentAPI } = this.props;
         const { content, isAddContentMode } = this.state;
 
         let postResponsePromise = null;
         if (isAddContentMode) {
             postResponsePromise = ContentAPI.create(content);
+        }
+        else {
+            content.user = content.user.id;
+            postResponsePromise = ContentAPI.update(content.id, content);
         }
         postResponsePromise
             .then(res=> {
@@ -112,14 +127,16 @@ class ContentAddEdit extends React.Component {
 
     render() {
 
-        const { contentType } = this.props;
+        const { contentType, match : { params : { slug, username }}  } = this.props;
         const { isAddContentMode, contentPostError, showContentAddOptions} = this.state;
 
         const elementTitle = isAddContentMode ? `Add ${contentType}` : `Edit ${contentType}`;
 
         const { content : {
-            title, description, published, header_image_url
+            title, description, published, header_image_url, body
         } } = this.state;
+
+        const defaultBody = '<p>Write your story here...</p>';
 
         return (
             <div className="mt-3">
@@ -128,9 +145,6 @@ class ContentAddEdit extends React.Component {
                     <title>{title && `${title} - `}{elementTitle} - Atila</title>
                 </Helmet>
                 <form className="row p-3 form-group" onSubmit={this.submitForm}>
-                    {!isAddContentMode &&
-                    <h1>{elementTitle}: {title}</h1>}
-                    {isAddContentMode &&
                     <TextareaAutosize placeholder="Title"
                                       className="border-0 center-block serif-font text-center col-12"
                                       name="title"
@@ -139,17 +153,16 @@ class ContentAddEdit extends React.Component {
                                       style={{fontSize: '2.5rem'}}
                                       maxLength="140"
                     />
-                    }
-                    {header_image_url &&
-                    <img  src={header_image_url}
-                          alt={title}
-                          style={{width: '100%' }}/>
-                    }
                     <button className="btn btn-link col-12 right"
                             type="button"
                             onClick={()=> this.setState({showContentAddOptions: !showContentAddOptions})}>
                         {showContentAddOptions && 'Hide'} Options
                     </button>
+                    {slug && username &&
+                    <Link to={`/blog/${username}/${slug}`}>
+                        View Blog
+                    </Link>
+                    }
                     {showContentAddOptions &&
                     <div className="col-12">
                     <textarea placeholder="Description"
@@ -158,17 +171,22 @@ class ContentAddEdit extends React.Component {
                               value={description}
                               onChange={this.updateForm}
                     />
-                    <input type="url"
-                           name="header_image_url"
-                           placeholder="Header Image Url"
-                           className="col-12 mb-3 form-control"
-                           onChange={this.updateForm}
-                           value={header_image_url} />
+                        <input type="url"
+                               name="header_image_url"
+                               placeholder="Header Image Url"
+                               className="col-12 mb-3 form-control"
+                               onChange={this.updateForm}
+                               value={header_image_url} />
                     </div>
+                    }
+                    {header_image_url &&
+                    <img  src={header_image_url}
+                          alt={title}
+                          style={{width: '100%' }}/>
                     }
                     <CKEditor
                         editor={ InlineEditor }
-                        data="<p>Write your story here...</p>"
+                        data={body || defaultBody}
                         onInit={ this.editorInit }
                         onChange={ this.editorChange }
                         onBlur={ this.editorBlur }
@@ -204,7 +222,8 @@ class ContentAddEdit extends React.Component {
 
 ContentAddEdit.defaultProps = {
     className: '',
-    hideImage: false
+    hideImage: false,
+    contentSlug: '',
 };
 
 ContentAddEdit.propTypes = {
@@ -212,6 +231,7 @@ ContentAddEdit.propTypes = {
     className: PropTypes.string,
     content: PropTypes.shape({}),
     contentType: PropTypes.string.isRequired,
+    contentSlug: PropTypes.string,
     ContentAPI: PropTypes.func.isRequired,
     userProfile: PropTypes.shape({}).isRequired,
 };

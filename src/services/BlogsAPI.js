@@ -34,6 +34,17 @@ class BlogsApi {
 
         return apiCompletionPromise;
     };
+
+    static update = (id, blog) => {
+
+        const apiCompletionPromise = request({
+            method: 'put',
+            data: blog,
+            url: `${BlogsApi.blogsApiUrl}/${id}/`,
+        });
+
+        return apiCompletionPromise;
+    };
 }
 
 export default BlogsApi;

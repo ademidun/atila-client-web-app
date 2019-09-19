@@ -5,6 +5,7 @@ import {Link} from "react-router-dom";
 import './ContentDetail.scss';
 import Loading from "../Loading";
 import RelatedItems from "../RelatedItems";
+import {connect} from "react-redux";
 
 class ContentDetail extends React.Component {
 
@@ -68,8 +69,11 @@ class ContentDetail extends React.Component {
     
     render () {
 
-        const { className, contentType } = this.props;
+        const { className, contentType, userProfile, contentSlug } = this.props;
         const { errorGettingContent, content } = this.state;
+
+        console.log(this.props);
+        console.log({userProfile, content});
 
         if (errorGettingContent) {
             return (<div className="text-center">
@@ -85,11 +89,18 @@ class ContentDetail extends React.Component {
                 title={'Loading...'} />)
         }
 
+        const canEditContent = userProfile && (userProfile.user === content.user.id || userProfile.is_atila_admin);
+
         const { title, body, header_image_url, user, id } = content;
         return (
             <div className="m-5 px-md-5">
                 <div className={`${className} serif-font center-block`}>
                     <h1>{title}</h1>
+                    {canEditContent &&
+                    <Link to={`/blog/edit/${contentSlug}`} >
+                        Edit Blog
+                    </Link>
+                    }
                     {header_image_url &&
                     <img src={header_image_url}
                          alt={title}
@@ -131,6 +142,12 @@ ContentDetail.propTypes = {
     contentType: PropTypes.string.isRequired,
     ContentAPI: PropTypes.func.isRequired,
     contentSlug: PropTypes.string.isRequired,
+    //redux
+    userProfile: PropTypes.shape({}).isRequired
 };
 
-export default ContentDetail;
+const mapStateToProps = state => {
+    return { userProfile: state.data.user.loggedInUserProfile };
+};
+
+export default connect(mapStateToProps)(ContentDetail);
