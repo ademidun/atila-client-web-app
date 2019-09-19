@@ -101,6 +101,12 @@ class ScholarshipAddEdit extends React.Component{
 
         const { userProfile } = this.props;
         console.log('this.props', this.props);
+
+        const { match : { path }} = this.props;
+
+        if ( path==='/scholarship/add' ) {
+            this.setState({isAddScholarshipMode: true})
+        }
         const scholarship = this.state.scholarship;
         scholarship.owner = userProfile.user;
         this.setState({scholarship});
@@ -137,15 +143,17 @@ class ScholarshipAddEdit extends React.Component{
     render() {
 
         const { scholarship, isAddScholarshipMode, scholarshipPostError } = this.state;
+
+        const title = isAddScholarshipMode ? 'Add Scholarship' : 'Edit Scholarship';
         return (
             <React.Fragment>
                 <Helmet>
                     <meta charSet="utf-8" />
-                    <title>{isAddScholarshipMode ? 'Add': 'Edit'} Scholarship - Atila</title>
+                    <title>{title} - Atila</title>
                 </Helmet>
                 <div className="container mt-5">
                     <div className="card shadow p-3">
-                        <h2>Scholarship Add Edit: {scholarship.name}</h2>
+                        <h1>{title}: {scholarship.name}</h1>
                         <FormDynamic model={scholarship}
                                      inputConfigs={scholarshipFormConfigs}
                                      onUpdateForm={this.updateForm}
