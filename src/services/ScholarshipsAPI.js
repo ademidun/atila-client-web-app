@@ -2,6 +2,7 @@ import request from 'axios';
 import Environment from './Environment'
 class ScholarshipsAPI {
 
+    static scholarshipsApiUrl = `${Environment.apiUrl}/scholarships`;
     static searchScholarships = (searchPayload, page=1) => {
 
         const apiCompletionPromise = request({
@@ -21,6 +22,35 @@ class ScholarshipsAPI {
         });
 
         return apiCompletionPromise;
+    }
+
+    static put = (id, scholarship) => {
+
+        const apiCompletionPromise = request({
+            method: 'put',
+            data: scholarship,
+            url: `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/`,
+        });
+
+        return apiCompletionPromise;
+    };
+
+    static create = (scholarship) => {
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: scholarship,
+            url: `${ScholarshipsAPI.scholarshipsApiUrl}/`,
+        });
+
+        return apiCompletionPromise;
+    };
+
+    static cleanScholarshipBeforeCreate = (scholarship) => {
+        if(!scholarship.funding_amount) {
+            scholarship.funding_amount = 0;
+        }
+        return scholarship;
     }
 }
 

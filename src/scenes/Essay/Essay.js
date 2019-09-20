@@ -8,7 +8,7 @@ function Essay({ match }) {
     return (
         <Switch>
             <Route path={`${match.path}/add`} component={EssayAddEdit} />
-            <Route path={`${match.path}/edit/:slug`} component={EssayAddEdit} />
+            <Route path={`${match.path}/edit/:username/:slug`} component={EssayAddEdit} />
             <Route path={`${match.path}/:username/:slug`} component={EssayDetail} />
             <Route
                 exact

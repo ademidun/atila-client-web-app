@@ -133,7 +133,15 @@ export function formatCurrency(input) {
     return input.toLocaleString('en-ca', {style : 'currency', currency: 'CAD'});
 }
 
-
+export function slugify(text) {
+    return text
+        .trim()
+        .toLowerCase()
+        .replace(/[^\w ]+/g, '')
+        .trim()
+        .replace(/ +/g, '-')
+        ;
+}
 export const initialReduxState = {
     data: {
         user: {

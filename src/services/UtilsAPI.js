@@ -6,6 +6,27 @@ class UtilsAPI {
 
         return makeXHRRequestAsPromise('POST', url, formData)
     };
+
+    static loadContent = (ContentClass) => {
+
+        const { ContentAPI } = ContentClass.props;
+        const { match : { params : { slug, username }} } = ContentClass.props;
+
+        ContentAPI.getSlug(`${username}/${slug}`)
+            .then(res => {
+                if (res.data.blog) {
+                    ContentClass.setState({content: res.data.blog});
+                }
+                else if( res.data.essay) {
+                    ContentClass.setState({content: res.data.essay});
+                }
+            })
+            .catch(err => {
+                ContentClass.setState({contentGetError: { err }});
+            })
+            .finally(() => {
+            });
+    }
 }
 
 export default UtilsAPI;

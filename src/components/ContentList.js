@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Loading from "./Loading";
 import ContentCard from "./ContentCard";
 import {genericItemTransform} from "../services/utils";
+import {Link} from "react-router-dom";
 
 class ContentList extends React.Component {
 
@@ -76,8 +77,11 @@ class ContentList extends React.Component {
             contentType
         } = this.props;
 
+        let contentList = null;
+
+
         if (errorGettingContent) {
-            return (
+            contentList = (
                 <div className="text-center container">
                     <h1>
                         Error Getting {contentType}
@@ -87,12 +91,23 @@ class ContentList extends React.Component {
                 </div>)
         }
 
-        if (contentItems.length === 0) {
-            return (
+        else if (contentItems.length === 0) {
+            contentList = (
                 <Loading
                     isLoading={isLoadingContent}
                     title={`Loading ${contentType}...`} />);
         }
+        else {
+            contentList = contentItems.map( content =>
+                    <ContentCard key={content.id}
+                                 content={genericItemTransform(content)}
+                                 className="col-12 mb-3"
+                                 hideImage={contentType==='Essays'}
+                    />
+                );
+        }
+
+        const slugifyContent = contentType.substring(0, contentType.length - 1).toLowerCase();
 
         return (
             <div className="container mt-5">
@@ -100,14 +115,15 @@ class ContentList extends React.Component {
                 <h1 className="text-center serif-font center-block">
                     {contentType}
                 </h1>
-
+                <div className="col-12 mb-3">
+                    <div className="card shadow">
+                        <Link to={`/${slugifyContent}/add`} className="btn btn-outline-primary">
+                            Add {slugifyContent}
+                        </Link>
+                    </div>
+                </div>
                 <div>
-                    {contentItems.map( content =>
-                        <ContentCard key={content.id} content={genericItemTransform(content)} className="col-12 mb-3"
-                                     hideImage={contentType==='Essays'}
-                        />
-
-                        )}
+                    {contentList}
                 </div>
                 {
                     contentItems.length < totalContentCount

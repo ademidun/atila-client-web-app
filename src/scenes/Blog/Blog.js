@@ -8,7 +8,7 @@ function Blog({ match }) {
     return (
         <Switch>
             <Route path={`${match.path}/add`} component={BlogAddEdit} />
-            <Route path={`${match.path}/edit/:slug`} component={BlogAddEdit} />
+            <Route path={`${match.path}/edit/:username/:slug`} component={BlogAddEdit} />
             <Route path={`${match.path}/:username/:slug`} component={BlogDetail} />
             <Route
                 exact
