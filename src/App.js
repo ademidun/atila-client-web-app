@@ -8,6 +8,7 @@ import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
 import Loading from "./components/Loading";
 
+import { toast } from 'react-toastify';
 const Scholarship = loadable(() => import('./scenes/Scholarship/Scholarship'), {
     fallback: <Loading />,
 });
@@ -40,7 +41,7 @@ const Register = loadable(() => import('./components/Register'), {
 });
 
 
-
+toast.configure();
 function App(props) {
     const {
         isLoadingLoggedInUserProfile,

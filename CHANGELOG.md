@@ -1,5 +1,22 @@
 # Changelog
 
+## September 20, 2019
+### Naming Things is Hard but Important
+
+- I was trying to find react snackbars, no luck finding anything good
+- Then I saw [an article](https://reactjsexample.com/simple-snackbar-style-notifications-for-react/) at the botom of the article indicating that the name
+is not actually a Snackbar but called Toast
+- Snackbar is a concept unique to Angular Material maybe?
+- Once I searched react toast notification I found way better results
+
+Toast Notification reveals this:
+- https://github.com/fkhadra/react-toastify
+- https://github.com/jossmac/react-toast-notifications
+
+Snackbar Notification options:
+- https://github.com/rodrigoramosrs/react-snackbar
+- https://joeattardi.github.io/react-snackbar-alert
+
 ## September 14 2019
 ### Adding Redux to React App
 

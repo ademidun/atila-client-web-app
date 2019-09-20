@@ -6,7 +6,8 @@ import {connect} from "react-redux";
 import {slugify} from "../../services/utils";
 import Loading from "../../components/Loading";
 import {SCHOOLS_LIST} from "../../models/Constants";
-import ReactSnackBar from "react-js-snackbar";
+import 'react-toastify/dist/ReactToastify.css';
+import {toastNotify} from "../../models/Utils";
 
 const scholarshipFormConfigs = [
     {
@@ -105,7 +106,6 @@ class ScholarshipAddEdit extends React.Component{
             scholarshipPostError: null,
             isLoadingScholarship: true,
             errorLoadingScholarship: false,
-            isResponseOk: null,
         };
     }
 
@@ -180,7 +180,7 @@ class ScholarshipAddEdit extends React.Component{
         }
         postResponsePromise
             .then(res => {
-                this.setState({isResponseOk: true});
+                toastNotify('😃 Scholarship successfully saved!');
             })
             .catch(err=> {
                 console.log({err});
@@ -192,7 +192,7 @@ class ScholarshipAddEdit extends React.Component{
 
     render() {
 
-        const { scholarship, isAddScholarshipMode, scholarshipPostError, isLoadingScholarship, isResponseOk } = this.state;
+        const { scholarship, isAddScholarshipMode, scholarshipPostError, isLoadingScholarship } = this.state;
 
         const title = isAddScholarshipMode ? 'Add Scholarship' : 'Edit Scholarship';
         return (
@@ -211,10 +211,6 @@ class ScholarshipAddEdit extends React.Component{
                                      formError={scholarshipPostError}
                                      onSubmit={this.submitForm}/>
                     </div>
-                    Click here to: <input type="button" value="Show" onClick={()=>this.setState({isResponseOk: true})} />
-                    <ReactSnackBar Icon={<span>🦄</span>} Show={isResponseOk}>
-                        Success Creating Scholarship
-                    </ReactSnackBar>
                 </div>
             </React.Fragment>
         );
