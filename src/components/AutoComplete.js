@@ -65,6 +65,20 @@ class AutoComplete extends React.Component {
         });
     };
 
+    onSuggestionSelected = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
+        event.preventDefault();
+
+        const { onSelected, keyName } = this.props;
+        if( method==='click' ) {
+            event.target.value = suggestionValue;
+            event.target.name = keyName;
+        }
+        onSelected(event);
+        this.setState({
+            value: ''
+        });
+    };
+
     getSuggestions = value => {
 
         const {suggestions} = this.props;
@@ -88,7 +102,7 @@ class AutoComplete extends React.Component {
 
     render() {
         const { value, suggestions } = this.state;
-        const { keyName, placeholder, onSelected } = this.props;
+        const { keyName, placeholder } = this.props;
 
         // Autosuggest will pass through all these props to the input.
         const inputProps = {
@@ -110,7 +124,7 @@ class AutoComplete extends React.Component {
                 renderSuggestion={this.renderSuggestion}
                 inputProps={inputProps}
                 renderInputComponent={this.renderInputComponent}
-                onSuggestionSelected={onSelected}
+                onSuggestionSelected={this.onSuggestionSelected}
             />
         );
     }

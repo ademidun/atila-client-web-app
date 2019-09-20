@@ -144,12 +144,8 @@ class ScholarshipAddEdit extends React.Component{
     };
 
     updateForm = (event) => {
-        console.log({event});
-        console.log('event.target.name', event.target.name);
-        console.log('event.target.value', event.target.value);
         event.preventDefault();
         const scholarship = this.state.scholarship;
-        console.log('scholarship[event.target.name]', scholarship[event.target.name]);
 
         const value = event.target.value;
         if (Array.isArray(scholarship[event.target.name])) {
@@ -157,9 +153,6 @@ class ScholarshipAddEdit extends React.Component{
         } else {
             scholarship[event.target.name] =value;
         }
-
-        console.log('scholarship[event.target.name]', scholarship[event.target.name]);
-
 
         if(event.target.name==='name') {
             scholarship.slug = slugify(event.target.value,{lower: true});
