@@ -2,33 +2,10 @@ import React from 'react';
 import Autosuggest from 'react-autosuggest';
 import './AutoComplete.scss';
 import { MAJORS_LIST} from "../models/Constants";
-// Imagine you have a list of languages that you'd like to autosuggest.
-// MAJORS_LIST
-// Teach Autosuggest how to calculate suggestions for any given input value.
-const getSuggestions = value => {
-    const inputValue = value.trim().toLowerCase();
-    const inputLength = inputValue.length;
-
-    return inputLength === 0 ? [] : MAJORS_LIST.filter(lang =>
-        lang.toLowerCase().includes(inputValue)
-    ).slice(0, 10);
-};
-
-// When suggestion is clicked, Autosuggest needs to populate the input
-// based on the clicked suggestion. Teach Autosuggest how to calculate the
-// input value for every given suggestion.
-const getSuggestionValue = suggestion => suggestion;
-
-// Use your imagination to render suggestions.
-const renderSuggestion = suggestion => (
-    <p className="suggestion-item cursor-pointer">
-        {suggestion}
-    </p>
-);
 
 class AutoComplete extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         // Autosuggest is a controlled component.
         // This means that you need to provide an input value
@@ -41,6 +18,16 @@ class AutoComplete extends React.Component {
         };
     }
 
+    renderInputComponent = inputProps => {
+
+        inputProps.className += ' form-control';
+        return (
+            <div>
+                <input{...inputProps}/>
+            </div>
+        );
+    };
+
     onChange = (event, { newValue }) => {
         this.setState({
             value: newValue
@@ -51,7 +38,7 @@ class AutoComplete extends React.Component {
     // You already implemented this logic above, so just use it.
     onSuggestionsFetchRequested = ({ value }) => {
         this.setState({
-            suggestions: getSuggestions(value)
+            suggestions: this.getSuggestions(value)
         });
     };
 
@@ -61,6 +48,29 @@ class AutoComplete extends React.Component {
             suggestions: []
         });
     };
+
+    // https://github.com/moroshko/react-autosuggest
+    // Imagine you have a list of languages that you'd like to autosuggest.
+    // MAJORS_LIST
+    // Teach Autosuggest how to calculate suggestions for any given input value.
+    getSuggestions = value => {
+            const inputValue = value.trim().toLowerCase();
+            const inputLength = inputValue.length;
+
+            return inputLength === 0 ? [] : MAJORS_LIST.filter(lang =>
+                lang.toLowerCase().includes(inputValue));
+        };
+
+    // When suggestion is clicked, Autosuggest needs to populate the input
+// based on the clicked suggestion. Teach Autosuggest how to calculate the
+// input value for every given suggestion.
+    getSuggestionValue = suggestion => suggestion;
+
+    renderSuggestion = suggestion => (
+        <p className="suggestion-item cursor-pointer">
+            {suggestion}
+        </p>
+    );
 
     render() {
         const { value, suggestions } = this.state;
@@ -78,9 +88,10 @@ class AutoComplete extends React.Component {
                 suggestions={suggestions}
                 onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
                 onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-                getSuggestionValue={getSuggestionValue}
-                renderSuggestion={renderSuggestion}
+                getSuggestionValue={this.getSuggestionValue}
+                renderSuggestion={this.renderSuggestion}
                 inputProps={inputProps}
+                renderInputComponent={this.renderInputComponent}
             />
         );
     }
