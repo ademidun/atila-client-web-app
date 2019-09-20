@@ -163,15 +163,6 @@ class ScholarshipAddEdit extends React.Component{
         this.setState({scholarship});
     };
 
-    show = () => {
-        if (this.state.Showing) return;
-
-        this.setState({ Show: true, Showing: true });
-        setTimeout(() => {
-            this.setState({ Show: false, Showing: false });
-        }, 2000);
-    };
-
     submitForm = (event) => {
         event.preventDefault();
         const scholarship = ScholarshipsAPI.cleanScholarshipBeforeCreate(this.state.scholarship);
@@ -188,7 +179,8 @@ class ScholarshipAddEdit extends React.Component{
             postResponsePromise = ScholarshipsAPI.put(scholarship.id, postData);
         }
         postResponsePromise
-            .then(res=> {
+            .then(res => {
+                this.setState({isResponseOk: true});
             })
             .catch(err=> {
                 console.log({err});
@@ -200,7 +192,7 @@ class ScholarshipAddEdit extends React.Component{
 
     render() {
 
-        const { scholarship, isAddScholarshipMode, scholarshipPostError, isLoadingScholarship } = this.state;
+        const { scholarship, isAddScholarshipMode, scholarshipPostError, isLoadingScholarship, isResponseOk } = this.state;
 
         const title = isAddScholarshipMode ? 'Add Scholarship' : 'Edit Scholarship';
         return (
@@ -219,9 +211,9 @@ class ScholarshipAddEdit extends React.Component{
                                      formError={scholarshipPostError}
                                      onSubmit={this.submitForm}/>
                     </div>
-                    Click here to: <input type="button" value="Show" onClick={this.show} />
-                    <ReactSnackBar Icon={<span>🦄</span>} Show={this.state.Show}>
-                        Hello there, nice to meet you!
+                    Click here to: <input type="button" value="Show" onClick={()=>this.setState({isResponseOk: true})} />
+                    <ReactSnackBar Icon={<span>🦄</span>} Show={isResponseOk}>
+                        Success Creating Scholarship
                     </ReactSnackBar>
                 </div>
             </React.Fragment>
