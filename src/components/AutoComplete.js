@@ -1,17 +1,17 @@
-import Autosuggest from 'react-autosuggest';
 import React from 'react';
+import Autosuggest from 'react-autosuggest';
+import './AutoComplete.scss';
 import { MAJORS_LIST} from "../models/Constants";
 // Imagine you have a list of languages that you'd like to autosuggest.
 // MAJORS_LIST
-
 // Teach Autosuggest how to calculate suggestions for any given input value.
 const getSuggestions = value => {
     const inputValue = value.trim().toLowerCase();
     const inputLength = inputValue.length;
 
     return inputLength === 0 ? [] : MAJORS_LIST.filter(lang =>
-        lang.toLowerCase().slice(0, inputLength) === inputValue
-    );
+        lang.toLowerCase().includes(inputValue)
+    ).slice(0, 10);
 };
 
 // When suggestion is clicked, Autosuggest needs to populate the input
@@ -21,9 +21,9 @@ const getSuggestionValue = suggestion => suggestion;
 
 // Use your imagination to render suggestions.
 const renderSuggestion = suggestion => (
-    <div>
+    <p className="suggestion-item cursor-pointer">
         {suggestion}
-    </div>
+    </p>
 );
 
 class AutoComplete extends React.Component {
@@ -67,7 +67,7 @@ class AutoComplete extends React.Component {
 
         // Autosuggest will pass through all these props to the input.
         const inputProps = {
-            placeholder: 'Type a programming language',
+            placeholder: 'Enter your Major',
             value,
             onChange: this.onChange
         };
