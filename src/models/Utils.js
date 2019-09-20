@@ -5,4 +5,5 @@ export const InputConfigPropType = PropTypes.shape({
     key: PropTypes.string.isRequired,
     placeholder: PropTypes.string.isRequired,
     html: PropTypes.func,
+    suggestions: PropTypes.array,
 });

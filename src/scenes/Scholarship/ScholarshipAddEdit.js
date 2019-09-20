@@ -5,7 +5,6 @@ import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import {connect} from "react-redux";
 import {slugify} from "../../services/utils";
 import Loading from "../../components/Loading";
-import AutoComplete from "../../components/AutoComplete";
 import {SCHOOLS_LIST} from "../../models/Constants";
 
 const scholarshipFormConfigs = [
@@ -65,6 +64,12 @@ const scholarshipFormConfigs = [
         placeholder: 'International Students Eligible?',
         type: 'checkbox',
     },
+    {
+        key: 'eligible_schools',
+        placeholder: 'Enter your school',
+        type: 'autocomplete',
+        suggestions: SCHOOLS_LIST
+    },
 ];
 
 class ScholarshipAddEdit extends React.Component{
@@ -93,6 +98,7 @@ class ScholarshipAddEdit extends React.Component{
                 female_only: false,
                 international_students_eligible: false,
                 no_essay_required: false,
+                eligible_schools: [],
             },
             isAddScholarshipMode: false,
             scholarshipPostError: null,
@@ -138,13 +144,27 @@ class ScholarshipAddEdit extends React.Component{
     };
 
     updateForm = (event) => {
+        console.log({event});
+        console.log('event.target.name', event.target.name);
+        console.log('event.target.value', event.target.value);
         event.preventDefault();
         const scholarship = this.state.scholarship;
-        scholarship[event.target.name] = event.target.value;
+        console.log('scholarship[event.target.name]', scholarship[event.target.name]);
+
+        const value = event.target.value;
+        if (Array.isArray(scholarship[event.target.name])) {
+            scholarship[event.target.name] = scholarship[event.target.name].push(value);
+        } else {
+            scholarship[event.target.name] =value;
+        }
+
+        console.log('scholarship[event.target.name]', scholarship[event.target.name]);
+
 
         if(event.target.name==='name') {
             scholarship.slug = slugify(event.target.value,{lower: true});
         }
+
         this.setState({scholarship});
     };
 
@@ -189,12 +209,12 @@ class ScholarshipAddEdit extends React.Component{
                     {isLoadingScholarship && <Loading  title="Loading Scholarships..."/>}
                     <div className="card shadow p-3">
                         <h1>{title}: {scholarship.name}</h1>
+                        <h1>{scholarship.eligible_schools}</h1>
                         <FormDynamic model={scholarship}
                                      inputConfigs={scholarshipFormConfigs}
                                      onUpdateForm={this.updateForm}
                                      formError={scholarshipPostError}
                                      onSubmit={this.submitForm}/>
-                         <AutoComplete suggestions={SCHOOLS_LIST} placeholder={"Enter your school"}/>
                     </div>
                 </div>
             </React.Fragment>

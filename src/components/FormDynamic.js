@@ -1,12 +1,13 @@
 import React from "react";
 import PropTypes from 'prop-types';
 import {InputConfigPropType} from "../models/Utils";
+import AutoComplete from "./AutoComplete";
 
 function FormDynamicInput({model, onUpdateForm, inputConfig}) {
 
-    const { type, key, placeholder, html } = inputConfig;
-
+    const { type, key, placeholder, html, suggestions } = inputConfig;
     let inputForm = null;
+
     switch (type) {
         case 'textarea':
             inputForm = (
@@ -31,6 +32,14 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
                            onChange={onUpdateForm}
                     />
                 </div>
+            );
+            break;
+        case 'autocomplete':
+            inputForm = (
+                <AutoComplete suggestions={suggestions}
+                              placeholder={placeholder}
+                              onSelected={onUpdateForm}
+                              keyName={key}/>
             );
             break;
         default:

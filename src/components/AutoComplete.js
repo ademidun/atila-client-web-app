@@ -3,6 +3,23 @@ import Autosuggest from 'react-autosuggest';
 import './AutoComplete.scss';
 import PropTypes from "prop-types";
 
+const theme = {
+    container: 'react-autosuggest__container col-12 p-0 mb-3',
+    containerOpen: 'react-autosuggest__container--open',
+    input: 'react-autosuggest__input',
+    inputOpen: 'react-autosuggest__input--open',
+    inputFocused: 'react-autosuggest__input--focused',
+    suggestionsContainer: 'react-autosuggest__suggestions-container',
+    suggestionsContainerOpen: 'react-autosuggest__suggestions-container--open',
+    suggestionsList: 'react-autosuggest__suggestions-list',
+    suggestion: 'react-autosuggest__suggestion',
+    suggestionFirst: 'react-autosuggest__suggestion--first',
+    suggestionHighlighted: 'react-autosuggest__suggestion--highlighted',
+    sectionContainer: 'react-autosuggest__section-container',
+    sectionContainerFirst: 'react-autosuggest__section-container--first',
+    sectionTitle: 'react-autosuggest__section-title'
+};
+
 class AutoComplete extends React.Component {
     constructor(props) {
         super(props);
@@ -20,9 +37,7 @@ class AutoComplete extends React.Component {
 
     renderInputComponent = inputProps => {
 
-        const { key } = this.props;
         inputProps.className += ' form-control';
-        inputProps.name = key;
         return (
             <div>
                 <input{...inputProps}/>
@@ -31,9 +46,8 @@ class AutoComplete extends React.Component {
     };
 
     onChange = (event, { newValue }) => {
-        this.setState({
-            value: newValue
-        });
+        event.preventDefault();
+        this.setState({value: newValue});
     };
 
     // Autosuggest will call this function every time you need to update suggestions.
@@ -74,19 +88,21 @@ class AutoComplete extends React.Component {
 
     render() {
         const { value, suggestions } = this.state;
-        const { key, placeholder } = this.props;
+        const { keyName, placeholder, onSelected } = this.props;
 
         // Autosuggest will pass through all these props to the input.
         const inputProps = {
             placeholder,
             value,
+            name:keyName,
             onChange: this.onChange
         };
 
         // Finally, render it!
         return (
             <Autosuggest
-                id={key}
+                id={keyName}
+                theme={theme}
                 suggestions={suggestions}
                 onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
                 onSuggestionsClearRequested={this.onSuggestionsClearRequested}
@@ -94,6 +110,7 @@ class AutoComplete extends React.Component {
                 renderSuggestion={this.renderSuggestion}
                 inputProps={inputProps}
                 renderInputComponent={this.renderInputComponent}
+                onSuggestionSelected={onSelected}
             />
         );
     }
@@ -102,8 +119,7 @@ class AutoComplete extends React.Component {
 AutoComplete.defaultProps = {
     value: '',
     onChange: (event) => event.preventDefault(),
-    onUpdate: (event) => event.preventDefault(),
-    key: 'AutoComplete',
+    onSelected: (event) => event.preventDefault(),
     placeholder: '',
 };
 
@@ -111,8 +127,8 @@ AutoComplete.propTypes = {
     value: PropTypes.string,
     suggestions: PropTypes.array.isRequired,
     onChange: PropTypes.func,
-    onUpdate: PropTypes.func,
-    key: PropTypes.string,
+    onSelected: PropTypes.func,
+    keyName: PropTypes.string.isRequired,
     placeholder: PropTypes.string,
 };
 
