@@ -18,7 +18,11 @@ describe('<ContentList />', () => {
 
     it('renders without crashing', () => {
 
-        const wrapper = shallow(<ContentList ContentAPI={EssaysApi} contentType={'essay'} />);
+        const wrapper = shallow(
+            <MemoryRouter>
+                <ContentList ContentAPI={EssaysApi} contentType={'essay'} />
+            </MemoryRouter>
+            );
         expect(wrapper.html()).toBeTruthy();
     });
 

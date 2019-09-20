@@ -148,3 +148,5 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps)(ContentDetail);
+
+export const  ContentDetailTest = ContentDetail;
