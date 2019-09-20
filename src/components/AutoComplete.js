@@ -1,7 +1,7 @@
 import React from 'react';
 import Autosuggest from 'react-autosuggest';
 import './AutoComplete.scss';
-import { MAJORS_LIST} from "../models/Constants";
+import PropTypes from "prop-types";
 
 class AutoComplete extends React.Component {
     constructor(props) {
@@ -20,7 +20,9 @@ class AutoComplete extends React.Component {
 
     renderInputComponent = inputProps => {
 
+        const { key } = this.props;
         inputProps.className += ' form-control';
+        inputProps.name = key;
         return (
             <div>
                 <input{...inputProps}/>
@@ -49,21 +51,19 @@ class AutoComplete extends React.Component {
         });
     };
 
-    // https://github.com/moroshko/react-autosuggest
-    // Imagine you have a list of languages that you'd like to autosuggest.
-    // MAJORS_LIST
-    // Teach Autosuggest how to calculate suggestions for any given input value.
     getSuggestions = value => {
+
+        const {suggestions} = this.props;
             const inputValue = value.trim().toLowerCase();
             const inputLength = inputValue.length;
 
-            return inputLength === 0 ? [] : MAJORS_LIST.filter(lang =>
+            return inputLength === 0 ? [] : suggestions.filter(lang =>
                 lang.toLowerCase().includes(inputValue));
         };
 
     // When suggestion is clicked, Autosuggest needs to populate the input
-// based on the clicked suggestion. Teach Autosuggest how to calculate the
-// input value for every given suggestion.
+    // based on the clicked suggestion. Teach Autosuggest how to calculate the
+    // input value for every given suggestion.
     getSuggestionValue = suggestion => suggestion;
 
     renderSuggestion = suggestion => (
@@ -74,10 +74,11 @@ class AutoComplete extends React.Component {
 
     render() {
         const { value, suggestions } = this.state;
+        const { key, placeholder } = this.props;
 
         // Autosuggest will pass through all these props to the input.
         const inputProps = {
-            placeholder: 'Enter your Major',
+            placeholder,
             value,
             onChange: this.onChange
         };
@@ -85,6 +86,7 @@ class AutoComplete extends React.Component {
         // Finally, render it!
         return (
             <Autosuggest
+                id={key}
                 suggestions={suggestions}
                 onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
                 onSuggestionsClearRequested={this.onSuggestionsClearRequested}
@@ -96,5 +98,22 @@ class AutoComplete extends React.Component {
         );
     }
 }
+
+AutoComplete.defaultProps = {
+    value: '',
+    onChange: (event) => event.preventDefault(),
+    onUpdate: (event) => event.preventDefault(),
+    key: 'AutoComplete',
+    placeholder: '',
+};
+
+AutoComplete.propTypes = {
+    value: PropTypes.string,
+    suggestions: PropTypes.array.isRequired,
+    onChange: PropTypes.func,
+    onUpdate: PropTypes.func,
+    key: PropTypes.string,
+    placeholder: PropTypes.string,
+};
 
 export default AutoComplete

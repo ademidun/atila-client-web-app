@@ -6,6 +6,7 @@ import {connect} from "react-redux";
 import {slugify} from "../../services/utils";
 import Loading from "../../components/Loading";
 import AutoComplete from "../../components/AutoComplete";
+import {SCHOOLS_LIST} from "../../models/Constants";
 
 const scholarshipFormConfigs = [
     {
@@ -193,7 +194,7 @@ class ScholarshipAddEdit extends React.Component{
                                      onUpdateForm={this.updateForm}
                                      formError={scholarshipPostError}
                                      onSubmit={this.submitForm}/>
-                         <AutoComplete/>
+                         <AutoComplete suggestions={SCHOOLS_LIST} placeholder={"Enter your school"}/>
                     </div>
                 </div>
             </React.Fragment>
