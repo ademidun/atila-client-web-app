@@ -9,7 +9,7 @@ import {SCHOOLS_LIST} from "../../models/Constants";
 
 const scholarshipFormConfigs = [
     {
-        key: 'name',
+        keyName: 'name',
         placeholder: 'Scholarship Name',
         type: 'text',
         html: (model) => (
@@ -17,7 +17,7 @@ const scholarshipFormConfigs = [
         )
     },
     {
-        key: 'description',
+        keyName: 'description',
         type: 'textarea',
         placeholder: 'Scholarship Description',
         html: () => (<label htmlFor="description">
@@ -27,27 +27,27 @@ const scholarshipFormConfigs = [
         </label>),
     },
     {
-        key: 'scholarship_url',
+        keyName: 'scholarship_url',
         placeholder: 'Scholarship Url',
         type: 'url',
     },
     {
-        key: 'form_url',
+        keyName: 'form_url',
         placeholder: 'Application Form URL',
         type: 'url',
     },
     {
-        key: 'img_url',
+        keyName: 'img_url',
         placeholder: 'Scholarship Image URL',
         type: 'url',
     },
     {
-        key: 'funding_amount',
+        keyName: 'funding_amount',
         placeholder: 'Funding Amount',
         type: 'number',
     },
     {
-        key: 'deadline',
+        keyName: 'deadline',
         placeholder: 'Deadline',
         type: 'datetime-local',
         html: () =>(<label htmlFor="deadline">
@@ -55,17 +55,17 @@ const scholarshipFormConfigs = [
         </label>),
     },
     {
-        key: 'female_only',
+        keyName: 'female_only',
         placeholder: 'Female Only?',
         type: 'checkbox',
     },
     {
-        key: 'international_students_eligible',
+        keyName: 'international_students_eligible',
         placeholder: 'International Students Eligible?',
         type: 'checkbox',
     },
     {
-        key: 'eligible_schools',
+        keyName: 'eligible_schools',
         placeholder: 'Enter your school',
         type: 'autocomplete',
         suggestions: SCHOOLS_LIST
@@ -153,7 +153,7 @@ class ScholarshipAddEdit extends React.Component{
 
         const value = event.target.value;
         if (Array.isArray(scholarship[event.target.name])) {
-            scholarship[event.target.name] = scholarship[event.target.name].push(value);
+            scholarship[event.target.name].push(value);
         } else {
             scholarship[event.target.name] =value;
         }
@@ -209,7 +209,6 @@ class ScholarshipAddEdit extends React.Component{
                     {isLoadingScholarship && <Loading  title="Loading Scholarships..."/>}
                     <div className="card shadow p-3">
                         <h1>{title}: {scholarship.name}</h1>
-                        <h1>{scholarship.eligible_schools}</h1>
                         <FormDynamic model={scholarship}
                                      inputConfigs={scholarshipFormConfigs}
                                      onUpdateForm={this.updateForm}

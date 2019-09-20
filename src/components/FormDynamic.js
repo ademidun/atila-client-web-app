@@ -5,7 +5,7 @@ import AutoComplete from "./AutoComplete";
 
 function FormDynamicInput({model, onUpdateForm, inputConfig}) {
 
-    const { type, key, placeholder, html, suggestions } = inputConfig;
+    const { type, keyName, placeholder, html, suggestions } = inputConfig;
     let inputForm = null;
 
     switch (type) {
@@ -13,8 +13,8 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
             inputForm = (
                 <textarea placeholder={placeholder}
                           className="col-12 mb-3 form-control"
-                          name={key}
-                          value={model[key]}
+                          name={keyName}
+                          value={model[keyName]}
                           onChange={onUpdateForm}
                 />
             );
@@ -22,13 +22,13 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
         case 'checkbox':
             inputForm = (
                 <div className="col-12 mb-3">
-                    <label htmlFor={key} className="mr-3">
+                    <label htmlFor={keyName} className="mr-3">
                         {placeholder}
                     </label>
                     <input placeholder={placeholder}
                            type="checkbox"
-                           name={key}
-                           value={model[key]}
+                           name={keyName}
+                           value={model[keyName]}
                            onChange={onUpdateForm}
                     />
                 </div>
@@ -36,18 +36,22 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
             break;
         case 'autocomplete':
             inputForm = (
-                <AutoComplete suggestions={suggestions}
-                              placeholder={placeholder}
-                              onSelected={onUpdateForm}
-                              keyName={key}/>
+
+                <React.Fragment>
+                    <label htmlFor={keyName}>{JSON.stringify(model[keyName], null, 4)}</label>
+                    <AutoComplete suggestions={suggestions}
+                                  placeholder={placeholder}
+                                  onSelected={onUpdateForm}
+                                  keyName={keyName}/>
+                </React.Fragment>
             );
             break;
         default:
             inputForm = (
                 <input placeholder={placeholder}
                        className="col-12 mb-3 form-control"
-                       name={key}
-                       value={model[key]}
+                       name={keyName}
+                       value={model[keyName]}
                        onChange={onUpdateForm}
                        type={type}
                 />);
@@ -74,7 +78,7 @@ FormDynamicInput.propTypes = {
 function FormDynamic({model, onUpdateForm, inputConfigs, onSubmit, formError}) {
     return (
         <form className="row p-3 form-group" onSubmit={onSubmit}>
-            {inputConfigs.map(config => <FormDynamicInput key={config.key}
+            {inputConfigs.map(config => <FormDynamicInput key={config.keyName}
                                                           model={model}
                                                           inputConfig={config}
                                                           onUpdateForm={onUpdateForm} /> )}
