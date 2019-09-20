@@ -19,7 +19,7 @@ class Login extends React.Component {
             password: '',
             isResponseError: null,
             loadingResponse: null,
-            isResponseSuccess: null,
+            isResponseOk: null,
         };
     }
     componentDidMount() {
@@ -43,7 +43,7 @@ class Login extends React.Component {
         UserProfileAPI
             .login({ username, password })
             .then(res => {
-                this.setState({ isResponseSuccess: true});
+                this.setState({ isResponseOk: true});
                 setLoggedInUserProfile(res.data.user_profile);
                 UserProfileAPI.authenticateRequests(res.data.token, res.data.id);
                 this.props.history.push(`/scholarship`);
@@ -63,7 +63,7 @@ class Login extends React.Component {
     render () {
         const { username, password,
             isResponseError, loadingResponse,
-            isResponseSuccess } = this.state;
+            isResponseOk } = this.state;
         return (
             <div className="container mt-5">
                 <div className="card shadow p-3">
@@ -78,7 +78,7 @@ class Login extends React.Component {
                                    onChange={this.updateForm}
                             />
                             <PasswordShowHide password={password} updateForm={this.updateForm} />
-                            {isResponseSuccess &&
+                            {isResponseOk &&
                             <p className="text-success">
                                 Login successful! Redirecting...
                                 <span role="img" aria-label="happy face emoji">🙂</span>

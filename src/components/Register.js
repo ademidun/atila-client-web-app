@@ -64,7 +64,7 @@ class Register extends React.Component {
                 password: '',
             },
             isResponseError: null,
-            isResponseSuccess: null,
+            isResponseOk: null,
             loadingResponse: null,
         };
     }
@@ -97,7 +97,7 @@ class Register extends React.Component {
                 locationData: null
             })
             .then(res => {
-                this.setState({ isResponseSuccess: true});
+                this.setState({ isResponseOk: true});
                 UserProfileAPI.authenticateRequests(res.data.token, res.data.id);
             })
             .catch(err => {
@@ -112,7 +112,7 @@ class Register extends React.Component {
 
     render () {
 
-        const { userProfile, isResponseError, isResponseSuccess, loadingResponse } = this.state;
+        const { userProfile, isResponseError, isResponseOk, loadingResponse } = this.state;
         const { firstName, lastName, username, email, password } = userProfile;
         return (
             <div className="container mt-5">
@@ -149,7 +149,7 @@ class Register extends React.Component {
                                    onChange={this.updateForm}
                             />
                             <PasswordShowHide password={password} updateForm={this.updateForm} />
-                            {isResponseSuccess &&
+                            {isResponseOk &&
                             <p className="text-success">
                                 Registration successful!
                                 <span role="img" aria-label="happy face emoji">🙂</span>

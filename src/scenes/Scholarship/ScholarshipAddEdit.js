@@ -6,6 +6,7 @@ import {connect} from "react-redux";
 import {slugify} from "../../services/utils";
 import Loading from "../../components/Loading";
 import {SCHOOLS_LIST} from "../../models/Constants";
+import ReactSnackBar from "react-js-snackbar";
 
 const scholarshipFormConfigs = [
     {
@@ -104,6 +105,7 @@ class ScholarshipAddEdit extends React.Component{
             scholarshipPostError: null,
             isLoadingScholarship: true,
             errorLoadingScholarship: false,
+            isResponseOk: null,
         };
     }
 
@@ -161,6 +163,15 @@ class ScholarshipAddEdit extends React.Component{
         this.setState({scholarship});
     };
 
+    show = () => {
+        if (this.state.Showing) return;
+
+        this.setState({ Show: true, Showing: true });
+        setTimeout(() => {
+            this.setState({ Show: false, Showing: false });
+        }, 2000);
+    };
+
     submitForm = (event) => {
         event.preventDefault();
         const scholarship = ScholarshipsAPI.cleanScholarshipBeforeCreate(this.state.scholarship);
@@ -208,6 +219,10 @@ class ScholarshipAddEdit extends React.Component{
                                      formError={scholarshipPostError}
                                      onSubmit={this.submitForm}/>
                     </div>
+                    Click here to: <input type="button" value="Show" onClick={this.show} />
+                    <ReactSnackBar Icon={<span>🦄</span>} Show={this.state.Show}>
+                        Hello there, nice to meet you!
+                    </ReactSnackBar>
                 </div>
             </React.Fragment>
         );
