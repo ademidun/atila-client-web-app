@@ -5,6 +5,7 @@ import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import {connect} from "react-redux";
 import {slugify} from "../../services/utils";
 import Loading from "../../components/Loading";
+import AutoComplete from "../../components/AutoComplete";
 
 const scholarshipFormConfigs = [
     {
@@ -106,7 +107,8 @@ class ScholarshipAddEdit extends React.Component{
         const { match : { path }} = this.props;
 
         if ( path==='/scholarship/add' ) {
-            this.setState({isAddScholarshipMode: true})
+            this.setState({isAddScholarshipMode: true});
+            this.setState({isLoadingScholarship: false});
             const scholarship = this.state.scholarship;
             scholarship.owner = userProfile.user;
             this.setState({scholarship});
@@ -191,6 +193,7 @@ class ScholarshipAddEdit extends React.Component{
                                      onUpdateForm={this.updateForm}
                                      formError={scholarshipPostError}
                                      onSubmit={this.submitForm}/>
+                         <AutoComplete/>
                     </div>
                 </div>
             </React.Fragment>
