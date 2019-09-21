@@ -3,7 +3,7 @@
 }
 
 .react-autosuggest__suggestions-container--open {
-  height: 300px;
+  max-height: 300px;
   overflow-y: scroll;
 }
 .react-autosuggest__suggestion--highlighted {

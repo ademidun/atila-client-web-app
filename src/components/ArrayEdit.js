@@ -20,19 +20,17 @@ class ArrayEdit extends React.Component{
 
         const {itemsList} = this.state;
         const { onUpdateItemsList,keyName } = this.props;
-        itemsList.splice(index, 1);
-        this.setState({itemsList});
 
-        if (onUpdateItemsList) {
-            event.target.name = keyName;
-            event.target.value = itemsList;
-            onUpdateItemsList(event);
-        }
+        itemsList.splice(index, 1);
+
+        event.target.name = keyName;
+        event.target.value = itemsList;
+        onUpdateItemsList(event);
     };
 
     render() {
 
-        const { itemsList } = this.state;
+        const { itemsList } = this.props;
 
         const displayItemsList = itemsList.map((item, index) => (
             <div className="chip" key={item}>
@@ -48,14 +46,10 @@ class ArrayEdit extends React.Component{
         );
     }
 }
-ArrayEdit.defaultProps = {
-    onUpdateItemsList: null,
-    keyName: null,
-};
 
 ArrayEdit.propTypes = {
     itemsList: PropTypes.array.isRequired,
-    onUpdateItemsList: PropTypes.func,
-    keyName: PropTypes.string,
+    onUpdateItemsList: PropTypes.func.isRequired,
+    keyName: PropTypes.string.isRequired,
 };
 export default ArrayEdit;

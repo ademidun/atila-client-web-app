@@ -1,5 +1,13 @@
 # Changelog
 
+## Septmeber 21, 2019
+### Steps for Adding a New Redux Action
+1. Create a constant with the name of the action in  src/redux/actions
+2. Export a function in the same file
+3. Add your reducer in src/reducers/data/<filename>.js
+replace `data` with `ui`, depending on your use case
+4. TO use in a component: `import {setLoggedInUserProfile} from "../redux/actions/user";`
+
 ## September 20, 2019
 ### Naming Things is Hard but Important
 

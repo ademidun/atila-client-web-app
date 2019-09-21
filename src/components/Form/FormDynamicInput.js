@@ -15,6 +15,9 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
     if (!placeholder) {
         placeholder = toTitleCase(keyName);
     }
+
+    // to prevent null value on inputs (controlled inputs)
+    model[keyName] = model[keyName] || '';
     switch (type) {
         case 'textarea':
             inputForm = (
@@ -68,7 +71,7 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
     }
 
     inputForm = (
-        <div className={`w-100 ${className}`}>
+        <div className={`w-100${className ? ` ${className}` : ''}`}>
             {html && html(model)}
             {inputForm}
         </div>
