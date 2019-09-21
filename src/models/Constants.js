@@ -1,3 +1,6 @@
+// If you make any changes here, notify in the Github repo and update backend as well
+// https://github.com/ademidun/atila-django/blob/master/helpers/constants.py
+
 export const MAJORS_LIST = [
     'Accounting',
     'African Studies',

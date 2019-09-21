@@ -79,13 +79,6 @@ class ScholarshipAddEdit extends React.Component{
     constructor(props) {
         super(props);
 
-        const now = new Date();
-
-        const year = now.getFullYear();
-        const month = (now.getMonth() + 1).toString().length === 1 ? '0' + (now.getMonth() + 1).toString() : now.getMonth() + 1;
-        const date = now.getDate().toString().length === 1 ? '0'         + (now.getDate()).toString()      : now.getDate();
-
-        const formattedDateTime = `${year}-${month}-${date}T23:59:00`;
         this.state = {
             scholarship: {
                 name: '',
@@ -94,7 +87,7 @@ class ScholarshipAddEdit extends React.Component{
                 img_url: '',
                 scholarship_url: '',
                 form_url:'',
-                deadline: formattedDateTime,
+                deadline: '2022-12-31T23:59:00',
                 funding_amount: '',
                 funding_type: ['Scholarship'],
                 female_only: false,
