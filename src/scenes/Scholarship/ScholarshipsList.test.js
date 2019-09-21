@@ -11,7 +11,7 @@ import {
 } from "../../models/Scholarship";
 import {MemoryRouter} from "react-router-dom";
 import configureStore from "redux-mock-store";
-import {initialReduxState} from "../../services/utils";
+import {initialReduxState} from "../../models/Constants";
 jest.mock('../../services/ScholarshipsAPI');
 
 ScholarshipsAPI.searchScholarships.mockImplementation(() => Promise.resolve(scholarshipsListResponseMockData));

@@ -1,7 +1,7 @@
 import React from 'react';
-import {emojiDictionary} from "../services/utils";
 import {faTimes} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {emojiDictionary} from "../models/Constants";
 
 class ArrayEdit extends React.Component{
 

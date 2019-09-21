@@ -154,13 +154,15 @@ const scholarshipFormConfigsPage2 = [
         keyName: 'eligible_schools',
         placeholder: 'Eligible Schools (leave blank for any) 🏫',
         type: 'autocomplete',
-        suggestions: SCHOOLS_LIST
+        suggestions: SCHOOLS_LIST,
+        className: 'col-md-6',
     },
     {
         keyName: 'eligible_programs',
         placeholder: 'Eligible Programs (leave blank for any) 📚',
         type: 'autocomplete',
-        suggestions: MAJORS_LIST
+        suggestions: MAJORS_LIST,
+        className: 'col-md-6',
     },
     {
         keyName: 'criteria_info',
