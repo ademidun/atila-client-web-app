@@ -13,7 +13,7 @@ import {
     MAJORS_LIST,
     RELIGIONS,
     SCHOOLS_LIST, SPORTS
-} from "../../models/Constants";
+} from "../../models/ConstantsForm";
 import 'react-toastify/dist/ReactToastify.css';
 import {toastNotify} from "../../models/Utils";
 import {defaultScholarship} from "../../models/Scholarship";
@@ -167,7 +167,10 @@ const scholarshipFormConfigsPage2 = [
         type: 'textarea',
         placeholder: 'Additional Information',
         html: () => (<label htmlFor="description">
-            Everything else you want people to know about the scholarship, put it here 👇🏿
+            Everything else you want people to know about the scholarship, put it here
+            <span role="img" aria-label="pointing down emoji">
+            👇🏿
+            </span>
         </label>),
     },
 ];

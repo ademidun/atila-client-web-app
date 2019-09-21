@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {InputConfigPropType} from "../models/Utils";
 import AutoComplete from "./AutoComplete";
 import {toTitleCase} from "../services/utils";
+import ArrayEdit from "./ArrayEdit";
 
 function FormDynamicInput({model, onUpdateForm, inputConfig}) {
 
@@ -44,6 +45,7 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
 
                 <React.Fragment>
                     <label htmlFor={keyName}>{JSON.stringify(model[keyName], null, 4)}</label>
+                    <ArrayEdit itemsList={model[keyName]} />
                     <AutoComplete suggestions={suggestions}
                                   placeholder={placeholder}
                                   onSelected={onUpdateForm}
