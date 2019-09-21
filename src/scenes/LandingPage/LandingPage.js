@@ -173,7 +173,9 @@ class LandingPage extends React.Component {
         }
     }
     onSubmit = event => {
-
+        event.preventDefault();
+        const { searchQuery } = this.state;
+        this.props.history.push(`/scholarship?q=${searchQuery}`);
     };
 
     updateSearch = event => {
