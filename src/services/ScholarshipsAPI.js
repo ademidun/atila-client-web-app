@@ -46,9 +46,16 @@ class ScholarshipsAPI {
         return apiCompletionPromise;
     };
 
-    static cleanScholarshipBeforeCreate = (scholarship) => {
+    static cleanScholarship = (scholarship) => {
         if(!scholarship.funding_amount) {
             scholarship.funding_amount = 0;
+        }
+
+        if(scholarship.deadline) {
+            // to fix the following error
+            // The specified value "2019-09-21T23:59:00Z" does not conform to the required format.
+            // The format is "yyyy-MM-ddThh:mm" followed by optional ":ss" or ":ss.SSS"
+            scholarship.deadline = scholarship.deadline.substring(0,16);
         }
         return scholarship;
     }

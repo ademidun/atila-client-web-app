@@ -219,9 +219,8 @@ class ScholarshipAddEdit extends React.Component{
         const { match : { params : { slug }} } = this.props;
         ScholarshipsAPI.getSlug(slug)
             .then(res => {
-                const scholarship = res.data;
-                scholarship.deadline = scholarship.deadline.substring(0, scholarship.deadline.length - 1);
-                this.setState({ scholarship: res.data });
+                const scholarship = ScholarshipsAPI.cleanScholarship(res.data);
+                this.setState({ scholarship });
             })
             .catch(err => {
                 this.setState({ errorLoadingScholarship: true });
@@ -252,7 +251,7 @@ class ScholarshipAddEdit extends React.Component{
 
     submitForm = (event) => {
         event.preventDefault();
-        const scholarship = ScholarshipsAPI.cleanScholarshipBeforeCreate(this.state.scholarship);
+        const scholarship = ScholarshipsAPI.cleanScholarship(this.state.scholarship);
         this.setState({scholarship});
 
         const { isAddScholarshipMode } = this.state;
@@ -268,7 +267,10 @@ class ScholarshipAddEdit extends React.Component{
         postResponsePromise
             .then(res => {
                 toastNotify('😃 Scholarship successfully saved!');
-                this.setState({isAddScholarshipMode: false})
+                console.log({res});
+                this.setState({isAddScholarshipMode: false});
+                const scholarship = ScholarshipsAPI.cleanScholarship(res.data);
+                this.setState({ scholarship });
             })
             .catch(err=> {
                 console.log({err});

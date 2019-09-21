@@ -37,6 +37,8 @@ export let defaultScholarship = {
     funding_type: ['Scholarship'],
     female_only: false,
     international_students_eligible: false,
+    id: null,
+    metadata: {},
     no_essay_required: false,
     eligible_schools: [],
     eligible_programs: [],
