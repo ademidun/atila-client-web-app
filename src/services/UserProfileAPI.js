@@ -49,6 +49,17 @@ class UserProfileAPI {
         return apiCompletionPromise;
     };
 
+    static update = (userProfileData, id) => {
+
+        const apiCompletionPromise = request({
+            method: 'put',
+            data: userProfileData,
+            url: `${this.userProfileEndPoint}/${id}/`,
+        });
+
+        return apiCompletionPromise;
+    };
+
     static login = (loginCredentials) => {
 
         const apiCompletionPromise = request({

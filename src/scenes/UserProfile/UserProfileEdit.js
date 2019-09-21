@@ -5,6 +5,8 @@ import {onUpdateModelForm} from "../../services/utils";
 import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import FormDynamic from "../../components/Form/FormDynamic";
 import {scholarshipUserProfileSharedFormConfigs} from "../../models/Utils";
+import ScholarshipsAPI from "../../services/ScholarshipsAPI";
+import UserProfileAPI from "../../services/UserProfileAPI";
 
 class UserProfileEdit extends React.Component {
 
@@ -16,6 +18,15 @@ class UserProfileEdit extends React.Component {
         userProfile = onUpdateModelForm(event, userProfile, 'user');
         console.log({userProfile, updateLoggedInUserProfile});
         updateLoggedInUserProfile(userProfile);
+    };
+
+    submitForm = (event) => {
+
+        event.preventDefault();
+        const { userProfile } = this.props;
+        UserProfileAPI
+            .update({userProfile, locationData: {}}, userProfile.user)
+            .then(res=>{console.log({res})});
     };
 
     render () {
@@ -35,6 +46,9 @@ class UserProfileEdit extends React.Component {
                              inputConfigs=
                                  {userProfileSharedFormConfigs}
                 />
+                <button type="submit"
+                        className="btn btn-primary col-12 mt-2"
+                        onClick={this.submitForm}>Submit</button>
             </div>
         );
     }
