@@ -1,6 +1,6 @@
 import React from 'react';
 import {Helmet} from "react-helmet";
-import FormDynamic from "../../components/FormDynamic";
+import FormDynamic from "../../components/Form/FormDynamic";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import {connect} from "react-redux";
 import {slugify} from "../../services/utils";
@@ -237,7 +237,7 @@ class ScholarshipAddEdit extends React.Component{
         const scholarship = this.state.scholarship;
 
         const value = event.target.value;
-        if (Array.isArray(scholarship[event.target.name])) {
+        if ( Array.isArray(scholarship[event.target.name]) && !Array.isArray(value) ) {
             scholarship[event.target.name].push(value);
         } else {
             scholarship[event.target.name] =value;

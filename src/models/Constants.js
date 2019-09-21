@@ -3,6 +3,7 @@ import {faUserMd} from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 
 // todo there might be an npm package for this!
+// todo add more emojis to the dictionary
 export const emojiDictionary = {
     china: <span role="img" aria-label="china emoji">🇨🇳</span>,
     canada: <span role="img" aria-label="canada emoji">🇨🇦</span>,

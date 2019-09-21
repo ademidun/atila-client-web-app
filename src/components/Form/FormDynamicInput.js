@@ -1,14 +1,15 @@
+import {toTitleCase} from "../../services/utils";
 import React from "react";
-import PropTypes from 'prop-types';
-import {InputConfigPropType} from "../models/Utils";
-import AutoComplete from "./AutoComplete";
-import {toTitleCase} from "../services/utils";
-import ArrayEdit from "./ArrayEdit";
+import ArrayEdit from "../ArrayEdit";
+import AutoComplete from "../AutoComplete";
+import PropTypes from "prop-types";
+import {InputConfigPropType} from "../../models/Utils";
+import FormDynamic from "./FormDynamic";
 
 function FormDynamicInput({model, onUpdateForm, inputConfig}) {
 
-    const { type, keyName, html, suggestions, className } = inputConfig;
-    let { placeholder } = inputConfig;
+    const {type, keyName, html, suggestions, className} = inputConfig;
+    let {placeholder} = inputConfig;
     let inputForm = null;
 
     if (!placeholder) {
@@ -44,8 +45,10 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
             inputForm = (
 
                 <React.Fragment>
-                    <label htmlFor={keyName}>{JSON.stringify(model[keyName], null, 4)}</label>
-                    <ArrayEdit itemsList={model[keyName]} />
+                    <ArrayEdit itemsList={model[keyName]}
+                               keyName={keyName}
+                               model={model}
+                               onUpdateItemsList={onUpdateForm}/>
                     <AutoComplete suggestions={suggestions}
                                   placeholder={placeholder}
                                   onSelected={onUpdateForm}
@@ -74,44 +77,11 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
     return inputForm;
 
 }
+
 FormDynamicInput.propTypes = {
     model: PropTypes.shape({}).isRequired,
     onUpdateForm: PropTypes.func.isRequired,
     inputConfig: InputConfigPropType.isRequired,
 };
 
-function FormDynamic({model, onUpdateForm, inputConfigs, onSubmit, formError}) {
-    return (
-        <form className="row p-3 form-group" onSubmit={onSubmit}>
-            {inputConfigs.map(config => <FormDynamicInput key={config.keyName}
-                                                          model={model}
-                                                          inputConfig={config}
-                                                          onUpdateForm={onUpdateForm} /> )}
-
-            {formError &&
-            <div className="text-danger">
-                <h3>Errors with your Form</h3>
-                <pre className="text-danger" style={{ whiteSpace: 'pre-wrap' }}>
-                            {formError}
-                        </pre>
-            </div>
-
-            }
-        </form>
-    )
-}
-
-FormDynamic.defaultProps = {
-    onSubmit: (event) => event.preventDefault(),
-    formError: null,
-};
-
-FormDynamic.propTypes = {
-    model: PropTypes.shape({}).isRequired,
-    onUpdateForm: PropTypes.func.isRequired,
-    inputConfigs: PropTypes.arrayOf(InputConfigPropType).isRequired,
-    onSubmit: PropTypes.func,
-    formError: PropTypes.shape({}),
-};
-
-export default FormDynamic
+export default FormDynamicInput
