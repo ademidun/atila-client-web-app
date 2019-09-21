@@ -25,3 +25,28 @@ export const scholarshipsListResponseMockData = {
         length: 2
     }
 };
+export let defaultScholarship = {
+    name: '',
+    slug: '',
+    description: '',
+    img_url: '',
+    scholarship_url: '',
+    form_url: '',
+    deadline: '2022-12-31T23:59:00',
+    funding_amount: '',
+    funding_type: ['Scholarship'],
+    female_only: false,
+    international_students_eligible: false,
+    no_essay_required: false,
+    eligible_schools: [],
+    eligible_programs: [],
+    email_contact: '',
+    activities: [],
+    ethnicity: [],
+    heritage: [],
+    citizenship: [],
+    religion: [],
+    sports: [],
+    disability: [],
+    language: [],
+};

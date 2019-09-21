@@ -5,17 +5,26 @@ import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import {connect} from "react-redux";
 import {slugify} from "../../services/utils";
 import Loading from "../../components/Loading";
-import {SCHOOLS_LIST} from "../../models/Constants";
+import {
+    ACTIVITIES,
+    COUNTRIES,
+    DISABILITIES,
+    ETHNICITIES, LANGUAGES,
+    MAJORS_LIST,
+    RELIGIONS,
+    SCHOOLS_LIST, SPORTS
+} from "../../models/Constants";
 import 'react-toastify/dist/ReactToastify.css';
 import {toastNotify} from "../../models/Utils";
+import {defaultScholarship} from "../../models/Scholarship";
 
-const scholarshipFormConfigs = [
+const scholarshipFormConfigsPage1 = [
     {
         keyName: 'name',
         placeholder: 'Scholarship Name',
         type: 'text',
         html: (model) => (
-            <p className="text-muted">{model.slug}</p>
+            <p className="text-muted">{model.slug && `Slug: atila.ca/scholarship/${model.slug}`}</p>
         )
     },
     {
@@ -45,32 +54,121 @@ const scholarshipFormConfigs = [
     },
     {
         keyName: 'funding_amount',
-        placeholder: 'Funding Amount',
+        placeholder: 'Funding Amount 💵 🤑',
         type: 'number',
     },
     {
         keyName: 'deadline',
-        placeholder: 'Deadline',
         type: 'datetime-local',
         html: () =>(<label htmlFor="deadline">
-            Deadline
+            Deadline <span role="img" aria-label="clock emoji">🕐</span>
         </label>),
     },
     {
         keyName: 'female_only',
-        placeholder: 'Female Only?',
+        placeholder: 'Female Only? 🙍🏿',
         type: 'checkbox',
     },
     {
         keyName: 'international_students_eligible',
-        placeholder: 'International Students Eligible?',
+        placeholder: 'International Students Eligible? 🌏',
         type: 'checkbox',
     },
     {
         keyName: 'eligible_schools',
-        placeholder: 'Enter your school',
+        placeholder: 'Eligible Schools (leave blank for any) 🏫',
         type: 'autocomplete',
         suggestions: SCHOOLS_LIST
+    },
+    {
+        keyName: 'eligible_programs',
+        placeholder: 'Eligible Programs (leave blank for any) 📚',
+        type: 'autocomplete',
+        suggestions: MAJORS_LIST
+    },
+    {
+        keyName: 'email_contact',
+        placeholder: 'Email address for sending questions and submissions',
+        type: 'email',
+    },
+];
+
+const scholarshipFormConfigsPage2 = [
+    {
+        keyName: 'activities',
+        placeholder: 'Activities 👩🏽‍🎨 📝 🎤 🔬',
+        type: 'autocomplete',
+        suggestions: ACTIVITIES,
+        className: 'col-md-6',
+    },
+    {
+        keyName: 'ethnicity',
+        placeholder: 'Ethnicity (e.g. Asian, Black, South Asian) 🙍🏻‍♂️ 🙍🏽 🙍🏿',
+        type: 'autocomplete',
+        suggestions: ETHNICITIES,
+        className: 'col-md-6',
+    },
+    {
+        keyName: 'religion',
+        placeholder: 'Religion 🙏🏿',
+        type: 'autocomplete',
+        suggestions: RELIGIONS,
+        className: 'col-md-6',
+    },
+    {
+        keyName: 'citizenship',
+        placeholder: 'Citizenship or Permanent Residency 🌏',
+        type: 'autocomplete',
+        suggestions: COUNTRIES,
+        className: 'col-md-6',
+    },
+    {
+        keyName: 'disability',
+        placeholder: 'Disability ♿️',
+        type: 'autocomplete',
+        suggestions: DISABILITIES,
+        className: 'col-md-6',
+    },
+    {
+        keyName: 'sports',
+        placeholder: 'Sports 🏀 ⛹🏿 ⚽ 🏸',
+        type: 'autocomplete',
+        suggestions: SPORTS,
+        className: 'col-md-6',
+    },
+    {
+        keyName: 'language',
+        placeholder: 'Languages 🗣',
+        type: 'autocomplete',
+        suggestions: LANGUAGES,
+        className: 'col-md-6',
+    },
+    {
+        keyName: 'heritage',
+        placeholder: 'Heritage (Indian, Nigerian, Chinese) 🇮🇳 🇳🇬 🇨🇳',
+        type: 'autocomplete',
+        suggestions: COUNTRIES,
+        className: 'col-md-6',
+    },
+    {
+        keyName: 'eligible_schools',
+        placeholder: 'Eligible Schools (leave blank for any) 🏫',
+        type: 'autocomplete',
+        suggestions: SCHOOLS_LIST
+    },
+    {
+        keyName: 'eligible_programs',
+        placeholder: 'Eligible Programs (leave blank for any) 📚',
+        type: 'autocomplete',
+        suggestions: MAJORS_LIST
+    },
+    {
+        keyName: 'criteria_info',
+        type: 'textarea',
+        placeholder: 'Additional Information',
+        html: () => (<label htmlFor="description">
+            Everything else you want people to know about the scholarship, put it here 👇🏿
+        </label>),
     },
 ];
 
@@ -80,27 +178,18 @@ class ScholarshipAddEdit extends React.Component{
         super(props);
 
         this.state = {
-            scholarship: {
-                name: '',
-                slug: '',
-                description: '',
-                img_url: '',
-                scholarship_url: '',
-                form_url:'',
-                deadline: '2022-12-31T23:59:00',
-                funding_amount: '',
-                funding_type: ['Scholarship'],
-                female_only: false,
-                international_students_eligible: false,
-                no_essay_required: false,
-                eligible_schools: [],
-            },
+            scholarship: defaultScholarship,
             isAddScholarshipMode: false,
             scholarshipPostError: null,
             isLoadingScholarship: true,
             errorLoadingScholarship: false,
+            pageNumber: 1
         };
     }
+
+    changePage = (pageNumber) => {
+        this.setState({pageNumber})
+    };
 
     componentDidMount() {
 
@@ -174,10 +263,15 @@ class ScholarshipAddEdit extends React.Component{
         postResponsePromise
             .then(res => {
                 toastNotify('😃 Scholarship successfully saved!');
+                this.setState({isAddScholarshipMode: false})
             })
             .catch(err=> {
                 console.log({err});
-                this.setState({scholarshipPostError: err.response && err.response.data})
+                let scholarshipPostError = err.response && err.response.data;
+                scholarshipPostError = JSON.stringify(scholarshipPostError, null, 4)
+                this.setState({scholarshipPostError});
+                toastNotify(`🙁${scholarshipPostError}`, 'error');
+
             })
             .finally(()=>{});
 
@@ -185,7 +279,8 @@ class ScholarshipAddEdit extends React.Component{
 
     render() {
 
-        const { scholarship, isAddScholarshipMode, scholarshipPostError, isLoadingScholarship } = this.state;
+        const { scholarship, isAddScholarshipMode, scholarshipPostError,
+            isLoadingScholarship, pageNumber } = this.state;
 
         const title = isAddScholarshipMode ? 'Add Scholarship' : 'Edit Scholarship';
         return (
@@ -198,11 +293,35 @@ class ScholarshipAddEdit extends React.Component{
                     {isLoadingScholarship && <Loading  title="Loading Scholarships..."/>}
                     <div className="card shadow p-3">
                         <h1>{title}: {scholarship.name}</h1>
+                        {pageNumber === 1 &&
                         <FormDynamic model={scholarship}
-                                     inputConfigs={scholarshipFormConfigs}
+                                     inputConfigs={scholarshipFormConfigsPage1}
                                      onUpdateForm={this.updateForm}
                                      formError={scholarshipPostError}
-                                     onSubmit={this.submitForm}/>
+                                     onSubmit={this.submitForm}/>}
+                        {pageNumber === 2 &&
+                            <React.Fragment>
+                                <h6>Leave blank for each criteria that is open to any</h6>
+                                <FormDynamic model={scholarship}
+                                             inputConfigs={scholarshipFormConfigsPage2}
+                                             onUpdateForm={this.updateForm}
+                                             formError={scholarshipPostError}
+                                             onSubmit={this.submitForm}
+                                />
+
+                            </React.Fragment>}
+                        <div className="my-2" style={{clear: 'both'}}>
+                            {pageNumber !== 2 &&
+                            <button className="btn btn-outline-primary float-right col-md-6"
+                                    onClick={() => this.changePage(pageNumber+1)}>Next</button>}
+                            {pageNumber !== 1 &&
+                            <button className="btn btn-outline-primary float-left col-md-6"
+                                    onClick={() => this.changePage(pageNumber-1)}>Prev</button>}
+                        </div>
+
+                        <button type="submit"
+                                className="btn btn-primary col-12 mt-2"
+                                onClick={this.submitForm}>Submit</button>
                     </div>
                 </div>
             </React.Fragment>

@@ -2,12 +2,17 @@ import React from "react";
 import PropTypes from 'prop-types';
 import {InputConfigPropType} from "../models/Utils";
 import AutoComplete from "./AutoComplete";
+import {toTitleCase} from "../services/utils";
 
 function FormDynamicInput({model, onUpdateForm, inputConfig}) {
 
-    const { type, keyName, placeholder, html, suggestions } = inputConfig;
+    const { type, keyName, html, suggestions, className } = inputConfig;
+    let { placeholder } = inputConfig;
     let inputForm = null;
 
+    if (!placeholder) {
+        placeholder = toTitleCase(keyName);
+    }
     switch (type) {
         case 'textarea':
             inputForm = (
@@ -57,14 +62,12 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
                 />);
     }
 
-    if (html) {
-        inputForm = (
-            <React.Fragment>
-                {html(model)}
-                {inputForm}
-            </React.Fragment>
-        )
-    }
+    inputForm = (
+        <div className={`w-100 ${className}`}>
+            {html && html(model)}
+            {inputForm}
+        </div>
+    );
 
     return inputForm;
 
@@ -84,20 +87,13 @@ function FormDynamic({model, onUpdateForm, inputConfigs, onSubmit, formError}) {
                                                           onUpdateForm={onUpdateForm} /> )}
 
             {formError &&
-                <div className="text-danger">
-                    <h3>Errors with your Form</h3>
-                    <pre className="text-danger" style={{ whiteSpace: 'pre-wrap' }}>
-                            {JSON.stringify(formError, null, 4)}
+            <div className="text-danger">
+                <h3>Errors with your Form</h3>
+                <pre className="text-danger" style={{ whiteSpace: 'pre-wrap' }}>
+                            {formError}
                         </pre>
-                </div>
-
-            }
-            {onSubmit &&
-            <div className="col-12">
-                <button type="submit"
-                        className="btn btn-primary"
-                        onClick={onSubmit}>Submit</button>
             </div>
+
             }
         </form>
     )
