@@ -1,10 +1,9 @@
-import {toTitleCase} from "../../services/utils";
+import {prettifyKeys, toTitleCase} from "../../services/utils";
 import React from "react";
 import ArrayEdit from "../ArrayEdit";
 import AutoComplete from "../AutoComplete";
 import PropTypes from "prop-types";
 import {InputConfigPropType} from "../../models/Utils";
-import FormDynamic from "./FormDynamic";
 
 function FormDynamicInput({model, onUpdateForm, inputConfig}) {
 
@@ -13,7 +12,7 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
     let inputForm = null;
 
     if (!placeholder) {
-        placeholder = toTitleCase(keyName);
+        placeholder = prettifyKeys(keyName);
     }
 
     // to prevent null value on inputs (controlled inputs)

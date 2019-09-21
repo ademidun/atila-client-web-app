@@ -102,6 +102,13 @@ export function getItemType(item) {
     return itemType;
 }
 
+// https://github.com/ademidun/atila-angular/blob/9cb6dbbe8e2c1f0f4d7812740c1a06c6d811e331/src/app/_shared/utils.ts#L3
+export function prettifyKeys(rawKey) {
+
+    return toTitleCase(rawKey.replace(/_/g, ' ' ));
+
+}
+
 // https://github.com/ademidun/atila-angular/blob/9cb6dbbe8e2c1f0f4d7812740c1a06c6d811e331/src/app/_shared/utils.ts#L11
 export function toTitleCase(str) {
     var i, j, lowers, uppers;

@@ -5,19 +5,35 @@ import {onUpdateModelForm} from "../../services/utils";
 import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import FormDynamic from "../../components/Form/FormDynamic";
 import {scholarshipUserProfileSharedFormConfigs} from "../../models/Utils";
-import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import UserProfileAPI from "../../services/UserProfileAPI";
+import {userProfileFormConfig} from "../../models/UserProfile";
+
+const userProfileSharedFormConfigs = scholarshipUserProfileSharedFormConfigs
+    .map(config => {
+        config.className = null;
+        return config;
+    }).filter(config => config.keyName !== 'criteria_info');
 
 class UserProfileEdit extends React.Component {
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            pageNumber: 1,
+        }
+    }
     updateForm = (event) => {
         event.preventDefault();
-        let { userProfile } = this.props;
-        const { updateLoggedInUserProfile } = this.props;
+        const { updateLoggedInUserProfile, userProfile } = this.props;
 
-        userProfile = onUpdateModelForm(event, userProfile, 'user');
-        console.log({userProfile, updateLoggedInUserProfile});
-        updateLoggedInUserProfile(userProfile);
+        const updatedUserProfile = onUpdateModelForm(event, userProfile, 'user');
+        console.log({updatedUserProfile, updateLoggedInUserProfile});
+        updateLoggedInUserProfile(updatedUserProfile);
+    };
+
+    changePage = (pageNumber) => {
+        this.setState({pageNumber})
     };
 
     submitForm = (event) => {
@@ -32,20 +48,31 @@ class UserProfileEdit extends React.Component {
     render () {
 
         const {userProfile} = this.props;
+        const {pageNumber} = this.state;
 
-        const userProfileSharedFormConfigs = scholarshipUserProfileSharedFormConfigs
-            .map(config => {
-                config.className = null;
-                return config;
-            }).filter(config => config.keyName !== 'criteria_info');
         return (
             <div>
                 <h1>Edit Profile</h1>
+                {pageNumber === 1 &&
+                <FormDynamic onUpdateForm={this.updateForm}
+                             model={userProfile}
+                             inputConfigs=
+                                 {userProfileFormConfig}
+                />}
+                {pageNumber === 2 &&
                 <FormDynamic onUpdateForm={this.updateForm}
                              model={userProfile}
                              inputConfigs=
                                  {userProfileSharedFormConfigs}
-                />
+                />}
+                <div className="my-2" style={{clear: 'both'}}>
+                    {pageNumber !== 2 &&
+                    <button className="btn btn-outline-primary float-right col-md-6"
+                            onClick={() => this.changePage(pageNumber+1)}>Next</button>}
+                    {pageNumber !== 1 &&
+                    <button className="btn btn-outline-primary float-left col-md-6"
+                            onClick={() => this.changePage(pageNumber-1)}>Prev</button>}
+                </div>
                 <button type="submit"
                         className="btn btn-primary col-12 mt-2"
                         onClick={this.submitForm}>Submit</button>

@@ -10,9 +10,7 @@ import {MemoryRouter} from "react-router-dom";
 import SearchApi from "../../services/SearchAPI";
 import {relatedItems} from "../RelatedItems.test";
 import configureStore from "redux-mock-store";
-import {Provider} from "react-redux";
 import {UserProfileTest1} from "../../models/UserProfile";
-import ContentList from "../ContentList";
 import {EssayIveyApplication} from "../../models/Essay";
 import {initialReduxState} from "../../models/Constants";
 
