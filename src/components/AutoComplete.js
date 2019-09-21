@@ -85,8 +85,12 @@ class AutoComplete extends React.Component {
             const inputValue = value.trim().toLowerCase();
             const inputLength = inputValue.length;
 
-            return inputLength === 0 ? [] : suggestions.filter(lang =>
+            const filteredSuggestions = inputLength === 0 ? [] : suggestions.filter(lang =>
                 lang.toLowerCase().includes(inputValue));
+
+            filteredSuggestions.unshift(value.trim());
+
+            return filteredSuggestions;
         };
 
     // When suggestion is clicked, Autosuggest needs to populate the input
