@@ -40,10 +40,8 @@ class UserProfileEdit extends React.Component {
     }
 }
 
-const mapDispatchToProps = () => {
-    return {
-        updateLoggedInUserProfile
-    };
+const mapDispatchToProps = {
+    updateLoggedInUserProfile
 };
 const mapStateToProps = state => {
     return { userProfile: state.data.user.loggedInUserProfile };

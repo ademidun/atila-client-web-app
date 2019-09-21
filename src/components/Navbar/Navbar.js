@@ -120,10 +120,8 @@ const mapStateToProps = state => {
         isLoadingLoggedInUserProfile: state.ui.user.isLoadingLoggedInUserProfile
     };
 };
-const mapDispatchToProps = () => {
-    return {
-        initializeLoggedInUserProfile,
-        setLoggedInUserProfile,
-    };
+const mapDispatchToProps = {
+    initializeLoggedInUserProfile,
+    setLoggedInUserProfile,
 };
-export default withRouter(connect(mapStateToProps, mapDispatchToProps())(Navbar));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Navbar));

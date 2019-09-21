@@ -111,14 +111,12 @@ class Login extends React.Component {
     }
 }
 
-const mapDispatchToProps = () => {
-    return {
-        setLoggedInUserProfile
-    };
+const mapDispatchToProps = {
+    setLoggedInUserProfile
 };
 
 Login.propTypes = {
     setLoggedInUserProfile: PropTypes.func.isRequired,
 };
 
-export default connect(null, mapDispatchToProps())(Login);
+export default connect(null, mapDispatchToProps)(Login);
