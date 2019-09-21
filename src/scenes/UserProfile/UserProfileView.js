@@ -2,6 +2,7 @@ import React from 'react';
 import Loading from "../../components/Loading";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import UserProfileViewTabs from "./UserProfileViewTabs";
+import {connect} from "react-redux";
 
 class UserProfileView extends React.Component {
 
@@ -38,6 +39,7 @@ class UserProfileView extends React.Component {
 
     render () {
         const { errorGettingUserProfile, userProfile } = this.state;
+        const { loggedInUserProfile } = this.props;
 
         if (errorGettingUserProfile) {
             return (
@@ -54,6 +56,9 @@ class UserProfileView extends React.Component {
                 <Loading
                     title={'Loading User Profile..'} />)
         }
+
+        const isProfileEditable = loggedInUserProfile && (userProfile.user === loggedInUserProfile.user
+            || userProfile.is_atila_admin);
 
         return (
             <div className="text-center container mt-3">
@@ -86,10 +91,12 @@ class UserProfileView extends React.Component {
                     </div>
                 </div>
 
-                <UserProfileViewTabs userProfile={userProfile} />
+                <UserProfileViewTabs userProfile={userProfile} isProfileEditable={isProfileEditable} />
             </div>
         );
     }
 }
-
-export default UserProfileView;
+const mapStateToProps = state => {
+    return { loggedInUserProfile: state.data.user.loggedInUserProfile };
+};
+export default connect(mapStateToProps)(UserProfileView);

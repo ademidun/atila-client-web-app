@@ -5,8 +5,9 @@ class UserProfileEdit extends React.Component {
     render () {
 
         return (
-            <div className="text-center container card shadow">
+            <div>
                 <h1>Edit Profile</h1>
+
             </div>
         );
     }

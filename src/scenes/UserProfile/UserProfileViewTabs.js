@@ -5,6 +5,7 @@ import UserProfileAPI from "../../services/UserProfileAPI";
 import ContentCard from "../../components/ContentCard";
 import {genericItemTransform} from "../../services/utils";
 import Loading from "../../components/Loading";
+import UserProfileEdit from "./UserProfileEdit";
 
 class UserProfileViewTabs extends React.Component {
 
@@ -33,6 +34,7 @@ class UserProfileViewTabs extends React.Component {
     render() {
 
         const { blogs, essays } = this.state;
+        const { isProfileEditable } = this.props;
 
         return (
             <div className="mt-3">
@@ -47,6 +49,11 @@ class UserProfileViewTabs extends React.Component {
                         contentList={essays}
                         contentType={'essay'}/>
                 </Tab>
+                {isProfileEditable &&
+                <Tab eventKey="edit" title="Edit Profile">
+                    <UserProfileEdit />
+                </Tab>
+                }
             </Tabs>
             </div>
         )
@@ -70,8 +77,12 @@ function TabItemContentList({ contentList, contentType }){
         )}
     </div>)
 }
+UserProfileViewTabs.defaultProps = {
+    isProfileEditable: false,
+};
 
 UserProfileViewTabs.propTypes = {
-    userProfile: PropTypes.shape({}).isRequired
+    userProfile: PropTypes.shape({}).isRequired,
+    isProfileEditable: PropTypes.bool
 };
 export default UserProfileViewTabs
