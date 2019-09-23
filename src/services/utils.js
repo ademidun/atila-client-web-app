@@ -152,26 +152,3 @@ export function slugify(text) {
         ;
 }
 
-export function onUpdateModelForm(event, model, modelName) {
-
-    event.preventDefault();
-    const value = event.target.value;
-
-    if ( Array.isArray(model[event.target.name]) && !Array.isArray(value) ) {
-
-        const newArray = model[event.target.name].slice();
-        newArray.push(value);
-        model[event.target.name] = newArray;
-
-    } else {
-        model[event.target.name] = value;
-    }
-
-    if(event.target.name==='name' && modelName === 'scholarship') {
-        model.slug = slugify(event.target.value);
-    }
-
-    return model;
-
-}
-

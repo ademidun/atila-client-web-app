@@ -22,7 +22,7 @@ class ScholarshipsAPI {
         });
 
         return apiCompletionPromise;
-    }
+    };
 
     static put = (id, scholarship) => {
 

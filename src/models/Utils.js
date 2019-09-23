@@ -41,7 +41,7 @@ export const toastNotify = (message, messageType='info') => {
         toast.info(message, options);
     }
 
-}
+};
 export const scholarshipUserProfileSharedFormConfigs = [
     {
         keyName: 'activities',

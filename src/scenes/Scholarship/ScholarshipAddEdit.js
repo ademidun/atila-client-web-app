@@ -184,7 +184,7 @@ class ScholarshipAddEdit extends React.Component{
             .catch(err=> {
                 console.log({err});
                 let scholarshipPostError = err.response && err.response.data;
-                scholarshipPostError = JSON.stringify(scholarshipPostError, null, 4)
+                scholarshipPostError = JSON.stringify(scholarshipPostError, null, 4);
                 this.setState({scholarshipPostError});
                 toastNotify(`🙁${scholarshipPostError}`, 'error');
 

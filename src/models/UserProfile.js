@@ -1,4 +1,3 @@
-import {MAJORS_LIST, SCHOOLS_LIST} from "./ConstantsForm";
 import React from "react";
 
 export const UserProfileTest1 = {

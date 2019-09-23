@@ -1,4 +1,4 @@
-import {prettifyKeys, toTitleCase} from "../../services/utils";
+import {prettifyKeys} from "../../services/utils";
 import React from "react";
 import ArrayEdit from "../ArrayEdit";
 import AutoComplete from "../AutoComplete";
