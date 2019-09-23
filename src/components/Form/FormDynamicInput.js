@@ -7,7 +7,7 @@ import {InputConfigPropType} from "../../models/Utils";
 
 function FormDynamicInput({model, onUpdateForm, inputConfig}) {
 
-    const {type, keyName, html, suggestions, className} = inputConfig;
+    const {type, keyName, html, suggestions, className, options} = inputConfig;
     let {placeholder} = inputConfig;
     let inputForm = null;
 
@@ -40,6 +40,25 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
                            value={model[keyName]}
                            onChange={onUpdateForm}
                     />
+                </div>
+            );
+            break;
+        case 'select':
+            inputForm = (
+                <div className="mb-3">
+                    <label htmlFor={keyName} className="float-left">
+                        {placeholder}
+                    </label>
+                    <select
+                        className="form-control"
+                        placeholder={placeholder}
+                        name={keyName}
+                        value={model[keyName]}
+                        onChange={onUpdateForm}
+                    >
+                        <option value="" selected disabled hidden>{placeholder}</option>
+                        {options.map(option => (<option key={option}>{option}</option>))}
+                    </select>
                 </div>
             );
             break;

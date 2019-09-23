@@ -78,8 +78,13 @@ class Navbar extends React.Component {
 
                                         <Dropdown.Menu>
                                             <Link to="/scholarship/add" className="dropdown-item">Add Scholarship</Link>
-                                            <Link to={`/profile/${userProfile.username}`} className="dropdown-item">View Profile</Link>
-                                            <Link to="/profile/edit" className="dropdown-item">Edit Profile</Link>
+                                            <Link to={`/profile/${userProfile.username}`} className="dropdown-item">
+                                                View Profile
+                                            </Link>
+                                            <Link to={`/profile/${userProfile.username}/edit`}
+                                                  className="dropdown-item">
+                                                Edit Profile
+                                            </Link>
                                             <Dropdown.Divider />
                                             <button onClick={this.logout}
                                                     className="btn btn-link dropdown-item"

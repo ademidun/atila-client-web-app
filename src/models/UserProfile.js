@@ -1,4 +1,5 @@
 import React from "react";
+import {GRADE_LEVELS} from "./ConstantsForm";
 
 export const UserProfileTest1 = {
     username: 'cbarkley',
@@ -26,9 +27,13 @@ export const userProfileFormConfig = [
     },
     {
         keyName: 'grade_level',
+        type: 'select',
+        options: GRADE_LEVELS
     },
     {
         keyName: 'gender',
+        type: 'select',
+        options: ['Male', 'Female', 'Other']
     },
     {
         keyName: 'city',

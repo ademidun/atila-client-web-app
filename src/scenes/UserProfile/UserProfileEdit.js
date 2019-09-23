@@ -31,11 +31,13 @@ class UserProfileEdit extends React.Component {
         const value = event.target.value;
 
         let newValue = userProfile[event.target.name];
+        console.log('event.target.name, newValue', event.target.name, newValue);
         if ( Array.isArray(userProfile[event.target.name]) && !Array.isArray(value) ) {
             newValue.push(value);
         } else {
             newValue =value;
         }
+        console.log('After event.target.name, newValue', event.target.name, newValue);
 
         let newUserProfile = {
             ...userProfile,
