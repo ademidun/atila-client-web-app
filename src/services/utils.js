@@ -158,9 +158,13 @@ export function onUpdateModelForm(event, model, modelName) {
     const value = event.target.value;
 
     if ( Array.isArray(model[event.target.name]) && !Array.isArray(value) ) {
-        model[event.target.name].push(value);
+
+        const newArray = model[event.target.name].slice();
+        newArray.push(value);
+        model[event.target.name] = newArray;
+
     } else {
-        model[event.target.name] =value;
+        model[event.target.name] = value;
     }
 
     if(event.target.name==='name' && modelName === 'scholarship') {

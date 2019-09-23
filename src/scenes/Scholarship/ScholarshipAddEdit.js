@@ -145,19 +145,11 @@ class ScholarshipAddEdit extends React.Component{
 
         const value = event.target.value;
 
-        console.log('value', value);
-        console.log('scholarship[event.target.name]', scholarship[event.target.name]);
-
         if ( Array.isArray(scholarship[event.target.name]) && !Array.isArray(value) ) {
             scholarship[event.target.name].push(value);
         } else {
             scholarship[event.target.name] =value;
         }
-
-        console.log('Update Value');
-
-        console.log('value', value);
-        console.log('scholarship[event.target.name]', scholarship[event.target.name]);
 
         if(event.target.name==='name') {
             scholarship.slug = slugify(event.target.value,{lower: true});

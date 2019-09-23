@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from "react-redux";
-import {onUpdateModelForm} from "../../services/utils";
+import {onUpdateModelForm, slugify} from "../../services/utils";
 import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import FormDynamic from "../../components/Form/FormDynamic";
 import {scholarshipUserProfileSharedFormConfigs} from "../../models/Utils";
@@ -23,13 +23,34 @@ class UserProfileEdit extends React.Component {
             pageNumber: 1,
         }
     }
+
     updateForm = (event) => {
         event.preventDefault();
+
         const { updateLoggedInUserProfile, userProfile } = this.props;
 
-        const updatedUserProfile = onUpdateModelForm(event, userProfile, 'user');
-        console.log({updatedUserProfile, updateLoggedInUserProfile});
-        updateLoggedInUserProfile(updatedUserProfile);
+        const value = event.target.value;
+
+        console.log('value', value);
+        console.log('userProfile[event.target.name]', userProfile[event.target.name]);
+
+        let newValue = userProfile[event.target.name];
+        if ( Array.isArray(userProfile[event.target.name]) && !Array.isArray(value) ) {
+            newValue.push(value);
+        } else {
+            newValue =value;
+        }
+
+        console.log('Update Value');
+
+        console.log('value', value);
+        console.log('userProfile[event.target.name]', newValue);
+
+        let newUserProfile = {
+            ...userProfile,
+            [event.target.name]: newValue
+        };
+        updateLoggedInUserProfile(newUserProfile);
     };
 
     changePage = (pageNumber) => {
