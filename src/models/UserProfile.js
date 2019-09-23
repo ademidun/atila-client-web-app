@@ -1,4 +1,3 @@
-import React from "react";
 import {GRADE_LEVELS} from "./ConstantsForm";
 
 export const UserProfileTest1 = {

@@ -51,12 +51,11 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
                     </label>
                     <select
                         className="form-control"
-                        placeholder={placeholder}
                         name={keyName}
-                        value={model[keyName]}
+                        value={model[keyName]||placeholder}
                         onChange={onUpdateForm}
                     >
-                        <option value="" selected disabled hidden>{placeholder}</option>
+                        <option key={placeholder} disabled hidden>{placeholder}</option>
                         {options.map(option => (<option key={option}>{option}</option>))}
                     </select>
                 </div>

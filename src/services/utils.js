@@ -1,5 +1,3 @@
-import React from "react";
-
 export function makeXHRRequestAsPromise (method, url, data) {
     return new Promise(function (resolve, reject) {
         const xhr = new XMLHttpRequest();
