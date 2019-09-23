@@ -52,7 +52,7 @@ export const scholarshipUserProfileSharedFormConfigs = [
     },
     {
         keyName: 'ethnicity',
-        placeholder: 'Ethnicity (e.g. Asian, Black, South Asian) 🙍🏻‍♂️ 🙍🏽 🙍🏿',
+        placeholder: 'Ethnicity (e.g. Aboriginal, Asian, Black, South Asian) 🙋🏽‍♂️🙋🏻 🙋🏿 🙋🏾‍♂️️',
         type: 'autocomplete',
         suggestions: ETHNICITIES,
         className: 'col-md-6',
