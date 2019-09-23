@@ -40,7 +40,6 @@ class UserProfileView extends React.Component {
     render () {
         const { errorGettingUserProfile, userProfile } = this.state;
         const { loggedInUserProfile } = this.props;
-
         if (errorGettingUserProfile) {
             return (
                 <div className="text-center">
@@ -57,6 +56,9 @@ class UserProfileView extends React.Component {
                     title={'Loading User Profile..'} />)
         }
 
+        let userProfileView = userProfile.user === loggedInUserProfile.user ?
+            loggedInUserProfile : userProfile;
+
         const isProfileEditable = loggedInUserProfile && (userProfile.user === loggedInUserProfile.user
             || userProfile.is_atila_admin);
 
@@ -70,21 +72,21 @@ class UserProfileView extends React.Component {
                             alt="user profile"
                             style={{ height: '250px', width: 'auto' }}
                             className="rounded-circle"
-                            src={userProfile.profile_pic_url} />
+                            src={userProfileView.profile_pic_url} />
                         </div>
                         <div className="col-md-8 col-sm-12">
-                                <h1>{ userProfile.first_name } { userProfile.last_name }</h1>
-                                <h3 className="text-muted">{ userProfile.title}
-                                    { userProfile.post_secondary_school && <br/> }
-                                    { userProfile.post_secondary_school}
+                                <h1>{ userProfileView.first_name } { userProfileView.last_name }</h1>
+                                <h3 className="text-muted">{ userProfileView.title}
+                                    { userProfileView.post_secondary_school && <br/> }
+                                    { userProfileView.post_secondary_school}
                                 </h3>
-                            {userProfile.public_metadata && userProfile.public_metadata.profile_link_url &&
-                            <a href={userProfile.public_metadata.profile_link_url}
+                            {userProfileView.public_metadata && userProfileView.public_metadata.profile_link_url &&
+                            <a href={userProfileView.public_metadata.profile_link_url}
                                target="_blank"
                                rel="noopener noreferrer"
                                className="btn btn-primary"
                             >
-                                {userProfile.public_metadata.profile_link_name}
+                                {userProfileView.public_metadata.profile_link_name}
                             </a>
                             }
                         </div>

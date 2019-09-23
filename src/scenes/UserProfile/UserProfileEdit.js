@@ -87,7 +87,7 @@ class UserProfileEdit extends React.Component {
                 </div>
                 <button type="submit"
                         className="btn btn-primary col-12 mt-2"
-                        onClick={this.submitForm}>Submit</button>
+                        onClick={this.submitForm}>Save</button>
             </div>
         );
     }
