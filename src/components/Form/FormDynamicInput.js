@@ -63,7 +63,6 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
             break;
         case 'autocomplete':
             inputForm = (
-
                 <React.Fragment>
                     <ArrayEdit itemsList={model[keyName]}
                                keyName={keyName}
@@ -72,6 +71,21 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
                     <AutoComplete suggestions={suggestions}
                                   placeholder={placeholder}
                                   onSelected={onUpdateForm}
+                                  keyName={keyName}/>
+                </React.Fragment>
+            );
+            break;
+        case 'autocomplete_single':
+            inputForm = (
+
+                <React.Fragment>
+                    <label htmlFor={keyName}>
+                        {placeholder}:{' '}
+                    </label> <strong> {model[keyName]} </strong>
+                    <AutoComplete suggestions={suggestions}
+                                  placeholder={placeholder}
+                                  onSelected={onUpdateForm}
+                                  value={model[keyName]}
                                   keyName={keyName}/>
                 </React.Fragment>
             );

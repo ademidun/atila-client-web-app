@@ -2,6 +2,7 @@ import React from 'react';
 import Autosuggest from 'react-autosuggest';
 import './AutoComplete.scss';
 import PropTypes from "prop-types";
+import {emojiDictionary} from "../models/Constants";
 
 const theme = {
     container: 'react-autosuggest__container col-12 p-0 mb-3',
@@ -29,9 +30,11 @@ class AutoComplete extends React.Component {
         // and an onChange handler that updates this value (see below).
         // Suggestions also need to be provided to the Autosuggest,
         // and they are initially empty because the Autosuggest is closed.
+        const { value, suggestions } = this.props;
+
         this.state = {
-            value: '',
-            suggestions: []
+            value,
+            suggestions
         };
     }
 
@@ -100,6 +103,7 @@ class AutoComplete extends React.Component {
 
     renderSuggestion = suggestion => (
         <p className="suggestion-item cursor-pointer">
+            <span>{emojiDictionary[suggestion.toLowerCase()] && emojiDictionary[suggestion.toLowerCase()]} </span>
             {suggestion}
         </p>
     );

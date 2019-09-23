@@ -1,4 +1,4 @@
-import {GRADE_LEVELS} from "./ConstantsForm";
+import {GRADE_LEVELS, MAJORS_LIST, SCHOOLS_LIST} from "./ConstantsForm";
 
 export const UserProfileTest1 = {
     username: 'cbarkley',
@@ -20,9 +20,13 @@ export const userProfileFormConfig = [
     },
     {
         keyName: 'post_secondary_school',
+        type: 'autocomplete_single',
+        suggestions: SCHOOLS_LIST,
     },
     {
         keyName: 'major',
+        type: 'autocomplete_single',
+        suggestions: MAJORS_LIST,
     },
     {
         keyName: 'grade_level',
