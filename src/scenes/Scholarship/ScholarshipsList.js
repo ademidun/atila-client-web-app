@@ -5,11 +5,15 @@ import ScholarshipCard from "./ScholarshipCard";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
 import {connect} from "react-redux";
+import {isCompleteUserProfile} from "../../models/UserProfile";
+import UserProfileEdit from "../UserProfile/UserProfileEdit";
 
 class ScholarshipsList extends React.Component {
 
     constructor(props) {
         super(props);
+
+        const { userProfile } = this.props;
 
         this.state = {
             model: null,
@@ -28,6 +32,7 @@ class ScholarshipsList extends React.Component {
             pageNumber: 1,
             totalScholarshipsCount: 0,
             totalFunding: null,
+            isCompleteProfile: !userProfile || isCompleteUserProfile(userProfile)
         }
     }
 
@@ -104,7 +109,7 @@ class ScholarshipsList extends React.Component {
 
         const { scholarships, isLoadingScholarships,
             totalScholarshipsCount, totalFunding,
-            errorGettingScholarships} = this.state;
+            errorGettingScholarships, isCompleteProfile} = this.state;
 
         const searchQuery = params.get('q');
 
@@ -126,6 +131,9 @@ class ScholarshipsList extends React.Component {
                     title={'Loading Scholarships...'} />);
         }
 
+        if (userProfile && !isCompleteProfile) {
+            return <UserProfileEdit />
+        }
         return (
             <div className="container mt-5">
                 <h1 className="text-center serif-font">

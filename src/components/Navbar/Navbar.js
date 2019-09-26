@@ -78,6 +78,7 @@ class Navbar extends React.Component {
 
                                         <Dropdown.Menu>
                                             <Link to="/scholarship/add" className="dropdown-item">Add Scholarship</Link>
+                                            <Link to="/scholarship" className="dropdown-item">View Scholarships</Link>
                                             <Link to={`/profile/${userProfile.username}`} className="dropdown-item">
                                                 View Profile
                                             </Link>

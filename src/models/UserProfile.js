@@ -48,3 +48,9 @@ export const userProfileFormConfig = [
         keyName: 'country',
     },
 ];
+
+export function isCompleteUserProfile(userProfile) {
+
+    return (userProfile.post_secondary_school || userProfile.eligible_schools.length !== 0) &&
+        (userProfile.major || userProfile.eligible_programs.length !== 0)
+}

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from "react-redux";
 import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import FormDynamic from "../../components/Form/FormDynamic";
-import {scholarshipUserProfileSharedFormConfigs} from "../../models/Utils";
+import {scholarshipUserProfileSharedFormConfigs, toastNotify} from "../../models/Utils";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import {userProfileFormConfig} from "../../models/UserProfile";
 
@@ -54,7 +54,10 @@ class UserProfileEdit extends React.Component {
         const { userProfile } = this.props;
         UserProfileAPI
             .update({userProfile, locationData: {}}, userProfile.user)
-            .then(res=>{console.log({res})});
+            .then(res=>{
+                toastNotify('😃 User Profile successfully saved!');
+                console.log({res});
+            });
     };
 
     render () {
