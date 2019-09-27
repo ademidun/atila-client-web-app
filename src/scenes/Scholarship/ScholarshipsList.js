@@ -132,7 +132,21 @@ class ScholarshipsList extends React.Component {
         }
 
         if (userProfile && !isCompleteProfile) {
-            return <UserProfileEdit />
+
+            const title = (<React.Fragment>
+                <h1 className="text-center serif-font">
+                    🤷🏾‍♀️ Scholarships Found
+                    <br />
+                </h1>
+                <h2 className="text-center text-muted serif-font">
+                    🤷🏾‍♀️ in Funding
+                </h2>
+                <h6 className="text-center text-muted serif-font">
+                    Complete Profile to see all eligible scholarships
+                </h6>
+                </React.Fragment>
+                );
+            return <UserProfileEdit title={title} className={"container mt-5"} />
         }
         return (
             <div className="container mt-5">

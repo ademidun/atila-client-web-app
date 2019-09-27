@@ -10,6 +10,7 @@ export const UserProfileTest1 = {
 export const userProfileFormConfig = [
     {
         keyName: 'first_name',
+        required: true,
     },
     {
         keyName: 'last_name',
@@ -22,10 +23,24 @@ export const userProfileFormConfig = [
         keyName: 'post_secondary_school',
         type: 'autocomplete_single',
         suggestions: SCHOOLS_LIST,
+        required: true,
+    },
+    {
+        keyName: 'eligible_schools',
+        placeholder: 'Any other schools? 🏫',
+        type: 'autocomplete',
+        suggestions: SCHOOLS_LIST,
     },
     {
         keyName: 'major',
         type: 'autocomplete_single',
+        suggestions: MAJORS_LIST,
+        required: true,
+    },
+    {
+        keyName: 'eligible_programs',
+        placeholder: 'Any other Programs? 📚',
+        type: 'autocomplete',
         suggestions: MAJORS_LIST,
     },
     {

@@ -101,14 +101,14 @@ export const scholarshipUserProfileSharedFormConfigs = [
     },
     {
         keyName: 'eligible_schools',
-        placeholder: 'Eligible Schools (leave blank for any) 🏫',
+        placeholder: 'Any other schools? 🏫',
         type: 'autocomplete',
         suggestions: SCHOOLS_LIST,
         className: 'col-md-6',
     },
     {
         keyName: 'eligible_programs',
-        placeholder: 'Eligible Programs (leave blank for any) 📚',
+        placeholder: 'Any other Programs? 📚',
         type: 'autocomplete',
         suggestions: MAJORS_LIST,
         className: 'col-md-6',

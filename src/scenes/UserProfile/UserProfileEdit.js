@@ -57,17 +57,22 @@ class UserProfileEdit extends React.Component {
             .then(res=>{
                 toastNotify('😃 User Profile successfully saved!');
                 console.log({res});
-            });
+            })
+            .catch(err=> {
+                let postError = err.response && err.response.data;
+                postError = JSON.stringify(postError, null, 4);
+                toastNotify(`🙁${postError}`, 'error');
+        });
     };
 
     render () {
 
-        const {userProfile} = this.props;
+        const {userProfile, title, className} = this.props;
         const {pageNumber} = this.state;
 
         return (
-            <div>
-                <h1>Edit Profile</h1>
+            <div className={className}>
+                <h1>{title}</h1>
                 {pageNumber === 1 &&
                 <FormDynamic onUpdateForm={this.updateForm}
                              model={userProfile}
@@ -103,10 +108,17 @@ const mapStateToProps = state => {
     return { userProfile: state.data.user.loggedInUserProfile };
 };
 
+UserProfileEdit.defaultProps = {
+    title: (<h1>Edit Profile</h1>),
+    className: '',
+};
+
 UserProfileEdit.propTypes = {
     // redux
     userProfile: PropTypes.shape({}).isRequired,
-    updateLoggedInUserProfile: PropTypes.func.isRequired
+    updateLoggedInUserProfile: PropTypes.func.isRequired,
+    title: PropTypes.node,
+    className: PropTypes.string
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserProfileEdit);
