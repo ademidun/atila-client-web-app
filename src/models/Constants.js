@@ -16,6 +16,7 @@ export const emojiDictionary = {
     china: <span role="img" className="text-dark" aria-label="china emoji">🇨🇳</span>,
     nigeria: <span role="img" className="text-dark" aria-label="nigeria emoji">🇳🇬</span>,
     canada: <span role="img" className="text-dark" aria-label="canada emoji">🇨🇦</span>,
+    india: <span role="img" className="text-dark" aria-label="india emoji">🇮🇳</span>,
     basketball: <span role="img" className="text-dark" aria-label="basketball emoji">🏀</span>,
     soccer: <span role="img" className="text-dark" aria-label="soccer emoji">⚽</span>,
     'creative writing': <span role="img" className="text-dark" aria-label="creative writing emoji">📝</span>,
