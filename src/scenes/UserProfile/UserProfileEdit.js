@@ -72,7 +72,7 @@ class UserProfileEdit extends React.Component {
 
         return (
             <div className={className}>
-                <h1>{title}</h1>
+                {title}
                 {pageNumber === 1 &&
                 <FormDynamic onUpdateForm={this.updateForm}
                              model={userProfile}

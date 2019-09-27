@@ -135,11 +135,17 @@ class ScholarshipsList extends React.Component {
 
             const title = (<React.Fragment>
                 <h1 className="text-center serif-font">
-                    🤷🏾‍♀️ Scholarships Found
+                    <span role="img" aria-label="shrug shoulders emoji">
+                    🤷🏾‍♀
+                    </span>
+                        ️ Scholarships Found
                     <br />
                 </h1>
                 <h2 className="text-center text-muted serif-font">
-                    🤷🏾‍♀️ in Funding
+                    <span role="img" aria-label="shrug shoulders emoji">
+                        🤷🏾‍♀️
+                    </span>
+                        in Funding
                 </h2>
                 <h6 className="text-center text-muted serif-font">
                     Complete Profile to see all eligible scholarships

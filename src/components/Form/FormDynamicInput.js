@@ -7,7 +7,7 @@ import {InputConfigPropType} from "../../models/Utils";
 
 function FormDynamicInput({model, onUpdateForm, inputConfig}) {
 
-    const {type, keyName, html, suggestions, className, options, required} = inputConfig;
+    const {type, keyName, html, suggestions, className, options} = inputConfig;
     let {placeholder} = inputConfig;
     let inputForm = null;
 
@@ -98,7 +98,6 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
                        value={model[keyName]}
                        onChange={onUpdateForm}
                        type={type}
-                       required
                 />);
     }
 
