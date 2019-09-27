@@ -7,6 +7,7 @@ import Loading from "../../components/Loading";
 import {connect} from "react-redux";
 import {isCompleteUserProfile} from "../../models/UserProfile";
 import UserProfileEdit from "../UserProfile/UserProfileEdit";
+import {Link} from "react-router-dom";
 
 class ScholarshipsList extends React.Component {
 
@@ -44,6 +45,12 @@ class ScholarshipsList extends React.Component {
         })
     };
 
+    afterProfileEdit = () => {
+        const { userProfile } = this.props;
+
+        this.setState({ isCompleteProfile: !userProfile || isCompleteUserProfile(userProfile) });
+    };
+
     loadScholarships = (page) => {
 
         const {
@@ -79,7 +86,11 @@ class ScholarshipsList extends React.Component {
             .then(res => {
 
                 const scholarshipResults = scholarships;
-                scholarshipResults.push(...res.data.data);
+                if (userProfile) {
+                    scholarshipResults.push(...res.data.data);
+                } else {
+                    scholarshipResults.push(...res.data.data.slice(0,3));
+                }
                 this.setState({ totalFunding: res.data.funding });
                 this.setState({ totalScholarshipsCount: res.data.length });
 
@@ -113,6 +124,34 @@ class ScholarshipsList extends React.Component {
 
         const searchQuery = params.get('q');
 
+        let loadMoreScholarshipsOrRegisterCTA = null;
+
+        if(userProfile) {
+            loadMoreScholarshipsOrRegisterCTA = (<React.Fragment>
+                {
+                    scholarships.length < totalScholarshipsCount
+                    &&
+                    <button className="btn btn-primary center-block font-size-xl" onClick={this.loadMoreScholarships}>
+                        Load More
+                    </button>
+                }
+            </React.Fragment>);
+        } else if (!userProfile) {
+            loadMoreScholarshipsOrRegisterCTA = (<React.Fragment>
+                {
+                    scholarships.length < totalScholarshipsCount
+                    &&
+                    <Link to="/register" className="btn btn-primary center-block font-size-xl">
+                            Register for Free to see all
+                            {totalScholarshipsCount > 3 ? ` ${totalScholarshipsCount} ` : null}
+                            Scholarships
+                    </Link>
+                }
+            </React.Fragment>);
+        }
+
+        console.log({userProfile, loadMoreScholarshipsOrRegisterCTA});
+
         if (errorGettingScholarships) {
             return (
                 <div className="text-center container">
@@ -133,6 +172,20 @@ class ScholarshipsList extends React.Component {
 
         if (userProfile && !isCompleteProfile) {
 
+            let missingSections = null;
+
+            if (!userProfile.post_secondary_school || !userProfile.major) {
+                missingSections = (<ul>
+                    The Following questions are missing:
+                    {! userProfile.major &&
+                    <li><strong>Major: </strong>What program are you currently or interested in?</li>
+                    }
+                    {! userProfile.post_secondary_school &&
+                    <li><strong>Post Secondary School</strong>: What school are you currently or interested in attending?</li>
+                    }
+
+                </ul>)
+            }
             const title = (<React.Fragment>
                 <h1 className="text-center serif-font">
                     <span role="img" aria-label="shrug shoulders emoji">
@@ -150,10 +203,14 @@ class ScholarshipsList extends React.Component {
                 <h6 className="text-center text-muted serif-font">
                     Complete Profile to see all eligible scholarships
                 </h6>
+                {missingSections}
                 </React.Fragment>
                 );
-            return <UserProfileEdit title={title} className={"container mt-5"} />
+            return <UserProfileEdit title={title}
+                                    className={"container mt-5"}
+                                    afterSubmitSuccess={this.afterProfileEdit} />
         }
+
         return (
             <div className="container mt-5">
                 <h1 className="text-center serif-font">
@@ -172,13 +229,7 @@ class ScholarshipsList extends React.Component {
                 <div className="mt-3">
                     {scholarships.map( scholarship => <ScholarshipCard key={scholarship.id} className="col-12" scholarship={scholarship} />)}
                 </div>
-                {
-                    scholarships.length < totalScholarshipsCount
-                    &&
-                    <button className="btn btn-primary center-block font-size-xl" onClick={this.loadMoreScholarships}>
-                        Load More
-                    </button>
-                }
+                {loadMoreScholarshipsOrRegisterCTA}
             </div>
         );
     }

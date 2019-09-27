@@ -63,6 +63,7 @@ class Navbar extends React.Component {
                                        placeholder="Enter a search term" onChange={this.updateSearch}/>
                                 <Link to="/search" className="nav-item">Search</Link>
                             </Form>
+                            <Link to="/scholarship" className="nav-item">Scholarships</Link>
                             <Link to="/essay" className="nav-item">Essays</Link>
                             <Link to="/blog" className="nav-item">Blogs</Link>
                             {!userProfile && !isLoadingLoggedInUserProfile &&
@@ -78,7 +79,6 @@ class Navbar extends React.Component {
 
                                         <Dropdown.Menu>
                                             <Link to="/scholarship/add" className="dropdown-item">Add Scholarship</Link>
-                                            <Link to="/scholarship" className="dropdown-item">View Scholarships</Link>
                                             <Link to={`/profile/${userProfile.username}`} className="dropdown-item">
                                                 View Profile
                                             </Link>

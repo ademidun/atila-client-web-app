@@ -51,12 +51,13 @@ class UserProfileEdit extends React.Component {
     submitForm = (event) => {
 
         event.preventDefault();
-        const { userProfile } = this.props;
+        const { userProfile, afterSubmitSuccess } = this.props;
         UserProfileAPI
             .update({userProfile, locationData: {}}, userProfile.user)
             .then(res=>{
                 toastNotify('😃 User Profile successfully saved!');
                 console.log({res});
+                afterSubmitSuccess();
             })
             .catch(err=> {
                 let postError = err.response && err.response.data;
@@ -111,6 +112,7 @@ const mapStateToProps = state => {
 UserProfileEdit.defaultProps = {
     title: (<h1>Edit Profile</h1>),
     className: '',
+    afterSubmitSuccess: () => {},
 };
 
 UserProfileEdit.propTypes = {
@@ -118,7 +120,8 @@ UserProfileEdit.propTypes = {
     userProfile: PropTypes.shape({}).isRequired,
     updateLoggedInUserProfile: PropTypes.func.isRequired,
     title: PropTypes.node,
-    className: PropTypes.string
+    className: PropTypes.string,
+    afterSubmitSuccess: PropTypes.func,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserProfileEdit);
