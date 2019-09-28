@@ -8,6 +8,7 @@ import TextareaAutosize from 'react-autosize-textarea';
 import {connect} from "react-redux";
 import {slugify} from "../../services/utils";
 import UtilsAPI from "../../services/UtilsAPI";
+import {toastNotify} from "../../models/Utils";
 
 class ContentAddEdit extends React.Component {
 
@@ -41,7 +42,13 @@ class ContentAddEdit extends React.Component {
         if ( path===`/${contentType.toLowerCase()}/add` ) {
             this.setState({isAddContentMode: true});
             const content = this.state.content;
-            content.user = userProfile.user;
+
+            if(userProfile) {
+                content.user = userProfile.user;
+            }
+            else {
+                toastNotify(`⚠️ Warning, you must be logged in to add ${contentType}s`);
+            }
             this.setState({content});
         } else {
             this.loadContent();
@@ -93,7 +100,12 @@ class ContentAddEdit extends React.Component {
         if(event){
             event.preventDefault();
         }
-        const { ContentAPI } = this.props;
+        const { ContentAPI, userProfile, contentType } = this.props;
+
+        if(!userProfile) {
+            toastNotify(`⚠️ Warning, you must be logged in to add ${contentType}s`);
+            return;
+        }
         const { content, isAddContentMode } = this.state;
 
         let postResponsePromise = null;
@@ -224,6 +236,7 @@ ContentAddEdit.defaultProps = {
     className: '',
     hideImage: false,
     contentSlug: '',
+    userProfile: null,
 };
 
 ContentAddEdit.propTypes = {
@@ -233,7 +246,7 @@ ContentAddEdit.propTypes = {
     contentType: PropTypes.string.isRequired,
     contentSlug: PropTypes.string,
     ContentAPI: PropTypes.func.isRequired,
-    userProfile: PropTypes.shape({}).isRequired,
+    userProfile: PropTypes.shape({}),
 };
 
 const mapStateToProps = state => {
