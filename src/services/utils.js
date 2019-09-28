@@ -172,7 +172,6 @@ export function  transformLocation(placeResult) {
         }
     });
 
-    console.log({locationData});
     return locationData;
 
 }

@@ -24,7 +24,6 @@ class LocationSearchInput extends React.Component {
     handleSelectSuggest = (geocodedPrediction, originalPrediction) => {
 
         const { onSelected, keyName } = this.props;
-        console.log(geocodedPrediction, originalPrediction); // eslint-disable-line
         this.setState({search: "", value: geocodedPrediction.formatted_address});
         const event = {
             preventDefault: () => {},

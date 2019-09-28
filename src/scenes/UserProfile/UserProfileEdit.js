@@ -34,7 +34,6 @@ class UserProfileEdit extends React.Component {
 
         const value = event.target.value;
 
-        console.log({event});
         let newUserProfile;
         if(['city', 'province', 'country'].includes(event.target.name)) {
             const locationData = transformLocation(event.target.value);
@@ -79,7 +78,6 @@ class UserProfileEdit extends React.Component {
             .update({userProfile, locationData }, userProfile.user)
             .then(res=>{
                 toastNotify('😃 User Profile successfully saved!');
-                console.log({res});
                 afterSubmitSuccess();
             })
             .catch(err=> {
@@ -93,7 +91,6 @@ class UserProfileEdit extends React.Component {
 
         const {userProfile, title, className} = this.props;
         const {pageNumber} = this.state;
-        console.log({userProfile});
 
         return (
             <div className={className}>

@@ -240,7 +240,6 @@ class ScholarshipAddEdit extends React.Component{
         postResponsePromise
             .then(res => {
                 toastNotify('😃 Scholarship successfully saved!');
-                console.log({res});
                 this.setState({isAddScholarshipMode: false});
                 const scholarship = ScholarshipsAPI.cleanScholarship(res.data);
                 this.setState({ scholarship });
