@@ -36,6 +36,9 @@ const ContactUs = loadable(() => import('./components/ContactUs'), {
 const Login = loadable(() => import('./components/Login'), {
     fallback: <Loading />,
 });
+const VerifyAccount = loadable(() => import('./components/VerifyAccount'), {
+    fallback: <Loading />,
+});
 const Register = loadable(() => import('./components/Register'), {
     fallback: <Loading />,
 });
@@ -60,6 +63,7 @@ function App(props) {
                         <Route path="/essay" component={Essay} />
                         <Route path="/scholarship" component={Scholarship} />
                         <Route path="/login" component={Login} />
+                        <Route path="/verify" component={VerifyAccount} />
                         <Route path="/register" component={Register} />
                         <Route path="/profile" component={UserProfile} />
                         <Route path="/team" component={Team} />

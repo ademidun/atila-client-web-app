@@ -23,12 +23,12 @@ export class PasswordShowHide extends React.Component {
 
     render (){
 
-        const { password, updateForm } = this.props;
+        const { password, updateForm , placeholder} = this.props;
         const { showPassword } = this.state;
 
         return (
             <div className="w-100 mb-3">
-                <input placeholder="Password"
+                <input placeholder={placeholder}
                        className="col-12 form-control"
                        name="password"
                        value={password}
@@ -45,9 +45,14 @@ export class PasswordShowHide extends React.Component {
     }
 }
 
+PasswordShowHide.defaultProps = {
+    placeholder: 'Password'
+};
+
 PasswordShowHide.propTypes = {
     updateForm: PropTypes.func.isRequired,
     password: PropTypes.string.isRequired,
+    placeholder: PropTypes.string,
 };
 
 class Register extends React.Component {

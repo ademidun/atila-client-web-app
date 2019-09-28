@@ -7,6 +7,7 @@ import UserProfileAPI from "../services/UserProfileAPI";
 import Loading from "./Loading";
 import {PasswordShowHide} from "./Register";
 import {setLoggedInUserProfile} from "../redux/actions/user";
+import ResponseDisplay from "./ResponseDisplay";
 
 class Login extends React.Component {
 
@@ -17,9 +18,9 @@ class Login extends React.Component {
         this.state = {
             username: '',
             password: '',
-            isResponseError: null,
-            loadingResponse: null,
-            isResponseOkMessage: null,
+            responseError: null,
+            isLoadingResponse: null,
+            responseOkMessage: null,
             forgotPassword: false,
             resetPasswordResponse: '',
         };
@@ -40,24 +41,24 @@ class Login extends React.Component {
         event.preventDefault();
         const { username, password } = this.state;
         const { setLoggedInUserProfile } = this.props;
-        this.setState({ loadingResponse: true});
-        this.setState({ isResponseError: null});
+        this.setState({ isLoadingResponse: true});
+        this.setState({ responseError: null});
         UserProfileAPI
             .login({ username, password })
             .then(res => {
-                this.setState({ isResponseOkMessage: 'Login successful 🙂! Redirecting...'});
+                this.setState({ responseOkMessage: 'Login successful 🙂! Redirecting...'});
                 setLoggedInUserProfile(res.data.user_profile);
                 UserProfileAPI.authenticateRequests(res.data.token, res.data.id);
                 this.props.history.push(`/scholarship`);
             })
             .catch(err => {
                 if (err.response && err.response.data) {
-                    this.setState({ isResponseError: err.response.data});
+                    this.setState({ responseError: err.response.data});
                 }
             })
             .finally(res => {
                 if (this._isMounted) {
-                    this.setState({ loadingResponse: false});
+                    this.setState({ isLoadingResponse: false});
                 }
             })
     };
@@ -65,30 +66,30 @@ class Login extends React.Component {
     submitResetPasswordForm = (event) => {
         event.preventDefault();
         const { username } = this.state;
-        this.setState({ loadingResponse: true});
-        this.setState({ isResponseError: null});
+        this.setState({ isLoadingResponse: true});
+        this.setState({ responseError: null});
         UserProfileAPI
             .resetPassword(username)
             .then(res => {
-                this.setState({ isResponseOkMessage: res.data.message });
+                this.setState({ responseOkMessage: res.data.message });
 
             })
             .catch(err => {
                 if (err.response && err.response.data) {
-                    this.setState({ isResponseError: err.response.data});
+                    this.setState({ responseError: err.response.data});
                 }
             })
             .finally(res => {
                 if (this._isMounted) {
-                    this.setState({ loadingResponse: false});
+                    this.setState({ isLoadingResponse: false});
                 }
             })
     };
 
     render () {
         const { username, password,
-            isResponseError, loadingResponse,
-            isResponseOkMessage, forgotPassword } = this.state;
+            responseError, isLoadingResponse,
+            responseOkMessage, forgotPassword } = this.state;
         return (
             <div className="container mt-5">
                 <div className="card shadow p-3">
@@ -106,7 +107,7 @@ class Login extends React.Component {
                             <div className="w-100">
                                 <button className="btn btn-primary col-sm-12 col-md-5 float-left mb-1"
                                         type="submit"
-                                        disabled={loadingResponse}>
+                                        disabled={isLoadingResponse}>
                                     Login
                                 </button>
                                 <Link to="/register"
@@ -134,24 +135,20 @@ class Login extends React.Component {
                             />
                             <button className="btn btn-primary col-sm-12 col-md-5 float-left mb-3"
                                     type="submit"
-                                    disabled={loadingResponse}>
+                                    disabled={isLoadingResponse}>
                                 Send Email
                             </button>
+                            <label className="w-100">
+                                Already have a reset token?
+                                <Link to="/verify?verification_type=reset_password"> Reset password </Link>
+                            </label>
                         </form>
+
                         }
-                        {isResponseOkMessage &&
-                        <p className="text-success">
-                            {isResponseOkMessage}
-                        </p>
-                        }
-                        {isResponseError &&
-                        <p className="text-danger">
-                            {isResponseError.message}
-                        </p>
-                        }
-                        {loadingResponse &&
-                        <Loading title="Loading Response..." className="center-block my-3"/>
-                        }
+
+                        <ResponseDisplay isLoadingResponse={isLoadingResponse}
+                                         responseError={responseError}
+                                         responseOkMessage={responseOkMessage} />
                     </div>
                 </div>
             </div>

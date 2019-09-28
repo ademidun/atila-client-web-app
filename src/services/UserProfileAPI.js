@@ -82,6 +82,27 @@ class UserProfileAPI {
         return apiCompletionPromise;
     };
 
+    static verifyResetPassword = (username, token, password) => {
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: {username, token, password},
+            url: `${this.userProfileEndPoint}/verify-reset-password/`,
+        });
+
+        return apiCompletionPromise;
+    };
+
+    static verifyToken = (username, token) => {
+
+        const apiCompletionPromise = request({
+            method: 'get',
+            url: `${this.userProfileEndPoint}/verify-token/?username=${username}&token=${token}`,
+        });
+
+        return apiCompletionPromise;
+    };
+
     static authenticateRequests = (jwtToken, userId) => {
 
         if(!this.isLoggedIn(userId, jwtToken)) {
