@@ -19,7 +19,9 @@ class Login extends React.Component {
             password: '',
             isResponseError: null,
             loadingResponse: null,
-            isResponseOk: null,
+            isResponseOkMessage: null,
+            forgotPassword: false,
+            resetPasswordResponse: '',
         };
     }
     componentDidMount() {
@@ -43,7 +45,7 @@ class Login extends React.Component {
         UserProfileAPI
             .login({ username, password })
             .then(res => {
-                this.setState({ isResponseOk: true});
+                this.setState({ isResponseOkMessage: 'Login successful 🙂! Redirecting...'});
                 setLoggedInUserProfile(res.data.user_profile);
                 UserProfileAPI.authenticateRequests(res.data.token, res.data.id);
                 this.props.history.push(`/scholarship`);
@@ -60,16 +62,39 @@ class Login extends React.Component {
             })
     };
 
+    submitResetPasswordForm = (event) => {
+        event.preventDefault();
+        const { username } = this.state;
+        this.setState({ loadingResponse: true});
+        this.setState({ isResponseError: null});
+        UserProfileAPI
+            .resetPassword(username)
+            .then(res => {
+                this.setState({ isResponseOkMessage: res.data.message });
+
+            })
+            .catch(err => {
+                if (err.response && err.response.data) {
+                    this.setState({ isResponseError: err.response.data});
+                }
+            })
+            .finally(res => {
+                if (this._isMounted) {
+                    this.setState({ loadingResponse: false});
+                }
+            })
+    };
+
     render () {
         const { username, password,
             isResponseError, loadingResponse,
-            isResponseOk } = this.state;
+            isResponseOkMessage, forgotPassword } = this.state;
         return (
             <div className="container mt-5">
                 <div className="card shadow p-3">
                     <div>
                         <h1>Login</h1>
-                        <form className="row p-3 form-group" onSubmit={this.submitForm}>
+                        <form className="row p-3" onSubmit={this.submitForm}>
                             <input placeholder="Username or Email"
                                    className="col-12 mb-3 form-control"
                                    name="username"
@@ -78,21 +103,8 @@ class Login extends React.Component {
                                    onChange={this.updateForm}
                             />
                             <PasswordShowHide password={password} updateForm={this.updateForm} />
-                            {isResponseOk &&
-                            <p className="text-success">
-                                Login successful! Redirecting...
-                                <span role="img" aria-label="happy face emoji">🙂</span>
-                            </p>
-                            }
-                            {isResponseError &&
-                            <p className="text-danger">
-                                {isResponseError.message}
-                            </p>
-                            }
-                            {loadingResponse &&
-                            <Loading title="Loading Response..." className="center-block my-3"/>}
                             <div className="w-100">
-                                <button className="btn btn-primary col-sm-12 col-md-5 float-left mb-3"
+                                <button className="btn btn-primary col-sm-12 col-md-5 float-left mb-1"
                                         type="submit"
                                         disabled={loadingResponse}>
                                     Login
@@ -102,8 +114,44 @@ class Login extends React.Component {
                                     Register
                                 </Link>
                             </div>
-
+                            <button className="btn btn-link max-width-fit-content"
+                                    onClick={event=> {
+                                        event.preventDefault();
+                                        this.setState({forgotPassword: true});
+                                    }}>
+                                Forgot password?
+                            </button>
                         </form>
+                        {forgotPassword &&
+                        <form className="row p-3" onSubmit={this.submitResetPasswordForm}>
+                            <label>Enter username or email to receive password reset token</label>
+                            <input placeholder="Username or Email"
+                                   className="col-12 mb-3 form-control"
+                                   name="username"
+                                   value={username}
+                                   autoComplete="username"
+                                   onChange={this.updateForm}
+                            />
+                            <button className="btn btn-primary col-sm-12 col-md-5 float-left mb-3"
+                                    type="submit"
+                                    disabled={loadingResponse}>
+                                Send Email
+                            </button>
+                        </form>
+                        }
+                        {isResponseOkMessage &&
+                        <p className="text-success">
+                            {isResponseOkMessage}
+                        </p>
+                        }
+                        {isResponseError &&
+                        <p className="text-danger">
+                            {isResponseError.message}
+                        </p>
+                        }
+                        {loadingResponse &&
+                        <Loading title="Loading Response..." className="center-block my-3"/>
+                        }
                     </div>
                 </div>
             </div>

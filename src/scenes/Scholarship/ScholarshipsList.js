@@ -150,8 +150,6 @@ class ScholarshipsList extends React.Component {
             </React.Fragment>);
         }
 
-        console.log({userProfile, loadMoreScholarshipsOrRegisterCTA});
-
         if (errorGettingScholarships) {
             return (
                 <div className="text-center container">

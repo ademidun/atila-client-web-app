@@ -71,6 +71,17 @@ class UserProfileAPI {
         return apiCompletionPromise;
     };
 
+    static resetPassword = (username) => {
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: {username},
+            url: `${this.userProfileEndPoint}/reset-password/`,
+        });
+
+        return apiCompletionPromise;
+    };
+
     static authenticateRequests = (jwtToken, userId) => {
 
         if(!this.isLoggedIn(userId, jwtToken)) {
