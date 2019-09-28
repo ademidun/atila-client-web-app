@@ -6,7 +6,6 @@ import {connect} from "react-redux";
 import {slugify} from "../../services/utils";
 import Loading from "../../components/Loading";
 import {MAJORS_LIST, SCHOOLS_LIST} from "../../models/ConstantsForm";
-import 'react-toastify/dist/ReactToastify.css';
 import {scholarshipUserProfileSharedFormConfigs, toastNotify} from "../../models/Utils";
 import {defaultScholarship} from "../../models/Scholarship";
 

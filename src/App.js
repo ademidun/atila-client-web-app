@@ -9,6 +9,8 @@ import Footer from "./components/Footer/Footer";
 import Loading from "./components/Loading";
 
 import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const Scholarship = loadable(() => import('./scenes/Scholarship/Scholarship'), {
     fallback: <Loading />,
 });
