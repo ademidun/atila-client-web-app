@@ -14,12 +14,9 @@ class VerifyAccount extends React.Component {
         } = this.props;
         const params = new URLSearchParams(search);
 
-        console.log({search});
-        console.log({params});
         const username = params.get('username') || '';
         const token = params.get('token') || '';
         const verification_type = params.get('verification_type') || '';
-        console.log({username, token, verification_type});
 
         this.state = {
             username,
@@ -32,6 +29,13 @@ class VerifyAccount extends React.Component {
         };
     }
 
+    componentDidMount() {
+        const { username, token } = this.state;
+        if (username && token) {
+            this.verifyAccount(true);
+        }
+    }
+
     updateForm = (event) => {
         event.preventDefault();
         this.setState({[event.target.name]: event.target.value})
@@ -39,13 +43,19 @@ class VerifyAccount extends React.Component {
 
     submitVerifyForm = (event) => {
         event.preventDefault();
+        this.verifyAccount();
+    };
+
+    verifyAccount = (verifyAccountOnPageLoad=false) => {
+
         const { username, token, password, verification_type } = this.state;
 
         let APIPromise = null;
 
         this.setState({ isLoadingResponse: true});
         this.setState({ responseError: null});
-        if (verification_type==='reset_password') {
+
+        if (!verifyAccountOnPageLoad && verification_type==='reset_password') {
             APIPromise = UserProfileAPI.verifyResetPassword(username, token, password)
         } else {
             APIPromise  = UserProfileAPI.verifyToken(username, token)
@@ -53,7 +63,12 @@ class VerifyAccount extends React.Component {
         APIPromise
             .then(res => {
                 console.log({res});
-                this.setState({ responseOkMessage: 'Verification successful 🙂! Login'});
+                if (!verifyAccountOnPageLoad && verification_type==='reset_password') {
+                    this.setState({ responseOkMessage: 'Password reset successful 🙂!\n' +
+                            'Log in again with new password'});
+                } else {
+                    this.setState({ responseOkMessage: 'Verification successful 🙂!'});
+                }
             })
             .catch(err => {
                 console.log({err});
@@ -63,7 +78,7 @@ class VerifyAccount extends React.Component {
             })
             .finally(res => {
                 this.setState({ isLoadingResponse: false});
-            })
+            });
     };
 
     render () {

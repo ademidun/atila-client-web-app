@@ -4,7 +4,6 @@ import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 
 import UserProfileAPI from "../services/UserProfileAPI";
-import Loading from "./Loading";
 import {PasswordShowHide} from "./Register";
 import {setLoggedInUserProfile} from "../redux/actions/user";
 import ResponseDisplay from "./ResponseDisplay";
