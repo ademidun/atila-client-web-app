@@ -92,15 +92,24 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
             );
             break;
         case 'location':
-            inputForm = (
+            let valueDisplayResult = '';
 
+            if(valueDisplay) {
+                valueDisplayResult = valueDisplay(model);
+            }
+            inputForm = (
                 <React.Fragment>
-                    <label htmlFor={keyName}>
-                        {placeholder}:{' '}
-                    </label> <strong> {valueDisplay(model)} </strong>
+                    {
+                        valueDisplayResult &&
+                        <React.Fragment>
+                            <label htmlFor={keyName}>
+                                {placeholder}:{' '}
+                            </label> <strong> {valueDisplayResult} </strong>
+                        </React.Fragment>
+                    }
 
                     <LocationSearchInput placeholder={placeholder}
-                                         value={valueDisplay(model)}
+                                         value={valueDisplayResult}
                                          keyName={keyName}
                                          onSelected={onUpdateForm} />
                 </React.Fragment>

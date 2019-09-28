@@ -34,7 +34,7 @@ FormDynamic.propTypes = {
     onUpdateForm: PropTypes.func.isRequired,
     inputConfigs: PropTypes.arrayOf(InputConfigPropType).isRequired,
     onSubmit: PropTypes.func,
-    formError: PropTypes.shape({}),
+    formError: PropTypes.string,
 };
 
 export default FormDynamic

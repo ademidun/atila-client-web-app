@@ -3,11 +3,13 @@ import {Helmet} from "react-helmet";
 import FormDynamic from "../../components/Form/FormDynamic";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import {connect} from "react-redux";
-import {slugify} from "../../services/utils";
+import {prettifyKeys, slugify, transformLocation} from "../../services/utils";
 import Loading from "../../components/Loading";
 import {MAJORS_LIST, SCHOOLS_LIST} from "../../models/ConstantsForm";
 import {scholarshipUserProfileSharedFormConfigs, toastNotify} from "../../models/Utils";
 import {defaultScholarship} from "../../models/Scholarship";
+import {faTrash} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 const scholarshipFormConfigsPage1 = [
     {
@@ -82,6 +84,14 @@ const scholarshipFormConfigsPage1 = [
         placeholder: 'Email address for sending questions and submissions',
         type: 'email',
     },
+    {
+        keyName: 'location',
+        placeholder: 'Enter city, province, country 🌏',
+        html: () =>(<label htmlFor="location">
+            Is the scholarship limited to certain locations? <span role="img" aria-label="globe emoji">🌏</span>
+        </label>),
+        type: 'location',
+    },
 ];
 
 class ScholarshipAddEdit extends React.Component{
@@ -95,7 +105,8 @@ class ScholarshipAddEdit extends React.Component{
             scholarshipPostError: null,
             isLoadingScholarship: true,
             errorLoadingScholarship: false,
-            pageNumber: 1
+            pageNumber: 1,
+            locationData: [],
         };
     }
 
@@ -127,7 +138,9 @@ class ScholarshipAddEdit extends React.Component{
         ScholarshipsAPI.getSlug(slug)
             .then(res => {
                 const scholarship = ScholarshipsAPI.cleanScholarship(res.data);
-                this.setState({ scholarship });
+                this.setState({ scholarship }, () => {
+                    this.initializeLocations();
+                });
             })
             .catch(err => {
                 this.setState({ errorLoadingScholarship: true });
@@ -138,23 +151,68 @@ class ScholarshipAddEdit extends React.Component{
             });
     };
 
+    initializeLocations = () => {
+        // See createLocations() int edit-scholarship or add-scholarship.component.ts
+        const { scholarship, locationData } = this.state;
+
+        for (var index = 0; index <scholarship.country.length; index++) {
+            var element =scholarship.country[index];
+            locationData.push({
+                'country': element.name
+            });
+        }
+
+        for (var index = 0; index <scholarship.province.length; index++) {
+            var element =scholarship.province[index];
+            locationData.push({
+                'country': element.country,
+                'province':element.name
+            });
+        }
+
+        for (var index = 0; index <scholarship.city.length; index++) {
+            var element =scholarship.city[index];
+            locationData.push({
+                'country': element.country,
+                'province':element.province,
+                'city': element.name,
+            });
+        }
+
+        this.setState({
+            locationData
+        });
+
+
+    };
+
     updateForm = (event) => {
         event.preventDefault();
-        const scholarship = this.state.scholarship;
 
-        const value = event.target.value;
+        if (event.target.name==='location') {
+            const { locationData } = this.state;
+            const newLocation = transformLocation(event.target.value);
 
-        if ( Array.isArray(scholarship[event.target.name]) && !Array.isArray(value) ) {
-            scholarship[event.target.name].push(value);
+            locationData.push(newLocation);
+            this.setState({locationData});
+
         } else {
-            scholarship[event.target.name] =value;
+            const scholarship = this.state.scholarship;
+
+            const value = event.target.value;
+
+            if ( Array.isArray(scholarship[event.target.name]) && !Array.isArray(value) ) {
+                scholarship[event.target.name].push(value);
+            } else {
+                scholarship[event.target.name] =value;
+            }
+
+            if(event.target.name==='name') {
+                scholarship.slug = slugify(event.target.value,{lower: true});
+            }
+            this.setState({scholarship});
         }
 
-        if(event.target.name==='name') {
-            scholarship.slug = slugify(event.target.value,{lower: true});
-        }
-
-        this.setState({scholarship});
     };
 
     submitForm = (event) => {
@@ -162,9 +220,9 @@ class ScholarshipAddEdit extends React.Component{
         const scholarship = ScholarshipsAPI.cleanScholarship(this.state.scholarship);
         this.setState({scholarship});
 
-        const { isAddScholarshipMode } = this.state;
+        const { isAddScholarshipMode, locationData } = this.state;
 
-        const postData = {scholarship,locationData: {}};
+        const postData = {scholarship,locationData};
         let postResponsePromise = null;
 
         if(isAddScholarshipMode) {
@@ -192,10 +250,18 @@ class ScholarshipAddEdit extends React.Component{
 
     };
 
+    removeLocationData = (index) => {
+
+        const {locationData} = this.state;
+
+        locationData.splice(index, 1);
+        this.setState({locationData});
+    };
+
     render() {
 
         const { scholarship, isAddScholarshipMode, scholarshipPostError,
-            isLoadingScholarship, pageNumber } = this.state;
+            isLoadingScholarship, pageNumber, locationData } = this.state;
 
         const title = isAddScholarshipMode ? 'Add Scholarship' : 'Edit Scholarship';
         return (
@@ -209,22 +275,48 @@ class ScholarshipAddEdit extends React.Component{
                     <div className="card shadow p-3">
                         <h1>{title}: {scholarship.name}</h1>
                         {pageNumber === 1 &&
-                        <FormDynamic model={scholarship}
-                                     inputConfigs={scholarshipFormConfigsPage1}
-                                     onUpdateForm={this.updateForm}
-                                     formError={scholarshipPostError}
-                                     onSubmit={this.submitForm}/>}
-                        {pageNumber === 2 &&
-                            <React.Fragment>
-                                <h6>Leave blank for each criteria that is open to any</h6>
-                                <FormDynamic model={scholarship}
-                                             inputConfigs={scholarshipUserProfileSharedFormConfigs}
-                                             onUpdateForm={this.updateForm}
-                                             formError={scholarshipPostError}
-                                             onSubmit={this.submitForm}
-                                />
+                        <React.Fragment>
+                            <FormDynamic model={scholarship}
+                                         inputConfigs={scholarshipFormConfigsPage1}
+                                         onUpdateForm={this.updateForm}
+                                         formError={scholarshipPostError}
+                                         onSubmit={this.submitForm}/>
+                            <table class="table">
+                                <caption >Locations</caption>
+                                <thead>
+                                <tr>
+                                    {['city','province','country'].map(location =>
+                                        <th>{prettifyKeys(location)}</th>)
+                                    }
+                                </tr>
+                                </thead>
+                                <tbody>
 
-                            </React.Fragment>}
+                                </tbody>
+                                {locationData.map((locationItem, index) => <tr>
+                                        {['city','province','country'].map(location =><td>{locationItem[location]}</td>)}
+                                        <button className="btn btn-outline-primary"
+                                                onClick={()=> this.removeLocationData(index)}>
+                                            <FontAwesomeIcon icon={faTrash} />
+                                        </button>
+                                    </tr>
+                                )}
+
+
+                            </table>
+                        </React.Fragment>
+                        }
+                        {pageNumber === 2 &&
+                        <React.Fragment>
+                            <h6>Leave blank for each criteria that is open to any</h6>
+                            <FormDynamic model={scholarship}
+                                         inputConfigs={scholarshipUserProfileSharedFormConfigs}
+                                         onUpdateForm={this.updateForm}
+                                         formError={scholarshipPostError}
+                                         onSubmit={this.submitForm}
+                            />
+
+                        </React.Fragment>}
                         <div className="my-2" style={{clear: 'both'}}>
                             {pageNumber !== 2 &&
                             <button className="btn btn-outline-primary float-right col-md-6"
@@ -236,7 +328,7 @@ class ScholarshipAddEdit extends React.Component{
 
                         <button type="submit"
                                 className="btn btn-primary col-12 mt-2"
-                                onClick={this.submitForm}>Submit</button>
+                                onClick={this.submitForm}>Save</button>
                     </div>
                 </div>
             </React.Fragment>
