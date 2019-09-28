@@ -37,19 +37,9 @@ class ScholarshipsList extends React.Component {
         }
     }
 
-    loadMoreScholarships = () => {
-        const { pageNumber } = this.state;
-
-        this.setState({ pageNumber: pageNumber + 1 }, () => {
-            this.loadScholarships(this.state.pageNumber);
-        })
-    };
-
-    afterProfileEdit = () => {
-        const { userProfile } = this.props;
-
-        this.setState({ isCompleteProfile: !userProfile || isCompleteUserProfile(userProfile) });
-    };
+    componentDidMount() {
+        this.loadScholarships();
+    }
 
     loadScholarships = (page) => {
 
@@ -107,9 +97,19 @@ class ScholarshipsList extends React.Component {
             });
     };
 
-    componentDidMount() {
-        this.loadScholarships();
-    }
+    loadMoreScholarships = () => {
+        const { pageNumber } = this.state;
+
+        this.setState({ pageNumber: pageNumber + 1 }, () => {
+            this.loadScholarships(this.state.pageNumber);
+        })
+    };
+
+    afterProfileEdit = () => {
+        const { userProfile } = this.props;
+
+        this.setState({ isCompleteProfile: !userProfile || isCompleteUserProfile(userProfile) });
+    };
 
     render () {
         const {
