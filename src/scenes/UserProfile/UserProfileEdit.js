@@ -26,7 +26,9 @@ class UserProfileEdit extends React.Component {
     }
 
     updateForm = (event) => {
-        event.preventDefault();
+        if (event.stopPropagation) {
+            event.stopPropagation();
+        }
 
         const { updateLoggedInUserProfile, userProfile } = this.props;
 

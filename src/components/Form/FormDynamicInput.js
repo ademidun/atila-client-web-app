@@ -38,7 +38,7 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
                     <input placeholder={placeholder}
                            type="checkbox"
                            name={keyName}
-                           value={model[keyName]}
+                           checked={model[keyName]}
                            onChange={onUpdateForm}
                     />
                 </div>

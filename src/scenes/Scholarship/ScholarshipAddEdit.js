@@ -187,8 +187,10 @@ class ScholarshipAddEdit extends React.Component{
     };
 
     updateForm = (event) => {
-        event.preventDefault();
 
+        if (event.stopPropagation) {
+            event.stopPropagation(); // https://github.com/facebook/react/issues/3446#issuecomment-82751540
+        }
         if (event.target.name==='location') {
             const { locationData } = this.state;
             const newLocation = transformLocation(event.target.value);
@@ -199,7 +201,11 @@ class ScholarshipAddEdit extends React.Component{
         } else {
             const scholarship = this.state.scholarship;
 
-            const value = event.target.value;
+            let value = event.target.value;
+
+            if (event.target.type==='checkbox'){
+                value = event.target.checked
+            }
 
             if ( Array.isArray(scholarship[event.target.name]) && !Array.isArray(value) ) {
                 scholarship[event.target.name].push(value);
@@ -281,28 +287,29 @@ class ScholarshipAddEdit extends React.Component{
                                          onUpdateForm={this.updateForm}
                                          formError={scholarshipPostError}
                                          onSubmit={this.submitForm}/>
-                            <table class="table">
+                            <table className="table">
                                 <caption >Locations</caption>
                                 <thead>
                                 <tr>
                                     {['city','province','country'].map(location =>
-                                        <th>{prettifyKeys(location)}</th>)
+                                        <th key={location}>{prettifyKeys(location)}</th>)
                                     }
                                 </tr>
                                 </thead>
                                 <tbody>
-
-                                </tbody>
-                                {locationData.map((locationItem, index) => <tr>
-                                        {['city','province','country'].map(location =><td>{locationItem[location]}</td>)}
-                                        <button className="btn btn-outline-primary"
-                                                onClick={()=> this.removeLocationData(index)}>
-                                            <FontAwesomeIcon icon={faTrash} />
-                                        </button>
+                                {locationData.map((locationItem, index) => <tr key={index}>
+                                        {['city','province','country'].map(location =>
+                                            <td key={location}>{locationItem[location]}</td>
+                                        )}
+                                        <td>
+                                            <button className="btn btn-outline-primary"
+                                                    onClick={()=> this.removeLocationData(index)}>
+                                                <FontAwesomeIcon icon={faTrash} />
+                                            </button>
+                                        </td>
                                     </tr>
                                 )}
-
-
+                                </tbody>
                             </table>
                         </React.Fragment>
                         }
