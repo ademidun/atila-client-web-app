@@ -120,6 +120,7 @@ class ContentAddEdit extends React.Component {
             .then(res=> {
                 this.setState({isAddContentMode: false});
                 this.setState({content: res.data});
+                toastNotify(`🙂 Successfully saved ${contentType}: "${content.title}"`);
             })
             .catch(err=> {
                 console.log({err});
