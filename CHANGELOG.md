@@ -1,6 +1,21 @@
 # Changelog
 
-## Septmeber 21, 2019
+## September 28, 2019
+### Checkbox form wierdness
+
+- the checkbox form is acting weird and is setting unchecked forms into empty strings instead of false
+- `is_international_students_eligible` and `female_only` are two fields that are affected
+- When I tried to manually change the string values using
+```javascript
+scholarship.international_students_eligible = !! scholarship.international_students_eligible
+```
+it kept on reverting back to string
+- A hacky workaround for now is to just cast the values to boolean in the backend:
+https://github.com/ademidun/atila-django/commit/bd66ba420d7258a292963308b8d8d075cfc32631 
+
+
+
+## September 21, 2019
 ### Steps for Adding a New Redux Action
 1. Create a constant with the name of the action in  src/redux/actions
 2. Export a function in the same file

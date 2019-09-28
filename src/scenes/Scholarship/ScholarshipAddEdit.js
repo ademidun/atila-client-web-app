@@ -10,6 +10,7 @@ import {scholarshipUserProfileSharedFormConfigs, toastNotify} from "../../models
 import {defaultScholarship} from "../../models/Scholarship";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {Link} from "react-router-dom";
 
 const scholarshipFormConfigsPage1 = [
     {
@@ -280,6 +281,11 @@ class ScholarshipAddEdit extends React.Component{
                     {isLoadingScholarship && <Loading  title="Loading Scholarships..."/>}
                     <div className="card shadow p-3">
                         <h1>{title}: {scholarship.name}</h1>
+                        {scholarship.slug && !isAddScholarshipMode &&
+                        <Link to={`/scholarship/${scholarship.slug}`}>
+                            View Scholarship
+                        </Link>
+                        }
                         {pageNumber === 1 &&
                         <React.Fragment>
                             <FormDynamic model={scholarship}
