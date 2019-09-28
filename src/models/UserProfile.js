@@ -52,12 +52,18 @@ export const userProfileFormConfig = [
     },
     {
         keyName: 'city',
+        type: 'location',
+        valueDisplay: model => model.city[0].name,
     },
     {
         keyName: 'province',
+        type: 'location',
+        valueDisplay: model => model.province[0].name,
     },
     {
         keyName: 'country',
+        type: 'location',
+        valueDisplay: model => model.country[0].name,
     },
 ];
 

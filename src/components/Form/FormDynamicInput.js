@@ -4,10 +4,11 @@ import ArrayEdit from "../ArrayEdit";
 import AutoComplete from "../AutoComplete";
 import PropTypes from "prop-types";
 import {InputConfigPropType} from "../../models/Utils";
+import LocationSearchInput from "../LocationSearchInput/LocationSearchInput";
 
 function FormDynamicInput({model, onUpdateForm, inputConfig}) {
 
-    const {type, keyName, html, suggestions, className, options} = inputConfig;
+    const {type, keyName, html, suggestions, className, options, valueDisplay} = inputConfig;
     let {placeholder} = inputConfig;
     let inputForm = null;
 
@@ -87,6 +88,21 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
                                   onSelected={onUpdateForm}
                                   value={model[keyName]}
                                   keyName={keyName}/>
+                </React.Fragment>
+            );
+            break;
+        case 'location':
+            inputForm = (
+
+                <React.Fragment>
+                    <label htmlFor={keyName}>
+                        {placeholder}:{' '}
+                    </label> <strong> {valueDisplay(model)} </strong>
+
+                    <LocationSearchInput placeholder={placeholder}
+                                         value={valueDisplay(model)}
+                                         keyName={keyName}
+                                         onSelected={onUpdateForm} />
                 </React.Fragment>
             );
             break;

@@ -9,9 +9,7 @@ class LocationSearchInput extends React.Component {
 
     constructor(props) {
         super(props);
-
         const { value } = this.props;
-
 
         this.state = {
             search: "",

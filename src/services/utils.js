@@ -150,3 +150,30 @@ export function slugify(text) {
         ;
 }
 
+// https://github.com/ademidun/atila-angular/blob/617cd6547ff82d85689773d86841d74f98b12152/src/app/scholarship/scholarships-list/scholarships-list.component.ts#L576
+export function  transformLocation(placeResult) {
+
+    const locationData = {};
+
+    placeResult.address_components.forEach(element => {
+        if (element.types[0] === 'locality' ||
+            element.types[0] === 'administrative_area_level_3'
+            || element.types[0] === 'postal_town' ||
+            element.types[0] === 'sublocality_level_1') {
+            locationData.city = element.long_name;
+        }
+
+        if (element.types[0] === 'administrative_area_level_1') {
+            locationData.province = element.long_name;
+        }
+
+        if (element.types[0] === 'country') {
+            locationData.country = element.long_name;
+        }
+    });
+
+    console.log({locationData});
+    return locationData;
+
+}
+

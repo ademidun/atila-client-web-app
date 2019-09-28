@@ -6,7 +6,7 @@ import FormDynamic from "../../components/Form/FormDynamic";
 import {scholarshipUserProfileSharedFormConfigs, toastNotify} from "../../models/Utils";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import {userProfileFormConfig} from "../../models/UserProfile";
-import LocationSearchInput from "../../components/LocationSearchInput/LocationSearchInput";
+import {transformLocation} from "../../services/utils";
 
 const userProfileSharedFormConfigs = scholarshipUserProfileSharedFormConfigs
     .map(config => {
@@ -21,6 +21,7 @@ class UserProfileEdit extends React.Component {
 
         this.state = {
             pageNumber: 1,
+            locationData: {},
         }
     }
 
@@ -31,17 +32,35 @@ class UserProfileEdit extends React.Component {
 
         const value = event.target.value;
 
-        let newValue = userProfile[event.target.name];
-        if ( Array.isArray(userProfile[event.target.name]) && !Array.isArray(value) ) {
-            newValue.push(value);
+        console.log({event});
+        let newUserProfile;
+        if(['city', 'province', 'country'].includes(event.target.name)) {
+            const locationData = transformLocation(event.target.value);
+            this.setState({locationData});
+            const city = locationData.city? [{name: locationData.city}] : userProfile.city;
+            const province = locationData.province? [{name: locationData.province}] : userProfile.province;
+            const country = locationData.country? [{name: locationData.country}] : userProfile.country;
+            newUserProfile = {
+                ...userProfile,
+                city,
+                province,
+                country,
+            };
+
         } else {
-            newValue =value;
+
+            let newValue = userProfile[event.target.name];
+            if ( Array.isArray(userProfile[event.target.name]) && !Array.isArray(value) ) {
+                newValue.push(value);
+            } else {
+                newValue =value;
+            }
+            newUserProfile = {
+                ...userProfile,
+                [event.target.name]: newValue
+            };
         }
 
-        let newUserProfile = {
-            ...userProfile,
-            [event.target.name]: newValue
-        };
         updateLoggedInUserProfile(newUserProfile);
     };
 
@@ -53,8 +72,9 @@ class UserProfileEdit extends React.Component {
 
         event.preventDefault();
         const { userProfile, afterSubmitSuccess } = this.props;
+        const { locationData } = this.state;
         UserProfileAPI
-            .update({userProfile, locationData: {}}, userProfile.user)
+            .update({userProfile, locationData }, userProfile.user)
             .then(res=>{
                 toastNotify('😃 User Profile successfully saved!');
                 console.log({res});
@@ -71,6 +91,7 @@ class UserProfileEdit extends React.Component {
 
         const {userProfile, title, className} = this.props;
         const {pageNumber} = this.state;
+        console.log({userProfile});
 
         return (
             <div className={className}>
@@ -81,7 +102,6 @@ class UserProfileEdit extends React.Component {
                              inputConfigs=
                                  {userProfileFormConfig}
                 />}
-                <LocationSearchInput />
                 {pageNumber === 2 &&
                 <FormDynamic onUpdateForm={this.updateForm}
                              model={userProfile}
