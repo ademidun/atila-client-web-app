@@ -6,7 +6,7 @@ import FormDynamic from "../../components/Form/FormDynamic";
 import {scholarshipUserProfileSharedFormConfigs, toastNotify} from "../../models/Utils";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import {userProfileFormConfig} from "../../models/UserProfile";
-import LocationSearchInput from "../../components/LocationSearchInput";
+import LocationSearchInput from "../../components/LocationSearchInput/LocationSearchInput";
 
 const userProfileSharedFormConfigs = scholarshipUserProfileSharedFormConfigs
     .map(config => {
