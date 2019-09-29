@@ -39,6 +39,12 @@ class Navbar extends React.Component {
         this.setState({searchQuery: event.target.value});
     };
 
+    submitSearch = event => {
+        event.preventDefault();
+        const {searchQuery} = this.state;
+        this.props.history.push(`/search?q=${searchQuery}`);
+    };
+
     logout = event => {
         event.preventDefault();
         const { setLoggedInUserProfile } = this.props;
@@ -59,7 +65,7 @@ class Navbar extends React.Component {
                     <NavbarBootstrap.Toggle aria-controls="basic-navbar-nav" />
                     <NavbarBootstrap.Collapse id="basic-navbar-nav">
                         <Nav className="ml-auto">
-                            <Form inline>
+                            <Form inline  onSubmit={this.submitSearch}>
                                 <input value={searchQuery} className="form-control search-input" type="text" name="search"
                                        placeholder="Enter a search term" onChange={this.updateSearch}/>
                                 <Link to="/search" className="nav-item">Search</Link>

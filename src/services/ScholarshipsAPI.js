@@ -65,7 +65,6 @@ class ScholarshipsAPI {
         newScholarship.female_only = !!newScholarship.female_only;
         newScholarship.international_students_eligible = !!newScholarship.international_students_eligible;
 
-        console.log({newScholarship});
         return newScholarship;
     }
 }
