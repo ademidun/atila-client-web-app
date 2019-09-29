@@ -198,9 +198,9 @@ class ScholarshipsList extends React.Component {
                     </span>
                         in Funding
                 </h2>
-                <h6 className="text-center text-muted serif-font">
-                    Complete Profile to see all eligible scholarships
-                </h6>
+                <h1 className="text-center font-weight-bold serif-font">
+                    Complete Your Profile to see all eligible scholarships
+                </h1>
                 {missingSections}
                 </React.Fragment>
                 );

@@ -11,12 +11,26 @@ import ResponseDisplay from "./ResponseDisplay";
 class Login extends React.Component {
 
     _isMounted = false;
+
     constructor(props){
         super(props);
+
+
+        const {
+            location : { search },
+        } = this.props;
+        const params = new URLSearchParams(search);
+
+        let nextLocation = params.get('redirect') || '/scholarship';
+
+        if (nextLocation==='/') {
+            nextLocation = '/scholarship';
+        }
 
         this.state = {
             username: '',
             password: '',
+            nextLocation,
             responseError: null,
             isLoadingResponse: null,
             responseOkMessage: null,
@@ -38,7 +52,7 @@ class Login extends React.Component {
 
     submitForm = (event) => {
         event.preventDefault();
-        const { username, password } = this.state;
+        const { username, password, nextLocation } = this.state;
         const { setLoggedInUserProfile } = this.props;
         this.setState({ isLoadingResponse: true});
         this.setState({ responseError: null});
@@ -49,13 +63,6 @@ class Login extends React.Component {
                 setLoggedInUserProfile(res.data.user_profile);
                 UserProfileAPI.authenticateRequests(res.data.token, res.data.id);
 
-
-                const {
-                    location : { search },
-                } = this.props;
-                const params = new URLSearchParams(search);
-
-                const nextLocation = params.get('redirect') || '/scholarship';
                 this.props.history.push(nextLocation);
             })
             .catch(err => {
@@ -96,7 +103,9 @@ class Login extends React.Component {
     render () {
         const { username, password,
             responseError, isLoadingResponse,
-            responseOkMessage, forgotPassword } = this.state;
+            responseOkMessage, forgotPassword, nextLocation } = this.state;
+
+
         return (
             <div className="container mt-5">
                 <div className="card shadow p-3">
@@ -117,7 +126,7 @@ class Login extends React.Component {
                                         disabled={isLoadingResponse}>
                                     Login
                                 </button>
-                                <Link to="/register"
+                                <Link to={`/register?redirect=${nextLocation}`}
                                       className="btn btn-outline-primary col-sm-12 col-md-5 float-right">
                                     Register
                                 </Link>
