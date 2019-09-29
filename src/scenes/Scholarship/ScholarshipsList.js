@@ -223,6 +223,11 @@ class ScholarshipsList extends React.Component {
                     No Search query. Displaying all valid Scholarships
                 </h6>
                 }
+                <div className="w-100 mb-3">
+                    <Link to={`/scholarship/add`} className="btn btn-link">
+                        Add a Scholarship
+                    </Link>
+                </div>
 
                 <div className="mt-3">
                     {scholarships.map( scholarship => <ScholarshipCard key={scholarship.id} className="col-12" scholarship={scholarship} />)}
