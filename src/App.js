@@ -14,6 +14,9 @@ import 'react-toastify/dist/ReactToastify.css';
 const Scholarship = loadable(() => import('./scenes/Scholarship/Scholarship'), {
     fallback: <Loading />,
 });
+const Search = loadable(() => import('./scenes/Search/Search'), {
+    fallback: <Loading />,
+});
 const UserProfile = loadable(() => import('./scenes/UserProfile/UserProfile'), {
     fallback: <Loading />,
 });
@@ -64,6 +67,7 @@ function App(props) {
                         <Route path="/blog" component={Blog} />
                         <Route path="/essay" component={Essay} />
                         <Route path="/scholarship" component={Scholarship} />
+                        <Route path="/search" component={Search} />
                         <Route path="/login" component={Login} />
                         <Route path="/verify" component={VerifyAccount} />
                         <Route path="/register" component={Register} />
