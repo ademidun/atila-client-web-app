@@ -22,8 +22,9 @@ class Search extends React.Component {
 
         this.state = {
             searchQuery,
+            prevSearchQuery: null,
             searchResults: null,
-            isLoadingResponse: null,
+            isLoadingResponse: true,
             responseError: null,
             responseOkMessage: null,
         }
@@ -37,14 +38,40 @@ class Search extends React.Component {
         }
     };
 
+    static getDerivedStateFromProps(props, state) {
+        // see ScholarshipDetail.getDerivedStateFromProps() for more details on how this works.
+        const {
+            location : { search },
+        } = props;
+        const params = new URLSearchParams(search);
+        const searchQuery = params.get('q') || '';
+        const { prevSearchQuery } = state;
+
+        if (searchQuery !== prevSearchQuery) {
+            return {
+                ...state,
+                searchQuery,
+                prevSearchQuery: searchQuery,
+                searchResults: null
+            };
+        }
+
+        return null;
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        const { searchResults, responseError } = this.state;
+        if (searchResults === null && !responseError) {
+            this.loadItems();
+        }
+    }
+
     loadItems = () => {
 
         const { searchQuery } = this.state;
-        this.setState({ isLoadingResponse: true });
 
         SearchApi.search(searchQuery)
             .then(res => {
-                console.log({res});
                 this.setState({ searchResults: res.data });
 
             })
@@ -79,7 +106,7 @@ class Search extends React.Component {
             <div className="container mt-5">
                 <Helmet>
                     <meta charSet="utf-8" />
-                    <title>Search - {searchQuery} - Atila</title>
+                    <title>{searchQuery && `${searchQuery} -`} Search - Atila</title>
                 </Helmet>
                 <h1>Search {searchQuery && `for ${searchQuery}`}</h1>
 
