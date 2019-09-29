@@ -21,7 +21,7 @@ class EssaysApi {
         });
 
         return apiCompletionPromise;
-    }
+    };
 
     static create = (essay) => {
 

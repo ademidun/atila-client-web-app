@@ -4,9 +4,9 @@ import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 
 import UserProfileAPI from "../services/UserProfileAPI";
-import Loading from "./Loading";
 import {PasswordShowHide} from "./Register";
 import {setLoggedInUserProfile} from "../redux/actions/user";
+import ResponseDisplay from "./ResponseDisplay";
 
 class Login extends React.Component {
 
@@ -17,9 +17,11 @@ class Login extends React.Component {
         this.state = {
             username: '',
             password: '',
-            isResponseError: null,
-            loadingResponse: null,
-            isResponseSuccess: null,
+            responseError: null,
+            isLoadingResponse: null,
+            responseOkMessage: null,
+            forgotPassword: false,
+            resetPasswordResponse: '',
         };
     }
     componentDidMount() {
@@ -38,38 +40,69 @@ class Login extends React.Component {
         event.preventDefault();
         const { username, password } = this.state;
         const { setLoggedInUserProfile } = this.props;
-        this.setState({ loadingResponse: true});
-        this.setState({ isResponseError: null});
+        this.setState({ isLoadingResponse: true});
+        this.setState({ responseError: null});
         UserProfileAPI
             .login({ username, password })
             .then(res => {
-                this.setState({ isResponseSuccess: true});
+                this.setState({ responseOkMessage: 'Login successful 🙂! Redirecting...'});
                 setLoggedInUserProfile(res.data.user_profile);
                 UserProfileAPI.authenticateRequests(res.data.token, res.data.id);
-                this.props.history.push(`/scholarship`);
+
+
+                const {
+                    location : { search },
+                } = this.props;
+                const params = new URLSearchParams(search);
+
+                const nextLocation = params.get('redirect') || '/scholarship';
+                this.props.history.push(nextLocation);
             })
             .catch(err => {
                 if (err.response && err.response.data) {
-                    this.setState({ isResponseError: err.response.data});
+                    this.setState({ responseError: err.response.data});
                 }
             })
             .finally(res => {
                 if (this._isMounted) {
-                    this.setState({ loadingResponse: false});
+                    this.setState({ isLoadingResponse: false});
+                }
+            })
+    };
+
+    submitResetPasswordForm = (event) => {
+        event.preventDefault();
+        const { username } = this.state;
+        this.setState({ isLoadingResponse: true});
+        this.setState({ responseError: null});
+        UserProfileAPI
+            .resetPassword(username)
+            .then(res => {
+                this.setState({ responseOkMessage: res.data.message });
+
+            })
+            .catch(err => {
+                if (err.response && err.response.data) {
+                    this.setState({ responseError: err.response.data});
+                }
+            })
+            .finally(res => {
+                if (this._isMounted) {
+                    this.setState({ isLoadingResponse: false});
                 }
             })
     };
 
     render () {
         const { username, password,
-            isResponseError, loadingResponse,
-            isResponseSuccess } = this.state;
+            responseError, isLoadingResponse,
+            responseOkMessage, forgotPassword } = this.state;
         return (
             <div className="container mt-5">
                 <div className="card shadow p-3">
                     <div>
                         <h1>Login</h1>
-                        <form className="row p-3 form-group" onSubmit={this.submitForm}>
+                        <form className="row p-3" onSubmit={this.submitForm}>
                             <input placeholder="Username or Email"
                                    className="col-12 mb-3 form-control"
                                    name="username"
@@ -78,23 +111,10 @@ class Login extends React.Component {
                                    onChange={this.updateForm}
                             />
                             <PasswordShowHide password={password} updateForm={this.updateForm} />
-                            {isResponseSuccess &&
-                            <p className="text-success">
-                                Login successful! Redirecting...
-                                <span role="img" aria-label="happy face emoji">🙂</span>
-                            </p>
-                            }
-                            {isResponseError &&
-                            <p className="text-danger">
-                                {isResponseError.message}
-                            </p>
-                            }
-                            {loadingResponse &&
-                            <Loading title="Loading Response..." className="center-block my-3"/>}
                             <div className="w-100">
-                                <button className="btn btn-primary col-sm-12 col-md-5 float-left mb-3"
+                                <button className="btn btn-primary col-sm-12 col-md-5 float-left mb-1"
                                         type="submit"
-                                        disabled={loadingResponse}>
+                                        disabled={isLoadingResponse}>
                                     Login
                                 </button>
                                 <Link to="/register"
@@ -102,8 +122,40 @@ class Login extends React.Component {
                                     Register
                                 </Link>
                             </div>
-
+                            <button className="btn btn-link max-width-fit-content"
+                                    onClick={event=> {
+                                        event.preventDefault();
+                                        this.setState({forgotPassword: true});
+                                    }}>
+                                Forgot password?
+                            </button>
                         </form>
+                        {forgotPassword &&
+                        <form className="row p-3" onSubmit={this.submitResetPasswordForm}>
+                            <label>Enter username or email to receive password reset token</label>
+                            <input placeholder="Username or Email"
+                                   className="col-12 mb-3 form-control"
+                                   name="username"
+                                   value={username}
+                                   autoComplete="username"
+                                   onChange={this.updateForm}
+                            />
+                            <button className="btn btn-primary col-sm-12 col-md-5 float-left mb-3"
+                                    type="submit"
+                                    disabled={isLoadingResponse}>
+                                Send Email
+                            </button>
+                            <label className="w-100">
+                                Already have a reset token?
+                                <Link to="/verify?verification_type=reset_password"> Reset password </Link>
+                            </label>
+                        </form>
+
+                        }
+
+                        <ResponseDisplay isLoadingResponse={isLoadingResponse}
+                                         responseError={responseError}
+                                         responseOkMessage={responseOkMessage} />
                     </div>
                 </div>
             </div>
@@ -111,14 +163,12 @@ class Login extends React.Component {
     }
 }
 
-const mapDispatchToProps = () => {
-    return {
-        setLoggedInUserProfile
-    };
+const mapDispatchToProps = {
+    setLoggedInUserProfile
 };
 
 Login.propTypes = {
     setLoggedInUserProfile: PropTypes.func.isRequired,
 };
 
-export default connect(null, mapDispatchToProps())(Login);
+export default connect(null, mapDispatchToProps)(Login);

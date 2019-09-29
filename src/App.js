@@ -8,6 +8,9 @@ import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
 import Loading from "./components/Loading";
 
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const Scholarship = loadable(() => import('./scenes/Scholarship/Scholarship'), {
     fallback: <Loading />,
 });
@@ -35,12 +38,15 @@ const ContactUs = loadable(() => import('./components/ContactUs'), {
 const Login = loadable(() => import('./components/Login'), {
     fallback: <Loading />,
 });
+const VerifyAccount = loadable(() => import('./components/VerifyAccount'), {
+    fallback: <Loading />,
+});
 const Register = loadable(() => import('./components/Register'), {
     fallback: <Loading />,
 });
 
 
-
+toast.configure();
 function App(props) {
     const {
         isLoadingLoggedInUserProfile,
@@ -59,6 +65,7 @@ function App(props) {
                         <Route path="/essay" component={Essay} />
                         <Route path="/scholarship" component={Scholarship} />
                         <Route path="/login" component={Login} />
+                        <Route path="/verify" component={VerifyAccount} />
                         <Route path="/register" component={Register} />
                         <Route path="/profile" component={UserProfile} />
                         <Route path="/team" component={Team} />

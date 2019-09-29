@@ -1,0 +1,15 @@
+.suggestion-item:hover {
+  background-color: #80808040;
+}
+
+.react-autosuggest__suggestions-container--open {
+  max-height: 300px;
+  overflow-y: scroll;
+}
+.react-autosuggest__suggestion--highlighted {
+  font-weight: bold;
+}
+.react-autosuggest__suggestions-list {
+  list-style-type: none;
+  padding-left: 0;
+}

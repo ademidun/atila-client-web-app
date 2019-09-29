@@ -50,6 +50,7 @@ class Navbar extends React.Component {
     render() {
         const { searchQuery } = this.state;
         const { userProfile, isLoadingLoggedInUserProfile } = this.props;
+        const { location: {pathname} } = this.props;
 
         return (
             <React.Fragment>
@@ -63,10 +64,11 @@ class Navbar extends React.Component {
                                        placeholder="Enter a search term" onChange={this.updateSearch}/>
                                 <Link to="/search" className="nav-item">Search</Link>
                             </Form>
+                            <Link to="/scholarship" className="nav-item">Scholarships</Link>
                             <Link to="/essay" className="nav-item">Essays</Link>
                             <Link to="/blog" className="nav-item">Blogs</Link>
                             {!userProfile && !isLoadingLoggedInUserProfile &&
-                            <Link to="/login" className="nav-item">Login</Link>}
+                            <Link to={`/login?redirect=${pathname}`} className="nav-item">Login</Link>}
                             {
                                 userProfile &&
                                 <React.Fragment>
@@ -78,8 +80,13 @@ class Navbar extends React.Component {
 
                                         <Dropdown.Menu>
                                             <Link to="/scholarship/add" className="dropdown-item">Add Scholarship</Link>
-                                            <Link to={`/profile/${userProfile.username}`} className="dropdown-item">View Profile</Link>
-                                            <Link to="/profile/edit" className="dropdown-item">Edit Profile</Link>
+                                            <Link to={`/profile/${userProfile.username}`} className="dropdown-item">
+                                                View Profile
+                                            </Link>
+                                            <Link to={`/profile/${userProfile.username}/edit`}
+                                                  className="dropdown-item">
+                                                Edit Profile
+                                            </Link>
                                             <Dropdown.Divider />
                                             <button onClick={this.logout}
                                                     className="btn btn-link dropdown-item"
@@ -120,10 +127,8 @@ const mapStateToProps = state => {
         isLoadingLoggedInUserProfile: state.ui.user.isLoadingLoggedInUserProfile
     };
 };
-const mapDispatchToProps = () => {
-    return {
-        initializeLoggedInUserProfile,
-        setLoggedInUserProfile,
-    };
+const mapDispatchToProps = {
+    initializeLoggedInUserProfile,
+    setLoggedInUserProfile,
 };
-export default withRouter(connect(mapStateToProps, mapDispatchToProps())(Navbar));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Navbar));

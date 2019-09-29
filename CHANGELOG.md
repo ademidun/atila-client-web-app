@@ -1,5 +1,45 @@
 # Changelog
 
+## September 28, 2019
+### Checkbox form wierdness
+
+- the checkbox form is acting weird and is setting unchecked forms into empty strings instead of false
+- `is_international_students_eligible` and `female_only` are two fields that are affected
+- When I tried to manually change the string values using
+```javascript
+scholarship.international_students_eligible = !! scholarship.international_students_eligible
+```
+it kept on reverting back to string
+- A hacky workaround for now is to just cast the values to boolean in the backend:
+https://github.com/ademidun/atila-django/commit/bd66ba420d7258a292963308b8d8d075cfc32631 
+
+
+
+## September 21, 2019
+### Steps for Adding a New Redux Action
+1. Create a constant with the name of the action in  src/redux/actions
+2. Export a function in the same file
+3. Add your reducer in src/reducers/data/<filename>.js
+replace `data` with `ui`, depending on your use case
+4. TO use in a component: `import {setLoggedInUserProfile} from "../redux/actions/user";`
+
+## September 20, 2019
+### Naming Things is Hard but Important
+
+- I was trying to find react snackbars, no luck finding anything good
+- Then I saw [an article](https://reactjsexample.com/simple-snackbar-style-notifications-for-react/) at the botom of the article indicating that the name
+is not actually a Snackbar but called Toast
+- Snackbar is a concept unique to Angular Material maybe?
+- Once I searched react toast notification I found way better results
+
+Toast Notification reveals this:
+- https://github.com/fkhadra/react-toastify
+- https://github.com/jossmac/react-toast-notifications
+
+Snackbar Notification options:
+- https://github.com/rodrigoramosrs/react-snackbar
+- https://joeattardi.github.io/react-snackbar-alert
+
 ## September 14 2019
 ### Adding Redux to React App
 

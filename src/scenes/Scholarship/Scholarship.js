@@ -1,6 +1,6 @@
 import React from 'react';
 import ScholarshipsList from "./ScholarshipsList";
-import { Route, Switch } from "react-router-dom";
+import {Route, Switch} from "react-router-dom";
 import ScholarshipDetail from "./ScholarshipDetail";
 import ScholarshipAddEdit from "./ScholarshipAddEdit";
 

@@ -9,8 +9,8 @@ const mockStore = configureStore();
 
 import App from './App';
 import configureStore from "redux-mock-store";
-import {initialReduxState} from "./services/utils";
 import {Provider} from "react-redux";
+import {initialReduxState} from "./models/Constants";
 
 const store = mockStore(initialReduxState);
 

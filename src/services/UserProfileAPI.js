@@ -49,12 +49,55 @@ class UserProfileAPI {
         return apiCompletionPromise;
     };
 
+    static update = (userProfileData, id) => {
+
+        const apiCompletionPromise = request({
+            method: 'put',
+            data: userProfileData,
+            url: `${this.userProfileEndPoint}/${id}/`,
+        });
+
+        return apiCompletionPromise;
+    };
+
     static login = (loginCredentials) => {
 
         const apiCompletionPromise = request({
             method: 'post',
             data: loginCredentials,
             url: `${Environment.apiUrl}/login/`,
+        });
+
+        return apiCompletionPromise;
+    };
+
+    static resetPassword = (username) => {
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: {username},
+            url: `${this.userProfileEndPoint}/reset-password/`,
+        });
+
+        return apiCompletionPromise;
+    };
+
+    static verifyResetPassword = (username, token, password) => {
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: {username, token, password},
+            url: `${this.userProfileEndPoint}/verify-reset-password/`,
+        });
+
+        return apiCompletionPromise;
+    };
+
+    static verifyToken = (username, token) => {
+
+        const apiCompletionPromise = request({
+            method: 'get',
+            url: `${this.userProfileEndPoint}/verify-token/?username=${username}&token=${token}`,
         });
 
         return apiCompletionPromise;

@@ -1,4 +1,3 @@
-
 export function makeXHRRequestAsPromise (method, url, data) {
     return new Promise(function (resolve, reject) {
         const xhr = new XMLHttpRequest();
@@ -101,6 +100,14 @@ export function getItemType(item) {
     return itemType;
 }
 
+// https://github.com/ademidun/atila-angular/blob/9cb6dbbe8e2c1f0f4d7812740c1a06c6d811e331/src/app/_shared/utils.ts#L3
+export function prettifyKeys(rawKey) {
+
+    return toTitleCase(rawKey.replace(/_/g, ' ' ));
+
+}
+
+// https://github.com/ademidun/atila-angular/blob/9cb6dbbe8e2c1f0f4d7812740c1a06c6d811e331/src/app/_shared/utils.ts#L11
 export function toTitleCase(str) {
     var i, j, lowers, uppers;
     str = str.replace(/([^\W_]+[^\s-]*) */g, function(txt) {
@@ -142,14 +149,30 @@ export function slugify(text) {
         .replace(/ +/g, '-')
         ;
 }
-export const initialReduxState = {
-    data: {
-        user: {
-            loggedInUserProfile: null
+
+// https://github.com/ademidun/atila-angular/blob/617cd6547ff82d85689773d86841d74f98b12152/src/app/scholarship/scholarships-list/scholarships-list.component.ts#L576
+export function  transformLocation(placeResult) {
+
+    const locationData = {};
+
+    placeResult.address_components.forEach(element => {
+        if (element.types[0] === 'locality' ||
+            element.types[0] === 'administrative_area_level_3'
+            || element.types[0] === 'postal_town' ||
+            element.types[0] === 'sublocality_level_1') {
+            locationData.city = element.long_name;
         }
-    },
-    ui: {
-        user: {
-            isLoadingLoggedInUserProfile: false
-        }}
-};
+
+        if (element.types[0] === 'administrative_area_level_1') {
+            locationData.province = element.long_name;
+        }
+
+        if (element.types[0] === 'country') {
+            locationData.country = element.long_name;
+        }
+    });
+
+    return locationData;
+
+}
+

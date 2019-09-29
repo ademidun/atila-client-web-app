@@ -8,7 +8,7 @@ const mockStore = configureStore();
 
 import Navbar from './Navbar';
 import {UserProfileTest1} from "../../models/UserProfile";
-import {initialReduxState} from "../../services/utils";
+import {initialReduxState} from "../../models/Constants";
 
 describe('<Navbar />', () => {
     it('renders without crashing', () => {
