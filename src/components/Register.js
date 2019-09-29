@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import UserProfileAPI from "../services/UserProfileAPI";
 import Loading from "./Loading";
 import './LoginRegister.scss';
-import {toastNotify} from "../models/Utils";
 import {setLoggedInUserProfile} from "../redux/actions/user";
 import {connect} from "react-redux";
 
