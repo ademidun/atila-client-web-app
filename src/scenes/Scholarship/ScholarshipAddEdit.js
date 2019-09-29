@@ -152,27 +152,28 @@ class ScholarshipAddEdit extends React.Component{
             });
     };
 
+    // https://github.com/ademidun/atila-angular/blob/dfe3cbdd5d9a5870e095c089d85394ba934718b5/src/app/scholarship/add-scholarship/add-scholarship.component.ts#L681
     initializeLocations = () => {
         // See createLocations() int edit-scholarship or add-scholarship.component.ts
         const { scholarship, locationData } = this.state;
 
-        for (var index = 0; index <scholarship.country.length; index++) {
-            var element =scholarship.country[index];
+        for (let index = 0; index <scholarship.country.length; index++) {
+            let element =scholarship.country[index];
             locationData.push({
                 'country': element.name
             });
         }
 
-        for (var index = 0; index <scholarship.province.length; index++) {
-            var element =scholarship.province[index];
+        for (let index = 0; index <scholarship.province.length; index++) {
+            let element =scholarship.province[index];
             locationData.push({
                 'country': element.country,
                 'province':element.name
             });
         }
 
-        for (var index = 0; index <scholarship.city.length; index++) {
-            var element =scholarship.city[index];
+        for (let index = 0; index <scholarship.city.length; index++) {
+            let element =scholarship.city[index];
             locationData.push({
                 'country': element.country,
                 'province':element.province,
