@@ -125,7 +125,13 @@ class ScholarshipAddEdit extends React.Component{
             this.setState({isAddScholarshipMode: true});
             this.setState({isLoadingScholarship: false});
             const scholarship = this.state.scholarship;
-            scholarship.owner = userProfile.user;
+
+            if(userProfile) {
+                scholarship.owner = userProfile.user;
+            }
+            else {
+                toastNotify(`⚠️ Warning, you must be logged in to add a scholarship`);
+            }
             this.setState({scholarship});
         } else {
             this.loadContent();
@@ -229,6 +235,12 @@ class ScholarshipAddEdit extends React.Component{
         this.setState({scholarship});
 
         const { isAddScholarshipMode, locationData } = this.state;
+        const { userProfile } = this.props;
+
+        if(!userProfile) {
+            toastNotify(`⚠️ Warning, you must be logged in to add a scholarship`);
+            return;
+        }
 
         const postData = {scholarship,locationData};
         let postResponsePromise = null;
