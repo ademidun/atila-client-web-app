@@ -48,7 +48,15 @@ class Login extends React.Component {
                 this.setState({ responseOkMessage: 'Login successful 🙂! Redirecting...'});
                 setLoggedInUserProfile(res.data.user_profile);
                 UserProfileAPI.authenticateRequests(res.data.token, res.data.id);
-                this.props.history.push(`/scholarship`);
+
+
+                const {
+                    location : { search },
+                } = this.props;
+                const params = new URLSearchParams(search);
+
+                const nextLocation = params.get('redirect') || '/scholarship';
+                this.props.history.push(nextLocation);
             })
             .catch(err => {
                 if (err.response && err.response.data) {

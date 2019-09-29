@@ -131,7 +131,8 @@ class ContentDetail extends React.Component {
     }
 }
 ContentDetail.defaultProps = {
-    className: ''
+    className: '',
+    userProfile: null,
 };
 
 ContentDetail.propTypes = {
@@ -140,7 +141,7 @@ ContentDetail.propTypes = {
     ContentAPI: PropTypes.func.isRequired,
     contentSlug: PropTypes.string.isRequired,
     //redux
-    userProfile: PropTypes.shape({}).isRequired
+    userProfile: PropTypes.shape({})
 };
 
 const mapStateToProps = state => {
