@@ -4,8 +4,6 @@ import SearchApi from "../../services/SearchAPI";
 import ResponseDisplay from "../../components/ResponseDisplay";
 import {SearchResultsDisplay} from "./SearchResultsDisplay";
 import Form from "react-bootstrap/Form";
-import {Link} from "react-router-dom";
-import Nav from "react-bootstrap/Nav";
 import {Helmet} from "react-helmet";
 
 class Search extends React.Component {

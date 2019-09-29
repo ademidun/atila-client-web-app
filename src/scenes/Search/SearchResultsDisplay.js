@@ -1,7 +1,6 @@
 import {genericItemTransform, prettifyKeys} from "../../services/utils";
 import ContentCard from "../../components/ContentCard";
 import React from "react";
-import Scholarship from "../Scholarship/Scholarship";
 import ScholarshipCard from "../Scholarship/ScholarshipCard";
 import {Link} from "react-router-dom";
 
