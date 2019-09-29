@@ -241,14 +241,12 @@ class ScholarshipAddEdit extends React.Component{
             toastNotify(`⚠️ Warning, you must be logged in to add a scholarship`);
             return;
         }
-
-        const postData = {scholarship,locationData};
         let postResponsePromise = null;
 
         if(isAddScholarshipMode) {
             postResponsePromise = ScholarshipsAPI.create(scholarship,locationData)
         } else {
-            postResponsePromise = ScholarshipsAPI.put(scholarship.id, scholarship,locationData);
+            postResponsePromise = ScholarshipsAPI.put(scholarship.id, scholarship, locationData);
         }
         postResponsePromise
             .then(res => {
