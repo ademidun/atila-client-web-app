@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import UserProfileAPI from "../services/UserProfileAPI";
 import Loading from "./Loading";
 import './LoginRegister.scss';
+import {setLoggedInUserProfile} from "../redux/actions/user";
+import {connect} from "react-redux";
 
 export class PasswordShowHide extends React.Component {
 
@@ -60,6 +62,16 @@ class Register extends React.Component {
     constructor(props){
         super(props);
 
+        const {
+            location : { search },
+        } = this.props;
+        const params = new URLSearchParams(search);
+
+        let nextLocation = params.get('redirect') || '/scholarship';
+
+        if (nextLocation==='/') {
+            nextLocation = '/scholarship';
+        }
         this.state = {
             userProfile: {
                 firstName: '',
@@ -68,8 +80,9 @@ class Register extends React.Component {
                 email: '',
                 password: '',
             },
+            nextLocation,
             isResponseError: null,
-            isResponseOk: null,
+            responseOkMessage: null,
             loadingResponse: null,
         };
     }
@@ -83,7 +96,8 @@ class Register extends React.Component {
 
     submitForm = (event) => {
         event.preventDefault();
-        const { userProfile } = this.state;
+        const { setLoggedInUserProfile } = this.props;
+        const { userProfile, nextLocation } = this.state;
         const { email, username, password } = userProfile;
 
         this.setState({ loadingResponse: true});
@@ -102,8 +116,12 @@ class Register extends React.Component {
                 locationData: null
             })
             .then(res => {
-                this.setState({ isResponseOk: true});
+
+                this.setState({ responseOkMessage: 'Registration successful 🙂! Redirecting...'});
                 UserProfileAPI.authenticateRequests(res.data.token, res.data.id);
+                setLoggedInUserProfile(res.data.user_profile);
+                console.log({res});
+                this.props.history.push(nextLocation);
             })
             .catch(err => {
                 if (err.response && err.response.data) {
@@ -117,7 +135,7 @@ class Register extends React.Component {
 
     render () {
 
-        const { userProfile, isResponseError, isResponseOk, loadingResponse } = this.state;
+        const { userProfile, isResponseError, responseOkMessage, loadingResponse } = this.state;
         const { firstName, lastName, username, email, password } = userProfile;
         return (
             <div className="container mt-5">
@@ -154,10 +172,9 @@ class Register extends React.Component {
                                    onChange={this.updateForm}
                             />
                             <PasswordShowHide password={password} updateForm={this.updateForm} />
-                            {isResponseOk &&
+                            {responseOkMessage &&
                             <p className="text-success">
-                                Registration successful!
-                                <span role="img" aria-label="happy face emoji">🙂</span>
+                                {responseOkMessage}
                             </p>
                             }
                             {isResponseError &&
@@ -180,5 +197,12 @@ class Register extends React.Component {
         )
     }
 }
+const mapDispatchToProps = {
+    setLoggedInUserProfile
+};
 
-export default Register;
+Register.propTypes = {
+    setLoggedInUserProfile: PropTypes.func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(Register);
