@@ -246,9 +246,9 @@ class ScholarshipAddEdit extends React.Component{
         let postResponsePromise = null;
 
         if(isAddScholarshipMode) {
-            postResponsePromise = ScholarshipsAPI.create(postData)
+            postResponsePromise = ScholarshipsAPI.create(scholarship,locationData)
         } else {
-            postResponsePromise = ScholarshipsAPI.put(scholarship.id, postData);
+            postResponsePromise = ScholarshipsAPI.put(scholarship.id, scholarship,locationData);
         }
         postResponsePromise
             .then(res => {
@@ -281,6 +281,7 @@ class ScholarshipAddEdit extends React.Component{
 
         const { scholarship, isAddScholarshipMode, scholarshipPostError,
             isLoadingScholarship, pageNumber, locationData } = this.state;
+        const { userProfile } = this.props;
 
         const title = isAddScholarshipMode ? 'Add Scholarship' : 'Edit Scholarship';
         return (
@@ -293,6 +294,13 @@ class ScholarshipAddEdit extends React.Component{
                     {isLoadingScholarship && <Loading  title="Loading Scholarships..."/>}
                     <div className="card shadow p-3">
                         <h1>{title}: {scholarship.name}</h1>
+                        {!userProfile &&
+                        <h4>
+                            <span role="img" aria-label="warning emoji">
+                                ⚠️
+                            </span> Warning, you must be logged in to add a scholarship
+                        </h4>
+                        }
                         {scholarship.slug && !isAddScholarshipMode &&
                         <Link to={`/scholarship/${scholarship.slug}`}>
                             View Scholarship

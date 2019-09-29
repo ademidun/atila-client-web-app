@@ -24,22 +24,22 @@ class ScholarshipsAPI {
         return apiCompletionPromise;
     };
 
-    static put = (id, scholarship) => {
+    static put = (id, scholarship, locationData) => {
 
         const apiCompletionPromise = request({
             method: 'put',
-            data: scholarship,
+            data: {scholarship: ScholarshipsAPI.cleanScholarship(scholarship), locationData},
             url: `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/`,
         });
 
         return apiCompletionPromise;
     };
 
-    static create = (scholarship) => {
+    static create = (scholarship, locationData) => {
 
         const apiCompletionPromise = request({
             method: 'post',
-            data: scholarship,
+            data: {scholarship: ScholarshipsAPI.cleanScholarship(scholarship), locationData},
             url: `${ScholarshipsAPI.scholarshipsApiUrl}/`,
         });
 
@@ -47,17 +47,26 @@ class ScholarshipsAPI {
     };
 
     static cleanScholarship = (scholarship) => {
-        if(!scholarship.funding_amount) {
-            scholarship.funding_amount = 0;
+
+        const newScholarship = Object.assign({}, scholarship);
+        if(!newScholarship.funding_amount) {
+            newScholarship.funding_amount = 0;
         }
 
-        if(scholarship.deadline) {
+        if(newScholarship.deadline) {
             // to fix the following error
             // The specified value "2019-09-21T23:59:00Z" does not conform to the required format.
             // The format is "yyyy-MM-ddThh:mm" followed by optional ":ss" or ":ss.SSS"
-            scholarship.deadline = scholarship.deadline.substring(0,16);
+            newScholarship.deadline = newScholarship.deadline.substring(0,16);
         }
-        return scholarship;
+
+        delete newScholarship.location;
+
+        newScholarship.female_only = !!newScholarship.female_only;
+        newScholarship.international_students_eligible = !!newScholarship.international_students_eligible;
+
+        console.log({newScholarship});
+        return newScholarship;
     }
 }
 
