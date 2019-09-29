@@ -39,7 +39,7 @@ class ContentCard extends React.Component {
             <div className={`${className} card shadow my-4`}>
                 <div className="row no-gutters">
                     <div className="col-md-4">
-                        <img src={img_url} className="card-img" alt={name} />
+                        <img src={img_url} className="card-img mt-4" alt={name} />
                     </div>
                     <div className="col-md-8">
                         <div className="card-body">
