@@ -2,7 +2,7 @@ import React from 'react';
 import Loading from "./Loading";
 
 
-function ResponseDisplay( {isLoadingResponse, responseOkMessage, responseError} ){
+function ResponseDisplay( {isLoadingResponse, responseOkMessage, responseError, loadingTitle} ){
 
     return (
         <React.Fragment>
@@ -17,7 +17,7 @@ function ResponseDisplay( {isLoadingResponse, responseOkMessage, responseError} 
             </p>
             }
             {isLoadingResponse &&
-            <Loading title="Loading Response..." className="center-block my-3"/>
+            <Loading title={loadingTitle || "Loading Response..."} className="center-block my-3"/>
             }
         </React.Fragment>
     )

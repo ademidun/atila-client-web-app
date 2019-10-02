@@ -8,6 +8,7 @@ import {connect} from "react-redux";
 import {isCompleteUserProfile} from "../../models/UserProfile";
 import UserProfileEdit from "../UserProfile/UserProfileEdit";
 import {Link} from "react-router-dom";
+import ResponseDisplay from "../../components/ResponseDisplay";
 
 class ScholarshipsList extends React.Component {
 
@@ -18,7 +19,7 @@ class ScholarshipsList extends React.Component {
 
         this.state = {
             model: null,
-            scholarships: [],
+            scholarships: null,
             searchPayload: {
                 location: { city :'', province :'', country :'', name :''},
                 education_level :[],
@@ -48,11 +49,7 @@ class ScholarshipsList extends React.Component {
             userProfile,
         } = this.props;
 
-        const { scholarships, totalScholarshipsCount } = this.state;
-
-        if (totalScholarshipsCount && scholarships.length >= totalScholarshipsCount) {
-            return
-        }
+        const { scholarships } = this.state;
 
         const params = new URLSearchParams(search);
 
@@ -61,7 +58,7 @@ class ScholarshipsList extends React.Component {
         let searchPayload = {...this.state.searchPayload};
         searchPayload.searchString = searchQuery;
 
-        if (userProfile) {
+        if (userProfile && !searchQuery) {
             searchPayload = {
                 sort_by: "deadline",
                 filter_by_user_show_eligible_only: true
@@ -75,7 +72,7 @@ class ScholarshipsList extends React.Component {
         ScholarshipsAPI.searchScholarships(searchPayload, page)
             .then(res => {
 
-                const scholarshipResults = scholarships;
+                const scholarshipResults = scholarships || [];
                 if (userProfile) {
                     scholarshipResults.push(...res.data.data);
                 } else {
@@ -129,17 +126,26 @@ class ScholarshipsList extends React.Component {
         if(userProfile) {
             loadMoreScholarshipsOrRegisterCTA = (<React.Fragment>
                 {
-                    scholarships.length < totalScholarshipsCount
+                    scholarships && scholarships.length < totalScholarshipsCount
                     &&
                     <button className="btn btn-primary center-block font-size-xl" onClick={this.loadMoreScholarships}>
                         Load More
                     </button>
                 }
+                {
+                    scholarships && scholarships.length >= totalScholarshipsCount
+                    &&
+                    <h4 className="text-center">
+                        All Caught up {' '}
+                        <span role="img" aria-label="happy face emoji">🙂</span>
+                    </h4>
+                }
+
             </React.Fragment>);
         } else if (!userProfile) {
             loadMoreScholarshipsOrRegisterCTA = (<React.Fragment>
                 {
-                    scholarships.length < totalScholarshipsCount
+                    scholarships && scholarships.length < totalScholarshipsCount
                     &&
                     <Link to="/register" className="btn btn-primary center-block font-size-xl">
                             Register for Free to see all
@@ -148,24 +154,6 @@ class ScholarshipsList extends React.Component {
                     </Link>
                 }
             </React.Fragment>);
-        }
-
-        if (errorGettingScholarships) {
-            return (
-                <div className="text-center container">
-                    <h1>
-                        Error Getting Scholarships
-                        <span role="img" aria-label="sad face emoji">😕</span>
-                    </h1>
-                    <h3>Please try again later </h3>
-                </div>)
-        }
-
-        if (scholarships.length === 0) {
-            return (
-                <Loading
-                    isLoading={isLoadingScholarships}
-                    title={'Loading Scholarships...'} />);
         }
 
         if (userProfile && !isCompleteProfile) {
@@ -211,6 +199,12 @@ class ScholarshipsList extends React.Component {
 
         return (
             <div className="container mt-5">
+
+                <ResponseDisplay
+                    responseError={errorGettingScholarships}
+                    isLoadingResponse={isLoadingScholarships}
+                    loadingTitle={"Loading Scholarships..."}
+                />
                 <h1 className="text-center serif-font">
                     {`${totalScholarshipsCount} Scholarships ${searchQuery ? `for ${toTitleCase(searchQuery)} ` : ''}found`}
                     <br />
@@ -230,7 +224,11 @@ class ScholarshipsList extends React.Component {
                 </div>
 
                 <div className="mt-3">
-                    {scholarships.map( scholarship => <ScholarshipCard key={scholarship.id} className="col-12" scholarship={scholarship} />)}
+                    {scholarships &&
+                    scholarships.map( scholarship => <ScholarshipCard key={scholarship.id}
+                                                                      className="col-12"
+                                                                      scholarship={scholarship} />)
+                    }
                 </div>
                 {loadMoreScholarshipsOrRegisterCTA}
             </div>
