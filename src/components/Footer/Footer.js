@@ -12,8 +12,8 @@ function Footer() {
                 <div className="row">
                     <div className="col lg-6 sm-12">
                         <Link to="/blog/atila/what-is-atila" className="white-text" style={{textDecoration: 'underline'}}><h2 >What is Atila?</h2></Link>
-                        <p className="grey-text text-lighten-4">Atila aims to improve access to education by automating the scholarship application process.
-                            <Link to="/blog/atila/what-is-atila">Automatically find and apply</Link> to scholarships at the click of a button.
+                        <p className="grey-text text-lighten-4">Atila helps students
+                            <Link to="/blog/atila/what-is-atila"> easily find and apply to scholarships </Link>.
                         </p>
 
                     </div>
