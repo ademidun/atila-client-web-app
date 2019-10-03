@@ -1,6 +1,24 @@
 // If you make any changes here, notify in the Github repo and update backend as well
 // https://github.com/ademidun/atila-django/blob/master/helpers/constants.py
 
+export const FILTER_TYPES = [
+    'major',
+    'post_secondary_school',
+    'ethnicity',
+    'city',
+    'country',
+    'heritage',
+    'religion',
+    'eligible_schools',
+    'eligible_programs',
+    'citizenship',
+    'activities',
+    'sports',
+    'disability',
+    'language',
+    'province',
+];
+
 export const MAJORS_LIST = [
     'Accounting',
     'African Studies',

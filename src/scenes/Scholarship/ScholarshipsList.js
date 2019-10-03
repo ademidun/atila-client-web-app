@@ -8,6 +8,7 @@ import {isCompleteUserProfile} from "../../models/UserProfile";
 import UserProfileEdit from "../UserProfile/UserProfileEdit";
 import {Link} from "react-router-dom";
 import ResponseDisplay from "../../components/ResponseDisplay";
+import ScholarshipsListFilter from "./ScholarshipsListFilter";
 
 class ScholarshipsList extends React.Component {
 
@@ -132,6 +133,21 @@ class ScholarshipsList extends React.Component {
         this.setState({ isCompleteProfile: !userProfile || isCompleteUserProfile(userProfile) });
     };
 
+    updateFilterOrSort = (event) => {
+        const { searchPayload } = this.state;
+        const {
+            userProfile,
+        } = this.props;
+
+        this.setState({
+            searchPayload : {
+                ...searchPayload,
+                filter_by_user_data: {[event.target.value]: userProfile[event.target.value]}
+            }
+        })
+    };
+
+
     render () {
         const {
             location : { search },
@@ -246,7 +262,7 @@ class ScholarshipsList extends React.Component {
                         Add a Scholarship
                     </Link>
                 </div>
-
+                <ScholarshipsListFilter model={userProfile} updateFilterBy={this.updateFilterOrSort} />
                 <div className="mt-3">
                     {scholarships &&
                     scholarships.map( scholarship => <ScholarshipCard key={scholarship.id}
