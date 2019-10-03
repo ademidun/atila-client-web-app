@@ -7,6 +7,7 @@ import MoreFeatures from "./MoreFeatures";
 import LandingPageContent from "./LandingPageContent";
 import LandingPageLiveDemo from "./LandingPageLiveDemo";
 import {genericItemTransform} from "../../services/utils";
+import SubscribeMailingList from "../../components/SubscribeMailingList";
 
 let blogs = [
     {
@@ -255,6 +256,8 @@ class LandingPage extends React.Component {
                     contentList={essays} />
                 <hr />
                 <LandingPageLiveDemo />
+                <hr />
+                <SubscribeMailingList />
             </React.Fragment>
         );
     }
