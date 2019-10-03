@@ -176,3 +176,16 @@ export function  transformLocation(placeResult) {
 
 }
 
+export function transformFilterDisplay(filter_type, userProfile) {
+
+    let filterValue = null;
+
+    if (['city', 'province', 'country'].includes(filter_type)) {
+        filterValue = userProfile[filter_type][0]['name']
+    } else {
+        filterValue = userProfile[filter_type];
+    }
+
+    return filterValue
+}
+

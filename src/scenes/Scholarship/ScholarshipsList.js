@@ -87,6 +87,8 @@ class ScholarshipsList extends React.Component {
         const { scholarships } = this.state;
         let { searchPayload } = this.state;
 
+        console.log({searchPayload});
+
         if (userProfile && !searchPayload.searchString) {
             searchPayload = {
                 sort_by: "deadline",
@@ -139,12 +141,32 @@ class ScholarshipsList extends React.Component {
             userProfile,
         } = this.props;
 
-        this.setState({
-            searchPayload : {
+        console.log('event.target.name', event.target.name);
+        console.log('event.target.value', event.target.value);
+
+        let updatedSearchPayload = searchPayload;
+
+        if (event.target.name === 'filter_by_user') {
+            updatedSearchPayload = {
                 ...searchPayload,
-                filter_by_user_data: {[event.target.value]: userProfile[event.target.value]}
+                [event.target.name]: event.target.value,
+                filter_by_user_data: [
+                    {
+                        filter_type: event.target.value,
+                        filter_value: [userProfile[event.target.value]]
+                    }
+                ]
             }
-        })
+        } else if (event.target.name === 'sort_by'){
+            updatedSearchPayload = {
+                ...searchPayload,
+                [event.target.name]: event.target.value
+            }
+        }
+        this.setState({
+            scholarships: null,
+            searchPayload : updatedSearchPayload
+        }, () => {this.loadScholarships()})
     };
 
 
