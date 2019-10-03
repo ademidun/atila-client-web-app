@@ -3,7 +3,6 @@ import React from 'react';
 import {toTitleCase} from "../../services/utils";
 import ScholarshipCard from "./ScholarshipCard";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
-import Loading from "../../components/Loading";
 import {connect} from "react-redux";
 import {isCompleteUserProfile} from "../../models/UserProfile";
 import UserProfileEdit from "../UserProfile/UserProfileEdit";
@@ -15,7 +14,12 @@ class ScholarshipsList extends React.Component {
     constructor(props) {
         super(props);
 
-        const { userProfile } = this.props;
+        const { userProfile,
+            location : { search }
+        } = this.props;
+
+        const params = new URLSearchParams(search);
+        const searchString = params.get('q');
 
         this.state = {
             model: null,
@@ -24,13 +28,14 @@ class ScholarshipsList extends React.Component {
                 location: { city :'', province :'', country :'', name :''},
                 education_level :[],
                 education_field :[],
-                searchString: '' ,
+                searchString ,
                 previewMode: 'universalSearch' ,
                 filter_by_user_show_eligible_only: true,
                 sort_by: 'relevance_new'
             },
+            searchString,
             errorGettingScholarships: null,
-            isLoadingScholarships: false,
+            isLoadingScholarships: true,
             pageNumber: 1,
             totalScholarshipsCount: 0,
             totalFunding: null,
@@ -45,29 +50,18 @@ class ScholarshipsList extends React.Component {
     loadScholarships = (page) => {
 
         const {
-            location : { search },
             userProfile,
         } = this.props;
 
         const { scholarships } = this.state;
+        let { searchPayload } = this.state;
 
-        const params = new URLSearchParams(search);
-
-        const searchQuery = params.get('q');
-
-        let searchPayload = {...this.state.searchPayload};
-        searchPayload.searchString = searchQuery;
-
-        if (userProfile && !searchQuery) {
+        if (userProfile && !searchPayload.searchString) {
             searchPayload = {
                 sort_by: "deadline",
                 filter_by_user_show_eligible_only: true
             };
         }
-
-        this.setState({ searchPayload });
-
-        this.setState({ isLoadingScholarships: true });
 
         ScholarshipsAPI.searchScholarships(searchPayload, page)
             .then(res => {
@@ -119,7 +113,7 @@ class ScholarshipsList extends React.Component {
             totalScholarshipsCount, totalFunding,
             errorGettingScholarships, isCompleteProfile} = this.state;
 
-        const searchQuery = params.get('q');
+        const searchString = params.get('q');
 
         let loadMoreScholarshipsOrRegisterCTA = null;
 
@@ -206,13 +200,13 @@ class ScholarshipsList extends React.Component {
                     loadingTitle={"Loading Scholarships..."}
                 />
                 <h1 className="text-center serif-font">
-                    {`${totalScholarshipsCount} Scholarships ${searchQuery ? `for ${toTitleCase(searchQuery)} ` : ''}found`}
+                    {`${totalScholarshipsCount} Scholarships ${searchString ? `for ${toTitleCase(searchString)} ` : ''}found`}
                     <br />
                 </h1>
                 <h2 className="text-center text-muted serif-font">
                     {totalFunding && `${totalFunding} in funding`}
                 </h2>
-                {!userProfile && !searchQuery &&
+                {!userProfile && !searchString &&
                 <h6 className="text-center text-muted serif-font">
                     No Search query. Displaying all valid Scholarships
                 </h6>
