@@ -34,6 +34,7 @@ class ScholarshipsList extends React.Component {
                 sort_by: 'relevance_new'
             },
             searchString,
+            prevSearchString: null,
             errorGettingScholarships: null,
             isLoadingScholarships: true,
             pageNumber: 1,
@@ -47,7 +48,36 @@ class ScholarshipsList extends React.Component {
         this.loadScholarships();
     }
 
-    loadScholarships = (page) => {
+    static getDerivedStateFromProps(props, state) {
+        // https://reactjs.org/blog/2018/03/27/update-on-async-rendering.html#fetching-external-data-when-props-change
+        // Store prevSlug in state so we can compare when props change.
+        // Clear out previously-loaded data (so we don't render stale stuff).
+        const { location : { search } } = props;
+        const { prevSearchString } = state;
+        const params = new URLSearchParams(search);
+        const searchString = params.get('q');
+
+        if (searchString !== prevSearchString) {
+            return {
+                ...state,
+                prevSearchString: searchString,
+                scholarships: null
+            };
+        }
+
+        // No state update necessary
+        return null;
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        const { prevSearchString } = this.state;
+
+        if (prevSearchString !== prevState.prevSearchString) {
+            this.loadScholarships();
+        }
+    }
+
+    loadScholarships = (page=1) => {
 
         const {
             userProfile,
