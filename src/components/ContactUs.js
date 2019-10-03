@@ -23,7 +23,7 @@ class ContactUs extends  React.Component{
         const { fullName, contactMessage, email } = this.state;
 
         this.setState({ isLoadingResponse: true });
-        UtilsAPI.sendContactUsForm({ name: fullName, message: contactMessage, email })
+        UtilsAPI.postGoogleScript({ name: fullName, message: contactMessage, email })
             .then(res=> {
                 this.setState({ isReceivedResponse: true });
             })

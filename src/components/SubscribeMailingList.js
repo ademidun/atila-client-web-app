@@ -24,7 +24,11 @@ class SubscribeMailingList extends  React.Component{
         const { fullName, contactMessage, email } = this.state;
 
         this.setState({ isLoadingResponse: true });
-        UtilsAPI.sendContactUsForm({ name: fullName, message: contactMessage, email })
+        UtilsAPI.postGoogleScript({
+            name: fullName,
+            formGoogleSheetName: 'mailinglist',
+            skipSendEmail: true,
+            email, })
             .then(res=> {
                 this.setState({ isReceivedResponse: true });
             })
