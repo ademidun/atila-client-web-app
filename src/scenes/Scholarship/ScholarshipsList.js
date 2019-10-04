@@ -63,7 +63,8 @@ class ScholarshipsList extends React.Component {
             return {
                 ...state,
                 prevSearchString: searchString,
-                scholarships: null
+                scholarships: null,
+                isLoadingScholarships: true,
             };
         }
 
@@ -169,7 +170,9 @@ class ScholarshipsList extends React.Component {
         }
         this.setState({
             scholarships: null,
-            searchPayload : updatedSearchPayload
+            searchPayload : updatedSearchPayload,
+            pageNumber: 1,
+            isLoadingScholarships: true,
         }, () => {this.loadScholarships()})
     };
 
