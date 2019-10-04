@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {Link} from "react-router-dom";
 import moment from "moment";
 import {formatCurrency} from "../../services/utils";
+import ScholarshipShareSaveButtons from "./ScholarshipShareSaveButtons";
 
 class ScholarshipCard extends React.Component {
 
@@ -60,6 +61,7 @@ class ScholarshipCard extends React.Component {
                             <button className="btn btn-link" onClick={this.togglePreview} >
                                 {showPreview ? 'Show Less' : 'Show More'}
                             </button>
+                            <ScholarshipShareSaveButtons />
                         </div>
                     </div>
                 </div>
