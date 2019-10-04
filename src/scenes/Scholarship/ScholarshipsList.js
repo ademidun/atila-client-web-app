@@ -9,7 +9,6 @@ import UserProfileEdit from "../UserProfile/UserProfileEdit";
 import {Link} from "react-router-dom";
 import ResponseDisplay from "../../components/ResponseDisplay";
 import ScholarshipsListFilter from "./ScholarshipsListFilter";
-import Loading from "../../components/Loading";
 
 class ScholarshipsList extends React.Component {
 
