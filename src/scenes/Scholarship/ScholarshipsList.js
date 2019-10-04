@@ -265,23 +265,27 @@ class ScholarshipsList extends React.Component {
                     isLoadingResponse={isLoadingScholarships}
                     loadingTitle={"Loading Scholarships..."}
                 />
-                <h1 className="text-center serif-font">
-                    {`${totalScholarshipsCount} Scholarships ${searchString ? `for ${toTitleCase(searchString)} ` : ''}found`}
-                    <br />
-                </h1>
-                {searchPayload.filter_by_user &&
-                <h3 className="text-center">
-                    (Filtering by {prettifyKeys(searchPayload.filter_by_user)}: {' '}
-                    {transformFilterDisplay(searchPayload.filter_by_user, userProfile)} )
-                </h3>
-                }
-                <h2 className="text-center text-muted serif-font">
-                    {totalFunding && `${totalFunding} in funding`}
-                </h2>
-                {!userProfile && !searchString &&
-                <h6 className="text-center text-muted serif-font">
-                    No Search query. Displaying all valid Scholarships
-                </h6>
+                {scholarships &&
+                    <React.Fragment>
+                        <h1 className="text-center serif-font">
+                            {`${totalScholarshipsCount} Scholarships ${searchString ? `for ${toTitleCase(searchString)} ` : ''}found`}
+                            <br />
+                        </h1>
+                        {searchPayload.filter_by_user &&
+                        <h3 className="text-center">
+                            (Filtering by {prettifyKeys(searchPayload.filter_by_user)}: {' '}
+                            {transformFilterDisplay(searchPayload.filter_by_user, userProfile)} )
+                        </h3>
+                        }
+                        <h2 className="text-center text-muted serif-font">
+                            {totalFunding && `${totalFunding} in funding`}
+                        </h2>
+                        {!userProfile && !searchString &&
+                        <h6 className="text-center text-muted serif-font">
+                            No Search query. Displaying all valid Scholarships
+                        </h6>
+                        }
+                    </React.Fragment>
                 }
                 <div className="w-100 mb-3">
                     <Link to={`/scholarship/add`} className="btn btn-link">
@@ -289,13 +293,14 @@ class ScholarshipsList extends React.Component {
                     </Link>
                 </div>
                 <ScholarshipsListFilter model={userProfile} updateFilterOrSortBy={this.updateFilterOrSort} />
-                <div className="mt-3">
+
                     {scholarships &&
-                    scholarships.map( scholarship => <ScholarshipCard key={scholarship.id}
-                                                                      className="col-12"
-                                                                      scholarship={scholarship} />)
+                    <div className="mt-3">
+                        {scholarships.map( scholarship => <ScholarshipCard key={scholarship.id}
+                                                                           className="col-12"
+                                                                           scholarship={scholarship} />)}
+                    </div>
                     }
-                </div>
                 {loadMoreScholarshipsOrRegisterCTA}
             </div>
         );
