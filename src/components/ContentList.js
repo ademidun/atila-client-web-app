@@ -5,6 +5,7 @@ import Loading from "./Loading";
 import ContentCard from "./ContentCard";
 import {genericItemTransform} from "../services/utils";
 import {Link} from "react-router-dom";
+import ResponseDisplay from "./ResponseDisplay";
 
 class ContentList extends React.Component {
 
@@ -70,7 +71,8 @@ class ContentList extends React.Component {
             contentItems,
             isLoadingContent,
             totalContentCount,
-            errorGettingContent
+            errorGettingContent,
+            pageNumber,
         } = this.state;
 
         const {
@@ -128,9 +130,27 @@ class ContentList extends React.Component {
                 {
                     contentItems.length < totalContentCount
                     &&
-                    <button className="btn btn-primary center-block font-size-xl" onClick={this.loadMoreItems}>
+                    <button className="btn btn-primary center-block font-size-xl"
+                            onClick={this.loadMoreItems}
+                            disabled={isLoadingContent}>
                         Load More
                     </button>
+                }
+
+                {
+                    contentItems.length >= totalContentCount
+                    &&
+                    <h4 className="text-center">
+                        All Caught up {' '}
+                        <span role="img" aria-label="happy face emoji">🙂</span>
+                    </h4>
+                }
+                {pageNumber > 1 &&
+                <ResponseDisplay
+                    responseError={errorGettingContent}
+                    isLoadingResponse={isLoadingContent}
+                    loadingTitle={`Loading ${contentType}s...`}
+                />
                 }
             </div>
         );

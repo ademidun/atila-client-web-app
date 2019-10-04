@@ -1,7 +1,8 @@
 import React from "react";
 import UtilsAPI from "../services/UtilsAPI";
 import Loading from "./Loading";
-class ContactUs extends  React.Component{
+import {Link} from "react-router-dom";
+class SubscribeMailingList extends  React.Component{
 
 
     constructor(props) {
@@ -9,7 +10,6 @@ class ContactUs extends  React.Component{
 
         this.state = {
             fullName: '',
-            contactMessage: '',
             email: '',
             isLoadingResponse: false,
             errorReceivingResponse: false,
@@ -20,10 +20,14 @@ class ContactUs extends  React.Component{
 
     submitContact = (event) => {
         event.preventDefault();
-        const { fullName, contactMessage, email } = this.state;
+        const { fullName, email } = this.state;
 
         this.setState({ isLoadingResponse: true });
-        UtilsAPI.postGoogleScript({ name: fullName, message: contactMessage, email })
+        UtilsAPI.postGoogleScript({
+            name: fullName,
+            formGoogleSheetName: 'mailinglist',
+            skipSendEmail: true,
+            email, })
             .then(res=> {
                 this.setState({ isReceivedResponse: true });
             })
@@ -47,20 +51,8 @@ class ContactUs extends  React.Component{
         this.setState({ email: event.target.value });
     };
 
-    updateMessage = (event) => {
-        event.preventDefault();
-        if (event.key === 'Enter') {
-            event.preventDefault();
-            event.stopPropagation();
-            this.onSubmit();
-        }
-
-        this.setState({contactMessage: event.target.value});
-
-    };
-
     render() {
-        const { fullName, email, contactMessage, isLoadingResponse,
+        const { fullName, email, isLoadingResponse,
             isReceivedResponse, errorReceivingResponse } = this.state;
 
         let pageContent = null;
@@ -72,16 +64,15 @@ class ContactUs extends  React.Component{
                     title={`Sending Form Please wait...`} />);
         }
         else if (isReceivedResponse) {
-            pageContent = <div className="text-center" style={{ height: '300px', marginTop: '150px' }}>
+            pageContent = <div className="text-center">
                 <h4>
-                    Thanks for your Response
+                    Thanks for Subscribing
                     <span role="img" aria-label="happy face emoji">🙂</span>
                 </h4>
-                <h6>We will get back to you within 1 business day</h6>
             </div>
         }
         else if (errorReceivingResponse) {
-            pageContent = <div className="text-center" style={{ height: '300px', marginTop: '150px' }}>
+            pageContent = <div className="text-center">
                 <h4>
                     Sorry, there was an error sending your form
                     <span role="img" aria-label="sad face emoji">😕</span>
@@ -94,35 +85,26 @@ class ContactUs extends  React.Component{
         }
         else {
             pageContent = (<React.Fragment>
-                <h3>Contact Us</h3>
-                <p>Or send us an email at {' '}
-                    <a href="mailto:info@atila.ca" target="_blank" rel="noopener noreferrer">
-                        info@atila.ca
-                    </a>
+                <p className="col-sm-12 col-md-6" style={{fontSize : 'medium'}}>Subscribe to get updates
+                    on new <Link to="/" >scholarships</Link>, <Link to="/blog" >blog</Link> and {' '}
+                    <Link to="/essay" >essays</Link>, and new product features.
                 </p>
                 <form className="row p-3 form-group" onSubmit={this.submitContact}>
                     <input placeholder="Full Name"
-                           className="col-12 mb-3 form-control"
+                           name="name"
+                           className="col-sm-12 col-md-6 mb-3 form-control"
                            value={fullName}
                            onChange={this.updateName}
                     />
                     <input placeholder="Email"
                            name="email"
                            type="email"
-                           className="col-12 mb-3 form-control"
+                           className="col-12 col-md-6 mb-3 form-control"
                            value={email}
                            onChange={this.updateEmail}
                     />
-                    <textarea
-                        placeholder="Message"
-                        className="col-12 mb-3 form-control"
-                        value={contactMessage}
-                        onChange={this.updateMessage}
-                        rows="5"
-
-                    />
                     <button className="btn btn-primary col-12 mb-3" type="submit">
-                        Send
+                        Subscribe
                     </button>
 
                 </form>
@@ -139,4 +121,4 @@ class ContactUs extends  React.Component{
     }
 }
 
-export default ContactUs;
+export default SubscribeMailingList;
