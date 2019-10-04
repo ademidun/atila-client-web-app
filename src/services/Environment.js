@@ -1,19 +1,22 @@
-
-
-
-const EnvironmentDev = {
+export const EnvironmentDev = {
+    name: 'dev',
     production: false,
     apiUrl: 'http://127.0.0.1:8000/api',
+    apiUrlNodeMicroservice: 'http://127.0.0.1:9000',
 };
 
-const EnvironmentStaging = {
+export const EnvironmentStaging = {
+    name: 'staging',
     production: false,
     apiUrl: 'https://atila-7-staging.herokuapp.com/api',
+    apiUrlNodeMicroservice: 'https://tgrr8bis30.execute-api.us-east-1.amazonaws.com/staging',
 };
 
-const EnvironmentProd = {
-    production: false,
+export const EnvironmentProd = {
+    name: 'prod',
+    production: true,
     apiUrl: 'https://atila-7.herokuapp.com/api',
+    apiUrlNodeMicroservice: 'https://yhpl8yynpk.execute-api.us-east-1.amazonaws.com/prod',
 };
 
 let Environment = {};
