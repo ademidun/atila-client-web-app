@@ -61,7 +61,7 @@ class ScholarshipCard extends React.Component {
                             <button className="btn btn-link" onClick={this.togglePreview} >
                                 {showPreview ? 'Show Less' : 'Show More'}
                             </button>
-                            <ScholarshipShareSaveButtons />
+                            <ScholarshipShareSaveButtons scholarship={scholarship} />
                         </div>
                     </div>
                 </div>

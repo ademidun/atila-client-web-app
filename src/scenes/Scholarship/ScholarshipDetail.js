@@ -7,6 +7,7 @@ import Loading from "../../components/Loading";
 import RelatedItems from "../../components/RelatedItems";
 import {connect} from "react-redux";
 import AnalyticsService from "../../services/AnalyticsService";
+import ScholarshipShareSaveButtons from "./ScholarshipShareSaveButtons";
 
 class ScholarshipDetail extends React.Component {
 
@@ -142,6 +143,7 @@ class ScholarshipDetail extends React.Component {
                                         Amount: {fundingString}
                                     </small>
                                 </p>
+                                <ScholarshipShareSaveButtons scholarship={scholarship} />
                                 <p>{description}</p>
 
                                 {/*todo find a way to secure against XSS: https://stackoverflow.com/a/19277723*/}
