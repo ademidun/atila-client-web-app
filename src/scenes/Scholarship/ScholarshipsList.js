@@ -148,7 +148,7 @@ class ScholarshipsList extends React.Component {
                 filter_by_user_data: [
                     {
                         filter_type: event.target.value,
-                        filter_value: [userProfile[event.target.value]]
+                        filter_value: [transformFilterDisplay(event.target.value, userProfile)]
                     }
                 ]
             }

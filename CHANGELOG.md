@@ -1,5 +1,23 @@
 # Changelog
 
+## October 3, 2019
+- So glad I have tests, I caught an error that only shows up when not logged in (userProfile in redux is null)
+- The test was `ScholarshipsList.test.js`
+```markdown
+TypeError: Cannot read property 'Select Filter' of null
+ScholarshipsListFilter.render
+src/scenes/Scholarship/ScholarshipsListFilter.js:71
+  68 | >
+  69 |     <option key={'Select Filter'} disabled hidden>{'Select Filter'}</option>
+  70 |     {FILTER_TYPES.map(filter_type => (
+> 71 |         <option key={filter_type} value={filter_type}>
+     | ^  72 |         {prettifyKeys(filter_type)}
+  73 |         </option>
+  74 |     ))}
+
+```
+- https://circleci.com/gh/ademidun/atila-client-web-app/165
+
 ## September 28, 2019
 ### Checkbox form wierdness
 

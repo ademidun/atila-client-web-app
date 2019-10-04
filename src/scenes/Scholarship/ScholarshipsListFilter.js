@@ -73,7 +73,7 @@ class ScholarshipsListFilter extends React.Component {
                             </option>
                         ))}
                     </select>
-                    {model[filterValue] &&
+                    {filterValue !== 'Select Filter' &&
                     <div className="font-weight-bold">
                         {transformFilterDisplay(filterValue, model)}
                     </div>
