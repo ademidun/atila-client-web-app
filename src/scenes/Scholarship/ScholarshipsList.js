@@ -9,6 +9,7 @@ import UserProfileEdit from "../UserProfile/UserProfileEdit";
 import {Link} from "react-router-dom";
 import ResponseDisplay from "../../components/ResponseDisplay";
 import ScholarshipsListFilter from "./ScholarshipsListFilter";
+import Loading from "../../components/Loading";
 
 class ScholarshipsList extends React.Component {
 
@@ -84,8 +85,13 @@ class ScholarshipsList extends React.Component {
             userProfile,
         } = this.props;
 
-        const { scholarships } = this.state;
+        const { scholarships, totalScholarshipsCount } = this.state;
         let { searchPayload } = this.state;
+
+        if (totalScholarshipsCount && scholarships
+            && scholarships.length >= totalScholarshipsCount) {
+            return
+        }
 
         if (userProfile && !searchPayload.searchString) {
             searchPayload = {
@@ -122,7 +128,7 @@ class ScholarshipsList extends React.Component {
     loadMoreScholarships = () => {
         const { pageNumber } = this.state;
 
-        this.setState({ pageNumber: pageNumber + 1 }, () => {
+        this.setState({ pageNumber: pageNumber + 1, isLoadingScholarships: true }, () => {
             this.loadScholarships(this.state.pageNumber);
         })
     };
@@ -177,7 +183,8 @@ class ScholarshipsList extends React.Component {
 
         const { scholarships, isLoadingScholarships,
             totalScholarshipsCount, totalFunding,
-            errorGettingScholarships, isCompleteProfile, searchPayload} = this.state;
+            errorGettingScholarships, isCompleteProfile, searchPayload,
+            pageNumber} = this.state;
 
         const searchString = params.get('q');
 
@@ -188,7 +195,9 @@ class ScholarshipsList extends React.Component {
                 {
                     scholarships && scholarships.length < totalScholarshipsCount
                     &&
-                    <button className="btn btn-primary center-block font-size-xl" onClick={this.loadMoreScholarships}>
+                    <button className="btn btn-primary center-block font-size-xl"
+                            onClick={this.loadMoreScholarships}
+                            disabled={isLoadingScholarships}>
                         Load More
                     </button>
                 }
@@ -259,7 +268,6 @@ class ScholarshipsList extends React.Component {
 
         return (
             <div className="container mt-5">
-
                 <ResponseDisplay
                     responseError={errorGettingScholarships}
                     isLoadingResponse={isLoadingScholarships}
@@ -302,6 +310,13 @@ class ScholarshipsList extends React.Component {
                     </div>
                     }
                 {loadMoreScholarshipsOrRegisterCTA}
+                {pageNumber > 1 &&
+                <ResponseDisplay
+                    responseError={errorGettingScholarships}
+                    isLoadingResponse={isLoadingScholarships}
+                    loadingTitle={"Loading Scholarships..."}
+                />
+                }
             </div>
         );
     }
