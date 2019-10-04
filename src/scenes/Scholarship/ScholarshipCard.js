@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import {Link} from "react-router-dom";
 import moment from "moment";
 import {formatCurrency} from "../../services/utils";
+import ScholarshipShareSaveButtons from "./ScholarshipShareSaveButtons";
 
-class ContentCard extends React.Component {
+class ScholarshipCard extends React.Component {
 
     constructor(props) {
         super(props);
@@ -60,6 +61,7 @@ class ContentCard extends React.Component {
                             <button className="btn btn-link" onClick={this.togglePreview} >
                                 {showPreview ? 'Show Less' : 'Show More'}
                             </button>
+                            <ScholarshipShareSaveButtons scholarship={scholarship} />
                         </div>
                     </div>
                 </div>
@@ -68,13 +70,13 @@ class ContentCard extends React.Component {
     }
 }
 
-ContentCard.defaultProps = {
+ScholarshipCard.defaultProps = {
     className: ''
 };
 
-ContentCard.propTypes = {
+ScholarshipCard.propTypes = {
     className: PropTypes.string,
     scholarship: PropTypes.shape({})
 };
 
-export default ContentCard;
+export default ScholarshipCard;

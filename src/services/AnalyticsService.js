@@ -37,6 +37,8 @@ class AnalyticsService {
             case 'blog':
                 transformedViewData.item_name = viewData.title;
                 break;
+            default:
+                break;
         }
 
         return transformedViewData;
