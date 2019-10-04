@@ -192,6 +192,8 @@ export function transformFilterDisplay(filter_type, userProfile) {
                 case 'country':
                     filterValue = 'Canada';
                     break;
+                default:
+                    break;
             }
         }
         else {
