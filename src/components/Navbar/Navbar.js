@@ -56,7 +56,7 @@ class Navbar extends React.Component {
     render() {
         const { searchQuery } = this.state;
         const { userProfile, isLoadingLoggedInUserProfile } = this.props;
-        const { location: {pathname} } = this.props;
+        const { location: { pathname, search } } = this.props;
 
         return (
             <React.Fragment>
@@ -74,13 +74,13 @@ class Navbar extends React.Component {
                             <Link to="/essay" className="nav-item">Essays</Link>
                             <Link to="/blog" className="nav-item">Blogs</Link>
                             {!userProfile && !isLoadingLoggedInUserProfile &&
-                            <Link to={`/login?redirect=${pathname}`} className="nav-item">Login</Link>}
+                            <Link to={`/login?redirect=${pathname}${search}`} className="nav-item">Login</Link>}
                             {
                                 userProfile &&
                                 <React.Fragment>
 
                                     <Dropdown>
-                                        <Dropdown.Toggle style={{ backgroundColor: 'trabsparent' }}>
+                                        <Dropdown.Toggle style={{ backgroundColor: 'transparent' }}>
                                             <FontAwesomeIcon icon={faUser} />
                                         </Dropdown.Toggle>
 
