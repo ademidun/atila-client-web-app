@@ -10,7 +10,6 @@ class SubscribeMailingList extends  React.Component{
 
         this.state = {
             fullName: '',
-            contactMessage: '',
             email: '',
             isLoadingResponse: false,
             errorReceivingResponse: false,
@@ -21,7 +20,7 @@ class SubscribeMailingList extends  React.Component{
 
     submitContact = (event) => {
         event.preventDefault();
-        const { fullName, contactMessage, email } = this.state;
+        const { fullName, email } = this.state;
 
         this.setState({ isLoadingResponse: true });
         UtilsAPI.postGoogleScript({

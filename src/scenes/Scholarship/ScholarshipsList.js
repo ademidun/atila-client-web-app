@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {toTitleCase} from "../../services/utils";
+import {prettifyKeys, toTitleCase, transformFilterDisplay} from "../../services/utils";
 import ScholarshipCard from "./ScholarshipCard";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import {connect} from "react-redux";
@@ -87,8 +87,6 @@ class ScholarshipsList extends React.Component {
         const { scholarships } = this.state;
         let { searchPayload } = this.state;
 
-        console.log({searchPayload});
-
         if (userProfile && !searchPayload.searchString) {
             searchPayload = {
                 sort_by: "deadline",
@@ -141,9 +139,6 @@ class ScholarshipsList extends React.Component {
             userProfile,
         } = this.props;
 
-        console.log('event.target.name', event.target.name);
-        console.log('event.target.value', event.target.value);
-
         let updatedSearchPayload = searchPayload;
 
         if (event.target.name === 'filter_by_user') {
@@ -162,6 +157,9 @@ class ScholarshipsList extends React.Component {
                 ...searchPayload,
                 [event.target.name]: event.target.value
             }
+        } else {
+            delete updatedSearchPayload.filter_by_user;
+            delete updatedSearchPayload.filter_by_user_data;
         }
         this.setState({
             scholarships: null,
@@ -179,7 +177,7 @@ class ScholarshipsList extends React.Component {
 
         const { scholarships, isLoadingScholarships,
             totalScholarshipsCount, totalFunding,
-            errorGettingScholarships, isCompleteProfile} = this.state;
+            errorGettingScholarships, isCompleteProfile, searchPayload} = this.state;
 
         const searchString = params.get('q');
 
@@ -271,6 +269,12 @@ class ScholarshipsList extends React.Component {
                     {`${totalScholarshipsCount} Scholarships ${searchString ? `for ${toTitleCase(searchString)} ` : ''}found`}
                     <br />
                 </h1>
+                {searchPayload.filter_by_user &&
+                <h3 className="text-center">
+                    (Filtering by {prettifyKeys(searchPayload.filter_by_user)}: {' '}
+                    {transformFilterDisplay(searchPayload.filter_by_user, userProfile)} )
+                </h3>
+                }
                 <h2 className="text-center text-muted serif-font">
                     {totalFunding && `${totalFunding} in funding`}
                 </h2>
@@ -284,7 +288,7 @@ class ScholarshipsList extends React.Component {
                         Add a Scholarship
                     </Link>
                 </div>
-                <ScholarshipsListFilter model={userProfile} updateFilterBy={this.updateFilterOrSort} />
+                <ScholarshipsListFilter model={userProfile} updateFilterOrSortBy={this.updateFilterOrSort} />
                 <div className="mt-3">
                     {scholarships &&
                     scholarships.map( scholarship => <ScholarshipCard key={scholarship.id}

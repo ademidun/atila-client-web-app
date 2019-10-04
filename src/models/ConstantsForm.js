@@ -6,6 +6,7 @@ export const FILTER_TYPES = [
     'post_secondary_school',
     'ethnicity',
     'city',
+    'province',
     'country',
     'heritage',
     'religion',
@@ -16,7 +17,14 @@ export const FILTER_TYPES = [
     'sports',
     'disability',
     'language',
-    'province',
+];
+export const SORT_TYPES = [
+    'relevance_new',
+    // 'relevance',
+    'deadline',
+    'surprise_me',
+    // 'only_automated',
+    // 'currently_open'
 ];
 
 export const MAJORS_LIST = [
