@@ -6,20 +6,33 @@ import {Dropdown} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBookmark, faShareAlt, faMailBulk, faSms} from "@fortawesome/free-solid-svg-icons";
 import { faFacebookMessenger, faWhatsapp, faFacebook } from '@fortawesome/free-brands-svg-icons';
+import {toastNotify} from "../../models/Utils";
 
 class ScholarshipShareSaveButtons extends React.Component {
 
     constructor(props) {
         super(props);
 
+        const { userProfile, scholarship } = props;
+
+        let isSavedScholarship = false;
+        if (userProfile.saved_scholarships.includes(scholarship.id)) {
+            isSavedScholarship = true;
+        }
+
         this.state = {
-            isSavedScholarship: false
+            isSavedScholarship,
         }
     }
 
     saveScholarship = (event) => {
         event.preventDefault();
         const { isSavedScholarship } = this.state;
+
+        if (isSavedScholarship) {
+            toastNotify("You've already saved this scholarship 👌🏿");
+            return;
+        }
         this.setState({ isSavedScholarship: !isSavedScholarship });
 
     };
@@ -59,12 +72,12 @@ class ScholarshipShareSaveButtons extends React.Component {
             },
         ];
         return (
-            <React.Fragment>
-                <Dropdown className="d-inline mx-1">
+            <div className="mb-3 d-inline">
+                <Dropdown className="d-inline mx-3">
                     <Dropdown.Toggle variant="outline-primary"
                                      id="dropdown-basic"
                                      title="Share Scholarship">
-                        <FontAwesomeIcon className="cursor-pointer ml-1" icon={faShareAlt}/>
+                        <FontAwesomeIcon className="ml-1" icon={faShareAlt}/>
                     </Dropdown.Toggle>
 
                     <Dropdown.Menu className="w-auto">
@@ -73,7 +86,7 @@ class ScholarshipShareSaveButtons extends React.Component {
                                            key={shareItem.name}
                                            target="_blank"
                                            title={`Share on ${shareItem.name}`}>
-                                <FontAwesomeIcon className="cursor-pointer ml-1"
+                                <FontAwesomeIcon className="ml-1"
                                                  icon={shareItem.icon}/> {' '}
                                 {`Share on ${shareItem.name}`}
                             </Dropdown.Item>
@@ -82,10 +95,12 @@ class ScholarshipShareSaveButtons extends React.Component {
                 </Dropdown>
                 <button className={`btn ${isSavedScholarship ? 'btn-primary' : 'btn-outline-primary'}`}
                         onClick={this.saveScholarship}
-                        title="Save Scholarship" >
-                    <FontAwesomeIcon className="cursor-pointer ml-1" icon={faBookmark}/>
+                        disabled={isSavedScholarship}
+                        title={isSavedScholarship?
+                            "You've already saved this scholarship 👌🏿": 'Save Scholarship'} >
+                    <FontAwesomeIcon className="ml-1" icon={faBookmark}/>
                 </button>
-            </React.Fragment>
+            </div>
         );
     }
 }
