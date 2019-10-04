@@ -3,7 +3,7 @@ import request from "axios";
 import {getItemType} from "./utils";
 class AnalyticsService {
 
-    static pageViewsUrl = `${Environment.atilaMicroservicesNodeApiUrl}/page-views`;
+    static pageViewsUrl = `${Environment.apiUrlNodeMicroservice}/page-views`;
     static savePageView = (viewData, userProfile) => {
 
         const apiCompletionPromise = request({
@@ -12,12 +12,11 @@ class AnalyticsService {
             url: `${AnalyticsService.pageViewsUrl}`,
         });
 
-        return apiCompletionPromise;
+        return apiCompletionPromise.then(res=>{console.log({res})});
     };
 
 
     static transformViewData = (viewData, userProfile) => {
-
         let transformedViewData = {
             user_id: userProfile.user,
             item_type: getItemType(viewData),
