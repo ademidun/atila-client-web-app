@@ -7,6 +7,8 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBookmark, faShareAlt, faMailBulk, faSms} from "@fortawesome/free-solid-svg-icons";
 import { faFacebookMessenger, faWhatsapp, faFacebook } from '@fortawesome/free-brands-svg-icons';
 import {toastNotify} from "../../models/Utils";
+import NotificationsService from "../../services/NotificationsService";
+import {Link} from "react-router-dom";
 
 class ScholarshipShareSaveButtons extends React.Component {
 
@@ -28,11 +30,21 @@ class ScholarshipShareSaveButtons extends React.Component {
     saveScholarship = (event) => {
         event.preventDefault();
         const { isSavedScholarship } = this.state;
+        const { userProfile, scholarship } = this.state;
 
         if (isSavedScholarship) {
             toastNotify("You've already saved this scholarship 👌🏿");
             return;
         }
+
+        if (!userProfile) {
+            toastNotify((<p>You must<Link to="/register">Register</Link> to save a scholarship.</p>));
+            return;
+        }
+        NotificationsService.createScholarshipNotifications(userProfile, scholarship)
+            .then(res=> {
+                console.log({res});
+            });
         this.setState({ isSavedScholarship: !isSavedScholarship });
 
     };
