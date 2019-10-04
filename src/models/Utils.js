@@ -27,7 +27,7 @@ export const toastNotify = (message, messageType='info') => {
 
     const options = {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 50000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,

@@ -8,7 +8,7 @@ import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
 import Loading from "./components/Loading";
 
-import { toast } from 'react-toastify';
+import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Scholarship = loadable(() => import('./scenes/Scholarship/Scholarship'), {
@@ -49,7 +49,6 @@ const Register = loadable(() => import('./components/Register'), {
 });
 
 
-toast.configure();
 function App(props) {
     const {
         isLoadingLoggedInUserProfile,
@@ -59,6 +58,7 @@ function App(props) {
     return (
             <Router>
                 <div className="App">
+                    <ToastContainer />
                     <Navbar />
                     {isLoadingLoggedInUserProfile && <Loading loaderType="beat" title="" style={{ width: 'auto' }}/>}
                     {isFinishedLoadingLoggedInUserProfile &&

@@ -1,5 +1,6 @@
 import Environment from "./Environment";
 import request from "axios";
+import moment from "moment";
 
 class NotificationsService {
 
@@ -13,7 +14,7 @@ class NotificationsService {
     static getPermission() {
     console.log('NotificationsService.swPush', NotificationsService.swPush);
 
-    if (Environment .name === 'dev') {
+    if (Environment.name === 'dev') {
         // https://stackoverflow.com/questions/53810194/angular-7-pwa-swpush-push-notifications-not-working
         // https://github.com/ademidun/atila-angular/commit/55884135cff7507171eba4e68f93eb8621eee604
         return Promise.reject({error: 'swPush.requestSubscription does not work in DEV'});
@@ -65,7 +66,7 @@ class NotificationsService {
 
             console.log({fullMessagePayloads});
             return NotificationsService.postNotifications(fullMessagePayloads)
-                .map(res => res)
+                .then(res => res)
                 .catch(err => Promise.reject(err));
         })
         .catch((err) => {
@@ -79,7 +80,7 @@ class NotificationsService {
 
             console.log({fullMessagePayloads});
             return NotificationsService.postNotifications(fullMessagePayloads)
-                .map(res => res)
+                .then(res => res)
                 .catch(err2 => Promise.reject(err2));
         });
 }
@@ -97,8 +98,12 @@ class NotificationsService {
     
         const twoDaysAgo = new Date();
         twoDaysAgo.setDate(today.getDate() - 2);
-    
-        for (const notificationType of Object.keys(notificationOptions)) {
+
+        // the following line is redundant but I need to add it to get rid of the following warning
+        // ./src/services/NotificationsService.js
+        //   Line 102:  'notificationType' is defined but never used  no-unused-vars
+        let notificationType = null;
+        for (notificationType in notificationOptions) {
             if (!notificationOptions.hasOwnProperty(notificationType)) {
                 continue;
             }
@@ -123,7 +128,7 @@ class NotificationsService {
                 }
     
                 sendDate = sendDate.getTime();
-                const notificationConfig = {notificationType, sendDate, daysBeforeDeadline};
+                const notificationConfig = {notificationType: notificationType, sendDate, daysBeforeDeadline};
                 const notificationMessage = NotificationsService.createScholarshipNotificationMessage(userProfile, scholarship, notificationConfig);
     
                 const fullMessagePayload = {...sub, ...notificationMessage};
@@ -147,6 +152,7 @@ class NotificationsService {
         let createdAt = new Date(scholarship.deadline);
     
         createdAt = createdAt.getTime();
+        const deadlineString = moment(scholarship.deadline).format('dddd, MMMM DD, YYYY');
     
         const urlAnalyticsSuffix = `?utm_source=${notificationConfig.notificationType}&utm_medium=${notificationConfig.notificationType}`+
             `&utm_campaign=scholarship-due-remind-${notificationConfig.daysBeforeDeadline}`;
@@ -155,8 +161,8 @@ class NotificationsService {
             '1 day ': `${notificationConfig.daysBeforeDeadline} days `;
         const messageData = {
             title: `${userProfile.first_name}, a scholarship you saved: ${scholarship.name} is due in ${notificationConfig.daysBeforeDeadline}`+
-                `on ${NotificationsService.datePipe.transform(scholarship.deadline, 'fullDate')}`,
-            body: `Scholarship due on ${NotificationsService.datePipe.transform(scholarship.deadline, 'fullDate')}: ${scholarship.name}.
+                `on ${deadlineString}`,
+            body: `Scholarship due on ${deadlineString}: ${scholarship.name}.
            Submit your Application!`,
             clickAction: `https://atila.ca/scholarship/${scholarship.slug}/${urlAnalyticsSuffix}`,
             // todo: user scholarship.img_url, for now use Atila Logo to build brand awareness
@@ -174,11 +180,11 @@ class NotificationsService {
     
             messageData.body = `Hey ${userProfile.first_name},
           The scholarship you saved, ${scholarship.name} is due in ${notificationConfig.daysBeforeDeadline} on
-          ${NotificationsService.datePipe.transform(scholarship.deadline, 'fullDate')}. View Scholarship: ${messageData.clickAction}`;
+          ${deadlineString}. View Scholarship: ${messageData.clickAction}`;
     
             messageData.html = `Hey ${userProfile.first_name}, <br/> <br/>
           The scholarship you saved, <strong>${scholarship.name} is due in ${notificationConfig.daysBeforeDeadline} on
-          ${NotificationsService.datePipe.transform(scholarship.deadline, 'fullDate')}. </strong> <br/> <br/>
+          ${deadlineString}. </strong> <br/> <br/>
           <a href="${messageData.clickAction}">View Scholarship: ${scholarship.name}</a> <br/> <br/>`;
         }
     

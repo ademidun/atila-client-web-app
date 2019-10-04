@@ -30,7 +30,7 @@ class ScholarshipShareSaveButtons extends React.Component {
     saveScholarship = (event) => {
         event.preventDefault();
         const { isSavedScholarship } = this.state;
-        const { userProfile, scholarship } = this.state;
+        const { userProfile, scholarship } = this.props;
 
         if (isSavedScholarship) {
             toastNotify("You've already saved this scholarship 👌🏿");
@@ -38,7 +38,7 @@ class ScholarshipShareSaveButtons extends React.Component {
         }
 
         if (!userProfile) {
-            toastNotify((<p>You must<Link to="/register">Register</Link> to save a scholarship.</p>));
+            toastNotify((<p>You must <Link to="/register">Register</Link> to save a scholarship.</p>));
             return;
         }
         NotificationsService.createScholarshipNotifications(userProfile, scholarship)
