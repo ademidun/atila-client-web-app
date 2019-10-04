@@ -41,7 +41,6 @@ class ScholarshipsList extends React.Component {
             pageNumber: 1,
             totalScholarshipsCount: 0,
             totalFunding: null,
-            showSortAndFilterList: false,
             isCompleteProfile: !userProfile || isCompleteUserProfile(userProfile)
         }
     }
@@ -176,12 +175,9 @@ class ScholarshipsList extends React.Component {
         } = this.props;
         const params = new URLSearchParams(search);
 
-        const {
-            scholarships, isLoadingScholarships,
+        const { scholarships, isLoadingScholarships,
             totalScholarshipsCount, totalFunding,
-            errorGettingScholarships, isCompleteProfile, searchPayload,
-            showSortAndFilterList
-        } = this.state;
+            errorGettingScholarships, isCompleteProfile, searchPayload} = this.state;
 
         const searchString = params.get('q');
 
@@ -291,14 +287,8 @@ class ScholarshipsList extends React.Component {
                     <Link to={`/scholarship/add`} className="btn btn-link">
                         Add a Scholarship
                     </Link>
-                    <button className="btn btn-link"
-                            onClick={() => this.setState({showSortAndFilterList : !showSortAndFilterList})}>
-                        {showSortAndFilterList? 'Hide ': null} Sort or Filter Scholarships
-                    </button>
                 </div>
-                {showSortAndFilterList &&
-                    <ScholarshipsListFilter model={userProfile} updateFilterOrSortBy={this.updateFilterOrSort} />
-                }
+                <ScholarshipsListFilter model={userProfile} updateFilterOrSortBy={this.updateFilterOrSort} />
                 <div className="mt-3">
                     {scholarships &&
                     scholarships.map( scholarship => <ScholarshipCard key={scholarship.id}
