@@ -6,6 +6,7 @@ import './ContentDetail.scss';
 import Loading from "../Loading";
 import RelatedItems from "../RelatedItems";
 import {connect} from "react-redux";
+import AnalyticsService from "../../services/AnalyticsService";
 
 class ContentDetail extends React.Component {
 
@@ -47,16 +48,16 @@ class ContentDetail extends React.Component {
     }
 
     loadContent = () => {
-        const { ContentAPI, contentSlug } = this.props;
+        const { ContentAPI, contentSlug, userProfile } = this.props;
 
         ContentAPI.getSlug(contentSlug)
             .then(res => {
 
-                if (res.data.blog) {
-                    this.setState({content: res.data.blog});
-                }
-                else if( res.data.essay) {
-                    this.setState({content: res.data.essay});
+                const content = res.data.blog || res.data.essay;
+                this.setState({content});
+
+                if(userProfile) {
+                    AnalyticsService.savePageView(content, userProfile);
                 }
 
             })
