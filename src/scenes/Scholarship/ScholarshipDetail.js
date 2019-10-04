@@ -5,6 +5,8 @@ import moment from "moment";
 import {formatCurrency} from "../../services/utils";
 import Loading from "../../components/Loading";
 import RelatedItems from "../../components/RelatedItems";
+import {connect} from "react-redux";
+import AnalyticsService from "../../services/AnalyticsService";
 
 class ScholarshipDetail extends React.Component {
 
@@ -49,11 +51,14 @@ class ScholarshipDetail extends React.Component {
 
     loadContent = () => {
 
-        const { match : { params : { slug }} } = this.props;
+        const { match : { params : { slug }}, userProfile } = this.props;
         ScholarshipsAPI.getSlug(slug)
             .then(res => {
                 this.setState({ scholarship: res.data });
 
+                if(userProfile) {
+                    AnalyticsService.savePageView(res.data, userProfile);
+                }
             })
             .catch(err => {
                 this.setState({ errorLoadingScholarship: true });
@@ -153,5 +158,7 @@ class ScholarshipDetail extends React.Component {
         );
     }
 }
-
-export default ScholarshipDetail;
+const mapStateToProps = state => {
+    return { userProfile: state.data.user.loggedInUserProfile };
+};
+export default connect(mapStateToProps)(ScholarshipDetail);
