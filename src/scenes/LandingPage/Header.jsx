@@ -3,7 +3,7 @@ import { Row, Col, Icon, Menu, Popover } from 'antd';
 import './Header.scss'
 import { enquireScreen } from 'enquire-js';
 
-const LOGO_URL = 'https://gw.alipayobjects.com/zos/rmsportal/gVAKqIsuJCepKNbgbSwE.svg';
+const LOGO_URL = 'https://media.licdn.com/dms/image/C4E0BAQHhphCx0qIJZQ/company-logo_200_200/0?e=2159024400&v=beta&t=kUzq_m5OGXX6zVlDTPsxNJFZCKi9jL1P0OCLEkbqQ5s';
 
 class Header extends React.Component {
     state = {
@@ -58,10 +58,10 @@ class Header extends React.Component {
                 ) : null}
           <Row>
             <Col xxl={4} xl={5} lg={8} md={8} sm={24} xs={24}>
-              <div id="logo" to="/">
+              <h2 id="logo" to="/" className="serif-font">
                 <img src={LOGO_URL} alt="logo" />
-                <span>ANT DESIGN PRO</span>
-              </div>
+                <span>Atila</span>
+              </h2>
             </Col>
             <Col xxl={20} xl={19} lg={16} md={16} sm={0} xs={0}>
               <div className="header-meta">

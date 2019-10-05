@@ -5,6 +5,7 @@ import QueueAnim from 'rc-queue-anim';
 import ScrollParallax from 'rc-scroll-anim/lib/ScrollParallax';
 import { FormattedMessage } from 'react-intl';
 import BannerImage from './BannerImage';
+import Button from "antd/es/button";
 
 const loop = {
   duration: 3000,
@@ -49,11 +50,15 @@ class Banner extends React.PureComponent {
             type="bottom"
           >
             <h1 key="h1">
-              Atila Tech
+              Atila
             </h1>
-            <p key="p">
-              <FormattedMessage id="app.home.introduce" />
-            </p>
+            <h2 key="h2">
+              Easily find and apply to scholarships
+            </h2>
+
+            <Button type="primary">
+              Find Scholarships
+            </Button>
           </QueueAnim>
           {!isMobile && (
             <div className="img-wrapper" key="image">
