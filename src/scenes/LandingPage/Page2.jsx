@@ -6,6 +6,7 @@ import ScrollOverPack from 'rc-scroll-anim/lib/ScrollOverPack';
 import { FormattedMessage } from 'react-intl';
 
 import svgBgToParallax from './util';
+import {Link} from "react-router-dom";
 
 const page2Data = [
   {
@@ -68,8 +69,8 @@ const svgBgChildArray = svgBgChild.map((item, i) => {
 export default function Page2({ isMobile }) {
   const componentButton = (
     <div key="b" className="components-button-wrapper">
-      <a>Ant Design of React <Icon type="right" /></a>
-      <a>Ant Design of Angular <Icon type="right" /></a>
+      <Link to="/blog/atilaeng">Ant Design of React <Icon type="right" /></Link>
+      <Link to="/blog/atilaeng">Ant Design of Angular <Icon type="right" /></Link>
     </div>
   );
   const children = page2Data.map((item, i) => {
@@ -78,7 +79,9 @@ export default function Page2({ isMobile }) {
     }
     const content = isMobile && !i ? componentButton : [
       <p key="p">{item.slogan}</p>,
-      <a key="a">learn more <Icon type="right" /></a>,
+        <Link to="/blog/atila/what-is-atila" key="a">
+            learn more <Icon type="right" />
+        </Link>,
     ];
     return (
       <Row className="product-block" key={i.toString()}>
@@ -87,7 +90,8 @@ export default function Page2({ isMobile }) {
           md={i === 2 ? 6 : 8}
           className={`block-image-wrapper${i % 2 ? ' right' : ''}`}
         >
-          <img src={item.img} style={isMobile && i === 2 ? { marginLeft: 16 } : {}} />
+          <img src={item.img} alt={item.name}
+               style={isMobile && i === 2 ? { marginLeft: 16 } : {}} />
         </Col>
         <Col xs={16} md={i === 2 ? 18 : 16} className="block-text-wrapper">
           <h4>{item.name}</h4>

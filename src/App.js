@@ -4,7 +4,6 @@ import loadable from '@loadable/component';
 import 'bootstrap/dist/css/bootstrap.css';
 import {connect} from "react-redux";
 import LandingPage from "./scenes/LandingPage";
-import Header from "./scenes/LandingPage/Header";
 import Footer from "./scenes/LandingPage/Footer";
 import Loading from "./components/Loading";
 

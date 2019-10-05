@@ -14,7 +14,6 @@ import Dropdown from "react-bootstrap/Dropdown";
 import {faUser} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import Loading from "../Loading";
-import {Menu} from "antd";
 import Header from "../../scenes/LandingPage/Header";
 
 class Navbar extends React.Component {
