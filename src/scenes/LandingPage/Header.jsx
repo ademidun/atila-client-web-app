@@ -1,10 +1,12 @@
 import React from 'react';
+import PropTypes from "prop-types";
 import { Row, Col, Icon, Menu, Popover } from 'antd';
-import './Header.scss'
-import { enquireScreen } from 'enquire-js';
 import {Link, withRouter} from "react-router-dom";
-
-const LOGO_URL = 'https://media.licdn.com/dms/image/C4E0BAQHhphCx0qIJZQ/company-logo_200_200/0?e=2159024400&v=beta&t=kUzq_m5OGXX6zVlDTPsxNJFZCKi9jL1P0OCLEkbqQ5s';
+import {initializeLoggedInUserProfile, setLoggedInUserProfile} from "../../redux/actions/user";
+import {connect} from "react-redux";
+import SubMenu from "antd/es/menu/SubMenu";
+import './Header.scss'
+import UserProfileAPI from "../../services/UserProfileAPI";
 
 class Header extends React.Component {
     state = {
@@ -12,20 +14,18 @@ class Header extends React.Component {
         menuMode: 'horizontal',
     };
 
-    componentDidMount() {
-        enquireScreen((b) => {
-            this.setState({ menuMode: b ? 'inline' : 'horizontal' });
-        });
-    }
-
-    handleShowMenu = (event) => {
+    logout = event => {
         event.preventDefault();
-        const { menuVisible } = this.state;
-        this.setState({ menuVisible: !menuVisible });
+        const { setLoggedInUserProfile } = this.props;
+        setLoggedInUserProfile(null);
+        UserProfileAPI.logout();
+        this.props.history.push("/");
     };
 
     render() {
-        const { menuMode, menuVisible } = this.state;
+        const { menuMode } = this.state;
+        const { userProfile, isLoadingLoggedInUserProfile } = this.props;
+        const { location: { pathname, search } } = this.props;
 
         const menu = (
             <Menu mode={menuMode} id="nav" key="nav">
@@ -41,45 +41,75 @@ class Header extends React.Component {
                 <Menu.Item key="blogs">
                     <Link to="/blog">Blogs</Link>
                 </Menu.Item>
+
+                {!userProfile && !isLoadingLoggedInUserProfile &&
                 <Menu.Item key="login">
                     <strong>
-                        <Link to="/login">Login</Link>
+                        <Link to={`/login?redirect=${pathname}${search}`}
+                              className="nav-item">
+                            Login
+                        </Link>
                     </strong>
                 </Menu.Item>
+                }
+                {
+                    userProfile &&
+                    <SubMenu
+                        key="user"
+                        title={<Icon type="user" />}
+                    >
+                        <Menu.Item key="add-scholarship">
+                            <Link to="/scholarship/add">
+                                Add Scholarship
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item key="view-profile">
+                            <Link to={`/profile/${userProfile.username}`}>
+                                View Profile
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item key="edit-profile">
+                            <Link to={`/profile/${userProfile.username}/edit`}>
+                                Edit Profile
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item key="logout">
+                            <button onClick={this.logout}
+                                    className="btn btn-link"
+                                    style={{ display: 'inherit' }}
+                            >Logout</button></Menu.Item>
+                    </SubMenu>
+                }
             </Menu>
         );
 
         return (
-            <div id="header" className="header">
-                {menuMode === 'inline' ? (
-                    <Popover
-                        overlayClassName="popover-menu"
-                        placement="bottomRight"
-                        content={menu}
-                        trigger="click"
-                        visible={menuVisible}
-                        arrowPointAtCenter
-                        onVisibleChange={this.onMenuVisibleChange}
-                    >
-                        <Icon
-                            className="nav-phone-icon"
-                            type="menu"
-                            onClick={this.handleShowMenu}
-                        />
-                    </Popover>
-                ) : null}
+            <div id="header" className="header pt-2">
                 <Row>
-                    <Col xxl={4} xl={5} lg={8} md={8} sm={24} xs={24}>
-                        <h2 id="logo" className="serif-font">
+                    <Col xxl={4} xl={5} lg={8} md={8} sm={8} xs={0}>
+                        <h2 id="logo" className="serif-font text-center4">
                             <Link to="/">
-                                <img src={LOGO_URL} alt="logo" />
                                 <span>Atila</span>
                             </Link>
                         </h2>
                     </Col>
-                    <Col xxl={20} xl={19} lg={16} md={16} sm={0} xs={0}>
+                    <Col xxl={20} xl={19} lg={16} md={16} sm={16} xs={0}>
                         <div className="header-meta">
-                            {menuMode === 'horizontal' ? <div id="menu">{menu}</div> : null}
+                            <div id="menu">{menu}</div>
+                        </div>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col xxl={0} xl={0} lg={0} md={0} sm={0} xs={24}>
+                        <h2 id="logo" className="serif-font text-center ant-col-xs-24">
+                            <Link to="/">
+                                <span>Atila</span>
+                            </Link>
+                        </h2>
+                    </Col>
+                    <Col xxl={0} xl={0} lg={0} md={0} sm={0} xs={24}>
+                        <div className="header-meta">
+                            <div id="menu">{menu}</div>
                         </div>
                     </Col>
                 </Row>
@@ -88,4 +118,26 @@ class Header extends React.Component {
     }
 }
 
-export default withRouter(Header);
+Header.defaultProps = {
+    userProfile: null,
+    isLoadingLoggedInUserProfile: false,
+};
+
+Header.propTypes = {
+    initializeLoggedInUserProfile: PropTypes.func.isRequired,
+    setLoggedInUserProfile: PropTypes.func.isRequired,
+    userProfile: PropTypes.shape({}),
+    isLoadingLoggedInUserProfile: PropTypes.bool,
+};
+
+const mapStateToProps = state => {
+    return {
+        userProfile: state.data.user.loggedInUserProfile,
+        isLoadingLoggedInUserProfile: state.ui.user.isLoadingLoggedInUserProfile
+    };
+};
+const mapDispatchToProps = {
+    initializeLoggedInUserProfile,
+    setLoggedInUserProfile,
+};
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));

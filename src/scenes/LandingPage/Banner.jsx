@@ -83,7 +83,7 @@ class Banner extends React.Component {
               <BannerImage />
             </div>)}
           <QueueAnim
-            className="text-wrapper"
+            className="text-wrapper pt-5"
             key="text"
             type="bottom"
           >
@@ -106,7 +106,7 @@ class Banner extends React.Component {
                   />
 
                   <AutoComplete suggestions={masterList}
-                                placeholder={"Enter a search term"}
+                                placeholder={"Search by school, city, program, ethnicity or more"}
                                 onSelected={this.updateSearch}
                                 value={searchQuery}
                                 keyName={'searchString'}/>
@@ -130,7 +130,7 @@ class Banner extends React.Component {
                   </p>
                 </div>
                 <Button type="primary"
-                        className="center-block">
+                        className="center-block pt-3">
                   Find Scholarships
                 </Button>
               </div>

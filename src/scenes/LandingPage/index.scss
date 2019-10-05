@@ -75,12 +75,15 @@ $border-color: rgba(229, 231, 235, 100);
     z-index: 1;
   }
   .text-wrapper {
+    top: 0;
+    position: absolute;
     width: 65%;
     max-width: 600px;
     min-height: 320px;
-    color: #0D1A26;
+    color: #455358;
     h1 {
       font-size: 68px;
+      color: #455358;
       font-weight: 600;
       line-height: 76px;
       margin: 8px 0 28px;
