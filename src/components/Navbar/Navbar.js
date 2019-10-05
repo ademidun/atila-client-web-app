@@ -14,6 +14,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import {faUser} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import Loading from "../Loading";
+import {Menu} from "antd";
 
 class Navbar extends React.Component {
     constructor(props) {
@@ -58,6 +59,22 @@ class Navbar extends React.Component {
         const { userProfile, isLoadingLoggedInUserProfile } = this.props;
         const { location: { pathname, search } } = this.props;
 
+        if (false) {
+            return (<Menu mode={'horizontal'} id="nav" key="nav">
+                <Menu.Item key="essays">
+                    <Link to="/essay">Essays</Link>
+                </Menu.Item>
+                <Menu.Item key="blogs">
+                    <a><span>Blog</span></a>
+                </Menu.Item>
+                <Menu.Item key="scholarships">
+                    <a><span>Scholarships</span></a>
+                </Menu.Item>
+                <Menu.Item key="login">
+                    <strong><a>Login</a></strong>
+                </Menu.Item>
+            </Menu>)
+        }
         return (
             <React.Fragment>
                 <NavbarBootstrap bg="white" expand="md" className="Navbar px-5 serif-font">
@@ -110,7 +127,6 @@ class Navbar extends React.Component {
                     isLoadingLoggedInUserProfile &&
                     <Loading className="col-12" title="Loading UserProfile..." />
                 }
-                <hr style={{ margin: 0 }}/>
             </React.Fragment>
         );
     }

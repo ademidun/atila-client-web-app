@@ -180,7 +180,7 @@ export default class Page1 extends React.PureComponent {
             leave={this.leave}
             {...item.svgBg.props}
             component="svg"
-            resetStyleBool={false}
+            resetstylebool={false}
           >
             {(this.props.isMobile || isHover) && this.getSvgChild(item.svgBg.props.children)}
           </TweenOneGroup>

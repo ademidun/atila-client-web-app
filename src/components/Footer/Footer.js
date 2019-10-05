@@ -81,7 +81,7 @@ function Footer() {
                                         Follow @atilatech <FontAwesomeIcon icon={faInstagram} />
                                     </a>
                                 </li> <br />
-                                <li>Built with <span role="img" aria-label="clock emoji">
+                                <li>Built with <span role="img" aria-label="heaart emoji">
                                 ❤️
                             </span> By {' '}
                                     <a href="https://tech.atila.ca"

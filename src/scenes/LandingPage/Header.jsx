@@ -2,6 +2,7 @@ import React from 'react';
 import { Row, Col, Icon, Menu, Popover } from 'antd';
 import './Header.scss'
 import { enquireScreen } from 'enquire-js';
+import {Link, withRouter} from "react-router-dom";
 
 const LOGO_URL = 'https://media.licdn.com/dms/image/C4E0BAQHhphCx0qIJZQ/company-logo_200_200/0?e=2159024400&v=beta&t=kUzq_m5OGXX6zVlDTPsxNJFZCKi9jL1P0OCLEkbqQ5s';
 
@@ -23,7 +24,7 @@ class Header extends React.Component {
       const menu = (
         <Menu mode={menuMode} id="nav" key="nav">
           <Menu.Item key="essays">
-            <a>Essays</a>
+            <Link to="/essay">Essays</Link>
           </Menu.Item>
           <Menu.Item key="blogs">
             <a><span>Blog</span></a>
@@ -74,4 +75,4 @@ class Header extends React.Component {
     }
 }
 
-export default Header;
+export default withRouter(Header);
