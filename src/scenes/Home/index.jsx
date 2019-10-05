@@ -8,7 +8,8 @@ import Page2 from './Page2';
 import Page3 from './Page3';
 import Footer from './Footer';
 import cnLocale from './zh-CN';
-import './static/style';
+import './static/style.less';
+import "antd/lib/style/themes/default.less";
 
 let isMobile = false;
 enquireScreen((b) => {

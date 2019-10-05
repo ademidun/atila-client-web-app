@@ -1,16 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.scss';
-import App from './App';
+import 'antd/dist/antd.css';
 import * as serviceWorker from './serviceWorker';
 import {Provider} from "react-redux";
 import store from "./redux/store";
-import Home from "./scenes/Home";
+import LandingPageNew from "./scenes/LandingPageNew";
 
 ReactDOM.render(
 
     <Provider store={store}>
-    <Home />
+    <LandingPageNew />
     </Provider>
     , document.getElementById('root'));
 
