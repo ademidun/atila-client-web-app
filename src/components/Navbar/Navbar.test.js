@@ -10,12 +10,12 @@ import Navbar from './Navbar';
 import {UserProfileTest1} from "../../models/UserProfile";
 import {initialReduxState} from "../../models/Constants";
 
-describe('<Navbar />', () => {
-    it('renders without crashing', () => {
+describe.skip('<Navbar />', () => {
+    it.skip('renders without crashing', () => {
         shallow(<Navbar />);
     });
 
-    it('renders searchLink', () => {
+    it.skip('renders searchLink', () => {
         const store = mockStore(initialReduxState);
         const wrapper = mount(
             <MemoryRouter>
@@ -26,7 +26,7 @@ describe('<Navbar />', () => {
         expect(wrapper.find(Navbar).html()).toContain(searchLink);
     });
 
-    it('renders userprofile nav item', () => {
+    it.skip('renders userprofile nav item', () => {
         initialReduxState.data.user.loggedInUserProfile = UserProfileTest1;
         const store = mockStore(initialReduxState);
         const wrapper = mount(

@@ -13,26 +13,27 @@ import {Provider} from "react-redux";
 import {initialReduxState} from "./models/Constants";
 
 const store = mockStore(initialReduxState);
+describe.skip('<App />', () => {
+    test('renders without crashing', () => {
+        const wrapper = mount(
+            <MemoryRouter initialEntries={['/']}>
+                <Provider store={store}>
+                    <App/>
+                </Provider>
+            </MemoryRouter>
+        );
+        expect(wrapper.html()).toBeTruthy();
+    });
 
-it('renders without crashing', () => {
-    const wrapper = mount(
-        <MemoryRouter initialEntries={[ '/' ]}>
-            <Provider store={store}>
-                <App />
-            </Provider>
-        </MemoryRouter>
-    );
-    expect(wrapper.html()).toBeTruthy();
-});
-
-it('renders LandingPageOld', () => {
-    const wrapper = mount(
-        <MemoryRouter initialEntries={[ '/' ]}>
-            <Provider store={store}>
-                <App />
-            </Provider>
-        </MemoryRouter>
-    );
-    expect(wrapper.html()).toContain('Navbar');
-    expect(wrapper.find('.Navbar').at(0).html()).toContain('<nav');
+    test('renders LandingPageOld', () => {
+        const wrapper = mount(
+            <MemoryRouter initialEntries={['/']}>
+                <Provider store={store}>
+                    <App/>
+                </Provider>
+            </MemoryRouter>
+        );
+        expect(wrapper.html()).toContain('Navbar');
+        expect(wrapper.find('.Navbar').at(0).html()).toContain('<nav');
+    });
 });
