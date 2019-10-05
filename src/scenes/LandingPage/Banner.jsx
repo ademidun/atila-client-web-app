@@ -87,7 +87,7 @@ class Banner extends React.Component {
             key="text"
             type="bottom"
           >
-            <h1 key="h1">
+            <h1 key="h1" className="mt-sm-5">
               Atila
             </h1>
             <h2 key="h2">

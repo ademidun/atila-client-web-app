@@ -23,16 +23,11 @@ $border-color: rgba(229, 231, 235, 100);
     position: relative;
     padding: 0 24px;
     h2 {
-      font-size: 6vw;
-      line-height: 10vw;
+      font-size: 30px;
+      line-height: 40px;
       color: $home-text-color;
       text-align: center;
       font-weight: 400;
-    }
-    h1 {
-      font-size: 7vw;
-      line-height: 10vw;
-      color: $home-text-color;
     }
     h1,
     h2,
@@ -82,8 +77,9 @@ $border-color: rgba(229, 231, 235, 100);
   .text-wrapper {
     top: 0;
     position: absolute;
-    width: 65%;
-    max-width: 600px;
+    //width: 65%;
+    width: 420px;
+    max-width: 80%;
     min-height: 320px;
     color: #455358;
     h1 {
