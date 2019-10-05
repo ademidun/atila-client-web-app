@@ -2,7 +2,6 @@ import React from 'react';
 import { TweenOneGroup } from 'rc-tween-one';
 import QueueAnim from 'rc-queue-anim';
 import { Row, Col } from 'antd';
-import ScrollOverPack from 'rc-scroll-anim/lib/ScrollOverPack';
 import { Link } from 'bisheng/router';
 
 
@@ -204,7 +203,6 @@ export default class Page1 extends React.PureComponent {
       <div className="home-page-wrapper page1">
         <div className="page" >
           <h2>What is Atila?</h2>
-          <ScrollOverPack playScale="0.3">
             <QueueAnim
               component={Row}
               key="queue"
@@ -214,7 +212,6 @@ export default class Page1 extends React.PureComponent {
             >
               {children}
             </QueueAnim>
-          </ScrollOverPack>
         </div>
       </div>
     );

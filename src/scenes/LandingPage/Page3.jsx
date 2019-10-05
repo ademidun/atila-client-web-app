@@ -1,7 +1,6 @@
 import React from 'react';
 import { Row, Col } from 'antd';
 import QueueAnim from 'rc-queue-anim';
-import ScrollOverPack from 'rc-scroll-anim/lib/ScrollOverPack';
 import { FormattedMessage } from 'react-intl';
 import svgBgToParallax from './util';
 
@@ -57,11 +56,9 @@ export default function Page3() {
       </div>
       <div className="page" >
         <h2>工具&资源</h2>
-        <ScrollOverPack location="page3">
           <QueueAnim key="queue" component={Row} type="bottom" leaveReverse>
             {children}
           </QueueAnim>
-        </ScrollOverPack>
       </div>
     </div>
   );

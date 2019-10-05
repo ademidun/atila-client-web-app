@@ -1,7 +1,6 @@
 import React from 'react';
 import { Row, Col, Icon } from 'antd';
 import QueueAnim from 'rc-queue-anim';
-import ScrollOverPack from 'rc-scroll-anim/lib/ScrollOverPack';
 
 import { FormattedMessage } from 'react-intl';
 
@@ -104,7 +103,6 @@ export default function Page2({ isMobile }) {
     <div className="home-page-wrapper page2" id="page2">
       <div className="page" >
         <h2><FormattedMessage id="app.home.solution" /></h2>
-        <ScrollOverPack component={Row} className="page2-content" playScale="0.4">
           <QueueAnim
             component={Col}
             componentProps={{ xs: 24, md: 12 }}
@@ -127,7 +125,6 @@ export default function Page2({ isMobile }) {
           >
             {children}
           </QueueAnim>
-        </ScrollOverPack>
       </div>
       <div className="parallax-bg bottom" >
         {svgBgChildArray[0]}
