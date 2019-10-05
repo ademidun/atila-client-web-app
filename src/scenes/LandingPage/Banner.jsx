@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import TweenOne from 'rc-tween-one';
 import QueueAnim from 'rc-queue-anim';
 import ScrollParallax from 'rc-scroll-anim/lib/ScrollParallax';
-import { FormattedMessage } from 'react-intl';
 import BannerImage from './BannerImage';
 import Button from "antd/es/button";
 
@@ -16,10 +15,10 @@ const loop = {
 class Banner extends React.PureComponent {
   static propTypes = {
     className: PropTypes.string,
-  }
+  };
   static defaultProps = {
     className: 'banner',
-  }
+  };
   render() {
     const { className, isMobile } = this.props;
     return (
@@ -55,8 +54,7 @@ class Banner extends React.PureComponent {
             <h2 key="h2">
               Easily find and apply to scholarships
             </h2>
-
-            <Button type="primary">
+            <Button type="primary" className="center-block">
               Find Scholarships
             </Button>
           </QueueAnim>

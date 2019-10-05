@@ -9,7 +9,7 @@ $border-color: rgba(229, 231, 235, 100);
 .home-page-wrapper {
   width: 100%;
   padding: 0;
-  overflow: hidden;
+  overflow: hidden !important;
   position: relative; 
   // will-change: transform; // firefox 下渲染占用太大。
   color: $home-text-color;

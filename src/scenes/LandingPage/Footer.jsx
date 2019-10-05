@@ -1,10 +1,11 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Row, Col } from 'antd';
+import './Footer.scss';
 
 function Footer() {
   return (
-    <footer id="footer" className="dark">
+    <footer id="footer">
       <div className="footer-wrap">
         <Row>
           <Col md={6} sm={24} xs={24}>

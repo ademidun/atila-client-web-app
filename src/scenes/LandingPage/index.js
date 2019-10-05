@@ -3,7 +3,6 @@ import { enquireScreen } from 'enquire-js';
 import Header from './Header';
 import Banner from './Banner';
 import Footer from './Footer';
-import "antd/lib/style/themes/default.less";
 import 'antd/dist/antd.css';
 import {IntlProvider} from "react-intl";
 import cnLocale from "./zh-CN";
