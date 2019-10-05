@@ -7,6 +7,8 @@ import {connect} from "react-redux";
 import SubMenu from "antd/es/menu/SubMenu";
 import './Header.scss'
 import UserProfileAPI from "../../services/UserProfileAPI";
+import * as NavbarBootstrap from "react-bootstrap/Navbar";
+import Loading from "../../components/Loading";
 
 class Header extends React.Component {
     state = {
@@ -123,6 +125,10 @@ class Header extends React.Component {
                         </div>
                     </Col>
                 </Row>
+                {
+                    isLoadingLoggedInUserProfile &&
+                    <Loading className="col-12" title="Loading UserProfile..." />
+                }
             </div>
         );
     }
