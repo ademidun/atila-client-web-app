@@ -5,7 +5,7 @@ import QueueAnim from 'rc-queue-anim';
 import ScrollParallax from 'rc-scroll-anim/lib/ScrollParallax';
 import BannerImage from './BannerImage';
 import Button from "antd/es/button";
-import {Link} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 
 const loop = {
   duration: 3000,
@@ -137,4 +137,4 @@ class Banner extends React.Component {
   }
 }
 
-export default Banner;
+export default withRouter(Banner);

@@ -7,8 +7,9 @@ import cnLocale from "./zh-CN";
 function Footer() {
   return (
       <IntlProvider locale={cnLocale.locale} messages={cnLocale.messages}>
+        <hr />
         <footer id="footer">
-          <div className="footer-wrap">
+          <div className="footer-wrap p-md-3 p-lg-5">
             <Row>
               <Col md={6} sm={24} xs={24}>
                 <div className="footer-center">
