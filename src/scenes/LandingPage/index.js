@@ -6,7 +6,7 @@ import Footer from './Footer';
 import "antd/lib/style/themes/default.less";
 import 'antd/dist/antd.css';
 import {IntlProvider} from "react-intl";
-import cnLocale from "../HomeOld/zh-CN";
+import cnLocale from "./zh-CN";
 import Page1 from "./Page1";
 import Page2 from "./Page2";
 import Page3 from "./Page3";
