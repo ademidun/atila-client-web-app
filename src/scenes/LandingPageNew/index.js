@@ -6,7 +6,10 @@ import Footer from './Footer';
 import "antd/lib/style/themes/default.less";
 import 'antd/dist/antd.css';
 import {IntlProvider} from "react-intl";
-import cnLocale from "../Home/zh-CN";
+import cnLocale from "../HomeOld/zh-CN";
+import Page1 from "../HomeOld/Page1";
+import Page2 from "../HomeOld/Page2";
+import Page3 from "../HomeOld/Page3";
 
 let isMobile = false;
 enquireScreen((b) => {
@@ -36,6 +39,9 @@ class Home extends React.Component {
                 <div className="page-wrapper home">
                     <Header />
                     <Banner isMobile={this.state.isMobile} />
+                    <Page1 isMobile={this.state.isMobile} />
+                    <Page2 isMobile={this.state.isMobile} />
+                    <Page3 />
                     <Footer />
                 </div>
             </IntlProvider>
