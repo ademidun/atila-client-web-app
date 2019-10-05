@@ -5,11 +5,12 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import {Provider} from "react-redux";
 import store from "./redux/store";
+import Home from "./scenes/Home";
 
 ReactDOM.render(
 
     <Provider store={store}>
-    <App />
+    <Home />
     </Provider>
     , document.getElementById('root'));
 
