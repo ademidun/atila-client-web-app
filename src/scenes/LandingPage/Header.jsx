@@ -7,7 +7,6 @@ import {connect} from "react-redux";
 import SubMenu from "antd/es/menu/SubMenu";
 import './Header.scss'
 import UserProfileAPI from "../../services/UserProfileAPI";
-import * as NavbarBootstrap from "react-bootstrap/Navbar";
 import Loading from "../../components/Loading";
 
 class Header extends React.Component {
