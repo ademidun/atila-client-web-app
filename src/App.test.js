@@ -13,7 +13,7 @@ import {Provider} from "react-redux";
 import {initialReduxState} from "./models/Constants";
 
 const store = mockStore(initialReduxState);
-describe.skip('<App />', () => {
+describe('<App />', () => {
     test('renders without crashing', () => {
         const wrapper = mount(
             <MemoryRouter initialEntries={['/']}>

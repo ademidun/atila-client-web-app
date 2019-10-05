@@ -10,7 +10,7 @@ import Navbar from './Navbar';
 import {UserProfileTest1} from "../../models/UserProfile";
 import {initialReduxState} from "../../models/Constants";
 
-describe.skip('<Navbar />', () => {
+describe('<Navbar />', () => {
     it.skip('renders without crashing', () => {
         shallow(<Navbar />);
     });
