@@ -22,7 +22,7 @@ class Search extends React.Component {
             searchQuery,
             prevSearchQuery: null,
             searchResults: null,
-            isLoadingResponse: true,
+            isLoadingResponse: !!searchQuery,
             responseError: null,
             responseOkMessage: null,
         }
@@ -93,7 +93,9 @@ class Search extends React.Component {
             pathname: '/search',
             search: `?q=${searchQuery}`
         });
-        this.loadItems();
+        this.setState({ isLoadingResponse: true }, () => {
+            this.loadItems();
+        });
     };
 
     render () {
