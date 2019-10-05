@@ -2,7 +2,7 @@ import React from 'react';
 import { enquireScreen } from 'enquire-js';
 import Banner from './Banner';
 import 'antd/dist/antd.css';
-import Page1 from "./Page1";
+import WhatIsAtila from "./WhatIsAtila";
 import Page2 from "./Page2";
 import Page3 from "./Page3";
 import {IntlProvider} from "react-intl";
@@ -33,7 +33,7 @@ class LandingPage extends React.Component {
             <IntlProvider locale={cnLocale.locale} messages={cnLocale.messages}>
                 <div className="page-wrapper home">
                     <Banner isMobile={this.state.isMobile} />
-                    <Page1 isMobile={this.state.isMobile} />
+                    <WhatIsAtila isMobile={this.state.isMobile} />
                     <Page2 isMobile={this.state.isMobile} />
                     <Page3 />
                 </div>

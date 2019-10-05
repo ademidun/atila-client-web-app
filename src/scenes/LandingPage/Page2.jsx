@@ -77,7 +77,7 @@ export default function Page2({ isMobile }) {
       return null;
     }
     const content = isMobile && !i ? componentButton : [
-      <p key="p">{item.slogan}</p>,
+        <span key={item.name}>{item.slogan}</span>,
         <Link to="/blog/atila/what-is-atila" key="a">
             learn more <Icon type="right" />
         </Link>,
@@ -114,7 +114,7 @@ export default function Page2({ isMobile }) {
             leaveReverse
           >
             <h3 key="h1">Finding Scholarships Takes Too Long</h3>
-            <p key="p">
+            <div key="p">
                 <ul>
                     <li>
                         Over 5 million scholarships are available in Canada every year.
@@ -127,18 +127,20 @@ export default function Page2({ isMobile }) {
                     </li>
                 </ul>
 
-            </p>
+            </div>
             {componentButton}
           </QueueAnim>
           <QueueAnim
-            component={Col}
-            componentProps={{ xs: 24, md: 12 }}
-            className="page2-product"
-            key="right"
-            type="bottom"
-            leaveReverse
+              component={Col}
+              componentProps={{ xs: 24, md: 12 }}
+              className="page2-product"
+              key="right"
+              type="bottom"
+              leaveReverse
           >
-            {children}
+              <h4>With Atila</h4>
+              <hr />
+              {children}
           </QueueAnim>
       </div>
       <div className="parallax-bg bottom" >

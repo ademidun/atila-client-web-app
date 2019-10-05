@@ -15,6 +15,12 @@ of Globalization
 https://stackoverflow.com/questions/44227090/how-to-use-less-preprocessor-in-react-create-react-app
 
 
+### Update Landing Page Copy
+
+- Making some changes to overhaul, I am modifying the Atila elevator pitch to:
+"Atila increases your chances of getting more money for school by making it easy to find and apply to scholarships."
+
+
 
 
 ## October 3, 2019
