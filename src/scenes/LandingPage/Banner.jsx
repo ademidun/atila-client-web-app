@@ -83,7 +83,7 @@ class Banner extends React.Component {
               <BannerImage />
             </div>)}
           <QueueAnim
-            className="text-wrapper pt-5"
+            className="text-wrapper responsive-text"
             key="text"
             type="bottom"
           >
@@ -130,7 +130,7 @@ class Banner extends React.Component {
                   </p>
                 </div>
                 <Button type="primary"
-                        className="center-block pt-3">
+                        className="center-block mt-3">
                   Find Scholarships
                 </Button>
               </div>
