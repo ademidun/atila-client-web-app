@@ -4,12 +4,10 @@ import QueueAnim from 'rc-queue-anim';
 import { Row, Col } from 'antd';
 import { Link } from 'bisheng/router';
 
-
 const page1Data = [
   {
     img: 'https://gw.alipayobjects.com/zos/rmsportal/URIeCOKLMAbRXaeXoNqN.svg',
-    name: '设计价值观',
-    nameEn: 'Design Values',
+    nameEn: 'Over 5 million Scholarships open in Canada Every Year',
     svgBg: (
       <svg width="213px" height="303px" viewBox="0 0 213 303" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
         <circle id="Oval-12-Copy-6" fill="#1D39C4" opacity="0.45" cx="60" cy="157" r="25" />
@@ -31,8 +29,7 @@ const page1Data = [
   },
   {
     img: 'https://gw.alipayobjects.com/zos/rmsportal/qXncdwwUTTgUFnsbCNCE.svg',
-    name: '视觉',
-    nameEn: 'Visual',
+    nameEn: 'Finding the ones you qualify for takes long',
     svgBg: (
       <svg width="207px" height="295px" viewBox="0 0 207 295" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
         <rect id="Rectangle-14" stroke="#1D39C4" opacity="0.7" x="192.5" y="62.5" width="14" height="14" rx="1" />
@@ -52,8 +49,7 @@ const page1Data = [
   },
   {
     img: 'https://gw.alipayobjects.com/zos/rmsportal/YFXXZocxAgjReehpPNbX.svg',
-    name: '可视化',
-    nameEn: 'Visualisation',
+    nameEn: 'Atila Searches all the Scholarships and matches the right ones for you',
     svgBg: (
       <svg width="215px" height="286px" viewBox="0 0 215 286" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd" style={{ transform: 'translateX(-30px)' }}>
         <circle id="Oval-12-Copy-4" fill="#1D39C4" opacity="0.35" cx="77" cy="152" r="10" />
@@ -73,8 +69,7 @@ const page1Data = [
   },
   {
     img: 'https://gw.alipayobjects.com/zos/rmsportal/VPuetGsvJuYBwoDkZWFW.svg',
-    name: '动效',
-    nameEn: 'Animation',
+    nameEn: "We'll notify you when new scholarships you qualify for are open",
     svgBg: (
       <svg width="193px" height="286px" viewBox="0 0 193 286" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd" style={{ transform: 'translateY(-20px)' }}>
         <circle id="Oval-12-Copy-4" fill="#1D39C4" opacity="0.35" cx="71" cy="65" r="10" />
@@ -92,6 +87,21 @@ const page1Data = [
       </svg>
     ),
   },
+];
+
+const atilaThreeThings = [
+    {
+        img: (<span role="img" aria-label="magnifying glass emoji">🔎</span>),
+        nameEn: 'Makes it easy to find scholarships',
+    },
+    {
+        img: (<span role="img" aria-label="magnifying glass emoji">😌</span>),
+        nameEn: 'Makes it Easy to apply for scholarships',
+    },
+    {
+        img: (<span role="img" aria-label="money face emoji">🤑</span>),
+        nameEn: 'Increase your Chances of Getting More Money',
+    },
 ];
 
 const getTransformXY = (t) => {
@@ -117,17 +127,17 @@ const svgToXY = page1Data.map((item) => {
 export default class Page1 extends React.PureComponent {
   state = {
     hoverKey: null,
-  }
+  };
   onMouseOver = (key) => {
     this.setState({
       hoverKey: key,
     });
-  }
+  };
   onMouseOut = () => {
     this.setState({
       hoverKey: null,
     });
-  }
+  };
   getEnter = (i, e) => {
     const ii = e.index;
     const r = (Math.random() * 2) - 1;
@@ -199,10 +209,45 @@ export default class Page1 extends React.PureComponent {
         </Col>
       );
     });
+    const threeThingsChildren = atilaThreeThings.map((item) => {
+      return (
+        <Col key={item.nameEn} md={8} xs={24}>
+          <QueueAnim
+            className="page1-block"
+            type="bottom"
+            component={Link}
+            componentProps={{ to: item.to }}
+            onMouseEnter={() => { this.onMouseOver(item.nameEn); }}
+            onMouseLeave={this.onMouseOut}
+          >
+            <div className="page1-image font-size-40px">
+              {item.img}
+            </div>
+            <h3 >{item.name}</h3>
+            <p>{item.nameEn}</p>
+          </QueueAnim>
+        </Col>
+      );
+    });
     return (
       <div className="home-page-wrapper page1">
         <div className="page" >
           <h2>What is Atila?</h2>
+            <h4 className="text-center text-white p-5">
+                Atila Makes it easy for students to find and apply to scholarships
+                and increase their chances of getting more money for school.
+            </h4>
+            <h2>Atila Does 3<sup>*</sup> Things</h2>
+            <QueueAnim
+              component={Row}
+              key="queue"
+              type="bottom"
+              ease={['easeOutQuart', 'easeInQuart']}
+              leaveReverse
+            >
+              {threeThingsChildren}
+            </QueueAnim>
+            <h2>How Do We Make it Easy to Find Scholarships?</h2>
             <QueueAnim
               component={Row}
               key="queue"

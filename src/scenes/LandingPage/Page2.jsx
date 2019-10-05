@@ -2,8 +2,6 @@ import React from 'react';
 import { Row, Col, Icon } from 'antd';
 import QueueAnim from 'rc-queue-anim';
 
-import { FormattedMessage } from 'react-intl';
-
 import svgBgToParallax from './util';
 import {Link} from "react-router-dom";
 
@@ -14,18 +12,20 @@ const page2Data = [
   },
   {
     img: 'https://gw.alipayobjects.com/zos/rmsportal/EPaPtDVGnJhyqyBAUZMl.svg',
-    name: 'Ant Design Pro',
-    slogan: (<FormattedMessage id="app.home.product-pro-slogan" />),
+    name: 'Scholarships Matched to Your Profile',
+      slogan: (<p>
+          Find customized scholarships based on your gender, ethnicity, school, program and more.
+      </p>),
   },
   {
     img: 'https://gw.alipayobjects.com/zos/rmsportal/GobRAKexhfTSJdLFzDFY.svg',
-    name: 'Ant Design Mobile',
-    slogan: (<FormattedMessage id="app.home.product-mobile-slogan" />),
+    name: "We'll notify you of new ones",
+      slogan: (<p>When a new scholarship you qualify for opens up, we'll let you know</p>),
   },
   {
     img: 'https://gw.alipayobjects.com/zos/rmsportal/slVtnOCcgeAcLEPwtewY.svg',
-    name: 'AntV',
-    slogan: (<FormattedMessage id="app.home.product-antv-slogan" />),
+    name: 'Suggest Similar Scholarships',
+      slogan: (<p>Applied to a scholarship in the past? We'll recommend similar scholarships</p>),
   },
 ];
 
@@ -101,8 +101,10 @@ export default function Page2({ isMobile }) {
   });
   return (
     <div className="home-page-wrapper page2" id="page2">
-      <div className="page" >
-        <h2><FormattedMessage id="app.home.solution" /></h2>
+      <div className="page mt-5" >
+        <h2>
+            How Does Atila Make it Easy to Find Scholarships?
+        </h2>
           <QueueAnim
             component={Col}
             componentProps={{ xs: 24, md: 12 }}
@@ -111,8 +113,21 @@ export default function Page2({ isMobile }) {
             type="bottom"
             leaveReverse
           >
-            <h3 key="h1">Ant Design Components</h3>
-            <p key="p"><FormattedMessage id="app.home.components-explain" /></p>
+            <h3 key="h1">Finding Scholarships Takes Too Long</h3>
+            <p key="p">
+                <ul>
+                    <li>
+                        Over 5 million scholarships are available in Canada every year.
+                    </li>
+                    <li>
+                        But you only qualify for a small percentage of those scholarships.
+                    </li>
+                    <li>
+                        Atila saves you time. By finding exactly the ones you qualify for.
+                    </li>
+                </ul>
+
+            </p>
             {componentButton}
           </QueueAnim>
           <QueueAnim

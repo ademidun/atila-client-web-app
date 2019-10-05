@@ -78,7 +78,10 @@ class Banner extends React.Component {
               Atila
             </h1>
             <h2 key="h2">
-              Easily find and apply to scholarships
+              Increase your chances of getting more money for school {' '}
+              <span role="img" aria-label="money emoji">
+                🤑
+              </span>
             </h2>
             <form className="col-sm-12 p-3 search-box"
                   onSubmit={this.onSubmit}>
