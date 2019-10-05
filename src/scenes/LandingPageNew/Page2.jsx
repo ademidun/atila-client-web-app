@@ -5,7 +5,7 @@ import ScrollOverPack from 'rc-scroll-anim/lib/ScrollOverPack';
 
 import { FormattedMessage } from 'react-intl';
 
-import svgBgToParallax from './util';
+import svgBgToParallax from '../HomeOld/util';
 
 const page2Data = [
   {

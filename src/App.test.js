@@ -25,7 +25,7 @@ it('renders without crashing', () => {
     expect(wrapper.html()).toBeTruthy();
 });
 
-it('renders LandingPage', () => {
+it('renders LandingPageOld', () => {
     const wrapper = mount(
         <MemoryRouter initialEntries={[ '/' ]}>
             <Provider store={store}>

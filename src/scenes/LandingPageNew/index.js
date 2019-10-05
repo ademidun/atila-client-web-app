@@ -7,9 +7,9 @@ import "antd/lib/style/themes/default.less";
 import 'antd/dist/antd.css';
 import {IntlProvider} from "react-intl";
 import cnLocale from "../HomeOld/zh-CN";
-import Page1 from "../HomeOld/Page1";
-import Page2 from "../HomeOld/Page2";
-import Page3 from "../HomeOld/Page3";
+import Page1 from "./Page1";
+import Page2 from "./Page2";
+import Page3 from "./Page3";
 
 let isMobile = false;
 enquireScreen((b) => {

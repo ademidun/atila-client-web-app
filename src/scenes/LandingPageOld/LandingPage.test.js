@@ -6,7 +6,7 @@ configure({ adapter: new Adapter() });
 
 import LandingPage from './LandingPage';
 
-describe('<LandingPage />', () => {
+describe('<LandingPageOld />', () => {
     it('renders without crashing', () => {
         shallow(<LandingPage />);
     });

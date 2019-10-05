@@ -3,7 +3,7 @@ import { Row, Col } from 'antd';
 import QueueAnim from 'rc-queue-anim';
 import ScrollOverPack from 'rc-scroll-anim/lib/ScrollOverPack';
 import { FormattedMessage } from 'react-intl';
-import svgBgToParallax from './util';
+import svgBgToParallax from '../HomeOld/util';
 
 const page3Data = [
   {
