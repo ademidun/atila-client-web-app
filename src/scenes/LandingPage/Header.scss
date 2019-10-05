@@ -7,7 +7,7 @@ $menu-item-border: 2px;
 header {
   transition: all 0.3s;
   background: #fff;
-  box-shadow: 0 2px 8px rgba(240, 241, 242, 65);
+  box-shadow: none;
   position: relative;
   z-index: 10;
   overflow: hidden;
@@ -30,6 +30,10 @@ header {
       position: relative;
       top: 1px;
     }
+  }
+
+  a:hover {
+    text-decoration: none;
   }
 }
 

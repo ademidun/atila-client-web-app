@@ -18,22 +18,30 @@ class Header extends React.Component {
       });
     }
 
+    handleShowMenu = (event) => {
+        event.preventDefault();
+        const { menuVisible } = this.state;
+        this.setState({ menuVisible: !menuVisible });
+    };
+
     render() {
       const { menuMode, menuVisible } = this.state;
 
       const menu = (
         <Menu mode={menuMode} id="nav" key="nav">
+            <Menu.Item key="scholarships">
+                <Link to="/scholarship">Scholarships</Link>
+        </Menu.Item>
           <Menu.Item key="essays">
             <Link to="/essay">Essays</Link>
           </Menu.Item>
           <Menu.Item key="blogs">
-            <a><span>Blog</span></a>
-          </Menu.Item>
-          <Menu.Item key="scholarships">
-            <a><span>Scholarships</span></a>
+              <Link to="/blog">Blogs</Link>
           </Menu.Item>
           <Menu.Item key="login">
-            <strong><a>Login</a></strong>
+              <strong>
+                  <Link to="/login">Login</Link>
+              </strong>
           </Menu.Item>
         </Menu>
       );
@@ -59,9 +67,11 @@ class Header extends React.Component {
                 ) : null}
           <Row>
             <Col xxl={4} xl={5} lg={8} md={8} sm={24} xs={24}>
-              <h2 id="logo" to="/" className="serif-font">
-                <img src={LOGO_URL} alt="logo" />
-                <span>Atila</span>
+              <h2 id="logo" className="serif-font">
+                  <Link to="/">
+                    <img src={LOGO_URL} alt="logo" />
+                    <span>Atila</span>
+                  </Link>
               </h2>
             </Col>
             <Col xxl={20} xl={19} lg={16} md={16} sm={0} xs={0}>

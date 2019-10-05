@@ -193,7 +193,7 @@ export default class Page1 extends React.PureComponent {
             onMouseLeave={this.onMouseOut}
           >
             <div className="page1-image">
-              <img src={item.img} />
+              <img src={item.img} alt={item.name} />
             </div>
             <h3 >{item.name}</h3>
             <p>{item.nameEn}</p>
@@ -204,7 +204,7 @@ export default class Page1 extends React.PureComponent {
     return (
       <div className="home-page-wrapper page1">
         <div className="page" >
-          <h2><FormattedMessage id="app.home.design-language" /></h2>
+          <h2>What is Atila?</h2>
           <ScrollOverPack playScale="0.3">
             <QueueAnim
               component={Row}

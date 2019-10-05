@@ -13,15 +13,40 @@ const loop = {
   repeat: -1,
 };
 
-class Banner extends React.PureComponent {
+class Banner extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      model: null,
+      searchQuery: '',
+    }
+  };
+
   static propTypes = {
     className: PropTypes.string,
   };
+
   static defaultProps = {
     className: 'banner',
   };
+
+  onSubmit = event => {
+    event.preventDefault();
+    const { searchQuery } = this.state;
+    this.props.history.push(`/scholarship?q=${searchQuery}`);
+  };
+
+  updateSearch = event => {
+    event.preventDefault();
+    this.setState({searchQuery: event.target.value});
+  };
+
   render() {
     const { className, isMobile } = this.props;
+    const  { searchQuery } = this.state;
+
     return (
       <div className="home-page-wrapper banner-wrapper" id="banner">
         <div className="banner-bg-wrapper">
@@ -55,9 +80,52 @@ class Banner extends React.PureComponent {
             <h2 key="h2">
               Easily find and apply to scholarships
             </h2>
-            <Button type="primary" className="center-block">
-              Find Scholarships
-            </Button>
+            <form className="col-sm-12 p-3 search-box"
+                  onSubmit={this.onSubmit}>
+              <div className="row justify-content-center preview-questions">
+
+                <div className="search-box">
+
+                  <div className="col-sm-12 input-field">
+                    <label className="active" id="typeahead-label"
+                           style={{ fontSize: '30px' }}
+                    />
+                    <input
+                        className="form-control" id="typeahead-config"
+                        type="text" tabIndex="0" placeholder="Enter a search term"
+                        name="searchString"
+                        onChange={this.updateSearch}/>
+                  </div>
+                  <div className="col-sm-12 pt-3">
+                    <p>Sample Searches:{' '}
+                      <Link to="/scholarship?q=engineering">
+                        Engineering</Link>,{' '}
+                      <Link to="/scholarship?q=female">
+                        Female</Link>,{' '}
+                      <Link to="/scholarship?q=ontario">
+                        Ontario</Link>,{' '}
+                      <Link to="/scholarship?q=toronto">
+                        Toronto</Link>,{' '}
+                      <Link to="/scholarship?q=black">
+                        Black</Link> ,{' '}
+                      <Link to="/scholarship?q=medical%20school">
+                        Medical School</Link>{' '}
+                    </p>
+                  </div>
+
+                </div>
+              </div>
+              <div className="" style={{ textAlign: 'center' }}>
+
+                <Button type="primary"
+                        className="center-block">
+                  Find Scholarships
+                </Button>
+                  <Link to={`/scholarship?q=${searchQuery}`} className="text-white">
+                    Get My Scholarships
+                  </Link>
+              </div>
+            </form>
           </QueueAnim>
           {!isMobile && (
             <div className="img-wrapper" key="image">

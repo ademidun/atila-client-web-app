@@ -15,6 +15,7 @@ import {faUser} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import Loading from "../Loading";
 import {Menu} from "antd";
+import Header from "../../scenes/LandingPage/Header";
 
 class Navbar extends React.Component {
     constructor(props) {
@@ -59,21 +60,8 @@ class Navbar extends React.Component {
         const { userProfile, isLoadingLoggedInUserProfile } = this.props;
         const { location: { pathname, search } } = this.props;
 
-        if (false) {
-            return (<Menu mode={'horizontal'} id="nav" key="nav">
-                <Menu.Item key="essays">
-                    <Link to="/essay">Essays</Link>
-                </Menu.Item>
-                <Menu.Item key="blogs">
-                    <a><span>Blog</span></a>
-                </Menu.Item>
-                <Menu.Item key="scholarships">
-                    <a><span>Scholarships</span></a>
-                </Menu.Item>
-                <Menu.Item key="login">
-                    <strong><a>Login</a></strong>
-                </Menu.Item>
-            </Menu>)
+        if (true) {
+            return (<Header />)
         }
         return (
             <React.Fragment>

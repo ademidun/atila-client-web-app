@@ -238,7 +238,6 @@ class LandingPage extends React.Component {
                                 </Link>
                             </button>
                         </div>
-
                     </form>
                 </div>
                 <HowItWorks />
