@@ -6,12 +6,17 @@ import ScrollParallax from 'rc-scroll-anim/lib/ScrollParallax';
 import BannerImage from './BannerImage';
 import Button from "antd/es/button";
 import {Link, withRouter} from "react-router-dom";
+import AutoComplete from "../../components/AutoComplete";
+import {MASTER_LIST_EVERYTHING} from "../../models/ConstantsForm";
 
 const loop = {
   duration: 3000,
   yoyo: true,
   repeat: -1,
 };
+
+
+const masterList = MASTER_LIST_EVERYTHING.map(item => item.toLowerCase());
 
 class Banner extends React.Component {
 
@@ -40,7 +45,15 @@ class Banner extends React.Component {
 
   updateSearch = event => {
     event.preventDefault();
+    event.persist();
+    console.log({event});
     this.setState({searchQuery: event.target.value});
+
+    if (event.key === 'Enter' || event.type === 'click') {
+      // the only click event that can trigger updateSearch is when autocomplete item is selected
+      this.props.history.push(`/scholarship?q=${event.target.value}`);
+    }
+
   };
 
   render() {
@@ -83,50 +96,43 @@ class Banner extends React.Component {
                 🤑
               </span>
             </h2>
-            <form className="col-sm-12 p-3 search-box"
-                  onSubmit={this.onSubmit}>
-              <div className="row justify-content-center preview-questions">
+            <form className="col-sm-12"
+                  onSubmit={this.onSubmit}
+                  style={{ height: '300px'}}>
+              <div className="row">
+                <div className="col-sm-12 input-field">
+                  <label className="active" id="typeahead-label"
+                         style={{ fontSize: '30px' }}
+                  />
 
-                <div className="search-box">
-
-                  <div className="col-sm-12 input-field">
-                    <label className="active" id="typeahead-label"
-                           style={{ fontSize: '30px' }}
-                    />
-                    <input
-                        className="form-control" id="typeahead-config"
-                        type="text" tabIndex="0" placeholder="Enter a search term"
-                        name="searchString"
-                        onChange={this.updateSearch}/>
-                  </div>
-                  <div className="col-sm-12 pt-3">
-                    <p>Sample Searches:{' '}
-                      <Link to="/scholarship?q=engineering">
-                        Engineering</Link>,{' '}
-                      <Link to="/scholarship?q=female">
-                        Female</Link>,{' '}
-                      <Link to="/scholarship?q=ontario">
-                        Ontario</Link>,{' '}
-                      <Link to="/scholarship?q=toronto">
-                        Toronto</Link>,{' '}
-                      <Link to="/scholarship?q=black">
-                        Black</Link> ,{' '}
-                      <Link to="/scholarship?q=medical%20school">
-                        Medical School</Link>{' '}
-                    </p>
-                  </div>
-
+                  <AutoComplete suggestions={masterList}
+                                placeholder={"Enter a search term"}
+                                onSelected={this.updateSearch}
+                                value={searchQuery}
+                                keyName={'searchString'}/>
                 </div>
-              </div>
-              <div className="" style={{ textAlign: 'center' }}>
-
+                <div className="col-sm-12">
+                  <p className="mb-0">Sample Searches:{' '}
+                    <Link to="/scholarship?q=engineering">
+                      Engineering</Link>,{' '}
+                    <Link to="/scholarship?q=female">
+                      Female</Link>,{' '}
+                    <Link to="/scholarship?q=ontario">
+                      Ontario</Link>,{' '}
+                    <Link to="/scholarship?q=toronto">
+                      Toronto</Link>,{' '}
+                    <Link to="/scholarship?q=black">
+                      Black</Link> ,{' '}
+                    <Link to="/scholarship?q=medical%20school">
+                      Medical School</Link>{' '},
+                    <Link to="/scholarship?q=University of Western Ontario">
+                      University of Western Ontario</Link>
+                  </p>
+                </div>
                 <Button type="primary"
                         className="center-block">
                   Find Scholarships
                 </Button>
-                  <Link to={`/scholarship?q=${searchQuery}`} className="text-white">
-                    Get My Scholarships
-                  </Link>
               </div>
             </form>
           </QueueAnim>

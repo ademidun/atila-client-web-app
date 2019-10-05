@@ -7,6 +7,7 @@ $padding-space: 144px;
 $border-color: rgba(229, 231, 235, 100);
 
 .home-page-wrapper {
+  height: 750px;
   width: 100%;
   padding: 0;
   overflow: hidden !important;
@@ -74,7 +75,7 @@ $border-color: rgba(229, 231, 235, 100);
     z-index: 1;
   }
   .text-wrapper {
-    width: 54%;
+    width: 65%;
     max-width: 600px;
     min-height: 320px;
     color: #0D1A26;
@@ -98,6 +99,7 @@ $border-color: rgba(229, 231, 235, 100);
     position: absolute;
     right: 0;
     bottom: 26px;
+    z-index: -1;
   }
 }
 
@@ -315,4 +317,10 @@ svg {
   .parallax-bg.top {
     margin: 0;
   }
+}
+
+.react-autosuggest__suggestions-container--open {
+  max-height: 200px;
+  overflow-y: scroll;
+  border: solid #0000004d .5px;
 }
