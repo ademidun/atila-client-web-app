@@ -2,6 +2,8 @@ import React from 'react';
 import { enquireScreen } from 'enquire-js';
 import Banner from './Banner';
 import 'antd/dist/antd.css';
+import './index.scss';
+import './Reponsive.scss';
 import WhatIsAtila from "./WhatIsAtila";
 import Page2 from "./Page2";
 import Page3 from "./Page3";
