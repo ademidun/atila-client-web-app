@@ -7,11 +7,6 @@
     }
   }
   .home-page-wrapper {
-    .page {
-      h2 {
-        margin: 80px auto 64px;
-      }
-    }
     .parallax-bg {
       display: none;
     }
@@ -31,19 +26,14 @@
     }
     .img-wrapper {
       position: initial;
-      margin-top: 48px;
       svg {
         width: 100%;
         height: auto;
       }
     }
     .text-wrapper {
-      margin-top: 48px;
       min-height: 200px;
       padding: 0 16px;
-      h1 {
-        display: none;
-      }
       p {
         font-size: 14px;
         line-height: 28px;
