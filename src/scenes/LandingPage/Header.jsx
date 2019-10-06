@@ -30,14 +30,14 @@ class Header extends React.Component {
 
         const menu = (
             <Menu mode={menuMode} id="nav" key="nav">
+                <Menu.Item key="essays">
+                    <Link to="/essay">Essays</Link>
+                </Menu.Item>
                 <Menu.Item key="search">
                     <Link to="/search">Search</Link>
                 </Menu.Item>
                 <Menu.Item key="scholarships">
                     <Link to="/scholarship">Scholarships</Link>
-                </Menu.Item>
-                <Menu.Item key="essays">
-                    <Link to="/essay">Essays</Link>
                 </Menu.Item>
                 <Menu.Item key="blogs">
                     <Link to="/blog">Blogs</Link>
