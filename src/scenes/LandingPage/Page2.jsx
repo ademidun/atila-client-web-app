@@ -102,8 +102,8 @@ export default function Page2({ isMobile }) {
   return (
     <div className="home-page-wrapper page2" id="page2">
       <div className="page mt-5" >
-        <h2>
-            How Does Atila Make it Easy to Find Scholarships?
+        <h2 className="mt-2">
+            How Does Atila Increase my chances of Getting More Money
         </h2>
           <QueueAnim
             component={Col}

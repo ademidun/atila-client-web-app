@@ -55,7 +55,7 @@ export default function Page3() {
         </svg>
       </div>
       <div className="page" >
-        <h2>工具&资源</h2>
+        <h2>How Does Atila Make it Easy to Find Scholarships?</h2>
           <QueueAnim key="queue" component={Row} type="bottom" leaveReverse>
             {children}
           </QueueAnim>
