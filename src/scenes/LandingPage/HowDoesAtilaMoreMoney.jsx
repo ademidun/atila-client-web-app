@@ -142,7 +142,7 @@ const svgBgChildArray = svgBgChild.map((item, i) => {
   const { props } = item;
   return React.cloneElement(item, { children: svgBgToParallax(props.children, i) });
 });
-export default function Page2({ isMobile }) {
+export default function HowDoesAtilaMoreMoney({ isMobile }) {
   return (
     <div className="home-page-wrapper page2" id="page2">
       <div className="page mt-5" >
