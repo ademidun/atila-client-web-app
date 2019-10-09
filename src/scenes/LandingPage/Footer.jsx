@@ -5,7 +5,8 @@ import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
   faFacebook,
-  faInstagram, faItunes,
+  faInstagram,
+  faItunesNote,
   faLinkedin,
   faMedium,
   faSpotify,
@@ -18,7 +19,7 @@ function Footer() {
       <React.Fragment>
         <hr />
         <footer id="footer">
-          <div className="footer-wrap p-md-3 p-lg-5">
+          <div className="footer-wrap p-1">
             <Row>
               <Col md={6} sm={12} xs={12}>
                 <div className="footer-center">
@@ -95,7 +96,7 @@ function Footer() {
                   </div>
                   <div>
                     <a  target="_blank" rel="noopener noreferrer" href="https://itunes.apple.com/ca/podcast/id1440531021">
-                      Itunes <FontAwesomeIcon icon={faItunes} />
+                      Itunes <FontAwesomeIcon icon={faItunesNote} />
                     </a>
                   </div>
                   <div>
@@ -137,7 +138,9 @@ function Footer() {
               <span style={{ marginRight: 12, fontSize: 'larger' }}>
                 Built with <span role="img" aria-label="heaart emoji">
                                 ❤️
-                            </span> By {' '}
+                            </span> <br />
+
+                By {' '}
                 <a href="https://tech.atila.ca"
                    target="_blank"
                    rel="noopener noreferrer">

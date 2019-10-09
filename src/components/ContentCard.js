@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {Link} from "react-router-dom";
 
 import './Footer/Footer.scss';
+import {truncate} from "../services/utils";
 
 class ContentCard extends React.Component {
 
@@ -43,7 +44,7 @@ class ContentCard extends React.Component {
                 <div  className="card-title">
                     <h3 className="serif-font">
                         <Link  title={title} to={slug}>
-                            {title}
+                            {truncate(title)}
                         </Link>
                     </h3>
                     <br />

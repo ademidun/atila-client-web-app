@@ -6,15 +6,15 @@ import { Link } from 'bisheng/router';
 const atilaThreeThings = [
     {
         img: (<span role="img" aria-label="money face emoji">🤑</span>),
-        nameEn: 'Increase your Chances of Getting More Money for School',
+        name: 'Increase your Chances of Getting More Money for School',
     },
     {
         img: (<span role="img" aria-label="magnifying glass emoji">🔎</span>),
-        nameEn: 'Makes it easy to find scholarships',
+        name: 'Makes it easy to find scholarships',
     },
     {
         img: (<span role="img" aria-label="magnifying glass emoji">😌</span>),
-        nameEn: 'Makes it Easy to apply for scholarships',
+        name: 'Makes it Easy to apply for scholarships',
     },
 ];
 
@@ -35,7 +35,7 @@ export default class WhatIsAtila extends React.PureComponent {
   render() {
     const threeThingsChildren = atilaThreeThings.map((item) => {
       return (
-        <Col key={item.nameEn} md={8} xs={24}>
+        <Col key={item.name} md={8} xs={24}>
           <QueueAnim
             className="page1-block"
             type="bottom"
@@ -48,7 +48,6 @@ export default class WhatIsAtila extends React.PureComponent {
               {item.img}
             </div>
             <h3 >{item.name}</h3>
-            <p>{item.nameEn}</p>
           </QueueAnim>
         </Col>
       );
