@@ -6,9 +6,6 @@ import './index.scss';
 import './Reponsive.scss';
 import WhatIsAtila from "./WhatIsAtila";
 import HowDoesAtilaMoreMoney from "./HowDoesAtilaMoreMoney";
-import Page3 from "./Page3";
-import {IntlProvider} from "react-intl";
-import cnLocale from "./zh-CN";
 
 let isMobile = false;
 enquireScreen((b) => {
@@ -32,14 +29,11 @@ class LandingPage extends React.Component {
     }
     render() {
         return (
-            <IntlProvider locale={cnLocale.locale} messages={cnLocale.messages}>
                 <div className="page-wrapper home">
                     <Banner isMobile={this.state.isMobile} />
                     <WhatIsAtila isMobile={this.state.isMobile} />
-                    <HowDoesAtilaMoreMoney isMobile={this.state.isMobile} />
-                    <Page3 />
+                    <HowDoesAtilaMoreMoney />
                 </div>
-            </IntlProvider>
         );
     }
 }
