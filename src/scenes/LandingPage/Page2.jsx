@@ -5,11 +5,7 @@ import QueueAnim from 'rc-queue-anim';
 import svgBgToParallax from './util';
 import {Link} from "react-router-dom";
 
-const page2Data = [
-  {
-    img: 'https://gw.alipayobjects.com/zos/rmsportal/eYNnmGagLWdrkdMHVUuA.svg',
-    name: 'Ant Design Components',
-  },
+const increaseApplications = [
   {
     img: 'https://gw.alipayobjects.com/zos/rmsportal/EPaPtDVGnJhyqyBAUZMl.svg',
     name: 'Scholarships Matched to Your Profile',
@@ -26,6 +22,46 @@ const page2Data = [
     img: 'https://gw.alipayobjects.com/zos/rmsportal/slVtnOCcgeAcLEPwtewY.svg',
     name: 'Suggest Similar Scholarships',
       slogan: (<p>Applied to a scholarship in the past? We'll recommend similar scholarships</p>),
+  },
+];
+
+const lessTimeApplying = [
+  {
+    img: 'https://gw.alipayobjects.com/zos/rmsportal/EPaPtDVGnJhyqyBAUZMl.svg',
+    name: "Stop Answering Questions You've already answered",
+      slogan: (<p>
+          If you've already answered a question before Atila will prefill it for you
+      </p>),
+  },
+  {
+    img: 'https://gw.alipayobjects.com/zos/rmsportal/GobRAKexhfTSJdLFzDFY.svg',
+    name: "No more Reuploading the same document",
+      slogan: (<p>If you've submitted a similar file before, you don't have to resubmit</p>),
+  },
+  {
+    img: 'https://gw.alipayobjects.com/zos/rmsportal/slVtnOCcgeAcLEPwtewY.svg',
+    name: 'Prefill Emails',
+      slogan: (<p>If you need to write an email to apply, we will prefill it for you</p>),
+  },
+];
+
+const improveApplications = [
+  {
+    img: 'https://gw.alipayobjects.com/zos/rmsportal/EPaPtDVGnJhyqyBAUZMl.svg',
+    name: "Read What a good application looks like",
+      slogan: (<p>
+          Read applications of past students who have won the same scholarship
+      </p>),
+  },
+  {
+    img: 'https://gw.alipayobjects.com/zos/rmsportal/GobRAKexhfTSJdLFzDFY.svg',
+    name: "Read not so good ones as well",
+      slogan: (<p>Read applications from students who also didn't get selected</p>),
+  },
+  {
+    img: 'https://gw.alipayobjects.com/zos/rmsportal/slVtnOCcgeAcLEPwtewY.svg',
+    name: 'Get Feedback on your applications',
+      slogan: (<p>Get feedback and advice from real students on how to make your application better</p>),
   },
 ];
 
@@ -61,87 +97,69 @@ const svgBgChild = [
   ),
 ];
 
+const displayPageData = (pageData, title) => {
+    const children = pageData.map((item, i) => {
+        const childLink = [
+            <span key={item.name}>{item.slogan}</span>,
+            <Link to={item.link || "/blog/atila/what-is-atila"} key="a">
+                learn more <Icon type="right" />
+            </Link>,
+        ] ;
+        return (
+            <div>
+                <Row className="product-block" key={i.toString()}>
+                    <Col
+                        xs={8}
+                        className={`block-image-wrapper${i % 2 ? ' right' : ''}`}
+                    >
+                        <img src={item.img} alt={item.name} />
+                    </Col>
+                    <Col xs={16} className="block-text-wrapper">
+                        <h4>{item.name}</h4>
+                        {childLink}
+                    </Col>
+                </Row>
+            </div>
+        );
+    });
+
+    const content = <QueueAnim
+        component={Col}
+        componentProps={{ xs: 24, md: { span: 12, offset: 6 }}}
+        className="page2-product mb-5"
+        key="right"
+        type="bottom"
+        leaveReverse
+    >
+        <h4>{title}</h4>
+        <hr />
+        {children}
+    </QueueAnim>;
+
+    return content;
+};
 const svgBgChildArray = svgBgChild.map((item, i) => {
   const { props } = item;
   return React.cloneElement(item, { children: svgBgToParallax(props.children, i) });
 });
 export default function Page2({ isMobile }) {
-  const componentButton = (
-    <div key="b" className="components-button-wrapper">
-      <Link to="/blog/atilaeng">Ant Design of React <Icon type="right" /></Link>
-      <Link to="/blog/atilaeng">Ant Design of Angular <Icon type="right" /></Link>
-    </div>
-  );
-  const children = page2Data.map((item, i) => {
-    if (!isMobile && !i) {
-      return null;
-    }
-    const content = isMobile && !i ? componentButton : [
-        <span key={item.name}>{item.slogan}</span>,
-        <Link to="/blog/atila/what-is-atila" key="a">
-            learn more <Icon type="right" />
-        </Link>,
-    ];
-    return (
-      <Row className="product-block" key={i.toString()}>
-        <Col
-          xs={8}
-          md={i === 2 ? 6 : 8}
-          className={`block-image-wrapper${i % 2 ? ' right' : ''}`}
-        >
-          <img src={item.img} alt={item.name}
-               style={isMobile && i === 2 ? { marginLeft: 16 } : {}} />
-        </Col>
-        <Col xs={16} md={i === 2 ? 18 : 16} className="block-text-wrapper">
-          <h4>{item.name}</h4>
-          {content}
-        </Col>
-      </Row>
-    );
-  });
   return (
     <div className="home-page-wrapper page2" id="page2">
       <div className="page mt-5" >
         <h2 className="mt-2">
-            How Does Atila Increase my chances of Getting More Money
+            How Does Atila Increase my chances of Getting More Money for School?
         </h2>
-          <QueueAnim
-            component={Col}
-            componentProps={{ xs: 24, md: 12 }}
-            className="page2-components"
-            key="left"
-            type="bottom"
-            leaveReverse
-          >
-            <h3 key="h1">Finding Scholarships Takes Too Long</h3>
-            <div key="p">
-                <ul>
-                    <li>
-                        Over 5 million scholarships are available in Canada every year.
-                    </li>
-                    <li>
-                        But you only qualify for a small percentage of those scholarships.
-                    </li>
-                    <li>
-                        Atila saves you time. By finding exactly the ones you qualify for.
-                    </li>
-                </ul>
-
-            </div>
-            {componentButton}
-          </QueueAnim>
-          <QueueAnim
-              component={Col}
-              componentProps={{ xs: 24, md: 12 }}
-              className="page2-product"
-              key="right"
-              type="bottom"
-              leaveReverse
-          >
-              <h4>With Atila</h4>
-              <hr />
-              {children}
-          </QueueAnim>
+          <ol className="font-size-xl">
+              <li>Increase the Number of Scholarships you Apply to</li>
+              <li>Spend Less Time Applying for Each Scholarship</li>
+              <li>Improve the quality of your applications</li>
+          </ol>
+          {displayPageData(increaseApplications,
+              'Increase the Number of Scholarships you Apply to')}
+          {displayPageData(lessTimeApplying,
+              'Spend less Time Applying for each Scholarship')}
+          {displayPageData(improveApplications,
+              'Improve the quality of your applications')}
       </div>
       <div className="parallax-bg bottom" >
         {svgBgChildArray[0]}

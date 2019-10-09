@@ -5,16 +5,16 @@ import { Link } from 'bisheng/router';
 
 const atilaThreeThings = [
     {
+        img: (<span role="img" aria-label="money face emoji">🤑</span>),
+        nameEn: 'Increase your Chances of Getting More Money for School',
+    },
+    {
         img: (<span role="img" aria-label="magnifying glass emoji">🔎</span>),
         nameEn: 'Makes it easy to find scholarships',
     },
     {
         img: (<span role="img" aria-label="magnifying glass emoji">😌</span>),
         nameEn: 'Makes it Easy to apply for scholarships',
-    },
-    {
-        img: (<span role="img" aria-label="money face emoji">🤑</span>),
-        nameEn: 'Increase your Chances of Getting More Money',
     },
 ];
 
