@@ -130,7 +130,7 @@ class Banner extends React.Component {
                   </p>
                 </div>
                 <Button type="primary"
-                        className="center-block mt-3">
+                        className="center-block my-3">
                   Find Scholarships
                 </Button>
               </div>
