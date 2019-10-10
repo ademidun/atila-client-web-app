@@ -9,7 +9,7 @@ import Loading from "./components/Loading";
 
 import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Navbar from "./components/Navbar/Navbar";
+import Navbar from "./components/Navbar/Header";
 
 const Scholarship = loadable(() => import('./scenes/Scholarship/Scholarship'), {
     fallback: <Loading />,
