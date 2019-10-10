@@ -4,10 +4,11 @@ import { Row, Col, Icon, Menu } from 'antd';
 import {Link, withRouter} from "react-router-dom";
 import {initializeLoggedInUserProfile, setLoggedInUserProfile} from "../../redux/actions/user";
 import {connect} from "react-redux";
-import SubMenu from "antd/es/menu/SubMenu";
 import './Header.scss'
 import UserProfileAPI from "../../services/UserProfileAPI";
 import Loading from "../../components/Loading";
+
+const {SubMenu} = Menu;
 
 class Header extends React.Component {
     state = {

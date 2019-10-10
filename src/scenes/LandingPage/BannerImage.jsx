@@ -13,45 +13,88 @@ const loop = {
   duration,
   ease,
 };
-const animate = {
-  path: {
-    path: { x: p, y: p },
-    duration: 5000,
-    repeat: -1,
-    ease: TweenOne.easing.path(easePath, { lengthPixel: 400 }),
-  },
-  rotate: {
-    ...loop,
-    rotate: 15,
-  },
-  rotateR: {
-    ...loop,
-    rotate: -15,
-  },
-  yGroup: {
-    ...loop,
-    y: 24,
-  },
-  track: {
-    ...loop,
-    rotate: 15,
-  },
-  rotateY: {
-    ...loop,
-    y: 24,
-    rotate: 15,
-  },
-  y: {
-    ...loop,
-    y: 15,
-    duration: 3000,
-  },
-  yR: {
-    ...loop,
-    y: -15,
-    duration: 3000,
-  },
-};
+
+let animate = [];
+try {
+  animate = {
+    path: {
+      path: { x: p, y: p },
+      duration: 5000,
+      repeat: -1,
+      ease: TweenOne.easing.path(easePath, { lengthPixel: 400 }),
+    },
+    rotate: {
+      ...loop,
+      rotate: 15,
+    },
+    rotateR: {
+      ...loop,
+      rotate: -15,
+    },
+    yGroup: {
+      ...loop,
+      y: 24,
+    },
+    track: {
+      ...loop,
+      rotate: 15,
+    },
+    rotateY: {
+      ...loop,
+      y: 24,
+      rotate: 15,
+    },
+    y: {
+      ...loop,
+      y: 15,
+      duration: 3000,
+    },
+    yR: {
+      ...loop,
+      y: -15,
+      duration: 3000,
+    },
+  };
+} catch (e) {
+  animate = {
+    path: {
+      path: { x: p, y: p },
+      duration: 5000,
+      repeat: -1,
+    },
+    rotate: {
+      ...loop,
+      rotate: 15,
+    },
+    rotateR: {
+      ...loop,
+      rotate: -15,
+    },
+    yGroup: {
+      ...loop,
+      y: 24,
+    },
+    track: {
+      ...loop,
+      rotate: 15,
+    },
+    rotateY: {
+      ...loop,
+      y: 24,
+      rotate: 15,
+    },
+    y: {
+      ...loop,
+      y: 15,
+      duration: 3000,
+    },
+    yR: {
+      ...loop,
+      y: -15,
+      duration: 3000,
+    },
+  };
+}
 
 function TweenOneG(props) {
   return <TweenOne component="g" {...props} />;
