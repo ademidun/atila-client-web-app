@@ -106,8 +106,8 @@ const displayPageData = (pageData, title) => {
             </Link>,
         ] ;
         return (
-            <div>
-                <Row className="product-block" key={i.toString()}>
+            <div key={i.toString()}>
+                <Row className="product-block">
                     <Col
                         xs={8}
                         className={`block-image-wrapper${i % 2 ? ' right' : ''}`}
@@ -127,7 +127,7 @@ const displayPageData = (pageData, title) => {
         component={Col}
         componentProps={{ xs: 24, md: { span: 12, offset: 6 }}}
         className="page2-product mb-5"
-        key="right"
+        key={title}
         type="bottom"
         leaveReverse
     >

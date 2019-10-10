@@ -2,10 +2,10 @@ import React from 'react';
 import {Link} from "react-router-dom";
 
 import './LandingPage.scss';
-import HowItWorks from "./HowItWorks";
-import MoreFeatures from "./MoreFeatures";
-import LandingPageContent from "./LandingPageContent";
-import LandingPageLiveDemo from "./LandingPageLiveDemo";
+import HowItWorks from "../LandingPage/HowItWorks";
+import MoreFeatures from "../LandingPage/MoreFeatures";
+import LandingPageContent from "../LandingPage/LandingPageContent";
+import LandingPageLiveDemo from "../LandingPage/LandingPageLiveDemo";
 import {genericItemTransform} from "../../services/utils";
 import SubscribeMailingList from "../../components/SubscribeMailingList";
 

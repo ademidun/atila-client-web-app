@@ -3,7 +3,7 @@ import {BrowserRouter as Router, Route} from "react-router-dom";
 import loadable from '@loadable/component';
 import 'bootstrap/dist/css/bootstrap.css';
 import {connect} from "react-redux";
-import LandingPage from "./scenes/LandingPage";
+import LandingPage from "./scenes/LandingPage/LandingPage";
 import Footer from "./scenes/LandingPage/Footer";
 import Loading from "./components/Loading";
 

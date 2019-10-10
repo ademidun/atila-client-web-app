@@ -55,7 +55,7 @@ export default class WhatIsAtila extends React.PureComponent {
     return (
       <div className="home-page-wrapper page1">
         <div className="page" >
-          <h2>What is Atila?</h2>
+          <h2 className="mt-5">What is Atila?</h2>
             <h4 className="text-center text-white p-5">
                 Atila increases your chances of getting more money for school
                 by making it easy to find and apply to scholarships.
@@ -70,7 +70,7 @@ export default class WhatIsAtila extends React.PureComponent {
             >
               {threeThingsChildren}
             </QueueAnim>
-            <p className="text-center text-white">
+            <p className="text-center text-white mt-5">
                 <sup>*</sup>(We do a lot of other stuff as well, but you get the idea {' '}
                 <span role="img" aria-label="winky face emoji">😉</span>)
             </p>

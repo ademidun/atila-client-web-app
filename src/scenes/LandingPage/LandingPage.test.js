@@ -4,7 +4,7 @@ import Adapter from 'enzyme-adapter-react-16';
 
 configure({ adapter: new Adapter() });
 
-import LandingPage from './LandingPage';
+import LandingPage from '../LandingPageOld/LandingPage';
 
 describe('<LandingPageOld />', () => {
     it('renders without crashing', () => {
