@@ -6,7 +6,7 @@ import configureStore from 'redux-mock-store';
 configure({ adapter: new Adapter() });
 const mockStore = configureStore();
 
-import Navbar from './Navbar';
+import Navbar from './Header';
 import {UserProfileTest1} from "../../models/UserProfile";
 import {initialReduxState} from "../../models/Constants";
 

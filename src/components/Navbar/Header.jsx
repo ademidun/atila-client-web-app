@@ -4,7 +4,7 @@ import { Row, Col, Icon, Menu } from 'antd';
 import {Link, withRouter} from "react-router-dom";
 import {initializeLoggedInUserProfile, setLoggedInUserProfile} from "../../redux/actions/user";
 import {connect} from "react-redux";
-import './Header.scss'
+import './Navbar.scss'
 import UserProfileAPI from "../../services/UserProfileAPI";
 import Loading from "../../components/Loading";
 
@@ -15,6 +15,12 @@ class Header extends React.Component {
         menuVisible: false,
         menuMode: 'horizontal',
     };
+
+    componentDidMount() {
+
+        const { initializeLoggedInUserProfile } = this.props;
+        initializeLoggedInUserProfile();
+    }
 
     logout = event => {
         event.preventDefault();

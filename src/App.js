@@ -4,7 +4,7 @@ import loadable from '@loadable/component';
 import 'bootstrap/dist/css/bootstrap.css';
 import {connect} from "react-redux";
 import LandingPage from "./scenes/LandingPage/LandingPage";
-import Footer from "./scenes/LandingPage/Footer";
+import Footer from "./components/Footer/Footer";
 import Loading from "./components/Loading";
 
 import {ToastContainer} from 'react-toastify';
