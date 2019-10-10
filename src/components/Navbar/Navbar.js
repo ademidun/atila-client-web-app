@@ -10,7 +10,7 @@ import Loading from "../../components/Loading";
 
 const {SubMenu} = Menu;
 
-class Header extends React.Component {
+class Navbar extends React.Component {
     state = {
         menuVisible: false,
         menuMode: 'horizontal',
@@ -140,12 +140,12 @@ class Header extends React.Component {
     }
 }
 
-Header.defaultProps = {
+Navbar.defaultProps = {
     userProfile: null,
     isLoadingLoggedInUserProfile: false,
 };
 
-Header.propTypes = {
+Navbar.propTypes = {
     initializeLoggedInUserProfile: PropTypes.func.isRequired,
     setLoggedInUserProfile: PropTypes.func.isRequired,
     userProfile: PropTypes.shape({}),
@@ -162,4 +162,4 @@ const mapDispatchToProps = {
     initializeLoggedInUserProfile,
     setLoggedInUserProfile,
 };
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Navbar));

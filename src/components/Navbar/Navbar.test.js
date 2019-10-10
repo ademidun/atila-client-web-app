@@ -6,16 +6,16 @@ import configureStore from 'redux-mock-store';
 configure({ adapter: new Adapter() });
 const mockStore = configureStore();
 
-import Navbar from './Header';
+import Navbar from './Navbar';
 import {UserProfileTest1} from "../../models/UserProfile";
 import {initialReduxState} from "../../models/Constants";
 
 describe('<Navbar />', () => {
-    it.skip('renders without crashing', () => {
+    it('renders without crashing', () => {
         shallow(<Navbar />);
     });
 
-    it.skip('renders searchLink', () => {
+    it('renders searchLink', () => {
         const store = mockStore(initialReduxState);
         const wrapper = mount(
             <MemoryRouter>
@@ -26,7 +26,7 @@ describe('<Navbar />', () => {
         expect(wrapper.find(Navbar).html()).toContain(searchLink);
     });
 
-    it.skip('renders userprofile nav item', () => {
+    it('renders userprofile nav item', () => {
         initialReduxState.data.user.loggedInUserProfile = UserProfileTest1;
         const store = mockStore(initialReduxState);
         const wrapper = mount(
@@ -35,7 +35,6 @@ describe('<Navbar />', () => {
             </MemoryRouter>
         );
         wrapper.update();
-        const userProfileLink = '<a class="dropdown-item" href="/profile/cbarkley">View Profile</a>';
-        expect(wrapper.find(Navbar).html()).toContain(userProfileLink);
+        expect(wrapper.find('.anticon-user').length).toBe(2);
     });
 });

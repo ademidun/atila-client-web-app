@@ -11,6 +11,7 @@ import App from './App';
 import configureStore from "redux-mock-store";
 import {Provider} from "react-redux";
 import {initialReduxState} from "./models/Constants";
+import Navbar from "./components/Navbar/Navbar";
 
 const store = mockStore(initialReduxState);
 describe('<App />', () => {
@@ -33,7 +34,7 @@ describe('<App />', () => {
                 </Provider>
             </MemoryRouter>
         );
-        expect(wrapper.html()).toContain('Navbar');
-        expect(wrapper.find('.Navbar').at(0).html()).toContain('<nav');
+        expect(wrapper.html()).toContain('header');
+        expect(wrapper.find(Navbar).length).toBe(1);
     });
 });
