@@ -1,8 +1,8 @@
 import React from 'react';
 import {Link} from "react-router-dom";
-import createProfileGif from '../LandingPageOld/assets/create-profile.gif';
-import registrationGif from '../LandingPageOld/assets/registration.gif';
-import viewScholarshipsGif from '../LandingPageOld/assets/view-scholarships.gif';
+import createProfileGif from './assets/create-profile.gif';
+import registrationGif from './assets/registration.gif';
+import viewScholarshipsGif from './assets/view-scholarships.gif';
 
 function HowItWorks() {
 

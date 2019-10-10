@@ -1,8 +1,8 @@
 import React from 'react';
 import {Link} from "react-router-dom";
-import applicationAutomationGif from '../LandingPageOld/assets/application-automation.gif';
-import scholarshipsNotificationsGif from '../LandingPageOld/assets/scholarship-notifications.gif';
-import viewEssaysGif from '../LandingPageOld/assets/view-essays.gif';
+import applicationAutomationGif from './assets/application-automation.gif';
+import scholarshipsNotificationsGif from './assets/scholarship-notifications.gif';
+import viewEssaysGif from './assets/view-essays.gif';
 
 function MoreFeatures() {
 
