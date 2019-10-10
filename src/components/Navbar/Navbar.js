@@ -52,12 +52,11 @@ class Navbar extends React.Component {
 
                 {!userProfile && !isLoadingLoggedInUserProfile &&
                 <Menu.Item key="login">
-                    <strong>
                         <Link to={`/login?redirect=${pathname}${search}`}
-                              className="nav-item">
+                              style={{color:'#007bff'}}
+                              className="font-weight-bold">
                             Login
                         </Link>
-                    </strong>
                 </Menu.Item>
                 }
                 {
