@@ -66,7 +66,7 @@ function Footer() {
                     </a>
                   </div>
                   <div>
-                    <Link to="/terms-conditions">
+                    <Link to="/terms-and-conditions">
                       Terms and Conditions
                     </Link>
                   </div>
