@@ -23,7 +23,7 @@ let Environment = {};
 
 if (window.location.host.includes('localhost')) {
     Environment = EnvironmentDev;
-} else if (window.location.host.includes('staging')) {
+} else if (window.location.host.includes('atila.netlify')) {
     Environment = EnvironmentStaging;
 }
 else if(window.location.host.includes('atila.ca')){
