@@ -2,12 +2,13 @@ import React from 'react';
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import {Link} from "react-router-dom";
 import moment from "moment";
-import {formatCurrency} from "../../services/utils";
+import {formatCurrency, genericItemTransform} from "../../services/utils";
 import Loading from "../../components/Loading";
 import RelatedItems from "../../components/RelatedItems";
 import {connect} from "react-redux";
 import AnalyticsService from "../../services/AnalyticsService";
 import ScholarshipShareSaveButtons from "./ScholarshipShareSaveButtons";
+import HelmetSeo from "../../components/HelmetSeo";
 
 class ScholarshipDetail extends React.Component {
 
@@ -101,6 +102,7 @@ class ScholarshipDetail extends React.Component {
 
         return (
             <React.Fragment>
+                <HelmetSeo content={genericItemTransform(scholarship)} />
                 <div className="container mt-5">
                     <div className="row">
                         <div className="col-12">

@@ -7,6 +7,8 @@ import Loading from "../Loading";
 import RelatedItems from "../RelatedItems";
 import {connect} from "react-redux";
 import AnalyticsService from "../../services/AnalyticsService";
+import HelmetSeo from "../HelmetSeo";
+import {genericItemTransform} from "../../services/utils";
 
 class ContentDetail extends React.Component {
 
@@ -92,6 +94,7 @@ class ContentDetail extends React.Component {
         const { title, body, header_image_url, user, id } = content;
         return (
             <div className="m-5 px-md-5">
+                <HelmetSeo content={genericItemTransform(content)} />
                 <div className={`${className} serif-font center-block`}>
                     <h1>{title}</h1>
                     {canEditContent &&
