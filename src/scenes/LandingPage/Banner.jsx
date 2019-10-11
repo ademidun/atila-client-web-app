@@ -127,7 +127,7 @@ class Banner extends React.Component {
                       Medical School</Link>{' '},
                     <Link to="/scholarship?q=University of Western Ontario">
                       University of Western Ontario</Link>
-                    <small>2:06</small>
+                    <small>2:26</small>
                   </p>
                 </div>
                 <Button type="primary"
