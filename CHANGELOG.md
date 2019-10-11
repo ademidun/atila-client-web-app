@@ -5,6 +5,8 @@
 - Seems like the best option to add SEO to the website is using Netlify
 - Found this promising tutorial on the internet: 
 https://www.netlify.com/blog/2017/09/26/how-to-build-a-serverless-seo-friendly-react-blog/
+- Then did deployment with circleci using:
+ https://medium.com/@thundermiracle/deploy-static-sites-to-netlify-by-circle-ci-ab51a0b59b73
 
 - Will likely have to change our circleci deployment and hosting options as well
 

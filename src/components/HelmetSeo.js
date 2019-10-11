@@ -1,6 +1,5 @@
 import {Helmet} from "react-helmet";
 import React from "react";
-import {genericItemTransform} from "../services/utils";
 
 const defaultContent = {
     title: 'Atila - Increase your chances of getting more money for school. Easily find and apply to scholarships.',
