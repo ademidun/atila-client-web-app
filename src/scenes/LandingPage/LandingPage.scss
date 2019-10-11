@@ -275,35 +275,6 @@ svg g {
 .parallax-bg.top svg {
   overflow: inherit;
 }
-/** page3 **/
-.page3 {
-  min-height: 556px;
-}
-.page3-block {
-  display: flex;
-  justify-content: center;
-  padding: 24px 32px;
-}
-.page3-img-wrapper,
-.page3-text-wrapper {
-  display: inline-block;
-}
-.page3-img-wrapper {
-  margin-top: 8px;
-}
-.page3-text-wrapper {
-  max-width: 182px;
-  margin-left: 32px;
-  line-height: 24px;
-}
-.page3-text-wrapper h3 {
-  font-size: 20px;
-  line-height: 28px;
-  margin-bottom: 4px;
-}
-.page3 .parallax-bg.top {
-  margin: 0;
-}
 .react-autosuggest__suggestions-container--open {
   max-height: 200px;
   overflow-y: scroll;
