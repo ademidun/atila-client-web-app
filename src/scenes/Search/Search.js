@@ -22,7 +22,7 @@ class Search extends React.Component {
             searchQuery,
             prevSearchQuery: null,
             searchResults: null,
-            isLoadingResponse: true,
+            isLoadingResponse: !!searchQuery,
             responseError: null,
             responseOkMessage: null,
         }
@@ -93,7 +93,9 @@ class Search extends React.Component {
             pathname: '/search',
             search: `?q=${searchQuery}`
         });
-        this.loadItems();
+        this.setState({ isLoadingResponse: true }, () => {
+            this.loadItems();
+        });
     };
 
     render () {
@@ -110,11 +112,14 @@ class Search extends React.Component {
 
                 <Form inline  onSubmit={this.submitSearch} className="my-3">
                     <input value={searchQuery}
-                           className="form-control search-input col-sm-12 col-md-6 mr-md-1 offset-md-1"
+                           className="form-control
+                           search-input
+                           col-sm-12 col-md-7 center-block
+                           mb-3"
                            type="text"
                            name="search"
                            placeholder="Enter a search term" onChange={this.updateSearch}/>
-                    <button className="btn btn-primary col-md-4 col-sm-12"
+                    <button className="btn btn-primary col-md-4 col-sm-12 mb-3"
                             type="submit">
                         Search
                     </button>

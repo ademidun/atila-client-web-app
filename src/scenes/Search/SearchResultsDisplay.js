@@ -26,7 +26,7 @@ export function SearchResultsDisplay({searchResults, searchResultsMetadata}) {
                         })
                     }
                     <div>
-                        {metadata[contentType]['omit_results'] &&
+                        {metadata[contentType] && metadata[contentType]['omit_results'] &&
                         <Link to="/register" className="btn btn-primary center-block font-size-xl my-3">
                             Register for free to see all {metadata[contentType]['total_results_count']}
                             {' '}

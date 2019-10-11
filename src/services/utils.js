@@ -260,3 +260,20 @@ export function transformFilterDisplay(filter_type, userProfile) {
     return filterValue
 }
 
+// https://github.com/ademidun/atila-angular/blob/e9db29bd4a39137980c66c760f45a71f1e7b2048/src/app/_pipes/truncate.pipe.ts#L7-L6
+export function truncate(value, length=75){
+
+    // Set the limit to truncated
+    let limit = length;
+
+    // Truncate string if its greater than the limit
+    if(value){
+        return value.length > limit ? value.substring(0, limit) + "..." : value;
+    }
+
+    else{
+        return value;
+    }
+
+}
+

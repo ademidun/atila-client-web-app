@@ -1,10 +1,14 @@
 import React from 'react';
-import {Link} from "react-router-dom";
-import { shallow, configure } from 'enzyme';
+import {Link, MemoryRouter} from "react-router-dom";
+import {shallow, configure, mount} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
+import configureStore from "redux-mock-store";
+import Footer from './Footer';
+import {initialReduxState} from "../../models/Constants";
+
 configure({ adapter: new Adapter() });
 
-import Footer from './Footer';
+const mockStore = configureStore();
 
 describe('<Footer />', () => {
     it('renders without crashing', () => {
@@ -12,10 +16,16 @@ describe('<Footer />', () => {
     });
 
     it('renders blogLink', () => {
-        const wrapper = shallow(<Footer />);
-        const blogLink = <Link to="blog">
-            Blog
-        </Link>;
+        const store = mockStore(initialReduxState);
+        const wrapper = mount(
+            <MemoryRouter>
+                <Footer store={store} />
+            </MemoryRouter>
+        );
+        const blogLink = (
+            <Link to="/blog">
+                Blogs
+            </Link>);
         expect(wrapper.contains(blogLink)).toEqual(true);
     });
 });

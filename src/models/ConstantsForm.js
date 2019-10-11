@@ -1644,3 +1644,8 @@ export const GRADE_LEVELS = [
     'Phd',
     'Other',
 ];
+
+export let MASTER_LIST_EVERYTHING = MAJORS_LIST.concat(SCHOOLS_LIST).concat(MAJORS_LIST).concat(ETHNICITIES)
+    .concat(DISABILITIES).concat(SPORTS).concat(ACTIVITIES).concat(RELIGIONS).concat(LANGUAGES).sort();
+
+MASTER_LIST_EVERYTHING = [...new Set(MASTER_LIST_EVERYTHING)];

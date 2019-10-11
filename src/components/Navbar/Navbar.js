@@ -1,49 +1,26 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from "react-redux";
-import * as NavbarBootstrap from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
-import Form from 'react-bootstrap/Form';
-
+import PropTypes from "prop-types";
+import { Row, Col, Icon, Menu } from 'antd';
 import {Link, withRouter} from "react-router-dom";
-
-import './Navbar.scss';
-import UserProfileAPI from "../../services/UserProfileAPI";
 import {initializeLoggedInUserProfile, setLoggedInUserProfile} from "../../redux/actions/user";
-import Dropdown from "react-bootstrap/Dropdown";
-import {faUser} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import Loading from "../Loading";
+import {connect} from "react-redux";
+import './Navbar.scss'
+import UserProfileAPI from "../../services/UserProfileAPI";
+import Loading from "../../components/Loading";
+
+const {SubMenu} = Menu;
 
 class Navbar extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            authService: {
-                isLoggedIn: false
-            },
-            searchQuery: '',
-            isLoadingUserProfile: false,
-        };
-    }
+    state = {
+        menuVisible: false,
+        menuMode: 'horizontal',
+    };
 
     componentDidMount() {
 
         const { initializeLoggedInUserProfile } = this.props;
         initializeLoggedInUserProfile();
     }
-
-    updateSearch = event => {
-        event.preventDefault();
-        this.setState({searchQuery: event.target.value});
-    };
-
-    submitSearch = event => {
-        event.preventDefault();
-        const {searchQuery} = this.state;
-        this.props.history.push(`/search?q=${searchQuery}`);
-    };
 
     logout = event => {
         event.preventDefault();
@@ -54,67 +31,114 @@ class Navbar extends React.Component {
     };
 
     render() {
-        const { searchQuery } = this.state;
+        const { menuMode } = this.state;
         const { userProfile, isLoadingLoggedInUserProfile } = this.props;
         const { location: { pathname, search } } = this.props;
 
+        const menu = (
+            <Menu mode={menuMode} id="nav" key="nav">
+                <Menu.Item key="essays">
+                    <Link to="/essay">Essays</Link>
+                </Menu.Item>
+                <Menu.Item key="search">
+                    <Link to="/search">Search</Link>
+                </Menu.Item>
+                <Menu.Item key="scholarships">
+                    <Link to="/scholarship">Scholarships</Link>
+                </Menu.Item>
+                <Menu.Item key="blogs">
+                    <Link to="/blog">Blogs</Link>
+                </Menu.Item>
+
+                {!userProfile && !isLoadingLoggedInUserProfile &&
+                <Menu.Item key="login">
+                        <Link to={`/login?redirect=${pathname}${search}`}
+                              style={{color:'#007bff'}}
+                              className="font-weight-bold">
+                            Login
+                        </Link>
+                </Menu.Item>
+                }
+                {
+                    userProfile &&
+                    <SubMenu
+                        key="user"
+                        title={<Icon type="user" />}
+                    >
+                        <Menu.Item key="add-scholarship">
+                            <Link to="/scholarship/add">
+                                Add Scholarship
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item key="view-profile">
+                            <Link to={`/profile/${userProfile.username}`}>
+                                View Profile
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item key="search">
+                            <Link to={`/search`}>
+                                Search
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item key="edit-profile">
+                            <Link to={`/profile/${userProfile.username}/edit`}>
+                                Edit Profile
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item key="logout">
+                            <button onClick={this.logout}
+                                    className="btn btn-link"
+                                    style={{ display: 'inherit' }}
+                            >Logout</button></Menu.Item>
+                    </SubMenu>
+                }
+            </Menu>
+        );
+
         return (
-            <React.Fragment>
-                <NavbarBootstrap bg="white" expand="md" className="Navbar px-5 serif-font">
-                    <NavbarBootstrap.Brand className="nav-logo"><Link to="/">Atila</Link></NavbarBootstrap.Brand>
-                    <NavbarBootstrap.Toggle aria-controls="basic-navbar-nav" />
-                    <NavbarBootstrap.Collapse id="basic-navbar-nav">
-                        <Nav className="ml-auto">
-                            <Form inline  onSubmit={this.submitSearch}>
-                                <input value={searchQuery} className="form-control search-input" type="text" name="search"
-                                       placeholder="Enter a search term" onChange={this.updateSearch}/>
-                                <Link to="/search" className="nav-item">Search</Link>
-                            </Form>
-                            <Link to="/scholarship" className="nav-item">Scholarships</Link>
-                            <Link to="/essay" className="nav-item">Essays</Link>
-                            <Link to="/blog" className="nav-item">Blogs</Link>
-                            {!userProfile && !isLoadingLoggedInUserProfile &&
-                            <Link to={`/login?redirect=${pathname}${search}`} className="nav-item">Login</Link>}
-                            {
-                                userProfile &&
-                                <React.Fragment>
-
-                                    <Dropdown>
-                                        <Dropdown.Toggle style={{ backgroundColor: 'transparent' }}>
-                                            <FontAwesomeIcon icon={faUser} />
-                                        </Dropdown.Toggle>
-
-                                        <Dropdown.Menu>
-                                            <Link to="/scholarship/add" className="dropdown-item">Add Scholarship</Link>
-                                            <Link to={`/profile/${userProfile.username}`} className="dropdown-item">
-                                                View Profile
-                                            </Link>
-                                            <Link to={`/profile/${userProfile.username}/edit`}
-                                                  className="dropdown-item">
-                                                Edit Profile
-                                            </Link>
-                                            <Dropdown.Divider />
-                                            <button onClick={this.logout}
-                                                    className="btn btn-link dropdown-item"
-                                                    style={{ display: 'inherit' }}
-                                            >Logout</button>
-
-                                        </Dropdown.Menu>
-                                    </Dropdown>
-                                </React.Fragment>
-                            }
-                        </Nav>
-                    </NavbarBootstrap.Collapse>
-                </NavbarBootstrap>
+            <div id="header"
+                 className="header mx-3 mx-lg-5 mt-2">
+                <Row>
+                    <Col xxl={4} xl={5} lg={8} md={8} sm={8} xs={0}>
+                        <h2 id="logo" className="serif-font text-center4">
+                            <Link to="/">
+                                <span>Atila</span>
+                            </Link>
+                        </h2>
+                    </Col>
+                    <Col xxl={20} xl={19} lg={16} md={16} sm={16} xs={0}>
+                        <div className="header-meta">
+                            <div id="menu">{menu}</div>
+                        </div>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col xxl={0} xl={0} lg={0} md={0} sm={0} xs={24}>
+                        <h2 id="logo"
+                            className="serif-font text-center ant-col-xs-24">
+                            <Link to="/">
+                                <span>Atila</span>
+                            </Link>
+                        </h2>
+                    </Col>
+                    <Col xxl={0} xl={0} lg={0} md={0} sm={0} xs={24}
+                         className="ml-4">
+                        <div className="header-meta">
+                            <div id="menu">
+                                {menu}
+                            </div>
+                        </div>
+                    </Col>
+                </Row>
                 {
                     isLoadingLoggedInUserProfile &&
                     <Loading className="col-12" title="Loading UserProfile..." />
                 }
-                <hr style={{ margin: 0 }}/>
-            </React.Fragment>
+            </div>
         );
     }
 }
+
 Navbar.defaultProps = {
     userProfile: null,
     isLoadingLoggedInUserProfile: false,

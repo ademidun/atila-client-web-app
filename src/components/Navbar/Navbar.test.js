@@ -35,7 +35,6 @@ describe('<Navbar />', () => {
             </MemoryRouter>
         );
         wrapper.update();
-        const userProfileLink = '<a class="dropdown-item" href="/profile/cbarkley">View Profile</a>';
-        expect(wrapper.find(Navbar).html()).toContain(userProfileLink);
+        expect(wrapper.find('.anticon-user').length).toBe(2);
     });
 });

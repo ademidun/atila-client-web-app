@@ -1,5 +1,28 @@
 # Changelog
 
+## October 4-5, 2019
+### Ant Design is a thing??
+
+- So apparently there's this design framework called Ant Design, which I am just hearing about
+- Apparently it's big in China and Michael and Yucen said they use it and it's great
+- I'm a bit upset at myself for not knowing that this thing existed
+- Also a bit hesitant to use it because I have had issues with frameworks before in the past 
+*cough* Angular Material Design and also a lot of the code seems to be in Chinese (Mandarin or Cantonese)
+- However, I see a lot of people from other parts of the world using it as well, which is an excellent example 
+of Globalization
+
+- Anyway, so first thing I had to do is get my app to work with LESS files by using a Less Preprocessor:
+https://stackoverflow.com/questions/44227090/how-to-use-less-preprocessor-in-react-create-react-app
+
+
+### Update Landing Page Copy
+
+- Making some changes to overhaul, I am modifying the Atila elevator pitch to:
+"Atila increases your chances of getting more money for school by making it easy to find and apply to scholarships."
+
+
+
+
 ## October 3, 2019
 - So glad I have tests, I caught an error that only shows up when not logged in (userProfile in redux is null)
 - The test was `ScholarshipsList.test.js`

@@ -4,12 +4,12 @@ import loadable from '@loadable/component';
 import 'bootstrap/dist/css/bootstrap.css';
 import {connect} from "react-redux";
 import LandingPage from "./scenes/LandingPage/LandingPage";
-import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
 import Loading from "./components/Loading";
 
 import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Navbar from "./components/Navbar/Navbar";
 
 const Scholarship = loadable(() => import('./scenes/Scholarship/Scholarship'), {
     fallback: <Loading />,
