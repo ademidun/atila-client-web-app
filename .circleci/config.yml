@@ -44,14 +44,14 @@ jobs:
           name: react-build
           command: npm run build
       - run: # todo change -P to default, to deploy to prod on master branch
-          name: Deploy Firebase
+          name: Deploy Netlify or Firebase
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
                 echo 'deploying to prod';
                 ./node_modules/.bin/firebase deploy --token=$FIREBASE_DEPLOY_TOKEN -P staging
             else
                 echo 'deploying to staging';
-                ./node_modules/.bin/firebase deploy --token=$FIREBASE_DEPLOY_TOKEN -P staging
+                ./node_modules/.bin/netlify deploy --dir=./build --prod
             fi
 
 workflows:

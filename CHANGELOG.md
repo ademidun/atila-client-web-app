@@ -1,5 +1,21 @@
 # Changelog
 
+## October 10, 2019
+### Adding SEO to Atila
+- Seems like the best option to add SEO to the website is using Netlify
+- Found this promising tutorial on the internet: 
+https://www.netlify.com/blog/2017/09/26/how-to-build-a-serverless-seo-friendly-react-blog/
+- Then did deployment with circleci using:
+ https://medium.com/@thundermiracle/deploy-static-sites-to-netlify-by-circle-ci-ab51a0b59b73
+
+- Will likely have to change our circleci deployment and hosting options as well
+
+- Found it through googling and Ending up on [this issue](https://github.com/nfl/react-helmet/issues/181)
+- Where someone pointed me to [this comment](https://github.com/nfl/react-helmet/issues/26#issuecomment-339128792)
+- Then I went down the rabbit Hole on the commenter [Jimmy Chion's really cool work](http://jimmychion.com)
+- I want to work with him! and hire him for Atila, stay tuned to this pot 
+- Checked out his work on ballot.fyi, and I think we can do something similar for Canadian politics
+
 ## October 4-5, 2019
 ### Ant Design is a thing??
 

@@ -5,6 +5,7 @@ https://demo.atila.ca
 
 
 [![Build Status](https://travis-ci.com/atilatech/client-web-app.svg?branch=master)](https://travis-ci.com/atilatech/client-web-app)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/837e9c44-3040-4460-a90e-d93d4a49f54a/deploy-status)](https://app.netlify.com/sites/pedantic-dijkstra-563128/deploys)
 
 ### `npm start`
 

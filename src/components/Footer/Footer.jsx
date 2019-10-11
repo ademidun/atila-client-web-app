@@ -66,7 +66,7 @@ function Footer() {
                     </a>
                   </div>
                   <div>
-                    <Link to="/terms-conditions">
+                    <Link to="/terms-and-conditions">
                       Terms and Conditions
                     </Link>
                   </div>
@@ -129,6 +129,12 @@ function Footer() {
                     </a>
                   </div>
                 </div>
+              </Col>
+              <Col md={{ span: 6, offset: 3 }} sm={{ span: 12, offset: 6 }}>
+                <a  target="_blank"
+                    rel="noopener noreferrer" href="https://www.instagram.com/atilatech/">
+                    Follow @atilatech on Instagram <FontAwesomeIcon icon={faInstagram} />
+                </a>
               </Col>
             </Row>
           </div>
