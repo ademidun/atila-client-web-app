@@ -11,7 +11,6 @@ const defaultContent = {
 };
 
 function HelmetSeo({content = defaultContent}) {
-
     return (
         <Helmet>
             <meta charSet="utf-8" />
@@ -19,7 +18,7 @@ function HelmetSeo({content = defaultContent}) {
             <meta property="og:title" content={content.title} />
             <meta name="Description" content={content.description} />
 
-            <meta property="og:url" content={`https://atila.ca/${content.slug}`} />
+            <meta property="og:url" content={window.location.href} />
             <meta property="og:type" content={content.type} />
             <meta property="og:description" content={content.description} />
             <meta property="og:image" content={content.image} />
