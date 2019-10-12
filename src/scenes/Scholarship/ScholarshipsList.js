@@ -9,6 +9,7 @@ import UserProfileEdit from "../UserProfile/UserProfileEdit";
 import {Link} from "react-router-dom";
 import ResponseDisplay from "../../components/ResponseDisplay";
 import ScholarshipsListFilter from "./ScholarshipsListFilter";
+import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 
 class ScholarshipsList extends React.Component {
 
@@ -268,8 +269,23 @@ class ScholarshipsList extends React.Component {
                                     afterSubmitSuccess={this.afterProfileEdit} />
         }
 
+        const seoContent = {
+            ...defaultSeoContent
+        };
+        let dynamicTitle = '';
+        if (scholarships) {
+            dynamicTitle = `${totalScholarshipsCount} Scholarships ${searchString ? `for ${toTitleCase(searchString)} ` : ''}found`;
+            seoContent.title = `${dynamicTitle}${totalFunding !== '$0'? ` and ${totalFunding} in funding` : ''}`;
+            seoContent.title += `${searchString ? ` available for ${toTitleCase(searchString)} scholarships.` : ''}`;
+            seoContent.title += ' - Atila';
+            seoContent.description = seoContent.title;
+            seoContent.slug = `/scholarship${search}`
+        }
+
+
         return (
             <div className="container mt-5">
+                <HelmetSeo content={seoContent} />
                 <ResponseDisplay
                     responseError={errorGettingScholarships}
                     isLoadingResponse={isLoadingScholarships}
@@ -278,7 +294,7 @@ class ScholarshipsList extends React.Component {
                 {scholarships &&
                     <React.Fragment>
                         <h1 className="text-center serif-font">
-                            {`${totalScholarshipsCount} Scholarships ${searchString ? `for ${toTitleCase(searchString)} ` : ''}found`}
+                            {dynamicTitle}
                             <br />
                         </h1>
                         {searchPayload.filter_by_user &&

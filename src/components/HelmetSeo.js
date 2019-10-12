@@ -1,7 +1,8 @@
 import {Helmet} from "react-helmet";
+import PropTypes from 'prop-types';
 import React from "react";
 
-const defaultContent = {
+export const defaultSeoContent = {
     title: 'Atila - Increase your chances of getting more money for school. Easily find and apply to scholarships.',
     description: 'Increase your chances of getting more money for school. Easily find and apply to scholarships.',
     image: 'https://firebasestorage.googleapis.com/' +
@@ -10,7 +11,7 @@ const defaultContent = {
     slug: ''
 };
 
-function HelmetSeo({content = defaultContent}) {
+function HelmetSeo({content}) {
     return (
         <Helmet>
             <meta charSet="utf-8" />
@@ -36,5 +37,9 @@ function HelmetSeo({content = defaultContent}) {
 
     )
 }
+
+HelmetSeo.propTypes = {
+    content: PropTypes.shape({}).isRequired,
+};
 
 export default HelmetSeo;
