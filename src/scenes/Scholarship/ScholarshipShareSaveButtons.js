@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {connect} from "react-redux";
-import {Dropdown} from "react-bootstrap";
+import {Dropdown, OverlayTrigger} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBookmark, faShareAlt, faMailBulk, faSms} from "@fortawesome/free-solid-svg-icons";
 import { faFacebookMessenger, faWhatsapp, faFacebook } from '@fortawesome/free-brands-svg-icons';
@@ -26,6 +26,31 @@ class ScholarshipShareSaveButtons extends React.Component {
             isSavedScholarship,
         }
     }
+
+    renderTooltip = props => {
+
+        const { isSavedScholarship } = this.state;
+
+        const title = isSavedScholarship?
+            "You've already saved this scholarship 👌🏿":
+            'Save Scholarship';
+
+        return (
+            <div
+                {...props}
+                style={{
+                    backgroundColor: 'rgba(0, 0, 0, 0.85)',
+                    padding: '2px 10px',
+                    color: 'white',
+                    borderRadius: 3,
+                    ...props.style,
+                }}
+            >
+                {title}
+            </div>
+        );
+    }
+
 
     saveScholarship = (event) => {
         event.preventDefault();
@@ -105,13 +130,19 @@ class ScholarshipShareSaveButtons extends React.Component {
                         ))}
                     </Dropdown.Menu>
                 </Dropdown>
-                <button className={`btn ${isSavedScholarship ? 'btn-primary' : 'btn-outline-primary'}`}
-                        onClick={this.saveScholarship}
-                        disabled={isSavedScholarship}
-                        title={isSavedScholarship?
-                            "You've already saved this scholarship 👌🏿": 'Save Scholarship'} >
-                    <FontAwesomeIcon className="ml-1" icon={faBookmark}/>
-                </button>
+                <OverlayTrigger
+                    placement="right-start"
+                    delay={{ delay: 250, hide: 400 }}
+                    overlay={this.renderTooltip}
+                >
+                    <button className={`btn ${isSavedScholarship ? 'btn-primary' : 'btn-outline-primary'}`}
+                            onClick={this.saveScholarship}
+                            disabled={isSavedScholarship}
+                            title={isSavedScholarship?
+                                "You've already saved this scholarship 👌🏿": 'Save Scholarship'} >
+                        <FontAwesomeIcon className="ml-1" icon={faBookmark}/>
+                    </button>
+                </OverlayTrigger>
             </div>
         );
     }
