@@ -16,6 +16,7 @@ class UserProfileViewTabs extends React.Component {
         this.state = {
             blogs: null,
             essays: null,
+            scholarships: null,
         }
     }
 
@@ -30,11 +31,15 @@ class UserProfileViewTabs extends React.Component {
             .then(res => {
                 this.setState({essays: res.data.essays });
             });
+        UserProfileAPI.getUserContent(userId, 'scholarships')
+            .then(res => {
+                this.setState({scholarships: res.data.scholarships });
+            });
     }
 
     render() {
 
-        const { blogs, essays } = this.state;
+        const { blogs, essays, scholarships } = this.state;
         const { isProfileEditable } = this.props;
         const { match : { params : { tab }} } = this.props;
         let defaultActiveKey = 'blogs';
@@ -48,23 +53,30 @@ class UserProfileViewTabs extends React.Component {
 
         return (
             <div className='mt-3'>
-            <Tabs defaultActiveKey={defaultActiveKey} transition={false}>
-                <Tab eventKey='blogs' title='Blogs'>
-                    <TabItemContentList
-                        contentList={blogs}
-                        contentType={'blog'}/>
-                </Tab>
-                <Tab eventKey='essays' title='Essays'>
-                    <TabItemContentList
-                        contentList={essays}
-                        contentType={'essay'}/>
-                </Tab>
-                {isProfileEditable &&
-                <Tab eventKey='edit' title='Edit Profile'>
-                    <UserProfileEdit />
-                </Tab>
-                }
-            </Tabs>
+                <Tabs defaultActiveKey={defaultActiveKey} transition={false}>
+                    {isProfileEditable &&
+                    <Tab eventKey='scholarships' title='Saved Scholarships'>
+                        <TabItemContentList
+                            contentList={scholarships}
+                            contentType={'scholarships'}/>
+                    </Tab>
+                    }
+                    {isProfileEditable &&
+                    <Tab eventKey='edit' title='Edit Profile'>
+                        <UserProfileEdit />
+                    </Tab>
+                    }
+                    <Tab eventKey='blogs' title='Blogs'>
+                        <TabItemContentList
+                            contentList={blogs}
+                            contentType={'blog'}/>
+                    </Tab>
+                    <Tab eventKey='essays' title='Essays'>
+                        <TabItemContentList
+                            contentList={essays}
+                            contentType={'essay'}/>
+                    </Tab>
+                </Tabs>
             </div>
         )
     }
