@@ -2,13 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {connect} from "react-redux";
-import {Dropdown, OverlayTrigger} from "react-bootstrap";
+import {Dropdown} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBookmark, faShareAlt, faMailBulk, faSms} from "@fortawesome/free-solid-svg-icons";
 import { faFacebookMessenger, faWhatsapp, faFacebook } from '@fortawesome/free-brands-svg-icons';
 import {toastNotify} from "../../models/Utils";
 import NotificationsService from "../../services/NotificationsService";
 import {Link} from "react-router-dom";
+import {Tooltip} from "antd";
 
 class ScholarshipShareSaveButtons extends React.Component {
 
@@ -27,31 +28,6 @@ class ScholarshipShareSaveButtons extends React.Component {
         }
     }
 
-    renderTooltip = props => {
-
-        const { isSavedScholarship } = this.state;
-
-        const title = isSavedScholarship?
-            "You've already saved this scholarship 👌🏿":
-            'Save Scholarship';
-
-        return (
-            <div
-                {...props}
-                style={{
-                    backgroundColor: 'rgba(0, 0, 0, 0.85)',
-                    padding: '2px 10px',
-                    color: 'white',
-                    borderRadius: 3,
-                    ...props.style,
-                }}
-            >
-                {title}
-            </div>
-        );
-    }
-
-
     saveScholarship = (event) => {
         event.preventDefault();
         const { isSavedScholarship } = this.state;
@@ -69,8 +45,11 @@ class ScholarshipShareSaveButtons extends React.Component {
         NotificationsService.createScholarshipNotifications(userProfile, scholarship)
             .then(res=> {
                 console.log({res});
+                this.setState({ isSavedScholarship: !isSavedScholarship });
+            })
+            .catch(err=> {
+                console.log({err});
             });
-        this.setState({ isSavedScholarship: !isSavedScholarship });
 
     };
 
@@ -130,19 +109,16 @@ class ScholarshipShareSaveButtons extends React.Component {
                         ))}
                     </Dropdown.Menu>
                 </Dropdown>
-                <OverlayTrigger
-                    placement="right-start"
-                    delay={{ delay: 250, hide: 400 }}
-                    overlay={this.renderTooltip}
-                >
+                <Tooltip placement="right"
+                         title={isSavedScholarship?
+                             "You've already saved this scholarship 👌🏿": 'Save Scholarship'}>
                     <button className={`btn ${isSavedScholarship ? 'btn-primary' : 'btn-outline-primary'}`}
                             onClick={this.saveScholarship}
-                            disabled={isSavedScholarship}
                             title={isSavedScholarship?
                                 "You've already saved this scholarship 👌🏿": 'Save Scholarship'} >
                         <FontAwesomeIcon className="ml-1" icon={faBookmark}/>
                     </button>
-                </OverlayTrigger>
+                </Tooltip>
             </div>
         );
     }
