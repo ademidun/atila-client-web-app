@@ -5,6 +5,8 @@ import ResponseDisplay from "../../components/ResponseDisplay";
 import {SearchResultsDisplay} from "./SearchResultsDisplay";
 import Form from "react-bootstrap/Form";
 import {Helmet} from "react-helmet";
+import AutoComplete from "../../components/AutoComplete";
+import {MASTER_LIST_EVERYTHING_UNDERSCORE} from "../../models/ConstantsForm";
 
 class Search extends React.Component {
 
@@ -110,20 +112,18 @@ class Search extends React.Component {
                 </Helmet>
                 <h1>Search {searchQuery && `for ${searchQuery}`}</h1>
 
-                <Form inline  onSubmit={this.submitSearch} className="my-3">
-                    <input value={searchQuery}
-                           className="form-control
-                           search-input
-                           col-sm-12 col-md-7 center-block
-                           mb-3"
-                           type="text"
-                           name="search"
-                           placeholder="Enter a search term" onChange={this.updateSearch}/>
+                <form  onSubmit={this.submitSearch} className="my-3 row">
+
+                    <AutoComplete suggestions={MASTER_LIST_EVERYTHING_UNDERSCORE}
+                                  placeholder={"Enter search here"}
+                                  onSelected={this.updateSearch}
+                                  value={searchQuery}
+                                  keyName='search'/>
                     <button className="btn btn-primary col-md-4 col-sm-12 mb-3"
                             type="submit">
                         Search
                     </button>
-                </Form>
+                </form>
 
                 { searchResults &&
                 <SearchResultsDisplay searchResults={searchResults} />
