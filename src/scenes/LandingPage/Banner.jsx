@@ -91,6 +91,7 @@ class Banner extends React.Component {
               <span role="img" aria-label="money emoji">
                 🤑
               </span>
+              Don't auto deploy
             </h2>
             <form className="col-sm-12"
                   onSubmit={this.onSubmit}
