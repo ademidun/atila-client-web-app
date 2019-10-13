@@ -51,6 +51,10 @@ class UserProfileAPI {
 
     static update = (userProfileData, id) => {
 
+        if(!userProfileData.locationData) {
+            userProfileData.locationData =
+                UserProfileAPI.getUserLocationData(userProfileData.userProfile);
+        }
         const apiCompletionPromise = request({
             method: 'put',
             data: userProfileData,
@@ -69,6 +73,17 @@ class UserProfileAPI {
         });
 
         return apiCompletionPromise;
+    };
+
+    static getUserLocationData = (userProfile) => {
+
+        const locationData = {};
+        if (userProfile.city.length > 0) {
+            locationData.city = userProfile.city[0].name;
+            locationData.country = userProfile.city[0].country;
+            locationData.province = userProfile.city[0].province;
+        }
+        return locationData;
     };
 
     static resetPassword = (username) => {

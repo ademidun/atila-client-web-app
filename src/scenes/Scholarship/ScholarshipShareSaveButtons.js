@@ -11,6 +11,7 @@ import NotificationsService from "../../services/NotificationsService";
 import {Link} from "react-router-dom";
 import {Tooltip} from "antd";
 import {addToMyScholarshipHelper} from "../../models/UserProfile";
+import UserProfileAPI from "../../services/UserProfileAPI";
 
 class ScholarshipShareSaveButtons extends React.Component {
 
@@ -44,11 +45,22 @@ class ScholarshipShareSaveButtons extends React.Component {
             return;
         }
 
-        addToMyScholarshipHelper(this.userProfile,this.scholarship);
+        const updatedUserProfile = addToMyScholarshipHelper(this.userProfile,this.scholarship);
         NotificationsService.createScholarshipNotifications(userProfile, scholarship)
             .then(res=> {
                 console.log({res});
-                this.setState({ isSavedScholarship: !isSavedScholarship });
+                this.setState({isSavedScholarship: !isSavedScholarship});
+                UserProfileAPI
+                    .update({userProfile: updatedUserProfile},
+                        userProfile.user)
+                    .then(res=>{
+                        toastNotify('😃 User Profile successfully saved!');
+                    })
+                    .catch(err=> {
+                        let postError = err.response && err.response.data;
+                        postError = JSON.stringify(postError, null, 4);
+                        toastNotify(`🙁${postError}`, 'error');
+                    });
             })
             .catch(err=> {
                 console.log({err});
