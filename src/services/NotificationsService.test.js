@@ -18,8 +18,8 @@ fdescribe('NotificationsService', () => {
             const deadline = moment(scholarship.deadline).format('dddd, MMMM DD, YYYY');
             const createdNotification = NotificationsService.createScholarshipNotificationMessage(userProfile, scholarship);
 
-            expect(createdNotification.title).toContain(scholarship.name, 'Scholarship name not in notification');
-            expect(createdNotification.body).toContain(deadline, 'Scholarship deadline not in notification');
+            expect(createdNotification.title).toContain(scholarship.name);
+            expect(createdNotification.body).toContain(deadline);
         });
 
     it('#customizeNotificationMessage() should create an email notification with the userProfile and scholarship details',
@@ -35,14 +35,14 @@ fdescribe('NotificationsService', () => {
 
             const createdNotification = createdNotifications[0];
 
-            expect(createdNotification.title).toContain(userProfile.first_name, 'User name not in notification title');
-            expect(createdNotification.body).toContain(userProfile.first_name, 'User name not in notification body');
-            expect(createdNotification.html).toContain(userProfile.first_name, 'User name not in notification html');
+            expect(createdNotification.title).toContain(userProfile.first_name);
+            expect(createdNotification.body).toContain(userProfile.first_name);
+            expect(createdNotification.html).toContain(userProfile.first_name);
 
             const deadline = moment(scholarship.deadline).format('dddd, MMMM DD, YYYY');
 
-            expect(createdNotification.title).toContain(scholarship.name, 'Scholarship name not in notification');
-            expect(createdNotification.html).toContain(deadline, 'Scholarship deadline not in notification');
+            expect(createdNotification.title).toContain(scholarship.name);
+            expect(createdNotification.html).toContain(deadline);
 
         });
 
@@ -55,15 +55,11 @@ fdescribe('NotificationsService', () => {
 
             const createdNotifications = NotificationsService.customizeNotificationMessage(notificationOptions,scholarship, userProfile);
 
-            expect(createdNotifications.length).toBe(notificationOptions.email.length,
-                'Notifications created should equal number of notificationOptions');
+            expect(createdNotifications.length).toBe(notificationOptions.email.length);
 
-            expect(createdNotifications[0].title).not.toContain(`${notificationOptions.email[1]} day`,
-                'scholarship due in 1 day should noy say 7 days');
-            expect(createdNotifications[0].title).toContain(`${notificationOptions.email[0]} day`,
-                'scholarship due in 1 day should say 1 days');
-            expect(createdNotifications[1].title).toContain(`${notificationOptions.email[1]} day`,
-                'scholarship due in 7 day should say 7 days');
+            expect(createdNotifications[0].title).not.toContain(`${notificationOptions.email[1]} day`);
+            expect(createdNotifications[0].title).toContain(`${notificationOptions.email[0]} day`);
+            expect(createdNotifications[1].title).toContain(`${notificationOptions.email[1]} day`);
 
         });
 
@@ -97,10 +93,10 @@ fdescribe('NotificationsService', () => {
             scholarshipDeadline.setDate(scholarshipDeadline.getDate());
             scholarship.deadline = scholarshipDeadline.toISOString();
 
-            const createdNotifications = NotificationsService.customizeNotificationMessage(notificationOptions,scholarship, userProfile);
+            const createdNotifications = NotificationsService.customizeNotificationMessage
+            (notificationOptions,scholarship, userProfile);
 
-            expect(createdNotifications.length).toBe(notificationOptions.email.length-1,
-                'Notifications created should be 1 less than number of notificationOptions');
+            expect(createdNotifications.length).toBe(notificationOptions.email.length-1);
 
         });
 
@@ -118,9 +114,10 @@ fdescribe('NotificationsService', () => {
             scholarshipDeadline.setDate(scholarshipDeadline.getDate() + 33);
             scholarship.deadline = scholarshipDeadline.toISOString();
 
-            const createdNotifications = NotificationsService.customizeNotificationMessage(notificationOptions,scholarship, userProfile);
+            const createdNotifications = NotificationsService.customizeNotificationMessage
+            (notificationOptions,scholarship, userProfile);
 
-            expect(createdNotifications.length).toBe(notificationOptions.email.length + notificationOptions.push.length,
-                'Notifications created should be equal to number of notificationOptions');
+            expect(createdNotifications.length).toBe(notificationOptions.email.length +
+                notificationOptions.push.length);
         });
 });
