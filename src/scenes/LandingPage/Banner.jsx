@@ -7,16 +7,13 @@ import BannerImage from './BannerImage';
 import {Button} from "antd";
 import {Link, withRouter} from "react-router-dom";
 import AutoComplete from "../../components/AutoComplete";
-import {MASTER_LIST_EVERYTHING} from "../../models/ConstantsForm";
+import {MASTER_LIST_EVERYTHING_UNDERSCORE} from "../../models/ConstantsForm";
 
 const loop = {
   duration: 3000,
   yoyo: true,
   repeat: -1,
 };
-
-
-const masterList = MASTER_LIST_EVERYTHING.map(item => item.toLowerCase());
 
 class Banner extends React.Component {
 
@@ -105,7 +102,7 @@ class Banner extends React.Component {
                          style={{ fontSize: '30px' }}
                   />
 
-                  <AutoComplete suggestions={masterList}
+                  <AutoComplete suggestions={MASTER_LIST_EVERYTHING_UNDERSCORE}
                                 placeholder={"Search by school, city, program, ethnicity or more"}
                                 onSelected={this.updateSearch}
                                 value={searchQuery}
