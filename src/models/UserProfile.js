@@ -72,3 +72,28 @@ export function isCompleteUserProfile(userProfile) {
     return (userProfile.post_secondary_school || userProfile.eligible_schools.length !== 0) &&
         (userProfile.major || userProfile.eligible_programs.length !== 0)
 }
+
+export function addToMyScholarshipHelper(userProfile, item) {
+
+    let isNewScholarshp = false;
+
+    if (!userProfile.saved_scholarships) {
+        userProfile.saved_scholarships = [];
+        userProfile.saved_scholarships_metadata = {};
+    }
+
+    for (let i = 0; i < userProfile.saved_scholarships.length; i++) {
+        if (userProfile.saved_scholarships[i] == item.id) {
+            isNewScholarshp = false;
+            return [userProfile, isNewScholarshp];
+        }
+    }
+
+
+    userProfile.saved_scholarships.push(item.id);
+    userProfile.saved_scholarships_metadata[item.id] = {notes: ''};
+
+    isNewScholarshp = true;
+    return [userProfile, isNewScholarshp];
+
+}

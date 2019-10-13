@@ -10,6 +10,7 @@ import {toastNotify} from "../../models/Utils";
 import NotificationsService from "../../services/NotificationsService";
 import {Link} from "react-router-dom";
 import {Tooltip} from "antd";
+import {addToMyScholarshipHelper} from "../../models/UserProfile";
 
 class ScholarshipShareSaveButtons extends React.Component {
 
@@ -33,15 +34,17 @@ class ScholarshipShareSaveButtons extends React.Component {
         const { isSavedScholarship } = this.state;
         const { userProfile, scholarship } = this.props;
 
+        if (!userProfile) {
+            toastNotify((<p>You must <Link to="/register">Register</Link> to save a scholarship.</p>));
+            return;
+        }
+
         if (isSavedScholarship) {
             toastNotify("You've already saved this scholarship 👌🏿");
             return;
         }
 
-        if (!userProfile) {
-            toastNotify((<p>You must <Link to="/register">Register</Link> to save a scholarship.</p>));
-            return;
-        }
+        addToMyScholarshipHelper(this.userProfile,this.scholarship);
         NotificationsService.createScholarshipNotifications(userProfile, scholarship)
             .then(res=> {
                 console.log({res});
