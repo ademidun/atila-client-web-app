@@ -43,7 +43,6 @@ class Banner extends React.Component {
   updateSearch = event => {
     event.preventDefault();
     event.persist();
-    console.log({event});
     this.setState({searchQuery: event.target.value});
 
     if (event.key === 'Enter' || event.type === 'click') {
