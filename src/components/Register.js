@@ -5,6 +5,7 @@ import Loading from "./Loading";
 import './LoginRegister.scss';
 import {setLoggedInUserProfile} from "../redux/actions/user";
 import {connect} from "react-redux";
+import {Link} from "react-router-dom";
 
 export class PasswordShowHide extends React.Component {
 
@@ -79,6 +80,7 @@ class Register extends React.Component {
                 username: '',
                 email: '',
                 password: '',
+                agreeTermsConditions: false,
             },
             nextLocation,
             isResponseError: null,
@@ -88,9 +90,17 @@ class Register extends React.Component {
     }
 
     updateForm = (event) => {
-        event.preventDefault();
+
+        if (event.stopPropagation) {
+            event.stopPropagation();
+        }
         const userProfile = {...this.state.userProfile};
         userProfile[event.target.name] = event.target.value;
+
+        if (event.target.type==='checkbox'){
+            userProfile[event.target.name] = event.target.checked
+        }
+
         this.setState({ userProfile });
     };
 
@@ -136,7 +146,7 @@ class Register extends React.Component {
     render () {
 
         const { userProfile, isResponseError, responseOkMessage, loadingResponse } = this.state;
-        const { firstName, lastName, username, email, password } = userProfile;
+        const { firstName, lastName, username, email, password, agreeTermsConditions } = userProfile;
         return (
             <div className="container mt-5">
                 <div className="card shadow p-3">
@@ -172,6 +182,18 @@ class Register extends React.Component {
                                    onChange={this.updateForm}
                             />
                             <PasswordShowHide password={password} updateForm={this.updateForm} />
+                            <div className="col-12 mb-3">
+                                <label htmlFor='agreeTermsConditions' className="mr-3">
+                                    Agree to the <Link to="/terms-and-conditions">
+                                    terms and conditions</Link>?
+                                </label>
+                                <input placeholder="Agree to the terms and conditions?"
+                                       type="checkbox"
+                                       name='agreeTermsConditions'
+                                       checked={agreeTermsConditions}
+                                       onChange={this.updateForm}
+                                />
+                            </div>
                             {responseOkMessage &&
                             <p className="text-success">
                                 {responseOkMessage}
@@ -186,7 +208,7 @@ class Register extends React.Component {
                             <Loading title="Loading Response..." className="center-block my-3"/>}
                             <button className="btn btn-primary col-12 mb-3"
                                     type="submit"
-                                    disabled={loadingResponse}>
+                                    disabled={loadingResponse || !agreeTermsConditions}>
                                 Register
                             </button>
 

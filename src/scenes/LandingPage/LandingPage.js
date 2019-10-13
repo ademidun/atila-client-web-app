@@ -13,6 +13,7 @@ import {genericItemTransform} from "../../services/utils";
 import LandingPageLiveDemo from "./LandingPageLiveDemo";
 import SubscribeMailingList from "../../components/SubscribeMailingList";
 import {Link} from "react-router-dom";
+import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 
 let isMobile = false;
 enquireScreen((b) => {
@@ -191,6 +192,7 @@ class LandingPage extends React.Component {
     render() {
         return (
                 <div className="page-wrapper home">
+                    <HelmetSeo content={defaultSeoContent}/>
                     <Banner isMobile={this.state.isMobile} />
                     <WhatIsAtila isMobile={this.state.isMobile} />
                     <div className="p-5">

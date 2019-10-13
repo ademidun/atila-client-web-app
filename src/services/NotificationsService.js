@@ -65,9 +65,15 @@ class NotificationsService {
             const fullMessagePayloads = NotificationsService.customizeNotificationMessage(notificationOptions, scholarship, userProfile, sub);
 
             console.log({fullMessagePayloads});
-            return NotificationsService.postNotifications(fullMessagePayloads)
-                .then(res => res)
-                .catch(err => Promise.reject(err));
+
+            if(fullMessagePayloads.length > 0) {
+                return NotificationsService.postNotifications(fullMessagePayloads)
+                    .then(res => res)
+                    .catch(err => Promise.reject(err));
+            }
+            else {
+               return Promise.resolve({message: 'No notifications to create'})
+            }
         })
         .catch((err) => {
             console.log({ err });
@@ -79,9 +85,14 @@ class NotificationsService {
             const fullMessagePayloads = NotificationsService.customizeNotificationMessage(notificationOptions, scholarship, userProfile);
 
             console.log({fullMessagePayloads});
-            return NotificationsService.postNotifications(fullMessagePayloads)
-                .then(res => res)
-                .catch(err2 => Promise.reject(err2));
+            if(fullMessagePayloads.length > 0) {
+                return NotificationsService.postNotifications(fullMessagePayloads)
+                    .then(res => res)
+                    .catch(err2 => Promise.reject(err2));
+            }
+            else {
+                return Promise.resolve({message: 'No notifications to create'})
+            }
         });
 }
 

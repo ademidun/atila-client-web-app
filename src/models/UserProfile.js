@@ -72,3 +72,16 @@ export function isCompleteUserProfile(userProfile) {
     return (userProfile.post_secondary_school || userProfile.eligible_schools.length !== 0) &&
         (userProfile.major || userProfile.eligible_programs.length !== 0)
 }
+
+export function addToMyScholarshipHelper(userProfile, scholarship) {
+
+    if (!userProfile.saved_scholarships) {
+        userProfile.saved_scholarships = [];
+        userProfile.saved_scholarships_metadata = {};
+    }
+
+    userProfile.saved_scholarships.push(scholarship.id);
+    userProfile.saved_scholarships_metadata[scholarship.id] = {notes: ''};
+
+    return userProfile;
+}

@@ -1,5 +1,14 @@
 # Changelog
 
+## October 11, 2019
+### event.stopPropagation()
+
+`event.stopPropagation()`
+- Ran into a wierd bug some time ago where we have to `event.stopPropagation()` instead of 
+`event.preventDefault()` when handling the state update of checboxes,
+see this for more information: https://github.com/facebook/react/issues/3446#issuecomment-82751540
+- and `ScholarshipAddEdit`
+
 ## October 10, 2019
 ### Adding SEO to Atila
 - Seems like the best option to add SEO to the website is using Netlify

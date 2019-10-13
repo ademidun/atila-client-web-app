@@ -25,6 +25,12 @@ code {
 
 h1 {
   text-align: center;
+  color: inherit;
+}
+
+a:hover {
+  color: #7cc7ff !important;
+  text-decoration: none;
 }
 
 .max-width-30 {
