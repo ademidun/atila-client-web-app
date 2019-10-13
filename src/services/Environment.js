@@ -23,11 +23,18 @@ let Environment = {};
 
 if (window.location.host.includes('localhost')) {
     Environment = EnvironmentDev;
-} else if (window.location.host.includes('atila.netlify')) {
+} else if (window.location.host.includes('staging')) {
     Environment = EnvironmentStaging;
 }
 else if(window.location.host.includes('atila.ca')){
     Environment =  EnvironmentProd;
+}
+
+if (!Environment.apiUrl) {
+    console.warn('Environment.apiUrl is not found')
+}
+if (!Environment.apiUrlNodeMicroservice) {
+    console.warn('Environment.apiUrlNodeMicroservice is not found')
 }
 
 export default Environment;
