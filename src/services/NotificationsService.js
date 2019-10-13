@@ -1,7 +1,6 @@
 import Environment from "./Environment";
 import request from "axios";
 import moment from "moment";
-import {toastNotify} from "../models/Utils";
 
 class NotificationsService {
 
