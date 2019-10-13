@@ -92,6 +92,7 @@ class Banner extends React.Component {
                 🤑
               </span>
             </h2>
+            <small>Test</small>
             <form className="col-sm-12"
                   onSubmit={this.onSubmit}
                   style={{ height: '300px'}}>
