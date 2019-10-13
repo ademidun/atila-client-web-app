@@ -20,6 +20,12 @@ function HelmetSeo({content}) {
             $('meta[property="og:type"]').attr('content', content.type);
             $('meta[property="og:description"]').attr('content', content.description);
             $('meta[property="og:image"]').attr('content', content.image);
+
+
+            $('meta[itemprop="name"]').attr('content', content.title);
+            $('meta[itemprop="description"]').attr('content', content.description);
+            $('meta[itemprop="image"]').attr('content', content.image);
+
         }
     }
     catch (e) {
