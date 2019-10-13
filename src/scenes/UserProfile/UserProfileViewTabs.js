@@ -23,6 +23,10 @@ class UserProfileViewTabs extends React.Component {
     componentDidMount() {
 
         const { userProfile: {user : userId} } = this.props;
+
+
+        const { isProfileEditable } = this.props;
+
         UserProfileAPI.getUserContent(userId, 'blogs')
             .then(res => {
                 this.setState({blogs: res.data.blogs });
@@ -31,10 +35,13 @@ class UserProfileViewTabs extends React.Component {
             .then(res => {
                 this.setState({essays: res.data.essays });
             });
-        UserProfileAPI.getUserContent(userId, 'scholarships')
-            .then(res => {
-                this.setState({scholarships: res.data.scholarships });
-            });
+
+        if (isProfileEditable) {
+            UserProfileAPI.getUserContent(userId, 'scholarships')
+                .then(res => {
+                    this.setState({scholarships: res.data.scholarships });
+                });
+        }
     }
 
     render() {
@@ -42,7 +49,12 @@ class UserProfileViewTabs extends React.Component {
         const { blogs, essays, scholarships } = this.state;
         const { isProfileEditable } = this.props;
         const { match : { params : { tab }} } = this.props;
-        let defaultActiveKey = 'blogs';
+        let defaultActiveKey = isProfileEditable ? 'scholarships' : 'blogs';
+
+        if (!isProfileEditable && blogs && blogs.length === 0 && essays && essays.length > 0 ) {
+            defaultActiveKey = 'essays';
+        }
+
         if(tab) {
             defaultActiveKey = tab;
             if (tab ==='edit' && !isProfileEditable) {
