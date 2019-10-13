@@ -85,6 +85,9 @@ class Banner extends React.Component {
           >
             <h1 key="h1" className="mt-sm-5">
               Atila
+              <span role="img" aria-label="money emoji">
+                🤑
+              </span>
             </h1>
             <h2 key="h2">
               Increase your chances of getting more money for school {' '}
