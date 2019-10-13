@@ -1,6 +1,7 @@
 # Changelog
 
-## Netlify Circleci Deployment Continued
+## October 13, 2019
+### Netlify Circleci Deployment Continued
 - Was still having issues trying to get atila.ca and staging.atila.ca set upin netlifyCI
 - this forum was "slightly?" helpful:
  https://community.netlify.com/t/common-issue-how-can-i-disable-automatic-git-deploys/166/2
@@ -10,6 +11,10 @@ use the CIRCLE_BRANCH and `netlify deploy --site $NETLIFY_SITE_ID_PROD`
 - Let's see if this works:
 - I also referred back to this blog, really helpful: 
 https://medium.com/@thundermiracle/deploy-static-sites-to-netlify-by-circle-ci-ab51a0b59b73
+
+- When you change domain names
+    - Update CORS_ORIGIN_WHITELIST in `atila-django`
+    - Update your Environment.js and Environment.test.js code 
 
 ## October 11, 2019
 ### event.stopPropagation()
