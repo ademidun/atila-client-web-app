@@ -51,7 +51,7 @@ jobs:
                 ./node_modules/.bin/firebase deploy --token=$FIREBASE_DEPLOY_TOKEN -P staging
             else
                 echo 'deploying to staging';
-                ./node_modules/.bin/netlify deploy --dir=./build --prod -m "${CIRCLE_SHA1} ${CIRCLE_PULL_REQUEST}"
+                ./node_modules/.bin/netlify deploy --dir=./build -m "${CIRCLE_SHA1} ${CIRCLE_PULL_REQUEST}"
             fi
 
 workflows:
