@@ -56,7 +56,7 @@ class UserProfileView extends React.Component {
                     title={'Loading User Profile..'} />)
         }
 
-        let userProfileView = userProfile.user === loggedInUserProfile.user ?
+        let userProfileView = loggedInUserProfile && userProfile.user === loggedInUserProfile.user ?
             loggedInUserProfile : userProfile;
 
         const isProfileEditable = loggedInUserProfile && (userProfile.user === loggedInUserProfile.user
