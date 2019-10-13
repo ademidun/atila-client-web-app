@@ -12,7 +12,7 @@ class AnalyticsService {
             url: `${AnalyticsService.pageViewsUrl}`,
         });
 
-        return apiCompletionPromise.then(res=>{console.log({res})});
+        return apiCompletionPromise;
     };
 
 

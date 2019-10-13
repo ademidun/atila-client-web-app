@@ -2,7 +2,7 @@ export const EnvironmentDev = {
     name: 'dev',
     production: false,
     apiUrl: 'http://127.0.0.1:8000/api',
-    apiUrlNodeMicroservice: 'http://127.0.0.1:9000',
+    apiUrlNodeMicroservice: 'https://tgrr8bis30.execute-api.us-east-1.amazonaws.com/staging',
 };
 
 export const EnvironmentStaging = {

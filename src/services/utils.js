@@ -1,3 +1,5 @@
+import {toastNotify} from "../models/Utils";
+
 export function makeXHRRequestAsPromise (method, url, data) {
     return new Promise(function (resolve, reject) {
         const xhr = new XMLHttpRequest();
@@ -275,5 +277,12 @@ export function truncate(value, length=75){
         return value;
     }
 
+}
+
+export function handleError(error) {
+    console.log('handleError', error);
+    let postError = error.response && error.response.data;
+    postError = JSON.stringify(postError, null, 4);
+    toastNotify(`🙁${postError}`, 'error');
 }
 

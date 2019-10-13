@@ -12,6 +12,7 @@ import {Link} from "react-router-dom";
 import {Tooltip} from "antd";
 import {addToMyScholarshipHelper} from "../../models/UserProfile";
 import UserProfileAPI from "../../services/UserProfileAPI";
+import {handleError} from "../../services/utils";
 
 class ScholarshipShareSaveButtons extends React.Component {
 
@@ -45,7 +46,10 @@ class ScholarshipShareSaveButtons extends React.Component {
             return;
         }
 
-        const updatedUserProfile = addToMyScholarshipHelper(this.userProfile,this.scholarship);
+        console.log({userProfile});
+
+        const updatedUserProfile = addToMyScholarshipHelper(userProfile, scholarship);
+        console.log({updatedUserProfile});
         NotificationsService.createScholarshipNotifications(userProfile, scholarship)
             .then(res=> {
                 console.log({res});
@@ -56,15 +60,9 @@ class ScholarshipShareSaveButtons extends React.Component {
                     .then(res=>{
                         toastNotify('😃 User Profile successfully saved!');
                     })
-                    .catch(err=> {
-                        let postError = err.response && err.response.data;
-                        postError = JSON.stringify(postError, null, 4);
-                        toastNotify(`🙁${postError}`, 'error');
-                    });
+                    .catch(handleError);
             })
-            .catch(err=> {
-                console.log({err});
-            });
+            .catch(handleError);
 
     };
 
