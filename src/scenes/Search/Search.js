@@ -85,11 +85,15 @@ class Search extends React.Component {
 
     updateSearch = event => {
         event.preventDefault();
-        this.setState({searchQuery: event.target.value});
+        this.setState({searchQuery: event.target.value}, () => {
+            this.submitSearch();
+        });
     };
 
     submitSearch = event => {
-        event.preventDefault();
+        if (event && event.preventDefault) {
+            event.preventDefault();
+        }
         const { searchQuery } = this.state;
         this.props.history.push({
             pathname: '/search',
@@ -104,6 +108,9 @@ class Search extends React.Component {
 
         const {isLoadingResponse, responseError, responseOkMessage, searchResults, searchQuery} = this.state;
 
+        const customTheme = {
+            container: 'react-autosuggest__container col-sm-12 col-md-7 p-0 my-3 mx-1',
+        };
         return (
             <div className="container mt-5">
                 <Helmet>
@@ -112,21 +119,22 @@ class Search extends React.Component {
                 </Helmet>
                 <h1>Search {searchQuery && `for ${searchQuery}`}</h1>
 
-                <form  onSubmit={this.submitSearch} className="my-3 row">
+                <form  onSubmit={this.submitSearch} className="row">
 
                     <AutoComplete suggestions={MASTER_LIST_EVERYTHING_UNDERSCORE}
                                   placeholder={"Enter search here"}
                                   onSelected={this.updateSearch}
                                   value={searchQuery}
+                                  customTheme={customTheme}
                                   keyName='search'/>
-                    <button className="btn btn-primary col-md-4 col-sm-12 mb-3"
+                    <button className="btn btn-primary col-md-4 col-sm-12 my-3 mx-1"
                             type="submit">
                         Search
                     </button>
                 </form>
 
-                { searchResults &&
-                <SearchResultsDisplay searchResults={searchResults} />
+                { searchResults && (searchResults.scholarships || searchResults.essays || searchResults.blogs) &&
+                    <SearchResultsDisplay searchResults={searchResults} />
                 }
                 <ResponseDisplay isLoadingResponse={isLoadingResponse}
                                  responseError={responseError}

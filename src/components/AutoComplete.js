@@ -4,7 +4,7 @@ import './AutoComplete.scss';
 import PropTypes from "prop-types";
 import {emojiDictionary} from "../models/Constants";
 
-const theme = {
+const defaultTheme = {
     container: 'react-autosuggest__container col-12 p-0 mb-3',
     containerOpen: 'react-autosuggest__container--open',
     input: 'react-autosuggest__input',
@@ -13,7 +13,7 @@ const theme = {
     suggestionsContainer: 'react-autosuggest__suggestions-container',
     suggestionsContainerOpen: 'react-autosuggest__suggestions-container--open',
     suggestionsList: 'react-autosuggest__suggestions-list',
-    suggestion: 'react-autosuggest__suggestion',
+    suggestion: 'react-autosuggest__suggestion pl-3',
     suggestionFirst: 'react-autosuggest__suggestion--first',
     suggestionHighlighted: 'react-autosuggest__suggestion--highlighted',
     sectionContainer: 'react-autosuggest__section-container',
@@ -110,7 +110,7 @@ class AutoComplete extends React.Component {
 
     render() {
         const { value, suggestions } = this.state;
-        const { keyName, placeholder } = this.props;
+        const { keyName, placeholder, customTheme } = this.props;
 
         // Autosuggest will pass through all these props to the input.
         const inputProps = {
@@ -124,7 +124,7 @@ class AutoComplete extends React.Component {
         return (
             <Autosuggest
                 id={keyName}
-                theme={theme}
+                theme={{...defaultTheme, ...customTheme}}
                 suggestions={suggestions}
                 onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
                 onSuggestionsClearRequested={this.onSuggestionsClearRequested}
@@ -143,6 +143,7 @@ AutoComplete.defaultProps = {
     onChange: (event) => event.preventDefault(),
     onSelected: (event) => event.preventDefault(),
     placeholder: '',
+    customTheme: {},
 };
 
 AutoComplete.propTypes = {
@@ -152,6 +153,7 @@ AutoComplete.propTypes = {
     onSelected: PropTypes.func,
     keyName: PropTypes.string.isRequired,
     placeholder: PropTypes.string,
+    customTheme: PropTypes.shape({}),
 };
 
 export default AutoComplete
