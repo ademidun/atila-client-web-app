@@ -84,17 +84,13 @@ class Banner extends React.Component {
             type="bottom"
           >
             <h1 key="h1" className="mt-sm-5">
-              Atila
-              <span role="img" aria-label="money emoji">
-                🤑
-              </span>
+              Atila <small>Test</small>
             </h1>
             <h2 key="h2">
               Increase your chances of getting more money for school {' '}
               <span role="img" aria-label="money emoji">
                 🤑
               </span>
-              Don't auto deploy
             </h2>
             <form className="col-sm-12"
                   onSubmit={this.onSubmit}
