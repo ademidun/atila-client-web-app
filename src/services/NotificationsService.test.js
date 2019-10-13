@@ -9,17 +9,17 @@ fdescribe('NotificationsService', () => {
 
 
     it('should be created', () => {
-        expect(service).toBeTruthy();
+        expect(NotificationsService).toBeTruthy();
     });
 
     it('should create a notification with the scholarship name and deadline',
         () => {
 
-            const deadline = NotificationsService.datePipe.transform(scholarship.deadline);
+            const deadline = moment(scholarship.deadline).format('dddd, MMMM DD, YYYY');
             const createdNotification = NotificationsService.createScholarshipNotificationMessage(userProfile, scholarship);
 
-            expect(createdNotification.title).toContain(scholarship.name);
-            expect(createdNotification.body).toContain(deadline);
+            expect(createdNotification.title).toContain(scholarship.name, 'Scholarship name not in notification');
+            expect(createdNotification.body).toContain(deadline, 'Scholarship deadline not in notification');
         });
 
     it('#customizeNotificationMessage() should create an email notification with the userProfile and scholarship details',
@@ -35,14 +35,14 @@ fdescribe('NotificationsService', () => {
 
             const createdNotification = createdNotifications[0];
 
-            expect(createdNotification.title).toContain(userProfile.first_name);
-            expect(createdNotification.body).toContain(userProfile.first_name);
-            expect(createdNotification.html).toContain(userProfile.first_name);
+            expect(createdNotification.title).toContain(userProfile.first_name, 'User name not in notification title');
+            expect(createdNotification.body).toContain(userProfile.first_name, 'User name not in notification body');
+            expect(createdNotification.html).toContain(userProfile.first_name, 'User name not in notification html');
 
             const deadline = moment(scholarship.deadline).format('dddd, MMMM DD, YYYY');
 
-            expect(createdNotification.title).toContain(scholarship.name);
-            expect(createdNotification.html).toContain(deadline);
+            expect(createdNotification.title).toContain(scholarship.name, 'Scholarship name not in notification');
+            expect(createdNotification.html).toContain(deadline, 'Scholarship deadline not in notification');
 
         });
 
@@ -69,6 +69,7 @@ fdescribe('NotificationsService', () => {
 
     it('#customizeNotificationMessage() should not create notifications if deadline is in past',
         () => {
+            NotificationsService.DEFAULT_NOTIFICATION_CONFIG.notificationType = 'email';
             const notificationOptions = {
                 'email': [1, 7], // each array element represents the number of days before the scholarship deadline a notification should be sent
             };
@@ -116,7 +117,6 @@ fdescribe('NotificationsService', () => {
             const scholarshipDeadline = new Date();
             scholarshipDeadline.setDate(scholarshipDeadline.getDate() + 33);
             scholarship.deadline = scholarshipDeadline.toISOString();
-            console.log('scholarship.deadline', scholarship.deadline);
 
             const createdNotifications = NotificationsService.customizeNotificationMessage(notificationOptions,scholarship, userProfile);
 
