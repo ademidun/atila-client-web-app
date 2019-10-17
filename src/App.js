@@ -10,6 +10,7 @@ import Loading from "./components/Loading";
 import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar from "./components/Navbar/Navbar";
+import GoogleAnalyticsTracker from "./services/GoogleAnalyticsTracker";
 
 const Scholarship = loadable(() => import('./scenes/Scholarship/Scholarship'), {
     fallback: <Loading />,
@@ -60,22 +61,23 @@ function App(props) {
                 <div className="App">
                     <ToastContainer />
                     <Navbar />
-                    {isLoadingLoggedInUserProfile && <Loading loaderType="beat" title="" style={{ width: 'auto' }}/>}
+                    {isLoadingLoggedInUserProfile &&
+                    <Loading loaderType="beat" title="" style={{ width: 'auto' }}/>}
                     {isFinishedLoadingLoggedInUserProfile &&
                     <React.Fragment>
-                        <Route exact path="/" component={LandingPage} />
-                        <Route path="/blog" component={Blog} />
-                        <Route path="/essay" component={Essay} />
-                        <Route path="/scholarship" component={Scholarship} />
-                        <Route path="/search" component={Search} />
-                        <Route path="/login" component={Login} />
-                        <Route path="/verify" component={VerifyAccount} />
-                        <Route path="/register" component={Register} />
-                        <Route path="/profile" component={UserProfile} />
-                        <Route path="/team" component={Team} />
-                        <Route path="/terms-and-conditions" component={TermsConditions} />
-                        <Route path="/contact" component={ContactUs} />
-                        <Route path="/siteMap" component={SiteMap} />
+                        <Route exact path="/" component={GoogleAnalyticsTracker(LandingPage)} />
+                        <Route path="/blog" component={GoogleAnalyticsTracker(Blog)} />
+                        <Route path="/essay" component={GoogleAnalyticsTracker(Essay)} />
+                        <Route path="/scholarship" component={GoogleAnalyticsTracker(Scholarship)} />
+                        <Route path="/search" component={GoogleAnalyticsTracker(Search)} />
+                        <Route path="/login" component={GoogleAnalyticsTracker(Login)} />
+                        <Route path="/verify" component={GoogleAnalyticsTracker(VerifyAccount)} />
+                        <Route path="/register" component={GoogleAnalyticsTracker(Register)} />
+                        <Route path="/profile" component={GoogleAnalyticsTracker(UserProfile)} />
+                        <Route path="/team" component={GoogleAnalyticsTracker(Team)} />
+                        <Route path="/terms-and-conditions" component={GoogleAnalyticsTracker(TermsConditions)} />
+                        <Route path="/contact" component={GoogleAnalyticsTracker(ContactUs)} />
+                        <Route path="/siteMap" component={GoogleAnalyticsTracker(SiteMap)} />
                     </React.Fragment>
                     }
                     <Footer />
