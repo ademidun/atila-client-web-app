@@ -276,7 +276,7 @@ class ScholarshipsList extends React.Component {
         if (scholarships) {
             dynamicTitle = `${totalScholarshipsCount} Scholarships ${searchString ? `for ${toTitleCase(searchString)} ` : ''}found`;
             seoContent.title = `${dynamicTitle}${totalFunding !== '$0'? ` and ${totalFunding} in funding` : ''}`;
-            seoContent.title += `${searchString ? ` available for ${toTitleCase(searchString)} scholarships.` : ''}`;
+            seoContent.title += `${searchString ? ` available for ${toTitleCase(searchString)} scholarships` : ''}`;
             seoContent.title += ' - Atila';
             seoContent.description = seoContent.title;
             seoContent.slug = `/scholarship${search}`

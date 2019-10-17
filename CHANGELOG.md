@@ -14,7 +14,16 @@ https://medium.com/@thundermiracle/deploy-static-sites-to-netlify-by-circle-ci-a
 
 - When you change domain names
     - Update CORS_ORIGIN_WHITELIST in `atila-django`
-    - Update your Environment.js and Environment.test.js code 
+    - Update your Environment.js and Environment.test.js code
+    
+    
+### Facebook Open Graph Meta Tags Gotchas
+- The helmet tag dynamically adds new og:title and other open graph objects
+- But there are already some objects in index.html
+- And [this answer]
+ from [open graph docs](https://ogp.me/#array) says that the first one takes precedence
+ - Which is why I think I used jquery code in `atila-anuglar` to replace the original open graph
+ meta attributes with the dynamicfacebook  meta tags in HelmetSeo 
 
 ## October 11, 2019
 ### event.stopPropagation()

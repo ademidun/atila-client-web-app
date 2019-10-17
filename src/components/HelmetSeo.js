@@ -1,6 +1,7 @@
 import {Helmet} from "react-helmet";
 import PropTypes from 'prop-types';
 import React from "react";
+import $ from 'jquery';
 
 export const defaultSeoContent = {
     title: 'Atila - Increase your chances of getting more money for school. Easily find and apply to scholarships.',
@@ -12,6 +13,25 @@ export const defaultSeoContent = {
 };
 
 function HelmetSeo({content}) {
+
+    try {
+        if ($) {
+            $('meta[property="og:url"]').attr('content', window.location.href);
+            $('meta[property="og:type"]').attr('content', content.type);
+            $('meta[property="og:description"]').attr('content', content.description);
+            $('meta[property="og:image"]').attr('content', content.image);
+
+
+            $('meta[itemprop="name"]').attr('content', content.title);
+            $('meta[itemprop="description"]').attr('content', content.description);
+            $('meta[itemprop="image"]').attr('content', content.image);
+
+        }
+    }
+    catch (e) {
+        console.warn({e});
+    }
+
     return (
         <Helmet>
             <meta charSet="utf-8" />
