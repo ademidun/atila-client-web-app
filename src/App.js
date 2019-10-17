@@ -1,6 +1,5 @@
 import React from 'react';
 import {BrowserRouter as Router, Route} from "react-router-dom";
-import Analytics from 'react-router-ga';
 import loadable from '@loadable/component';
 import 'bootstrap/dist/css/bootstrap.css';
 import {connect} from "react-redux";
@@ -59,7 +58,6 @@ function App(props) {
 
     return (
             <Router>
-                <Analytics  id="UA-110656912-1" debug={true}>
                 <div className="App">
                     <ToastContainer />
                     <Navbar />
@@ -84,7 +82,6 @@ function App(props) {
                     }
                     <Footer />
                 </div>
-                </Analytics>
             </Router>
     );
 }

@@ -36,7 +36,6 @@
     "react-google-places-suggest": "^3.8.0",
     "react-helmet": "^5.2.1",
     "react-router-dom": "^5.0.1",
-    "react-router-ga": "^1.2.2",
     "react-scripts": "3.1.1",
     "react-spinners": "^0.6.1",
     "react-toastify": "^5.3.2"
