@@ -13,6 +13,12 @@ import {Provider} from "react-redux";
 import {initialReduxState} from "./models/Constants";
 import Navbar from "./components/Navbar/Navbar";
 
+jest.mock("react-ga", () => (
+    {
+        initialize: () => {},
+    }
+));
+
 const store = mockStore(initialReduxState);
 describe('<App />', () => {
     test('renders without crashing', () => {
