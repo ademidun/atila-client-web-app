@@ -1,7 +1,13 @@
 import React, { Component, } from "react";
 import GoogleAnalytics from "react-ga";
+import Environment from "./Environment";
 
-GoogleAnalytics.initialize("UA-110656912-1");
+if (Environment.name !== 'prod') {
+    GoogleAnalytics.initialize("UA-110656912-2");
+}
+else {
+    GoogleAnalytics.initialize("UA-110656912-1");
+}
 
 const GoogleAnalyticsTracker = (WrappedComponent, options = {}) => {
     const trackPage = page => {
