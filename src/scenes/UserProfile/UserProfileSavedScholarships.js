@@ -5,6 +5,8 @@ import {Button, Table, Tag} from "antd";
 import PropTypes from "prop-types";
 import {Link, withRouter} from "react-router-dom";
 import moment from "moment";
+import {updateLoggedInUserProfile} from "../../redux/actions/user";
+import {connect} from "react-redux";
 
 
 
@@ -55,10 +57,13 @@ class UserProfileViewSavedScholarships extends React.Component {
 
     removeSavedScholarship(scholarshipId) {
         let { scholarships, showExpiredScholarships } = this.state;
-        const { userProfile: {user : userId} } = this.props;
+        const { userProfile: {user : userId}, updateLoggedInUserProfile } = this.props;
         scholarships = scholarships.filter( scholarship => scholarship.id !== scholarshipId );
 
-        UserProfileAPI.removeSavedScholarship(userId, scholarshipId);
+        UserProfileAPI.removeSavedScholarship(userId, scholarshipId)
+            .then(res => {
+                updateLoggedInUserProfile(res.data.user_profile);
+            });
 
         this.setState({scholarships}, () => {
             this.toggleShowExpiredScholarships(showExpiredScholarships);
@@ -160,10 +165,12 @@ function SavedScholarshipsTable({ scholarships, removeSavedScholarship }){
     return (<Table columns={columns} dataSource={scholarships} rowKey="id" />)
 }
 
-UserProfileViewSavedScholarships.defaultProps = {
+const mapDispatchToProps = {
+    updateLoggedInUserProfile
 };
 
-UserProfileViewSavedScholarships.propTypes = {
-    userProfile: PropTypes.shape({}).isRequired,
+const mapStateToProps = state => {
+    return { userProfile: state.data.user.loggedInUserProfile };
 };
-export default withRouter(UserProfileViewSavedScholarships);
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserProfileViewSavedScholarships);
