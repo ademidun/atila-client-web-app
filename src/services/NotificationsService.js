@@ -12,7 +12,6 @@ class NotificationsService {
     static notificationsUrl = `${Environment.apiUrlNodeMicroservice}/notifications`;
 
     static getPermission() {
-    console.log('NotificationsService.swPush', NotificationsService.swPush);
 
     if (Environment.name === 'dev') {
         // https://stackoverflow.com/questions/53810194/angular-7-pwa-swpush-push-notifications-not-working
@@ -40,7 +39,6 @@ class NotificationsService {
 
         return apiCompletionPromise
             .then(res=> {
-                console.log({res});
                 return Promise.resolve(res);
             });
     }
@@ -52,8 +50,6 @@ class NotificationsService {
     return getPermissionPromise
         .then((sub) => {
 
-            console.log({ sub });
-
             // $('#dimScreen').css('display', 'none');
 
             // todo notificationOptions will be based on userProfile preferences
@@ -63,8 +59,6 @@ class NotificationsService {
             };
 
             const fullMessagePayloads = NotificationsService.customizeNotificationMessage(notificationOptions, scholarship, userProfile, sub);
-
-            console.log({fullMessagePayloads});
 
             if(fullMessagePayloads.length > 0) {
                 return NotificationsService.postNotifications(fullMessagePayloads)
@@ -76,7 +70,6 @@ class NotificationsService {
             }
         })
         .catch((err) => {
-            console.log({ err });
             // todo notificationOptions will be based on userProfile preferences
             const notificationOptions = {
                 'email': [7, 1], // each array element represents the number of days before the scholarship deadline a notification should be sent
@@ -84,7 +77,6 @@ class NotificationsService {
 
             const fullMessagePayloads = NotificationsService.customizeNotificationMessage(notificationOptions, scholarship, userProfile);
 
-            console.log({fullMessagePayloads});
             if(fullMessagePayloads.length > 0) {
                 return NotificationsService.postNotifications(fullMessagePayloads)
                     .then(res => res)
