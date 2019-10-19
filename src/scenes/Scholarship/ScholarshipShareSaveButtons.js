@@ -50,17 +50,23 @@ class ScholarshipShareSaveButtons extends React.Component {
 
         const updatedUserProfile = addToMyScholarshipHelper(userProfile, scholarship);
         console.log({updatedUserProfile});
-        NotificationsService.createScholarshipNotifications(userProfile, scholarship)
-            .then(res=> {
-                console.log({res});
-                this.setState({isSavedScholarship: !isSavedScholarship});
-                UserProfileAPI
-                    .update({userProfile: updatedUserProfile},
-                        userProfile.user)
-                    .then(res=>{
-                        toastNotify('😃 User Profile successfully saved!');
+
+
+        this.setState({isSavedScholarship: !isSavedScholarship});
+        UserProfileAPI
+            .update({userProfile: updatedUserProfile},
+                userProfile.user)
+            .then(res=>{
+                toastNotify('😃 Scholarship successfully saved!');
+
+                NotificationsService.createScholarshipNotifications(userProfile, scholarship)
+                    .then(res=> {
+                        console.log({res});
                     })
-                    .catch(handleError);
+                    .catch(handleError)
+                    .finally(()=> {
+
+                    });
             })
             .catch(handleError);
 
