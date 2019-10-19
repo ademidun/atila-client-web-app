@@ -1,7 +1,7 @@
 import React from "react";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import Loading from "../../components/Loading";
-import {Button, Table, Divider, Tag} from "antd";
+import {Button, Table, Tag} from "antd";
 import PropTypes from "prop-types";
 import {Link, withRouter} from "react-router-dom";
 import moment from "moment";
@@ -36,7 +36,7 @@ class UserProfileViewSavedScholarships extends React.Component {
             });
     }
 
-    toggleShowExpiredScholarships(showExpiredScholarships) {
+    toggleShowExpiredScholarships = (showExpiredScholarships) => {
 
         const { scholarships } = this.state;
         this.setState({showExpiredScholarships});
@@ -53,6 +53,14 @@ class UserProfileViewSavedScholarships extends React.Component {
 
     }
 
+    removeSavedScholarship(scholarshipId) {
+        let { scholarships } = this.state;
+        scholarships = scholarships.filter( scholarship =>
+            scholarship.id != scholarshipId );
+
+        this.setState({filteredScholarships: scholarships});
+        this.setState({scholarships});
+    }
 
     render() {
 
@@ -63,33 +71,29 @@ class UserProfileViewSavedScholarships extends React.Component {
         }
         return (<React.Fragment>
             <Button type="primary"
-                    className="mt-3"
+                    className="my-3"
                     onClick={()=>{
                         this.toggleShowExpiredScholarships(!showExpiredScholarships)
                     }}>
                 {showExpiredScholarships? 'Hide' : 'Show'} Expired Scholarships
             </Button>
-            <SavedScholarshipsTable scholarships={filteredScholarships} />
+            <SavedScholarshipsTable scholarships={filteredScholarships}
+                                    removeSavedScholarship={this.removeSavedScholarship.bind(this)}  />
         </React.Fragment>)
     }
 
 
 }
 
-function SavedScholarshipsTable({ scholarships }){
+function SavedScholarshipsTable({ scholarships, removeSavedScholarship }){
 
     const columns = [
-        {
-            title: 'Row',
-            key: 'row',
-            render: (text, record, index) => (index+1)
-        },
         {
             title: 'Name',
             dataIndex: 'name',
             key: 'name',
             render: (text, record) => (
-                <Link to={`/scholarship${record.slug}`}>{text}</Link>
+                <Link to={`/scholarship/${record.slug}`}>{text}</Link>
             ),
         },
         {
@@ -109,16 +113,15 @@ function SavedScholarshipsTable({ scholarships }){
                 const daysFromDeadline = deadlineMoment.diff(todayMoment, 'days');
                 const deadlineString = moment(deadline).format('dddd, MMMM DD, YYYY');
 
-                console.log({dayFromDeadline: daysFromDeadline});
-
                 if (daysFromDeadline < 0) {
                     color = 'volcano';
                     tag = 'Expired'
-                } else if (deadline < 7) {
-                    color = 'green';
-                    tag = 'due this week'
                 } else {
-                    color = 'geekblue'
+                    if (daysFromDeadline < 7) {
+                        color = 'green';
+                    } else {
+                        color = 'geekblue';
+                    }
                     tag = `due ${moment(deadline).fromNow()}`;
                 }
 
@@ -137,19 +140,20 @@ function SavedScholarshipsTable({ scholarships }){
             },
         },
         {
-            title: 'Action',
+            title: 'Remove',
             key: 'action',
             render: (text, record) => (
-                <span>
-        <Link to={`/scholarship${record.slug}`}>Scholarship Details</Link>
-        <Divider type="vertical" />
-        <a>Delete</a>
-      </span>
+                <button className="btn btn-link my-3"
+                        onClick={()=>{
+                            removeSavedScholarship(record.id);
+                        }}>
+                    Remove
+                </button>
             ),
         },
     ];
 
-    return (<Table columns={columns} dataSource={scholarships} />)
+    return (<Table columns={columns} dataSource={scholarships} rowKey="id" />)
 }
 
 UserProfileViewSavedScholarships.defaultProps = {
