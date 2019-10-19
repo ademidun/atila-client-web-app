@@ -13,6 +13,7 @@ import {Tooltip} from "antd";
 import {addToMyScholarshipHelper} from "../../models/UserProfile";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import {handleError} from "../../services/utils";
+import {updateLoggedInUserProfile} from "../../redux/actions/user";
 
 class ScholarshipShareSaveButtons extends React.Component {
 
@@ -34,7 +35,7 @@ class ScholarshipShareSaveButtons extends React.Component {
     saveScholarship = (event) => {
         event.preventDefault();
         const { isSavedScholarship } = this.state;
-        const { userProfile, scholarship } = this.props;
+        const { userProfile, scholarship, updateLoggedInUserProfile } = this.props;
 
         if (!userProfile) {
             toastNotify((<p>You must <Link to="/register">Register</Link> to save a scholarship.</p>));
@@ -46,21 +47,23 @@ class ScholarshipShareSaveButtons extends React.Component {
             return;
         }
 
-        console.log({userProfile});
-
         const updatedUserProfile = addToMyScholarshipHelper(userProfile, scholarship);
-        console.log({updatedUserProfile});
-        NotificationsService.createScholarshipNotifications(userProfile, scholarship)
-            .then(res=> {
-                console.log({res});
-                this.setState({isSavedScholarship: !isSavedScholarship});
-                UserProfileAPI
-                    .update({userProfile: updatedUserProfile},
-                        userProfile.user)
-                    .then(res=>{
-                        toastNotify('😃 User Profile successfully saved!');
+
+        this.setState({isSavedScholarship: !isSavedScholarship});
+        UserProfileAPI
+            .update({userProfile: updatedUserProfile},
+                userProfile.user)
+            .then(res=>{
+                toastNotify('😃 Scholarship successfully saved!');
+                updateLoggedInUserProfile(res.data);
+
+                NotificationsService.createScholarshipNotifications(userProfile, scholarship)
+                    .then(res=> {
                     })
-                    .catch(handleError);
+                    .catch(handleError)
+                    .finally(()=> {
+
+                    });
             })
             .catch(handleError);
 
@@ -146,8 +149,12 @@ ScholarshipShareSaveButtons.propTypes = {
     scholarship: PropTypes.shape({}).isRequired,
 };
 
+const mapDispatchToProps = {
+    updateLoggedInUserProfile
+};
+
 const mapStateToProps = state => {
     return { userProfile: state.data.user.loggedInUserProfile };
 };
 
-export default connect(mapStateToProps)(ScholarshipShareSaveButtons);
+export default connect(mapStateToProps, mapDispatchToProps)(ScholarshipShareSaveButtons);

@@ -7,6 +7,7 @@ import ContentCard from '../../components/ContentCard';
 import {genericItemTransform} from '../../services/utils';
 import Loading from '../../components/Loading';
 import UserProfileEdit from './UserProfileEdit';
+import UserProfileViewSavedScholarships from './UserProfileSavedScholarships';
 
 class UserProfileViewTabs extends React.Component {
 
@@ -24,9 +25,6 @@ class UserProfileViewTabs extends React.Component {
 
         const { userProfile: {user : userId} } = this.props;
 
-
-        const { isProfileEditable } = this.props;
-
         UserProfileAPI.getUserContent(userId, 'blogs')
             .then(res => {
                 this.setState({blogs: res.data.blogs });
@@ -35,18 +33,11 @@ class UserProfileViewTabs extends React.Component {
             .then(res => {
                 this.setState({essays: res.data.essays });
             });
-
-        if (isProfileEditable) {
-            UserProfileAPI.getUserContent(userId, 'scholarships')
-                .then(res => {
-                    this.setState({scholarships: res.data.scholarships });
-                });
-        }
     }
 
     render() {
 
-        const { blogs, essays, scholarships } = this.state;
+        const { blogs, essays } = this.state;
         const { isProfileEditable } = this.props;
         const { match : { params : { tab }} } = this.props;
         let defaultActiveKey = isProfileEditable ? 'scholarships' : 'blogs';
@@ -68,9 +59,7 @@ class UserProfileViewTabs extends React.Component {
                 <Tabs defaultActiveKey={defaultActiveKey} transition={false}>
                     {isProfileEditable &&
                     <Tab eventKey='scholarships' title='Saved Scholarships'>
-                        <TabItemContentList
-                            contentList={scholarships}
-                            contentType={'scholarships'}/>
+                        <UserProfileViewSavedScholarships />
                     </Tab>
                     }
                     {isProfileEditable &&

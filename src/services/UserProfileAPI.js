@@ -38,6 +38,16 @@ class UserProfileAPI {
         return apiCompletionPromise;
     };
 
+    static removeSavedScholarship = (userId, scholarshipId) => {
+
+        const apiCompletionPromise = request({
+            method: 'get',
+            url: `${this.userProfileEndPoint}/${userId}/remove-saved-scholarship/?scholarship=${scholarshipId}/`,
+        });
+
+        return apiCompletionPromise;
+    };
+
     static createUser = (registrationData) => {
 
         const apiCompletionPromise = request({

@@ -116,6 +116,8 @@ class ScholarshipDetail extends React.Component {
 
                         <div className="row">
                             <div className="col-md-8">
+                                <small>#{id}</small>
+                                <br />
                                 {scholarship_url &&
                                 <React.Fragment>
                                     <a href={scholarship_url} target="_blank" rel="noopener noreferrer">
