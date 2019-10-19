@@ -54,12 +54,16 @@ class UserProfileViewSavedScholarships extends React.Component {
     }
 
     removeSavedScholarship(scholarshipId) {
-        let { scholarships } = this.state;
-        scholarships = scholarships.filter( scholarship =>
-            scholarship.id != scholarshipId );
+        let { scholarships, showExpiredScholarships } = this.state;
+        const { userProfile: {user : userId} } = this.props;
+        scholarships = scholarships.filter( scholarship => scholarship.id !== scholarshipId );
 
-        this.setState({filteredScholarships: scholarships});
-        this.setState({scholarships});
+        UserProfileAPI.removeSavedScholarship(userId, scholarshipId);
+
+        this.setState({scholarships}, () => {
+            this.toggleShowExpiredScholarships(showExpiredScholarships);
+        });
+
     }
 
     render() {
