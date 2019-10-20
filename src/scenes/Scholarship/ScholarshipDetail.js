@@ -85,7 +85,7 @@ class ScholarshipDetail extends React.Component {
 
     render() {
 
-        const { isLoadingScholarship, scholarship, errorLoadingScholarship} = this.state;
+        const { isLoadingScholarship, scholarship, errorLoadingScholarship, scholarshipUserProfile} = this.state;
 
         if (errorLoadingScholarship) {
             return (<div className="text-center">
@@ -141,6 +141,23 @@ class ScholarshipDetail extends React.Component {
                                     Edit Scholarship
                                 </Link>
                                 <br/>
+                                {
+                                    scholarshipUserProfile &&
+                                    <React.Fragment>
+                                        Added by:
+                                        <div className="bg-light mb-3 p-1" style={{ width: '250px' }}>
+                                            <Link to={`/profile/${scholarshipUserProfile.username}`} >
+                                                <img
+                                                    alt="user profile"
+                                                    style={{ height: '50px', maxWidth: 'auto' }}
+                                                    className="rounded-circle py-1 pr-1"
+                                                    src={scholarshipUserProfile.profile_pic_url} />
+                                                {scholarshipUserProfile.first_name} {scholarshipUserProfile.last_name}
+                                            </Link>
+                                        </div>
+                                    </React.Fragment>
+                                }
+
                                 <button onClick={this.goBack} className="btn btn-link pl-0">
                                     Go Back ←
                                 </button>
