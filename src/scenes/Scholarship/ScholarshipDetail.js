@@ -9,6 +9,7 @@ import {connect} from "react-redux";
 import AnalyticsService from "../../services/AnalyticsService";
 import ScholarshipShareSaveButtons from "./ScholarshipShareSaveButtons";
 import HelmetSeo from "../../components/HelmetSeo";
+import UserProfileAPI from "../../services/UserProfileAPI";
 
 class ScholarshipDetail extends React.Component {
 
@@ -17,6 +18,7 @@ class ScholarshipDetail extends React.Component {
 
         this.state = {
             scholarship: null,
+            scholarshipUserProfile: null,
             isLoadingScholarship: true,
             errorLoadingScholarship: false,
             prevSlug: null
@@ -56,11 +58,16 @@ class ScholarshipDetail extends React.Component {
         const { match : { params : { slug }}, userProfile } = this.props;
         ScholarshipsAPI.getSlug(slug)
             .then(res => {
-                this.setState({ scholarship: res.data });
+                const scholarship = res.data;
+                this.setState({ scholarship });
 
                 if(userProfile) {
                     AnalyticsService.savePageView(res.data, userProfile);
                 }
+                UserProfileAPI.get(scholarship.owner)
+                    .then(res => {
+                        this.setState({ scholarshipUserProfile: res.data });
+                    })
             })
             .catch(err => {
                 this.setState({ errorLoadingScholarship: true });
