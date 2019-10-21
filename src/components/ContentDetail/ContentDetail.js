@@ -60,7 +60,13 @@ class ContentDetail extends React.Component {
                 this.setState({content});
 
                 if(userProfile) {
-                    AnalyticsService.savePageView(content, userProfile);
+                    // AnalyticsService.savePageView(content, userProfile);
+
+                    AnalyticsService
+                        .getPageViews(userProfile.user)
+                        .then( pageViewsData => {
+                            console.log({pageViewsData});
+                        })
                 }
 
             })
