@@ -12,7 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Navbar from "./components/Navbar/Navbar";
 import GoogleAnalyticsTracker from "./services/GoogleAnalyticsTracker";
 
-const Pricing = loadable(() => import('./scenes/AtilaPlus/Pricing'), {
+const Pricing = loadable(() => import('./scenes/AtilaPremium/Pricing'), {
     fallback: <Loading />,
 });
 const Scholarship = loadable(() => import('./scenes/Scholarship/Scholarship'), {
