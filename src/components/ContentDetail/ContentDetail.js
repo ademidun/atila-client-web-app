@@ -62,15 +62,18 @@ class ContentDetail extends React.Component {
                 this.setState({content});
 
                 if(userProfile) {
-                    // AnalyticsService.savePageView(content, userProfile);
+                    if (contentSlug !== 'atila/what-is-atila') {
+                        // AnalyticsService.savePageView(content, userProfile);
+                        console.log({contentSlug});
+                        AnalyticsService
+                            .getPageViews(userProfile.user)
+                            .then( res => {
 
-                    AnalyticsService
-                        .getPageViews(userProfile.user)
-                        .then( res => {
+                                const { pageViews } = res.data;
+                                this.setState({pageViews});
+                            })
+                    }
 
-                            const { pageViews } = res.data;
-                            this.setState({pageViews});
-                        })
                 }
 
             })

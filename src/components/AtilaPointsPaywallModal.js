@@ -1,8 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {Button, Modal} from 'antd';
+import {Button, Modal, Popover} from 'antd';
 import {connect} from "react-redux";
 import {Link, withRouter} from "react-router-dom";
+import { faQuestionCircle} from "@fortawesome/free-solid-svg-icons/faQuestionCircle";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 class AtilaPointsPaywallModal extends React.Component {
     constructor(props) {
@@ -42,6 +44,16 @@ class AtilaPointsPaywallModal extends React.Component {
 
         const { pageViews, userProfile } = this.props;
 
+        const atilaPointsPopover = (
+            <span>
+                <p>
+                A way to get points on Atila for adding content like scholarships, blog posts and essays.
+                You can also get paid for the content you contribute.
+                </p>
+                <Link to="/blog/atila/what-is-atila"> Learn More </Link>
+            </span>
+        );
+
         return (
             <div>
                 <Modal
@@ -67,8 +79,17 @@ class AtilaPointsPaywallModal extends React.Component {
                         <h3>You have viewed {pageViews.count} pages</h3>
                         <h5>And Only have
                             {parseInt(userProfile.atila_points).toLocaleString()}
-                            {' '}Atila Points
-                        </h5> <br/>
+                            {' '}
+                            <Popover content={atilaPointsPopover}
+                                     title="What is Atila Points?">
+                                <Link to="/blog/atila/what-is-atila">
+                                    Atila Points <FontAwesomeIcon icon={faQuestionCircle} />
+                                </Link>
+                            </Popover>
+
+                        </h5>
+
+                        <br/>
                         <h4>Ways to keep Viewing: </h4>
                         <ol className="font-size-xl">
                             <li className="font-weight-bold">
