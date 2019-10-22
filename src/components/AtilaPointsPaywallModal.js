@@ -27,7 +27,10 @@ class AtilaPointsPaywallModal extends React.Component {
         if (pathname === '/blog/atila/what-is-atila') {
             return
         }
-        if (pageViews.count > 5 && pageViews.count % 5 === 0) {
+
+        if (pageViews.count > 5 && (pageViews.count+1) % 5 === 0) {
+            // todo tk fix hacky way doing this for now because it's firing on
+            // view 71 instead of view 70
             this.setState({visible: true});
         }
     };
