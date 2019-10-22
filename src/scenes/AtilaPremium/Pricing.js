@@ -1,7 +1,7 @@
 import React from "react";
 import './Pricing.scss';
 import {Link} from "react-router-dom";
-import {Button, Popover} from "antd";
+import {Popover} from "antd";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faQuestionCircle} from "@fortawesome/free-solid-svg-icons/faQuestionCircle";
 import {ATILA_POINTS_EXPLAIN_POPOVER} from "../../components/AtilaPointsPaywallModal";
