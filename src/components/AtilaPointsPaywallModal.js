@@ -18,11 +18,15 @@ class AtilaPointsPaywallModal extends React.Component {
     }
 
     componentDidMount() {
-        this.showModalUsingpageViews();
+        this.showModalUsingPageViews();
     }
 
-    showModalUsingpageViews = () => {
-        const { pageViews } = this.props;
+    showModalUsingPageViews = () => {
+        const { pageViews, location : { pathname } } = this.props;
+
+        if (pathname === '/blog/atila/what-is-atila') {
+            return
+        }
         if (pageViews.count > 5) {
             this.setState({visible: true});
         }
@@ -47,7 +51,10 @@ class AtilaPointsPaywallModal extends React.Component {
         const atilaPointsPopover = (
             <span>
                 <p>
-                A way to get points on Atila for adding content like scholarships, blog posts and essays.
+                Points system where  you get points for adding content
+                    like scholarships, blog posts and essays.
+                You can use those points for special features like viewing essays,
+                    scholarships, easier applications and more.
                 You can also get paid for the content you contribute.
                 </p>
                 <Link to="/blog/atila/what-is-atila"> Learn More </Link>
@@ -77,12 +84,12 @@ class AtilaPointsPaywallModal extends React.Component {
                 >
                     <div className="p-3">
                         <h3>You have viewed {pageViews.count} pages</h3>
-                        <h5>And Only have
+                        <h5>And Only have{' '}
                             {parseInt(userProfile.atila_points).toLocaleString()}
                             {' '}
                             <Popover content={atilaPointsPopover}
                                      title="What is Atila Points?">
-                                <Link to="/blog/atila/what-is-atila">
+                                <Link to="/blog/atila/what-is-atila#atila-points">
                                     Atila Points <FontAwesomeIcon icon={faQuestionCircle} />
                                 </Link>
                             </Popover>
