@@ -1,5 +1,7 @@
 import React from "react";
 import './Pricing.scss';
+import {Link} from "react-router-dom";
+import {Button} from "antd";
 
 function Pricing() {
     // todo generate sitemap dynamically
@@ -17,7 +19,9 @@ function Pricing() {
                                 <li className="pricing-features-item">Sleeps after 30 mins of inactivity</li>
                             </ul>
                             <span className="pricing-price">Free</span>
-                            <a href="#/" className="pricing-button">Sign up</a>
+                            <Link to="/register" className="pricing-button">
+                                Sign up
+                            </Link>
                     </div>
 
                     <div className="pricing-plan">
@@ -28,7 +32,9 @@ function Pricing() {
                                 <li className="pricing-features-item">Multiple workers for more powerful apps</li>
                             </ul>
                             <span className="pricing-price">$9</span>
-                            <a href="#/" className="pricing-button is-featured">Free trial</a>
+                        <Link to="/register" className="pricing-button is-featured">
+                            Sign Up
+                        </Link>
                     </div>
 
                     <div className="pricing-plan">
@@ -39,7 +45,9 @@ function Pricing() {
                                 <li className="pricing-features-item">Simple horizontal scalability</li>
                             </ul>
                             <span className="pricing-price">$50</span>
-                            <a href="#/" className="pricing-button">Free trial</a>
+                            <Link to="/register" className="pricing-button">
+                            Sign up
+                        </Link>
                     </div>
 
                 </div>
