@@ -69,8 +69,6 @@ class ContentDetail extends React.Component {
                         .then( res => {
 
                             const { pageViews } = res.data;
-                            console.log({pageViews});
-                            console.log({res});
                             this.setState({pageViews});
                         })
                 }

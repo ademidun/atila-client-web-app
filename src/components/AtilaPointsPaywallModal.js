@@ -1,6 +1,7 @@
-import { Modal, Button } from 'antd';
 import React from "react";
 import PropTypes from "prop-types";
+import { Modal } from 'antd';
+import $ from 'jquery';
 
 class AtilaPointsPaywallModal extends React.Component {
     constructor(props) {
@@ -19,16 +20,10 @@ class AtilaPointsPaywallModal extends React.Component {
 
     showModalUsingpageViews = () => {
         const { pageViews } = this.props;
-        console.log({pageViews});
         if (pageViews.count > 5) {
+            $('#dimScreen').css('display', 'block');
             this.setState({visible: true});
         }
-    };
-
-    showModal = () => {
-        this.setState({
-            visible: true,
-        });
     };
 
     handleOk = e => {
@@ -36,6 +31,7 @@ class AtilaPointsPaywallModal extends React.Component {
         this.setState({
             visible: false,
         });
+        $('#dimScreen').css('display', 'none');
     };
 
     handleCancel = e => {
@@ -43,14 +39,12 @@ class AtilaPointsPaywallModal extends React.Component {
         this.setState({
             visible: false,
         });
+        $('#dimScreen').css('display', 'none');
     };
 
     render() {
         return (
             <div>
-                <Button type="primary" onClick={this.showModal}>
-                    Open Modal
-                </Button>
                 <Modal
                     title="Basic Modal"
                     visible={this.state.visible}
