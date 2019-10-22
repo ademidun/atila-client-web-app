@@ -12,6 +12,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import Navbar from "./components/Navbar/Navbar";
 import GoogleAnalyticsTracker from "./services/GoogleAnalyticsTracker";
 
+const Pricing = loadable(() => import('./scenes/AtilaPlus/Pricing'), {
+    fallback: <Loading />,
+});
 const Scholarship = loadable(() => import('./scenes/Scholarship/Scholarship'), {
     fallback: <Loading />,
 });
@@ -71,6 +74,7 @@ function App(props) {
                         <Route path="/scholarship" component={GoogleAnalyticsTracker(Scholarship)} />
                         <Route path="/search" component={GoogleAnalyticsTracker(Search)} />
                         <Route path="/login" component={GoogleAnalyticsTracker(Login)} />
+                        <Route path="/pricing" component={GoogleAnalyticsTracker(Pricing)} />
                         <Route path="/verify" component={GoogleAnalyticsTracker(VerifyAccount)} />
                         <Route path="/register" component={GoogleAnalyticsTracker(Register)} />
                         <Route path="/profile" component={GoogleAnalyticsTracker(UserProfile)} />
