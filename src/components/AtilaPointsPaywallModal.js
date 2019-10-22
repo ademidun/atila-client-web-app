@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Modal } from 'antd';
-import $ from 'jquery';
+import {Button, Modal} from 'antd';
+import {connect} from "react-redux";
+import {Link, withRouter} from "react-router-dom";
 
 class AtilaPointsPaywallModal extends React.Component {
     constructor(props) {
@@ -21,7 +22,6 @@ class AtilaPointsPaywallModal extends React.Component {
     showModalUsingpageViews = () => {
         const { pageViews } = this.props;
         if (pageViews.count > 5) {
-            $('#dimScreen').css('display', 'block');
             this.setState({visible: true});
         }
     };
@@ -31,7 +31,6 @@ class AtilaPointsPaywallModal extends React.Component {
         this.setState({
             visible: false,
         });
-        $('#dimScreen').css('display', 'none');
     };
 
     handleCancel = e => {
@@ -39,21 +38,53 @@ class AtilaPointsPaywallModal extends React.Component {
         this.setState({
             visible: false,
         });
-        $('#dimScreen').css('display', 'none');
     };
 
     render() {
+
+        const { pageViews, userProfile } = this.props;
+
         return (
             <div>
                 <Modal
-                    title="Basic Modal"
                     visible={this.state.visible}
                     onOk={this.handleOk}
                     onCancel={this.handleCancel}
+                    maskClosable={false}
+                    maskStyle={{background: 'rgba(0,0,0,0.87)'}}
+                    closable={false}
+                    footer={[
+                        <Button key="back"
+                                onClick={this.handleCancel}>
+                            Close
+                        </Button>,
+                        <Button key="submit"
+                                type="primary"
+                                onClick={this.handleOk}>
+                            <Link to="/register">Get Atila Plus</Link>
+                        </Button>,
+                    ]}
                 >
-                    <p>Some contents...</p>
-                    <p>Some contents...</p>
-                    <p>Some contents...</p>
+                    <div className="p-3">
+                        <h3>You have viewed {pageViews.count} pages</h3>
+                        <h5>And Only have  {parseInt(userProfile.atila_points).toLocaleString()} Atila Points</h5>
+                        <h4>Ways to keep Viewing: </h4>
+                        <ol>
+                            <li>
+                                <Link to="/register">Get Atila Plus</Link>
+                            </li>
+                            <li>
+                                <Link to="/scholarship/add">Add a scholarship</Link>
+                            </li>
+                            <li>
+                                <Link to="/blog/add">Add a blog post</Link>
+                            </li>
+                            <li>
+                                <Link to="/essay/add">Add an Essay</Link>
+                            </li>
+                        </ol>
+                    </div>
+
                 </Modal>
             </div>
         );
@@ -62,6 +93,11 @@ class AtilaPointsPaywallModal extends React.Component {
 
 AtilaPointsPaywallModal.propTypes = {
     pageViews: PropTypes.shape({}).isRequired,
+    userProfile: PropTypes.shape({}).isRequired,
 };
 
-export default AtilaPointsPaywallModal;
+const mapStateToProps = state => {
+    return { userProfile: state.data.user.loggedInUserProfile };
+};
+
+export default withRouter(connect(mapStateToProps)(AtilaPointsPaywallModal));
