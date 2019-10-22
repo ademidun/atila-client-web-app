@@ -73,11 +73,6 @@ class ContentDetail extends React.Component {
                                 });
                         })
                 }
-                const { location } = this.props;
-
-                if (location && location.hash) {
-                    scrollToElement(location.hash);
-                }
 
             })
             .catch(err => {
@@ -192,6 +187,6 @@ const mapStateToProps = state => {
     return { userProfile: state.data.user.loggedInUserProfile };
 };
 
-export default withRouter(connect(mapStateToProps)(ContentDetail));
+export default connect(mapStateToProps)(ContentDetail);
 
 export const  ContentDetailTest = ContentDetail;
