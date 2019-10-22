@@ -6,6 +6,21 @@ import {Link, withRouter} from "react-router-dom";
 import { faQuestionCircle} from "@fortawesome/free-solid-svg-icons/faQuestionCircle";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
+
+
+export const ATILA_POINTS_EXPLAIN_POPOVER = (
+    <span>
+                <p>
+                Points system where  you get points for adding content
+                    like scholarships, blog posts and essays.
+                You can use those points for special features like viewing essays,
+                    scholarships, easier applications and more.
+                You can also get paid for the content you contribute.
+                </p>
+                <Link to="/blog/atila/what-is-atila"> Learn More </Link>
+            </span>
+);
+
 class AtilaPointsPaywallModal extends React.Component {
     constructor(props) {
         super(props);
@@ -51,19 +66,6 @@ class AtilaPointsPaywallModal extends React.Component {
 
         const { pageViews, userProfile } = this.props;
 
-        const atilaPointsPopover = (
-            <span>
-                <p>
-                Points system where  you get points for adding content
-                    like scholarships, blog posts and essays.
-                You can use those points for special features like viewing essays,
-                    scholarships, easier applications and more.
-                You can also get paid for the content you contribute.
-                </p>
-                <Link to="/blog/atila/what-is-atila"> Learn More </Link>
-            </span>
-        );
-
         return (
             <div>
                 <Modal
@@ -90,7 +92,7 @@ class AtilaPointsPaywallModal extends React.Component {
                         <h5>and only have{' '}
                             {parseInt(userProfile.atila_points).toLocaleString()}
                             {' '}
-                            <Popover content={atilaPointsPopover}
+                            <Popover content={ATILA_POINTS_EXPLAIN_POPOVER}
                                      title="What is Atila Points?">
                                 <Link to="/blog/atila/what-is-atila#atila-points">
                                     Atila Points <FontAwesomeIcon icon={faQuestionCircle} />
