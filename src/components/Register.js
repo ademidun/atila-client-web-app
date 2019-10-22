@@ -130,7 +130,6 @@ class Register extends React.Component {
                 this.setState({ responseOkMessage: 'Registration successful 🙂! Redirecting...'});
                 UserProfileAPI.authenticateRequests(res.data.token, res.data.id);
                 setLoggedInUserProfile(res.data.user_profile);
-                console.log({res});
                 this.props.history.push(nextLocation);
             })
             .catch(err => {

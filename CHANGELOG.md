@@ -1,5 +1,15 @@
 # Changelog
 
+## October 22, 2019
+### Temporary Hack for Page Views Counter
+
+- The page view atila points reminder modal is supposed to show on every 5th page view
+e.g. page view 55,70.
+- For some reason it is triggering on page views # 56 or 71 instead
+- Might be something with how the props are being updated
+- Anyway, trying to start working on the pricing page so I just did a temp hack
+where we show the modal on (pageView+1), will need to revisit this later
+
 ## October 13, 2019
 ### Netlify Circleci Deployment Continued
 - Was still having issues trying to get atila.ca and staging.atila.ca set upin netlifyCI

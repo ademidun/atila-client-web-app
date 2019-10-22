@@ -14,6 +14,15 @@ class AnalyticsService {
 
         return apiCompletionPromise;
     };
+    static getPageViews = (userId) => {
+
+        const apiCompletionPromise = request({
+            method: 'get',
+            url: `${AnalyticsService.pageViewsUrl}?user=${userId}`,
+        });
+
+        return apiCompletionPromise;
+    };
 
 
     static transformViewData = (viewData, userProfile) => {

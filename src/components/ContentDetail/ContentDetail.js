@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Link} from "react-router-dom";
+import {Link,} from "react-router-dom";
 
 import './ContentDetail.scss';
 import Loading from "../Loading";
@@ -8,7 +8,9 @@ import RelatedItems from "../RelatedItems";
 import {connect} from "react-redux";
 import AnalyticsService from "../../services/AnalyticsService";
 import HelmetSeo from "../HelmetSeo";
-import {genericItemTransform} from "../../services/utils";
+import {genericItemTransform, toTitleCase} from "../../services/utils";
+import {Button} from "antd";
+import AtilaPointsPaywallModal from "../AtilaPointsPaywallModal";
 
 class ContentDetail extends React.Component {
 
@@ -19,6 +21,7 @@ class ContentDetail extends React.Component {
             content: null,
             errorGettingContent: null,
             prevSlug: null,
+            pageViews: null,
 
         }
     }
@@ -59,7 +62,16 @@ class ContentDetail extends React.Component {
                 this.setState({content});
 
                 if(userProfile) {
-                    AnalyticsService.savePageView(content, userProfile);
+                    AnalyticsService
+                        .savePageView(content, userProfile)
+                        .then(() => {
+                            AnalyticsService
+                                .getPageViews(userProfile.user)
+                                .then( res => {
+                                    const { pageViews } = res.data;
+                                    this.setState({pageViews});
+                                });
+                        })
                 }
 
             })
@@ -73,7 +85,7 @@ class ContentDetail extends React.Component {
     render () {
 
         const { className, contentType, userProfile, contentSlug } = this.props;
-        const { errorGettingContent, content } = this.state;
+        const { errorGettingContent, content, pageViews } = this.state;
 
         if (errorGettingContent) {
             return (<div className="text-center">
@@ -109,6 +121,10 @@ class ContentDetail extends React.Component {
                          className="header-image"
                     />}
 
+                    {pageViews &&
+                    <AtilaPointsPaywallModal pageViews={pageViews} />
+                    }
+
                     {user &&
                     <div className="bg-light my-3 p-1">
                         <Link to={`/profile/${user.username}`} >
@@ -123,7 +139,26 @@ class ContentDetail extends React.Component {
                 </div>
                     {/*todo find a way to secure against XSS: https://stackoverflow.com/a/19277723*/}
                     <div className="row">
-                        <div className={`${className} col-md-8 serif-font content-detail`} dangerouslySetInnerHTML={{__html: body}} />
+
+                        {userProfile &&
+                            <div className={`${className} col-md-8 serif-font content-detail`} dangerouslySetInnerHTML={{__html: body}} />
+                        }
+                        {!userProfile && contentType === 'essay' &&
+                        <div className=" col-md-8 serif-font content-detail">
+                            <div className={`${className} paywall-border`}
+                                 dangerouslySetInnerHTML={{__html: body}} />
+                                 <div className="card shadow p-3">
+                                     <p>
+                                         Register to Read Full {toTitleCase(contentType)}
+                                     </p>
+                                     <Button type="primary">
+                                         <Link to="/register">
+                                         Register
+                                         </Link>
+                                     </Button>
+                                 </div>
+                        </div>
+                        }
                         <RelatedItems
                             className="col-md-4"
                             id={id}
