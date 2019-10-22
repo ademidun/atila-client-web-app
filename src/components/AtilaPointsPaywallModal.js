@@ -97,10 +97,10 @@ class AtilaPointsPaywallModal extends React.Component {
                         </h5>
 
                         <br/>
-                        <h4>Ways to keep Viewing: </h4>
+                        <h4>ways to keep viewing: </h4>
                         <ol className="font-size-xl">
                             <li className="font-weight-bold">
-                                <Link to="/scholarship/add">add a cholarship</Link>
+                                <Link to="/scholarship/add">add a scholarship</Link>
                             </li>
                             <li>
                                 <Link to="/blog/add">add a blog post</Link>
