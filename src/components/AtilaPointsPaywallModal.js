@@ -27,14 +27,12 @@ class AtilaPointsPaywallModal extends React.Component {
     };
 
     handleOk = e => {
-        console.log(e);
         this.setState({
             visible: false,
         });
     };
 
     handleCancel = e => {
-        console.log(e);
         this.setState({
             visible: false,
         });
@@ -67,10 +65,13 @@ class AtilaPointsPaywallModal extends React.Component {
                 >
                     <div className="p-3">
                         <h3>You have viewed {pageViews.count} pages</h3>
-                        <h5>And Only have  {parseInt(userProfile.atila_points).toLocaleString()} Atila Points</h5>
+                        <h5>And Only have
+                            {parseInt(userProfile.atila_points).toLocaleString()}
+                            {' '}Atila Points
+                        </h5> <br/>
                         <h4>Ways to keep Viewing: </h4>
-                        <ol>
-                            <li>
+                        <ol className="font-size-xl">
+                            <li className="font-weight-bold">
                                 <Link to="/register">Get Atila Plus</Link>
                             </li>
                             <li>
