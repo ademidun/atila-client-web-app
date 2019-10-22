@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Link, withRouter} from "react-router-dom";
+import {Link,} from "react-router-dom";
 
 import './ContentDetail.scss';
 import Loading from "../Loading";
@@ -8,7 +8,7 @@ import RelatedItems from "../RelatedItems";
 import {connect} from "react-redux";
 import AnalyticsService from "../../services/AnalyticsService";
 import HelmetSeo from "../HelmetSeo";
-import {genericItemTransform, scrollToElement, toTitleCase} from "../../services/utils";
+import {genericItemTransform, toTitleCase} from "../../services/utils";
 import {Button} from "antd";
 import AtilaPointsPaywallModal from "../AtilaPointsPaywallModal";
 

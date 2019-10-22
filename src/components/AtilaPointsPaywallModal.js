@@ -27,7 +27,7 @@ class AtilaPointsPaywallModal extends React.Component {
         if (pathname === '/blog/atila/what-is-atila') {
             return
         }
-        if (pageViews.count > 5) {
+        if (pageViews.count % 5 === 0) {
             this.setState({visible: true});
         }
     };
@@ -68,7 +68,7 @@ class AtilaPointsPaywallModal extends React.Component {
                     onOk={this.handleOk}
                     onCancel={this.handleCancel}
                     maskClosable={false}
-                    maskStyle={{background: 'rgba(0,0,0,0.87)'}}
+                    maskStyle={{background: 'rgba(0,0,0,0.93)'}}
                     closable={false}
                     footer={[
                         <Button key="back"

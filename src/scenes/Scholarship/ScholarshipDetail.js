@@ -10,6 +10,7 @@ import AnalyticsService from "../../services/AnalyticsService";
 import ScholarshipShareSaveButtons from "./ScholarshipShareSaveButtons";
 import HelmetSeo from "../../components/HelmetSeo";
 import UserProfileAPI from "../../services/UserProfileAPI";
+import AtilaPointsPaywallModal from "../../components/AtilaPointsPaywallModal";
 
 class ScholarshipDetail extends React.Component {
 
@@ -21,7 +22,8 @@ class ScholarshipDetail extends React.Component {
             scholarshipUserProfile: null,
             isLoadingScholarship: true,
             errorLoadingScholarship: false,
-            prevSlug: null
+            prevSlug: null,
+            pageViews: null
         }
     }
 
@@ -62,7 +64,18 @@ class ScholarshipDetail extends React.Component {
                 this.setState({ scholarship });
 
                 if(userProfile) {
-                    AnalyticsService.savePageView(res.data, userProfile);
+                    if(userProfile) {
+                        AnalyticsService
+                            .savePageView(scholarship, userProfile)
+                            .then(() => {
+                                AnalyticsService
+                                    .getPageViews(userProfile.user)
+                                    .then( res => {
+                                        const { pageViews } = res.data;
+                                        this.setState({pageViews});
+                                    });
+                            })
+                    }
                 }
                 UserProfileAPI.get(scholarship.owner)
                     .then(res => {
@@ -85,7 +98,9 @@ class ScholarshipDetail extends React.Component {
 
     render() {
 
-        const { isLoadingScholarship, scholarship, errorLoadingScholarship, scholarshipUserProfile} = this.state;
+        const { isLoadingScholarship, scholarship,
+            errorLoadingScholarship, scholarshipUserProfile,
+            pageViews} = this.state;
 
         if (errorLoadingScholarship) {
             return (<div className="text-center">
@@ -110,6 +125,10 @@ class ScholarshipDetail extends React.Component {
         return (
             <React.Fragment>
                 <HelmetSeo content={genericItemTransform(scholarship)} />
+
+                {pageViews &&
+                <AtilaPointsPaywallModal pageViews={pageViews} />
+                }
                 <div className="container mt-5">
                     <div className="row">
                         <div className="col-12">
