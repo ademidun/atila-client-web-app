@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Link} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 
 import './ContentDetail.scss';
 import Loading from "../Loading";
@@ -8,7 +8,7 @@ import RelatedItems from "../RelatedItems";
 import {connect} from "react-redux";
 import AnalyticsService from "../../services/AnalyticsService";
 import HelmetSeo from "../HelmetSeo";
-import {genericItemTransform, toTitleCase} from "../../services/utils";
+import {genericItemTransform, scrollToElement, toTitleCase} from "../../services/utils";
 import {Button} from "antd";
 import AtilaPointsPaywallModal from "../AtilaPointsPaywallModal";
 
@@ -72,6 +72,11 @@ class ContentDetail extends React.Component {
                                     this.setState({pageViews});
                                 });
                         })
+                }
+                const { location } = this.props;
+
+                if (location && location.hash) {
+                    scrollToElement(location.hash);
                 }
 
             })
@@ -187,6 +192,6 @@ const mapStateToProps = state => {
     return { userProfile: state.data.user.loggedInUserProfile };
 };
 
-export default connect(mapStateToProps)(ContentDetail);
+export default withRouter(connect(mapStateToProps)(ContentDetail));
 
 export const  ContentDetailTest = ContentDetail;

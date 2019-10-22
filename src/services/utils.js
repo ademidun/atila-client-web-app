@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import {toastNotify} from "../models/Utils";
 
 export function makeXHRRequestAsPromise (method, url, data) {
@@ -286,3 +287,6 @@ export function handleError(error) {
     toastNotify(`🙁${postError}`, 'error');
 }
 
+export function scrollToElement(elementSelector) {
+    $('html, body').animate({scrollTop: $(elementSelector).offset().top}, 1000);
+}
