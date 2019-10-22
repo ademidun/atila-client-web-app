@@ -78,13 +78,13 @@ class AtilaPointsPaywallModal extends React.Component {
                         <Button key="submit"
                                 type="primary"
                                 onClick={this.handleOk}>
-                            <Link to="/register">Get Atila Plus</Link>
+                            <Link to="/scholarship/add">Add A Scholarship</Link>
                         </Button>,
                     ]}
                 >
                     <div className="p-3">
                         <h3>You have viewed {pageViews.count} pages</h3>
-                        <h5>And Only have{' '}
+                        <h5>and only have{' '}
                             {parseInt(userProfile.atila_points).toLocaleString()}
                             {' '}
                             <Popover content={atilaPointsPopover}
@@ -100,16 +100,13 @@ class AtilaPointsPaywallModal extends React.Component {
                         <h4>Ways to keep Viewing: </h4>
                         <ol className="font-size-xl">
                             <li className="font-weight-bold">
-                                <Link to="/register">Get Atila Plus</Link>
+                                <Link to="/scholarship/add">add a cholarship</Link>
                             </li>
                             <li>
-                                <Link to="/scholarship/add">Add a scholarship</Link>
+                                <Link to="/blog/add">add a blog post</Link>
                             </li>
                             <li>
-                                <Link to="/blog/add">Add a blog post</Link>
-                            </li>
-                            <li>
-                                <Link to="/essay/add">Add an Essay</Link>
+                                <Link to="/essay/add">add an essay</Link>
                             </li>
                         </ol>
                     </div>
