@@ -1,7 +1,9 @@
 import React from "react";
 import UtilsAPI from "../services/UtilsAPI";
 import Loading from "./Loading";
-import {Link} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
+import PropTypes from "prop-types";
+import ScholarshipCard from "../scenes/Scholarship/ScholarshipCard";
 class SubscribeMailingList extends  React.Component{
 
 
@@ -22,11 +24,19 @@ class SubscribeMailingList extends  React.Component{
         event.preventDefault();
         const { fullName, email } = this.state;
 
+
+        if(!fullName || !email) {
+            return
+        }
+
+        const { formGoogleSheetName, location: { pathname } } = this.props;
+
         this.setState({ isLoadingResponse: true });
         UtilsAPI.postGoogleScript({
             name: fullName,
-            formGoogleSheetName: 'mailinglist',
+            formGoogleSheetName: formGoogleSheetName,
             skipSendEmail: true,
+            referrer: pathname,
             email, })
             .then(res=> {
                 this.setState({ isReceivedResponse: true });
@@ -54,6 +64,8 @@ class SubscribeMailingList extends  React.Component{
     render() {
         const { fullName, email, isLoadingResponse,
             isReceivedResponse, errorReceivingResponse } = this.state;
+
+        const { btnText, subscribeText } = this.props;
 
         let pageContent = null;
 
@@ -85,10 +97,7 @@ class SubscribeMailingList extends  React.Component{
         }
         else {
             pageContent = (<React.Fragment>
-                <p className="col-sm-12 col-md-6" style={{fontSize : 'medium'}}>Subscribe to get updates
-                    on new <Link to="/" >scholarships</Link>, <Link to="/blog" >blog</Link> and {' '}
-                    <Link to="/essay" >essays</Link>, and new product features.
-                </p>
+                {subscribeText}
                 <form className="row p-3 form-group" onSubmit={this.submitContact}>
                     <input placeholder="Full Name"
                            name="name"
@@ -104,7 +113,7 @@ class SubscribeMailingList extends  React.Component{
                            onChange={this.updateEmail}
                     />
                     <button className="btn btn-primary col-12 mb-3" type="submit">
-                        Subscribe
+                        {btnText}
                     </button>
 
                 </form>
@@ -121,4 +130,23 @@ class SubscribeMailingList extends  React.Component{
     }
 }
 
-export default SubscribeMailingList;
+SubscribeMailingList.defaultProps = {
+    btnText: 'Subscribe',
+    subscribeText: (
+        <p className="col-sm-12 col-md-6" style={{fontSize : 'medium'}}>Subscribe to get updates
+            on new <Link to="/" >scholarships</Link>, <Link to="/blog" >blog</Link> and {' '}
+            <Link to="/essay" >essays</Link>, and new product features.
+        </p>),
+    formGoogleSheetName: 'mailinglist',
+};
+
+SubscribeMailingList.propTypes = {
+    btnText: PropTypes.string,
+    formGoogleSheetName: PropTypes.string,
+    subscribeText: PropTypes.oneOfType([
+        PropTypes.shape({}),
+        PropTypes.string,
+    ])
+};
+
+export default withRouter(SubscribeMailingList);

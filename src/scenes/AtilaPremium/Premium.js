@@ -1,9 +1,11 @@
 import React from "react";
-import {withRouter} from "react-router-dom";
 import SubscribeMailingList from "../../components/SubscribeMailingList";
 
-function Premium(props) {
-    console.log({props});
+function Premium() {
+
+    const subscribeText = (<h3>
+        Get Notified When Atila Premium Launches
+    </h3>)
     return (
         <div className="container mt-5">
             <div className="card p-3 pb-5">
@@ -12,14 +14,13 @@ function Premium(props) {
                         Atila Premium Coming Soon
                         <span role="img" aria-label="eyes and clock emoji">👀 🕛</span>
                     </h1>
-                    <h3>
-                        Get Notified When Atila Premium Launches
-                    </h3>
-                    <SubscribeMailingList />
+
+                    <SubscribeMailingList subscribeText={subscribeText}
+                                          btnText="Get Notified" />
                 </div>
             </div>
         </div>
     );
 }
 
-export default withRouter(Premium);
+export default Premium;
