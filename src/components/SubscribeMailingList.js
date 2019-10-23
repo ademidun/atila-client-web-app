@@ -3,7 +3,6 @@ import UtilsAPI from "../services/UtilsAPI";
 import Loading from "./Loading";
 import {Link, withRouter} from "react-router-dom";
 import PropTypes from "prop-types";
-import ScholarshipCard from "../scenes/Scholarship/ScholarshipCard";
 class SubscribeMailingList extends  React.Component{
 
 
