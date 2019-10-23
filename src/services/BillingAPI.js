@@ -6,9 +6,9 @@ class BillingAPI {
     static chargePayment = (tokenId) => {
 
         const apiCompletionPromise = request({
-            url: `${BillingAPI.billingMicroserviceUrl}/charge`,
+            url: `${BillingAPI.billingMicroserviceUrl}/create-customer`,
             method: 'post',
-            data: tokenId,
+            data: {tokenId, email: 'tomiademidun+strip@gmail.com', productPlan: 'plan_G2wqtX5n0quawI' },
             headers: {"Content-Type": "text/plain"},
         });
 

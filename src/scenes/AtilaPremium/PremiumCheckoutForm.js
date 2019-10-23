@@ -4,6 +4,7 @@ import {CardElement, injectStripe} from 'react-stripe-elements';
 import {Button} from "antd";
 import {withRouter} from "react-router-dom";
 import {STRIPE_PUBLIC_KEY} from "../../models/Constants";
+import BillingAPI from "../../services/BillingAPI";
 
 
 class PremiumCheckoutForm extends React.Component {
@@ -22,7 +23,14 @@ class PremiumCheckoutForm extends React.Component {
         this.props.stripe
             .createToken({type: 'card', name: 'Jenny Rosen'})
             .then(function(result) {
-                console.log({result})
+                console.log({result});
+
+                if(result.token) {
+                    BillingAPI.chargePayment(result.token.id)
+                        .then(res => {
+                            console.log({res});
+                        })
+                }
             });
         this.props.stripe
             .createPaymentMethod('card', {billing_details: {name: 'Jenny Rosen'}})
