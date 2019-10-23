@@ -3,6 +3,7 @@ export const EnvironmentDev = {
     production: false,
     apiUrl: 'http://127.0.0.1:8000/api',
     apiUrlNodeMicroservice: 'http://127.0.0.1:9000',
+    apiUrlBillingMicroservice: 'http://127.0.0.1:9001',
 };
 
 export const EnvironmentStaging = {
