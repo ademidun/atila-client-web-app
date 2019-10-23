@@ -15,6 +15,9 @@ import GoogleAnalyticsTracker from "./services/GoogleAnalyticsTracker";
 const Pricing = loadable(() => import('./scenes/AtilaPremium/Pricing'), {
     fallback: <Loading />,
 });
+const Premium = loadable(() => import('./scenes/AtilaPremium/Premium'), {
+    fallback: <Loading />,
+});
 const Scholarship = loadable(() => import('./scenes/Scholarship/Scholarship'), {
     fallback: <Loading />,
 });
@@ -75,6 +78,8 @@ function App(props) {
                         <Route path="/search" component={GoogleAnalyticsTracker(Search)} />
                         <Route path="/login" component={GoogleAnalyticsTracker(Login)} />
                         <Route path="/pricing" component={GoogleAnalyticsTracker(Pricing)} />
+                        <Route path="/premium/:accountType" component={GoogleAnalyticsTracker(Premium)} />
+                        <Route exact path="/premium" component={GoogleAnalyticsTracker(Premium)} />
                         <Route path="/verify" component={GoogleAnalyticsTracker(VerifyAccount)} />
                         <Route path="/register" component={GoogleAnalyticsTracker(Register)} />
                         <Route path="/profile" component={GoogleAnalyticsTracker(UserProfile)} />

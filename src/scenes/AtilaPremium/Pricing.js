@@ -9,13 +9,14 @@ import {ATILA_POINTS_EXPLAIN_POPOVER} from "../../components/AtilaPointsPaywallM
 function Pricing() {
     // todo generate sitemap dynamically
     return (
-        <div className="background">
-            <div className="container">
-                <h1>Pricing</h1>
-                <div className="panel pricing-table">
+        <div className="Pricing">
+            <div className="background">
+                <div className="container">
+                    <h1>Pricing</h1>
+                    <div className="panel pricing-table">
 
-                    <div className="pricing-plan">
-                        <img src="https://s22.postimg.cc/8mv5gn7w1/paper-plane.png" alt="" className="pricing-img" />
+                        <div className="pricing-plan">
+                            <img src="https://s22.postimg.cc/8mv5gn7w1/paper-plane.png" alt="" className="pricing-img" />
                             <h2 className="pricing-header">Student</h2>
                             <ul className="pricing-features">
                                 <li className="pricing-features-item">high school, college, university students</li>
@@ -26,10 +27,10 @@ function Pricing() {
                             <Link to="/register" className="pricing-button">
                                 Sign up
                             </Link>
-                    </div>
+                        </div>
 
-                    <div className="pricing-plan">
-                        <img src="https://s28.postimg.cc/ju5bnc3x9/plane.png" alt="" className="pricing-img" />
+                        <div className="pricing-plan">
+                            <img src="https://s28.postimg.cc/ju5bnc3x9/plane.png" alt="" className="pricing-img" />
                             <h2 className="pricing-header">Student Premium</h2>
                             <ul className="pricing-features">
                                 <li className="pricing-features-item">high school, college, university students</li>
@@ -37,13 +38,13 @@ function Pricing() {
                                 <li className="pricing-features-item">Unlimited essay views</li>
                             </ul>
                             <span className="pricing-price">$9</span>
-                        <Link to="/register" className="pricing-button is-featured">
-                            Sign Up
-                        </Link>
-                    </div>
+                            <Link to="/premium/student" className="pricing-button is-featured">
+                                Sign Up
+                            </Link>
+                        </div>
 
-                    <div className="pricing-plan">
-                        <img src="https://s21.postimg.cc/tpm0cge4n/space-ship.png" alt="" className="pricing-img" />
+                        <div className="pricing-plan">
+                            <img src="https://s21.postimg.cc/tpm0cge4n/space-ship.png" alt="" className="pricing-img" />
                             <h2 className="pricing-header">Enterprise</h2>
                             <ul className="pricing-features">
                                 <li className="pricing-features-item">Schools and organizations</li>
@@ -55,28 +56,29 @@ function Pricing() {
                                 </li>
                             </ul>
                             <span className="pricing-price">$50<small><sup>*</sup></small></span>
-                            <Link to="/register" className="pricing-button">
-                            Sign up
-                        </Link>
+                            <Link to="/premium/enterprise" className="pricing-button">
+                                Sign up
+                            </Link>
+                        </div>
+
                     </div>
 
-                </div>
+                    <div className="m-3 col-md-8 offset-md-4">
+                        Prices represent monthly subscription  <hr/><br/>
 
-                <div className="m-3 col-md-8 offset-md-4">
-                    Prices represent monthly subscription  <hr/><br/>
-
-                    Free Student Plans can access Student Premium features by adding scholarships
-                    and getting <Popover content={ATILA_POINTS_EXPLAIN_POPOVER}
-                                         title="What is Atila Points?">
+                        Free Student Plans can access Student Premium features by adding scholarships
+                        and getting <Popover content={ATILA_POINTS_EXPLAIN_POPOVER}
+                                             title="What is Atila Points?">
                     <span className="btn-link">
                         Atila Points <FontAwesomeIcon icon={faQuestionCircle} />
                     </span>
-                </Popover>  <hr/><br/>
+                    </Popover>  <hr/><br/>
 
-                    * = Schools: additional cost per student.
-                    Organizations only pay $50 flat fee{' '}
-                    <Link to="/contact">Contact Us</Link> for more details
+                        * = Schools: additional cost per student.
+                        Organizations only pay $50 flat fee{' '}
+                        <Link to="/contact">Contact Us</Link> for more details
 
+                    </div>
                 </div>
             </div>
         </div>
