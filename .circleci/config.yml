@@ -51,7 +51,7 @@ jobs:
                 ./node_modules/.bin/netlify deploy --dir=./build --prod --site $NETLIFY_SITE_ID_PROD -m "${CIRCLE_SHA1} ${CIRCLE_PULL_REQUEST}"
             else
                 echo 'deploying to staging';
-                ./node_modules/.bin/netlify deploy --dir=./build --prod --site $NETLIFY_SITE_ID_STAGING -m "${CIRCLE_SHA1} ${CIRCLE_PULL_REQUEST}"
+                ./node_modules/.bin/netlify deploy --dir=./build --site $NETLIFY_SITE_ID_STAGING -m "${CIRCLE_SHA1} ${CIRCLE_PULL_REQUEST}"
             fi
 
 workflows:
