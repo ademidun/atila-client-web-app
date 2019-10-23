@@ -71,6 +71,11 @@ function Footer() {
                     </Link>
                   </div>
                   <div>
+                    <Link to="/pricing">
+                      Pricing
+                    </Link>
+                  </div>
+                  <div>
                     <Link to="/sitemap">
                       SiteMap
                     </Link>

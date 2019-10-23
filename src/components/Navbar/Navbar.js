@@ -49,6 +49,9 @@ class Navbar extends React.Component {
                 <Menu.Item key="blogs">
                     <Link to="/blog">Blogs</Link>
                 </Menu.Item>
+                <Menu.Item key="pricing">
+                    <Link to="/pricing">Pricing</Link>
+                </Menu.Item>
 
                 {!userProfile && !isLoadingLoggedInUserProfile &&
                 <Menu.Item key="login">
