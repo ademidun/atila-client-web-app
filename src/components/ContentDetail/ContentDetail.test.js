@@ -13,7 +13,6 @@ import configureStore from "redux-mock-store";
 import {UserProfileTest1} from "../../models/UserProfile";
 import {EssayIveyApplication} from "../../models/Essay";
 import {initialReduxState} from "../../models/Constants";
-import {toTitleCase} from "../../services/utils";
 
 configure({ adapter: new Adapter() });
 const mockStore = configureStore();
@@ -24,7 +23,20 @@ SearchApi.relatedItems.mockImplementation(() => Promise.resolve({ data: { items:
 
 describe('<ContentDetail />', () => {
 
-    it('renders without crashing', () => {
+    it('renders without crashing (Not Logged In)', () => {
+
+        const wrapper = shallow(
+            <MemoryRouter>
+                <ContentDetail contentType={'blog'}
+                               contentSlug={'atila/what-is-atila'}
+                               ContentAPI={BlogsApi}
+                />
+            </MemoryRouter>
+        );
+        expect(wrapper.html()).toBeTruthy();
+    });
+
+    it('renders without crashing (Logged In)', () => {
 
         const wrapper = shallow(
             <MemoryRouter>
@@ -83,6 +95,24 @@ describe('<ContentDetail />', () => {
 
     });
 
+    it('renders Related Items (NOT Logged In)', () => {
+
+        const wrapper = mount(
+            <MemoryRouter>
+            <ContentDetail contentType={'blog'}
+                           contentSlug={'atila/what-is-atila'}
+                           ContentAPI={BlogsApi}
+            />
+            </MemoryRouter>
+        );
+        let childWrapper = wrapper.find(ContentDetail);
+        childWrapper.setState({ content: BlogWhatIsAtila });
+        wrapper.update();
+        expect(wrapper.find(ContentDetail).html()).toContain(BlogWhatIsAtila.title);
+        expect(wrapper.find(ContentDetail).html()).not.toContain(EssayIveyApplication.title);
+
+    });
+
     it('renders Content Detail if Not Logged In', () => {
 
         const wrapper = mount(
@@ -123,8 +153,6 @@ describe('<ContentDetail />', () => {
             .find('div.paywall-border').exists()).toBeTruthy();
         const registerPrompt = "<p>Register to Read Full Essay</p>";
 
-        console.log('childWrapper.html()', childWrapper.html());
-        console.log(registerPrompt);
         expect(childWrapper.html()).toContain(registerPrompt);
 
     });
