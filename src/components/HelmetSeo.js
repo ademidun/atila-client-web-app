@@ -15,7 +15,7 @@ export const defaultSeoContent = {
 function HelmetSeo({content}) {
 
     try {
-        if ($) {
+        if (process.env.NODE_ENV !=='test' && $) {
             $('meta[property="og:url"]').attr('content', window.location.href);
             $('meta[property="og:type"]').attr('content', content.type);
             $('meta[property="og:description"]').attr('content', content.description);

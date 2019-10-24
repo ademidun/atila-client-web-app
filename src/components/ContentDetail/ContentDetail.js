@@ -104,6 +104,33 @@ class ContentDetail extends React.Component {
         const canEditContent = userProfile && (userProfile.user === content.user.id || userProfile.is_atila_admin);
 
         const { title, body, header_image_url, user, id } = content;
+
+        let contentToDisplay = null;
+
+        if(!userProfile && contentType === 'essay') {
+            contentToDisplay = (
+                <div className=" col-md-8 serif-font content-detail">
+                    <div className={`${className} paywall-border`}
+                         dangerouslySetInnerHTML={{__html: body}} />
+                    <div className="card shadow p-3">
+                        <p>
+                            Register to Read Full {toTitleCase(contentType)}
+                        </p>
+                        <Button type="primary">
+                            <Link to="/register">
+                                Register
+                            </Link>
+                        </Button>
+                    </div>
+                </div>
+            );
+
+        } else {
+            contentToDisplay = (
+                <div className={`${className} col-md-8 serif-font content-detail`}
+                     dangerouslySetInnerHTML={{__html: body}} />
+            )
+        }
         return (
             <div className="m-5 px-md-5">
                 <HelmetSeo content={genericItemTransform(content)} />
@@ -140,25 +167,7 @@ class ContentDetail extends React.Component {
                     {/*todo find a way to secure against XSS: https://stackoverflow.com/a/19277723*/}
                     <div className="row">
 
-                        {userProfile &&
-                            <div className={`${className} col-md-8 serif-font content-detail`} dangerouslySetInnerHTML={{__html: body}} />
-                        }
-                        {!userProfile && contentType === 'essay' &&
-                        <div className=" col-md-8 serif-font content-detail">
-                            <div className={`${className} paywall-border`}
-                                 dangerouslySetInnerHTML={{__html: body}} />
-                                 <div className="card shadow p-3">
-                                     <p>
-                                         Register to Read Full {toTitleCase(contentType)}
-                                     </p>
-                                     <Button type="primary">
-                                         <Link to="/register">
-                                         Register
-                                         </Link>
-                                     </Button>
-                                 </div>
-                        </div>
-                        }
+                        {contentToDisplay}
                         <RelatedItems
                             className="col-md-4"
                             id={id}
