@@ -8,11 +8,10 @@ import BlogsApi from "../../services/BlogsAPI";
 import RelatedItems from "../RelatedItems";
 import {MemoryRouter} from "react-router-dom";
 import SearchApi from "../../services/SearchAPI";
-import {relatedItems} from "../RelatedItems.test";
 import configureStore from "redux-mock-store";
 import {UserProfileTest1} from "../../models/UserProfile";
 import {EssayIveyApplication} from "../../models/Essay";
-import {initialReduxState} from "../../models/Constants";
+import {initialReduxState, relatedItems} from "../../models/Constants";
 
 configure({ adapter: new Adapter() });
 const mockStore = configureStore();
@@ -24,6 +23,8 @@ SearchApi.relatedItems.mockImplementation(() => Promise.resolve({ data: { items:
 describe('<ContentDetail />', () => {
 
     it('renders without crashing (Not Logged In)', () => {
+
+        console.log('process.env.NODE_ENV', process.env.NODE_ENV);
 
         const wrapper = shallow(
             <MemoryRouter>

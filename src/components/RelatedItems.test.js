@@ -6,23 +6,12 @@ import SearchApi from "../services/SearchAPI";
 import RelatedItems from "./RelatedItems";
 import {ScholarshipEngineering} from "../models/Scholarship";
 import {BlogWhatIsAtila} from "../models/Blog";
-import {genericItemTransform} from "../services/utils";
 import {MemoryRouter} from "react-router-dom";
 import {EssayIveyApplication} from "../models/Essay";
+import {relatedItems} from "../models/Constants";
 
 
 configure({ adapter: new Adapter() });
-
-export const relatedItems = [
-    BlogWhatIsAtila,
-    EssayIveyApplication,
-    ScholarshipEngineering].map((item, index) => {
-        return {
-            ...genericItemTransform(item),
-            id: index
-            // React components require unique Ids (usually index shouldn't be the ID but its fine for testing)
-        }
-});
 
 jest.mock('../services/SearchAPI');
 SearchApi.relatedItems.mockImplementation(() => Promise.resolve({ data: { items: relatedItems } } ));

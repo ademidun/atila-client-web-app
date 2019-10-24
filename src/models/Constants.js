@@ -1,6 +1,10 @@
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUserMd} from "@fortawesome/free-solid-svg-icons";
 import React from "react";
+import {BlogWhatIsAtila} from "./Blog";
+import {EssayIveyApplication} from "./Essay";
+import {ScholarshipEngineering} from "./Scholarship";
+import {genericItemTransform} from "../services/utils";
 
 // todo there might be an npm package for this!
 // todo add more emojis to the dictionary
@@ -38,3 +42,13 @@ export const initialReduxState = {
         }
     }
 };
+export const relatedItems = [
+    BlogWhatIsAtila,
+    EssayIveyApplication,
+    ScholarshipEngineering].map((item, index) => {
+    return {
+        ...genericItemTransform(item),
+        id: index
+        // React components require unique Ids (usually index shouldn't be the ID but its fine for testing)
+    }
+});
