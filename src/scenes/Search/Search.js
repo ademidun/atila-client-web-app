@@ -59,8 +59,14 @@ class Search extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        const { searchResults, responseError } = this.state;
-        if (searchResults === null && !responseError) {
+        const { searchResults, responseError, prevSearchQuery } = this.state;
+        const {
+            location : { search },
+        } = this.props;
+        const params = new URLSearchParams(search);
+        const searchQuery = params.get('q') || '';
+
+        if (searchResults === null && !responseError && searchQuery !== prevSearchQuery) {
             this.loadItems();
         }
     }

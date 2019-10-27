@@ -53,6 +53,16 @@ class AutoComplete extends React.Component {
         this.setState({value: newValue});
     };
 
+    onKeyPress = (event) => {
+
+        if (event.key === "Enter") {
+            event.preventDefault();
+            this.onSuggestionSelected(event, {suggestionValue: event.target.value, method: 'click'});
+        }
+    };
+
+
+
     // Autosuggest will call this function every time you need to update suggestions.
     // You already implemented this logic above, so just use it.
     onSuggestionsFetchRequested = ({ value }) => {
@@ -117,7 +127,8 @@ class AutoComplete extends React.Component {
             placeholder,
             value,
             name:keyName,
-            onChange: this.onChange
+            onChange: this.onChange,
+            onKeyPress: this.onKeyPress,
         };
 
         // Finally, render it!
