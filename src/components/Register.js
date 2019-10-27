@@ -205,7 +205,7 @@ class Register extends React.Component {
                                 </Modal>
                                 <label htmlFor='agreeTermsConditions' className="mr-3">
                                     Agree to the
-                                    <button className="btn btn-link"
+                                    <button className="btn-text btn-link"
                                                          onClick={(event)=>this.showTermsConditionsModal(event, true)}>
                                     terms and conditions
                                     </button>?
