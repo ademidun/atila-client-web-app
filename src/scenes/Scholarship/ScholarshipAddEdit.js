@@ -250,10 +250,18 @@ class ScholarshipAddEdit extends React.Component{
         }
         postResponsePromise
             .then(res => {
-                toastNotify('😃 Scholarship successfully saved!');
                 this.setState({isAddScholarshipMode: false});
-                const scholarship = ScholarshipsAPI.cleanScholarship(res.data);
-                this.setState({ scholarship });
+                const savedScholarship = ScholarshipsAPI.cleanScholarship(res.data);
+                const successMessage = (<p>
+                    <span role="img" aria-label="happy face emoji">🙂</span>
+                    Successfully saved {' '}
+                    <Link to={`/scholarship/${savedScholarship.slug}`}>
+                        {savedScholarship.name}
+                    </Link>
+                </p>);
+
+                toastNotify(successMessage);
+                this.setState({ scholarship: savedScholarship });
             })
             .catch(err=> {
                 console.log({err});
