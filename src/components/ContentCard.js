@@ -29,7 +29,7 @@ class ContentCard extends React.Component {
 
         const { className, content, hideImage } = this.props;
         const { showPreview } = this.state;
-        const { title, description, image, slug, type, user } = content;
+        const { title, description, image, slug, type, user, published } = content;
 
         let descriptionText = description;
 
@@ -52,6 +52,11 @@ class ContentCard extends React.Component {
                         style={{ fontSize: 'small' }}>
                         {type}
                     </p>
+                    {!published &&
+                    <p  className="badge badge-secondary mx-1"
+                        style={{ fontSize: 'small' }}>
+                        Unpublished
+                    </p>}
                 </div>
                 {user && <div className="bg-light mb-3 p-1">
                     <Link to={`/profile/${user.username}`} >

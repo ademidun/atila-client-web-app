@@ -103,7 +103,7 @@ class ContentDetail extends React.Component {
 
         const canEditContent = userProfile && (userProfile.user === content.user.id || userProfile.is_atila_admin);
 
-        const { title, body, header_image_url, user, id } = content;
+        const { title, body, header_image_url, user, id, published } = content;
 
         let contentToDisplay = null;
 
@@ -141,6 +141,12 @@ class ContentDetail extends React.Component {
                         Edit {contentType}
                     </Link>
                     }
+
+                    {!published &&
+                    <p  className="badge badge-secondary mx-1"
+                        style={{ fontSize: 'small' }}>
+                        Unpublished
+                    </p>}
                     {header_image_url &&
                     <img src={header_image_url}
                          alt={title}

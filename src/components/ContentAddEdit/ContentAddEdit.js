@@ -168,6 +168,12 @@ class ContentAddEdit extends React.Component {
                         View {contentType}
                     </Link>
                     }
+
+                    {!published &&
+                    <p  className="badge badge-secondary mx-1"
+                        style={{ fontSize: 'small' }}>
+                        Unpublished
+                    </p>}
                     {showContentAddOptions &&
                     <div className="col-12">
                     <textarea placeholder="Description"
