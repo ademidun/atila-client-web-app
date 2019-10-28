@@ -29,7 +29,7 @@ function Pricing() {
                             </ul>
                         </div>
 
-                        <div className="pricing-plan">
+                        <div className="pricing-plan shadow">
                             <img src="https://s28.postimg.cc/ju5bnc3x9/plane.png" alt="" className="pricing-img" />
                             <h2 className="pricing-header">Student Premium</h2>
                             <span className="pricing-price">$9</span>
