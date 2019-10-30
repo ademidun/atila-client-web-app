@@ -96,15 +96,21 @@ class PremiumCheckoutForm extends React.Component {
         const { isLoggedInModalVisible } = this.state;
         const { location: { pathname, search } } = this.props;
 
-        const redirectString = `?redirect=${pathname}${search}`
+        const redirectString = `?redirect=${pathname}${search}`;
 
+        const loginToUsePremium = (<div className="center-block">
+            <Link to={`/login${redirectString}`}>Login</Link>{' '} or {' '}
+            <Link to={`/register${redirectString}`}>Register</Link>
+            {' '} to continue with Atila Premium checkout
+        </div>);
+        const loginToUsePremiumTitle = "You Must be Logged In";
         if(!userProfile) {
             return (
                 <div className="container mt-5">
                     <div className="card shadow p-3">
                         <Modal
                             visible={isLoggedInModalVisible}
-                            title="You Must be Logged In"
+                            title={loginToUsePremiumTitle}
                             onOk={this.handleOk}
                             onCancel={this.handleCancel}
                             footer={[
@@ -116,11 +122,10 @@ class PremiumCheckoutForm extends React.Component {
                                 </Button>,
                             ]}
                         >
-                            <Link to={`/login${redirectString}`}>Login</Link>{' '}
-                            or{' '}
-                            <Link to={`/register${redirectString}`}>Register</Link>{' '}
-                            to continue with Atila Premium checkout
+                            {loginToUsePremium}
                         </Modal>
+                    <h1>{loginToUsePremiumTitle}</h1>
+                    {loginToUsePremium}
                     </div>
                 </div>
             )
