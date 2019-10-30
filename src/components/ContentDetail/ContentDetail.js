@@ -53,15 +53,15 @@ class ContentDetail extends React.Component {
     }
 
     loadContent = () => {
-        const { ContentAPI, contentSlug, userProfile, location : {hash} } = this.props;
+        const { ContentAPI, contentSlug, userProfile, location } = this.props;
 
         ContentAPI.getSlug(contentSlug)
             .then(res => {
 
                 const content = res.data.blog || res.data.essay;
                 this.setState({content}, () => {
-                    if (hash) {
-                        scrollToElement(hash);
+                    if (location && location.hash) {
+                        scrollToElement(location.hash);
                     }
                 });
 
