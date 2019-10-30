@@ -20,7 +20,7 @@ export const EnvironmentProd = {
     production: true,
     apiUrl: 'https://atila-7.herokuapp.com/api',
     apiUrlNodeMicroservice: 'https://yhpl8yynpk.execute-api.us-east-1.amazonaws.com/prod',
-    STRIPE_PUBLIC_KEY: 'pk_test_AxhlK7IudWRlQCa4azz4WElP00QVVE6SNM',
+    STRIPE_PUBLIC_KEY: 'pk_live_AgHuMdhPDSk5eKrlwoHCnZnR00uIrfIHkM',
 };
 
 let Environment = {};

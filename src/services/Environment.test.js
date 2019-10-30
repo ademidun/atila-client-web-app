@@ -35,21 +35,16 @@ it('renders the correct api url', () => {
 });
 
 it('renders the correct STRIPE_PUBLIC_KEY', () => {
+    const stripePublicKeyTest = 'pk_test_AxhlK7IudWRlQCa4azz4WElP00QVVE6SNM';
 
-
-    const stripePublicKeyTestPrefix = 'pk_test_';
-    const stripePublicKeyTestSuffix = 'P00QVVE6SNM';
+    const stripePublicKeyProduction = 'pk_live_AgHuMdhPDSk5eKrlwoHCnZnR00uIrfIHkM';
 
     expect(EnvironmentDev.STRIPE_PUBLIC_KEY)
-        .toContain(stripePublicKeyTestPrefix);
-    expect(EnvironmentDev.STRIPE_PUBLIC_KEY)
-        .toContain(stripePublicKeyTestSuffix);
+        .toContain(stripePublicKeyTest);
 
     expect(EnvironmentStaging.STRIPE_PUBLIC_KEY)
-        .toContain(stripePublicKeyTestSuffix);
-    expect(EnvironmentStaging.STRIPE_PUBLIC_KEY)
-        .toContain(stripePublicKeyTestPrefix);
+        .toContain(stripePublicKeyTest);
 
     expect(EnvironmentProd.STRIPE_PUBLIC_KEY)
-        .not.toContain(stripePublicKeyTestPrefix);
+        .toContain(stripePublicKeyProduction);
 });
