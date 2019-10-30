@@ -4,7 +4,7 @@ export const EnvironmentDev = {
     apiUrl: 'http://127.0.0.1:8000/api',
     apiUrlNodeMicroservice: 'http://127.0.0.1:9000',
     apiUrlBillingMicroservice: 'http://127.0.0.1:9001',
-    STRIPE_PUBLIC_KEY: 'http://127.0.0.1:9001',
+    STRIPE_PUBLIC_KEY: 'pk_test_AxhlK7IudWRlQCa4azz4WElP00QVVE6SNM',
 };
 
 export const EnvironmentStaging = {
@@ -12,7 +12,7 @@ export const EnvironmentStaging = {
     production: false,
     apiUrl: 'https://atila-7-staging.herokuapp.com/api',
     apiUrlNodeMicroservice: 'https://tgrr8bis30.execute-api.us-east-1.amazonaws.com/staging',
-    STRIPE_PUBLIC_KEY: 'https://tgrr8bis30.execute-api.us-east-1.amazonaws.com/staging',
+    STRIPE_PUBLIC_KEY: 'pk_test_AxhlK7IudWRlQCa4azz4WElP00QVVE6SNM',
 };
 
 export const EnvironmentProd = {
@@ -20,6 +20,7 @@ export const EnvironmentProd = {
     production: true,
     apiUrl: 'https://atila-7.herokuapp.com/api',
     apiUrlNodeMicroservice: 'https://yhpl8yynpk.execute-api.us-east-1.amazonaws.com/prod',
+    STRIPE_PUBLIC_KEY: 'pk_test_AxhlK7IudWRlQCa4azz4WElP00QVVE6SNM',
 };
 
 let Environment = {};

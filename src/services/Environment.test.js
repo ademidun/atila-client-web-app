@@ -33,3 +33,23 @@ it('renders the correct api url', () => {
     expect(EnvironmentProd.apiUrlNodeMicroservice)
         .toContain('yhpl8yynpk.execute-api.us-east-1.amazonaws.com/prod');
 });
+
+it('renders the correct STRIPE_PUBLIC_KEY', () => {
+
+
+    const stripePublicKeyTestPrefix = 'pk_test_';
+    const stripePublicKeyTestSuffix = 'P00QVVE6SNM';
+
+    expect(EnvironmentDev.STRIPE_PUBLIC_KEY)
+        .toContain(stripePublicKeyTestPrefix);
+    expect(EnvironmentDev.STRIPE_PUBLIC_KEY)
+        .toContain(stripePublicKeyTestSuffix);
+
+    expect(EnvironmentStaging.STRIPE_PUBLIC_KEY)
+        .toContain(stripePublicKeyTestSuffix);
+    expect(EnvironmentStaging.STRIPE_PUBLIC_KEY)
+        .toContain(stripePublicKeyTestPrefix);
+
+    expect(EnvironmentProd.STRIPE_PUBLIC_KEY)
+        .not.toContain(stripePublicKeyTestPrefix);
+});
