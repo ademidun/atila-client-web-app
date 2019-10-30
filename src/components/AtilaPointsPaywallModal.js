@@ -17,7 +17,7 @@ export const ATILA_POINTS_EXPLAIN_POPOVER = (
                     scholarships, easier applications and more.
                 You can also get paid for the content you contribute.
                 </p>
-                <Link to="/blog/atila/what-is-atila"> Learn More </Link>
+                <Link to="/blog/atila/what-is-atila#atila-points"> Learn More </Link>
             </span>
 );
 
