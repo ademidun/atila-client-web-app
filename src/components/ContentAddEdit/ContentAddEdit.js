@@ -100,7 +100,7 @@ class ContentAddEdit extends React.Component {
         if(event){
             event.preventDefault();
         }
-        const { ContentAPI, userProfile, contentType } = this.props;
+        const { ContentAPI, userProfile, contentType, match : { params : { slug, username }} } = this.props;
 
         if(!userProfile) {
             toastNotify(`⚠️ Warning, you must be logged in to add ${contentType}s`);
@@ -120,7 +120,13 @@ class ContentAddEdit extends React.Component {
             .then(res=> {
                 this.setState({isAddContentMode: false});
                 this.setState({content: res.data});
-                toastNotify(`🙂 Successfully saved ${contentType}: "${content.title}"`);
+                const successMessage = (<p>
+                    <span role="img" aria-label="happy face emoji">🙂</span>
+                    Successfully saved {' '}
+                    <Link to={`/${contentType.toLowerCase()}/${username}/${slug}`}>
+                        {content.title}
+                </Link></p>);
+                toastNotify(successMessage);
             })
             .catch(err=> {
                 console.log({err});
@@ -168,6 +174,12 @@ class ContentAddEdit extends React.Component {
                         View {contentType}
                     </Link>
                     }
+
+                    {!published &&
+                    <p  className="badge badge-secondary mx-1"
+                        style={{ fontSize: 'small' }}>
+                        Unpublished
+                    </p>}
                     {showContentAddOptions &&
                     <div className="col-12">
                     <textarea placeholder="Description"

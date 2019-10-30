@@ -54,6 +54,7 @@ export function genericItemTransform (item) {
                 image: `${item.user.profile_pic_url}`,
                 type: item.type,
                 user: item.user,
+                published: item.published,
             };
             break;
         case 'blog':
@@ -65,6 +66,7 @@ export function genericItemTransform (item) {
                 slug: `/blog/${item.user.username}/${item.slug}/`,
                 type: item.type,
                 user: item.user,
+                published: item.published,
             };
             break;
         case 'forum':

@@ -88,7 +88,7 @@ function TermsConditions() {
                     legal compliance requirements or changes in our business practices.
                 </p>
                 <h6>Questions or comments?</h6>
-                <p>If you have questions or comments about Atila‘s privacy policy, send email to info@Atila.com, or
+                <p>If you have questions or comments about Atila‘s privacy policy, send email to info@atila.ca, or
                     contact us via any of the ways described in the Footer of our home page.</p>
 
                 <p>Thank you for choosing Atila!</p>

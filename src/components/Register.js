@@ -5,7 +5,8 @@ import Loading from "./Loading";
 import './LoginRegister.scss';
 import {setLoggedInUserProfile} from "../redux/actions/user";
 import {connect} from "react-redux";
-import {Link} from "react-router-dom";
+import TermsConditions from "./TermsConditions";
+import {Modal} from "antd";
 
 export class PasswordShowHide extends React.Component {
 
@@ -86,6 +87,7 @@ class Register extends React.Component {
             isResponseError: null,
             responseOkMessage: null,
             loadingResponse: null,
+            isTermsConditionsModalVisible: false,
         };
     }
 
@@ -102,6 +104,16 @@ class Register extends React.Component {
         }
 
         this.setState({ userProfile });
+    };
+
+    showTermsConditionsModal = (event, showModal) => {
+        console.log({event, showModal});
+        if (event.preventDefault) {
+            event.preventDefault();
+        }
+        this.setState({
+            isTermsConditionsModalVisible: showModal,
+        });
     };
 
     submitForm = (event) => {
@@ -144,7 +156,8 @@ class Register extends React.Component {
 
     render () {
 
-        const { userProfile, isResponseError, responseOkMessage, loadingResponse } = this.state;
+        const { userProfile, isResponseError, responseOkMessage,
+            loadingResponse, isTermsConditionsModalVisible } = this.state;
         const { firstName, lastName, username, email, password, agreeTermsConditions } = userProfile;
         return (
             <div className="container mt-5">
@@ -182,9 +195,20 @@ class Register extends React.Component {
                             />
                             <PasswordShowHide password={password} updateForm={this.updateForm} />
                             <div className="col-12 mb-3">
+                                <Modal
+                                    title="Terms and Conditions"
+                                    visible={isTermsConditionsModalVisible}
+                                    onOk={(event)=>this.showTermsConditionsModal(event, false)}
+                                    onCancel={(event)=>this.showTermsConditionsModal(event, false)}
+                                >
+                                    <TermsConditions />
+                                </Modal>
                                 <label htmlFor='agreeTermsConditions' className="mr-3">
-                                    Agree to the <Link to="/terms-and-conditions">
-                                    terms and conditions</Link>?
+                                    Agree to the
+                                    <button className="btn-text btn-link"
+                                                         onClick={(event)=>this.showTermsConditionsModal(event, true)}>
+                                    terms and conditions
+                                    </button>?
                                 </label>
                                 <input placeholder="Agree to the terms and conditions?"
                                        type="checkbox"
