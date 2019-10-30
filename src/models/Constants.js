@@ -6,9 +6,6 @@ import {EssayIveyApplication} from "./Essay";
 import {ScholarshipEngineering} from "./Scholarship";
 import {genericItemTransform} from "../services/utils";
 
-export const STRIPE_PUBLIC_KEY = 'pk_test_AxhlK7IudWRlQCa4azz4WElP00QVVE6SNM';
-// const STANDARD_PRODUCT_ID = "";
-// const PREMIUM_PRODUCT_ID = "";
 // todo there might be an npm package for this!
 // todo add more emojis to the dictionary
 export const emojiDictionary = {

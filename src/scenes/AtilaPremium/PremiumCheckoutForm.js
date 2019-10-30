@@ -1,9 +1,8 @@
 // CheckoutForm.js
 import React from 'react';
 import {CardElement, injectStripe} from 'react-stripe-elements';
-import {Button, Modal} from "antd";
+import {Button, Col, Modal, Row} from "antd";
 import {Link, withRouter} from "react-router-dom";
-import {STRIPE_PUBLIC_KEY} from "../../models/Constants";
 import BillingAPI from "../../services/BillingAPI";
 import {connect} from "react-redux";
 
@@ -15,6 +14,8 @@ class PremiumCheckoutForm extends React.Component {
         const { userProfile } = this.props;
         this.state = {
             isLoggedInModalVisible: !userProfile,
+            cardHolderName: "",
+            addressCountry: ""
         }
     }
 
@@ -24,9 +25,10 @@ class PremiumCheckoutForm extends React.Component {
         console.log({ev});
 
         const { stripe } = this.props;
+        const { cardHolderName, addressCountry } = this.props;
 
         stripe
-            .createToken({type: 'card', name: 'Jenny Rosen'})
+            .createToken({name: cardHolderName, address_country: addressCountry})
             .then(function(result) {
                 console.log({result});
 
@@ -37,6 +39,12 @@ class PremiumCheckoutForm extends React.Component {
                         })
                 }
             });
+    };
+
+    updateForm = (event) => {
+        event.preventDefault();
+        this.setState({[event.target.name]: event.target.value});
+
     };
 
 
@@ -56,7 +64,7 @@ class PremiumCheckoutForm extends React.Component {
     render() {
 
         const { userProfile } = this.props;
-        const { isLoggedInModalVisible } = this.state;
+        const { isLoggedInModalVisible, cardHolderName, addressCountry } = this.state;
         const { location: { pathname, search } } = this.props;
 
         const redirectString = `?redirect=${pathname}${search}`;
@@ -98,9 +106,27 @@ class PremiumCheckoutForm extends React.Component {
                 <div className="card shadow p-3">
                     <h1>Student Premium Checkout</h1>
                     <form onSubmit={this.handleSubmit}>
-                        <div>
-                            <CardElement style={{base: {fontSize: '18px'}}} />
-                        </div>
+                        <Row gutter={16}>
+                            <Col xs={24} sm={12} className="mb-3">
+                                <input placeholder="Cardholder Name"
+                                       name="cardHolderName"
+                                       className="form-control"
+                                       value={cardHolderName}
+                                       onChange={this.updateForm}
+                                />
+                            </Col>
+                            <Col xs={24} sm={12} className="mb-3">
+                                <input placeholder="Card Country"
+                                       name="addressCountry"
+                                       className="form-control"
+                                       value={addressCountry}
+                                       onChange={this.updateForm}
+                                />
+                            </Col>
+                            <Col span={24}>
+                                <CardElement style={{base: {fontSize: '18px'}}} />
+                            </Col>
+                        </Row>
 
                         <Button className="col-12 my-3"
                                 type="primary"

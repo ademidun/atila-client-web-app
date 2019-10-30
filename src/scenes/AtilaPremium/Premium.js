@@ -1,8 +1,9 @@
 import React from "react";
 import {Elements, StripeProvider} from "react-stripe-elements";
-import {STRIPE_PUBLIC_KEY} from "../../models/Constants";
 import PremiumCheckoutForm from "./PremiumCheckoutForm";
+import Environment from "../../services/Environment";
 
+const { STRIPE_PUBLIC_KEY } = Environment;
 class Premium extends React.Component {
 
     render() {

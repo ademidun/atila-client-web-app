@@ -4,6 +4,7 @@ export const EnvironmentDev = {
     apiUrl: 'http://127.0.0.1:8000/api',
     apiUrlNodeMicroservice: 'http://127.0.0.1:9000',
     apiUrlBillingMicroservice: 'http://127.0.0.1:9001',
+    STRIPE_PUBLIC_KEY: 'http://127.0.0.1:9001',
 };
 
 export const EnvironmentStaging = {
@@ -11,6 +12,7 @@ export const EnvironmentStaging = {
     production: false,
     apiUrl: 'https://atila-7-staging.herokuapp.com/api',
     apiUrlNodeMicroservice: 'https://tgrr8bis30.execute-api.us-east-1.amazonaws.com/staging',
+    STRIPE_PUBLIC_KEY: 'https://tgrr8bis30.execute-api.us-east-1.amazonaws.com/staging',
 };
 
 export const EnvironmentProd = {
