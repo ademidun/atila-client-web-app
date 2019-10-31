@@ -1,11 +1,12 @@
 // CheckoutForm.js
 import React from 'react';
 import {CardElement, injectStripe} from 'react-stripe-elements';
-import {Button, Col, Modal, Row} from "antd";
-import {Link, withRouter} from "react-router-dom";
+import {Button, Col, Row} from "antd";
+import {withRouter} from "react-router-dom";
 import BillingAPI from "../../services/BillingAPI";
 import {connect} from "react-redux";
 import {UserProfilePropType} from "../../models/UserProfile";
+import SubscribeMailingList from "../../components/SubscribeMailingList";
 
 
 class PremiumCheckoutForm extends React.Component {
@@ -55,56 +56,27 @@ class PremiumCheckoutForm extends React.Component {
 
     };
 
-
-
-    handleOk = e => {
-        this.setState({
-            isLoggedInModalVisible: false,
-        });
-    };
-
-    handleCancel = e => {
-        this.setState({
-            isLoggedInModalVisible: false,
-        });
-    };
-
     render() {
 
         const { userProfile } = this.props;
-        const { isLoggedInModalVisible, cardHolderName, addressCountry } = this.state;
-        const { location: { pathname, search } } = this.props;
+        const { cardHolderName, addressCountry } = this.state;
 
-        const redirectString = `?redirect=${pathname}${search}`;
-
-        const loginToUsePremium = (<div className="center-block">
-            <Link to={`/login${redirectString}`}>Login</Link>{' '} or {' '}
-            <Link to={`/register${redirectString}`}>Register</Link>
-            {' '} to continue with Atila Premium checkout
-        </div>);
-        const loginToUsePremiumTitle = "You Must be Logged In";
+        const subscribeText = (<h3>
+            Join the Waiting List. Get Notified When Atila Premium Launches
+        </h3>);
         if(!userProfile || !userProfile.is_atila_admin) {
             return (
                 <div className="container mt-5">
                     <div className="card shadow p-3">
-                        <Modal
-                            visible={isLoggedInModalVisible}
-                            title={loginToUsePremiumTitle}
-                            onOk={this.handleOk}
-                            onCancel={this.handleCancel}
-                            footer={[
-                                <Button key="back" onClick={this.handleCancel}>
-                                    <Link to={`/login${redirectString}`}>Login</Link>
-                                </Button>,
-                                <Button key="submit" type="primary" onClick={this.handleOk}>
-                                    <Link to={`/register${redirectString}`}>Register</Link>
-                                </Button>,
-                            ]}
-                        >
-                            {loginToUsePremium}
-                        </Modal>
-                    <h1>{loginToUsePremiumTitle}</h1>
-                    {loginToUsePremium}
+                        <div className="text-center">
+                            <h1>
+                                Atila Premium Coming Soon
+                                <span role="img" aria-label="eyes and clock emoji">👀 🕛</span>
+                            </h1>
+
+                            <SubscribeMailingList subscribeText={subscribeText}
+                                                  btnText="Join Waiting List" />
+                        </div>
                     </div>
                 </div>
             )
