@@ -11,7 +11,6 @@ class BillingAPI {
             url: `${BillingAPI.billingMicroserviceUrl}/create-customer`,
             method: 'post',
             data: {tokenId, email, name},
-            headers: {"Content-Type": "text/plain"},
         });
 
         return apiCompletionPromise;
