@@ -28,7 +28,7 @@ class PremiumCheckoutForm extends React.Component {
 
         const { stripe, userProfile } = this.props;
 
-        const { first_name, last_name, email } = userProfile;
+        const { first_name, last_name, email, user } = userProfile;
         const { cardHolderName, addressCountry } = this.props;
 
         stripe
@@ -38,8 +38,12 @@ class PremiumCheckoutForm extends React.Component {
 
                 const fullName = `${first_name} ${last_name}`;
 
+                const metadata = {
+                    atila_user_id: user,
+                };
+
                 if(result.token) {
-                    BillingAPI.chargePayment(result.token.id, fullName, email)
+                    BillingAPI.chargePayment(result.token.id, fullName, email, metadata)
                         .then(res => {
                             console.log({res});
                         })
