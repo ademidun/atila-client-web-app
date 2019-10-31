@@ -5,6 +5,7 @@ import {Button, Col, Modal, Row} from "antd";
 import {Link, withRouter} from "react-router-dom";
 import BillingAPI from "../../services/BillingAPI";
 import {connect} from "react-redux";
+import {UserProfilePropType} from "../../models/UserProfile";
 
 
 class PremiumCheckoutForm extends React.Component {
@@ -82,7 +83,7 @@ class PremiumCheckoutForm extends React.Component {
             {' '} to continue with Atila Premium checkout
         </div>);
         const loginToUsePremiumTitle = "You Must be Logged In";
-        if(!userProfile) {
+        if(!userProfile || !userProfile.is_atila_admin) {
             return (
                 <div className="container mt-5">
                     <div className="card shadow p-3">
@@ -147,6 +148,14 @@ class PremiumCheckoutForm extends React.Component {
         );
     }
 }
+
+PremiumCheckoutForm.defaultProps = {
+    userProfile: null
+};
+
+PremiumCheckoutForm.propTypes = {
+    userProfile: UserProfilePropType
+};
 
 const mapStateToProps = state => {
     return { userProfile: state.data.user.loggedInUserProfile };
