@@ -52,7 +52,7 @@ class ContentCard extends React.Component {
                         style={{ fontSize: 'small' }}>
                         {type}
                     </p>
-                    {!published &&
+                    {published===false &&
                     <p  className="badge badge-secondary mx-1"
                         style={{ fontSize: 'small' }}>
                         Unpublished
