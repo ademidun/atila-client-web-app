@@ -48,3 +48,13 @@ it('renders the correct STRIPE_PUBLIC_KEY', () => {
     expect(EnvironmentProd.STRIPE_PUBLIC_KEY)
         .toContain(stripePublicKeyProduction);
 });
+
+
+it('renders the correct billing api url', () => {
+    const stagingBilingUrl = 'noitlizkka.execute-api.us-east-1.amazonaws.com';
+
+    expect(EnvironmentDev.apiUrlBillingMicroservice)
+        .toContain('127.0.0.1:9001');
+    expect(EnvironmentStaging.apiUrlBillingMicroservice)
+        .toContain(stagingBilingUrl);
+});
