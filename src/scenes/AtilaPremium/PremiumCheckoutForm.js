@@ -7,6 +7,8 @@ import BillingAPI from "../../services/BillingAPI";
 import {connect} from "react-redux";
 import {UserProfilePropType} from "../../models/UserProfile";
 import SubscribeMailingList from "../../components/SubscribeMailingList";
+import UserProfileAPI from "../../services/UserProfileAPI";
+import {updateLoggedInUserProfile} from "../../redux/actions/user";
 
 
 class PremiumCheckoutForm extends React.Component {
@@ -21,37 +23,36 @@ class PremiumCheckoutForm extends React.Component {
         }
     }
 
-    handleSubmit = (ev) => {
+    handleSubmit = async (ev) => {
         ev.preventDefault();
 
         console.log({ev});
 
-        const { stripe, userProfile } = this.props;
+        const { stripe, userProfile, updateLoggedInUserProfile } = this.props;
 
         const { first_name, last_name, email, user } = userProfile;
-        const { cardHolderName, addressCountry } = this.props;
+        const fullName = `${first_name} ${last_name}`;
+        const metadata = {
+            atila_user_id: user,
+        };
+        const { cardHolderName} = this.state;
 
-        stripe
-            .createToken({name: cardHolderName, address_country: addressCountry})
-            .then(function(result) {
-                console.log({result});
+        const createTokenResult = await stripe.createToken({name: cardHolderName});
+        if (createTokenResult.token) {
+            console.log({result: createTokenResult});
 
-                const fullName = `${first_name} ${last_name}`;
+            const { data : { data : { customerId } }} = await BillingAPI
+                .chargePayment(createTokenResult.token.id, fullName, email, metadata);
+            console.log({customerId});
 
-                const metadata = {
-                    atila_user_id: user,
-                };
+            const {data : updateUserProfileResponse} = await UserProfileAPI
+                .patch({is_atila_premium: true, stripe_customer_id: customerId}, user);
+            console.log({updateUserProfileResponse});
+            updateLoggedInUserProfile(updateUserProfileResponse);
 
-                if(result.token) {
-                    BillingAPI.chargePayment(result.token.id, fullName, email, metadata)
-                        .then(res => {
-                            console.log({res});
-                        })
-                        .catch( err => {
-                            console.log({err});
-                        })
-                }
-            });
+        } else if (createTokenResult.error) {
+            console.log(createTokenResult.error);
+        }
     };
 
     updateForm = (event) => {
@@ -63,7 +64,7 @@ class PremiumCheckoutForm extends React.Component {
     render() {
 
         const { userProfile } = this.props;
-        const { cardHolderName, addressCountry } = this.state;
+        const { cardHolderName } = this.state;
 
         const subscribeText = (<h3>
             Join the Waiting List. Get Notified When Atila Premium Launches
@@ -91,19 +92,11 @@ class PremiumCheckoutForm extends React.Component {
                     <h1>Student Premium Checkout</h1>
                     <form onSubmit={this.handleSubmit}>
                         <Row gutter={16}>
-                            <Col xs={24} sm={12} className="mb-3">
+                            <Col span={24} className="mb-3">
                                 <input placeholder="Cardholder Name"
                                        name="cardHolderName"
                                        className="form-control"
                                        value={cardHolderName}
-                                       onChange={this.updateForm}
-                                />
-                            </Col>
-                            <Col xs={24} sm={12} className="mb-3">
-                                <input placeholder="Card Country"
-                                       name="addressCountry"
-                                       className="form-control"
-                                       value={addressCountry}
                                        onChange={this.updateForm}
                                 />
                             </Col>
@@ -132,8 +125,11 @@ PremiumCheckoutForm.defaultProps = {
 PremiumCheckoutForm.propTypes = {
     userProfile: UserProfilePropType
 };
+const mapDispatchToProps = {
+    updateLoggedInUserProfile
+};
 
 const mapStateToProps = state => {
     return { userProfile: state.data.user.loggedInUserProfile };
 };
-export default injectStripe(withRouter(connect(mapStateToProps)(PremiumCheckoutForm)));
+export default injectStripe(withRouter(connect(mapStateToProps, mapDispatchToProps)(PremiumCheckoutForm)));
