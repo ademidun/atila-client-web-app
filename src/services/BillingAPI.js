@@ -3,12 +3,14 @@ import request from "axios";
 class BillingAPI {
 
     static billingMicroserviceUrl = `${Environment.apiUrlBillingMicroservice}`;
-    static chargePayment = (tokenId) => {
+
+
+    static chargePayment = (tokenId, name, email) => {
 
         const apiCompletionPromise = request({
             url: `${BillingAPI.billingMicroserviceUrl}/create-customer`,
             method: 'post',
-            data: {tokenId, email: 'tomiademidun+strip@gmail.com', productPlan: 'plan_G2wqtX5n0quawI' },
+            data: {tokenId, email, name},
             headers: {"Content-Type": "text/plain"},
         });
 
