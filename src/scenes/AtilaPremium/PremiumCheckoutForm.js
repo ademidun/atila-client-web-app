@@ -11,6 +11,7 @@ import UserProfileAPI from "../../services/UserProfileAPI";
 import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import Loading from "../../components/Loading";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
+import Invoice from "./Invoice";
 
 
 class PremiumCheckoutForm extends React.Component {
@@ -115,59 +116,67 @@ class PremiumCheckoutForm extends React.Component {
                 <div className="container mt-5">
                     <div className="card shadow p-3">
                         <h1>Student Premium Checkout</h1>
-                        <div className="checkout-form-container">
-                            {isPaymentSuccess &&
-                            <Result
-                                status="success"
-                                title="Payment Success 🙂"
-                                subTitle={isFinishedLoadingResponseText}
-                                extra={[
-                                        <p key="next-steps">Next Steps:</p>,
-                                        <Link to="/scholarship" key="scholarship">
-                                        View Scholarships
-                                        </Link>,
-                                        <Link to="/blog" key="blog">
-                                        View Blog Posts
-                                        </Link>,
-                                        <Link to="/essay" key="essay">
-                                        View Essays
-                                        </Link>,
-                                ]}
-                            />
-                            }
-                        </div>
-                        {!isPaymentSuccess &&
-                        <form onSubmit={this.handleSubmit}>
-                            <Row gutter={16}>
-                                <Col span={24} className="mb-3">
-                                    <input placeholder="Cardholder Name"
-                                           name="cardHolderName"
-                                           className="form-control"
-                                           value={cardHolderName}
-                                           onChange={this.updateForm}
+
+                        <Row gutter={16}>
+                            <Col xs={24} sm={12}>
+                                <div className="checkout-form-container">
+                                    {isPaymentSuccess &&
+                                    <Result
+                                        status="success"
+                                        title="Payment Success 🙂"
+                                        subTitle={isFinishedLoadingResponseText}
+                                        extra={[
+                                                <p key="next-steps">Next Steps:</p>,
+                                                <Link to="/scholarship" key="scholarship">
+                                                View Scholarships
+                                                </Link>,
+                                                <Link to="/blog" key="blog">
+                                                View Blog Posts
+                                                </Link>,
+                                                <Link to="/essay" key="essay">
+                                                View Essays
+                                                </Link>,
+                                        ]}
                                     />
-                                </Col>
-                                <Col span={24}>
-                                    <CardElement style={{base: {fontSize: '18px'}}} />
-                                </Col>
-                            </Row>
+                                    }
+                                </div>
+                                {!isPaymentSuccess &&
+                                <form onSubmit={this.handleSubmit}>
+                                    <Row gutter={16}>
+                                        <Col span={24} className="mb-3">
+                                            <input placeholder="Cardholder Name"
+                                                   name="cardHolderName"
+                                                   className="form-control"
+                                                   value={cardHolderName}
+                                                   onChange={this.updateForm}
+                                            />
+                                        </Col>
+                                        <Col span={24}>
+                                            <CardElement style={{base: {fontSize: '18px'}}} />
+                                        </Col>
+                                    </Row>
 
-                            <Button className="col-12 my-3"
-                                    type="primary"
-                                    size="large"
-                                    disabled={isLoadingResponse}
-                                    onClick={this.handleSubmit}>
-                                Confirm order ($9/month)
-                            </Button>
+                                    <Button className="col-12 my-3"
+                                            type="primary"
+                                            size="large"
+                                            disabled={isLoadingResponse}
+                                            onClick={this.handleSubmit}>
+                                        Confirm order ($9/month)
+                                    </Button>
 
-                            {isLoadingResponse &&
+                                    {isLoadingResponse &&
 
-                            <Loading
-                                isLoading={isLoadingResponse}
-                                title={isLoadingResponseText} />
-                            }
+                                    <Loading
+                                        isLoading={isLoadingResponse}
+                                        title={isLoadingResponseText} />
+                                    }
 
-                        </form>}
+                                </form>}
+                            </Col>
+                            <Col xs={24} sm={12}>
+                                <Invoice />
+                            </Col>
+                        </Row>
                     </div>
                 </div>
             </React.Fragment>
