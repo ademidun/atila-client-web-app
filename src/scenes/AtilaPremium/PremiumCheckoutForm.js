@@ -173,3 +173,5 @@ const mapStateToProps = state => {
     return { userProfile: state.data.user.loggedInUserProfile };
 };
 export default injectStripe(withRouter(connect(mapStateToProps, mapDispatchToProps)(PremiumCheckoutForm)));
+
+export const  PremiumCheckoutFormTest = PremiumCheckoutForm;
