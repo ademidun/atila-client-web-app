@@ -71,16 +71,15 @@ class PremiumCheckoutForm extends React.Component {
                 this.setState({isResponseLoadingFinishedText, isPaymentSuccess: true});
 
             } catch (chargePaymentError) {
-                // todo send an email to admin that error occurred at payment
                 const { response : { data : {error : { message }}}} = chargePaymentError;
 
                 this.setState({isResponseErrorMessage: message});
             }
 
         } else if (createTokenResult.error) {
-            // todo send an email to admin that error occurred at payment
-            this.setState({isResponseErrorMessage: createTokenResult.error.message});
             console.log(createTokenResult.error);
+            // todo send an email to admin that error occurred at payment
+            this.setState({isResponseErrorMessage: createTokenResult.error.message || createTokenResult.error});
         }
         this.setState({isResponseLoading: false});
     };
