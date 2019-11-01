@@ -61,8 +61,9 @@ class PremiumCheckoutForm extends React.Component {
                     updateLoggedInUserProfile(updateUserProfileResponse);
 
                 } catch (patchUserProfileError) {
-                    // todo send an email to admin that payment went through
-                    //  but there was an error saving info to userProfile
+                    const patchUserProfileErrorResponse = await BillingAPI
+                        .sendBillingError(patchUserProfileError, {email, name: fullName});
+                    console.log({patchUserProfileErrorResponse});
                 }
                 const isResponseLoadingFinishedText = (<div>
                     Payment was successful Check out <Link to="/scholarship" >scholarships</Link>, <Link to="/blog" >blog</Link> and {' '}
@@ -78,7 +79,6 @@ class PremiumCheckoutForm extends React.Component {
 
         } else if (createTokenResult.error) {
             console.log(createTokenResult.error);
-            // todo send an email to admin that error occurred at payment
             this.setState({isResponseErrorMessage: createTokenResult.error.message || createTokenResult.error});
         }
         this.setState({isResponseLoading: false});
