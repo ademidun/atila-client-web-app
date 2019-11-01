@@ -10,6 +10,7 @@ import SubscribeMailingList from "../../components/SubscribeMailingList";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import Loading from "../../components/Loading";
+import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 
 
 class PremiumCheckoutForm extends React.Component {
@@ -79,81 +80,98 @@ class PremiumCheckoutForm extends React.Component {
         const subscribeText = (<h3>
             Join the Waiting List. Get Notified When Atila Premium Launches
         </h3>);
+
+        const seoContent = {
+            title: 'Atila Student Premium Checkout - $9/month',
+            description: 'Get a premium student membership to Atila starting at just $9/month',
+            image: defaultSeoContent.image,
+            slug: '/premium'
+        };
+
+        const helmetSeo = (<HelmetSeo content={seoContent} />);
         if(!userProfile || !userProfile.is_atila_admin) {
             return (
-                <div className="container mt-5">
-                    <div className="card shadow p-3">
-                        <div className="text-center">
-                            <h1>
-                                Atila Premium Coming Soon
-                                <span role="img" aria-label="eyes and clock emoji">👀 🕛</span>
-                            </h1>
+                <React.Fragment>
+                    {helmetSeo}
+                    <div className="container mt-5">
+                        <div className="card shadow p-3">
+                            <div className="text-center">
+                                <h1>
+                                    Atila Premium Coming Soon
+                                    <span role="img" aria-label="eyes and clock emoji">👀 🕛</span>
+                                </h1>
 
-                            <SubscribeMailingList subscribeText={subscribeText}
-                                                  btnText="Join Waiting List" />
+                                <SubscribeMailingList subscribeText={subscribeText}
+                                                      btnText="Join Waiting List" />
+                            </div>
                         </div>
                     </div>
-                </div>
+                </React.Fragment>
             )
         }
         return (
-            <div className="container mt-5">
-                <div className="card shadow p-3">
-                    <h1>Student Premium Checkout</h1>
-                    <div className="checkout-form-container">
-                        {isPaymentSuccess &&
-                        <Result
-                            status="success"
-                            title="Payment Success 🙂"
-                            subTitle={isFinishedLoadingResponseText}
-                            extra={[
-                                    <p key="next-steps">Next Steps:</p>,
-                                    <Link to="/scholarship" key="scholarship">
-                                    View Scholarships
-                                    </Link>,
-                                    <Link to="/blog" key="blog">
-                                    View Blog Posts
-                                    </Link>,
-                                    <Link to="/essay" key="essay">
-                                    View Essays
-                                    </Link>,
-                            ]}
-                        />
-                        }
+            <React.Fragment>
+                {helmetSeo}
+                <div className="container mt-5">
+                    <div className="card shadow p-3">
+                        <h1>Student Premium Checkout</h1>
+                        <div className="checkout-form-container">
+                            {isPaymentSuccess &&
+                            <Result
+                                status="success"
+                                title="Payment Success 🙂"
+                                subTitle={isFinishedLoadingResponseText}
+                                extra={[
+                                        <p key="next-steps">Next Steps:</p>,
+                                        <Link to="/scholarship" key="scholarship">
+                                        View Scholarships
+                                        </Link>,
+                                        <Link to="/blog" key="blog">
+                                        View Blog Posts
+                                        </Link>,
+                                        <Link to="/essay" key="essay">
+                                        View Essays
+                                        </Link>,
+                                ]}
+                            />
+                            }
+                        </div>
+                        {!isPaymentSuccess &&
+                        <form onSubmit={this.handleSubmit}>
+                            <Row gutter={16}>
+                                <Col span={24} className="mb-3">
+                                    <input placeholder="Cardholder Name"
+                                           name="cardHolderName"
+                                           className="form-control"
+                                           value={cardHolderName}
+                                           onChange={this.updateForm}
+                                    />
+                                </Col>
+                                <Col span={24}>
+                                    <CardElement style={{base: {fontSize: '18px'}}} />
+                                </Col>
+                            </Row>
+
+                            <Button className="col-12 my-3"
+                                    type="primary"
+                                    size="large"
+                                    style={{fontSize :'x-large'}}
+                                    disabled={isLoadingResponse}
+                                    onClick={this.handleSubmit}>
+                                Confirm order
+                            </Button>
+
+                            {isLoadingResponse &&
+
+                            <Loading
+                                isLoading={isLoadingResponse}
+                                title={isLoadingResponseText} />
+                            }
+
+                        </form>}
                     </div>
-                    {!isPaymentSuccess &&
-                    <form onSubmit={this.handleSubmit}>
-                        <Row gutter={16}>
-                            <Col span={24} className="mb-3">
-                                <input placeholder="Cardholder Name"
-                                       name="cardHolderName"
-                                       className="form-control"
-                                       value={cardHolderName}
-                                       onChange={this.updateForm}
-                                />
-                            </Col>
-                            <Col span={24}>
-                                <CardElement style={{base: {fontSize: '18px'}}} />
-                            </Col>
-                        </Row>
-
-                        <Button className="col-12 my-3"
-                                type="primary"
-                                disabled={isLoadingResponse}
-                                onClick={this.handleSubmit}>
-                            Confirm order
-                        </Button>
-
-                        {isLoadingResponse &&
-
-                        <Loading
-                            isLoading={isLoadingResponse}
-                            title={isLoadingResponseText} />
-                        }
-
-                    </form>}
                 </div>
-            </div>
+            </React.Fragment>
         );
     }
 }

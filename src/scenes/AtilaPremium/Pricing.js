@@ -5,11 +5,22 @@ import {Popover} from "antd";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faQuestionCircle} from "@fortawesome/free-solid-svg-icons/faQuestionCircle";
 import {ATILA_POINTS_EXPLAIN_POPOVER} from "../../components/AtilaPointsPaywallModal";
+import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 
 function Pricing() {
     // todo generate sitemap dynamically
+    const seoContent = {
+        title: 'Atila Pricing - $9/month',
+        description: 'Get a premium student membership to Atila starting at just $9/month',
+        image: defaultSeoContent.image,
+        slug: '/premium'
+    };
+
+    const helmetSeo = (<HelmetSeo content={seoContent} />);
+
     return (
         <div className="Pricing">
+            {helmetSeo}
             <div className="background">
                 <div className="container">
                     <h1>Pricing</h1>
