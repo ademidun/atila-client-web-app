@@ -135,7 +135,7 @@ SubscribeMailingList.defaultProps = {
     btnText: 'Subscribe',
     subscribeText: (
         <p className="col-sm-12 col-md-6" style={{fontSize : 'medium'}}>Subscribe to get updates
-            on new <Link to="/" >scholarships</Link>, <Link to="/blog" >blog</Link> and {' '}
+            on new <Link to="/scholarship" >scholarships</Link>, <Link to="/blog" >blog</Link> and {' '}
             <Link to="/essay" >essays</Link>, and new product features.
         </p>),
     formGoogleSheetName: 'mailinglist',

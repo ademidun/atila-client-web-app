@@ -1,14 +1,15 @@
 // CheckoutForm.js
 import React from 'react';
 import {CardElement, injectStripe} from 'react-stripe-elements';
-import {Button, Col, Row} from "antd";
-import {withRouter} from "react-router-dom";
+import {Button, Col, Result, Row} from "antd";
+import {Link, withRouter} from "react-router-dom";
 import BillingAPI from "../../services/BillingAPI";
 import {connect} from "react-redux";
 import {UserProfilePropType} from "../../models/UserProfile";
 import SubscribeMailingList from "../../components/SubscribeMailingList";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import {updateLoggedInUserProfile} from "../../redux/actions/user";
+import Loading from "../../components/Loading";
 
 
 class PremiumCheckoutForm extends React.Component {
@@ -19,7 +20,11 @@ class PremiumCheckoutForm extends React.Component {
         this.state = {
             isLoggedInModalVisible: !userProfile,
             cardHolderName: "",
-            addressCountry: ""
+            addressCountry: "",
+            isLoadingResponse: false,
+            isLoadingResponseText: "",
+            isFinishedLoadingResponseText: null,
+            isPaymentSuccess: false,
         }
     }
 
@@ -37,6 +42,8 @@ class PremiumCheckoutForm extends React.Component {
         };
         const { cardHolderName} = this.state;
 
+        this.setState({isLoadingResponse: true});
+        this.setState({isLoadingResponseText: 'Processing Payment'});
         const createTokenResult = await stripe.createToken({name: cardHolderName});
         if (createTokenResult.token) {
             console.log({result: createTokenResult});
@@ -45,14 +52,23 @@ class PremiumCheckoutForm extends React.Component {
                 .chargePayment(createTokenResult.token.id, fullName, email, metadata);
             console.log({customerId});
 
+
+            this.setState({isLoadingResponseText: 'Payment Successful! 🙂 Saving UserProfile'});
             const {data : updateUserProfileResponse} = await UserProfileAPI
                 .patch({is_atila_premium: true, stripe_customer_id: customerId}, user);
             console.log({updateUserProfileResponse});
             updateLoggedInUserProfile(updateUserProfileResponse);
 
+            const isFinishedLoadingResponseText = (<div>
+               Payment was successful Check out <Link to="/scholarship" >scholarships</Link>, <Link to="/blog" >blog</Link> and {' '}
+                <Link to="/essay" >essays</Link>
+            </div>);
+            this.setState({isFinishedLoadingResponseText, isPaymentSuccess: true});
+
         } else if (createTokenResult.error) {
             console.log(createTokenResult.error);
         }
+        this.setState({isLoadingResponse: false});
     };
 
     updateForm = (event) => {
@@ -64,7 +80,8 @@ class PremiumCheckoutForm extends React.Component {
     render() {
 
         const { userProfile } = this.props;
-        const { cardHolderName } = this.state;
+        const { cardHolderName, isLoadingResponse, isLoadingResponseText,
+            isPaymentSuccess, isFinishedLoadingResponseText } = this.state;
 
         const subscribeText = (<h3>
             Join the Waiting List. Get Notified When Atila Premium Launches
@@ -90,6 +107,28 @@ class PremiumCheckoutForm extends React.Component {
             <div className="container mt-5">
                 <div className="card shadow p-3">
                     <h1>Student Premium Checkout</h1>
+                    <div className="checkout-form-container">
+                        {isPaymentSuccess &&
+                        <Result
+                            status="success"
+                            title="Payment Success 🙂"
+                            subTitle={isFinishedLoadingResponseText}
+                            extra={[
+                                    <p key="next-steps">Next Steps:</p>,
+                                    <Link to="/scholarship" key="scholarship">
+                                    View Scholarships
+                                    </Link>,
+                                    <Link to="/blog" key="blog">
+                                    View Blog Posts
+                                    </Link>,
+                                    <Link to="/essay" key="essay">
+                                    View Essays
+                                    </Link>,
+                            ]}
+                        />
+                        }
+                    </div>
+                    {!isPaymentSuccess &&
                     <form onSubmit={this.handleSubmit}>
                         <Row gutter={16}>
                             <Col span={24} className="mb-3">
@@ -107,11 +146,19 @@ class PremiumCheckoutForm extends React.Component {
 
                         <Button className="col-12 my-3"
                                 type="primary"
-                        onClick={this.handleSubmit}>
+                                disabled={isLoadingResponse}
+                                onClick={this.handleSubmit}>
                             Confirm order
                         </Button>
 
-                    </form>
+                        {isLoadingResponse &&
+
+                        <Loading
+                            isLoading={isLoadingResponse}
+                            title={isLoadingResponseText} />
+                        }
+
+                    </form>}
                 </div>
             </div>
         );
