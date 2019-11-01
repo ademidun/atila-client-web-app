@@ -1,7 +1,7 @@
 // CheckoutForm.js
 import React from 'react';
 import {CardElement, injectStripe} from 'react-stripe-elements';
-import {Button, Col, Result, Row} from "antd";
+import {Alert, Button, Col, Result, Row} from "antd";
 import {Link, withRouter} from "react-router-dom";
 import BillingAPI from "../../services/BillingAPI";
 import {connect} from "react-redux";
@@ -24,9 +24,10 @@ class PremiumCheckoutForm extends React.Component {
             isLoggedInModalVisible: !userProfile,
             cardHolderName: "",
             addressCountry: "",
-            isLoadingResponse: false,
-            isLoadingResponseText: "",
-            isFinishedLoadingResponseText: null,
+            isResponseLoading: false,
+            isResponseLoadingMessage: "",
+            isResponseErrorMessage: null,
+            isResponseLoadingFinishedText: null,
             isPaymentSuccess: false,
         }
     }
@@ -42,29 +43,31 @@ class PremiumCheckoutForm extends React.Component {
         };
         const { cardHolderName} = this.state;
 
-        this.setState({isLoadingResponse: true});
-        this.setState({isLoadingResponseText: 'Processing Payment'});
+        this.setState({isResponseLoading: true});
+        this.setState({isResponseLoadingMessage: 'Processing Payment'});
+        this.setState({isResponseErrorMessage: null});
         const createTokenResult = await stripe.createToken({name: cardHolderName});
         if (createTokenResult.token) {
 
             const { data : { data : { customerId } }} = await BillingAPI
                 .chargePayment(createTokenResult.token.id, fullName, email, metadata);
 
-            this.setState({isLoadingResponseText: 'Payment Successful! 🙂 Saving UserProfile'});
+            this.setState({isResponseLoadingMessage: 'Payment Successful! 🙂 Saving UserProfile'});
             const {data : updateUserProfileResponse} = await UserProfileAPI
                 .patch({is_atila_premium: true, stripe_customer_id: customerId}, user);
             updateLoggedInUserProfile(updateUserProfileResponse);
 
-            const isFinishedLoadingResponseText = (<div>
+            const isResponseLoadingFinishedText = (<div>
                Payment was successful Check out <Link to="/scholarship" >scholarships</Link>, <Link to="/blog" >blog</Link> and {' '}
                 <Link to="/essay" >essays</Link>
             </div>);
-            this.setState({isFinishedLoadingResponseText, isPaymentSuccess: true});
+            this.setState({isResponseLoadingFinishedText, isPaymentSuccess: true});
 
         } else if (createTokenResult.error) {
+            this.setState({isResponseErrorMessage: createTokenResult.error.message});
             console.log(createTokenResult.error);
         }
-        this.setState({isLoadingResponse: false});
+        this.setState({isResponseLoading: false});
     };
 
     updateForm = (event) => {
@@ -76,8 +79,9 @@ class PremiumCheckoutForm extends React.Component {
     render() {
 
         const { userProfile } = this.props;
-        const { cardHolderName, isLoadingResponse, isLoadingResponseText,
-            isPaymentSuccess, isFinishedLoadingResponseText } = this.state;
+        const { cardHolderName, isResponseLoading, isResponseLoadingMessage,
+            isPaymentSuccess, isResponseLoadingFinishedText,
+            isResponseErrorMessage} = this.state;
 
         const subscribeText = (<h3>
             Join the Waiting List. Get Notified When Atila Premium Launches
@@ -125,7 +129,7 @@ class PremiumCheckoutForm extends React.Component {
                                     <Result
                                         status="success"
                                         title="Payment Success 🙂"
-                                        subTitle={isFinishedLoadingResponseText}
+                                        subTitle={isResponseLoadingFinishedText}
                                         extra={[
                                                 <p key="next-steps">Next Steps:</p>,
                                                 <Link to="/scholarship" key="scholarship">
@@ -160,16 +164,22 @@ class PremiumCheckoutForm extends React.Component {
                                     <Button className="col-12 my-3"
                                             type="primary"
                                             size="large"
-                                            disabled={isLoadingResponse}
+                                            disabled={isResponseLoading}
                                             onClick={this.handleSubmit}>
                                         Confirm order (${PREMIUM_PRICE_WITH_TAX}/month)
                                     </Button>
 
-                                    {isLoadingResponse &&
+                                    {isResponseLoading &&
 
                                     <Loading
-                                        isLoading={isLoadingResponse}
-                                        title={isLoadingResponseText} />
+                                        isLoading={isResponseLoading}
+                                        title={isResponseLoadingMessage} />
+                                    }
+
+                                    {isResponseErrorMessage &&
+
+                                        <Alert message={isResponseErrorMessage}
+                                               type="error" />
                                     }
 
                                 </form>}
