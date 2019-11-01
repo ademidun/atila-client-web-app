@@ -9,8 +9,6 @@ import {PREMIUM_PRICE_BEFORE_TAX, PREMIUM_PRICE_WITH_TAX} from "./PremiumCheckou
 const logoImageData = "https://firebasestorage.googleapis.com/v0/b/atila-7.appspot.com/o/public%2Fatila-logo-right-way-circle-transparent.png?alt=media&token=c7b77a1a-9563-41ef-90e9-57025a7dbd87";
 function Invoice({ userProfile }) {
 
-    console.log({userProfile});
-
     const { first_name, last_name, email } = userProfile;
     const todayString = moment(Date.now()).format('MMMM DD, YYYY');
     return (
@@ -76,7 +74,7 @@ function Invoice({ userProfile }) {
                     </td>
                 </tr>
 
-                <tr className="item last">
+                <tr className="item">
                     <td>
                         HST (13%)
                     </td>
