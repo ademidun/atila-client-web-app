@@ -30,9 +30,6 @@ class PremiumCheckoutForm extends React.Component {
 
     handleSubmit = async (ev) => {
         ev.preventDefault();
-
-        console.log({ev});
-
         const { stripe, userProfile, updateLoggedInUserProfile } = this.props;
 
         const { first_name, last_name, email, user } = userProfile;
@@ -46,17 +43,13 @@ class PremiumCheckoutForm extends React.Component {
         this.setState({isLoadingResponseText: 'Processing Payment'});
         const createTokenResult = await stripe.createToken({name: cardHolderName});
         if (createTokenResult.token) {
-            console.log({result: createTokenResult});
 
             const { data : { data : { customerId } }} = await BillingAPI
                 .chargePayment(createTokenResult.token.id, fullName, email, metadata);
-            console.log({customerId});
-
 
             this.setState({isLoadingResponseText: 'Payment Successful! 🙂 Saving UserProfile'});
             const {data : updateUserProfileResponse} = await UserProfileAPI
                 .patch({is_atila_premium: true, stripe_customer_id: customerId}, user);
-            console.log({updateUserProfileResponse});
             updateLoggedInUserProfile(updateUserProfileResponse);
 
             const isFinishedLoadingResponseText = (<div>
