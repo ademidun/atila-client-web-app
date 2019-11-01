@@ -35,6 +35,20 @@ class Navbar extends React.Component {
         const { userProfile, isLoadingLoggedInUserProfile } = this.props;
         const { location: { pathname, search } } = this.props;
 
+        if (pathname === '/premium') {
+            return (<div id="header"
+                         className="header mx-3 mx-lg-5 mt-2">
+                    <Row>
+                        <Col xxl={4} xl={5} lg={8} md={8} sm={8} xs={0}>
+                            <h2 id="logo" className="serif-font text-center4">
+                                <span>Atila</span>
+                            </h2>
+                        </Col>
+                    </Row>
+                </div>
+            )
+        }
+
         const menu = (
             <Menu mode={menuMode} id="nav" key="nav">
                 <Menu.Item key="essays">
