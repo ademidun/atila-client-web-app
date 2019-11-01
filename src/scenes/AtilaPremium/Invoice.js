@@ -12,7 +12,7 @@ function Invoice({ userProfile }) {
     const { first_name, last_name, email } = userProfile;
     const todayString = moment(Date.now()).format('MMMM DD, YYYY');
     return (
-        <div className="invoice-box">
+        <div className="invoice-box px-3">
             <table cellPadding="0" cellSpacing="0">
                 <tbody>
                 <tr className="top">
@@ -24,9 +24,9 @@ function Invoice({ userProfile }) {
                                     <img src={logoImageData}
                                          style={{maxHeight:'75px'}} alt="atila logo" />
                                 </td>
-
                                 <td>
-                                    Date: {todayString}<br />
+                                    {todayString}<br />
+                                    Atila Tech.<br />
                                 </td>
                             </tr>
 
@@ -40,10 +40,6 @@ function Invoice({ userProfile }) {
                         <table>
                             <tbody>
                             <tr>
-                                <td>
-                                    Atila Tech.<br />
-                                </td>
-
                                 <td>
                                     {first_name} {last_name}<br />
                                     {email}
