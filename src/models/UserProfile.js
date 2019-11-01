@@ -1,10 +1,12 @@
 import {GRADE_LEVELS, MAJORS_LIST, SCHOOLS_LIST} from "./ConstantsForm";
+import PropTypes from "prop-types";
 
 export const UserProfileTest1 = {
     username: 'cbarkley',
     first_name: 'Charles',
     last_name: 'Barkley',
     id: 1,
+    is_atila_admin: false,
 };
 
 export const userProfileFormConfig = [
@@ -84,4 +86,13 @@ export function addToMyScholarshipHelper(userProfile, scholarship) {
     userProfile.saved_scholarships_metadata[scholarship.id] = {notes: ''};
 
     return userProfile;
-}
+};
+
+export const UserProfilePropType = PropTypes.shape({
+    username: PropTypes.string.isRequired,
+    id: PropTypes.number,
+    first_name: PropTypes.string,
+    last_name: PropTypes.string,
+    email: PropTypes.string,
+    is_atila_admin: PropTypes.boolean,
+});

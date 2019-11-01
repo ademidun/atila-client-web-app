@@ -107,7 +107,6 @@ class Register extends React.Component {
     };
 
     showTermsConditionsModal = (event, showModal) => {
-        console.log({event, showModal});
         if (event.preventDefault) {
             event.preventDefault();
         }

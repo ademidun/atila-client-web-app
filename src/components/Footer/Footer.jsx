@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Col } from 'antd';
 import './Footer.scss';
-import {Link} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
   faFacebook,
@@ -14,7 +14,25 @@ import {
   faYoutube
 } from "@fortawesome/free-brands-svg-icons";
 
-function Footer() {
+const goBack = (event, history) => {
+  event.preventDefault();
+  history.goBack();
+};
+
+function Footer({location, history}) {
+
+  const { pathname } = location;
+
+  if(pathname === '/premium') {
+    return (<div className="center-block" style={{ textAlign: 'center'}}>
+      <hr />
+      <button onClick={(event) => goBack(event, history)}
+              className="btn-link btn-text">
+        Go Back
+      </button>to previous page <br/>
+          Return to <Link to="/">atila.ca</Link> homepage <br/>
+    </div>)
+  }
   return (
       <React.Fragment>
         <hr />
@@ -165,4 +183,4 @@ function Footer() {
   );
 }
 
-export default Footer;
+export default withRouter(Footer);

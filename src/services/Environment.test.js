@@ -33,3 +33,31 @@ it('renders the correct api url', () => {
     expect(EnvironmentProd.apiUrlNodeMicroservice)
         .toContain('yhpl8yynpk.execute-api.us-east-1.amazonaws.com/prod');
 });
+
+it('renders the correct STRIPE_PUBLIC_KEY', () => {
+    const stripePublicKeyTest = 'pk_test_AxhlK7IudWRlQCa4azz4WElP00QVVE6SNM';
+
+    const stripePublicKeyProduction = 'pk_live_AgHuMdhPDSk5eKrlwoHCnZnR00uIrfIHkM';
+
+    expect(EnvironmentDev.STRIPE_PUBLIC_KEY)
+        .toContain(stripePublicKeyTest);
+
+    expect(EnvironmentStaging.STRIPE_PUBLIC_KEY)
+        .toContain(stripePublicKeyTest);
+
+    expect(EnvironmentProd.STRIPE_PUBLIC_KEY)
+        .toContain(stripePublicKeyProduction);
+});
+
+
+it('renders the correct billing api url', () => {
+    const stagingBilingUrl = 'noitlizkka.execute-api.us-east-1.amazonaws.com';
+    const prodBilingUrl = 'eiqnyq1jx6.execute-api.us-east-1.amazonaws.com/prod';
+
+    expect(EnvironmentDev.apiUrlBillingMicroservice)
+        .toContain('127.0.0.1:9001');
+    expect(EnvironmentStaging.apiUrlBillingMicroservice)
+        .toContain(stagingBilingUrl);
+    expect(EnvironmentProd.apiUrlBillingMicroservice)
+        .toContain(prodBilingUrl);
+});

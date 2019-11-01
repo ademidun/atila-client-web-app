@@ -3,6 +3,7 @@ import UtilsAPI from "../services/UtilsAPI";
 import Loading from "./Loading";
 import {Link, withRouter} from "react-router-dom";
 import PropTypes from "prop-types";
+import {Col, Row} from "antd";
 class SubscribeMailingList extends  React.Component{
 
 
@@ -49,15 +50,10 @@ class SubscribeMailingList extends  React.Component{
             })
     };
 
-    updateName = (event) => {
+    updateForm = (event) => {
         event.preventDefault();
-        this.setState({fullName: event.target.value});
+        this.setState({[event.target.name]: event.target.value});
 
-    };
-
-    updateEmail = (event) => {
-        event.preventDefault();
-        this.setState({ email: event.target.value });
     };
 
     render() {
@@ -97,20 +93,26 @@ class SubscribeMailingList extends  React.Component{
         else {
             pageContent = (<React.Fragment>
                 {subscribeText}
-                <form className="row p-3 form-group" onSubmit={this.submitContact}>
-                    <input placeholder="Full Name"
-                           name="name"
-                           className="col-sm-12 col-md-6 mb-3 form-control"
-                           value={fullName}
-                           onChange={this.updateName}
-                    />
-                    <input placeholder="Email"
-                           name="email"
-                           type="email"
-                           className="col-12 col-md-6 mb-3 form-control"
-                           value={email}
-                           onChange={this.updateEmail}
-                    />
+                <form className="form-group" onSubmit={this.submitContact}>
+                    <Row gutter={16}>
+                        <Col xs={24} sm={12} className="my-3">
+                            <input className="form-control"
+                                   placeholder="Full Name"
+                                   name="fullName"
+                                   value={fullName}
+                                   onChange={this.updateForm}
+                            />
+                        </Col>
+                        <Col xs={24} sm={12} className="my-3">
+                            <input className="form-control"
+                                   placeholder="Email"
+                                   name="email"
+                                   type="email"
+                                   value={email}
+                                   onChange={this.updateForm}
+                            />
+                        </Col>
+                    </Row>
                     <button className="btn btn-primary col-12 mb-3" type="submit">
                         {btnText}
                     </button>
@@ -133,7 +135,7 @@ SubscribeMailingList.defaultProps = {
     btnText: 'Subscribe',
     subscribeText: (
         <p className="col-sm-12 col-md-6" style={{fontSize : 'medium'}}>Subscribe to get updates
-            on new <Link to="/" >scholarships</Link>, <Link to="/blog" >blog</Link> and {' '}
+            on new <Link to="/scholarship" >scholarships</Link>, <Link to="/blog" >blog</Link> and {' '}
             <Link to="/essay" >essays</Link>, and new product features.
         </p>),
     formGoogleSheetName: 'mailinglist',

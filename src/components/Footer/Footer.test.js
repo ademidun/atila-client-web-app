@@ -12,7 +12,12 @@ const mockStore = configureStore();
 
 describe('<Footer />', () => {
     it('renders without crashing', () => {
-        shallow(<Footer />);
+        const wrapper = shallow(
+            <MemoryRouter>
+                <Footer />
+            </MemoryRouter>);
+
+        expect(wrapper.html()).toBeTruthy();
     });
 
     it('renders blogLink', () => {

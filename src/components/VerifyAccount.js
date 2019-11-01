@@ -62,7 +62,6 @@ class VerifyAccount extends React.Component {
         }
         APIPromise
             .then(res => {
-                console.log({res});
                 if (!verifyAccountOnPageLoad && verification_type==='reset_password') {
                     this.setState({ responseOkMessage: 'Password reset successful 🙂!\n' +
                             'Log in again with new password'});

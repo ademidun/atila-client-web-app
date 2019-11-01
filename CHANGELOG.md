@@ -1,5 +1,39 @@
 # Changelog
 
+## November 1, 2019
+### Stripe React Testing
+
+- Mocked `react-stripe-ements` so I can use in testing, I explain how I did it 
+in this [Github issue comment](https://github.com/stripe/react-stripe-elements/issues/427#issuecomment-548799082)
+
+Repeated below for convenience:
+
+> Here is what I did and it works for me. What do you folks think about this?
+> 
+> ```node
+> jest.mock('react-stripe-elements', () => {
+>     return {
+>         injectStripe: () => {
+>             const PremiumCheckoutFormTest2 = require('./PremiumCheckoutForm').PremiumCheckoutFormTest;
+>             return PremiumCheckoutFormTest2;
+>         },
+>         CardElement: () => {
+>             return <div>CardElement</div>;
+>         },
+>     };
+> });
+> ```
+> 
+> Sources:
+> 
+> - https://thoughtbot.com/blog/mocking-react-components-with-jest
+> - https://github.com/facebook/jest/issues/2567#issuecomment-271937555
+> - https://stackoverflow.com/questions/31780616/how-change-require-to-import-with-key-in-es6
+> - https://stackoverflow.com/a/31783409/5405197
+> 
+>  
+>QUOTE FROM : [Github issue comment](https://github.com/stripe/react-stripe-elements/issues/427#issuecomment-548799082)
+
 ## October 22, 2019
 ### Temporary Hack for Page Views Counter
 

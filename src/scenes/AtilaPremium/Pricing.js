@@ -5,11 +5,23 @@ import {Popover} from "antd";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faQuestionCircle} from "@fortawesome/free-solid-svg-icons/faQuestionCircle";
 import {ATILA_POINTS_EXPLAIN_POPOVER} from "../../components/AtilaPointsPaywallModal";
+import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
+import {PREMIUM_PRICE_BEFORE_TAX} from "./PremiumCheckoutForm";
 
 function Pricing() {
     // todo generate sitemap dynamically
+    const seoContent = {
+        title: 'Atila Pricing - $9/month',
+        description: 'Get a premium student membership to Atila starting at just $9/month',
+        image: defaultSeoContent.image,
+        slug: '/premium'
+    };
+
+    const helmetSeo = (<HelmetSeo content={seoContent} />);
+
     return (
         <div className="Pricing">
+            {helmetSeo}
             <div className="background">
                 <div className="container">
                     <h1>Pricing</h1>
@@ -32,8 +44,8 @@ function Pricing() {
                         <div className="pricing-plan shadow">
                             <img src="https://s21.postimg.cc/tpm0cge4n/space-ship.png" alt="" className="pricing-img" />
                             <h2 className="pricing-header">Student Premium</h2>
-                            <span className="pricing-price">$9</span>
-                            <Link to="/premium/student" className="pricing-button is-featured">
+                            <span className="pricing-price">${PREMIUM_PRICE_BEFORE_TAX}</span>
+                            <Link to="/premium" className="pricing-button is-featured">
                                 Sign Up
                             </Link>
                             <ul className="pricing-features">

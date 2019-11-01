@@ -1,26 +1,24 @@
 import React from "react";
-import SubscribeMailingList from "../../components/SubscribeMailingList";
+import {Elements, StripeProvider} from "react-stripe-elements";
+import PremiumCheckoutForm from "./PremiumCheckoutForm";
+import Environment from "../../services/Environment";
 
-function Premium() {
+const { STRIPE_PUBLIC_KEY } = Environment;
+class Premium extends React.Component {
 
-    const subscribeText = (<h3>
-        Get Notified When Atila Premium Launches
-    </h3>)
-    return (
-        <div className="container mt-5">
-            <div className="card p-3 pb-5">
-                <div className="text-center">
-                    <h1>
-                        Atila Premium Coming Soon
-                        <span role="img" aria-label="eyes and clock emoji">👀 🕛</span>
-                    </h1>
+    render() {
+        return (
+            // ...
+            <StripeProvider
+                apiKey={STRIPE_PUBLIC_KEY}
+            >
 
-                    <SubscribeMailingList subscribeText={subscribeText}
-                                          btnText="Get Notified" />
-                </div>
-            </div>
-        </div>
-    );
+                <Elements>
+                    <PremiumCheckoutForm />
+                </Elements>
+            </StripeProvider>
+        )
+    }
 }
 
 export default Premium;
