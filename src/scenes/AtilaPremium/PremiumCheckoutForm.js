@@ -119,7 +119,7 @@ class PremiumCheckoutForm extends React.Component {
             return (
                 <React.Fragment>
                     {helmetSeo}
-                    <div className="container mt-5">
+                    <div className="container mt-5" style={{ height: '80vh'}}>
                         <div className="card shadow p-3">
                             <div className="text-center">
                                 <h1>
@@ -138,7 +138,7 @@ class PremiumCheckoutForm extends React.Component {
         return (
             <React.Fragment>
                 {helmetSeo}
-                <div className="container mt-5">
+                <div className="container mt-5" style={{ height: '80vh'}}>
                     <div className="card shadow p-3">
                         <h1>Student Premium Checkout</h1>
 
