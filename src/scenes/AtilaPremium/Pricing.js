@@ -6,6 +6,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faQuestionCircle} from "@fortawesome/free-solid-svg-icons/faQuestionCircle";
 import {ATILA_POINTS_EXPLAIN_POPOVER} from "../../components/AtilaPointsPaywallModal";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
+import {PREMIUM_PRICE_BEFORE_TAX} from "./PremiumCheckoutForm";
 
 function Pricing() {
     // todo generate sitemap dynamically
@@ -43,7 +44,7 @@ function Pricing() {
                         <div className="pricing-plan shadow">
                             <img src="https://s21.postimg.cc/tpm0cge4n/space-ship.png" alt="" className="pricing-img" />
                             <h2 className="pricing-header">Student Premium</h2>
-                            <span className="pricing-price">$9</span>
+                            <span className="pricing-price">${PREMIUM_PRICE_BEFORE_TAX}</span>
                             <Link to="/premium" className="pricing-button is-featured">
                                 Sign Up
                             </Link>

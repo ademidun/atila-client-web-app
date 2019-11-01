@@ -13,7 +13,8 @@ import Loading from "../../components/Loading";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import Invoice from "./Invoice";
 
-
+export const PREMIUM_PRICE_BEFORE_TAX = 9;
+export const PREMIUM_PRICE_WITH_TAX = 10.17;
 class PremiumCheckoutForm extends React.Component {
 
     constructor(props) {
@@ -161,7 +162,7 @@ class PremiumCheckoutForm extends React.Component {
                                             size="large"
                                             disabled={isLoadingResponse}
                                             onClick={this.handleSubmit}>
-                                        Confirm order ($9/month)
+                                        Confirm order (${PREMIUM_PRICE_WITH_TAX}/month)
                                     </Button>
 
                                     {isLoadingResponse &&

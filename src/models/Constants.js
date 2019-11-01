@@ -5,6 +5,7 @@ import {BlogWhatIsAtila} from "./Blog";
 import {EssayIveyApplication} from "./Essay";
 import {ScholarshipEngineering} from "./Scholarship";
 import {genericItemTransform} from "../services/utils";
+import {UserProfileTest1} from "./UserProfile";
 
 // todo there might be an npm package for this!
 // todo add more emojis to the dictionary
@@ -34,6 +35,18 @@ export const initialReduxState = {
     data: {
         user: {
             loggedInUserProfile: null
+        }
+    },
+    ui: {
+        user: {
+            isLoadingLoggedInUserProfile: false
+        }
+    }
+};
+export const ReduxStateLoggedIn = {
+    data: {
+        user: {
+            loggedInUserProfile: UserProfileTest1
         }
     },
     ui: {
