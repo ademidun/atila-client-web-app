@@ -119,7 +119,7 @@ class PremiumCheckoutForm extends React.Component {
                         <h1>Student Premium Checkout</h1>
 
                         <Row gutter={16}>
-                            <Col xs={24} sm={12}>
+                            <Col xs={24} md={12}>
                                 <div className="checkout-form-container">
                                     {isPaymentSuccess &&
                                     <Result
@@ -174,7 +174,7 @@ class PremiumCheckoutForm extends React.Component {
 
                                 </form>}
                             </Col>
-                            <Col xs={24} sm={12}>
+                            <Col xs={24} md={12}>
                                 <Invoice />
                             </Col>
                         </Row>
