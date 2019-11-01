@@ -44,7 +44,7 @@ function Pricing() {
                             <img src="https://s21.postimg.cc/tpm0cge4n/space-ship.png" alt="" className="pricing-img" />
                             <h2 className="pricing-header">Student Premium</h2>
                             <span className="pricing-price">$9</span>
-                            <Link to="/premium/student" className="pricing-button is-featured">
+                            <Link to="/premium" className="pricing-button is-featured">
                                 Sign Up
                             </Link>
                             <ul className="pricing-features">

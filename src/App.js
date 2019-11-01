@@ -78,7 +78,6 @@ function App(props) {
                         <Route path="/search" component={GoogleAnalyticsTracker(Search)} />
                         <Route path="/login" component={GoogleAnalyticsTracker(Login)} />
                         <Route path="/pricing" component={GoogleAnalyticsTracker(Pricing)} />
-                        <Route path="/premium/:accountType" component={GoogleAnalyticsTracker(Premium)} />
                         <Route exact path="/premium" component={GoogleAnalyticsTracker(Premium)} />
                         <Route path="/verify" component={GoogleAnalyticsTracker(VerifyAccount)} />
                         <Route path="/register" component={GoogleAnalyticsTracker(Register)} />

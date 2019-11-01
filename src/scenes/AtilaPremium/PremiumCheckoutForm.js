@@ -155,10 +155,9 @@ class PremiumCheckoutForm extends React.Component {
                             <Button className="col-12 my-3"
                                     type="primary"
                                     size="large"
-                                    style={{fontSize :'x-large'}}
                                     disabled={isLoadingResponse}
                                     onClick={this.handleSubmit}>
-                                Confirm order
+                                Confirm order ($9/month)
                             </Button>
 
                             {isLoadingResponse &&
