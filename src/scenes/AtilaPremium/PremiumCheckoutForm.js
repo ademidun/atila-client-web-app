@@ -49,21 +49,36 @@ class PremiumCheckoutForm extends React.Component {
         const createTokenResult = await stripe.createToken({name: cardHolderName});
         if (createTokenResult.token) {
 
-            const { data : { data : { customerId } }} = await BillingAPI
-                .chargePayment(createTokenResult.token.id, fullName, email, metadata);
+            try {
+                const { data : { data : { customerId } }} = await BillingAPI
+                    .chargePayment(createTokenResult.token.id, fullName, email, metadata);
 
-            this.setState({isResponseLoadingMessage: 'Payment Successful! 🙂 Saving UserProfile'});
-            const {data : updateUserProfileResponse} = await UserProfileAPI
-                .patch({is_atila_premium: true, stripe_customer_id: customerId}, user);
-            updateLoggedInUserProfile(updateUserProfileResponse);
+                this.setState({isResponseLoadingMessage: 'Payment Successful! 🙂 Saving UserProfile'});
 
-            const isResponseLoadingFinishedText = (<div>
-               Payment was successful Check out <Link to="/scholarship" >scholarships</Link>, <Link to="/blog" >blog</Link> and {' '}
-                <Link to="/essay" >essays</Link>
-            </div>);
-            this.setState({isResponseLoadingFinishedText, isPaymentSuccess: true});
+                try {
+                    const {data : updateUserProfileResponse} = await UserProfileAPI
+                        .patch({is_atila_premium: true, stripe_customer_id: customerId}, user);
+                    updateLoggedInUserProfile(updateUserProfileResponse);
+
+                } catch (patchUserProfileError) {
+                    // todo send an email to admin that payment went through
+                    //  but there was an error saving info to userProfile
+                }
+                const isResponseLoadingFinishedText = (<div>
+                    Payment was successful Check out <Link to="/scholarship" >scholarships</Link>, <Link to="/blog" >blog</Link> and {' '}
+                    <Link to="/essay" >essays</Link>
+                </div>);
+                this.setState({isResponseLoadingFinishedText, isPaymentSuccess: true});
+
+            } catch (chargePaymentError) {
+                // todo send an email to admin that error occurred at payment
+                const { response : { data : {error : { message }}}} = chargePaymentError;
+
+                this.setState({isResponseErrorMessage: message});
+            }
 
         } else if (createTokenResult.error) {
+            // todo send an email to admin that error occurred at payment
             this.setState({isResponseErrorMessage: createTokenResult.error.message});
             console.log(createTokenResult.error);
         }
@@ -86,6 +101,11 @@ class PremiumCheckoutForm extends React.Component {
         const subscribeText = (<h3>
             Join the Waiting List. Get Notified When Atila Premium Launches
         </h3>);
+
+        const isResponseErrorMessageWithContactLink = (<div>
+            {isResponseErrorMessage}
+            <br /> <Link to="/contact"> Contact us</Link> if problem continues
+        </div>);
 
         const seoContent = {
             title: 'Atila Student Premium Checkout - $9/month',
@@ -131,16 +151,16 @@ class PremiumCheckoutForm extends React.Component {
                                         title="Payment Success 🙂"
                                         subTitle={isResponseLoadingFinishedText}
                                         extra={[
-                                                <p key="next-steps">Next Steps:</p>,
-                                                <Link to="/scholarship" key="scholarship">
+                                            <p key="next-steps">Next Steps:</p>,
+                                            <Link to="/scholarship" key="scholarship">
                                                 View Scholarships
-                                                </Link>,
-                                                <Link to="/blog" key="blog">
+                                            </Link>,
+                                            <Link to="/blog" key="blog">
                                                 View Blog Posts
-                                                </Link>,
-                                                <Link to="/essay" key="essay">
+                                            </Link>,
+                                            <Link to="/essay" key="essay">
                                                 View Essays
-                                                </Link>,
+                                            </Link>,
                                         ]}
                                     />
                                     }
@@ -177,9 +197,10 @@ class PremiumCheckoutForm extends React.Component {
                                     }
 
                                     {isResponseErrorMessage &&
-
-                                        <Alert message={isResponseErrorMessage}
-                                               type="error" />
+                                    <Alert
+                                        type="error"
+                                        message={isResponseErrorMessageWithContactLink}
+                                    />
                                     }
 
                                 </form>}
