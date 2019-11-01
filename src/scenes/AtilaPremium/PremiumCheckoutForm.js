@@ -61,9 +61,8 @@ class PremiumCheckoutForm extends React.Component {
                     updateLoggedInUserProfile(updateUserProfileResponse);
 
                 } catch (patchUserProfileError) {
-                    const patchUserProfileErrorResponse = await BillingAPI
+                    BillingAPI
                         .sendBillingError(patchUserProfileError, {email, name: fullName});
-                    console.log({patchUserProfileErrorResponse});
                 }
                 const isResponseLoadingFinishedText = (<div>
                     Payment was successful Check out <Link to="/scholarship" >scholarships</Link>, <Link to="/blog" >blog</Link> and {' '}
@@ -72,9 +71,14 @@ class PremiumCheckoutForm extends React.Component {
                 this.setState({isResponseLoadingFinishedText, isPaymentSuccess: true});
 
             } catch (chargePaymentError) {
-                const { response : { data : {error : { message }}}} = chargePaymentError;
-
-                this.setState({isResponseErrorMessage: message});
+                BillingAPI
+                    .sendBillingError(chargePaymentError, {email, name: fullName});
+                const { response } = chargePaymentError;
+                if (response && response.data && response.data.error) {
+                    this.setState({isResponseErrorMessage: response.data.error.message});
+                } else {
+                    this.setState({isResponseErrorMessage: chargePaymentError.message || JSON.stringify(chargePaymentError)});
+                }
             }
 
         } else if (createTokenResult.error) {
