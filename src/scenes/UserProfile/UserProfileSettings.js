@@ -16,7 +16,9 @@ class UserProfileSettings extends React.Component {
 
         this.state = {
             customerData: null,
+            customerDataIsLoading: null,
             isResponseErrorMessage: null,
+            isResponseSuccessMessage: null,
         }
     }
 
@@ -27,9 +29,15 @@ class UserProfileSettings extends React.Component {
     getCustomer = () => {
         const { userProfile } = this.props;
 
+        this.setState({customerDataIsLoading: true});
+
         BillingAPI.getCustomer(userProfile.stripe_customer_id)
             .then(res => {
                 this.setState({customerData: res.data.data});
+            })
+            .catch()
+            .finally(()=> {
+                this.setState({customerDataIsLoading: false});
             })
     };
 
@@ -50,21 +58,45 @@ class UserProfileSettings extends React.Component {
 
         BillingAPI.cancelSubscription(id, 'sub_G6LWZY1viFdxPQ')
             .then(res=> {
-                console.log({res})
+                console.log({res});
+                this.setState({isResponseSuccessMessage: 'Your premium subscription has been cancelled.'});
             })
             .catch(err=> {
                 console.log({err});
 
-                this.setState({isResponseErrorMessage: transformErrorMessage(err)})
+                this.setState({isResponseErrorMessage: transformErrorMessage(err)});
             })
     };
 
     render () {
 
-        const { customerData, isResponseErrorMessage } = this.state;
+        const { customerData, isResponseErrorMessage, isResponseSuccessMessage, customerDataIsLoading } = this.state;
+        const { userProfile } = this.props;
 
-        if (!customerData) {
+        if (customerDataIsLoading) {
             return <Loading title="Loading Billing Details..." />
+        }
+
+        if (!userProfile.is_atila_premium || !customerData) {
+            return (
+                <div>
+                    <h1 className="my-3">Settings</h1>
+                    <Row style={{textAlign: 'left'}}>
+                        <Col sm={24} md={12}>
+                            <span><strong> Account Type: </strong> Student {userProfile.is_atila_premium ? 'Premium' : 'Free'}</span>
+                            {!userProfile.is_atila_premium &&
+                            <Button style={{ marginTop: 16 }}
+                                    className="m-3"
+                                    type="primary">
+                                <Link to="/premium">
+                                    Go Premium
+                                </Link>
+                            </Button>
+                            }
+                        </Col>
+                    </Row>
+                </div>
+            )
         }
         const isResponseErrorMessageWithContactLink = (<div>
             {isResponseErrorMessage}
@@ -79,7 +111,7 @@ class UserProfileSettings extends React.Component {
         nextBillDate = moment(nextBillDate).format('dddd, MMMM DD, YYYY');
         return (
             <div>
-                <h1 className="mb-3">Settings</h1>
+                <h1 className="my-3">Settings</h1>
                 <Row style={{textAlign: 'left'}}>
                     <Col sm={24} md={12}>
                         <Timeline>
@@ -89,7 +121,7 @@ class UserProfileSettings extends React.Component {
                         <Button style={{ marginTop: 16 }}
                                 onClick={this.showConfirm}
                                 type="danger"
-                                className="mb-3">
+                                className="my-3">
                             Cancel Subscription
                         </Button>
                         <p>Questions about your subscription? <Link to="/contact">Contact us</Link> </p>
@@ -97,6 +129,12 @@ class UserProfileSettings extends React.Component {
                         <Alert
                             type="error"
                             message={isResponseErrorMessageWithContactLink}
+                        />
+                        }
+                        {isResponseSuccessMessage &&
+                        <Alert
+                            type="success"
+                            message={isResponseSuccessMessage}
                         />
                         }
                     </Col>
