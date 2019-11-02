@@ -5,6 +5,7 @@ import {connect} from "react-redux";
 import {Link, withRouter} from "react-router-dom";
 import { faQuestionCircle} from "@fortawesome/free-solid-svg-icons/faQuestionCircle";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {getPageViewLimit} from "../services/utils";
 
 
 
@@ -39,25 +40,17 @@ class AtilaPointsPaywallModal extends React.Component {
     }
 
     showModalUsingPageViews = () => {
-        const { pageViews: { thisMonth }, location : { pathname } } = this.props;
+        const { pageViews, location : { pathname } } = this.props;
 
         if (pathname === '/blog/atila/what-is-atila') {
             return
         }
-        if (thisMonth.blog >= 5 || thisMonth.essay >= 3 || thisMonth.scholarship >= 10
-        ) {
-            if (thisMonth.blog >= 5) {
-                this.setState({viewCount: thisMonth.blog});
-                this.setState({viewCountType: 'Blog'});
-            } else if(thisMonth.essay >= 3) {
-                this.setState({viewCount: thisMonth.essay});
-                this.setState({viewCountType: 'Essay'});
-            } else if(thisMonth.scholarship >= 10) {
-                this.setState({viewCount: thisMonth.scholarship});
-                this.setState({viewCountType: 'Scholarship'});
-            }
-            this.setState({visible: true});
-        }
+
+        const { viewCount, viewCountType, isOverLimit } = getPageViewLimit(pageViews, pathname);
+
+        console.log({ viewCount, viewCountType, isOverLimit });
+        this.setState({viewCount, viewCountType});
+        this.setState({visible: isOverLimit});
     };
 
     handleOk = e => {
@@ -74,7 +67,7 @@ class AtilaPointsPaywallModal extends React.Component {
 
     render() {
 
-        const { pageViews, userProfile } = this.props;
+        const { userProfile } = this.props;
         const { viewCount, viewCountType } = this.state;
 
         return (

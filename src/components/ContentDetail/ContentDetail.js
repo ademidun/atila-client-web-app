@@ -34,7 +34,8 @@ class ContentDetail extends React.Component {
                 ...state,
                 prevSlug: contentSlug,
                 errorGettingContent: null,
-                content: null
+                content: null,
+                pageViews: null,
             };
         }
 

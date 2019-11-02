@@ -306,3 +306,39 @@ export function transformErrorMessage(error) {
     }
     return error.message
 }
+
+export function getPageViewLimit(pageViews, pathname) {
+    let pageViewResult = {
+        isOverLimit: false,
+        viewCount: null,
+        viewCountType: null,
+    };
+
+    const viewTypes = ['blog', 'essay', 'scholarship'];
+
+    const viewTypesLimit = {
+        blog: 5,
+        essay: 3,
+        scholarship: 10,
+    };
+
+    for (const viewType of viewTypes){
+        if (pathname.includes(`/${viewType}/`)) {
+            if (pageViews.thisMonth[viewType] >= viewTypesLimit[viewType] &&
+                pageViews.thisMonth[viewType] % viewTypesLimit[viewType]  === 0){
+                pageViewResult = {
+                    isOverLimit: true,
+                    viewCount: pageViews.thisMonth[viewType],
+                    viewCountType: viewType,
+                }
+            } else {
+                pageViewResult = {
+                    isOverLimit: false,
+                    viewCount: pageViews.thisMonth[viewType],
+                    viewCountType: viewType,
+                }
+            }
+        }
+    }
+    return pageViewResult;
+}
