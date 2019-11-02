@@ -38,6 +38,7 @@ function Pricing() {
                                 <li className="pricing-features-item">10 scholarship views per month</li>
                                 <li className="pricing-features-item">3 essay views per month</li>
                                 <li className="pricing-features-item">5 blog views per month</li>
+                                <li className="pricing-features-item">bi-weekly scholarship newsletter</li>
                             </ul>
                         </div>
 
@@ -52,6 +53,10 @@ function Pricing() {
                                 <li className="pricing-features-item">Unlimited scholarship views</li>
                                 <li className="pricing-features-item">Unlimited essay views</li>
                                 <li className="pricing-features-item">Unlimited blog views</li>
+                                <li className="pricing-features-item">Weekly scholarship newsletter</li>
+                                <li className="pricing-features-item">
+                                    Get notified before your scholarships are due
+                                </li>
                             </ul>
                         </div>
 
