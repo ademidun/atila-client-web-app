@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from "react-redux";
-import {Button, Col, Row} from "antd";
+import {Button, Col, Row, Timeline} from "antd";
 import BillingAPI from "../../services/BillingAPI";
 import Loading from "../../components/Loading";
 import moment from "moment";
+import {Link} from "react-router-dom";
 
 
 class UserProfileSettings extends React.Component {
@@ -35,7 +36,7 @@ class UserProfileSettings extends React.Component {
         const { customerData } = this.state;
 
         if (!customerData) {
-            return <Loading title="Loading Payment Details..." />
+            return <Loading title="Loading Billing Details..." />
         }
 
         const { subscriptionData: {current_period_start, current_period_end} } = customerData;
@@ -46,16 +47,17 @@ class UserProfileSettings extends React.Component {
         nextBillDate = moment(nextBillDate).format('dddd, MMMM DD, YYYY');
         return (
             <div>
-                <h1>Settings</h1>
-                <Row gutter={16}>
-                    <Col span={12}>
-                        Last Bill Date: {lastBillDate}
-                    </Col>
-                    <Col span={12}>
-                        Next Bill Date: {nextBillDate}
-                        <Button style={{ marginTop: 16 }} type="danger">
+                <h1 className="mb-3">Settings</h1>
+                <Row style={{textAlign: 'left'}}>
+                    <Col sm={24} md={12}>
+                        <Timeline>
+                            <Timeline.Item color="green">Last Bill Date: {lastBillDate}</Timeline.Item>
+                            <Timeline.Item>Next Bill Date: {nextBillDate}</Timeline.Item>
+                        </Timeline>
+                        <Button style={{ marginTop: 16 }} type="danger" className="mb-3">
                             Cancel Subscription
                         </Button>
+                        <p>Questions about your subscription? <Link to="/contact">Contact us</Link> </p>
                     </Col>
                 </Row>
             </div>
