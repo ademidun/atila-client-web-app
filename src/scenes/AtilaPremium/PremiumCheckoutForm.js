@@ -6,7 +6,6 @@ import {Link, withRouter} from "react-router-dom";
 import BillingAPI from "../../services/BillingAPI";
 import {connect} from "react-redux";
 import {UserProfilePropType} from "../../models/UserProfile";
-import SubscribeMailingList from "../../components/SubscribeMailingList";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import Loading from "../../components/Loading";
