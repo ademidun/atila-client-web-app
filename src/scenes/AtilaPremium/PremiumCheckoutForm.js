@@ -138,6 +138,27 @@ class PremiumCheckoutForm extends React.Component {
                 </React.Fragment>
             )
         }
+
+        if (userProfile.is_atila_premium) {
+            return (
+                <React.Fragment>
+                    {helmetSeo}
+                    <div className="container mt-5" style={{ height: '80vh'}}>
+                        <div className="card shadow p-3">
+                            <div className="text-center">
+                                <h1>
+                                    You already have a premium account
+                                </h1>
+
+                                <Link to={`/profile/${userProfile.username}/settings`}>
+                                    View Your Account Settings
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                </React.Fragment>
+            )
+        }
         return (
             <React.Fragment>
                 {helmetSeo}
