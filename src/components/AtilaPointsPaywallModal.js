@@ -45,12 +45,11 @@ class AtilaPointsPaywallModal extends React.Component {
         if (pathname === '/blog/atila/what-is-atila') {
             return
         }
+        const { viewCount, viewCountType, showReminder } = getPageViewLimit(pageViews, pathname);
 
-        const { viewCount, viewCountType, isOverLimit } = getPageViewLimit(pageViews, pathname);
-
-        console.log({ viewCount, viewCountType, isOverLimit });
+        console.log({ viewCount, viewCountType, showReminder });
         this.setState({viewCount, viewCountType});
-        this.setState({visible: isOverLimit});
+        this.setState({visible: showReminder});
     };
 
     handleOk = e => {

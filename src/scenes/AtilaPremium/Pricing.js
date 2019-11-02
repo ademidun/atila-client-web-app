@@ -7,6 +7,7 @@ import {faQuestionCircle} from "@fortawesome/free-solid-svg-icons/faQuestionCirc
 import {ATILA_POINTS_EXPLAIN_POPOVER} from "../../components/AtilaPointsPaywallModal";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import {PREMIUM_PRICE_BEFORE_TAX} from "./PremiumCheckoutForm";
+import {MAX_BLOG_PAGE_VIEWS, MAX_ESSAY_PAGE_VIEWS, MAX_SCHOLARSHIP_PAGE_VIEWS} from "../../models/Constants";
 
 function Pricing() {
     // todo generate sitemap dynamically
@@ -35,9 +36,9 @@ function Pricing() {
                                 Sign up
                             </Link>
                             <ul className="pricing-features">
-                                <li className="pricing-features-item">10 scholarship views per month</li>
-                                <li className="pricing-features-item">3 essay views per month</li>
-                                <li className="pricing-features-item">5 blog views per month</li>
+                                <li className="pricing-features-item">{MAX_SCHOLARSHIP_PAGE_VIEWS} scholarship views per month</li>
+                                <li className="pricing-features-item">{MAX_ESSAY_PAGE_VIEWS}  essay views per month</li>
+                                <li className="pricing-features-item">{MAX_BLOG_PAGE_VIEWS}  blog views per month</li>
                                 <li className="pricing-features-item">bi-weekly scholarship newsletter</li>
                             </ul>
                         </div>

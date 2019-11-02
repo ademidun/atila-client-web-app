@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import {toastNotify} from "../models/Utils";
+import {MAX_BLOG_PAGE_VIEWS, MAX_ESSAY_PAGE_VIEWS, MAX_SCHOLARSHIP_PAGE_VIEWS} from "../models/Constants";
 
 export function makeXHRRequestAsPromise (method, url, data) {
     return new Promise(function (resolve, reject) {
@@ -309,7 +310,7 @@ export function transformErrorMessage(error) {
 
 export function getPageViewLimit(pageViews, pathname) {
     let pageViewResult = {
-        isOverLimit: false,
+        showReminder: false,
         viewCount: null,
         viewCountType: null,
     };
@@ -317,9 +318,9 @@ export function getPageViewLimit(pageViews, pathname) {
     const viewTypes = ['blog', 'essay', 'scholarship'];
 
     const viewTypesLimit = {
-        blog: 5,
-        essay: 3,
-        scholarship: 10,
+        blog: MAX_BLOG_PAGE_VIEWS,
+        essay: MAX_ESSAY_PAGE_VIEWS,
+        scholarship: MAX_SCHOLARSHIP_PAGE_VIEWS,
     };
 
     for (const viewType of viewTypes){
@@ -327,13 +328,13 @@ export function getPageViewLimit(pageViews, pathname) {
             if (pageViews.thisMonth[viewType] >= viewTypesLimit[viewType] &&
                 pageViews.thisMonth[viewType] % viewTypesLimit[viewType]  === 0){
                 pageViewResult = {
-                    isOverLimit: true,
+                    showReminder: true,
                     viewCount: pageViews.thisMonth[viewType],
                     viewCountType: viewType,
                 }
             } else {
                 pageViewResult = {
-                    isOverLimit: false,
+                    showReminder: false,
                     viewCount: pageViews.thisMonth[viewType],
                     viewCountType: viewType,
                 }

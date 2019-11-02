@@ -9,6 +9,11 @@ import {UserProfileTest1} from "./UserProfile";
 
 // todo there might be an npm package for this!
 // todo add more emojis to the dictionary
+
+export const MAX_BLOG_PAGE_VIEWS = 5;
+export const MAX_ESSAY_PAGE_VIEWS = 3;
+export const MAX_SCHOLARSHIP_PAGE_VIEWS = 10;
+
 export const emojiDictionary = {
     'aboriginal/first nations': <span role="img" className="text-dark" aria-label="ethnic hand raised emoji">🙋🏽‍♂</span>,
     'asian/east-asian': <span role="img" className="text-dark" aria-label="ethnic hand raised emoji">️🙋🏻 </span>,
