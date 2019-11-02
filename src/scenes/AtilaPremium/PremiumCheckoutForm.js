@@ -111,7 +111,7 @@ class PremiumCheckoutForm extends React.Component {
 
     render() {
 
-        const { userProfile, location: { pathname, search } } = this.props;
+        const { userProfile } = this.props;
         const { cardHolderName, isResponseLoading, isResponseLoadingMessage,
             isPaymentSuccess, isResponseLoadingFinishedText,
             isResponseErrorMessage, isLoggedInModalVisible, isPremiumOnLoad} = this.state;
@@ -129,7 +129,7 @@ class PremiumCheckoutForm extends React.Component {
         };
 
         const helmetSeo = (<HelmetSeo content={seoContent} />);
-        const redirectString = `?redirect=${pathname}${search}`;
+        const redirectString = `?redirect=/premium`;
         const loginToUsePremiumTitle = "You Must be Logged In";
         const loginToUsePremium = (<div className="center-block">
             <Link to={`/login${redirectString}`}>Login</Link>{' '} or {' '}

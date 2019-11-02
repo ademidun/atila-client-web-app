@@ -47,67 +47,69 @@ describe('<PremiumCheckoutForm />', () => {
 
         const wrapper = shallow(
             <MemoryRouter>
-                <PremiumCheckoutForm
-                    userProfile={UserProfileTest1} />
-            </MemoryRouter>
-        );
-        expect(wrapper.html()).toBeTruthy();
-    });
-
-    it('renders coming soon form if not logged in', () => {
-
-        const wrapper = mount(
-            <MemoryRouter>
-                <PremiumCheckoutForm
-                    userProfile={null} />
-            </MemoryRouter>
-        );
-
-        let childWrapper = wrapper.find(SubscribeMailingList);
-        const checkoutTitle = "Atila Premium Coming Soon";
-
-        expect(wrapper.html()).toContain(checkoutTitle);
-        expect(childWrapper.exists()).toBeTruthy();
-    });
-
-    it('renders coming soon form if logged in but not is_atila_admin', () => {
-
-        const wrapper = mount(
-            <MemoryRouter>
-                <PremiumCheckoutForm
-                    userProfile={UserProfileTest1} />
-            </MemoryRouter>
-        );
-
-        let childWrapper = wrapper.find(SubscribeMailingList);
-        const checkoutTitle = "Atila Premium Coming Soon";
-
-        expect(wrapper.html()).toContain(checkoutTitle);
-        expect(childWrapper.exists()).toBeTruthy();
-    });
-
-    it('renders checkout form if logged in and is_atila_admin', () => {
-
-        UserProfileTest1.is_atila_admin = true;
-        const wrapper = mount(
-            <MemoryRouter>
                 <Provider store={store}>
                 <PremiumCheckoutForm
                     userProfile={UserProfileTest1} />
                 </Provider>
             </MemoryRouter>
         );
-        let childWrapper = wrapper.find(SubscribeMailingList);
-        const checkoutTitle = `<h1>Student Premium Checkout</h1>`;
+        expect(wrapper.html()).toBeTruthy();
+    });
+
+    it('renders login content if not logged in', () => {
+
+        const wrapper = mount(
+            <MemoryRouter>
+                <Provider store={store}>
+                <PremiumCheckoutForm
+                    userProfile={null} />
+                </Provider>
+            </MemoryRouter>
+        );
+
+        const checkoutTitle = "<h1>You Must be Logged In</h1>";
 
         expect(wrapper.html()).toContain(checkoutTitle);
-        expect(childWrapper.exists()).toBeFalsy();
+    });
+
+    it('renders checkout form if logged in and not is_atila_premium', () => {
+
+        const wrapper = mount(
+            <MemoryRouter  initialEntries={["/premium"]}>
+                <Provider store={store}>
+                <PremiumCheckoutForm
+                    userProfile={UserProfileTest1} />
+                </Provider>
+            </MemoryRouter>
+        );
+        const checkoutTitle = "<h1>Student Premium Checkout</h1>";
+
+        expect(wrapper.html()).toContain(checkoutTitle);
+    });
+
+    it('renders already checked out if already premium user', () => {
+
+        const premiumUser = {
+            ...UserProfileTest1,
+            is_atila_premium: true,
+        };
+        const wrapper = mount(
+            <MemoryRouter>
+                <Provider store={store}>
+                    <PremiumCheckoutForm
+                        userProfile={premiumUser} />
+                </Provider>
+            </MemoryRouter>
+        );
+
+        const checkoutTitle = "<h1>You already have a premium account</h1>";
+
+        expect(wrapper.html()).toContain(checkoutTitle);
     });
 
     it('renders correct checkout price', () => {
 
 
-        UserProfileTest1.is_atila_admin = true;
         const wrapper = mount(
             <MemoryRouter>
                 <Provider store={store}>
