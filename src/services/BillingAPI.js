@@ -25,6 +25,15 @@ class BillingAPI {
 
         return apiCompletionPromise;
     };
+    static getCustomer = (customerId) => {
+
+        const apiCompletionPromise = request({
+            url: `${BillingAPI.billingMicroserviceUrl}/customer/${customerId}`,
+            method: 'get',
+        });
+
+        return apiCompletionPromise;
+    };
 
 }
 

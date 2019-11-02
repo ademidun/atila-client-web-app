@@ -95,4 +95,5 @@ export const UserProfilePropType = PropTypes.shape({
     last_name: PropTypes.string,
     email: PropTypes.string,
     is_atila_admin: PropTypes.boolean,
+    stripe_customer_id: PropTypes.string,
 });
