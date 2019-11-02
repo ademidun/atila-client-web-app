@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from "react-redux";
-import {Button, Col, Row, Statistic} from "antd";
+import {Button, Col, Row} from "antd";
 import BillingAPI from "../../services/BillingAPI";
 import Loading from "../../components/Loading";
 import moment from "moment";
@@ -26,7 +26,6 @@ class UserProfileSettings extends React.Component {
 
         BillingAPI.getCustomer(userProfile.stripe_customer_id)
             .then(res => {
-                console.log({res});
                 this.setState({customerData: res.data.data});
             })
     };
