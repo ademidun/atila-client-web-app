@@ -29,7 +29,7 @@ class UserProfileSettings extends React.Component {
                 console.log({res});
                 this.setState({customerData: res.data.data});
             })
-    };;
+    };
 
     render () {
 
