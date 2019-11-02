@@ -8,6 +8,7 @@ import {genericItemTransform} from '../../services/utils';
 import Loading from '../../components/Loading';
 import UserProfileEdit from './UserProfileEdit';
 import UserProfileViewSavedScholarships from './UserProfileSavedScholarships';
+import UserProfileSettings from "./UserProfileSettings";
 
 class UserProfileViewTabs extends React.Component {
 
@@ -48,7 +49,7 @@ class UserProfileViewTabs extends React.Component {
 
         if(tab) {
             defaultActiveKey = tab;
-            if (tab ==='edit' && !isProfileEditable) {
+            if (!['essays', 'blogs'].includes(tab) && !isProfileEditable) {
                 defaultActiveKey = 'blogs';
             }
         }
@@ -56,15 +57,21 @@ class UserProfileViewTabs extends React.Component {
 
         return (
             <div className='mt-3'>
-                <Tabs defaultActiveKey={defaultActiveKey} transition={false}>
+                <Tabs defaultActiveKey={defaultActiveKey} transition={false} id="UserProfileViewTabs">
                     {isProfileEditable &&
                     <Tab eventKey='scholarships' title='Saved Scholarships'>
                         <UserProfileViewSavedScholarships />
                     </Tab>
                     }
                     {isProfileEditable &&
-                    <Tab eventKey='edit' title='Edit Profile'>
-                        <UserProfileEdit />
+                        <Tab eventKey='edit' title='Edit Profile'>
+                            <UserProfileEdit />
+                        </Tab>
+                    }
+                    {isProfileEditable &&
+
+                    <Tab eventKey='settings' title='Settings'>
+                        <UserProfileSettings />
                     </Tab>
                     }
                     <Tab eventKey='blogs' title='Blogs'>

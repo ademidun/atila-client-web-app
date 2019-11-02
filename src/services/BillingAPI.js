@@ -25,6 +25,25 @@ class BillingAPI {
 
         return apiCompletionPromise;
     };
+    static getCustomer = (customerId) => {
+
+        const apiCompletionPromise = request({
+            url: `${BillingAPI.billingMicroserviceUrl}/customer/${customerId}`,
+            method: 'get',
+        });
+
+        return apiCompletionPromise;
+    };
+    static cancelSubscription = (customerId, subscriptionId) => {
+
+        const apiCompletionPromise = request({
+            url: `${BillingAPI.billingMicroserviceUrl}/customer/${customerId}/cancel-subscription`,
+            method: 'post',
+            data: {subscriptionId},
+        });
+
+        return apiCompletionPromise;
+    };
 
 }
 

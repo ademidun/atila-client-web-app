@@ -7,6 +7,8 @@ import {scholarshipUserProfileSharedFormConfigs, toastNotify} from "../../models
 import UserProfileAPI from "../../services/UserProfileAPI";
 import {userProfileFormConfig} from "../../models/UserProfile";
 import {transformLocation} from "../../services/utils";
+import {Button, Col, Row} from "antd";
+import {Link} from "react-router-dom";
 
 const userProfileSharedFormConfigs = scholarshipUserProfileSharedFormConfigs
     .map(config => {
@@ -95,6 +97,20 @@ class UserProfileEdit extends React.Component {
         return (
             <div className={className}>
                 {title}
+                <Row style={{textAlign: 'left'}}>
+                    <Col sm={24} md={12}>
+                        <span><strong> Account Type: </strong> Student {userProfile.is_atila_premium ? 'Premium' : 'Free'}</span>
+                        {!userProfile.is_atila_premium &&
+                        <Button style={{ marginTop: 16 }}
+                                className="m-3"
+                                type="primary">
+                            <Link to="/premium">
+                                Go Premium
+                            </Link>
+                        </Button>
+                        }
+                    </Col>
+                </Row>
                 {pageNumber === 1 &&
                 <FormDynamic onUpdateForm={this.updateForm}
                              model={userProfile}
