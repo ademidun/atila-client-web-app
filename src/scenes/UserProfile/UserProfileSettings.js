@@ -38,7 +38,10 @@ class UserProfileSettings extends React.Component {
             .then(res => {
                 this.setState({customerData: res.data.data});
             })
-            .catch()
+            .catch(err=> {
+                console.log({err});
+                this.setState({isResponseErrorMessage: transformErrorMessage(err)});
+            })
             .finally(()=> {
                 this.setState({customerDataIsLoading: false});
             })
@@ -47,29 +50,36 @@ class UserProfileSettings extends React.Component {
     showConfirm = () => {
         Modal.confirm({
             title: 'Are you sure you want to cancel your subscription? 😢',
+            maskClosable: true,
+            autoFocusButton: 'cancel',
             content: <p>
                 You will not be charged again for this subscription. <br/>
                 Your subscription will terminate at the end of the current billing period.
             </p>,
+            cancelText: 'Close',
+            okText: 'Cancel Subscription',
+            okType:'default',
             onOk: this.cancelSubscription,
             onCancel: () => {},
         });
     };
 
     cancelSubscription = () => {
-        const {id, subscriptionData : { subscriptionId }} = this.state.customerData;
-        const { userProfile: user, updateLoggedInUserProfile } = this.props;
+        const {id: customerId, subscriptionData : { id: subscriptionId }} = this.state.customerData;
+        const { userProfile: { user, email }, updateLoggedInUserProfile } = this.props;
 
         this.setState({cancelSubscriptionLoadingText: 'Cancelling Subscription...'});
-        BillingAPI.cancelSubscription(id, subscriptionId)
+        BillingAPI.cancelSubscription(customerId, subscriptionId)
             .then(res=> {
-                console.log({res});
                 UserProfileAPI
                     .patch({is_atila_premium: false }, user)
                     .then(res => {
                         updateLoggedInUserProfile(res.data);
+                        this.setState({cancelSubscriptionLoadingText: null});
                         this.setState({isResponseSuccessMessage:
-                                'Your premium subscription has been cancelled.'});
+                                'Your premium subscription has been cancelled. 😢'});
+                        BillingAPI
+                            .sendBillingError({message: 'User cancelled premium subscription'}, {email});
                     })
                     .catch(err=> {
                         console.log({err});
@@ -94,53 +104,59 @@ class UserProfileSettings extends React.Component {
             return <Loading title="Loading Billing Details..." />
         }
 
-        if (!userProfile.is_atila_premium || !customerData) {
-            return (
-                <div>
-                    <h1 className="my-3">Settings</h1>
-                    <Row style={{textAlign: 'left'}}>
-                        <Col sm={24} md={12}>
-                            <span><strong> Account Type: </strong> Student {userProfile.is_atila_premium ? 'Premium' : 'Free'}</span>
-                            {!userProfile.is_atila_premium &&
-                            <Button style={{ marginTop: 16 }}
-                                    className="m-3"
-                                    type="primary">
-                                <Link to="/premium">
-                                    Go Premium
-                                </Link>
-                            </Button>
-                            }
-                        </Col>
-                    </Row>
-                </div>
-            )
-        }
         const isResponseErrorMessageWithContactLink = (<div>
             {isResponseErrorMessage}
             <br /> <Link to="/contact"> Contact us</Link> if problem continues
         </div>);
 
-        const { subscriptionData: {current_period_start, current_period_end} } = customerData;
+        let customerDataContent = null;
+        if (customerData) {
+            const { subscriptionData: {current_period_start, current_period_end} } = customerData;
 
-        let lastBillDate = new Date(1970, 0, 1).setSeconds(current_period_start);
-        lastBillDate = moment(lastBillDate).format('dddd, MMMM DD, YYYY');
-        let nextBillDate = new Date(1970, 0, 1).setSeconds(current_period_end);
-        nextBillDate = moment(nextBillDate).format('dddd, MMMM DD, YYYY');
+            let lastBillDate = new Date(1970, 0, 1).setSeconds(current_period_start);
+            lastBillDate = moment(lastBillDate).format('dddd, MMMM DD, YYYY');
+            let nextBillDate = new Date(1970, 0, 1).setSeconds(current_period_end);
+            nextBillDate = moment(nextBillDate).format('dddd, MMMM DD, YYYY');
+
+            customerDataContent = (
+                <div>
+                    <p><strong> Account Type: </strong> Student Premium</p>
+                    <Timeline>
+                        <Timeline.Item color="green">Last Bill Date: {lastBillDate}</Timeline.Item>
+                        {userProfile.is_atila_premium &&
+                            <Timeline.Item>Next Bill Date: {nextBillDate}</Timeline.Item>
+                        }
+                    </Timeline>
+                    <Button style={{ marginTop: 16 }}
+                            onClick={this.showConfirm}
+                            className="my-3">
+                        Cancel Subscription
+                    </Button>
+                </div>
+            )
+        }
+        if (!userProfile.is_atila_premium) {
+            customerDataContent =  (
+                <div>
+                    <span><strong> Account Type: </strong> Student Free</span>
+                    <Button style={{ marginTop: 16 }}
+                            className="m-3"
+                            type="primary">
+                        <Link to="/premium">
+                            Go Premium
+                        </Link>
+                    </Button>
+                </div>
+            )
+        }
+
+
         return (
             <div>
                 <h1 className="my-3">Settings</h1>
                 <Row style={{textAlign: 'left'}}>
                     <Col sm={24} md={12}>
-                        <Timeline>
-                            <Timeline.Item color="green">Last Bill Date: {lastBillDate}</Timeline.Item>
-                            <Timeline.Item>Next Bill Date: {nextBillDate}</Timeline.Item>
-                        </Timeline>
-                        <Button style={{ marginTop: 16 }}
-                                onClick={this.showConfirm}
-                                type="danger"
-                                className="my-3">
-                            Cancel Subscription
-                        </Button>
+                        {customerDataContent}
                         <p>Questions about your subscription? <Link to="/contact">Contact us</Link> </p>
                         {isResponseErrorMessage &&
                         <Alert

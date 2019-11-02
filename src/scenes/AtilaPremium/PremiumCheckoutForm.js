@@ -1,7 +1,7 @@
 // CheckoutForm.js
 import React from 'react';
 import {CardElement, injectStripe} from 'react-stripe-elements';
-import {Alert, Button, Col, Result, Row} from "antd";
+import {Alert, Button, Col, Modal, Result, Row} from "antd";
 import {Link, withRouter} from "react-router-dom";
 import BillingAPI from "../../services/BillingAPI";
 import {connect} from "react-redux";
@@ -29,6 +29,9 @@ class PremiumCheckoutForm extends React.Component {
             isResponseErrorMessage: null,
             isResponseLoadingFinishedText: null,
             isPaymentSuccess: false,
+            // have to set it here, otherwise it may get set after user subscribes for an account
+            // then instead of showing 'Payment successful' it showed 'You already have a premium account'
+            isPremiumOnLoad: userProfile && userProfile.is_atila_premium,
         }
     }
 
@@ -94,16 +97,24 @@ class PremiumCheckoutForm extends React.Component {
 
     };
 
+    handleOk = e => {
+        this.setState({
+            isLoggedInModalVisible: false,
+        });
+    };
+
+    handleCancel = e => {
+        this.setState({
+            isLoggedInModalVisible: false,
+        });
+    };
+
     render() {
 
-        const { userProfile } = this.props;
+        const { userProfile, location: { pathname, search } } = this.props;
         const { cardHolderName, isResponseLoading, isResponseLoadingMessage,
             isPaymentSuccess, isResponseLoadingFinishedText,
-            isResponseErrorMessage} = this.state;
-
-        const subscribeText = (<h3>
-            Join the Waiting List. Get Notified When Atila Premium Launches
-        </h3>);
+            isResponseErrorMessage, isLoggedInModalVisible, isPremiumOnLoad} = this.state;
 
         const isResponseErrorMessageWithContactLink = (<div>
             {isResponseErrorMessage}
@@ -118,28 +129,45 @@ class PremiumCheckoutForm extends React.Component {
         };
 
         const helmetSeo = (<HelmetSeo content={seoContent} />);
-        if(!userProfile || !userProfile.is_atila_admin) {
-            return (
-                <React.Fragment>
-                    {helmetSeo}
-                    <div className="container mt-5" style={{ height: '80vh'}}>
-                        <div className="card shadow p-3">
-                            <div className="text-center">
-                                <h1>
-                                    Atila Premium Coming Soon
-                                    <span role="img" aria-label="eyes and clock emoji">👀 🕛</span>
-                                </h1>
+        const redirectString = `?redirect=${pathname}${search}`;
+        const loginToUsePremiumTitle = "You Must be Logged In";
+        const loginToUsePremium = (<div className="center-block">
+            <Link to={`/login${redirectString}`}>Login</Link>{' '} or {' '}
+            <Link to={`/register${redirectString}`}>Register</Link>
+            {' '} to continue with Atila Premium checkout
+        </div>);
 
-                                <SubscribeMailingList subscribeText={subscribeText}
-                                                      btnText="Join Waiting List" />
-                            </div>
-                        </div>
+        if(!userProfile) {
+            return (
+                <div className="container mt-5">
+                    <div className="card shadow p-3">
+                        <Modal
+                            visible={isLoggedInModalVisible}
+                            title={loginToUsePremiumTitle}
+                            onOk={this.handleOk}
+                            onCancel={this.handleCancel}
+                            footer={[
+                                <Button key="back" onClick={this.handleCancel}>
+                                    <Link to={`/login${redirectString}`}>Login</Link>
+                                </Button>,
+                                <Button key="submit" type="primary" onClick={this.handleOk}>
+                                    <Link to={`/register${redirectString}`}>Register</Link>
+                                </Button>,
+                            ]}
+                        >
+                            <Link to={`/login${redirectString}`}>Login</Link>{' '}
+                            or{' '}
+                            <Link to={`/register${redirectString}`}>Register</Link>{' '}
+                            to continue with Atila Premium checkout
+                        </Modal>
+                        <h1>{loginToUsePremiumTitle}</h1>
+                    {loginToUsePremium}
                     </div>
-                </React.Fragment>
+                </div>
             )
         }
 
-        if (userProfile.is_atila_premium) {
+        if (isPremiumOnLoad) {
             return (
                 <React.Fragment>
                     {helmetSeo}

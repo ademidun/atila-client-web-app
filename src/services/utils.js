@@ -304,4 +304,5 @@ export function transformErrorMessage(error) {
             return JSON.stringify(error.response.data)
         }
     }
+    return error.message
 }
