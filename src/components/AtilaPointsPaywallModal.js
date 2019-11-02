@@ -29,6 +29,8 @@ class AtilaPointsPaywallModal extends React.Component {
         this.state = {
             visible: false,
             pageViews,
+            viewCount: null,
+            viewCountType: null,
         }
     }
 
@@ -37,15 +39,23 @@ class AtilaPointsPaywallModal extends React.Component {
     }
 
     showModalUsingPageViews = () => {
-        const { pageViews, location : { pathname } } = this.props;
+        const { pageViews: { thisMonth }, location : { pathname } } = this.props;
 
         if (pathname === '/blog/atila/what-is-atila') {
             return
         }
-
-        if (pageViews.count > 5 && (pageViews.count+1) % 5 === 0) {
-            // todo tk fix hacky way doing this for now because it's firing on
-            // view 71 instead of view 70
+        if (thisMonth.blog >= 5 || thisMonth.essay >= 3 || thisMonth.scholarship >= 10
+        ) {
+            if (thisMonth.blog >= 5) {
+                this.setState({viewCount: thisMonth.blog});
+                this.setState({viewCountType: 'Blog'});
+            } else if(thisMonth.essay >= 3) {
+                this.setState({viewCount: thisMonth.essay});
+                this.setState({viewCountType: 'Essay'});
+            } else if(thisMonth.scholarship >= 10) {
+                this.setState({viewCount: thisMonth.scholarship});
+                this.setState({viewCountType: 'Scholarship'});
+            }
             this.setState({visible: true});
         }
     };
@@ -65,6 +75,7 @@ class AtilaPointsPaywallModal extends React.Component {
     render() {
 
         const { pageViews, userProfile } = this.props;
+        const { viewCount, viewCountType } = this.state;
 
         return (
             <div>
@@ -83,13 +94,17 @@ class AtilaPointsPaywallModal extends React.Component {
                         <Button key="submit"
                                 type="primary"
                                 onClick={this.handleOk}>
-                            <Link to="/scholarship/add">Add A Scholarship</Link>
+                            <Link to="/pricing">Go Premium</Link>
                         </Button>,
                     ]}
                 >
                     <div className="p-3">
-                        <h3>You have viewed {pageViews.count} pages</h3>
-                        <h5>and only have{' '}
+                        <h3>You have viewed {viewCount} {viewCountType} pages this Month</h3>
+                        <h5>
+                            You are on a <Link to="/pricing">
+                            free account
+                        </Link> <br/>
+                            You only have{' '}
                             {parseInt(userProfile.atila_points).toLocaleString()}
                             {' '}
                             <Popover content={ATILA_POINTS_EXPLAIN_POPOVER}
@@ -105,6 +120,9 @@ class AtilaPointsPaywallModal extends React.Component {
                         <h4>ways to keep viewing: </h4>
                         <ol className="font-size-xl">
                             <li className="font-weight-bold">
+                                <Link to="/pricing">Go Premium</Link>
+                            </li>
+                            <li>
                                 <Link to="/scholarship/add">add a scholarship</Link>
                             </li>
                             <li>
