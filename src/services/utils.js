@@ -292,3 +292,16 @@ export function handleError(error) {
 export function scrollToElement(elementSelector) {
     $('html, body').animate({scrollTop: $(elementSelector).offset().top}, 1000);
 }
+
+export function transformErrorMessage(error) {
+
+    if(error.response && error.response.data ) {
+        if(error.response.data.error && error.response.data.error.message) {
+            return error.response.data.error.message
+        } else if (error.response.data.error) {
+            return JSON.stringify(error.response.data.error)
+        } else if(error.response.data) {
+            return JSON.stringify(error.response.data)
+        }
+    }
+}

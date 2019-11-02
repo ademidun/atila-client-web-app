@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from "react-redux";
-import {Button, Col, Row, Timeline} from "antd";
+import {Button, Col, Row, Timeline, Modal, Alert} from "antd";
 import BillingAPI from "../../services/BillingAPI";
 import Loading from "../../components/Loading";
 import moment from "moment";
 import {Link} from "react-router-dom";
+import {transformErrorMessage} from "../../services/utils";
 
 
 class UserProfileSettings extends React.Component {
@@ -15,6 +16,7 @@ class UserProfileSettings extends React.Component {
 
         this.state = {
             customerData: null,
+            isResponseErrorMessage: null,
         }
     }
 
@@ -31,13 +33,43 @@ class UserProfileSettings extends React.Component {
             })
     };
 
+    showConfirm = () => {
+        Modal.confirm({
+            title: 'Are you sure you want to cancel your subscription? 😢',
+            content: <p>
+                You will not be charged again for this subscription. <br/>
+                Your subscription will terminate at the end of the current billing period.
+            </p>,
+            onOk: this.cancelSubscription,
+            onCancel: () => {},
+        });
+    };
+
+    cancelSubscription = () => {
+        const {id, subscriptionData : { subscriptionId }} = this.state.customerData;
+
+        BillingAPI.cancelSubscription(id, 'sub_G6LWZY1viFdxPQ')
+            .then(res=> {
+                console.log({res})
+            })
+            .catch(err=> {
+                console.log({err});
+
+                this.setState({isResponseErrorMessage: transformErrorMessage(err)})
+            })
+    };
+
     render () {
 
-        const { customerData } = this.state;
+        const { customerData, isResponseErrorMessage } = this.state;
 
         if (!customerData) {
             return <Loading title="Loading Billing Details..." />
         }
+        const isResponseErrorMessageWithContactLink = (<div>
+            {isResponseErrorMessage}
+            <br /> <Link to="/contact"> Contact us</Link> if problem continues
+        </div>);
 
         const { subscriptionData: {current_period_start, current_period_end} } = customerData;
 
@@ -54,10 +86,19 @@ class UserProfileSettings extends React.Component {
                             <Timeline.Item color="green">Last Bill Date: {lastBillDate}</Timeline.Item>
                             <Timeline.Item>Next Bill Date: {nextBillDate}</Timeline.Item>
                         </Timeline>
-                        <Button style={{ marginTop: 16 }} type="danger" className="mb-3">
+                        <Button style={{ marginTop: 16 }}
+                                onClick={this.showConfirm}
+                                type="danger"
+                                className="mb-3">
                             Cancel Subscription
                         </Button>
                         <p>Questions about your subscription? <Link to="/contact">Contact us</Link> </p>
+                        {isResponseErrorMessage &&
+                        <Alert
+                            type="error"
+                            message={isResponseErrorMessageWithContactLink}
+                        />
+                        }
                     </Col>
                 </Row>
             </div>
