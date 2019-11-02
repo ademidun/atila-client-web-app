@@ -7,6 +7,8 @@ import Loading from "../../components/Loading";
 import moment from "moment";
 import {Link} from "react-router-dom";
 import {transformErrorMessage} from "../../services/utils";
+import UserProfileAPI from "../../services/UserProfileAPI";
+import {updateLoggedInUserProfile} from "../../redux/actions/user";
 
 
 class UserProfileSettings extends React.Component {
@@ -19,6 +21,7 @@ class UserProfileSettings extends React.Component {
             customerDataIsLoading: null,
             isResponseErrorMessage: null,
             isResponseSuccessMessage: null,
+            cancelSubscriptionLoadingText: null,
         }
     }
 
@@ -55,22 +58,36 @@ class UserProfileSettings extends React.Component {
 
     cancelSubscription = () => {
         const {id, subscriptionData : { subscriptionId }} = this.state.customerData;
+        const { userProfile: user, updateLoggedInUserProfile } = this.props;
 
-        BillingAPI.cancelSubscription(id, 'sub_G6LWZY1viFdxPQ')
+        this.setState({cancelSubscriptionLoadingText: 'Cancelling Subscription...'});
+        BillingAPI.cancelSubscription(id, subscriptionId)
             .then(res=> {
                 console.log({res});
-                this.setState({isResponseSuccessMessage: 'Your premium subscription has been cancelled.'});
+                UserProfileAPI
+                    .patch({is_atila_premium: false }, user)
+                    .then(res => {
+                        updateLoggedInUserProfile(res.data);
+                        this.setState({isResponseSuccessMessage:
+                                'Your premium subscription has been cancelled.'});
+                    })
+                    .catch(err=> {
+                        console.log({err});
+                        this.setState({cancelSubscriptionLoadingText: null});
+                        this.setState({isResponseErrorMessage: transformErrorMessage(err)});
+                    })
             })
             .catch(err=> {
                 console.log({err});
-
+                this.setState({cancelSubscriptionLoadingText: null});
                 this.setState({isResponseErrorMessage: transformErrorMessage(err)});
             })
     };
 
     render () {
 
-        const { customerData, isResponseErrorMessage, isResponseSuccessMessage, customerDataIsLoading } = this.state;
+        const { customerData, isResponseErrorMessage,
+            isResponseSuccessMessage, customerDataIsLoading, cancelSubscriptionLoadingText } = this.state;
         const { userProfile } = this.props;
 
         if (customerDataIsLoading) {
@@ -137,12 +154,19 @@ class UserProfileSettings extends React.Component {
                             message={isResponseSuccessMessage}
                         />
                         }
+                        {
+                            cancelSubscriptionLoadingText &&
+                            <Loading title={cancelSubscriptionLoadingText} />
+                        }
                     </Col>
                 </Row>
             </div>
         );
     }
 }
+const mapDispatchToProps = {
+    updateLoggedInUserProfile
+};
 const mapStateToProps = state => {
     return { userProfile: state.data.user.loggedInUserProfile };
 };
@@ -154,7 +178,8 @@ UserProfileSettings.defaultProps = {
 
 UserProfileSettings.propTypes = {
     // redux
-    userProfile: PropTypes.shape({}).isRequired,
+    userProfile: PropTypes.shape({}),
+    updateLoggedInUserProfile: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(UserProfileSettings);
+export default connect(mapStateToProps, mapDispatchToProps)(UserProfileSettings);
