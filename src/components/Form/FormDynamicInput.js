@@ -5,6 +5,20 @@ import AutoComplete from "../AutoComplete";
 import PropTypes from "prop-types";
 import {InputConfigPropType} from "../../models/Utils";
 import LocationSearchInput from "../LocationSearchInput/LocationSearchInput";
+import CKEditor from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+
+
+
+const editorChange = ( event, editor, name, updateForm ) => {
+    const newEvent = {
+        target: {
+            name: name,
+            value: editor.getData()
+        }
+    };
+    updateForm(newEvent);
+};
 
 function FormDynamicInput({model, onUpdateForm, inputConfig}) {
 
@@ -112,6 +126,18 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
                                          value={valueDisplayResult}
                                          keyName={keyName}
                                          onSelected={onUpdateForm} />
+                </React.Fragment>
+            );
+            break;
+        case 'html_editor':
+
+            inputForm = (
+                <React.Fragment>
+                    <CKEditor
+                        editor={ClassicEditor}
+                        data={model[keyName]}
+                        onChange={ (event, editor) => editorChange(event, editor, keyName, onUpdateForm) }
+                    />
                 </React.Fragment>
             );
             break;

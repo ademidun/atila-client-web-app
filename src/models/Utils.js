@@ -115,7 +115,7 @@ export const scholarshipUserProfileSharedFormConfigs = [
     },
     {
         keyName: 'criteria_info',
-        type: 'textarea',
+        type: 'html_editor',
         placeholder: 'Additional Information',
         html: () => (<label htmlFor="description">
             Everything else you want people to know about the scholarship, put it here
