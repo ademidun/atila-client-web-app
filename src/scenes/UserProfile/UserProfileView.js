@@ -75,11 +75,7 @@ class UserProfileView extends React.Component {
                             src={userProfileView.profile_pic_url} />
                         </div>
                         <div className="col-md-8 col-sm-12">
-                                <h1>{ userProfileView.first_name } { userProfileView.last_name }</h1>
-                                <h3 className="text-muted">{ userProfileView.title}
-                                    { userProfileView.post_secondary_school && <br/> }
-                                    { userProfileView.post_secondary_school}
-                                </h3>
+                                <h1>{ userProfileView.first_name }</h1>
                             {userProfileView.public_metadata && userProfileView.public_metadata.profile_link_url &&
                             <a href={userProfileView.public_metadata.profile_link_url}
                                target="_blank"
