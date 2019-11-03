@@ -132,10 +132,10 @@ class ScholarshipDetail extends React.Component {
                 {pageViews &&
                 <AtilaPointsPaywallModal pageViews={pageViews} />
                 }
-                <div className="container mt-5">
+                <div className="content-detail container mt-5">
                     <div className="row">
                         <div className="col-12">
-                            <h1 className="serif-font">{name}</h1>
+                            <h1>{name}</h1>
                             <img
                                 style={{ maxHeight: '300px', width: 'auto'}}
                                 src={img_url}
@@ -150,13 +150,13 @@ class ScholarshipDetail extends React.Component {
                                 <React.Fragment>
                                     <a href={scholarship_url} target="_blank" rel="noopener noreferrer">
                                         Visit Scholarship Website
-                                    </a> <br/> <br/>
+                                    </a> <br/>
                                 </React.Fragment>}
                                 {form_url &&
                                 <React.Fragment>
                                     <a href={form_url} target="_blank" rel="noopener noreferrer">
                                         View Scholarship Application
-                                    </a> <br/> <br/>
+                                    </a> <br/>
                                 </React.Fragment>}
                                 <Link to={`/scholarship/edit/${slug}`}>
                                     Edit Scholarship
@@ -189,14 +189,17 @@ class ScholarshipDetail extends React.Component {
                                 </p>
                                 <ScholarshipShareSaveButtons scholarship={scholarship} />
                                 <hr />
-                                <h3>Description</h3>
-                                <p className="my-3 content-detail">{description}</p>
-
-                                <ScholarshipExtraCriteria scholarship={scholarship} />
+                                <div className="my-3">
+                                    <h3>Description</h3>
+                                    <p>
+                                        {description}
+                                    </p>
+                                    <ScholarshipExtraCriteria scholarship={scholarship} />
+                                </div>
 
                                 {/*todo find a way to secure against XSS: https://stackoverflow.com/a/19277723*/}
                                 <hr />
-                                <div className="content-detail" dangerouslySetInnerHTML={{__html: criteria_info}} />
+                                <div dangerouslySetInnerHTML={{__html: criteria_info}} />
                             </div>
                             <RelatedItems
                                 className="col-md-4"

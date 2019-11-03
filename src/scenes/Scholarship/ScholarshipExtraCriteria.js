@@ -22,7 +22,7 @@ function ScholarshipExtraCriteria({scholarship, userProfile}) {
                 .map(criteria => (
                 <React.Fragment key={criteria}>
                     <p>
-                        <strong>{prettifyKeys(criteria)} {criteria === 'citizenship' ? 'or permanent residency': ''}:</strong>
+                        <strong>{prettifyKeys(criteria)}{criteria === 'citizenship' ? ' or permanent residency': ''}:{' '}</strong>
                         {JSON.stringify(scholarship[criteria], null, ' ')}
                     </p>
                     {userProfile &&
@@ -45,13 +45,14 @@ function ScholarshipExtraCriteria({scholarship, userProfile}) {
                 <React.Fragment key={locationType}>
 
                     {scholarship[locationType].map((locationString, index) => (
-                        <React.Fragment key={locationString}>
+                        <p key={locationString}>
+
                             {index===0 && <strong>{prettifyKeys(locationType)}: {' '}</strong>}
                             {' '}
                             {locationString.name}
                             {emojiDictionary[locationString.name.toLowerCase()]}
                             {index < scholarship[locationType].length-1 ? ', ' : null }
-                        </React.Fragment>
+                        </p>
                     ))}
                     {scholarship[locationType].length > 0 && <br />}
                 </React.Fragment>

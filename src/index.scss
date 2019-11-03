@@ -111,3 +111,17 @@ label {
   background-color: transparent;
   border: 1px solid transparent;
 }
+
+.content-detail {
+  h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    top: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+    line-height: 1.5;
+  }
+  font-family: Palatino,Georgia,Cambria,"Times New Roman",Times,serif;
+  p, a {
+    line-height: 2.5rem;
+    font-size: 20px;
+  }
+}
