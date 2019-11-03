@@ -2,7 +2,7 @@ import React from 'react';
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import {Link} from "react-router-dom";
 import moment from "moment";
-import {formatCurrency, genericItemTransform} from "../../services/utils";
+import {formatCurrency, genericItemTransform, guestPageViewsIncrement} from "../../services/utils";
 import Loading from "../../components/Loading";
 import RelatedItems from "../../components/RelatedItems";
 import {connect} from "react-redux";
@@ -37,7 +37,8 @@ class ScholarshipDetail extends React.Component {
             return {
                 ...state,
                 prevSlug: slug,
-                scholarship: null
+                scholarship: null,
+                pageViews: null,
             };
         }
 
@@ -76,6 +77,9 @@ class ScholarshipDetail extends React.Component {
                                     });
                             })
                     }
+                } else {
+                    const guestPageViews = guestPageViewsIncrement();
+                    this.setState({pageViews: {guestPageViews}});
                 }
                 UserProfileAPI.get(scholarship.owner)
                     .then(res => {

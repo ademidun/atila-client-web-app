@@ -8,7 +8,7 @@ import RelatedItems from "../RelatedItems";
 import {connect} from "react-redux";
 import AnalyticsService from "../../services/AnalyticsService";
 import HelmetSeo from "../HelmetSeo";
-import {genericItemTransform, scrollToElement, toTitleCase} from "../../services/utils";
+import {genericItemTransform, guestPageViewsIncrement, scrollToElement, toTitleCase} from "../../services/utils";
 import {Button} from "antd";
 import AtilaPointsPaywallModal from "../AtilaPointsPaywallModal";
 
@@ -78,6 +78,9 @@ class ContentDetail extends React.Component {
                                     this.setState({pageViews});
                                 });
                         })
+                } else {
+                    const guestPageViews = guestPageViewsIncrement();
+                    this.setState({pageViews: {guestPageViews}});
                 }
 
             })

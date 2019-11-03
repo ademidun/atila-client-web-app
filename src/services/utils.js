@@ -323,7 +323,7 @@ export function getPageViewLimit(pageViews, pathname) {
         scholarship: MAX_SCHOLARSHIP_PAGE_VIEWS,
     };
 
-    const  viewType = null;
+    let  viewType = null;
     for (viewType of viewTypes){
         if (pathname.includes(`/${viewType}/`)) {
             if (pageViews.thisMonth[viewType] >= viewTypesLimit[viewType] &&
@@ -344,4 +344,18 @@ export function getPageViewLimit(pageViews, pathname) {
         }
     }
     return pageViewResult;
+}
+
+export function guestPageViewsIncrement() {
+
+    let guestPageViews = localStorage.getItem('guestPageViews');
+
+    if (guestPageViews && !isNaN(guestPageViews)) {
+        guestPageViews = parseInt(guestPageViews) + 1
+    } else {
+        guestPageViews = 1;
+    }
+    localStorage.setItem('guestPageViews', guestPageViews);
+
+    return guestPageViews;
 }
