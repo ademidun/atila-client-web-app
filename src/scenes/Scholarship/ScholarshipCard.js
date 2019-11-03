@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 import moment from "moment";
 import {formatCurrency} from "../../services/utils";
 import ScholarshipShareSaveButtons from "./ScholarshipShareSaveButtons";
+import ScholarshipExtraCriteria from "./ScholarshipExtraCriteria";
 
 class ScholarshipCard extends React.Component {
 
@@ -58,6 +59,9 @@ class ScholarshipCard extends React.Component {
                                 </small>
                             </p>
                             <p className="card-text">{descriptionText}</p>
+                            {showPreview &&
+                            <ScholarshipExtraCriteria scholarship={scholarship} />
+                            }
                             <button className="btn btn-link" onClick={this.togglePreview} >
                                 {showPreview ? 'Show Less' : 'Show More'}
                             </button>

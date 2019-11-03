@@ -11,6 +11,7 @@ import ScholarshipShareSaveButtons from "./ScholarshipShareSaveButtons";
 import HelmetSeo from "../../components/HelmetSeo";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import AtilaPointsPaywallModal from "../../components/AtilaPointsPaywallModal";
+import ScholarshipExtraCriteria from "./ScholarshipExtraCriteria";
 
 class ScholarshipDetail extends React.Component {
 
@@ -146,7 +147,6 @@ class ScholarshipDetail extends React.Component {
 
                         <div className="row">
                             <div className="col-md-8">
-                                <small>#{id}</small>
                                 <br />
                                 {scholarship_url &&
                                 <React.Fragment>
@@ -184,20 +184,19 @@ class ScholarshipDetail extends React.Component {
                                 <button onClick={this.goBack} className="btn btn-link pl-0">
                                     Go Back ←
                                 </button>
-                                <p>
-                                    <small className="text-muted">
-                                        Deadline: { deadlineString }
-                                    </small>
-                                </p>
-                                <p>
-                                    <small className="text-muted">
-                                        Amount: {fundingString}
-                                    </small>
+                                <p className="font-weight-bold">
+                                    Deadline: { deadlineString }
+                                    <br/>
+                                    Amount: {fundingString}
                                 </p>
                                 <ScholarshipShareSaveButtons scholarship={scholarship} />
-                                <p>{description}</p>
+                                <hr />
+                                <p className="my-3">{description}</p>
+
+                                <ScholarshipExtraCriteria scholarship={scholarship} />
 
                                 {/*todo find a way to secure against XSS: https://stackoverflow.com/a/19277723*/}
+                                <hr />
                                 <div className="content-detail" dangerouslySetInnerHTML={{__html: criteria_info}} />
                             </div>
                             <RelatedItems
