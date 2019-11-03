@@ -126,7 +126,7 @@ class ContentAddEdit extends React.Component {
                     <Link to={`/${contentType.toLowerCase()}/${username}/${slug}`}>
                         {content.title}
                 </Link></p>);
-                toastNotify(successMessage);
+                toastNotify(successMessage, 'info', {position: 'bottom-right'});
             })
             .catch(err=> {
                 console.log({err});

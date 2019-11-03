@@ -260,7 +260,7 @@ class ScholarshipAddEdit extends React.Component{
                     </Link>
                 </p>);
 
-                toastNotify(successMessage);
+                toastNotify(successMessage, 'info', {position: 'bottom-right'});
                 this.setState({ scholarship: savedScholarship });
             })
             .catch(err=> {
