@@ -1,5 +1,5 @@
 import React from "react";
-import {prettifyKeys, toTitleCase} from "../../services/utils";
+import {prettifyKeys} from "../../services/utils";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {AUTOCOMPLETE_KEY_LIST} from "../../models/ConstantsForm";

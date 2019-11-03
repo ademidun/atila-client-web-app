@@ -1,17 +1,13 @@
 import React from "react";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import Loading from "../../components/Loading";
-import {Button, Table, Tag} from "antd";
+import {Button, Table} from "antd";
 import {Link} from "react-router-dom";
-import moment from "moment";
 import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import {connect} from "react-redux";
 import ScholarshipDeadlineWithTags from "../../components/ScholarshipDeadlineWithTags";
 
-
-
 const todayDate = new Date().toISOString();
-const todayMoment = moment(Date.now());
 
 class UserProfileViewSavedScholarships extends React.Component {
 

@@ -1,7 +1,6 @@
 import React from 'react';
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import {Link} from "react-router-dom";
-import moment from "moment";
 import {formatCurrency, genericItemTransform, guestPageViewsIncrement} from "../../services/utils";
 import Loading from "../../components/Loading";
 import RelatedItems from "../../components/RelatedItems";

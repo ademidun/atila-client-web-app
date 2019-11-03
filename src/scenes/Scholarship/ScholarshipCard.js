@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from "react-router-dom";
-import moment from "moment";
 import {formatCurrency} from "../../services/utils";
 import ScholarshipShareSaveButtons from "./ScholarshipShareSaveButtons";
 import ScholarshipExtraCriteria from "./ScholarshipExtraCriteria";
@@ -36,7 +35,6 @@ class ScholarshipCard extends React.Component {
             descriptionText +='...'
         }
 
-        const deadlineString = moment(deadline).format('MMMM DD, YYYY');
         const fundingString = formatCurrency(Number.parseInt(funding_amount), true);
         return (
             <div className={`${className} card shadow my-4`}>
