@@ -6,6 +6,7 @@ import {Link} from "react-router-dom";
 import moment from "moment";
 import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import {connect} from "react-redux";
+import ScholarshipDeadlineWithTags from "../../components/ScholarshipDeadlineWithTags";
 
 
 
@@ -114,38 +115,7 @@ function SavedScholarshipsTable({ scholarships, removeSavedScholarship }){
             title: 'Deadline',
             key: 'deadline',
             dataIndex: 'deadline',
-            render: deadline => {
-                let tag = null;
-                let color = null;
-                const deadlineMoment = moment(deadline);
-                const daysFromDeadline = deadlineMoment.diff(todayMoment, 'days');
-                const deadlineString = moment(deadline).format('dddd, MMMM DD, YYYY');
-
-                if (daysFromDeadline < 0) {
-                    color = 'volcano';
-                    tag = 'Expired'
-                } else {
-                    if (daysFromDeadline < 7) {
-                        color = 'green';
-                    } else {
-                        color = 'geekblue';
-                    }
-                    tag = `due ${moment(deadline).fromNow()}`;
-                }
-
-                if(!tag) {
-                    return null;
-                }
-                return (
-                    <React.Fragment>
-                        {deadlineString} <br />
-                        {tag &&
-                        <Tag color={color} key={tag}>
-                            {tag.toUpperCase()}
-                        </Tag>}
-                    </React.Fragment>
-                );
-            },
+            render: deadline => (<ScholarshipDeadlineWithTags deadline={deadline} />),
         },
         {
             title: 'Remove',

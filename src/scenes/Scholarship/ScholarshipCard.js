@@ -5,6 +5,7 @@ import moment from "moment";
 import {formatCurrency} from "../../services/utils";
 import ScholarshipShareSaveButtons from "./ScholarshipShareSaveButtons";
 import ScholarshipExtraCriteria from "./ScholarshipExtraCriteria";
+import ScholarshipDeadlineWithTags from "../../components/ScholarshipDeadlineWithTags";
 
 class ScholarshipCard extends React.Component {
 
@@ -49,14 +50,9 @@ class ScholarshipCard extends React.Component {
                                 <h1 className="card-title text-left serif-font">{name}</h1>
                             </Link>
                             <p className="card-text">
-                                <small className="text-muted">
-                                    Deadline: { deadlineString }
-                                </small>
-                            </p>
-                            <p className="card-text">
-                                <small className="text-muted">
-                                    Amount: {fundingString}
-                                </small>
+                                Deadline: <ScholarshipDeadlineWithTags deadline={deadline } />
+                                <br/>
+                                Amount: {fundingString}
                             </p>
                             <p className="card-text">{descriptionText}</p>
                             {showPreview &&

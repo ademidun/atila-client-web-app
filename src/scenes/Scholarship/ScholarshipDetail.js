@@ -12,6 +12,7 @@ import HelmetSeo from "../../components/HelmetSeo";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import AtilaPointsPaywallModal from "../../components/AtilaPointsPaywallModal";
 import ScholarshipExtraCriteria from "./ScholarshipExtraCriteria";
+import ScholarshipDeadlineWithTags from "../../components/ScholarshipDeadlineWithTags";
 
 class ScholarshipDetail extends React.Component {
 
@@ -123,8 +124,6 @@ class ScholarshipDetail extends React.Component {
                     title={'Loading Scholarships..'} />)
         }
         const { id, name, description, deadline, funding_amount, slug, img_url, criteria_info, scholarship_url, application_form_url } = scholarship;
-
-        const deadlineString = moment(deadline).format('MMMM DD, YYYY');
         const fundingString = formatCurrency(Number.parseInt(funding_amount), true);
 
         return (
@@ -185,7 +184,7 @@ class ScholarshipDetail extends React.Component {
                                     Go Back ←
                                 </button>
                                 <p className="font-weight-bold">
-                                    Deadline: { deadlineString }
+                                    Deadline: <ScholarshipDeadlineWithTags deadline={deadline } />
                                     <br/>
                                     Amount: {fundingString}
                                 </p>
