@@ -123,7 +123,7 @@ class ScholarshipDetail extends React.Component {
                     isLoading={isLoadingScholarship}
                     title={'Loading Scholarships..'} />)
         }
-        const { id, name, description, deadline, funding_amount, slug, img_url, criteria_info, scholarship_url, application_form_url } = scholarship;
+        const { id, name, description, deadline, funding_amount, slug, img_url, criteria_info, scholarship_url, form_url } = scholarship;
         const fundingString = formatCurrency(Number.parseInt(funding_amount), true);
 
         return (
@@ -151,18 +151,18 @@ class ScholarshipDetail extends React.Component {
                                 <React.Fragment>
                                     <a href={scholarship_url} target="_blank" rel="noopener noreferrer">
                                         Visit Scholarship Website
-                                    </a> <br/>
+                                    </a> <br/> <br/>
                                 </React.Fragment>}
-                                {application_form_url &&
+                                {form_url &&
                                 <React.Fragment>
-                                    <a href={application_form_url} target="_blank" rel="noopener noreferrer">
+                                    <a href={form_url} target="_blank" rel="noopener noreferrer">
                                         View Scholarship Application
-                                    </a> <br/>
+                                    </a> <br/> <br/>
                                 </React.Fragment>}
                                 <Link to={`/scholarship/edit/${slug}`}>
                                     Edit Scholarship
                                 </Link>
-                                <br/>
+                                <br/><br/>
                                 {
                                     scholarshipUserProfile &&
                                     <React.Fragment>

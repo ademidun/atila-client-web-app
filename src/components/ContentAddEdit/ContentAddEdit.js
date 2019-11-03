@@ -87,15 +87,6 @@ class ContentAddEdit extends React.Component {
         this.setState({content});
     };
 
-    editorInit = editor => {
-    };
-
-    editorBlur = ( event, editor ) => {
-    };
-
-    editorFocus = ( event, editor ) => {
-    };
-
     submitForm = (event) => {
         if(event){
             event.preventDefault();
