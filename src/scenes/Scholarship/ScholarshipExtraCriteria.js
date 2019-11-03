@@ -1,13 +1,16 @@
 import React from "react";
-import {prettifyKeys} from "../../services/utils";
+import {prettifyKeys, toTitleCase} from "../../services/utils";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {AUTOCOMPLETE_KEY_LIST} from "../../models/ConstantsForm";
 import {Link} from "react-router-dom";
+import {emojiDictionary} from "../../models/Constants";
 
 function ScholarshipExtraCriteria({scholarship, userProfile}) {
 
-    if (!AUTOCOMPLETE_KEY_LIST.some(key => (scholarship[key] && scholarship[key].length>0))) {
+    if (!AUTOCOMPLETE_KEY_LIST.some(key => (scholarship[key] && scholarship[key].length>0)) &&
+        !['city', 'province', 'country'].some(key => (scholarship[key] && scholarship[key].length>0))
+    ) {
         return null;
     }
 
@@ -15,38 +18,52 @@ function ScholarshipExtraCriteria({scholarship, userProfile}) {
         <div className="other-criteria">
             <h3>Other Criteria</h3>
             {AUTOCOMPLETE_KEY_LIST
-                .filter(key=>(scholarship[key] && scholarship[key].length>0))
-                .map(key => (
-                <React.Fragment>
+                .filter(criteria=>(scholarship[criteria] && scholarship[criteria].length>0))
+                .map(criteria => (
+                <React.Fragment key={criteria}>
                     <p>
-                        <strong>{prettifyKeys(key)} {key === 'citizenship' ? 'or permanent residency': ''}:</strong>
-                        {scholarship[key]}
+                        <strong>{prettifyKeys(criteria)} {criteria === 'citizenship' ? 'or permanent residency': ''}:</strong>
+                        {JSON.stringify(scholarship[criteria], null, ' ')}
                     </p>
                     {userProfile &&
                     <p>
-                        Your {prettifyKeys(key)}: JSON.stringify(userProfile[key])
+                        <strong>Your {prettifyKeys(criteria)}:{' '}</strong>
+                        {JSON.stringify(userProfile[criteria], null, ' ')}
                     </p>
                     }
                     {
-                        userProfile && userProfile[key] && userProfile[key].length===0 &&
+                        userProfile && userProfile[criteria] && userProfile[criteria].length===0 &&
                         <p>
-                            Don't qualify for scholarships of these {prettifyKeys(key)}?
+                            Don't qualify for scholarships of these {prettifyKeys(criteria)}?
                             <Link to={`/profile/${userProfile.username}/edit`}>
                                 Edit Profile</Link> to see correct scholarships
                         </p>
                     }
-                    {['city', 'province', 'country'].map(locationType => (
-                        <React.Fragment>
-                            {scholarship[locationType].map(locationString => (
-                                locationString.name
-                            ))}
-                        </React.Fragment>
-                    ))}
-
-                    {scholarship.female_only && <p><strong>Female Only</strong></p>}
-                    {scholarship.international_students_eligible && <p><strong>International Students Eligible</strong></p>}
                 </React.Fragment>
             ))}
+            {['city', 'province', 'country'].map(locationType => (
+                <React.Fragment key={locationType}>
+
+                    {scholarship[locationType].map((locationString, index) => (
+                        <React.Fragment key={locationString}>
+                            {index===0 && <strong>{prettifyKeys(locationType)}: {' '}</strong>}
+                            {' '}
+                            {locationString.name}
+                            {emojiDictionary[locationString.name.toLowerCase()]}
+                            {index < scholarship[locationType].length-1 ? ', ' : null }
+                        </React.Fragment>
+                    ))}
+                    {scholarship[locationType].length > 0 && <br />}
+                </React.Fragment>
+            ))}
+
+            {scholarship.female_only && <p><strong>Female Only <span role="img" aria-label="female emoji">
+                🙎🏾
+            </span>
+            </strong></p>}
+            {scholarship.international_students_eligible && <p><strong>International Students Eligible
+                <span role="img" aria-label="globe emoji">🌏</span>
+            </strong></p>}
         </div>
     )
 }
