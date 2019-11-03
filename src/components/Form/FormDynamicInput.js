@@ -6,8 +6,7 @@ import PropTypes from "prop-types";
 import {InputConfigPropType} from "../../models/Utils";
 import LocationSearchInput from "../LocationSearchInput/LocationSearchInput";
 import CKEditor from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-
+import InlineEditor from "@ckeditor/ckeditor5-build-inline";
 
 
 const editorChange = ( event, editor, name, updateForm ) => {
@@ -134,7 +133,7 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
             inputForm = (
                 <React.Fragment>
                     <CKEditor
-                        editor={ClassicEditor}
+                        editor={InlineEditor}
                         data={model[keyName]}
                         onChange={ (event, editor) => editorChange(event, editor, keyName, onUpdateForm) }
                     />

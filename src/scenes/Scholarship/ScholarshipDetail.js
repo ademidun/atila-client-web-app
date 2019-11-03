@@ -189,7 +189,8 @@ class ScholarshipDetail extends React.Component {
                                 </p>
                                 <ScholarshipShareSaveButtons scholarship={scholarship} />
                                 <hr />
-                                <p className="my-3">{description}</p>
+                                <h3>Description</h3>
+                                <p className="my-3 content-detail">{description}</p>
 
                                 <ScholarshipExtraCriteria scholarship={scholarship} />
 
