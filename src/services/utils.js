@@ -323,7 +323,8 @@ export function getPageViewLimit(pageViews, pathname) {
         scholarship: MAX_SCHOLARSHIP_PAGE_VIEWS,
     };
 
-    for (const viewType of viewTypes){
+    const  viewType = null;
+    for (viewType of viewTypes){
         if (pathname.includes(`/${viewType}/`)) {
             if (pageViews.thisMonth[viewType] >= viewTypesLimit[viewType] &&
                 pageViews.thisMonth[viewType] % viewTypesLimit[viewType]  === 0){
@@ -339,6 +340,7 @@ export function getPageViewLimit(pageViews, pathname) {
                     viewCountType: viewType,
                 }
             }
+            break;
         }
     }
     return pageViewResult;

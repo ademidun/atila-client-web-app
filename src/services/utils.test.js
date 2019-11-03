@@ -30,18 +30,6 @@ const pageViewsRemindEssay = {
         blog: 13
     }
 };
-const pageViewsNoRemind = {
-    count: 123,
-    scholarship: 42,
-    essay: 30,
-    blog: 51,
-    is_owner: 66,
-    thisMonth: {
-        scholarship: 0,
-        essay: 11,
-        blog: 13
-    }
-};
 
 const essaySlug = '/essay/tomiwa/why-i-write';
 const scholarshipSlug = '/scholarship/interstellar-scholarship-fund';
