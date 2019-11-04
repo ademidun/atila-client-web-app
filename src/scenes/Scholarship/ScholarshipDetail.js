@@ -1,7 +1,6 @@
 import React from 'react';
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import {Link} from "react-router-dom";
-import moment from "moment";
 import {formatCurrency, genericItemTransform, guestPageViewsIncrement} from "../../services/utils";
 import Loading from "../../components/Loading";
 import RelatedItems from "../../components/RelatedItems";
@@ -11,6 +10,10 @@ import ScholarshipShareSaveButtons from "./ScholarshipShareSaveButtons";
 import HelmetSeo from "../../components/HelmetSeo";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import AtilaPointsPaywallModal from "../../components/AtilaPointsPaywallModal";
+import ScholarshipExtraCriteria from "./ScholarshipExtraCriteria";
+import ScholarshipDeadlineWithTags from "../../components/ScholarshipDeadlineWithTags";
+import {Alert, message} from 'antd';
+
 
 class ScholarshipDetail extends React.Component {
 
@@ -63,6 +66,13 @@ class ScholarshipDetail extends React.Component {
             .then(res => {
                 const scholarship = res.data;
                 this.setState({ scholarship });
+
+                const { is_not_available  } = scholarship;
+
+                if (is_not_available) {
+                    const notAvailableText = (<p className="text-danger">Scholarship is no longer available</p>);
+                    message.error(notAvailableText, 3);
+                }
 
                 if(userProfile) {
                     if(userProfile) {
@@ -121,9 +131,8 @@ class ScholarshipDetail extends React.Component {
                     isLoading={isLoadingScholarship}
                     title={'Loading Scholarships..'} />)
         }
-        const { id, name, description, deadline, funding_amount, slug, img_url, criteria_info, scholarship_url, application_form_url } = scholarship;
-
-        const deadlineString = moment(deadline).format('MMMM DD, YYYY');
+        const { id, name, description, deadline, funding_amount,
+            slug, img_url, criteria_info, scholarship_url, form_url, is_not_available } = scholarship;
         const fundingString = formatCurrency(Number.parseInt(funding_amount), true);
 
         return (
@@ -133,10 +142,10 @@ class ScholarshipDetail extends React.Component {
                 {pageViews &&
                 <AtilaPointsPaywallModal pageViews={pageViews} />
                 }
-                <div className="container mt-5">
+                <div className="content-detail container mt-5">
                     <div className="row">
                         <div className="col-12">
-                            <h1 className="serif-font">{name}</h1>
+                            <h1>{name}</h1>
                             <img
                                 style={{ maxHeight: '300px', width: 'auto'}}
                                 src={img_url}
@@ -146,7 +155,6 @@ class ScholarshipDetail extends React.Component {
 
                         <div className="row">
                             <div className="col-md-8">
-                                <small>#{id}</small>
                                 <br />
                                 {scholarship_url &&
                                 <React.Fragment>
@@ -154,16 +162,16 @@ class ScholarshipDetail extends React.Component {
                                         Visit Scholarship Website
                                     </a> <br/>
                                 </React.Fragment>}
-                                {application_form_url &&
+                                {form_url &&
                                 <React.Fragment>
-                                    <a href={application_form_url} target="_blank" rel="noopener noreferrer">
+                                    <a href={form_url} target="_blank" rel="noopener noreferrer">
                                         View Scholarship Application
                                     </a> <br/>
                                 </React.Fragment>}
                                 <Link to={`/scholarship/edit/${slug}`}>
                                     Edit Scholarship
                                 </Link>
-                                <br/>
+                                <br/><br/>
                                 {
                                     scholarshipUserProfile &&
                                     <React.Fragment>
@@ -184,21 +192,32 @@ class ScholarshipDetail extends React.Component {
                                 <button onClick={this.goBack} className="btn btn-link pl-0">
                                     Go Back ←
                                 </button>
-                                <p>
-                                    <small className="text-muted">
-                                        Deadline: { deadlineString }
-                                    </small>
+                                <p className="font-weight-bold">
+                                    Deadline: <ScholarshipDeadlineWithTags deadline={deadline } />
+                                    <br/>
+                                    Amount: {fundingString}
                                 </p>
-                                <p>
-                                    <small className="text-muted">
-                                        Amount: {fundingString}
-                                    </small>
-                                </p>
+                                {is_not_available &&
+                                <Alert
+                                    type="error"
+                                    message="This scholarship is no longer being offered."
+                                    className="mb-3"
+                                    style={{maxWidth: '300px'}}
+                                />
+                                }
                                 <ScholarshipShareSaveButtons scholarship={scholarship} />
-                                <p>{description}</p>
+                                <hr />
+                                <div className="my-3">
+                                    <h3>Description</h3>
+                                    <p>
+                                        {description}
+                                    </p>
+                                    <ScholarshipExtraCriteria scholarship={scholarship} />
+                                </div>
 
                                 {/*todo find a way to secure against XSS: https://stackoverflow.com/a/19277723*/}
-                                <div className="content-detail" dangerouslySetInnerHTML={{__html: criteria_info}} />
+                                <hr />
+                                <div dangerouslySetInnerHTML={{__html: criteria_info}} />
                             </div>
                             <RelatedItems
                                 className="col-md-4"

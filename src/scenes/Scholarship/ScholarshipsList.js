@@ -245,20 +245,20 @@ class ScholarshipsList extends React.Component {
                 </ul>)
             }
             const title = (<React.Fragment>
-                <h1 className="text-center serif-font">
+                <h1 className="text-center">
                     <span role="img" aria-label="shrug shoulders emoji">
                     🤷🏾‍♀
                     </span>
                         ️ Scholarships Found
                     <br />
                 </h1>
-                <h2 className="text-center text-muted serif-font">
+                <h2 className="text-center text-muted">
                     <span role="img" aria-label="shrug shoulders emoji">
                         🤷🏾‍♀️
                     </span>
                         in Funding
                 </h2>
-                <h1 className="text-center font-weight-bold serif-font">
+                <h1 className="text-center font-weight-bold">
                     Complete Your Profile to see all eligible scholarships
                 </h1>
                 {missingSections}
@@ -293,7 +293,7 @@ class ScholarshipsList extends React.Component {
                 />
                 {scholarships &&
                     <React.Fragment>
-                        <h1 className="text-center serif-font">
+                        <h1 className="text-center">
                             {dynamicTitle}
                             <br />
                         </h1>
@@ -303,11 +303,11 @@ class ScholarshipsList extends React.Component {
                             {transformFilterDisplay(searchPayload.filter_by_user, userProfile)} )
                         </h3>
                         }
-                        <h2 className="text-center text-muted serif-font">
+                        <h2 className="text-center text-muted">
                             {totalFunding && `${totalFunding} in funding`}
                         </h2>
                         {!userProfile && !searchString &&
-                        <h6 className="text-center text-muted serif-font">
+                        <h6 className="text-center text-muted">
                             No Search query. Displaying all valid Scholarships
                         </h6>
                         }
