@@ -9,7 +9,6 @@ import {
 } from "./PremiumCheckoutForm";
 import {MemoryRouter} from "react-router-dom";
 import {UserProfileTest1} from "../../models/UserProfile";
-import SubscribeMailingList from "../../components/SubscribeMailingList";
 import {Provider} from "react-redux";
 
 configure({ adapter: new Adapter() });

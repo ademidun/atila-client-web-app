@@ -64,6 +64,11 @@ const scholarshipFormConfigsPage1 = [
         type: 'checkbox',
     },
     {
+        keyName: 'is_not_available',
+        placeholder: 'Is not available?',
+        type: 'checkbox',
+    },
+    {
         keyName: 'international_students_eligible',
         placeholder: 'International Students Eligible? 🌏',
         type: 'checkbox',
@@ -260,7 +265,7 @@ class ScholarshipAddEdit extends React.Component{
                     </Link>
                 </p>);
 
-                toastNotify(successMessage);
+                toastNotify(successMessage, 'info', {position: 'bottom-right'});
                 this.setState({ scholarship: savedScholarship });
             })
             .catch(err=> {

@@ -87,15 +87,6 @@ class ContentAddEdit extends React.Component {
         this.setState({content});
     };
 
-    editorInit = editor => {
-    };
-
-    editorBlur = ( event, editor ) => {
-    };
-
-    editorFocus = ( event, editor ) => {
-    };
-
     submitForm = (event) => {
         if(event){
             event.preventDefault();
@@ -126,7 +117,7 @@ class ContentAddEdit extends React.Component {
                     <Link to={`/${contentType.toLowerCase()}/${username}/${slug}`}>
                         {content.title}
                 </Link></p>);
-                toastNotify(successMessage);
+                toastNotify(successMessage, 'info', {position: 'bottom-right'});
             })
             .catch(err=> {
                 console.log({err});
@@ -157,7 +148,7 @@ class ContentAddEdit extends React.Component {
                 </Helmet>
                 <form className="row p-3 form-group" onSubmit={this.submitForm}>
                     <TextareaAutosize placeholder="Title"
-                                      className="border-0 center-block serif-font text-center col-12"
+                                      className="border-0 center-block text-center col-12"
                                       name="title"
                                       value={title}
                                       onChange={this.updateForm}
