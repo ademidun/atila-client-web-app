@@ -12,6 +12,8 @@ import UserProfileAPI from "../../services/UserProfileAPI";
 import AtilaPointsPaywallModal from "../../components/AtilaPointsPaywallModal";
 import ScholarshipExtraCriteria from "./ScholarshipExtraCriteria";
 import ScholarshipDeadlineWithTags from "../../components/ScholarshipDeadlineWithTags";
+import {Alert, message} from 'antd';
+
 
 class ScholarshipDetail extends React.Component {
 
@@ -64,6 +66,13 @@ class ScholarshipDetail extends React.Component {
             .then(res => {
                 const scholarship = res.data;
                 this.setState({ scholarship });
+
+                const { is_not_available  } = scholarship;
+
+                if (is_not_available) {
+                    const notAvailableText = (<p className="text-danger">Scholarship is no longer available</p>);
+                    message.error(notAvailableText, 3);
+                }
 
                 if(userProfile) {
                     if(userProfile) {
@@ -122,7 +131,8 @@ class ScholarshipDetail extends React.Component {
                     isLoading={isLoadingScholarship}
                     title={'Loading Scholarships..'} />)
         }
-        const { id, name, description, deadline, funding_amount, slug, img_url, criteria_info, scholarship_url, form_url } = scholarship;
+        const { id, name, description, deadline, funding_amount,
+            slug, img_url, criteria_info, scholarship_url, form_url, is_not_available } = scholarship;
         const fundingString = formatCurrency(Number.parseInt(funding_amount), true);
 
         return (
@@ -187,6 +197,14 @@ class ScholarshipDetail extends React.Component {
                                     <br/>
                                     Amount: {fundingString}
                                 </p>
+                                {is_not_available &&
+                                <Alert
+                                    type="error"
+                                    message="This scholarship is no longer being offered."
+                                    className="mb-3"
+                                    style={{maxWidth: '300px'}}
+                                />
+                                }
                                 <ScholarshipShareSaveButtons scholarship={scholarship} />
                                 <hr />
                                 <div className="my-3">
