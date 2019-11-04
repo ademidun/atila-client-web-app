@@ -150,7 +150,7 @@ class ScholarshipsList extends React.Component {
     };
 
     updateFilterOrSortOnEnterPress = (event) => {
-        if(event.keyCode == 13 && event.shiftKey == false) {
+        if(event.keyCode === 13 && event.shiftKey === false) {
             event.preventDefault();
             this.updateFilterOrSort(event);
         }
