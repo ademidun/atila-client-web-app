@@ -49,7 +49,7 @@ class UserProfileViewSavedScholarships extends React.Component {
 
         this.setState({filteredScholarships});
 
-    }
+    };
 
     removeSavedScholarship(scholarshipId) {
         let { scholarships, showExpiredScholarships } = this.state;
