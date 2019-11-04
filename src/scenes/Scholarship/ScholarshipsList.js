@@ -27,9 +27,6 @@ class ScholarshipsList extends React.Component {
             model: null,
             scholarships: null,
             searchPayload: {
-                location: { city :'', province :'', country :'', name :''},
-                education_level :[],
-                education_field :[],
                 searchString ,
                 previewMode: 'universalSearch' ,
                 filter_by_user_show_eligible_only: true,
@@ -95,10 +92,7 @@ class ScholarshipsList extends React.Component {
         }
 
         if (userProfile && !searchPayload.searchString) {
-            searchPayload = {
-                sort_by: "deadline",
-                filter_by_user_show_eligible_only: true
-            };
+            delete searchPayload.previewMode;
         }
 
         ScholarshipsAPI.searchScholarships(searchPayload, page)
