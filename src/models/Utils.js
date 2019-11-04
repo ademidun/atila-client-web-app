@@ -23,7 +23,7 @@ export const InputConfigPropType = PropTypes.shape({
     className: PropTypes.string,
 });
 
-export const toastNotify = (message, messageType='info') => {
+export const toastNotify = (message, messageType='info', customOptions={}) => {
 
     const options = {
         position: "top-right",
@@ -32,6 +32,7 @@ export const toastNotify = (message, messageType='info') => {
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
+        ...customOptions
     };
 
     // I could refactor this to make it more concise but then I would lose the typechecking and inspection benefits.
@@ -115,7 +116,7 @@ export const scholarshipUserProfileSharedFormConfigs = [
     },
     {
         keyName: 'criteria_info',
-        type: 'textarea',
+        type: 'html_editor',
         placeholder: 'Additional Information',
         html: () => (<label htmlFor="description">
             Everything else you want people to know about the scholarship, put it here

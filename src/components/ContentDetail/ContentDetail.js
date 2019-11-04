@@ -118,7 +118,7 @@ class ContentDetail extends React.Component {
 
         if(!userProfile && contentType === 'essay') {
             contentToDisplay = (
-                <div className=" col-md-8 serif-font content-detail">
+                <div className=" col-md-8 content-detail">
                     <div className={`${className} paywall-border`}
                          dangerouslySetInnerHTML={{__html: body}} />
                     <div className="card shadow p-3">
@@ -136,14 +136,14 @@ class ContentDetail extends React.Component {
 
         } else {
             contentToDisplay = (
-                <div className={`${className} col-md-8 serif-font content-detail`}
+                <div className={`${className} col-md-8 content-detail`}
                      dangerouslySetInnerHTML={{__html: body}} />
             )
         }
         return (
             <div className="m-5 px-md-5">
                 <HelmetSeo content={genericItemTransform(content)} />
-                <div className={`${className} serif-font center-block`}>
+                <div className={`${className} center-block`}>
                     <h1>{title}</h1>
                     {canEditContent &&
                     <Link to={`/${contentType.toLowerCase()}/edit/${contentSlug}`} >

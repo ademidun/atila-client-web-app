@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from "react-router-dom";
-import moment from "moment";
 import {formatCurrency} from "../../services/utils";
 import ScholarshipShareSaveButtons from "./ScholarshipShareSaveButtons";
+import ScholarshipExtraCriteria from "./ScholarshipExtraCriteria";
+import ScholarshipDeadlineWithTags from "../../components/ScholarshipDeadlineWithTags";
 
 class ScholarshipCard extends React.Component {
 
@@ -34,7 +35,6 @@ class ScholarshipCard extends React.Component {
             descriptionText +='...'
         }
 
-        const deadlineString = moment(deadline).format('MMMM DD, YYYY');
         const fundingString = formatCurrency(Number.parseInt(funding_amount), true);
         return (
             <div className={`${className} card shadow my-4`}>
@@ -45,19 +45,17 @@ class ScholarshipCard extends React.Component {
                     <div className="col-md-8">
                         <div className="card-body">
                             <Link to={`/scholarship/${slug}`}>
-                                <h1 className="card-title text-left serif-font">{name}</h1>
+                                <h1 className="card-title text-left">{name}</h1>
                             </Link>
                             <p className="card-text">
-                                <small className="text-muted">
-                                    Deadline: { deadlineString }
-                                </small>
-                            </p>
-                            <p className="card-text">
-                                <small className="text-muted">
-                                    Amount: {fundingString}
-                                </small>
+                                Deadline: <ScholarshipDeadlineWithTags deadline={deadline } />
+                                <br/>
+                                Amount: {fundingString}
                             </p>
                             <p className="card-text">{descriptionText}</p>
+                            {showPreview &&
+                            <ScholarshipExtraCriteria scholarship={scholarship} />
+                            }
                             <button className="btn btn-link" onClick={this.togglePreview} >
                                 {showPreview ? 'Show Less' : 'Show More'}
                             </button>

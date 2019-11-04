@@ -72,6 +72,10 @@ class AtilaPointsPaywallModal extends React.Component {
         const { viewCount, viewCountType } = this.state;
 
         let guestOrUserProfileContent = null;
+
+        if (userProfile && userProfile.is_atila_premium) {
+            return null
+        }
         if (userProfile) {
             guestOrUserProfileContent = (<span>
                         <h3>You have viewed {viewCount} {viewCountType} this Month</h3>

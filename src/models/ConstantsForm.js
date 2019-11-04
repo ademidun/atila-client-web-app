@@ -1,6 +1,17 @@
 // If you make any changes here, notify in the Github repo and update backend as well
 // https://github.com/ademidun/atila-django/blob/master/helpers/constants.py
-
+export const AUTOCOMPLETE_KEY_LIST = [
+    'activities',
+    'sports',
+    'ethnicity',
+    'religion',
+    'heritage',
+    'disability',
+    'citizenship',
+    'language',
+    'eligible_schools',
+    'eligible_programs',
+];
 export const FILTER_TYPES = [
     'major',
     'post_secondary_school',
