@@ -11,6 +11,7 @@ import ResponseDisplay from "../../components/ResponseDisplay";
 import ScholarshipsListFilter from "./ScholarshipsListFilter";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import {Button} from "antd";
+import UserProfileAPI from "../../services/UserProfileAPI";
 
 class ScholarshipsList extends React.Component {
 
@@ -199,6 +200,29 @@ class ScholarshipsList extends React.Component {
         }, () => {this.loadScholarships()})
     };
 
+    refreshScholarshipCache = () => {
+        let {
+            userProfile : {user : userId},
+        } = this.props;
+        const { viewAsUserProfile} = this.state;
+
+        if (viewAsUserProfile) {
+            userId  = viewAsUserProfile.user;
+        }
+
+        this.setState({ isLoadingScholarships: true, scholarships: null }, () => {
+            UserProfileAPI.refreshScholarshipCache(userId)
+                .then(() => {
+                    this.loadScholarships(this.state.pageNumber);
+                })
+                .catch((errorRefreshingCache)=>{
+                    console.log({err: errorRefreshingCache});
+                    this.setState({ isLoadingScholarships: false,
+                        errorGettingScholarships : errorRefreshingCache });
+                })
+        })
+    };
+
 
     render () {
         const {
@@ -358,6 +382,10 @@ class ScholarshipsList extends React.Component {
                            onChange={this.onUpdateStateHandler}
                            onKeyDown={this.updateFilterOrSortOnEnterPress}
                     />
+                    <Button onClick={this.refreshScholarshipCache}
+                            className="my-3">
+                        Refresh Cache {viewAsUserProfile ? `for ${viewAsUserProfile.username}` : null}
+                    </Button>
                 </div>
                 }
                 <ScholarshipsListFilter model={userProfile} updateFilterOrSortBy={this.updateFilterOrSort} />
