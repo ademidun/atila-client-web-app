@@ -48,6 +48,9 @@ class ScholarshipsAPI {
 
     static cleanScholarship = (scholarship) => {
 
+        // todo remove this line
+        console.log('cleanScholarship()')
+
         const newScholarship = Object.assign({}, scholarship);
         if(!newScholarship.funding_amount) {
             newScholarship.funding_amount = 0;
