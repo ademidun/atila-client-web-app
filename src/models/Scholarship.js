@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 export const ScholarshipGeneral = {
     id: 200,
     name: 'General Scholarship',
@@ -52,3 +54,10 @@ export let defaultScholarship = {
     disability: [],
     language: [],
 };
+
+export const ScholarshipPropType = PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    deadline: PropTypes.string,
+    is_not_available: PropTypes.boolean,
+    form_url: PropTypes.string,
+});
