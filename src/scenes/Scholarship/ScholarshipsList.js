@@ -10,6 +10,7 @@ import {Link} from "react-router-dom";
 import ResponseDisplay from "../../components/ResponseDisplay";
 import ScholarshipsListFilter from "./ScholarshipsListFilter";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
+import {Button} from "antd";
 
 class ScholarshipsList extends React.Component {
 
@@ -33,6 +34,9 @@ class ScholarshipsList extends React.Component {
                 sort_by: 'relevance_new'
             },
             searchString,
+            viewAsUserString: '',
+            viewAsUserProfile: null,
+            viewAsUserError: null,
             prevSearchString: null,
             errorGettingScholarships: null,
             isLoadingScholarships: true,
@@ -101,6 +105,10 @@ class ScholarshipsList extends React.Component {
                 const scholarshipResults = scholarships || [];
                 if (userProfile) {
                     scholarshipResults.push(...res.data.data);
+                    const viewAsUserProfile = res.data.view_as_user;
+                    const viewAsUserError = res.data.view_as_user_error;
+                    this.setState({ viewAsUserProfile });
+                    this.setState({ viewAsUserError });
                 } else {
                     scholarshipResults.push(...res.data.data.slice(0,3));
                 }
@@ -134,6 +142,19 @@ class ScholarshipsList extends React.Component {
         this.setState({ isCompleteProfile: !userProfile || isCompleteUserProfile(userProfile) });
     };
 
+    onUpdateStateHandler = (event) => {
+        this.setState({
+            [event.target.name]: event.target.value
+        });
+    };
+
+    updateFilterOrSortOnEnterPress = (event) => {
+        if(event.keyCode == 13 && event.shiftKey == false) {
+            event.preventDefault();
+            this.updateFilterOrSort(event);
+        }
+    };
+
     updateFilterOrSort = (event) => {
         const { searchPayload } = this.state;
         const {
@@ -152,6 +173,14 @@ class ScholarshipsList extends React.Component {
                         filter_value: [transformFilterDisplay(event.target.value, userProfile)]
                     }
                 ]
+            }
+        } else if (event.target.name === 'viewAsUserString'){
+            updatedSearchPayload = {
+                ...searchPayload,
+                view_as_user: event.target.value
+            };
+            if (event.target.value === '') {
+                delete updatedSearchPayload.view_as_user;
             }
         } else if (event.target.name === 'sort_by'){
             updatedSearchPayload = {
@@ -181,7 +210,7 @@ class ScholarshipsList extends React.Component {
         const { scholarships, isLoadingScholarships,
             totalScholarshipsCount, totalFunding,
             errorGettingScholarships, isCompleteProfile, searchPayload,
-            pageNumber} = this.state;
+            pageNumber, viewAsUserString, viewAsUserProfile, viewAsUserError} = this.state;
 
         const searchString = params.get('q');
 
@@ -300,6 +329,13 @@ class ScholarshipsList extends React.Component {
                         <h2 className="text-center text-muted">
                             {totalFunding && `${totalFunding} in funding`}
                         </h2>
+
+                        {viewAsUserProfile &&
+                        <h5 className="text-center text-success">Viewing as {viewAsUserProfile.username}</h5>
+                        }
+                        {viewAsUserError &&
+                        <h5 className="text-center text-danger">{viewAsUserError}</h5>
+                        }
                         {!userProfile && !searchString &&
                         <h6 className="text-center text-muted">
                             No Search query. Displaying all valid Scholarships
@@ -312,6 +348,18 @@ class ScholarshipsList extends React.Component {
                         Add a Scholarship
                     </Link>
                 </div>
+
+                {userProfile && userProfile.is_atila_admin &&
+                <div style={{maxWidth: '250px'}} className="my-3">
+                    <input placeholder="View as user (enter to submit)"
+                           className="form-control"
+                           name="viewAsUserString"
+                           value={viewAsUserString}
+                           onChange={this.onUpdateStateHandler}
+                           onKeyDown={this.updateFilterOrSortOnEnterPress}
+                    />
+                </div>
+                }
                 <ScholarshipsListFilter model={userProfile} updateFilterOrSortBy={this.updateFilterOrSort} />
 
                     {scholarships &&
