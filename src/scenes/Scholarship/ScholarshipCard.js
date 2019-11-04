@@ -45,7 +45,7 @@ class ScholarshipCard extends React.Component {
                     <div className="col-md-8">
                         <div className="card-body">
                             <Link to={`/scholarship/${slug}`}>
-                                <h1 className="card-title text-left serif-font">{name}</h1>
+                                <h1 className="card-title text-left">{name}</h1>
                             </Link>
                             <p className="card-text">
                                 Deadline: <ScholarshipDeadlineWithTags deadline={deadline } />

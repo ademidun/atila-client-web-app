@@ -148,7 +148,7 @@ class ContentAddEdit extends React.Component {
                 </Helmet>
                 <form className="row p-3 form-group" onSubmit={this.submitForm}>
                     <TextareaAutosize placeholder="Title"
-                                      className="border-0 center-block serif-font text-center col-12"
+                                      className="border-0 center-block text-center col-12"
                                       name="title"
                                       value={title}
                                       onChange={this.updateForm}

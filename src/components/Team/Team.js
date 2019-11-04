@@ -82,7 +82,7 @@ function TeamMemberCard({ teamMember }) {
 
     return (
         <div className="card shadow max-width-md-30 m-1 p-2">
-            <div className="serif-font" style={{ height: '100px' }}>
+            <div style={{ height: '100px' }}>
                 <h4>
                 {teamMember.first_name} {teamMember.last_name}
                 </h4>
@@ -122,7 +122,7 @@ function Team() {
     return (
         <div className="container mt-3">
             <h1>Team</h1>
-            <h6 className="text-center text-mute serif-font">(past and present)</h6>
+            <h6 className="text-center text-mute">(past and present)</h6>
             <div className="row ml-md-5">
 
                 {teamMembers.map(member => <TeamMemberCard key={member.first_name} teamMember={member} />)}

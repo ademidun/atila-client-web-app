@@ -40,7 +40,7 @@ class Navbar extends React.Component {
                          className="header mx-3 mx-lg-5 mt-2">
                     <Row>
                         <Col xxl={4} xl={5} lg={8} md={8} sm={8} xs={0}>
-                            <h2 id="logo" className="serif-font text-center4">
+                            <h2 id="logo" className="text-center4">
                                 <span>Atila</span>
                             </h2>
                         </Col>
@@ -120,7 +120,7 @@ class Navbar extends React.Component {
                  className="header mx-3 mx-lg-5 mt-2">
                 <Row>
                     <Col xxl={4} xl={5} lg={8} md={8} sm={8} xs={0}>
-                        <h2 id="logo" className="serif-font text-center4">
+                        <h2 id="logo" className="text-center4">
                             <Link to="/">
                                 <span>Atila</span>
                             </Link>
@@ -135,7 +135,7 @@ class Navbar extends React.Component {
                 <Row>
                     <Col xxl={0} xl={0} lg={0} md={0} sm={0} xs={24}>
                         <h2 id="logo"
-                            className="serif-font text-center ant-col-xs-24">
+                            className="text-center ant-col-xs-24">
                             <Link to="/">
                                 <span>Atila</span>
                             </Link>
