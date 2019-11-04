@@ -21,7 +21,7 @@ class SearchApi {
         });
 
         return apiCompletionPromise;
-    }
+    };
 
     static search = (searchQuery) => {
 
