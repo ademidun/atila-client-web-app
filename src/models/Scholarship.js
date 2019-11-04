@@ -59,5 +59,7 @@ export const ScholarshipPropType = PropTypes.shape({
     name: PropTypes.string.isRequired,
     deadline: PropTypes.string,
     is_not_available: PropTypes.boolean,
+    female_only: PropTypes.boolean,
+    international_students_eligible: PropTypes.boolean,
     form_url: PropTypes.string,
 });
