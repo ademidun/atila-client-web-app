@@ -48,6 +48,11 @@ class ScholarshipsAPI {
 
     static cleanScholarship = (scholarship) => {
 
+        // todo remove this line
+        console.log('cleanScholarship(), trigger new Netlify build for more details see: ' +
+            '' +
+            'https://github.com/ademidun/atila-client-web-app/pull/51')
+
         const newScholarship = Object.assign({}, scholarship);
         if(!newScholarship.funding_amount) {
             newScholarship.funding_amount = 0;
