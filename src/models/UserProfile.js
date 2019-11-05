@@ -5,8 +5,10 @@ export const UserProfileTest1 = {
     username: 'cbarkley',
     first_name: 'Charles',
     last_name: 'Barkley',
+    major: 'Basketball',
     id: 1,
     is_atila_admin: false,
+    eligible_programs: []
 };
 
 export const userProfileFormConfig = [

@@ -33,6 +33,8 @@ function ScholarshipExtraCriteria({scholarship, userProfile}) {
                     {userProfile &&
                     <p>
                         <strong>Your {prettifyKeys(criteria)}:{' '}</strong>
+                        {criteria === 'eligible_programs' && `${userProfile.major} and `}
+                        {criteria === 'eligible_schools' && `${userProfile.post_secondary_school} and `}
                         {JSON.stringify(userProfile[criteria], null, ' ')}
                     </p>
                     }
@@ -49,9 +51,8 @@ function ScholarshipExtraCriteria({scholarship, userProfile}) {
             {['city', 'province', 'country'].map(locationType => (
                 <React.Fragment key={locationType}>
 
-                    {scholarship[locationType].map((locationString, index) => (
+                    {scholarship[locationType] && scholarship[locationType].map((locationString, index) => (
                         <p key={locationString}>
-
                             {index===0 && <strong>{prettifyKeys(locationType)}: {' '}</strong>}
                             {' '}
                             {locationString.name}
@@ -61,8 +62,8 @@ function ScholarshipExtraCriteria({scholarship, userProfile}) {
                             {
                                 userProfile &&
                                 userProfile[locationType] &&
-                                userProfile[locationType].length===0
-                                &&
+                                userProfile[locationType].length===0 &&
+                                index===0 &&
                                 <p>
                                     Don't qualify for scholarships of these {prettifyKeys(locationType)}?
                                     <Link to={`/profile/${userProfile.username}/edit`}>
@@ -71,7 +72,6 @@ function ScholarshipExtraCriteria({scholarship, userProfile}) {
                             }
                         </p>
                     ))}
-                    {scholarship[locationType].length > 0 && <br />}
                 </React.Fragment>
             ))}
 
@@ -106,3 +106,4 @@ ScholarshipExtraCriteria.propTypes = {
 };
 
 export default connect(mapStateToProps)(ScholarshipExtraCriteria);
+export const  ScholarshipExtraCriteriaTest = ScholarshipExtraCriteria;
