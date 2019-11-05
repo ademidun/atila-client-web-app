@@ -89,7 +89,7 @@ class ScholarshipsList extends React.Component {
             userProfile,
         } = this.props;
 
-        const { scholarships, totalScholarshipsCount } = this.state;
+        const { scholarships, totalScholarshipsCount, scholarshipsScoreBreakdown } = this.state;
         let { searchPayload } = this.state;
 
         if (totalScholarshipsCount && scholarships
@@ -111,7 +111,11 @@ class ScholarshipsList extends React.Component {
                     const viewAsUserError = res.data.view_as_user_error;
                     this.setState({ viewAsUserProfile });
                     this.setState({ viewAsUserError });
-                    this.setState({ scholarshipsScoreBreakdown: res.data.scholarships_score_breakdown });
+                    const updatedScoreBreakdown = Object.assign({},
+                        scholarshipsScoreBreakdown,
+                        res.data.scholarships_score_breakdown);
+
+                    this.setState({ scholarshipsScoreBreakdown: updatedScoreBreakdown });
                 } else {
                     scholarshipResults.push(...res.data.data.slice(0,3));
                 }
