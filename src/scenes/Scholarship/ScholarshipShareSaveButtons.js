@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {connect} from "react-redux";
 import {Dropdown} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faBookmark, faShareAlt, faMailBulk, faSms} from "@fortawesome/free-solid-svg-icons";
+import {faBookmark, faShareAlt, faMailBulk, faSms, faFrown} from "@fortawesome/free-solid-svg-icons";
 import { faFacebookMessenger, faWhatsapp, faFacebook } from '@fortawesome/free-brands-svg-icons';
 import {toastNotify} from "../../models/Utils";
 import NotificationsService from "../../services/NotificationsService";
@@ -135,6 +135,15 @@ class ScholarshipShareSaveButtons extends React.Component {
                         <FontAwesomeIcon className="ml-1" icon={faBookmark}/>
                     </button>
                 </Tooltip>
+
+                <Tooltip placement="right"
+                         title="I'm Not eligible for this scholarship">
+                    <button className={`btn ml-1 ${isSavedScholarship ? 'btn-primary' : 'btn-outline-primary'}`}>
+                        <FontAwesomeIcon icon={faFrown}/>
+                    </button>
+                </Tooltip>
+
+
             </div>
         );
     }
