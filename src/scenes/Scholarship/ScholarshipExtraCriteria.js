@@ -54,7 +54,7 @@ function ScholarshipExtraCriteria({scholarship, loggedInUserProfile, viewAsUserP
                 <React.Fragment key={locationType}>
 
                     {scholarship[locationType] && scholarship[locationType].map((locationString, index) => (
-                        <p key={locationString}>
+                        <p key={locationString.name}>
                             {index===0 && <strong>{prettifyKeys(locationType)}: {' '}</strong>}
                             {' '}
                             {locationString.name}
