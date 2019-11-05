@@ -26,7 +26,7 @@ class ScholarshipCard extends React.Component {
 
     render() {
 
-        const { className, scholarship } = this.props;
+        const { className, scholarship, viewAsUserProfile } = this.props;
         const { showPreview } = this.state;
         const { name, description, deadline, funding_amount, slug, img_url } = scholarship;
 
@@ -54,7 +54,7 @@ class ScholarshipCard extends React.Component {
                             </p>
                             <p className="card-text">{descriptionText}</p>
                             {showPreview &&
-                            <ScholarshipExtraCriteria scholarship={scholarship} />
+                            <ScholarshipExtraCriteria scholarship={scholarship} viewAsUserProfile={viewAsUserProfile} />
                             }
                             <button className="btn btn-link" onClick={this.togglePreview} >
                                 {showPreview ? 'Show Less' : 'Show More'}
@@ -69,12 +69,14 @@ class ScholarshipCard extends React.Component {
 }
 
 ScholarshipCard.defaultProps = {
-    className: ''
+    className: '',
+    viewAsUserProfile: null,
 };
 
 ScholarshipCard.propTypes = {
     className: PropTypes.string,
-    scholarship: PropTypes.shape({})
+    scholarship: PropTypes.shape({}),
+    viewAsUserProfile: PropTypes.shape({}),
 };
 
 export default ScholarshipCard;

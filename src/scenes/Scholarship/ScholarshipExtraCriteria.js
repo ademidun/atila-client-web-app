@@ -13,7 +13,9 @@ export function doesScholarshipHaveExtraCriteria(scholarship) {
         ))
 }
 
-function ScholarshipExtraCriteria({scholarship, userProfile}) {
+function ScholarshipExtraCriteria({scholarship, loggedInUserProfile, viewAsUserProfile}) {
+
+    const userProfile = viewAsUserProfile || loggedInUserProfile;
 
     if (!doesScholarshipHaveExtraCriteria(scholarship)) {
         return null;
@@ -93,15 +95,17 @@ function ScholarshipExtraCriteria({scholarship, userProfile}) {
 }
 
 const mapStateToProps = state => {
-    return { userProfile: state.data.user.loggedInUserProfile };
+    return { loggedInUserProfile: state.data.user.loggedInUserProfile };
 };
 
 ScholarshipExtraCriteria.defaultProps = {
-    userProfile: null,
+    viewAsUserProfile: null,
+    loggedInUserProfile: null,
 };
 
 ScholarshipExtraCriteria.propTypes = {
-    userProfile: PropTypes.shape({}),
+    loggedInUserProfile: PropTypes.shape({}),
+    viewAsUserProfile: PropTypes.shape({}),
     scholarship: PropTypes.shape({}).isRequired,
 };
 

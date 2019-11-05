@@ -394,7 +394,8 @@ class ScholarshipsList extends React.Component {
                     <div className="mt-3">
                         {scholarships.map( scholarship => <ScholarshipCard key={scholarship.id}
                                                                            className="col-12"
-                                                                           scholarship={scholarship} />)}
+                                                                           scholarship={scholarship}
+                                                                           viewAsUserProfile={viewAsUserProfile} />)}
                     </div>
                     }
                 {loadMoreScholarshipsOrRegisterCTA}
