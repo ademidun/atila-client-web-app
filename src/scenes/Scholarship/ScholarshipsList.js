@@ -41,6 +41,7 @@ class ScholarshipsList extends React.Component {
             prevSearchString: null,
             errorGettingScholarships: null,
             isLoadingScholarships: true,
+            scholarshipsScoreBreakdown: null,
             pageNumber: 1,
             totalScholarshipsCount: 0,
             totalFunding: null,
@@ -110,6 +111,7 @@ class ScholarshipsList extends React.Component {
                     const viewAsUserError = res.data.view_as_user_error;
                     this.setState({ viewAsUserProfile });
                     this.setState({ viewAsUserError });
+                    this.setState({ scholarshipsScoreBreakdown: res.data.scholarships_score_breakdown });
                 } else {
                     scholarshipResults.push(...res.data.data.slice(0,3));
                 }
@@ -234,7 +236,7 @@ class ScholarshipsList extends React.Component {
         const { scholarships, isLoadingScholarships,
             totalScholarshipsCount, totalFunding,
             errorGettingScholarships, isCompleteProfile, searchPayload,
-            pageNumber, viewAsUserString, viewAsUserProfile, viewAsUserError} = this.state;
+            pageNumber, viewAsUserString, viewAsUserProfile, viewAsUserError, scholarshipsScoreBreakdown} = this.state;
 
         const searchString = params.get('q');
 
@@ -392,10 +394,14 @@ class ScholarshipsList extends React.Component {
 
                     {scholarships &&
                     <div className="mt-3">
-                        {scholarships.map( scholarship => <ScholarshipCard key={scholarship.id}
-                                                                           className="col-12"
-                                                                           scholarship={scholarship}
-                                                                           viewAsUserProfile={viewAsUserProfile} />)}
+                        {scholarships.map( scholarship =>
+                            <ScholarshipCard
+                                        key={scholarship.id}
+                                        className="col-12"
+                                        scholarship={scholarship}
+                                        viewAsUserProfile={viewAsUserProfile}
+                                        matchScoreBreakdown={scholarshipsScoreBreakdown &&
+                                        scholarshipsScoreBreakdown[scholarship.id]} />)}
                     </div>
                     }
                 {loadMoreScholarshipsOrRegisterCTA}

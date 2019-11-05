@@ -26,7 +26,7 @@ class ScholarshipCard extends React.Component {
 
     render() {
 
-        const { className, scholarship, viewAsUserProfile } = this.props;
+        const { className, scholarship, viewAsUserProfile, matchScoreBreakdown } = this.props;
         const { showPreview } = this.state;
         const { name, description, deadline, funding_amount, slug, img_url } = scholarship;
 
@@ -63,6 +63,11 @@ class ScholarshipCard extends React.Component {
                         </div>
                     </div>
                 </div>
+                { matchScoreBreakdown &&
+                    <pre style={{maxHeight: '350px'}}>
+                        {JSON.stringify(matchScoreBreakdown, null, 4)}
+                    </pre>
+                }
             </div>
         );
     }
@@ -71,12 +76,14 @@ class ScholarshipCard extends React.Component {
 ScholarshipCard.defaultProps = {
     className: '',
     viewAsUserProfile: null,
+    matchScoreBreakdown: null,
 };
 
 ScholarshipCard.propTypes = {
     className: PropTypes.string,
     scholarship: PropTypes.shape({}),
     viewAsUserProfile: PropTypes.shape({}),
+    matchScoreBreakdown: PropTypes.shape({}),
 };
 
 export default ScholarshipCard;
