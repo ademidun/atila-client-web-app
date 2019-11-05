@@ -6,11 +6,16 @@ import {AUTOCOMPLETE_KEY_LIST} from "../../models/ConstantsForm";
 import {Link} from "react-router-dom";
 import {emojiDictionary} from "../../models/Constants";
 
+export function doesScholarshipHaveExtraCriteria(scholarship) {
+    return (AUTOCOMPLETE_KEY_LIST.some(key => (scholarship[key] && scholarship[key].length>0)) ||
+        ['city', 'province', 'country'].some(key => (scholarship[key] && scholarship[key].length>0)
+            || scholarship.female_only ||scholarship.international_students_eligible
+        ))
+}
+
 function ScholarshipExtraCriteria({scholarship, userProfile}) {
 
-    if (!AUTOCOMPLETE_KEY_LIST.some(key => (scholarship[key] && scholarship[key].length>0)) &&
-        !['city', 'province', 'country'].some(key => (scholarship[key] && scholarship[key].length>0))
-    ) {
+    if (!doesScholarshipHaveExtraCriteria(scholarship)) {
         return null;
     }
 
@@ -52,6 +57,18 @@ function ScholarshipExtraCriteria({scholarship, userProfile}) {
                             {locationString.name}
                             {emojiDictionary[locationString.name.toLowerCase()]}
                             {index < scholarship[locationType].length-1 ? ', ' : null }
+                            <br />
+                            {
+                                userProfile &&
+                                userProfile[locationType] &&
+                                userProfile[locationType].length===0
+                                &&
+                                <p>
+                                    Don't qualify for scholarships of these {prettifyKeys(locationType)}?
+                                    <Link to={`/profile/${userProfile.username}/edit`}>
+                                        Edit Profile</Link> to see correct scholarships
+                                </p>
+                            }
                         </p>
                     ))}
                     {scholarship[locationType].length > 0 && <br />}
@@ -60,7 +77,13 @@ function ScholarshipExtraCriteria({scholarship, userProfile}) {
 
             {scholarship.female_only && <p><strong>Female Only <span role="img" aria-label="female emoji">
                 🙎🏾
+            </span> {userProfile && userProfile.gender !== 'female' &&
+            <span>
+                <br />
+                Not a Female? <Link to={`/profile/${userProfile.username}/edit`}>
+                Edit Profile</Link> to see correct scholarships
             </span>
+            }
             </strong></p>}
             {scholarship.international_students_eligible && <p><strong>International Students Eligible
                 <span role="img" aria-label="globe emoji">🌏</span>
