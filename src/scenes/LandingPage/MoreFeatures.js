@@ -1,23 +1,24 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {Link} from "react-router-dom";
 import viewEssaysGif from './assets/view-essays.gif';
 import emailDigest1 from './assets/digest-email-screenshot-1.png';
 import emailDigest2 from './assets/digest-email-screenshot-2.png';
 import emailScholarshipDue from './assets/scholarship-due-email.png';
 import './MoreFeatures.scss';
-function MoreFeatures() {
+function MoreFeatures({title}) {
 
     return (
-        <div  className="container MoreFeatures">
-            <h1 className="col-sm-12 text-center">
-                <Link to="/blog/atila/what-is-atila"> More Features </Link>
-            </h1>
+        <div  className="MoreFeatures container">
+            {title}
+            {title &&
             <h2  className="col-sm-12 text-center">
-                Stay Woke.
+                Stay Woke.{' '}
                 <Link to="essay">
-                Read Essays.
+                    Read Essays.
                 </Link>
             </h2>
+            }
 
             <div className="offset-lg-1">
                 <div  className="row">
@@ -75,4 +76,13 @@ function MoreFeatures() {
     );
 }
 
+MoreFeatures.defaultProps = {
+    title: (<h1 className="col-sm-12 text-center">
+                <Link to="/blog/atila/what-is-atila"> More Features </Link>
+            </h1>)
+};
+
+MoreFeatures.propTypes = {
+    title: PropTypes.shape({})
+};
 export default MoreFeatures;
