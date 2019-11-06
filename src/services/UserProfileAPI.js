@@ -48,6 +48,16 @@ class UserProfileAPI {
         return apiCompletionPromise;
     };
 
+    static refreshScholarshipCache = (userId) => {
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: {},
+            url: `${this.userProfileEndPoint}/${userId}/refresh-scholarship-cache/`,
+        });
+        return apiCompletionPromise;
+    };
+
     static createUser = (registrationData) => {
 
         const apiCompletionPromise = request({

@@ -6,11 +6,18 @@ import {AUTOCOMPLETE_KEY_LIST} from "../../models/ConstantsForm";
 import {Link} from "react-router-dom";
 import {emojiDictionary} from "../../models/Constants";
 
-function ScholarshipExtraCriteria({scholarship, userProfile}) {
+export function doesScholarshipHaveExtraCriteria(scholarship) {
+    return (AUTOCOMPLETE_KEY_LIST.some(key => (scholarship[key] && scholarship[key].length>0)) ||
+        ['city', 'province', 'country'].some(key => (scholarship[key] && scholarship[key].length>0)
+            || scholarship.female_only ||scholarship.international_students_eligible
+        ))
+}
 
-    if (!AUTOCOMPLETE_KEY_LIST.some(key => (scholarship[key] && scholarship[key].length>0)) &&
-        !['city', 'province', 'country'].some(key => (scholarship[key] && scholarship[key].length>0))
-    ) {
+function ScholarshipExtraCriteria({scholarship, loggedInUserProfile, viewAsUserProfile}) {
+
+    const userProfile = viewAsUserProfile || loggedInUserProfile;
+
+    if (!doesScholarshipHaveExtraCriteria(scholarship)) {
         return null;
     }
 
@@ -28,6 +35,8 @@ function ScholarshipExtraCriteria({scholarship, userProfile}) {
                     {userProfile &&
                     <p>
                         <strong>Your {prettifyKeys(criteria)}:{' '}</strong>
+                        {criteria === 'eligible_programs' && `${userProfile.major} and `}
+                        {criteria === 'eligible_schools' && `${userProfile.post_secondary_school} and `}
                         {JSON.stringify(userProfile[criteria], null, ' ')}
                     </p>
                     }
@@ -44,23 +53,39 @@ function ScholarshipExtraCriteria({scholarship, userProfile}) {
             {['city', 'province', 'country'].map(locationType => (
                 <React.Fragment key={locationType}>
 
-                    {scholarship[locationType].map((locationString, index) => (
-                        <p key={locationString}>
-
+                    {scholarship[locationType] && scholarship[locationType].map((locationString, index) => (
+                        <p key={locationString.name}>
                             {index===0 && <strong>{prettifyKeys(locationType)}: {' '}</strong>}
                             {' '}
                             {locationString.name}
                             {emojiDictionary[locationString.name.toLowerCase()]}
                             {index < scholarship[locationType].length-1 ? ', ' : null }
+                            <br />
+                            {
+                                userProfile &&
+                                userProfile[locationType] &&
+                                userProfile[locationType].length===0 &&
+                                index===0 &&
+                                <p>
+                                    Don't qualify for scholarships of these {prettifyKeys(locationType)}?
+                                    <Link to={`/profile/${userProfile.username}/edit`}>
+                                        Edit Profile</Link> to see correct scholarships
+                                </p>
+                            }
                         </p>
                     ))}
-                    {scholarship[locationType].length > 0 && <br />}
                 </React.Fragment>
             ))}
 
             {scholarship.female_only && <p><strong>Female Only <span role="img" aria-label="female emoji">
                 🙎🏾
+            </span> {userProfile && userProfile.gender !== 'female' &&
+            <span>
+                <br />
+                Not a Female? <Link to={`/profile/${userProfile.username}/edit`}>
+                Edit Profile</Link> to see correct scholarships
             </span>
+            }
             </strong></p>}
             {scholarship.international_students_eligible && <p><strong>International Students Eligible
                 <span role="img" aria-label="globe emoji">🌏</span>
@@ -70,16 +95,19 @@ function ScholarshipExtraCriteria({scholarship, userProfile}) {
 }
 
 const mapStateToProps = state => {
-    return { userProfile: state.data.user.loggedInUserProfile };
+    return { loggedInUserProfile: state.data.user.loggedInUserProfile };
 };
 
 ScholarshipExtraCriteria.defaultProps = {
-    userProfile: null,
+    viewAsUserProfile: null,
+    loggedInUserProfile: null,
 };
 
 ScholarshipExtraCriteria.propTypes = {
-    userProfile: PropTypes.shape({}),
+    loggedInUserProfile: PropTypes.shape({}),
+    viewAsUserProfile: PropTypes.shape({}),
     scholarship: PropTypes.shape({}).isRequired,
 };
 
 export default connect(mapStateToProps)(ScholarshipExtraCriteria);
+export const  ScholarshipExtraCriteriaTest = ScholarshipExtraCriteria;

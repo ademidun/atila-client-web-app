@@ -11,6 +11,7 @@ import {defaultScholarship} from "../../models/Scholarship";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Link} from "react-router-dom";
+import './ScholarshipAddEdit.scss';
 
 const scholarshipFormConfigsPage1 = [
     {
@@ -296,7 +297,7 @@ class ScholarshipAddEdit extends React.Component{
 
         const title = isAddScholarshipMode ? 'Add Scholarship' : 'Edit Scholarship';
         return (
-            <React.Fragment>
+            <div className="ScholarshipAddEdit">
                 <Helmet>
                     <meta charSet="utf-8" />
                     <title>{title} - Atila</title>
@@ -375,7 +376,7 @@ class ScholarshipAddEdit extends React.Component{
                                 onClick={this.submitForm}>Save</button>
                     </div>
                 </div>
-            </React.Fragment>
+            </div>
         );
 
     }

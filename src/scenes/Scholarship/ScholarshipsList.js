@@ -10,6 +10,8 @@ import {Link} from "react-router-dom";
 import ResponseDisplay from "../../components/ResponseDisplay";
 import ScholarshipsListFilter from "./ScholarshipsListFilter";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
+import {Button} from "antd";
+import UserProfileAPI from "../../services/UserProfileAPI";
 
 class ScholarshipsList extends React.Component {
 
@@ -27,18 +29,19 @@ class ScholarshipsList extends React.Component {
             model: null,
             scholarships: null,
             searchPayload: {
-                location: { city :'', province :'', country :'', name :''},
-                education_level :[],
-                education_field :[],
                 searchString ,
                 previewMode: 'universalSearch' ,
                 filter_by_user_show_eligible_only: true,
                 sort_by: 'relevance_new'
             },
             searchString,
+            viewAsUserString: '',
+            viewAsUserProfile: null,
+            viewAsUserError: null,
             prevSearchString: null,
             errorGettingScholarships: null,
             isLoadingScholarships: true,
+            scholarshipsScoreBreakdown: null,
             pageNumber: 1,
             totalScholarshipsCount: 0,
             totalFunding: null,
@@ -86,7 +89,7 @@ class ScholarshipsList extends React.Component {
             userProfile,
         } = this.props;
 
-        const { scholarships, totalScholarshipsCount } = this.state;
+        const { scholarships, totalScholarshipsCount, scholarshipsScoreBreakdown } = this.state;
         let { searchPayload } = this.state;
 
         if (totalScholarshipsCount && scholarships
@@ -95,10 +98,7 @@ class ScholarshipsList extends React.Component {
         }
 
         if (userProfile && !searchPayload.searchString) {
-            searchPayload = {
-                sort_by: "deadline",
-                filter_by_user_show_eligible_only: true
-            };
+            delete searchPayload.previewMode;
         }
 
         ScholarshipsAPI.searchScholarships(searchPayload, page)
@@ -107,6 +107,15 @@ class ScholarshipsList extends React.Component {
                 const scholarshipResults = scholarships || [];
                 if (userProfile) {
                     scholarshipResults.push(...res.data.data);
+                    const viewAsUserProfile = res.data.view_as_user;
+                    const viewAsUserError = res.data.view_as_user_error;
+                    this.setState({ viewAsUserProfile });
+                    this.setState({ viewAsUserError });
+                    const updatedScoreBreakdown = Object.assign({},
+                        scholarshipsScoreBreakdown,
+                        res.data.scholarships_score_breakdown);
+
+                    this.setState({ scholarshipsScoreBreakdown: updatedScoreBreakdown });
                 } else {
                     scholarshipResults.push(...res.data.data.slice(0,3));
                 }
@@ -140,6 +149,19 @@ class ScholarshipsList extends React.Component {
         this.setState({ isCompleteProfile: !userProfile || isCompleteUserProfile(userProfile) });
     };
 
+    onUpdateStateHandler = (event) => {
+        this.setState({
+            [event.target.name]: event.target.value
+        });
+    };
+
+    updateFilterOrSortOnEnterPress = (event) => {
+        if(event.keyCode === 13 && event.shiftKey === false) {
+            event.preventDefault();
+            this.updateFilterOrSort(event);
+        }
+    };
+
     updateFilterOrSort = (event) => {
         const { searchPayload } = this.state;
         const {
@@ -159,6 +181,14 @@ class ScholarshipsList extends React.Component {
                     }
                 ]
             }
+        } else if (event.target.name === 'viewAsUserString'){
+            updatedSearchPayload = {
+                ...searchPayload,
+                view_as_user: event.target.value
+            };
+            if (event.target.value === '') {
+                delete updatedSearchPayload.view_as_user;
+            }
         } else if (event.target.name === 'sort_by'){
             updatedSearchPayload = {
                 ...searchPayload,
@@ -176,6 +206,29 @@ class ScholarshipsList extends React.Component {
         }, () => {this.loadScholarships()})
     };
 
+    refreshScholarshipCache = () => {
+        let {
+            userProfile : {user : userId},
+        } = this.props;
+        const { viewAsUserProfile} = this.state;
+
+        if (viewAsUserProfile) {
+            userId  = viewAsUserProfile.user;
+        }
+
+        this.setState({ isLoadingScholarships: true, scholarships: null }, () => {
+            UserProfileAPI.refreshScholarshipCache(userId)
+                .then(() => {
+                    this.loadScholarships(this.state.pageNumber);
+                })
+                .catch((errorRefreshingCache)=>{
+                    console.log({err: errorRefreshingCache});
+                    this.setState({ isLoadingScholarships: false,
+                        errorGettingScholarships : errorRefreshingCache });
+                })
+        })
+    };
+
 
     render () {
         const {
@@ -187,7 +240,7 @@ class ScholarshipsList extends React.Component {
         const { scholarships, isLoadingScholarships,
             totalScholarshipsCount, totalFunding,
             errorGettingScholarships, isCompleteProfile, searchPayload,
-            pageNumber} = this.state;
+            pageNumber, viewAsUserString, viewAsUserProfile, viewAsUserError, scholarshipsScoreBreakdown} = this.state;
 
         const searchString = params.get('q');
 
@@ -306,6 +359,13 @@ class ScholarshipsList extends React.Component {
                         <h2 className="text-center text-muted">
                             {totalFunding && `${totalFunding} in funding`}
                         </h2>
+
+                        {viewAsUserProfile &&
+                        <h5 className="text-center text-success">Viewing as {viewAsUserProfile.username}</h5>
+                        }
+                        {viewAsUserError &&
+                        <h5 className="text-center text-danger">{viewAsUserError}</h5>
+                        }
                         {!userProfile && !searchString &&
                         <h6 className="text-center text-muted">
                             No Search query. Displaying all valid Scholarships
@@ -318,13 +378,34 @@ class ScholarshipsList extends React.Component {
                         Add a Scholarship
                     </Link>
                 </div>
+
+                {userProfile && userProfile.is_atila_admin &&
+                <div style={{maxWidth: '250px'}} className="my-3">
+                    <input placeholder="View as user (enter to submit)"
+                           className="form-control"
+                           name="viewAsUserString"
+                           value={viewAsUserString}
+                           onChange={this.onUpdateStateHandler}
+                           onKeyDown={this.updateFilterOrSortOnEnterPress}
+                    />
+                    <Button onClick={this.refreshScholarshipCache}
+                            className="my-3">
+                        Refresh Cache {viewAsUserProfile ? `for ${viewAsUserProfile.username}` : null}
+                    </Button>
+                </div>
+                }
                 <ScholarshipsListFilter model={userProfile} updateFilterOrSortBy={this.updateFilterOrSort} />
 
                     {scholarships &&
                     <div className="mt-3">
-                        {scholarships.map( scholarship => <ScholarshipCard key={scholarship.id}
-                                                                           className="col-12"
-                                                                           scholarship={scholarship} />)}
+                        {scholarships.map( scholarship =>
+                            <ScholarshipCard
+                                        key={scholarship.id}
+                                        className="col-12"
+                                        scholarship={scholarship}
+                                        viewAsUserProfile={viewAsUserProfile}
+                                        matchScoreBreakdown={scholarshipsScoreBreakdown &&
+                                        scholarshipsScoreBreakdown[scholarship.id]} />)}
                     </div>
                     }
                 {loadMoreScholarshipsOrRegisterCTA}

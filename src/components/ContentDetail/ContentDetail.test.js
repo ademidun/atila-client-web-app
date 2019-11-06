@@ -24,8 +24,6 @@ describe('<ContentDetail />', () => {
 
     it('renders without crashing (Not Logged In)', () => {
 
-        console.log('process.env.NODE_ENV', process.env.NODE_ENV);
-
         const wrapper = shallow(
             <MemoryRouter>
                 <ContentDetail contentType={'blog'}

@@ -1,5 +1,12 @@
 import PropTypes from "prop-types";
 
+export const MILTON_LOCATION_OBJECT = {
+    name: 'Milton',
+    province: 'Ontario',
+    country: 'Canada',
+    id: 1,
+};
+
 export const ScholarshipGeneral = {
     id: 200,
     name: 'General Scholarship',
@@ -13,7 +20,17 @@ export const ScholarshipEngineering = {
     name: 'Engineering Scholarship',
     description: 'Scholarship only for awesome engineering students',
     amount: '100',
-    slug: 'engineering-scholarship'
+    slug: 'engineering-scholarship',
+    eligible_programs: ['Engineering']
+};
+
+export const ScholarshipMilton = {
+    id: 100,
+    name: 'Engineering Scholarship',
+    description: 'Scholarship only for awesome engineering students',
+    amount: '100',
+    slug: 'engineering-scholarship',
+    city: [MILTON_LOCATION_OBJECT]
 };
 
 export const scholarshipsListMockData = [
