@@ -8,6 +8,7 @@ import {Button} from "antd";
 import {Link, withRouter} from "react-router-dom";
 import AutoComplete from "../../components/AutoComplete";
 import {MASTER_LIST_EVERYTHING_UNDERSCORE} from "../../models/ConstantsForm";
+import {slugify} from "../../services/utils";
 
 const loop = {
   duration: 3000,
@@ -37,7 +38,7 @@ class Banner extends React.Component {
   onSubmit = event => {
     event.preventDefault();
     const { searchQuery } = this.state;
-    this.props.history.push(`/scholarship?q=${searchQuery}`);
+    this.props.history.push(`/scholarship/s/${slugify(searchQuery)}`);
   };
 
   updateSearch = event => {
@@ -47,7 +48,7 @@ class Banner extends React.Component {
 
     if (event.key === 'Enter' || event.type === 'click') {
       // the only click event that can trigger updateSearch is when autocomplete item is selected
-      this.props.history.push(`/scholarship?q=${event.target.value}`);
+      this.props.history.push(`/scholarship/s/${slugify(event.target.value)}`);
     }
 
   };
@@ -109,19 +110,19 @@ class Banner extends React.Component {
                 </div>
                 <div className="col-sm-12">
                   <p className="mb-0">Sample Searches:{' '}
-                    <Link to="/scholarship?q=engineering">
+                    <Link to="/scholarship/s/engineering">
                       Engineering</Link>,{' '}
-                    <Link to="/scholarship?q=female">
+                    <Link to="/scholarship/s/female">
                       Female</Link>,{' '}
-                    <Link to="/scholarship?q=ontario">
+                    <Link to="/scholarship/s/ontario">
                       Ontario</Link>,{' '}
-                    <Link to="/scholarship?q=toronto">
+                    <Link to="/scholarship/s/toronto">
                       Toronto</Link>,{' '}
-                    <Link to="/scholarship?q=black">
+                    <Link to="/scholarship/s/black">
                       Black</Link> ,{' '}
-                    <Link to="/scholarship?q=medical%20school">
+                    <Link to="/scholarship/s/medical+school">
                       Medical School</Link>{' '},
-                    <Link to="/scholarship?q=University of Western Ontario">
+                    <Link to="/scholarship/s/University+of+Western+Ontario">
                       University of Western Ontario</Link>
                   </p>
                 </div>
