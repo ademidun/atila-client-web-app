@@ -8,7 +8,6 @@ import {ATILA_POINTS_EXPLAIN_POPOVER} from "../../components/AtilaPointsPaywallM
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import {PREMIUM_PRICE_BEFORE_TAX} from "./PremiumCheckoutForm";
 import {MAX_BLOG_PAGE_VIEWS, MAX_ESSAY_PAGE_VIEWS, MAX_SCHOLARSHIP_PAGE_VIEWS} from "../../models/Constants";
-import HowItWorks from "../LandingPage/HowItWorks";
 import MoreFeatures from "../LandingPage/MoreFeatures";
 
 function Pricing() {
