@@ -37,7 +37,7 @@ class Banner extends React.Component {
   onSubmit = event => {
     event.preventDefault();
     const { searchQuery } = this.state;
-    this.props.history.push(`/scholarship?q=${searchQuery}`);
+    this.props.history.push(`/scholarship/s/${searchQuery}`);
   };
 
   updateSearch = event => {
@@ -47,7 +47,7 @@ class Banner extends React.Component {
 
     if (event.key === 'Enter' || event.type === 'click') {
       // the only click event that can trigger updateSearch is when autocomplete item is selected
-      this.props.history.push(`/scholarship?q=${event.target.value}`);
+      this.props.history.push(`/scholarship/s/${event.target.value}`);
     }
 
   };

@@ -156,6 +156,13 @@ export function slugify(text) {
         ;
 }
 
+export function unSlugify(str) {
+    if(!str) {
+        return str
+    }
+    return toTitleCase(str.replace(/-/g, " ").replace(/\+/g, " "));
+}
+
 // https://github.com/ademidun/atila-angular/blob/617cd6547ff82d85689773d86841d74f98b12152/src/app/scholarship/scholarships-list/scholarships-list.component.ts#L576
 export function  transformLocation(placeResult) {
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {prettifyKeys, toTitleCase, transformFilterDisplay} from "../../services/utils";
+import {prettifyKeys, toTitleCase, transformFilterDisplay, unSlugify} from "../../services/utils";
 import ScholarshipCard from "./ScholarshipCard";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import {connect} from "react-redux";
@@ -19,11 +19,11 @@ class ScholarshipsList extends React.Component {
         super(props);
 
         const { userProfile,
-            location : { search }
+            match : { params : { searchString: searchStringRaw } },
         } = this.props;
 
-        const params = new URLSearchParams(search);
-        const searchString = params.get('q');
+        const searchString = unSlugify(searchStringRaw);
+        console.log({searchString, searchStringRaw});
 
         this.state = {
             model: null,
@@ -57,10 +57,9 @@ class ScholarshipsList extends React.Component {
         // https://reactjs.org/blog/2018/03/27/update-on-async-rendering.html#fetching-external-data-when-props-change
         // Store prevSlug in state so we can compare when props change.
         // Clear out previously-loaded data (so we don't render stale stuff).
-        const { location : { search } } = props;
         const { prevSearchString } = state;
-        const params = new URLSearchParams(search);
-        const searchString = params.get('q');
+        const { match : { params : { searchString: searchStringRaw } } } = props;
+        const searchString = unSlugify(searchStringRaw);
 
         if (searchString !== prevSearchString) {
             return {
@@ -232,17 +231,15 @@ class ScholarshipsList extends React.Component {
 
     render () {
         const {
-            location : { search },
+            match : { params : { searchString: searchStringRaw } },
             userProfile,
         } = this.props;
-        const params = new URLSearchParams(search);
+        const searchString = unSlugify(searchStringRaw);
 
         const { scholarships, isLoadingScholarships,
             totalScholarshipsCount, totalFunding,
             errorGettingScholarships, isCompleteProfile, searchPayload,
             pageNumber, viewAsUserString, viewAsUserProfile, viewAsUserError, scholarshipsScoreBreakdown} = this.state;
-
-        const searchString = params.get('q');
 
         let loadMoreScholarshipsOrRegisterCTA = null;
 
@@ -332,7 +329,7 @@ class ScholarshipsList extends React.Component {
             seoContent.title += `${searchString ? ` available for ${toTitleCase(searchString)} scholarships` : ''}`;
             seoContent.title += ' - Atila';
             seoContent.description = seoContent.title;
-            seoContent.slug = `/scholarship${search}`
+            seoContent.slug = `/scholarship/s/${searchString}`
         }
 
 

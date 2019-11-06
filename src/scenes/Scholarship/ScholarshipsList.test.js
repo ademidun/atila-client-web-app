@@ -30,7 +30,7 @@ describe('<ScholarshipsList />', () => {
         const wrapper = shallow(
             <MemoryRouter>
             <ScholarshipsList
-                location={{ search: '?q=engineering' }}
+                match={{ params: { searchString: 'engineering' } } }
                 store={store}
             />
             </MemoryRouter>

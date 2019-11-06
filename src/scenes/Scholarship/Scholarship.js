@@ -8,6 +8,7 @@ function Scholarship({ match }) {
     return (
         <Switch>
             <Route path={`${match.path}/add`} component={ScholarshipAddEdit} />
+            <Route path={`${match.path}/s/:searchString`} component={ScholarshipsList} />
             <Route path={`${match.path}/edit/:slug`} component={ScholarshipAddEdit} />
             <Route path={`${match.path}/:slug`} component={ScholarshipDetail} />
             <Route
