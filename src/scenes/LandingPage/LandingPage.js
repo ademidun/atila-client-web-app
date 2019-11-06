@@ -5,7 +5,6 @@ import 'antd/dist/antd.css';
 import './LandingPage.scss';
 import './Reponsive.scss';
 import WhatIsAtila from "./WhatIsAtila";
-import HowDoesAtilaMoreMoney from "./HowDoesAtilaMoreMoney";
 import HowItWorks from "./HowItWorks";
 import MoreFeatures from "./MoreFeatures";
 import LandingPageContent from "./LandingPageContent";
@@ -200,7 +199,6 @@ class LandingPage extends React.Component {
                             Register for Free
                         </Link>
                     </div>
-                    <HowDoesAtilaMoreMoney />
                     <HowItWorks/>
                     <MoreFeatures/>
                     <hr/>
