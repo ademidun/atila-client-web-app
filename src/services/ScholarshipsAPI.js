@@ -24,6 +24,16 @@ class ScholarshipsAPI {
         return apiCompletionPromise;
     };
 
+    static relatedItems = (id) => {
+
+        const apiCompletionPromise = request({
+            method: 'get',
+            url: `${Environment.apiUrlRecommender}/${id}`,
+        });
+
+        return apiCompletionPromise;
+    };
+
     static put = (id, scholarship, locationData) => {
 
         const apiCompletionPromise = request({

@@ -5,6 +5,7 @@ import ContentCard from "./ContentCard";
 import {genericItemTransform} from "../services/utils";
 import SearchApi from "../services/SearchAPI";
 import Loading from "./Loading";
+import ScholarshipsAPI from "../services/ScholarshipsAPI";
 
 class RelatedItems extends React.Component {
 
@@ -21,13 +22,26 @@ class RelatedItems extends React.Component {
 
         const { itemType, id } = this.props;
         this.setState({ isLoadingRelatedItems: true });
+        let relatedItemsPromise  = Promise.resolve();
+        if (itemType === 'scholarship') {
+            relatedItemsPromise = ScholarshipsAPI
+                .relatedItems(`${itemType}-${id}`);
+            relatedItemsPromise
+                .then(res => {
+                    console.log({res});
+                    const relatedItems = res.data.results.slice(0,3);
+                    this.setState({ relatedItems });
+                });
+        } else {
+            relatedItemsPromise = SearchApi.relatedItems(`?type=${itemType}&id=${id}`)
+            relatedItemsPromise
+                .then(res => {
 
-        SearchApi.relatedItems(`?type=${itemType}&id=${id}`)
-            .then(res => {
-
-                const relatedItems = (res.data.items.map(item => genericItemTransform(item)));
-                this.setState({ relatedItems });
-            })
+                    const relatedItems = (res.data.items.map(item => genericItemTransform(item)));
+                    this.setState({ relatedItems });
+                });
+        }
+        relatedItemsPromise
             .catch(err => {
                 console.log({ err});
             })
