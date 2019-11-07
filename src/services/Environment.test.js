@@ -12,18 +12,29 @@ it('renders the correct api url', () => {
     }
 
     for (let prop in EnvironmentStaging) {
-        if (Object.prototype.hasOwnProperty.call(EnvironmentDev, prop)) {
+        if (Object.prototype.hasOwnProperty.call(EnvironmentStaging, prop)) {
+
+            const propValue = EnvironmentStaging[prop];
             if (prop.toLowerCase().includes('api')) {
-                expect(EnvironmentStaging[prop]).toContain('staging');
+                expect(propValue).toContain('staging');
+            }
+
+            if (typeof propValue === 'string' && propValue.toLowerCase().includes('.execute-api.')) {
+                expect(propValue.endsWith('/staging')).toBeTruthy();
             }
         }
     }
 
     for (let prop in EnvironmentProd) {
-        if (Object.prototype.hasOwnProperty.call(EnvironmentDev, prop)) {
+        if (Object.prototype.hasOwnProperty.call(EnvironmentProd, prop)) {
+
+            const propValue = EnvironmentProd[prop];
             if (prop.toLowerCase().includes('api')) {
-                expect(EnvironmentProd[prop]).not.toContain('127.0.0.1');
-                expect(EnvironmentProd[prop]).not.toContain('staging');
+                expect(propValue).not.toContain('127.0.0.1');
+                expect(propValue).not.toContain('staging');
+            }
+            if (typeof propValue === 'string' && propValue.toLowerCase().includes('.execute-api.')) {
+                expect(propValue.endsWith('/prod')).toBeTruthy();
             }
         }
     }
