@@ -14,7 +14,7 @@ export const EnvironmentStaging = {
     apiUrl: 'https://atila-7-staging.herokuapp.com/api',
     apiUrlNodeMicroservice: 'https://tgrr8bis30.execute-api.us-east-1.amazonaws.com/staging',
     apiUrlBillingMicroservice: 'https://noitlizkka.execute-api.us-east-1.amazonaws.com/staging',
-    apiUrlRecommender: 'https://vxscnk0ex9.execute-api.us-east-1.amazonaws.com/staging',
+    apiUrlRecommender: 'https://ioqtbeqgob.execute-api.us-east-1.amazonaws.com/staging',
     STRIPE_PUBLIC_KEY: 'pk_test_AxhlK7IudWRlQCa4azz4WElP00QVVE6SNM',
 };
 
@@ -24,7 +24,7 @@ export const EnvironmentProd = {
     apiUrl: 'https://atila-7.herokuapp.com/api',
     apiUrlNodeMicroservice: 'https://yhpl8yynpk.execute-api.us-east-1.amazonaws.com/prod',
     apiUrlBillingMicroservice: 'https://eiqnyq1jx6.execute-api.us-east-1.amazonaws.com/prod',
-    apiUrlRecommender: 'https://icrbn6xobc.execute-api.us-east-1.amazonaws.com/prod',
+    apiUrlRecommender: 'https://ioqtbeqgob.execute-api.us-east-1.amazonaws.com/staging',
     STRIPE_PUBLIC_KEY: 'pk_live_AgHuMdhPDSk5eKrlwoHCnZnR00uIrfIHkM',
 };
 
