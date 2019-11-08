@@ -28,7 +28,7 @@ class ScholarshipsAPI {
 
         const apiCompletionPromise = request({
             method: 'get',
-            url: `${Environment.apiUrlRecommender}/${id}`,
+            url: `${Environment.apiUrlRecommender}/related/${id}`,
         });
 
         return apiCompletionPromise;

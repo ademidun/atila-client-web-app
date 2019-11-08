@@ -29,7 +29,10 @@ class RelatedItems extends React.Component {
             relatedItemsPromise
                 .then(res => {
                     console.log({res});
-                    const relatedItems = res.data.results.slice(0,3);
+                    let relatedItems = [];
+                    if (res.data.results) {
+                        relatedItems = res.data.results.slice(0,3);
+                    }
                     this.setState({ relatedItems });
                 });
         } else {

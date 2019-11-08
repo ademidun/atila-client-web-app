@@ -4,7 +4,7 @@ export const EnvironmentDev = {
     apiUrl: 'http://127.0.0.1:8000/api',
     apiUrlNodeMicroservice: 'http://127.0.0.1:9000',
     apiUrlBillingMicroservice: 'http://127.0.0.1:9001',
-    apiUrlRecommender: 'http://127.0.0.1:5000/related',
+    apiUrlRecommender: 'http://127.0.0.1:5000',
     STRIPE_PUBLIC_KEY: 'pk_test_AxhlK7IudWRlQCa4azz4WElP00QVVE6SNM',
 };
 
