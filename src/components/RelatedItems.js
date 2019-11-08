@@ -28,7 +28,6 @@ class RelatedItems extends React.Component {
                 .relatedItems(`${itemType}-${id}`);
             relatedItemsPromise
                 .then(res => {
-                    console.log({res});
                     let relatedItems = [];
                     if (res.data.results) {
                         relatedItems = res.data.results.slice(0,3);
@@ -36,7 +35,7 @@ class RelatedItems extends React.Component {
                     this.setState({ relatedItems });
                 });
         } else {
-            relatedItemsPromise = SearchApi.relatedItems(`?type=${itemType}&id=${id}`)
+            relatedItemsPromise = SearchApi.relatedItems(`?type=${itemType}&id=${id}`);
             relatedItemsPromise
                 .then(res => {
 
