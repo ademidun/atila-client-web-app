@@ -55,7 +55,7 @@ class Banner extends React.Component {
   };
 
   render() {
-    const { className, isMobile } = this.props;
+    const { className } = this.props;
     const  { searchQuery } = this.state;
 
     return (
