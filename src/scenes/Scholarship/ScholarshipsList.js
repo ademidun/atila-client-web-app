@@ -23,7 +23,6 @@ class ScholarshipsList extends React.Component {
         } = this.props;
 
         const searchString = unSlugify(searchStringRaw);
-        console.log({searchString, searchStringRaw});
 
         this.state = {
             model: null,

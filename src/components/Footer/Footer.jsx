@@ -70,11 +70,9 @@ function Footer({location, history}) {
               </Col>
               <Col md={6} sm={12} xs={12}>
                 <div className="footer-center">
-                  <div>
-                    <Link to="/profile/atilaeng">
-                      Engineering
-                    </Link>
-                  </div>
+                  <Link to="/profile/atilaeng">
+                    Engineering
+                  </Link>
                   <div>
                     <a href="https://tech.atila.ca"
                        target="_blank"
