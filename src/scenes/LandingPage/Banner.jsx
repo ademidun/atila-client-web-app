@@ -9,6 +9,7 @@ import {Link, withRouter} from "react-router-dom";
 import AutoComplete from "../../components/AutoComplete";
 import {MASTER_LIST_EVERYTHING_UNDERSCORE} from "../../models/ConstantsForm";
 import {slugify} from "../../services/utils";
+import moneyFaceEmoji from './assets/moneyFaceEmoji.png';
 
 const loop = {
   duration: 3000,
@@ -54,7 +55,7 @@ class Banner extends React.Component {
   };
 
   render() {
-    const { className, isMobile } = this.props;
+    const { className } = this.props;
     const  { searchQuery } = this.state;
 
     return (
@@ -75,10 +76,6 @@ class Banner extends React.Component {
           <ScrollParallax location="banner" className="banner-bg" animation={{ playScale: [1, 1.5], rotate: 0 }} />
         </div>
         <QueueAnim className={`${className} page`} type="alpha" delay={150}>
-          {isMobile && (
-            <div className="img-wrapper" key="image">
-              <BannerImage />
-            </div>)}
           <QueueAnim
             className="text-wrapper responsive-text"
             key="text"
@@ -88,10 +85,11 @@ class Banner extends React.Component {
               Atila
             </h1>
             <h2 key="h2">
-              Increase your chances of getting more money for school {' '}
-              <span role="img" aria-label="money emoji">
-                🤑
-              </span>
+              Get more money for school.<br/>
+              Find and apply to scholarships. <br/>
+              <img src={moneyFaceEmoji}
+                   style={{height: '55px'}}
+                   alt="money-face emoji"/>
             </h2>
             <form className="col-sm-12"
                   onSubmit={this.onSubmit}
@@ -133,10 +131,9 @@ class Banner extends React.Component {
               </div>
             </form>
           </QueueAnim>
-          {!isMobile && (
-            <div className="img-wrapper" key="image">
-              <ScrollParallax location="banner" component={BannerImage} animation={{ playScale: [1, 1.5], y: 80 }} />
-            </div>)}
+          <div className="img-wrapper" key="image">
+            <ScrollParallax location="banner" component={BannerImage} animation={{ playScale: [1, 1.5], y: 80 }} />
+          </div>
         </QueueAnim>
       </div>
     );

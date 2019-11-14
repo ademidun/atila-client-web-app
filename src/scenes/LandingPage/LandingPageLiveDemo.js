@@ -14,7 +14,7 @@ function LandingPageLiveDemo() {
             <div className="videowrapper text-center">
                 <iframe title="Atila Live demo Video"
                         src="//www.youtube.com/embed/c_K4342WMwQ?cc_load_policy=1"
-                        width="560" height="314">
+                        width="560" height="314" style={{maxWidth: '80%'}}>
                 </iframe>
             </div>
         </div>

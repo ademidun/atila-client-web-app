@@ -80,7 +80,7 @@ class AtilaPointsPaywallModal extends React.Component {
             guestOrUserProfileContent = (<span>
                         <h3>You have viewed {viewCount} {viewCountType} this Month</h3>
                         <h5>
-                            You are on a <Link to="/pricing">
+                            You're on a <Link to="/pricing">
                             free account
                         </Link> <br/> <br/>
                             You only have{' '}

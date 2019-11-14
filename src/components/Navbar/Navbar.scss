@@ -35,6 +35,12 @@ header {
   a:hover {
     text-decoration: none;
   }
+
+  @media (max-width: 800px) {
+    .ant-menu-item {
+      padding: 0 10px;
+    }
+  }
 }
 
 .home {

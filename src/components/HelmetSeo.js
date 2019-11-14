@@ -4,8 +4,8 @@ import React from "react";
 import $ from 'jquery';
 
 export const defaultSeoContent = {
-    title: 'Atila - Increase your chances of getting more money for school 🤑. Easily find and apply to scholarships.',
-    description: 'Increase your chances of getting more money for school 🤑. Easily find and apply to scholarships.',
+    title: 'Atila - Get more money for school 🤑. Easily find and apply to scholarships.',
+    description: 'Get more money for school 🤑. Easily find and apply to scholarships.',
     image: 'https://firebasestorage.googleapis.com/' +
         'v0/b/atila-7.appspot.com/o/public%2Fatila-landing-page-october-11-2019.png' +
         '?alt=media&token=f0cc7224-86f7-4365-9ff1-b53034ada0ad',

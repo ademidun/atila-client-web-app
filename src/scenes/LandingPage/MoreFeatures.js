@@ -6,6 +6,7 @@ import emailDigest1 from './assets/digest-email-screenshot-1.png';
 import emailDigest2 from './assets/digest-email-screenshot-2.png';
 import emailScholarshipDue from './assets/scholarship-due-email.png';
 import './MoreFeatures.scss';
+import scholarshipManagement from "./assets/scholarshipManagement.png";
 function MoreFeatures({title}) {
 
     return (
@@ -28,7 +29,7 @@ function MoreFeatures({title}) {
                                 🕐
                             </span>
                         </h3>
-                        <p >Save scholarships you are interested in and we'll let you know 7 days and 24 hours before the scholarship is due.</p>
+                        <p >Save scholarships you're interested in and we'll let you know 7 days and 24 hours before the scholarship is due.</p>
                     </div>
                     <div  className="card shadow m-3 p-3 col-lg-7 col-sm-12">
                         <img  alt="Get Notified when Scholarships are Due"
@@ -37,10 +38,26 @@ function MoreFeatures({title}) {
                     </div>
 
                 </div>
+                <div className="row">
+                    <div className="card shadow m-3 p-5 col-lg-4 col-sm-12">
+                        <h3>2. Manage your Scholarships
+                            <span role="img" aria-label="memo emoji">
+                            📝
+                            </span>
+                        </h3>
+                        <p>Easily manage all your scholarships in one place</p>
+                    </div>
+                    <div className="card shadow m-3 p-3 col-lg-7 col-sm-12">
+
+                        <img src={scholarshipManagement} id="view-scholarships-gif"
+                             alt="Find Your Scholarships" title="Find Your Scholarships"
+                             className="landing-page-gif landing-page-gif-mobile" />
+                    </div>
+                </div>
                 <div  className="row">
                     <div  className="card shadow m-3 p-5 col-lg-4 col-sm-12">
                         <h3>
-                            2. Get Notified BEFORE Scholarships are Due
+                            3. Get Notified BEFORE Scholarships are Due
                             <span role="img" aria-label="clock emoji">
                                 🕐
                             </span>
@@ -59,12 +76,12 @@ function MoreFeatures({title}) {
                 </div>
                 <div  className="row">
                     <div  className="card shadow m-3 p-5 col-lg-4 col-sm-12">
-                        <h3 >3. Read Other student's <Link to="essay">Essays</Link>
+                        <h3 >4. Read Other student's <Link to="essay">Essays</Link>
                             <span role="img" aria-label="people holding hands emoji">
                                 👫
                             </span>
                         </h3>
-                        <p >Read <Link to="essay">essays and past applications</Link> from other students for scholarships and schools you are interested in.</p>
+                        <p >Read <Link to="essay">essays and past applications</Link> from other students for scholarships and schools you're interested in.</p>
                     </div>
                     <div  className="card shadow m-3 p-3 col-lg-7 col-sm-12">
 

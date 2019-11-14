@@ -6,7 +6,7 @@ import { Link } from 'bisheng/router';
 const atilaThreeThings = [
     {
         img: (<span role="img" aria-label="money face emoji">🤑</span>),
-        name: 'Increase your Chances of Getting More Money for School',
+        name: 'Get more money for school',
     },
     {
         img: (<span role="img" aria-label="magnifying glass emoji">🔎</span>),
@@ -57,7 +57,7 @@ export default class WhatIsAtila extends React.PureComponent {
         <div className="page" >
           <h2 className="mt-5">What is Atila?</h2>
             <h4 className="text-center text-white p-5">
-                Atila is a free website that increases your chances of getting more money for school
+                Atila is a free website that helps you get more money for school
                 by making it easy to find and apply to scholarships.
             </h4>
             <h2>Atila Does 3<sup>*</sup> Things</h2>
