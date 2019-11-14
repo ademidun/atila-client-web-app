@@ -28,7 +28,7 @@ function MoreFeatures({title}) {
                                 🕐
                             </span>
                         </h3>
-                        <p >Save scholarships you are interested in and we'll let you know 7 days and 24 hours before the scholarship is due.</p>
+                        <p >Save scholarships you're interested in and we'll let you know 7 days and 24 hours before the scholarship is due.</p>
                     </div>
                     <div  className="card shadow m-3 p-3 col-lg-7 col-sm-12">
                         <img  alt="Get Notified when Scholarships are Due"
@@ -64,7 +64,7 @@ function MoreFeatures({title}) {
                                 👫
                             </span>
                         </h3>
-                        <p >Read <Link to="essay">essays and past applications</Link> from other students for scholarships and schools you are interested in.</p>
+                        <p >Read <Link to="essay">essays and past applications</Link> from other students for scholarships and schools you're interested in.</p>
                     </div>
                     <div  className="card shadow m-3 p-3 col-lg-7 col-sm-12">
 

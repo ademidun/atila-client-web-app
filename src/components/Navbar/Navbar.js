@@ -142,7 +142,7 @@ class Navbar extends React.Component {
                         </h2>
                     </Col>
                     <Col xxl={0} xl={0} lg={0} md={0} sm={0} xs={24}
-                         className="ml-4">
+                         className="ml-0">
                         <div className="header-meta">
                             <div id="menu">
                                 {menu}

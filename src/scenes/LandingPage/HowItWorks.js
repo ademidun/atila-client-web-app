@@ -36,7 +36,7 @@ function HowItWorks() {
                             🙎🏾‍♀️
                             </span>
                         </h3>
-                        <p>Tell us the schools and programs you are interested in.</p>
+                        <p>Tell us the schools and programs you're interested in.</p>
                     </div>
                     <div className="card shadow m-3 p-3 col-lg-7 col-sm-12">
 
