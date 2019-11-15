@@ -13,6 +13,7 @@ class ScholarshipCard extends React.Component {
 
         this.state = {
             showPreview: false,
+            hideScholarshipCard: false,
         }
     }
 
@@ -24,10 +25,21 @@ class ScholarshipCard extends React.Component {
 
     };
 
+    onHideScholarship = (event) => {
+        event.preventDefault();
+
+        this.setState({ hideScholarshipCard: true });
+
+    };
+
     render() {
 
         const { className, scholarship, viewAsUserProfile, matchScoreBreakdown } = this.props;
-        const { showPreview } = this.state;
+        const { showPreview, hideScholarshipCard } = this.state;
+
+        if (hideScholarshipCard) {
+            return null;
+        }
         const { name, description, funding_amount, slug, img_url } = scholarship;
 
         let descriptionText = showPreview ? description : `${description.substring(0,100)}`;
@@ -59,7 +71,8 @@ class ScholarshipCard extends React.Component {
                             <button className="btn btn-link" onClick={this.togglePreview} >
                                 {showPreview ? 'Show Less' : 'Show More'}
                             </button>
-                            <ScholarshipShareSaveButtons scholarship={scholarship} />
+                            <ScholarshipShareSaveButtons scholarship={scholarship}
+                                                         onHideScholarship={this.onHideScholarship} />
                         </div>
                     </div>
                 </div>

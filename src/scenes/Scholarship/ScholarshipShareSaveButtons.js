@@ -12,8 +12,9 @@ import {Link} from "react-router-dom";
 import {Tooltip} from "antd";
 import {addToMyScholarshipHelper} from "../../models/UserProfile";
 import UserProfileAPI from "../../services/UserProfileAPI";
-import {handleError} from "../../services/utils";
+import {handleError, transformErrorMessage} from "../../services/utils";
 import {updateLoggedInUserProfile} from "../../redux/actions/user";
+import BillingAPI from "../../services/BillingAPI";
 
 class ScholarshipShareSaveButtons extends React.Component {
 
@@ -28,7 +29,7 @@ class ScholarshipShareSaveButtons extends React.Component {
         }
 
         this.state = {
-            isSavedScholarship,
+            isSavedScholarship
         }
     }
 
@@ -67,6 +68,31 @@ class ScholarshipShareSaveButtons extends React.Component {
             })
             .catch(handleError);
 
+    };
+
+    notInterestedInScholarship = (event) => {
+        event.preventDefault();
+
+        const { userProfile, scholarship, onHideScholarship } = this.props;
+
+        if(!userProfile) {
+            return null;
+        }
+        userProfile.scholarships_not_interested.push(scholarship.id);
+
+        userProfile.metadata['stale_cache'] = true;
+        const scholarships_not_interested = userProfile.scholarships_not_interested;
+        UserProfileAPI.patch(
+            {
+                scholarships_not_interested, metadata: userProfile.metadata
+            }, userProfile.user)
+            .then(res => {
+                updateLoggedInUserProfile(res.data);
+                onHideScholarship(event);
+            })
+            .catch(err=> {
+                console.log({err});
+            });
     };
 
     render () {
@@ -138,7 +164,8 @@ class ScholarshipShareSaveButtons extends React.Component {
 
                 <Tooltip placement="right"
                          title="I'm Not eligible for this scholarship">
-                    <button className={`btn ml-1 ${isSavedScholarship ? 'btn-primary' : 'btn-outline-primary'}`}>
+                    <button className="btn btn-outline-primary ml-1"
+                            onClick={this.notInterestedInScholarship}>
                         <FontAwesomeIcon icon={faFrown}/>
                     </button>
                 </Tooltip>
@@ -151,11 +178,17 @@ class ScholarshipShareSaveButtons extends React.Component {
 
 ScholarshipShareSaveButtons.defaultProps = {
     userProfile: null,
+    onHideScholarship: (event)=>{
+        if(event && event.preventDefault) {
+            event.preventDefault();
+        }
+    },
 };
 
 ScholarshipShareSaveButtons.propTypes = {
     userProfile: PropTypes.shape({}),
     scholarship: PropTypes.shape({}).isRequired,
+    onHideScholarship: PropTypes.func
 };
 
 const mapDispatchToProps = {
