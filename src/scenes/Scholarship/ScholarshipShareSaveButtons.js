@@ -89,7 +89,11 @@ class ScholarshipShareSaveButtons extends React.Component {
             .then(res => {
                 updateLoggedInUserProfile(res.data);
                 const messageText = (<p>
-                    Your changes have been saved 😁. <br/>
+                    Your changes have been saved
+                    <span role="img" aria-label="grin emoji">
+                        😁
+                    </span>
+                        . <br/>
                     You will see less scholarships like this.
                 </p>);
                 message.success(messageText, 5);

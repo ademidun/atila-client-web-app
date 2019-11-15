@@ -11,6 +11,7 @@ import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar from "./components/Navbar/Navbar";
 import GoogleAnalyticsTracker from "./services/GoogleAnalyticsTracker";
+import ScrollToTop from "./components/ScrollToTop";
 
 const Pricing = loadable(() => import('./scenes/AtilaPremium/Pricing'), {
     fallback: <Loading />,
@@ -64,6 +65,7 @@ function App(props) {
 
     return (
             <Router>
+                <ScrollToTop />
                 <div className="App">
                     <ToastContainer />
                     <Navbar />
