@@ -14,6 +14,7 @@ import {addToMyScholarshipHelper} from "../../models/UserProfile";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import {handleError} from "../../services/utils";
 import {updateLoggedInUserProfile} from "../../redux/actions/user";
+import {message} from 'antd';
 
 class ScholarshipShareSaveButtons extends React.Component {
 
@@ -87,6 +88,11 @@ class ScholarshipShareSaveButtons extends React.Component {
             }, userProfile.user)
             .then(res => {
                 updateLoggedInUserProfile(res.data);
+                const messageText = (<p>
+                    Your changes have been saved 😁. <br/>
+                    You will see less scholarships like this.
+                </p>);
+                message.success(messageText, 5);
                 onHideScholarship(event);
             })
             .catch(err=> {
