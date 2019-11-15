@@ -366,3 +366,43 @@ export function guestPageViewsIncrement() {
 
     return guestPageViews;
 }
+
+/**
+ * get a nested field of an object using dotted path
+ * e.g. obj = scholarship, path='metadata.is_not_open'
+ * return scholarship[metadata][is_not_open]
+ * @see https://stackoverflow.com/a/8750472/
+ * @param obj
+ * @param path
+ * @returns {*}
+ */
+export function nestedFieldGet(obj, path) {
+    path=path.split('.');
+    let res = obj;
+    for (let i=0;i<path.length;i++){
+        if(!res) {
+            return res
+        }
+        res=res[path[i]]
+    }
+    return res;
+}
+
+/**
+ * update nested field of an object using dotted path
+ * (for now this function only goes one level deep
+ * e.g. obj = scholarship, path='metadata.is_not_open', value= true
+ * scholarship[metadata][is_not_open] = true
+ * return scholarship
+ * @param obj
+ * @param value
+ * @param path
+ * @returns {*}
+ */
+export function nestedFieldUpdate(obj, path, value) {
+    const updatedObj = Object.assign({}, obj);
+    path=path.split('.');
+    updatedObj[path[0]][path[1]] = value;
+
+    return updatedObj;
+}

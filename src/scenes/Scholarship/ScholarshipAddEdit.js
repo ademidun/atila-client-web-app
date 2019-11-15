@@ -3,7 +3,7 @@ import {Helmet} from "react-helmet";
 import FormDynamic from "../../components/Form/FormDynamic";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import {connect} from "react-redux";
-import {prettifyKeys, slugify, transformLocation} from "../../services/utils";
+import {nestedFieldGet, nestedFieldUpdate, prettifyKeys, slugify, transformLocation} from "../../services/utils";
 import Loading from "../../components/Loading";
 import {MAJORS_LIST, SCHOOLS_LIST} from "../../models/ConstantsForm";
 import {scholarshipUserProfileSharedFormConfigs, toastNotify} from "../../models/Utils";
@@ -67,7 +67,7 @@ const scholarshipFormConfigsPage1 = [
     {
         keyName: 'open_date',
         type: 'date',
-        isHide: (scholarship) => (scholarship.metadata && scholarship.metadata.not_open_yet),
+        isHidden: (scholarship) => (scholarship.metadata && !scholarship.metadata.not_open_yet),
         html: () =>(<label htmlFor="open_date">
             When does the scholarship open? <span role="img" aria-label="calendar emoji">🗓</span>
         </label>),
@@ -215,6 +215,11 @@ class ScholarshipAddEdit extends React.Component{
 
     updateForm = (event) => {
 
+        let value = event.target.value;
+
+        if (event.target.type==='checkbox'){
+            value = event.target.checked
+        }
         if (event.stopPropagation) {
             event.stopPropagation(); // https://github.com/facebook/react/issues/3446#issuecomment-82751540
         }
@@ -226,14 +231,12 @@ class ScholarshipAddEdit extends React.Component{
             this.setState({locationData});
 
         }
+        else if (event.target.name.includes('.')) {
+            const scholarship = nestedFieldUpdate(this.state.scholarship, event.target.name, value);
+            this.setState({scholarship});
+        }
         else {
             const scholarship = this.state.scholarship;
-
-            let value = event.target.value;
-
-            if (event.target.type==='checkbox'){
-                value = event.target.checked
-            }
 
             if ( Array.isArray(scholarship[event.target.name]) && !Array.isArray(value) ) {
                 scholarship[event.target.name].push(value);
