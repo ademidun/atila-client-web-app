@@ -1,15 +1,15 @@
-import moment from "moment";
 import React from "react";
+import PropTypes from 'prop-types';
+import moment from "moment";
 import {Tag} from "antd";
 import {ScholarshipPropType} from "../models/Scholarship";
 const todayMoment = moment(Date.now());
 
-function ScholarshipDeadlineWithTags({scholarship}) {
+function ScholarshipDeadlineWithTags({scholarship, datePrefix}) {
 
     const { deadline, open_date, metadata} = scholarship;
     let tag = null;
     let tagPrefix = 'due';
-    let datePrefix = 'Deadline: ';
     let color = null;
 
     let scholarshipDateMoment = moment(deadline);
@@ -49,7 +49,14 @@ function ScholarshipDeadlineWithTags({scholarship}) {
         </React.Fragment>
     );
 }
+
+ScholarshipDeadlineWithTags.defaultProps = {
+    datePrefix: 'Deadline: ',
+};
+
+
 ScholarshipDeadlineWithTags.propTypes = {
+    datePrefix: PropTypes.string,
     scholarship: ScholarshipPropType.isRequired,
 };
 export default ScholarshipDeadlineWithTags;

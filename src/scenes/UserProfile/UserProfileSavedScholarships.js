@@ -111,7 +111,7 @@ function SavedScholarshipsTable({ scholarships, removeSavedScholarship }){
             title: 'Deadline',
             key: 'deadline',
             dataIndex: 'deadline',
-            render: deadline => (<ScholarshipDeadlineWithTags deadline={deadline} />),
+            render: (deadline, scholarship) => (<ScholarshipDeadlineWithTags scholarship={scholarship} datePrefix="" />),
         },
         {
             title: 'Remove',

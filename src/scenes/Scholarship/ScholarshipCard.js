@@ -48,7 +48,7 @@ class ScholarshipCard extends React.Component {
                                 <h1 className="card-title text-left">{name}</h1>
                             </Link>
                             <p className="card-text">
-                                Deadline: <ScholarshipDeadlineWithTags deadline={deadline } />
+                                <ScholarshipDeadlineWithTags scholarship={scholarship} />
                                 <br/>
                                 Amount: {fundingString}
                             </p>
