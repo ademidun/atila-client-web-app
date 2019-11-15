@@ -60,6 +60,19 @@ const scholarshipFormConfigsPage1 = [
         </label>),
     },
     {
+        keyName: 'metadata.not_open_yet',
+        placeholder: 'Scholarship not open yet?',
+        type: 'checkbox',
+    },
+    {
+        keyName: 'open_date',
+        type: 'date',
+        isHide: (scholarship) => (scholarship.metadata && scholarship.metadata.not_open_yet),
+        html: () =>(<label htmlFor="open_date">
+            When does the scholarship open? <span role="img" aria-label="calendar emoji">🗓</span>
+        </label>),
+    },
+    {
         keyName: 'female_only',
         placeholder: 'Female Only? 🙍🏿',
         type: 'checkbox',
@@ -212,7 +225,8 @@ class ScholarshipAddEdit extends React.Component{
             locationData.push(newLocation);
             this.setState({locationData});
 
-        } else {
+        }
+        else {
             const scholarship = this.state.scholarship;
 
             let value = event.target.value;
