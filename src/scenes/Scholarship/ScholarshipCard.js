@@ -28,7 +28,7 @@ class ScholarshipCard extends React.Component {
 
         const { className, scholarship, viewAsUserProfile, matchScoreBreakdown } = this.props;
         const { showPreview } = this.state;
-        const { name, description, deadline, funding_amount, slug, img_url } = scholarship;
+        const { name, description, funding_amount, slug, img_url } = scholarship;
 
         let descriptionText = showPreview ? description : `${description.substring(0,100)}`;
         if (!showPreview && description.length > 100) {

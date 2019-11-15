@@ -3,7 +3,7 @@ import {Helmet} from "react-helmet";
 import FormDynamic from "../../components/Form/FormDynamic";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import {connect} from "react-redux";
-import {nestedFieldGet, nestedFieldUpdate, prettifyKeys, slugify, transformLocation} from "../../services/utils";
+import {nestedFieldUpdate, prettifyKeys, slugify, transformLocation} from "../../services/utils";
 import Loading from "../../components/Loading";
 import {MAJORS_LIST, SCHOOLS_LIST} from "../../models/ConstantsForm";
 import {scholarshipUserProfileSharedFormConfigs, toastNotify} from "../../models/Utils";

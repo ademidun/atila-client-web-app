@@ -7,7 +7,7 @@ const todayMoment = moment(Date.now());
 
 function ScholarshipDeadlineWithTags({scholarship, datePrefix}) {
 
-    const { deadline, open_date, metadata} = scholarship;
+    const { deadline, open_date} = scholarship;
     let tag = null;
     let tagPrefix = 'due';
     let color = null;
