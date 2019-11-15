@@ -13,10 +13,7 @@ function ScholarshipDeadlineWithTags({scholarship, datePrefix}) {
     let color = null;
 
     let scholarshipDateMoment = moment(deadline);
-    console.log({open_date});
-    console.log(' todayMoment.toISOString()',  todayMoment.toISOString());
-    console.log('open_date > todayMoment.toISOString()', open_date > todayMoment.toISOString());
-    if (open_date && metadata && metadata.not_open_yet && open_date > todayMoment.toISOString()) {
+    if (open_date && open_date > todayMoment.toISOString()) {
         scholarshipDateMoment = moment(open_date);
         tagPrefix = 'opens';
         datePrefix = 'Opens: ';
@@ -34,10 +31,6 @@ function ScholarshipDeadlineWithTags({scholarship, datePrefix}) {
             color = 'geekblue';
         }
         tag = `${tagPrefix} ${scholarshipDateMoment.fromNow()}`;
-    }
-
-    if(!tag) {
-        return null;
     }
     return (
         <React.Fragment>
