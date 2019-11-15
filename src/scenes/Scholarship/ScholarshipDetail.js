@@ -96,7 +96,7 @@ class ScholarshipDetail extends React.Component {
                         this.setState({ scholarshipUserProfile: res.data });
                     })
             })
-            .catch(err => {
+            .catch(() => {
                 this.setState({ errorLoadingScholarship: true });
             })
             .finally(() => {
@@ -131,7 +131,7 @@ class ScholarshipDetail extends React.Component {
                     isLoading={isLoadingScholarship}
                     title={'Loading Scholarships..'} />)
         }
-        const { id, name, description, deadline, funding_amount,
+        const { id, name, description, funding_amount,
             slug, img_url, criteria_info, scholarship_url, form_url, is_not_available } = scholarship;
         const fundingString = formatCurrency(Number.parseInt(funding_amount), true);
 
@@ -193,7 +193,7 @@ class ScholarshipDetail extends React.Component {
                                     Go Back ←
                                 </button>
                                 <p className="font-weight-bold">
-                                    Deadline: <ScholarshipDeadlineWithTags deadline={deadline } />
+                                    <ScholarshipDeadlineWithTags scholarship={scholarship} />
                                     <br/>
                                     Amount: {fundingString}
                                 </p>

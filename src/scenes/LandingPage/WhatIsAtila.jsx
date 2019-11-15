@@ -2,18 +2,21 @@ import React from 'react';
 import QueueAnim from 'rc-queue-anim';
 import { Row, Col } from 'antd';
 import { Link } from 'bisheng/router';
+import moneyFaceEmoji from './assets/moneyFaceEmoji.png';
+import relievedFaceEmoji from './assets/relievedFaceEmoji.png';
+import magnifyingGlassEmoji from './assets/magnifyingGlassEmoji.png';
 
 const atilaThreeThings = [
     {
-        img: (<span role="img" aria-label="money face emoji">🤑</span>),
+        img: moneyFaceEmoji,
         name: 'Get more money for school',
     },
     {
-        img: (<span role="img" aria-label="magnifying glass emoji">🔎</span>),
+        img: magnifyingGlassEmoji,
         name: 'Makes it easy to find scholarships',
     },
     {
-        img: (<span role="img" aria-label="magnifying glass emoji">😌</span>),
+        img: relievedFaceEmoji,
         name: 'Makes it Easy to apply for scholarships',
     },
 ];
@@ -45,7 +48,9 @@ export default class WhatIsAtila extends React.PureComponent {
             onMouseLeave={this.onMouseOut}
           >
             <div className="page1-image font-size-40px">
-              {item.img}
+                <img src={item.img}
+                     style={{height: '55px'}}
+                     alt={item.name}/>
             </div>
             <h3 >{item.name}</h3>
           </QueueAnim>

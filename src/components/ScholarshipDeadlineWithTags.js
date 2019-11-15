@@ -1,15 +1,25 @@
-import moment from "moment";
 import React from "react";
+import PropTypes from 'prop-types';
+import moment from "moment";
 import {Tag} from "antd";
+import {ScholarshipPropType} from "../models/Scholarship";
 const todayMoment = moment(Date.now());
 
-function ScholarshipDeadlineWithTags({deadline}) {
+function ScholarshipDeadlineWithTags({scholarship, datePrefix}) {
 
+    const { deadline, open_date, metadata} = scholarship;
     let tag = null;
+    let tagPrefix = 'due';
     let color = null;
-    const deadlineMoment = moment(deadline);
-    const daysFromDeadline = deadlineMoment.diff(todayMoment, 'days');
-    const deadlineString = moment(deadline).format('dddd, MMMM DD, YYYY');
+
+    let scholarshipDateMoment = moment(deadline);
+    if (open_date && metadata && metadata.not_open_yet && open_date > todayMoment.toISOString()) {
+        scholarshipDateMoment = moment(open_date);
+        tagPrefix = 'opens';
+        datePrefix = 'Opens: ';
+    }
+    const daysFromDeadline = scholarshipDateMoment.diff(todayMoment, 'days');
+    const scholarshipDateString = scholarshipDateMoment.format('dddd, MMMM DD, YYYY');
 
     if (daysFromDeadline < 0) {
         color = 'volcano';
@@ -20,15 +30,11 @@ function ScholarshipDeadlineWithTags({deadline}) {
         } else {
             color = 'geekblue';
         }
-        tag = `due ${moment(deadline).fromNow()}`;
-    }
-
-    if(!tag) {
-        return null;
+        tag = `${tagPrefix} ${scholarshipDateMoment.fromNow()}`;
     }
     return (
         <React.Fragment>
-            {deadlineString}{' '}
+            {datePrefix} {scholarshipDateString}{' '}
             {tag &&
             <Tag color={color} key={tag}>
                 {tag.toUpperCase()}
@@ -37,4 +43,13 @@ function ScholarshipDeadlineWithTags({deadline}) {
     );
 }
 
+ScholarshipDeadlineWithTags.defaultProps = {
+    datePrefix: 'Deadline: ',
+};
+
+
+ScholarshipDeadlineWithTags.propTypes = {
+    datePrefix: PropTypes.string,
+    scholarship: ScholarshipPropType.isRequired,
+};
 export default ScholarshipDeadlineWithTags;

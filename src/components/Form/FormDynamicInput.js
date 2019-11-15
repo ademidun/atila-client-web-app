@@ -1,4 +1,4 @@
-import {prettifyKeys} from "../../services/utils";
+import {nestedFieldGet, prettifyKeys} from "../../services/utils";
 import React from "react";
 import ArrayEdit from "../ArrayEdit";
 import AutoComplete from "../AutoComplete";
@@ -21,23 +21,35 @@ const editorChange = ( event, editor, name, updateForm ) => {
 
 function FormDynamicInput({model, onUpdateForm, inputConfig}) {
 
-    const {type, keyName, html, suggestions, className, options, valueDisplay} = inputConfig;
+    const {type, keyName, html, suggestions, className, options, valueDisplay, isHidden} = inputConfig;
     let {placeholder} = inputConfig;
     let inputForm = null;
+
+    if(isHidden && isHidden(model)) {
+        return null
+    }
 
     if (!placeholder) {
         placeholder = prettifyKeys(keyName);
     }
 
     // to prevent null value on inputs (controlled inputs)
-    model[keyName] = model[keyName] || '';
+
+    let modelValue = model[keyName];
+    if (keyName.includes('.')) {
+        modelValue = nestedFieldGet(model, keyName);
+    }
+
+    // to fix controlled components issue: https://fb.me/react-controlled-components
+    modelValue = modelValue || '';
+
     switch (type) {
         case 'textarea':
             inputForm = (
                 <textarea placeholder={placeholder}
                           className="col-12 mb-3 form-control"
                           name={keyName}
-                          value={model[keyName]}
+                          value={modelValue}
                           onChange={onUpdateForm}
                 />
             );
@@ -51,7 +63,7 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
                     <input placeholder={placeholder}
                            type="checkbox"
                            name={keyName}
-                           checked={model[keyName]}
+                           checked={modelValue}
                            onChange={onUpdateForm}
                     />
                 </div>
@@ -66,7 +78,7 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
                     <select
                         className="form-control"
                         name={keyName}
-                        value={model[keyName]||placeholder}
+                        value={modelValue||placeholder}
                         onChange={onUpdateForm}
                     >
                         <option key={placeholder} disabled hidden>{placeholder}</option>
@@ -78,7 +90,7 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
         case 'autocomplete':
             inputForm = (
                 <React.Fragment>
-                    <ArrayEdit itemsList={model[keyName]}
+                    <ArrayEdit itemsList={modelValue}
                                keyName={keyName}
                                model={model}
                                onUpdateItemsList={onUpdateForm}/>
@@ -95,11 +107,11 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
                 <React.Fragment>
                     <label htmlFor={keyName}>
                         {placeholder}:{' '}
-                    </label> <strong> {model[keyName]} </strong>
+                    </label> <strong> {modelValue} </strong>
                     <AutoComplete suggestions={suggestions}
                                   placeholder={placeholder}
                                   onSelected={onUpdateForm}
-                                  value={model[keyName]}
+                                  value={modelValue}
                                   keyName={keyName}/>
                 </React.Fragment>
             );
@@ -134,7 +146,7 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
                 <React.Fragment>
                     <CKEditor
                         editor={InlineEditor}
-                        data={model[keyName]}
+                        data={modelValue}
                         onChange={ (event, editor) => editorChange(event, editor, keyName, onUpdateForm) }
                     />
                 </React.Fragment>
@@ -145,7 +157,7 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
                 <input placeholder={placeholder}
                        className="col-12 mb-3 form-control"
                        name={keyName}
-                       value={model[keyName]}
+                       value={modelValue}
                        onChange={onUpdateForm}
                        type={type}
                 />);

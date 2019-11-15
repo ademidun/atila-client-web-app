@@ -52,6 +52,7 @@ export let defaultScholarship = {
     scholarship_url: '',
     form_url: '',
     deadline: '2022-12-31T23:59:00',
+    open_date: '2022-12-31',
     funding_amount: '',
     funding_type: ['Scholarship'],
     female_only: false,
