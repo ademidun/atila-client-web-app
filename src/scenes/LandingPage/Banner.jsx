@@ -89,7 +89,7 @@ class Banner extends React.Component {
               Find and apply to scholarships. <br/>
               <img src={moneyFaceEmoji}
                    style={{height: '55px'}}
-                   alt="money-face emoji"/>
+                   alt="money face emoji"/>
             </h2>
             <form className="col-sm-12"
                   onSubmit={this.onSubmit}
