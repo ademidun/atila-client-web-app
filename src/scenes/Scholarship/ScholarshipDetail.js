@@ -193,7 +193,7 @@ class ScholarshipDetail extends React.Component {
                                     Go Back ←
                                 </button>
                                 <p className="font-weight-bold">
-                                    Deadline: <ScholarshipDeadlineWithTags deadline={deadline } />
+                                    <ScholarshipDeadlineWithTags scholarship={scholarship} />
                                     <br/>
                                     Amount: {fundingString}
                                 </p>
