@@ -6,6 +6,8 @@ import ScholarshipShareSaveButtons from "./ScholarshipShareSaveButtons";
 import ScholarshipExtraCriteria from "./ScholarshipExtraCriteria";
 import ScholarshipDeadlineWithTags from "../../components/ScholarshipDeadlineWithTags";
 
+import {Motion, spring} from 'react-motion';
+
 class ScholarshipCard extends React.Component {
 
     constructor(props) {
@@ -13,7 +15,8 @@ class ScholarshipCard extends React.Component {
 
         this.state = {
             showPreview: false,
-            hideScholarshipCard: false,
+            scholarshipHideStart: false,
+            scholarshipHideFinish: false,
         }
     }
 
@@ -25,21 +28,18 @@ class ScholarshipCard extends React.Component {
 
     };
 
-    onHideScholarship = (event) => {
-        event.preventDefault();
-
-        this.setState({ hideScholarshipCard: true });
-
+    onHideScholarship = () => {
+        this.setState({ scholarshipHideStart: true });
+    };
+    onHideScholarshipFinished = () => {
+        this.setState({ scholarshipHideFinish: true });
     };
 
     render() {
 
         const { className, scholarship, viewAsUserProfile, matchScoreBreakdown } = this.props;
-        const { showPreview, hideScholarshipCard } = this.state;
+        const { showPreview, scholarshipHideStart, scholarshipHideFinish } = this.state;
 
-        if (hideScholarshipCard) {
-            return null;
-        }
         const { name, description, funding_amount, slug, img_url } = scholarship;
 
         let descriptionText = showPreview ? description : `${description.substring(0,100)}`;
@@ -47,41 +47,51 @@ class ScholarshipCard extends React.Component {
             descriptionText +='...'
         }
 
+        const scholarshipCardStyle = {display: scholarshipHideFinish? 'none' : 'flex'};
+
         const fundingString = formatCurrency(Number.parseInt(funding_amount), true);
         return (
-            <div className={`${className} card shadow my-4`}>
-                <div className="row no-gutters">
-                    <div className="col-md-4">
-                        <img src={img_url} className="card-img mt-4" alt={name} />
-                    </div>
-                    <div className="col-md-8">
-                        <div className="card-body">
-                            <Link to={`/scholarship/${slug}`}>
-                                <h1 className="card-title text-left">{name}</h1>
-                            </Link>
-                            <p className="card-text">
-                                <ScholarshipDeadlineWithTags scholarship={scholarship} />
-                                <br/>
-                                Amount: {fundingString}
-                            </p>
-                            <p className="card-text">{descriptionText}</p>
-                            {showPreview &&
-                            <ScholarshipExtraCriteria scholarship={scholarship} viewAsUserProfile={viewAsUserProfile} />
-                            }
-                            <button className="btn btn-link" onClick={this.togglePreview} >
-                                {showPreview ? 'Show Less' : 'Show More'}
-                            </button>
-                            <ScholarshipShareSaveButtons scholarship={scholarship}
-                                                         onHideScholarship={this.onHideScholarship} />
+            <Motion defaultStyle={{maxHeight: 1000}}
+                    style={{maxHeight: spring(scholarshipHideStart? 0 : 1000)}}
+                    onRest={this.onHideScholarshipFinished}
+            >
+                {(interpolatingStyle)=>
+                <div className={`${className} card shadow my-4`}
+                        style={{...scholarshipCardStyle,...interpolatingStyle}} >
+                    <div className="row no-gutters">
+                        <div className="col-md-4">
+                            <img src={img_url} className="card-img mt-4" alt={name} />
+                        </div>
+                        <div className="col-md-8">
+                            <div className="card-body">
+                                <Link to={`/scholarship/${slug}`}>
+                                    <h1 className="card-title text-left">{name}</h1>
+                                </Link>
+                                <p className="card-text">
+                                    <ScholarshipDeadlineWithTags scholarship={scholarship} />
+                                    <br/>
+                                    Amount: {fundingString}
+                                </p>
+                                <p className="card-text">{descriptionText}</p>
+                                {showPreview &&
+                                <ScholarshipExtraCriteria scholarship={scholarship} viewAsUserProfile={viewAsUserProfile} />
+                                }
+                                <button className="btn btn-link" onClick={this.togglePreview} >
+                                    {showPreview ? 'Show Less' : 'Show More'}
+                                </button>
+                                <ScholarshipShareSaveButtons scholarship={scholarship}
+                                                             onHideScholarship={this.onHideScholarship} />
+                            </div>
                         </div>
                     </div>
-                </div>
-                { matchScoreBreakdown &&
+                    { matchScoreBreakdown &&
                     <pre style={{maxHeight: '350px'}}>
                         {JSON.stringify(matchScoreBreakdown, null, 4)}
                     </pre>
+                    }
+                </div>
                 }
-            </div>
+            </Motion>
         );
     }
 }

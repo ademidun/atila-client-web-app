@@ -12,9 +12,8 @@ import {Link} from "react-router-dom";
 import {Tooltip} from "antd";
 import {addToMyScholarshipHelper} from "../../models/UserProfile";
 import UserProfileAPI from "../../services/UserProfileAPI";
-import {handleError, transformErrorMessage} from "../../services/utils";
+import {handleError} from "../../services/utils";
 import {updateLoggedInUserProfile} from "../../redux/actions/user";
-import BillingAPI from "../../services/BillingAPI";
 
 class ScholarshipShareSaveButtons extends React.Component {
 
@@ -178,11 +177,7 @@ class ScholarshipShareSaveButtons extends React.Component {
 
 ScholarshipShareSaveButtons.defaultProps = {
     userProfile: null,
-    onHideScholarship: (event)=>{
-        if(event && event.preventDefault) {
-            event.preventDefault();
-        }
-    },
+    onHideScholarship: ()=>{},
 };
 
 ScholarshipShareSaveButtons.propTypes = {
