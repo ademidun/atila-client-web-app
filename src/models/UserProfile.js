@@ -8,7 +8,8 @@ export const UserProfileTest1 = {
     major: 'Basketball',
     id: 1,
     is_atila_admin: false,
-    eligible_programs: []
+    eligible_programs: [],
+    saved_scholarships: [],
 };
 
 export const userProfileFormConfig = [

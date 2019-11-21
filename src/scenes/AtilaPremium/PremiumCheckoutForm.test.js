@@ -26,8 +26,8 @@ jest.mock('react-stripe-elements', () => {
 
 const mockStore = configureStore();
 import configureStore from "redux-mock-store";
-import {ReduxStateLoggedIn} from "../../models/Constants";
-const store = mockStore(ReduxStateLoggedIn);
+import {initialReduxStateLoggedIn} from "../../models/Constants";
+const store = mockStore(initialReduxStateLoggedIn);
 
 // Invoice component uses Redux so you need to use a provider for them
 describe('<PremiumCheckoutForm />', () => {
