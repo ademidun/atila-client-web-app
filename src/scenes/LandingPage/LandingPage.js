@@ -12,31 +12,42 @@ import SubscribeMailingList from "../../components/SubscribeMailingList";
 import {Link} from "react-router-dom";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import {blogs, essays} from "./LandingPageData";
+import {connect} from "react-redux";
+import BannerLoggedIn from "./BannerLoggedIn";
 
 class LandingPage extends React.Component {
 
     render() {
+
+        const { userProfile } = this.props;
         return (
                 <div className="page-wrapper home">
                     <HelmetSeo content={defaultSeoContent}/>
-                    <Banner/>
-                    <WhatIsAtila/>
-                    <div className="p-5">
-                        <Link to="/register" className="btn btn-primary center-block font-size-xl">
-                            Register for Free
-                        </Link>
-                    </div>
-                    <HowItWorks/>
-                    <MoreFeatures/>
-                    <hr/>
+
+                    {!userProfile && <Banner/>}
+                    {userProfile && <BannerLoggedIn/>}
+
+                    {!userProfile &&
+                    <React.Fragment>
+                        <WhatIsAtila/>
+                        <div className="p-5">
+                            <Link to="/register" className="btn btn-primary center-block font-size-xl">
+                                Register for Free
+                            </Link>
+                        </div>
+                        <HowItWorks/>
+                        <MoreFeatures/>
+                        <hr/>
+                    </React.Fragment>
+                    }
                     <LandingPageContent
                         title={'Blog'}
-                        description={"Learn from other students' stories"}
+                        description={!userProfile? "Learn from other students' stories": null}
                         contentList={blogs} />
                     <hr/>
                     <LandingPageContent
                         title={'Essays'}
-                        description={"Read the essays that got students acceptance to top schools and win major scholarships."}
+                        description={!userProfile? "Read the essays that got students acceptance to top schools and win major scholarships.": null}
                         contentList={essays} />
                     <hr />
                     <LandingPageLiveDemo />
@@ -51,4 +62,8 @@ class LandingPage extends React.Component {
         );
     }
 }
-export default LandingPage;
+const mapStateToProps = state => {
+    return { userProfile: state.data.user.loggedInUserProfile };
+};
+export default connect(mapStateToProps)(LandingPage);
+

@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import {toastNotify} from "../models/Utils";
 import {MAX_BLOG_PAGE_VIEWS, MAX_ESSAY_PAGE_VIEWS, MAX_SCHOLARSHIP_PAGE_VIEWS} from "../models/Constants";
+import moment from "moment";
 
 export function makeXHRRequestAsPromise (method, url, data) {
     return new Promise(function (resolve, reject) {
@@ -405,4 +406,32 @@ export function nestedFieldUpdate(obj, path, value) {
     updatedObj[path[0]][path[1]] = value;
 
     return updatedObj;
+}
+
+/**
+ * @see https://gist.github.com/James1x0/8443042
+ *The const "humanizedGreeting" below will equal (assuming the time is 8pm)
+ * "Good evening, James."
+ const user = "James";
+ var humanizedGreeting = "Good " + getGreetingTime(moment()) + ", " + user + ".";
+ * @returns {string}
+ */
+export function getGreetingTime () {
+    let greeting = null; //return greeting
+
+    const m = moment();
+
+    const split_afternoon = 12; //24hr time to split the afternoon
+    const split_evening = 17; //24hr time to split the evening
+    const currentHour = parseFloat(m.format("HH"));
+
+    if(currentHour >= split_afternoon && currentHour <= split_evening) {
+        greeting = "afternoon";
+    } else if(currentHour >= split_evening) {
+        greeting = "evening";
+    } else {
+        greeting = "morning";
+    }
+
+    return greeting;
 }

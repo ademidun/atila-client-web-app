@@ -10,9 +10,12 @@ function LandingPageContent({ title, description, contentList }) {
         <div className="p-5">
             <h1 className="col-sm-12 text-center">
                 <Link to={`/${title.toLowerCase()}`}> {title} </Link></h1>
+            {
+            description &&
             <h2 className="col-sm-12 text-center">
                 {description}
             </h2>
+            }
             <div className="row ml-md-4">
                 {contentList.map( content => (<ContentCard className="max-width-md-30 m-2"
                                                            key={content.title}
@@ -22,10 +25,12 @@ function LandingPageContent({ title, description, contentList }) {
     );
 }
 
-
+LandingPageContent.defaultProps = {
+    description: null,
+};
 LandingPageContent.propTypes = {
     title: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
+    description: PropTypes.string,
     contentList: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 

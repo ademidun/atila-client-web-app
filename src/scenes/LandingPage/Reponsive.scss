@@ -42,6 +42,11 @@
   .banner.page {
     height: 700px;
   }
+  .logged-in {
+    .banner.page {
+      height: 400px;
+    }
+  }
   .page1 {
     min-height: 1538px;
   }

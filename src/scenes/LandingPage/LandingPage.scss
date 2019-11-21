@@ -85,6 +85,17 @@ $border-color: rgba(229, 231, 235, 100);
   margin: 8px 0 28px;
   letter-spacing: 0;
 }
+.logged-in {
+  .banner .text-wrapper {
+    width: 500px;
+  }
+}
+.logged-in {
+  .banner .text-wrapper h1 {
+    font-size: 50px;
+    line-height: 65px;
+  }
+}
 .banner .text-wrapper p {
   font-size: 20px;
   line-height: 40px;
