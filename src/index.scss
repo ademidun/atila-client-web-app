@@ -43,6 +43,11 @@ a:hover {
   max-width: fit-content;
 }
 
+.max-width-md-30 {
+  h1 {
+    font-size: 25px;
+  }
+}
 @media (min-width: 768px) {
   .max-width-md-30 {
     max-width: 30%;

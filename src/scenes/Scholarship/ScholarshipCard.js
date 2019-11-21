@@ -37,7 +37,7 @@ class ScholarshipCard extends React.Component {
 
     render() {
 
-        const { className, scholarship, viewAsUserProfile, matchScoreBreakdown } = this.props;
+        const { className, scholarship, viewAsUserProfile, matchScoreBreakdown, isOneColumn } = this.props;
         const { showPreview, scholarshipHideStart, scholarshipHideFinish } = this.state;
 
         const { name, description, funding_amount, slug, img_url } = scholarship;
@@ -59,10 +59,10 @@ class ScholarshipCard extends React.Component {
                 <div className={`${className} card shadow my-4`}
                         style={{...scholarshipCardStyle,...interpolatingStyle}} >
                     <div className="row no-gutters">
-                        <div className="col-md-4">
+                        <div className={isOneColumn ? null: "col-md-4"}>
                             <img src={img_url} className="card-img mt-4" alt={name} />
                         </div>
-                        <div className="col-md-8">
+                        <div className={isOneColumn ? null: "col-md-8"}>
                             <div className="card-body">
                                 <Link to={`/scholarship/${slug}`}>
                                     <h1 className="card-title text-left">{name}</h1>
@@ -79,6 +79,7 @@ class ScholarshipCard extends React.Component {
                                 <button className="btn btn-link" onClick={this.togglePreview} >
                                     {showPreview ? 'Show Less' : 'Show More'}
                                 </button>
+                                {isOneColumn && <br />}
                                 <ScholarshipShareSaveButtons scholarship={scholarship}
                                                              onHideScholarship={this.onHideScholarship} />
                             </div>
@@ -100,10 +101,12 @@ ScholarshipCard.defaultProps = {
     className: '',
     viewAsUserProfile: null,
     matchScoreBreakdown: null,
+    isOneColumn: null,
 };
 
 ScholarshipCard.propTypes = {
     className: PropTypes.string,
+    isOneColumn: PropTypes.bool,
     scholarship: PropTypes.shape({}),
     viewAsUserProfile: PropTypes.shape({}),
     matchScoreBreakdown: PropTypes.shape({}),

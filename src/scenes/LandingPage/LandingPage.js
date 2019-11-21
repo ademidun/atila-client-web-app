@@ -14,18 +14,54 @@ import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import {blogs, essays} from "./LandingPageData";
 import {connect} from "react-redux";
 import BannerLoggedIn from "./BannerLoggedIn";
+import ScholarshipsAPI from "../../services/ScholarshipsAPI";
+import Loading from "../../components/Loading";
 
 class LandingPage extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            scholarshipsDueSoon: null,
+        }
+    }
+    componentDidMount() {
+        this.loadContent();
+    }
+
+    loadContent = () => {
+
+        this.setState({ scholarshipsDueSoonIsLoading: true });
+        ScholarshipsAPI.getDueSoon()
+            .then(res => {
+                const scholarshipsDueSoon = res.data.results;
+                this.setState({ scholarshipsDueSoon });
+            })
+            .catch(() => {})
+            .finally(() => {
+                this.setState({ scholarshipsDueSoonIsLoading: false });
+            });
+    };
 
     render() {
 
         const { userProfile } = this.props;
+        const { scholarshipsDueSoon, scholarshipsDueSoonIsLoading } = this.state;
         return (
                 <div className="page-wrapper home">
                     <HelmetSeo content={defaultSeoContent}/>
 
                     {!userProfile && <Banner/>}
                     {userProfile && <BannerLoggedIn/>}
+                    {scholarshipsDueSoonIsLoading &&
+                    <Loading title="Loading Scholarships ..." />
+                    }
+                    {scholarshipsDueSoon &&
+                    <LandingPageContent title="Scholarships Due Soon"
+                                        contentList={scholarshipsDueSoon}
+                                        contentType="scholarship" />
+                    }
 
                     {!userProfile &&
                     <React.Fragment>
