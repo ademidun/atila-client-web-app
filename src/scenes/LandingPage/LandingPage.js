@@ -1,5 +1,4 @@
 import React from 'react';
-import {enquireScreen} from 'enquire-js';
 import Banner from './Banner';
 import 'antd/dist/antd.css';
 import './LandingPage.scss';
@@ -13,49 +12,86 @@ import SubscribeMailingList from "../../components/SubscribeMailingList";
 import {Link} from "react-router-dom";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import {blogs, essays} from "./LandingPageData";
-
-let isMobile = false;
-enquireScreen((b) => {
-    isMobile = b;
-});
+import {connect} from "react-redux";
+import BannerLoggedIn from "./BannerLoggedIn";
+import ScholarshipsAPI from "../../services/ScholarshipsAPI";
+import Loading from "../../components/Loading";
 
 class LandingPage extends React.Component {
+
     constructor(props) {
         super(props);
+
         this.state = {
-            isMobile,
-        };
+            scholarshipsDueSoon: null,
+        }
+    }
+    componentDidMount() {
+        this.loadContent();
     }
 
-    componentDidMount() {
-        enquireScreen((b) => {
-            this.setState({
-                isMobile: !!b,
+    loadContent = () => {
+
+        this.setState({ scholarshipsDueSoonIsLoading: true });
+        ScholarshipsAPI.getDueSoon()
+            .then(res => {
+                const scholarshipsDueSoon = res.data.results;
+                this.setState({ scholarshipsDueSoon });
+            })
+            .catch(() => {})
+            .finally(() => {
+                this.setState({ scholarshipsDueSoonIsLoading: false });
             });
-        });
-    }
+    };
+
     render() {
+
+        const { userProfile } = this.props;
+        const { scholarshipsDueSoon, scholarshipsDueSoonIsLoading } = this.state;
         return (
                 <div className="page-wrapper home">
                     <HelmetSeo content={defaultSeoContent}/>
-                    <Banner isMobile={this.state.isMobile} />
-                    <WhatIsAtila isMobile={this.state.isMobile} />
-                    <div className="p-5">
-                        <Link to="/register" className="btn btn-primary center-block font-size-xl">
-                            Register for Free
-                        </Link>
-                    </div>
-                    <HowItWorks/>
-                    <MoreFeatures/>
-                    <hr/>
+
+                    {!userProfile &&
+                    <React.Fragment>
+                        <Banner/>
+                        <WhatIsAtila/>
+                        <div className="p-5">
+                            <Link to="/register" className="btn btn-primary center-block font-size-xl">
+                                Register for Free
+                            </Link>
+                        </div>
+                        <HowItWorks/>
+                        <MoreFeatures/>
+                        <hr/>
+                        {scholarshipsDueSoonIsLoading &&
+                        <Loading title="Loading Scholarships ..." />
+                        }
+                        <LandingPageContent title="Scholarships Due Soon"
+                                            contentList={scholarshipsDueSoon}
+                                            contentType="scholarship" />
+                    </React.Fragment>
+                        }
+                    {userProfile &&
+                    <React.Fragment>
+                        <BannerLoggedIn/>
+                        {scholarshipsDueSoonIsLoading &&
+                        <Loading title="Loading Scholarships ..." />
+                        }
+                        <LandingPageContent title="Your Scholarships Due Soon"
+                                            contentList={scholarshipsDueSoon}
+                                            contentType="scholarship" />
+                        <hr />
+                    </React.Fragment>
+                    }
                     <LandingPageContent
                         title={'Blog'}
-                        description={"Learn from other students' stories"}
+                        description={!userProfile? "Learn from other students' stories": null}
                         contentList={blogs} />
                     <hr/>
                     <LandingPageContent
                         title={'Essays'}
-                        description={"Read the essays that got students acceptance to top schools and win major scholarships."}
+                        description={!userProfile? "Read the essays that got students acceptance to top schools and win major scholarships.": null}
                         contentList={essays} />
                     <hr />
                     <LandingPageLiveDemo />
@@ -70,4 +106,8 @@ class LandingPage extends React.Component {
         );
     }
 }
-export default LandingPage;
+const mapStateToProps = state => {
+    return { userProfile: state.data.user.loggedInUserProfile };
+};
+export default connect(mapStateToProps)(LandingPage);
+

@@ -24,6 +24,16 @@ class ScholarshipsAPI {
         return apiCompletionPromise;
     };
 
+    static getDueSoon = () => {
+
+        const apiCompletionPromise = request({
+            method: 'get',
+            url: `${ScholarshipsAPI.scholarshipsApiUrl}/due-soon/`,
+        });
+
+        return apiCompletionPromise;
+    };
+
     static relatedItems = (id) => {
 
         const apiCompletionPromise = request({

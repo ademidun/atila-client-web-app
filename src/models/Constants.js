@@ -48,7 +48,7 @@ export const initialReduxState = {
         }
     }
 };
-export const ReduxStateLoggedIn = {
+export const initialReduxStateLoggedIn = {
     data: {
         user: {
             loggedInUserProfile: UserProfileTest1
