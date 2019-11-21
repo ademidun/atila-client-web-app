@@ -7,6 +7,7 @@ import {ScholarshipEngineering} from "./Scholarship";
 import {genericItemTransform} from "../services/utils";
 import {UserProfileTest1} from "./UserProfile";
 
+const wow = 3;
 // todo there might be an npm package for this!
 // todo add more emojis to the dictionary
 
