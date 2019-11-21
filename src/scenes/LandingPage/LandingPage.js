@@ -52,19 +52,9 @@ class LandingPage extends React.Component {
                 <div className="page-wrapper home">
                     <HelmetSeo content={defaultSeoContent}/>
 
-                    {!userProfile && <Banner/>}
-                    {userProfile && <BannerLoggedIn/>}
-                    {scholarshipsDueSoonIsLoading &&
-                    <Loading title="Loading Scholarships ..." />
-                    }
-                    {scholarshipsDueSoon &&
-                    <LandingPageContent title="Scholarships Due Soon"
-                                        contentList={scholarshipsDueSoon}
-                                        contentType="scholarship" />
-                    }
-
                     {!userProfile &&
                     <React.Fragment>
+                        <Banner/>
                         <WhatIsAtila/>
                         <div className="p-5">
                             <Link to="/register" className="btn btn-primary center-block font-size-xl">
@@ -74,6 +64,24 @@ class LandingPage extends React.Component {
                         <HowItWorks/>
                         <MoreFeatures/>
                         <hr/>
+                        {scholarshipsDueSoonIsLoading &&
+                        <Loading title="Loading Scholarships ..." />
+                        }
+                        <LandingPageContent title="Scholarships Due Soon"
+                                            contentList={scholarshipsDueSoon}
+                                            contentType="scholarship" />
+                    </React.Fragment>
+                        }
+                    {userProfile &&
+                    <React.Fragment>
+                        <BannerLoggedIn/>
+                        {scholarshipsDueSoonIsLoading &&
+                        <Loading title="Loading Scholarships ..." />
+                        }
+                        <LandingPageContent title="Your Scholarships Due Soon"
+                                            contentList={scholarshipsDueSoon}
+                                            contentType="scholarship" />
+                        <hr />
                     </React.Fragment>
                     }
                     <LandingPageContent

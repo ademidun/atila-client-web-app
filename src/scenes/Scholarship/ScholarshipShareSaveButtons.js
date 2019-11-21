@@ -39,7 +39,7 @@ class ScholarshipShareSaveButtons extends React.Component {
         const { userProfile, scholarship, updateLoggedInUserProfile } = this.props;
 
         if (!userProfile) {
-            toastNotify((<p>You must <Link to="/register">Register</Link> to save a scholarship.</p>));
+            toastNotify((<p><Link to="/register">Create an Account</Link> to save a scholarship.</p>));
             return;
         }
 
@@ -75,8 +75,9 @@ class ScholarshipShareSaveButtons extends React.Component {
 
         const { userProfile, scholarship, onHideScholarship } = this.props;
 
-        if(!userProfile) {
-            return null;
+        if (!userProfile) {
+            toastNotify((<p><Link to="/register">Create an Account</Link> to remove ineligible scholarships.</p>));
+            return;
         }
         userProfile.scholarships_not_interested.push(scholarship.id);
 

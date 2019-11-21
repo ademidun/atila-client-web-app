@@ -7,6 +7,9 @@ import ScholarshipCard from "../Scholarship/ScholarshipCard";
 
 function LandingPageContent({ title, description, contentList, contentType }) {
 
+    if (!contentList) {
+        return null;
+    }
     let contentListDisplay = contentList.map( content => (<ContentCard className="max-width-md-30 m-2"
                                                                          key={content.title}
                                                                          content={content}/>));
