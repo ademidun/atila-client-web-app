@@ -5,9 +5,8 @@ import QueueAnim from 'rc-queue-anim';
 import ScrollParallax from 'rc-scroll-anim/lib/ScrollParallax';
 import BannerImage from './BannerImage';
 import {Button} from "antd";
-import {Link, withRouter} from "react-router-dom";
-import AutoComplete from "../../components/AutoComplete";
-import {MASTER_LIST_EVERYTHING_UNDERSCORE} from "../../models/ConstantsForm";
+import {Link} from "react-router-dom";
+import {enquireScreen} from 'enquire-js';
 import {getGreetingTime, slugify} from "../../services/utils";
 import moneyFaceEmoji from './assets/moneyFaceEmoji.png';
 import {connect} from "react-redux";
@@ -20,9 +19,26 @@ const loop = {
 
 class BannerLoggedIn extends React.Component {
 
+
     constructor(props) {
+
+        let isMobile = false;
+        enquireScreen((b) => {
+            isMobile = b;
+        });
         super(props);
+        this.state = {
+            isMobile,
+        };
     };
+
+    componentDidMount() {
+        enquireScreen((b) => {
+            this.setState({
+                isMobile: !!b,
+            });
+        });
+    }
 
     render() {
 
@@ -34,6 +50,7 @@ class BannerLoggedIn extends React.Component {
         };
 
         const { userProfile, className } = this.props;
+        const { isMobile } = this.state;
         const { first_name } = userProfile;
         const  humanizedGreeting = `Good ${timeOfDay} ${first_name} ${greetingEmojiDict[timeOfDay]},`;
         return (
@@ -53,7 +70,8 @@ class BannerLoggedIn extends React.Component {
                     </svg>
                     <ScrollParallax location="banner" className="banner-bg" animation={{ playScale: [1, 1.5], rotate: 0 }} />
                 </div>
-                <QueueAnim className={`${className} page justify-content-center`} type="alpha" delay={150}>
+                <QueueAnim className={`${className} page ${isMobile? 'justify-content-center' : null } `}
+                           type="alpha" delay={150}>
                     <QueueAnim
                         className="text-wrapper responsive-text"
                         key="text"
