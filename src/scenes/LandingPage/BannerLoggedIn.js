@@ -7,7 +7,7 @@ import BannerImage from './BannerImage';
 import {Button} from "antd";
 import {Link} from "react-router-dom";
 import {enquireScreen} from 'enquire-js';
-import {getGreetingTime, slugify} from "../../services/utils";
+import {getGreetingTime} from "../../services/utils";
 import moneyFaceEmoji from './assets/moneyFaceEmoji.png';
 import {connect} from "react-redux";
 
