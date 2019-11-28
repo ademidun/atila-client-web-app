@@ -97,7 +97,7 @@ class UserProfileView extends React.Component {
             || userProfile.is_atila_admin);
 
         const seoContent = {
-            title: `${userProfile.first_name}'s profile @${userProfile.username} on Atila`,
+            title: `${userProfile.first_name}'s profile (@${userProfile.username}) `,
             description: `${userProfile.first_name}'s profile @${userProfile.username} on Atila`,
             image: userProfile.profile_pic_url,
             slug: `/profile/${userProfile.username}`
