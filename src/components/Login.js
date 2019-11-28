@@ -69,11 +69,11 @@ class Login extends React.Component {
                 if (err.response && err.response.data) {
                     this.setState({ responseError: err.response.data});
                 } else {
-                    const responseError = (<p>
+                    const responseError = (<React.Fragment>
                         Error logging in.{' '}
                         <Link to="/contact">
                             Contact us</Link> if this continues
-                    </p>);
+                    </React.Fragment>);
                     this.setState({ responseError });
                 }
             })
