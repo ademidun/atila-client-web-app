@@ -3,6 +3,7 @@ import Loading from "../../components/Loading";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import UserProfileViewTabs from "./UserProfileViewTabs";
 import {connect} from "react-redux";
+import {Link} from "react-router-dom";
 
 class UserProfileView extends React.Component {
 
@@ -26,14 +27,43 @@ class UserProfileView extends React.Component {
     }
 
     loadContent = () => {
-        const { match : { params : { username }} } = this.props;
+        const { match : { params : { username }},
+                loggedInUserProfile,
+                location: { pathname, search } } = this.props;
+
+        if(!username) {
+            if (loggedInUserProfile){
+                this.setState({userProfile: loggedInUserProfile});
+            } else {
+
+                const errorGettingUserProfile = ((
+                    <div className="text-center">
+                        <h1>
+                            <Link to={`/login?redirect=${pathname}${search}`}>
+                            Log in</Link> to view your profile.
+                        </h1>
+                        <h3>
+                            or enter a valid username
+                        </h3>
+                    </div>));
+                this.setState({errorGettingUserProfile });
+            }
+            return
+        }
         UserProfileAPI.getUsername(username)
             .then(res => {
                 this.setState({userProfile: res.data});
 
             })
-            .catch(err => {
-                this.setState({errorGettingUserProfile: { err }});
+            .catch(() => {
+                const errorGettingUserProfile = ((
+                    <div className="text-center">
+                        <h1>Error Getting User Profile.</h1>
+                        <h3>
+                            Please try again later
+                        </h3>
+                    </div>));
+                this.setState({errorGettingUserProfile });
             })
     };
 
@@ -41,13 +71,7 @@ class UserProfileView extends React.Component {
         const { errorGettingUserProfile, userProfile } = this.state;
         const { loggedInUserProfile } = this.props;
         if (errorGettingUserProfile) {
-            return (
-                <div className="text-center">
-                    <h1>Error Getting User Profile.</h1>
-                    <h3>
-                        Please try again later
-                    </h3>
-                </div>);
+            return errorGettingUserProfile;
         }
 
         if (!userProfile) {

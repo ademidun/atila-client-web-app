@@ -7,6 +7,7 @@ function UserProfile({ match }) {
         <Switch>
             <Route path={`${match.path}/:username/:tab`} component={UserProfileView} />
             <Route path={`${match.path}/:username/`} component={UserProfileView} />
+            <Route path={`${match.path}/`} component={UserProfileView} />
         </Switch>
     );
 }
