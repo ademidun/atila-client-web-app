@@ -4,6 +4,7 @@ import UserProfileAPI from "../../services/UserProfileAPI";
 import UserProfileViewTabs from "./UserProfileViewTabs";
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
+import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 
 class UserProfileView extends React.Component {
 
@@ -71,7 +72,16 @@ class UserProfileView extends React.Component {
         const { errorGettingUserProfile, userProfile } = this.state;
         const { loggedInUserProfile } = this.props;
         if (errorGettingUserProfile) {
-            return errorGettingUserProfile;
+            const seoContent = {
+                title: `User Profile`,
+                description: `User Profile ${defaultSeoContent.description}`,
+                image: defaultSeoContent.image,
+                slug: `/profile/`
+            };
+            return <React.Fragment>
+                <HelmetSeo content={seoContent} />
+                {errorGettingUserProfile}
+            </React.Fragment>;
         }
 
         if (!userProfile) {
@@ -86,9 +96,17 @@ class UserProfileView extends React.Component {
         const isProfileEditable = loggedInUserProfile && (userProfile.user === loggedInUserProfile.user
             || userProfile.is_atila_admin);
 
-        return (
-            <div className="text-center container mt-3">
+        const seoContent = {
+            title: `${userProfile.first_name}'s profile @${userProfile.username} on Atila`,
+            description: `${userProfile.first_name}'s profile @${userProfile.username} on Atila`,
+            image: userProfile.profile_pic_url,
+            slug: `/profile/${userProfile.username}`
+        };
 
+        return (
+
+            <div className="text-center container mt-3">
+                <HelmetSeo content={seoContent} />
                 <div className="card shadow p-3">
                     <div className="row">
                         <div className="col-md-4 col-sm-12">
