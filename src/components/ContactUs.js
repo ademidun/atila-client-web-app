@@ -77,7 +77,7 @@ class ContactUs extends  React.Component{
                     Thanks for your Response
                     <span role="img" aria-label="happy face emoji">🙂</span>
                 </h4>
-                <h6>We will get back to you within 1 business day</h6>
+                <h6>We will get back to you within 24 hours</h6>
             </div>
         }
         else if (errorReceivingResponse) {
@@ -100,6 +100,7 @@ class ContactUs extends  React.Component{
                         info@atila.ca
                     </a>
                 </p>
+                <h6>We will get back to you within 24 hours</h6>
                 <form className="row p-3 form-group" onSubmit={this.submitContact}>
                     <input placeholder="Full Name"
                            className="col-12 mb-3 form-control"

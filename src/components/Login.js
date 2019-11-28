@@ -68,6 +68,13 @@ class Login extends React.Component {
             .catch(err => {
                 if (err.response && err.response.data) {
                     this.setState({ responseError: err.response.data});
+                } else {
+                    const responseError = (<p>
+                        Error logging in.{' '}
+                        <Link to="/contact">
+                            Contact us</Link> if this continues
+                    </p>);
+                    this.setState({ responseError });
                 }
             })
             .finally(res => {
