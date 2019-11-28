@@ -5,6 +5,7 @@ import UserProfileViewTabs from "./UserProfileViewTabs";
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
+import {RESERVED_USERNAMES} from "../../models/Constants";
 
 class UserProfileView extends React.Component {
 
@@ -32,7 +33,7 @@ class UserProfileView extends React.Component {
                 loggedInUserProfile,
                 location: { pathname, search } } = this.props;
 
-        if(!username) {
+        if(!username || RESERVED_USERNAMES.includes(username)) {
             if (loggedInUserProfile){
                 this.setState({userProfile: loggedInUserProfile});
             } else {

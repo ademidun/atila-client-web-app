@@ -9,6 +9,7 @@ import Loading from '../../components/Loading';
 import UserProfileEdit from './UserProfileEdit';
 import UserProfileViewSavedScholarships from './UserProfileSavedScholarships';
 import UserProfileSettings from "./UserProfileSettings";
+import {RESERVED_USERNAMES} from "../../models/Constants";
 
 class UserProfileViewTabs extends React.Component {
 
@@ -40,8 +41,12 @@ class UserProfileViewTabs extends React.Component {
 
         const { blogs, essays } = this.state;
         const { isProfileEditable } = this.props;
-        const { match : { params : { tab }} } = this.props;
+        let { match : { params : { tab, username }} } = this.props;
         let defaultActiveKey = isProfileEditable ? 'scholarships' : 'blogs';
+
+        if (RESERVED_USERNAMES.includes(username)) {
+            defaultActiveKey = username;
+        }
 
         if (!isProfileEditable && blogs && blogs.length === 0 && essays && essays.length > 0 ) {
             defaultActiveKey = 'essays';

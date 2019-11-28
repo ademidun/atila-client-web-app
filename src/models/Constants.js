@@ -70,3 +70,5 @@ export const relatedItems = [
         // React components require unique Ids (usually index shouldn't be the ID but its fine for testing)
     }
 });
+
+export const RESERVED_USERNAMES = ['edit', 'settings', 'blog', 'essays', 'scholarships'];
