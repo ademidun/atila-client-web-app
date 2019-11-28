@@ -3,6 +3,9 @@ import Loading from "../../components/Loading";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import UserProfileViewTabs from "./UserProfileViewTabs";
 import {connect} from "react-redux";
+import {Link} from "react-router-dom";
+import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
+import {RESERVED_USERNAMES} from "../../models/Constants";
 
 class UserProfileView extends React.Component {
 
@@ -26,14 +29,43 @@ class UserProfileView extends React.Component {
     }
 
     loadContent = () => {
-        const { match : { params : { username }} } = this.props;
+        const { match : { params : { username }},
+                loggedInUserProfile,
+                location: { pathname, search } } = this.props;
+
+        if(!username || RESERVED_USERNAMES.includes(username)) {
+            if (loggedInUserProfile){
+                this.setState({userProfile: loggedInUserProfile});
+            } else {
+
+                const errorGettingUserProfile = ((
+                    <div className="text-center">
+                        <h1>
+                            <Link to={`/login?redirect=${pathname}${search}`}>
+                            Log in</Link> to view your profile.
+                        </h1>
+                        <h3>
+                            or enter a valid username
+                        </h3>
+                    </div>));
+                this.setState({errorGettingUserProfile });
+            }
+            return
+        }
         UserProfileAPI.getUsername(username)
             .then(res => {
                 this.setState({userProfile: res.data});
 
             })
-            .catch(err => {
-                this.setState({errorGettingUserProfile: { err }});
+            .catch(() => {
+                const errorGettingUserProfile = ((
+                    <div className="text-center">
+                        <h1>Error Getting User Profile.</h1>
+                        <h3>
+                            Please try again later
+                        </h3>
+                    </div>));
+                this.setState({errorGettingUserProfile });
             })
     };
 
@@ -41,13 +73,16 @@ class UserProfileView extends React.Component {
         const { errorGettingUserProfile, userProfile } = this.state;
         const { loggedInUserProfile } = this.props;
         if (errorGettingUserProfile) {
-            return (
-                <div className="text-center">
-                    <h1>Error Getting User Profile.</h1>
-                    <h3>
-                        Please try again later
-                    </h3>
-                </div>);
+            const seoContent = {
+                title: `User Profile`,
+                description: `User Profile ${defaultSeoContent.description}`,
+                image: defaultSeoContent.image,
+                slug: `/profile/`
+            };
+            return <React.Fragment>
+                <HelmetSeo content={seoContent} />
+                {errorGettingUserProfile}
+            </React.Fragment>;
         }
 
         if (!userProfile) {
@@ -62,9 +97,17 @@ class UserProfileView extends React.Component {
         const isProfileEditable = loggedInUserProfile && (userProfile.user === loggedInUserProfile.user
             || userProfile.is_atila_admin);
 
-        return (
-            <div className="text-center container mt-3">
+        const seoContent = {
+            title: `${userProfile.first_name}'s profile (@${userProfile.username}) `,
+            description: `${userProfile.first_name}'s profile @${userProfile.username} on Atila`,
+            image: userProfile.profile_pic_url,
+            slug: `/profile/${userProfile.username}`
+        };
 
+        return (
+
+            <div className="text-center container mt-3">
+                <HelmetSeo content={seoContent} />
                 <div className="card shadow p-3">
                     <div className="row">
                         <div className="col-md-4 col-sm-12">
