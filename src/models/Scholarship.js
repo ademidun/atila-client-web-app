@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import {UserProfileTest1} from "./UserProfile";
 
 export const MILTON_LOCATION_OBJECT = {
     name: 'Milton',
@@ -17,6 +18,7 @@ export const ScholarshipGeneral = {
 
 export const ScholarshipEngineering = {
     id: 100,
+    owner: UserProfileTest1.user,
     name: 'Engineering Scholarship',
     description: 'Scholarship only for awesome engineering students',
     amount: '100',

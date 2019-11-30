@@ -5,7 +5,7 @@ const IPDATA_URL = 'https://api.ipdata.co/?api-key=335beb2ad17cc12676f2792328a5a
 class AnalyticsService {
 
     static pageViewsUrl = `${Environment.apiUrlNodeMicroservice}/page-views`;
-    static async savePageView(viewData, userProfile) {
+    static savePageView = async (viewData, userProfile) => {
 
         const viewDataBody = await AnalyticsService.transformViewData(viewData, userProfile);
         const apiCompletionPromise = request({
@@ -27,7 +27,7 @@ class AnalyticsService {
     };
 
 
-    static async transformViewData(viewData, userProfile) {
+    static transformViewData = async (viewData, userProfile) => {
 
 
         let transformedViewData = {
@@ -79,7 +79,7 @@ class AnalyticsService {
         return transformedViewData;
     };
 
-    static async getGeoIp() {
+    static getGeoIp = async () => {
 
         const dropFields = ['currency', 'emoji_flag', 'emoji_unicode', 'flag', 'languages'];
         let geo_ip = {};
