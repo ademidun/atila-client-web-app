@@ -62,7 +62,6 @@ class ScholarshipDetail extends React.Component {
     loadContent = () => {
 
         const { match : { params : { slug }}, userProfile } = this.props;
-        const { prevSlug } = this.state;
         ScholarshipsAPI.getSlug(slug)
             .then(res => {
                 const scholarship = res.data;
