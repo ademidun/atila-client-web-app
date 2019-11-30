@@ -1,8 +1,7 @@
 import Environment from "./Environment";
 import request from "axios";
 import {getGuestUserId, getItemType, makeXHRRequestAsPromise} from "./utils";
-const GEO_IP_URL = 'https://api.ipgeolocation.io/ipgeo?apiKey=defa481e93f84d4196dbf19426ab0c51__FOOBAR';
-
+const IPDATA_URL = 'https://api.ipdata.co/?api-key=335beb2ad17cc12676f2792328a5a770c47b89d6768daf9ec2c4d866';
 class AnalyticsService {
 
     static pageViewsUrl = `${Environment.apiUrlNodeMicroservice}/page-views`;
@@ -36,15 +35,18 @@ class AnalyticsService {
             item_id: viewData.id,
             item_name: null,
             geo_ip: null,
+            useragent: navigator && navigator.userAgent
         };
         if (!userProfile) {
             transformedViewData = {
-                user_id: getGuestUserId(),
+                ...transformedViewData,
+                user_id_guest: getGuestUserId(),
                 is_owner: false,
                 is_guest: true
             };
         } else {
             transformedViewData = {
+                ...transformedViewData,
                 user_id: userProfile.user,
                 is_owner: !!(viewData.user && viewData.user.id === userProfile.user)
             };
@@ -79,11 +81,17 @@ class AnalyticsService {
 
     static async getGeoIp() {
 
+        const dropFields = ['currency', 'emoji_flag', 'emoji_unicode', 'flag', 'languages'];
         let geo_ip = {};
         try {
             geo_ip = await makeXHRRequestAsPromise('GET',
-                GEO_IP_URL, {});
+                IPDATA_URL, {});
             geo_ip = JSON.parse(geo_ip);
+
+            dropFields.forEach(field => {
+                delete geo_ip[field];
+            });
+
             console.log({geo_ip});
         } catch (err) {
             console.log({err});
