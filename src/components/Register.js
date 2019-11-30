@@ -7,6 +7,7 @@ import {setLoggedInUserProfile} from "../redux/actions/user";
 import {connect} from "react-redux";
 import TermsConditions from "./TermsConditions";
 import {Modal} from "antd";
+import {Link} from "react-router-dom";
 
 export class PasswordShowHide extends React.Component {
 
@@ -145,7 +146,19 @@ class Register extends React.Component {
             })
             .catch(err => {
                 if (err.response && err.response.data) {
-                    this.setState({ isResponseError: err.response.data});
+                    let isResponseError = err.response.data;
+                    isResponseError = (
+                        <p className="text-danger">
+                            {isResponseError.message || isResponseError.error}
+                        </p>);
+                    this.setState({ isResponseError });
+                } else {
+                    const responseError = (<React.Fragment>
+                        Error logging in.{' '}
+                        <Link to="/contact">
+                            Contact us</Link> if this continues
+                    </React.Fragment>);
+                    this.setState({ responseError });
                 }
             })
             .finally(res => {
@@ -222,9 +235,7 @@ class Register extends React.Component {
                             </p>
                             }
                             {isResponseError &&
-                            <p className="text-danger">
-                                {isResponseError.message || isResponseError.error}
-                            </p>
+                             isResponseError
                             }
                             {loadingResponse &&
                             <Loading title="Loading Response..." className="center-block my-3"/>}
