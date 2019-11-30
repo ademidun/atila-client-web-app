@@ -67,7 +67,6 @@ describe('services/utils.js', () => {
         it('returns same guestUserId if called twice', () => {
             const guestUserId = getGuestUserId();
 
-            console.log({guestUserId});
             const guestUserId2 = getGuestUserId();
             console.log({guestUserId2});
             expect(guestUserId).toBeTruthy();
