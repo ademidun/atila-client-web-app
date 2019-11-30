@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import {UserProfileTest1} from "./UserProfile";
 
 export const MILTON_LOCATION_OBJECT = {
     name: 'Milton',
@@ -12,16 +13,19 @@ export const ScholarshipGeneral = {
     name: 'General Scholarship',
     description: 'Anyone can secure the bag.',
     amount: '200',
-    slug: 'general-scholarship'
+    slug: 'general-scholarship',
+    deadline: '2020-02-17T04:59:00Z',
 };
 
 export const ScholarshipEngineering = {
     id: 100,
+    owner: UserProfileTest1.user,
     name: 'Engineering Scholarship',
     description: 'Scholarship only for awesome engineering students',
     amount: '100',
     slug: 'engineering-scholarship',
-    eligible_programs: ['Engineering']
+    eligible_programs: ['Engineering'],
+    deadline: '2020-02-17T04:59:00Z',
 };
 
 export const ScholarshipMilton = {
@@ -30,7 +34,8 @@ export const ScholarshipMilton = {
     description: 'Scholarship only for awesome engineering students',
     amount: '100',
     slug: 'engineering-scholarship',
-    city: [MILTON_LOCATION_OBJECT]
+    city: [MILTON_LOCATION_OBJECT],
+    deadline: '2020-02-17T04:59:00Z',
 };
 
 export const scholarshipsListMockData = [

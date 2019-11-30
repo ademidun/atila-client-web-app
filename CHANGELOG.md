@@ -1,5 +1,16 @@
 # Changelog
 
+## November 30, 2019
+### Save Page Views for Guest User
+
+- add better analytics to save PageViews
+- Create a guestUserId to save page views for guest users
+- `user_id_guest` is used in backend
+- Realize importance of good architecture, ran into an issue with
+index type mismatch and had to update
+`atila-database-infrastructure-code` and `atila-microservices-node`
+So 3 different repos were impacted by this seemingly small PR
+
 ## November 1, 2019
 ### Stripe React Testing
 

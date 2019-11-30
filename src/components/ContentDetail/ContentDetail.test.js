@@ -8,15 +8,22 @@ import BlogsApi from "../../services/BlogsAPI";
 import RelatedItems from "../RelatedItems";
 import {MemoryRouter} from "react-router-dom";
 import SearchApi from "../../services/SearchAPI";
-import configureStore from "redux-mock-store";
 import {UserProfileTest1} from "../../models/UserProfile";
 import {EssayIveyApplication} from "../../models/Essay";
-import {initialReduxState, relatedItems} from "../../models/Constants";
+import {relatedItems} from "../../models/Constants";
 
 configure({ adapter: new Adapter() });
-const mockStore = configureStore();
-const store = mockStore(initialReduxState);
-
+jest.mock("../../services/utils", () => {
+    return {
+        ...(jest.requireActual("../../services/utils")),
+        makeXHRRequestAsPromise: () => Promise.reject({
+            status: 400,
+            statusText: '',
+            response: {error: 'Mocking XHR'},
+        }),
+        getGuestUserId: () => 'randomGuestUserId123',
+    }
+});
 jest.mock('../../services/SearchAPI');
 SearchApi.relatedItems.mockImplementation(() => Promise.resolve({ data: { items: relatedItems } } ));
 

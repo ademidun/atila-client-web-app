@@ -1,7 +1,7 @@
 import {configure} from "enzyme";
 import React from "react";
 import Adapter from 'enzyme-adapter-react-16';
-import {getPageViewLimit} from "./utils";
+import {getGuestUserId, getPageViewLimit} from "./utils";
 import {MAX_BLOG_PAGE_VIEWS, MAX_ESSAY_PAGE_VIEWS, MAX_SCHOLARSHIP_PAGE_VIEWS} from "../models/Constants";
 
 configure({ adapter: new Adapter() });
@@ -36,28 +36,41 @@ const scholarshipSlug = '/scholarship/interstellar-scholarship-fund';
 
 
 describe('services/utils.js', () => {
-    it('returns essay page view NOT over limit', () => {
+    describe('getPageViewLimit', () => {
+        it('returns essay page view NOT over limit', () => {
 
-        const { viewCount, viewCountType, showReminder } = getPageViewLimit(pageViewsRemindScholarshipBlog,essaySlug);
+            const { viewCount, viewCountType, showReminder } = getPageViewLimit(pageViewsRemindScholarshipBlog,essaySlug);
 
-        expect(showReminder).toBeFalsy();
-        expect(viewCountType).toEqual('essay');
-        expect(viewCount).toEqual(11);
+            expect(showReminder).toBeFalsy();
+            expect(viewCountType).toEqual('essay');
+            expect(viewCount).toEqual(11);
+        });
+        it('returns essay page view NOT over limit', () => {
+
+            const { viewCount, viewCountType, showReminder } = getPageViewLimit(pageViewsRemindEssay,essaySlug);
+
+            expect(showReminder).toBeTruthy();
+            expect(viewCountType).toEqual('essay');
+            expect(viewCount).toEqual(MAX_ESSAY_PAGE_VIEWS*2);
+        });
+        it('returns scholarship over limit', () => {
+            const { viewCount, viewCountType, showReminder } = getPageViewLimit(pageViewsRemindScholarshipBlog,scholarshipSlug);
+
+            expect(showReminder).toBeTruthy();
+            expect(viewCountType).toEqual('scholarship');
+            expect(viewCount).toEqual(MAX_SCHOLARSHIP_PAGE_VIEWS);
+        });
     });
-    it('returns essay page view NOT over limit', () => {
 
-        const { viewCount, viewCountType, showReminder } = getPageViewLimit(pageViewsRemindEssay,essaySlug);
+    describe('getGuestUserId', () => {
 
-        expect(showReminder).toBeTruthy();
-        expect(viewCountType).toEqual('essay');
-        expect(viewCount).toEqual(MAX_ESSAY_PAGE_VIEWS*2);
-    });
+        it('returns same guestUserId if called twice', () => {
+            const guestUserId = getGuestUserId();
 
-    it('returns scholarship over limit', () => {
-        const { viewCount, viewCountType, showReminder } = getPageViewLimit(pageViewsRemindScholarshipBlog,scholarshipSlug);
-
-        expect(showReminder).toBeTruthy();
-        expect(viewCountType).toEqual('scholarship');
-        expect(viewCount).toEqual(MAX_SCHOLARSHIP_PAGE_VIEWS);
-    });
+            const guestUserId2 = getGuestUserId();
+            console.log({guestUserId2});
+            expect(guestUserId).toBeTruthy();
+            expect(guestUserId2).toEqual(guestUserId);
+        });
+    })
 });

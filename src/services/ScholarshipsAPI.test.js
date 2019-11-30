@@ -1,6 +1,17 @@
 import {ScholarshipGeneral} from "../models/Scholarship";
 import ScholarshipsAPI from "./ScholarshipsAPI";
 
+jest.mock("./utils", () => {
+    return {
+        ...(jest.requireActual("./utils")),
+        makeXHRRequestAsPromise: () => Promise.reject({
+            status: 400,
+            statusText: '',
+            response: {error: 'Mocking XHR'},
+        }),
+        getGuestUserId: () => 'randomGuestUserId123',
+    }
+});
 fdescribe('ScholarshipAPI', () => {
 
     test('cleanScholarship() should cast all empty string values generated' +

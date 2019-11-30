@@ -1,14 +1,16 @@
 import Environment from "./Environment";
 import request from "axios";
-import {getItemType} from "./utils";
+import {getGuestUserId, getItemType, makeXHRRequestAsPromise} from "./utils";
+const IPDATA_URL = 'https://api.ipdata.co/?api-key=335beb2ad17cc12676f2792328a5a770c47b89d6768daf9ec2c4d866';
 class AnalyticsService {
 
     static pageViewsUrl = `${Environment.apiUrlNodeMicroservice}/page-views`;
-    static savePageView = (viewData, userProfile) => {
+    static savePageView = async (viewData, userProfile) => {
 
+        const viewDataBody = await AnalyticsService.transformViewData(viewData, userProfile);
         const apiCompletionPromise = request({
             method: 'post',
-            data: AnalyticsService.transformViewData(viewData, userProfile),
+            data: viewDataBody,
             url: `${AnalyticsService.pageViewsUrl}`,
         });
 
@@ -25,20 +27,44 @@ class AnalyticsService {
     };
 
 
-    static transformViewData = (viewData, userProfile) => {
+    static transformViewData = async (viewData, userProfile) => {
+
+
         let transformedViewData = {
-            user_id: userProfile.user,
             item_type: getItemType(viewData),
             item_id: viewData.id,
             item_name: null,
-            is_owner: !!(viewData.user && viewData.user.id === userProfile.user)
+            geo_ip: null,
+            useragent: navigator && navigator.userAgent,
+            referrer: document && document.referrer,
         };
+        if (!userProfile) {
+            transformedViewData = {
+                ...transformedViewData,
+                user_id_guest: getGuestUserId(),
+                is_owner: false,
+                is_guest: true
+            };
+        } else {
+            transformedViewData = {
+                ...transformedViewData,
+                user_id: userProfile.user,
+                is_owner: !!(viewData.user && viewData.user.id === userProfile.user)
+            };
+
+            let guestUserId = localStorage.getItem('guestUserId');
+            if (guestUserId) {
+                transformedViewData.user_id_guest = guestUserId
+            }
+        }
+
+        transformedViewData.geo_ip = await AnalyticsService.getGeoIp();
 
         switch (transformedViewData.item_type) {
 
             case 'scholarship':
                 transformedViewData.item_name = viewData.name;
-                transformedViewData.is_owner = (viewData.owner === userProfile.user);
+                transformedViewData.is_owner = !!(userProfile && viewData.owner === userProfile.user);
                 break;
             case 'essay':
                 transformedViewData.item_name = viewData.title;
@@ -51,6 +77,24 @@ class AnalyticsService {
         }
 
         return transformedViewData;
+    };
+
+    static getGeoIp = async () => {
+
+        const dropFields = ['currency', 'emoji_flag', 'emoji_unicode', 'flag', 'languages'];
+        let geo_ip = {};
+        try {
+            geo_ip = await makeXHRRequestAsPromise('GET',
+                IPDATA_URL, {});
+            geo_ip = JSON.parse(geo_ip);
+
+            dropFields.forEach(field => {
+                delete geo_ip[field];
+            });
+        } catch (err) {
+            geo_ip['error'] = err;
+        }
+        return geo_ip
     }
 
 }

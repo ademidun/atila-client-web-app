@@ -66,23 +66,21 @@ class ContentDetail extends React.Component {
                     }
                 });
 
-
-                if(userProfile) {
-                    AnalyticsService
-                        .savePageView(content, userProfile)
-                        .then(() => {
+                AnalyticsService
+                    .savePageView(content, userProfile)
+                    .then(() => {
+                        if(userProfile) {
                             AnalyticsService
                                 .getPageViews(userProfile.user)
                                 .then( res => {
                                     const { pageViews } = res.data;
                                     this.setState({pageViews});
                                 });
-                        })
-                } else {
-                    const guestPageViews = guestPageViewsIncrement();
-                    this.setState({pageViews: {guestPageViews}});
-                }
-
+                        } else {
+                            const pageViews = guestPageViewsIncrement();
+                            this.setState({pageViews});
+                        }
+                    })
             })
             .catch(err => {
                 this.setState({errorGettingContent: { err }});

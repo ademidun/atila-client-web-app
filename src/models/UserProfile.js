@@ -7,6 +7,7 @@ export const UserProfileTest1 = {
     last_name: 'Barkley',
     major: 'Basketball',
     id: 1,
+    user: 1,
     is_atila_admin: false,
     eligible_programs: [],
     saved_scholarships: [],

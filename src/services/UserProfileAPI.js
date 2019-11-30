@@ -2,6 +2,7 @@ import request from 'axios';
 import axios from 'axios';
 import Environment from './Environment'
 import jwtDecode from 'jwt-decode';
+import GoogleAnalytics from "react-ga";
 
 class UserProfileAPI {
 
@@ -154,6 +155,8 @@ class UserProfileAPI {
         if(!this.isLoggedIn(userId, jwtToken)) {
             return false;
         }
+
+        GoogleAnalytics.set({userId});
         localStorage.setItem('userId', userId);
         localStorage.setItem('token', jwtToken);
         axios.defaults.headers.common['Authorization'] = `JWT ${jwtToken}`;

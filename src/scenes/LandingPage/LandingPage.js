@@ -48,6 +48,17 @@ class LandingPage extends React.Component {
 
         const { userProfile } = this.props;
         const { scholarshipsDueSoon, scholarshipsDueSoonIsLoading } = this.state;
+
+        const scholarshipsDueSoonContent = (<React.Fragment>
+            {scholarshipsDueSoonIsLoading &&
+            <Loading title="Loading Scholarships ..." />
+            }
+            {scholarshipsDueSoon &&
+            <LandingPageContent title={`${userProfile? 'Your': ''} Scholarships Due Soon`}
+                                contentList={scholarshipsDueSoon}
+                                contentType="scholarship" />
+            }
+        </React.Fragment>);
         return (
                 <div className="page-wrapper home">
                     <HelmetSeo content={defaultSeoContent}/>
@@ -55,6 +66,7 @@ class LandingPage extends React.Component {
                     {!userProfile &&
                     <React.Fragment>
                         <Banner/>
+                        {scholarshipsDueSoonContent}
                         <WhatIsAtila/>
                         <div className="p-5">
                             <Link to="/register" className="btn btn-primary center-block font-size-xl">
@@ -64,23 +76,12 @@ class LandingPage extends React.Component {
                         <HowItWorks/>
                         <MoreFeatures/>
                         <hr/>
-                        {scholarshipsDueSoonIsLoading &&
-                        <Loading title="Loading Scholarships ..." />
-                        }
-                        <LandingPageContent title="Scholarships Due Soon"
-                                            contentList={scholarshipsDueSoon}
-                                            contentType="scholarship" />
                     </React.Fragment>
                         }
                     {userProfile &&
                     <React.Fragment>
                         <BannerLoggedIn/>
-                        {scholarshipsDueSoonIsLoading &&
-                        <Loading title="Loading Scholarships ..." />
-                        }
-                        <LandingPageContent title="Your Scholarships Due Soon"
-                                            contentList={scholarshipsDueSoon}
-                                            contentType="scholarship" />
+                        {scholarshipsDueSoonContent}
                         <hr />
                     </React.Fragment>
                     }

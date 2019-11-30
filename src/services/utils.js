@@ -14,14 +14,16 @@ export function makeXHRRequestAsPromise (method, url, data) {
             } else {
                 reject({
                     status: this.status,
-                    statusText: xhr.statusText
+                    statusText: xhr.statusText,
+                    response: xhr.response,
                 });
             }
         };
         xhr.onerror = function () {
             reject({
-                status: this.status,
-                statusText: xhr.statusText
+                status: xhr.status,
+                statusText: xhr.statusText,
+                response: xhr.response,
             });
         };
         // url encode form data for sending as post data
@@ -434,4 +436,29 @@ export function getGreetingTime () {
     }
 
     return greeting;
+}
+
+export function getRandomString() {
+    // https://gist.github.com/gordonbrander/2230317
+    let id = '';
+
+    for (let i =0; i< 4; i++) {
+        id += Math.random().toString(36).substr(2, 8);
+    }
+
+    return id;
+}
+
+export function getGuestUserId() {
+
+    const guestUserIdName = 'guestUserId';
+    let guestUserId = localStorage.getItem(guestUserIdName);
+
+    if(!guestUserId) {
+        guestUserId = getRandomString();
+        localStorage.setItem(guestUserIdName, guestUserId)
+    }
+
+    return guestUserId;
+
 }
