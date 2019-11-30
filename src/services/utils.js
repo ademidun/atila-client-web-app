@@ -14,14 +14,16 @@ export function makeXHRRequestAsPromise (method, url, data) {
             } else {
                 reject({
                     status: this.status,
-                    statusText: xhr.statusText
+                    statusText: xhr.statusText,
+                    response: xhr.response,
                 });
             }
         };
         xhr.onerror = function () {
             reject({
-                status: this.status,
-                statusText: xhr.statusText
+                status: xhr.status,
+                statusText: xhr.statusText,
+                response: xhr.response,
             });
         };
         // url encode form data for sending as post data

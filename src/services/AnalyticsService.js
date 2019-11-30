@@ -1,14 +1,17 @@
 import Environment from "./Environment";
 import request from "axios";
-import {getGuestUserId, getItemType} from "./utils";
+import {getGuestUserId, getItemType, makeXHRRequestAsPromise} from "./utils";
+const GEO_IP_URL = 'https://api.ipgeolocation.io/ipgeo?apiKey=defa481e93f84d4196dbf19426ab0c51__FOOBAR';
+
 class AnalyticsService {
 
     static pageViewsUrl = `${Environment.apiUrlNodeMicroservice}/page-views`;
-    static savePageView = (viewData, userProfile) => {
+    static async savePageView(viewData, userProfile) {
 
+        const viewDataBody = await AnalyticsService.transformViewData(viewData, userProfile);
         const apiCompletionPromise = request({
             method: 'post',
-            data: AnalyticsService.transformViewData(viewData, userProfile),
+            data: viewDataBody,
             url: `${AnalyticsService.pageViewsUrl}`,
         });
 
@@ -25,13 +28,14 @@ class AnalyticsService {
     };
 
 
-    static transformViewData = (viewData, userProfile) => {
+    static async transformViewData(viewData, userProfile) {
 
 
         let transformedViewData = {
             item_type: getItemType(viewData),
             item_id: viewData.id,
             item_name: null,
+            geo_ip: null,
         };
         if (!userProfile) {
             transformedViewData = {
@@ -51,6 +55,9 @@ class AnalyticsService {
             }
         }
 
+        transformedViewData.geo_ip = await AnalyticsService.getGeoIp();
+        console.log({transformedViewData});
+
         switch (transformedViewData.item_type) {
 
             case 'scholarship':
@@ -68,6 +75,22 @@ class AnalyticsService {
         }
 
         return transformedViewData;
+    };
+
+    static async getGeoIp() {
+
+        let geo_ip = {};
+        try {
+            geo_ip = await makeXHRRequestAsPromise('GET',
+                GEO_IP_URL, {});
+            geo_ip = JSON.parse(geo_ip);
+            console.log({geo_ip});
+        } catch (err) {
+            console.log({err});
+            geo_ip['error'] = err;
+        }
+        console.log({geo_ip});
+        return geo_ip
     }
 
 }
