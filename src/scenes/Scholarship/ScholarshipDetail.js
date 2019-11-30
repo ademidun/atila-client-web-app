@@ -74,23 +74,21 @@ class ScholarshipDetail extends React.Component {
                     message.error(notAvailableText, 3);
                 }
 
-                if(userProfile) {
-                    if(userProfile) {
-                        AnalyticsService
-                            .savePageView(scholarship, userProfile)
-                            .then(() => {
-                                AnalyticsService
-                                    .getPageViews(userProfile.user)
-                                    .then( res => {
-                                        const { pageViews } = res.data;
-                                        this.setState({pageViews});
-                                    });
-                            })
-                    }
-                } else {
-                    const guestPageViews = guestPageViewsIncrement();
-                    this.setState({pageViews: {guestPageViews}});
-                }
+                AnalyticsService
+                    .savePageView(scholarship, userProfile)
+                    .then(() => {
+                        if(userProfile) {
+                            AnalyticsService
+                                .getPageViews(userProfile.user)
+                                .then( res => {
+                                    const { pageViews } = res.data;
+                                    this.setState({pageViews});
+                                });
+                        } else {
+                            const pageViews = guestPageViewsIncrement();
+                            this.setState({pageViews});
+                        }
+                    });
                 UserProfileAPI.get(scholarship.owner)
                     .then(res => {
                         this.setState({ scholarshipUserProfile: res.data });

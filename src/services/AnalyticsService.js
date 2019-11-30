@@ -35,7 +35,8 @@ class AnalyticsService {
             item_id: viewData.id,
             item_name: null,
             geo_ip: null,
-            useragent: navigator && navigator.userAgent
+            useragent: navigator && navigator.userAgent,
+            referrer: document && document.referrer,
         };
         if (!userProfile) {
             transformedViewData = {
@@ -63,7 +64,7 @@ class AnalyticsService {
 
             case 'scholarship':
                 transformedViewData.item_name = viewData.name;
-                transformedViewData.is_owner = (userProfile && viewData.owner === userProfile.user);
+                transformedViewData.is_owner = !!(userProfile && viewData.owner === userProfile.user);
                 break;
             case 'essay':
                 transformedViewData.item_name = viewData.title;
