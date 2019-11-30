@@ -92,7 +92,6 @@ class AnalyticsService {
                 delete geo_ip[field];
             });
         } catch (err) {
-            console.log({err});
             geo_ip['error'] = err;
         }
         return geo_ip
