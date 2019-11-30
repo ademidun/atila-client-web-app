@@ -58,7 +58,6 @@ class AnalyticsService {
         }
 
         transformedViewData.geo_ip = await AnalyticsService.getGeoIp();
-        console.log({transformedViewData});
 
         switch (transformedViewData.item_type) {
 
@@ -91,13 +90,10 @@ class AnalyticsService {
             dropFields.forEach(field => {
                 delete geo_ip[field];
             });
-
-            console.log({geo_ip});
         } catch (err) {
             console.log({err});
             geo_ip['error'] = err;
         }
-        console.log({geo_ip});
         return geo_ip
     }
 
