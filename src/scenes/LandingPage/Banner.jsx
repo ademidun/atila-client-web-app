@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import TweenOne from 'rc-tween-one';
 import QueueAnim from 'rc-queue-anim';
 import ScrollParallax from 'rc-scroll-anim/lib/ScrollParallax';
-import BannerImage from './BannerImage';
 import {Button} from "antd";
 import {Link, withRouter} from "react-router-dom";
 import AutoComplete from "../../components/AutoComplete";
@@ -75,7 +74,7 @@ class Banner extends React.Component {
           </svg>
           <ScrollParallax location="banner" className="banner-bg" animation={{ playScale: [1, 1.5], rotate: 0 }} />
         </div>
-        <QueueAnim className={`${className} page`} type="alpha" delay={150}>
+        <QueueAnim className={`${className} page justify-content-center`} type="alpha" delay={150}>
           <QueueAnim
             className="text-wrapper responsive-text"
             key="text"
@@ -131,9 +130,6 @@ class Banner extends React.Component {
               </div>
             </form>
           </QueueAnim>
-          <div className="img-wrapper" key="image">
-            <ScrollParallax location="banner" component={BannerImage} animation={{ playScale: [1, 1.5], y: 80 }} />
-          </div>
         </QueueAnim>
       </div>
     );
