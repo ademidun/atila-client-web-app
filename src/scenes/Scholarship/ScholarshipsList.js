@@ -12,6 +12,7 @@ import ScholarshipsListFilter from "./ScholarshipsListFilter";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import {Button} from "antd";
 import UserProfileAPI from "../../services/UserProfileAPI";
+import AnalyticsService from "../../services/AnalyticsService";
 
 class ScholarshipsList extends React.Component {
 
@@ -119,7 +120,18 @@ class ScholarshipsList extends React.Component {
                 }
                 this.setState({ totalFunding: res.data.funding });
                 this.setState({ totalScholarshipsCount: res.data.length });
+                console.log({page});
+                if(page===1) {
 
+                    const searchAnalyticsPayload = {
+                        searchPayload,
+                        results_count: res.data.length,
+                        funding: res.data.funding,
+                        type: 'scholarships',
+                    };
+                    console.log({searchAnalyticsPayload});
+                    AnalyticsService.saveSearchAnalytics(searchAnalyticsPayload, userProfile).then()
+                }
                 if (scholarshipResults) {
                     this.setState({ scholarships: scholarshipResults });
                 }

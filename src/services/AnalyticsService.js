@@ -5,6 +5,7 @@ const IPDATA_URL = 'https://api.ipdata.co/?api-key=335beb2ad17cc12676f2792328a5a
 class AnalyticsService {
 
     static pageViewsUrl = `${Environment.apiUrlNodeMicroservice}/page-views`;
+    static searchAnalyticsUrl = `${Environment.apiUrlNodeMicroservice}/search-analytics`;
     static savePageView = async (viewData, userProfile) => {
 
         const viewDataBody = await AnalyticsService.transformViewData(viewData, userProfile);
@@ -25,7 +26,51 @@ class AnalyticsService {
 
         return apiCompletionPromise;
     };
+    static saveSearchAnalytics = async (searchAnalytics, userProfile) => {
 
+        const searchAnalyticsBody = await AnalyticsService.transformSearchAnalytics(searchAnalytics, userProfile);
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: searchAnalyticsBody,
+            url: `${AnalyticsService.searchAnalyticsUrl}`,
+        });
+
+        return apiCompletionPromise;
+    };
+
+
+    static transformSearchAnalytics = async (inputData, userProfile) => {
+
+
+        let transformedData = {
+            ...inputData,
+            geo_ip: null,
+            useragent: navigator && navigator.userAgent,
+            referrer: document && document.referrer,
+            location: window && window.location.href,
+        };
+        if (!userProfile) {
+            transformedData = {
+                ...transformedData,
+                user_id_guest: getGuestUserId(),
+                is_guest: true
+            };
+        } else {
+            transformedData = {
+                ...transformedData,
+                user_id: userProfile.user,
+            };
+
+            let guestUserId = localStorage.getItem('guestUserId');
+            if (guestUserId) {
+                transformedData.user_id_guest = guestUserId
+            }
+        }
+
+        transformedData.geo_ip = await AnalyticsService.getGeoIp();
+
+        return transformedData;
+    };
 
     static transformViewData = async (viewData, userProfile) => {
 
