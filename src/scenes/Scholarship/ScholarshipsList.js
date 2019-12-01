@@ -128,8 +128,7 @@ class ScholarshipsList extends React.Component {
                         funding: fundingAsNumber,
                         type: 'scholarships',
                     };
-                    AnalyticsService.saveSearchAnalytics
-                    ({searchResults}, userProfile).then();
+                    AnalyticsService.saveSearchAnalytics({searchResults}, userProfile).then();
                 }
                 if (scholarshipResults) {
                     this.setState({ scholarships: scholarshipResults });

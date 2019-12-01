@@ -6,6 +6,7 @@ import {SearchResultsDisplay} from "./SearchResultsDisplay";
 import {Helmet} from "react-helmet";
 import AutoComplete from "../../components/AutoComplete";
 import {MASTER_LIST_EVERYTHING_UNDERSCORE} from "../../models/ConstantsForm";
+import AnalyticsService from "../../services/AnalyticsService";
 
 class Search extends React.Component {
 
@@ -78,6 +79,17 @@ class Search extends React.Component {
         SearchApi.search(searchQuery)
             .then(res => {
                 this.setState({ searchResults: res.data });
+                const searchResults = {
+                    searchQuery,
+                    metadata: res.data.metadata,
+                    results_count: {
+                        scholarships: res.data.scholarships.length,
+                        blogPosts: res.data.blogPosts.length,
+                        essays: res.data.essays.length,
+                    },
+                    type: 'search',
+                };
+                AnalyticsService.saveSearchAnalytics({searchResults}, null).then();
 
             })
             .catch(err => {
