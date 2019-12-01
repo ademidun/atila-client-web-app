@@ -4,6 +4,7 @@ import Environment from './Environment'
 import jwtDecode from 'jwt-decode';
 import GoogleAnalytics from "react-ga";
 import AnalyticsService from "./AnalyticsService";
+import {IP_DATA_URL} from "../models/Constants";
 
 class UserProfileAPI {
 
@@ -65,7 +66,7 @@ class UserProfileAPI {
         const registrationDataPost = registrationData;
 
         registrationDataPost.userProfile.metadata_private =  {
-            geo_ip_registration: await AnalyticsService.getGeoIp(),
+            geo_ip_registration: await AnalyticsService.getGeoIp(IP_DATA_URL),
         };
         console.log({registrationDataPost});
         const apiCompletionPromise = request({

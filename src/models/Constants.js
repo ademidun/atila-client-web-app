@@ -72,3 +72,43 @@ export const relatedItems = [
 });
 
 export const RESERVED_USERNAMES = ['edit', 'settings', 'blog', 'essays', 'scholarships'];
+
+// use 2 different URLS to increase the amount of available quota
+export const IP_GEO_LOCATION_URL = 'https://api.ipgeolocation.io/ipgeo?apiKey=defa481e93f84d4196dbf19426ab0c51';
+export const IP_DATA_URL = 'https://api.ipdata.co/?api-key=335beb2ad17cc12676f2792328a5a770c47b89d6768daf9ec2c4d866';
+
+export const SEARCH_ANALYTICS_RESULTS_SCHOLARSHIP = {
+    search_payload: {
+        searchString: "University of Western Ontario",
+        previewMode: "universalSearch",
+        filter_by_user_show_eligible_only: true,
+        sort_by: "relevance_new"
+    },
+    results_count: 14,
+    funding: 186550,
+    type: "scholarships"
+};
+export const SEARCH_ANALYTICS_RESULTS_ENGINEERING = {
+    search_query: "engineering",
+    metadata: {
+        scholarships: {
+            omit_results: true,
+            total_results_count: 58,
+            results_limit: 3
+        },
+        blogPosts: {
+            omit_results: true,
+            total_results_count: 4,
+            results_limit: 3
+        },
+        essays: {
+            omit_results: false
+        }
+    },
+    results_count: {
+        scholarships: 3,
+        blogPosts: 3,
+        essays: 3
+    },
+    type: "search"
+};

@@ -6,6 +6,8 @@ import {SearchResultsDisplay} from "./SearchResultsDisplay";
 import {Helmet} from "react-helmet";
 import AutoComplete from "../../components/AutoComplete";
 import {MASTER_LIST_EVERYTHING_UNDERSCORE} from "../../models/ConstantsForm";
+import AnalyticsService from "../../services/AnalyticsService";
+import {slugify, unSlugify} from "../../services/utils";
 
 class Search extends React.Component {
 
@@ -17,7 +19,7 @@ class Search extends React.Component {
             location : { search },
         } = this.props;
         const params = new URLSearchParams(search);
-        const searchQuery = params.get('q') || '';
+        const searchQuery = unSlugify(params.get('q') || '');
 
         this.state = {
             searchQuery,
@@ -43,7 +45,7 @@ class Search extends React.Component {
             location : { search },
         } = props;
         const params = new URLSearchParams(search);
-        const searchQuery = params.get('q') || '';
+        const searchQuery = unSlugify(params.get('q') || '');
         const { prevSearchQuery } = state;
 
         if (searchQuery !== prevSearchQuery) {
@@ -64,7 +66,7 @@ class Search extends React.Component {
             location : { search },
         } = this.props;
         const params = new URLSearchParams(search);
-        const searchQuery = params.get('q') || '';
+        const searchQuery = unSlugify(params.get('q') || '');
 
         if (searchResults === null && !responseError && searchQuery !== prevSearchQuery) {
             this.loadItems();
@@ -78,6 +80,17 @@ class Search extends React.Component {
         SearchApi.search(searchQuery)
             .then(res => {
                 this.setState({ searchResults: res.data });
+                const search_results = {
+                    search_query: searchQuery,
+                    metadata: res.data.metadata,
+                    results_count: {
+                        scholarships: res.data.scholarships.length,
+                        blogPosts: res.data.blogPosts.length,
+                        essays: res.data.essays.length,
+                    },
+                    type: 'search',
+                };
+                AnalyticsService.saveSearchAnalytics({search_results}, null).then();
 
             })
             .catch(err => {
@@ -90,7 +103,8 @@ class Search extends React.Component {
 
     updateSearch = event => {
         event.preventDefault();
-        this.setState({searchQuery: event.target.value}, () => {
+        const searchQuery = unSlugify(event.target.value);
+        this.setState({searchQuery}, () => {
             this.submitSearch();
         });
     };
@@ -102,7 +116,7 @@ class Search extends React.Component {
         const { searchQuery } = this.state;
         this.props.history.push({
             pathname: '/search',
-            search: `?q=${searchQuery}`
+            search: `?q=${slugify(searchQuery)}`
         });
         this.setState({ isLoadingResponse: true }, () => {
             this.loadItems();

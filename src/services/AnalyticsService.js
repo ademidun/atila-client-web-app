@@ -1,10 +1,12 @@
 import Environment from "./Environment";
 import request from "axios";
 import {getGuestUserId, getItemType, makeXHRRequestAsPromise} from "./utils";
-const IPDATA_URL = 'https://api.ipdata.co/?api-key=335beb2ad17cc12676f2792328a5a770c47b89d6768daf9ec2c4d866';
+import {IP_GEO_LOCATION_URL} from "../models/Constants";
+
 class AnalyticsService {
 
     static pageViewsUrl = `${Environment.apiUrlNodeMicroservice}/page-views`;
+    static searchAnalyticsUrl = `${Environment.apiUrlNodeMicroservice}/search-analytics`;
     static savePageView = async (viewData, userProfile) => {
 
         const viewDataBody = await AnalyticsService.transformViewData(viewData, userProfile);
@@ -25,7 +27,51 @@ class AnalyticsService {
 
         return apiCompletionPromise;
     };
+    static saveSearchAnalytics = async (searchAnalytics, userProfile) => {
 
+        const searchAnalyticsBody = await AnalyticsService.transformSearchAnalytics(searchAnalytics, userProfile);
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: searchAnalyticsBody,
+            url: `${AnalyticsService.searchAnalyticsUrl}`,
+        });
+
+        return apiCompletionPromise;
+    };
+
+
+    static transformSearchAnalytics = async (inputData, userProfile) => {
+
+
+        let transformedData = {
+            ...inputData,
+            geo_ip: null,
+            useragent: navigator && navigator.userAgent,
+            referrer: document && document.referrer,
+            location: window && window.location.href,
+        };
+        if (!userProfile) {
+            transformedData = {
+                ...transformedData,
+                user_id_guest: getGuestUserId(),
+                is_guest: true
+            };
+        } else {
+            transformedData = {
+                ...transformedData,
+                user_id: userProfile.user,
+            };
+
+            let guestUserId = localStorage.getItem('guestUserId');
+            if (guestUserId) {
+                transformedData.user_id_guest = guestUserId
+            }
+        }
+
+        transformedData.geo_ip = await AnalyticsService.getGeoIp();
+
+        return transformedData;
+    };
 
     static transformViewData = async (viewData, userProfile) => {
 
@@ -79,13 +125,21 @@ class AnalyticsService {
         return transformedViewData;
     };
 
-    static getGeoIp = async () => {
+    static getGeoIp = async (url=IP_GEO_LOCATION_URL) => {
+
+        if (window.location.hostname === 'localhost') {
+            return {
+                error: 'Skip AnalyticsService.getGeoIp() in localhost to stay within quota limit. ' +
+                    'Uncomment this line in AnalyticsService to test in localhost'
+            }
+        }
 
         const dropFields = ['currency', 'emoji_flag', 'emoji_unicode', 'flag', 'languages'];
         let geo_ip = {};
+
         try {
             geo_ip = await makeXHRRequestAsPromise('GET',
-                IPDATA_URL, {});
+                url, {});
             geo_ip = JSON.parse(geo_ip);
 
             dropFields.forEach(field => {

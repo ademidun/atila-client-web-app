@@ -153,9 +153,11 @@ export function slugify(text) {
     return text
         .trim()
         .toLowerCase()
-        .replace(/[^\w ]+/g, '')
+        .replace(/[^\w /-]+/g, '')
         .trim()
         .replace(/ +/g, '-')
+        .replace(/\//g, '-')
+        .replace(/-{2,}/g, '-')
         ;
 }
 
