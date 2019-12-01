@@ -122,13 +122,13 @@ class ScholarshipsList extends React.Component {
                 this.setState({ totalScholarshipsCount: res.data.length });
                 if(page===1) {
                     const fundingAsNumber =  Number(res.data.funding.replace(/[^0-9.-]+/g,""));
-                    const searchResults = {
-                        searchPayload,
+                    const search_results = {
+                        search_payload: searchPayload,
                         results_count: res.data.length,
                         funding: fundingAsNumber,
                         type: 'scholarships',
                     };
-                    AnalyticsService.saveSearchAnalytics({searchResults}, userProfile).then();
+                    AnalyticsService.saveSearchAnalytics({search_results}, userProfile).then();
                 }
                 if (scholarshipResults) {
                     this.setState({ scholarships: scholarshipResults });

@@ -79,8 +79,8 @@ class Search extends React.Component {
         SearchApi.search(searchQuery)
             .then(res => {
                 this.setState({ searchResults: res.data });
-                const searchResults = {
-                    searchQuery,
+                const search_results = {
+                    search_query: searchQuery,
                     metadata: res.data.metadata,
                     results_count: {
                         scholarships: res.data.scholarships.length,
@@ -89,7 +89,7 @@ class Search extends React.Component {
                     },
                     type: 'search',
                 };
-                AnalyticsService.saveSearchAnalytics({searchResults}, null).then();
+                AnalyticsService.saveSearchAnalytics({search_results}, null).then();
 
             })
             .catch(err => {
