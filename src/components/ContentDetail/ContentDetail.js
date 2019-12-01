@@ -77,8 +77,8 @@ class ContentDetail extends React.Component {
                                     this.setState({pageViews});
                                 });
                         } else {
-                            const pageViews = guestPageViewsIncrement();
-                            this.setState({pageViews});
+                            const guestPageViews = guestPageViewsIncrement();
+                            this.setState({pageViews: {guestPageViews}});
                         }
                     })
             })
