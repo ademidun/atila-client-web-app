@@ -3,6 +3,7 @@ import axios from 'axios';
 import Environment from './Environment'
 import jwtDecode from 'jwt-decode';
 import GoogleAnalytics from "react-ga";
+import AnalyticsService from "./AnalyticsService";
 
 class UserProfileAPI {
 
@@ -59,11 +60,17 @@ class UserProfileAPI {
         return apiCompletionPromise;
     };
 
-    static createUser = (registrationData) => {
+    static createUser = async (registrationData) => {
 
+        const registrationDataPost = registrationData;
+
+        registrationDataPost.userProfile.metadata_private =  {
+            geo_ip_registration: await AnalyticsService.getGeoIp(),
+        };
+        console.log({registrationDataPost});
         const apiCompletionPromise = request({
             method: 'post',
-            data: registrationData,
+            data: registrationDataPost,
             url: `${this.userEndPoint}/`,
         });
 
