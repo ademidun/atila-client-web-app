@@ -120,17 +120,16 @@ class ScholarshipsList extends React.Component {
                 }
                 this.setState({ totalFunding: res.data.funding });
                 this.setState({ totalScholarshipsCount: res.data.length });
-                console.log({page});
                 if(page===1) {
-
-                    const searchAnalyticsPayload = {
+                    const fundingAsNumber =  Number(res.data.funding.replace(/[^0-9.-]+/g,""));
+                    const searchResults = {
                         searchPayload,
                         results_count: res.data.length,
-                        funding: res.data.funding,
+                        funding: fundingAsNumber,
                         type: 'scholarships',
                     };
-                    console.log({searchAnalyticsPayload});
-                    AnalyticsService.saveSearchAnalytics(searchAnalyticsPayload, userProfile).then()
+                    AnalyticsService.saveSearchAnalytics
+                    ({searchResults}, userProfile).then();
                 }
                 if (scholarshipResults) {
                     this.setState({ scholarships: scholarshipResults });
