@@ -1,7 +1,8 @@
 import Environment from "./Environment";
 import request from "axios";
 import {getGuestUserId, getItemType, makeXHRRequestAsPromise} from "./utils";
-const IPDATA_URL = 'https://api.ipdata.co/?api-key=335beb2ad17cc12676f2792328a5a770c47b89d6768daf9ec2c4d866';
+import {IP_GEO_LOCATION_URL} from "../models/Constants";
+
 class AnalyticsService {
 
     static pageViewsUrl = `${Environment.apiUrlNodeMicroservice}/page-views`;
@@ -124,13 +125,13 @@ class AnalyticsService {
         return transformedViewData;
     };
 
-    static getGeoIp = async () => {
+    static getGeoIp = async (url=IP_GEO_LOCATION_URL) => {
 
         const dropFields = ['currency', 'emoji_flag', 'emoji_unicode', 'flag', 'languages'];
         let geo_ip = {};
         try {
             geo_ip = await makeXHRRequestAsPromise('GET',
-                IPDATA_URL, {});
+                url, {});
             geo_ip = JSON.parse(geo_ip);
 
             dropFields.forEach(field => {
