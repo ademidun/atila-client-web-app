@@ -127,8 +127,16 @@ class AnalyticsService {
 
     static getGeoIp = async (url=IP_GEO_LOCATION_URL) => {
 
+        if (window.location.hostname === 'localhost') {
+            return {
+                error: 'Skip AnalyticsService.getGeoIp() in localhost to stay within quota limit. ' +
+                    'Uncomment this line in AnalyticsService to test in localhost'
+            }
+        }
+
         const dropFields = ['currency', 'emoji_flag', 'emoji_unicode', 'flag', 'languages'];
         let geo_ip = {};
+
         try {
             geo_ip = await makeXHRRequestAsPromise('GET',
                 url, {});
