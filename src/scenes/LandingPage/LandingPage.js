@@ -16,6 +16,7 @@ import {connect} from "react-redux";
 import BannerLoggedIn from "./BannerLoggedIn";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
+import SearchApi from "../../services/SearchAPI";
 
 class LandingPage extends React.Component {
 
@@ -25,6 +26,8 @@ class LandingPage extends React.Component {
         this.state = {
             scholarshipsDueSoon: null,
             scholarshipsRecentlyAdded: null,
+            scholarshipsForLocation: null,
+            searchLocation: 'Ontario'
         }
     }
     componentDidMount() {
@@ -34,16 +37,29 @@ class LandingPage extends React.Component {
     loadContent = async () => {
 
         this.setState({ scholarshipsDueSoonIsLoading: true });
+        const { userProfile } = this.props;
+
+        let searchLocation = this.state.searchLocation;
+
+        if(userProfile && userProfile.city[0] && userProfile.city[0].name) {
+            searchLocation = userProfile.city[0].name;
+        }
+
+        const scholarshipPromises = [
+            ScholarshipsAPI.list('due-soon'),
+            ScholarshipsAPI.list('?ordering=date_time_created'),
+            SearchApi.search(searchLocation),
+        ];
 
         try {
-            let [scholarshipsDueSoonResponse, scholarshipsRecentlyAddedResponse] = await Promise.all([
-                ScholarshipsAPI.list('due-soon'),
-                ScholarshipsAPI.list('?ordering=date_time_created'),
-            ]);
+            let [scholarshipsDueSoonResponse, scholarshipsRecentlyAddedResponse,
+                scholarshipsForLocationResponse] = await Promise.all(scholarshipPromises);
 
             const scholarshipsDueSoon = scholarshipsDueSoonResponse.data.results.slice(0,3);
             const scholarshipsRecentlyAdded = scholarshipsRecentlyAddedResponse.data.results.slice(0,3);
-            this.setState({ scholarshipsDueSoon, scholarshipsRecentlyAdded });
+            const scholarshipsForLocation = scholarshipsForLocationResponse.data.scholarships.slice(0,3);
+            this.setState({ scholarshipsDueSoon, scholarshipsRecentlyAdded,
+                scholarshipsForLocation, searchLocation });
             this.setState({ scholarshipsDueSoonIsLoading: false });
 
         }
@@ -56,7 +72,8 @@ class LandingPage extends React.Component {
     render() {
 
         const { userProfile } = this.props;
-        const { scholarshipsDueSoon, scholarshipsDueSoonIsLoading, scholarshipsRecentlyAdded } = this.state;
+        const { scholarshipsDueSoon, scholarshipsDueSoonIsLoading,
+            scholarshipsRecentlyAdded, scholarshipsForLocation, searchLocation } = this.state;
 
         const scholarshipsContent = (<React.Fragment>
             {scholarshipsDueSoonIsLoading &&
@@ -72,6 +89,14 @@ class LandingPage extends React.Component {
             <hr/>
             <LandingPageContent title={`Scholarships Recently Added`}
                                 contentList={scholarshipsRecentlyAdded}
+                                contentType="scholarship" />
+            </React.Fragment>
+            }
+            {scholarshipsForLocation &&
+            <React.Fragment>
+            <hr/>
+            <LandingPageContent title={`Scholarships For ${searchLocation}`}
+                                contentList={scholarshipsForLocation}
                                 contentType="scholarship" />
             </React.Fragment>
             }
