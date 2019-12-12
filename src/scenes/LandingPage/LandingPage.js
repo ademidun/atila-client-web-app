@@ -68,9 +68,12 @@ class LandingPage extends React.Component {
                                 contentType="scholarship" />
             }
             {scholarshipsRecentlyAdded &&
+            <React.Fragment>
+            <hr/>
             <LandingPageContent title={`Scholarships Recently Added`}
                                 contentList={scholarshipsRecentlyAdded}
                                 contentType="scholarship" />
+            </React.Fragment>
             }
         </React.Fragment>);
         return (
