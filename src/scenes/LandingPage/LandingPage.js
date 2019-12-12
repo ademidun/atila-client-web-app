@@ -16,6 +16,7 @@ import {connect} from "react-redux";
 import BannerLoggedIn from "./BannerLoggedIn";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
+import SearchApi from "../../services/SearchAPI";
 
 class LandingPage extends React.Component {
 
@@ -24,32 +25,57 @@ class LandingPage extends React.Component {
 
         this.state = {
             scholarshipsDueSoon: null,
+            scholarshipsRecentlyAdded: null,
+            scholarshipsForLocation: null,
+            searchLocation: 'Ontario'
         }
     }
     componentDidMount() {
         this.loadContent();
     }
 
-    loadContent = () => {
+    loadContent = async () => {
 
         this.setState({ scholarshipsDueSoonIsLoading: true });
-        ScholarshipsAPI.getDueSoon()
-            .then(res => {
-                const scholarshipsDueSoon = res.data.results;
-                this.setState({ scholarshipsDueSoon });
-            })
-            .catch(() => {})
-            .finally(() => {
-                this.setState({ scholarshipsDueSoonIsLoading: false });
-            });
+        const { userProfile } = this.props;
+
+        let searchLocation = this.state.searchLocation;
+
+        if(userProfile && userProfile.city[0] && userProfile.city[0].name) {
+            searchLocation = userProfile.city[0].name;
+        }
+
+        const scholarshipPromises = [
+            ScholarshipsAPI.list('due-soon'),
+            ScholarshipsAPI.list('?ordering=date_time_created'),
+            SearchApi.search(searchLocation),
+        ];
+
+        try {
+            let [scholarshipsDueSoonResponse, scholarshipsRecentlyAddedResponse,
+                scholarshipsForLocationResponse] = await Promise.all(scholarshipPromises);
+
+            const scholarshipsDueSoon = scholarshipsDueSoonResponse.data.results.slice(0,3);
+            const scholarshipsRecentlyAdded = scholarshipsRecentlyAddedResponse.data.results.slice(0,3);
+            const scholarshipsForLocation = scholarshipsForLocationResponse.data.scholarships.slice(0,3);
+            this.setState({ scholarshipsDueSoon, scholarshipsRecentlyAdded,
+                scholarshipsForLocation, searchLocation });
+            this.setState({ scholarshipsDueSoonIsLoading: false });
+
+        }
+        catch(err) {
+            console.log(err);
+            this.setState({ scholarshipsDueSoonIsLoading: false });
+        }
     };
 
     render() {
 
         const { userProfile } = this.props;
-        const { scholarshipsDueSoon, scholarshipsDueSoonIsLoading } = this.state;
+        const { scholarshipsDueSoon, scholarshipsDueSoonIsLoading,
+            scholarshipsRecentlyAdded, scholarshipsForLocation, searchLocation } = this.state;
 
-        const scholarshipsDueSoonContent = (<React.Fragment>
+        const scholarshipsContent = (<React.Fragment>
             {scholarshipsDueSoonIsLoading &&
             <Loading title="Loading Scholarships ..." />
             }
@@ -57,6 +83,22 @@ class LandingPage extends React.Component {
             <LandingPageContent title={`${userProfile? 'Your': ''} Scholarships Due Soon`}
                                 contentList={scholarshipsDueSoon}
                                 contentType="scholarship" />
+            }
+            {scholarshipsRecentlyAdded &&
+            <React.Fragment>
+            <hr/>
+            <LandingPageContent title={`Scholarships Recently Added`}
+                                contentList={scholarshipsRecentlyAdded}
+                                contentType="scholarship" />
+            </React.Fragment>
+            }
+            {scholarshipsForLocation &&
+            <React.Fragment>
+            <hr/>
+            <LandingPageContent title={`Scholarships For ${searchLocation}`}
+                                contentList={scholarshipsForLocation}
+                                contentType="scholarship" />
+            </React.Fragment>
             }
         </React.Fragment>);
         return (
@@ -67,7 +109,7 @@ class LandingPage extends React.Component {
                     <React.Fragment>
                         <Banner/>
                         <hr/>
-                        {scholarshipsDueSoonContent}
+                        {scholarshipsContent}
                         <WhatIsAtila/>
                         <div className="p-5">
                             <Link to="/register" className="btn btn-primary center-block font-size-xl">
@@ -83,7 +125,7 @@ class LandingPage extends React.Component {
                     <React.Fragment>
                         <BannerLoggedIn/>
                         <hr/>
-                        {scholarshipsDueSoonContent}
+                        {scholarshipsContent}
                         <hr />
                     </React.Fragment>
                     }

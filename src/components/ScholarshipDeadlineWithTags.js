@@ -7,7 +7,7 @@ const todayMoment = moment(Date.now());
 
 function ScholarshipDeadlineWithTags({scholarship, datePrefix}) {
 
-    const { deadline, open_date, metadata} = scholarship;
+    const { deadline, open_date, metadata, date_time_created} = scholarship;
     let tag = null;
     let tagPrefix = 'due';
     let color = null;
@@ -36,11 +36,40 @@ function ScholarshipDeadlineWithTags({scholarship, datePrefix}) {
         <React.Fragment>
             {datePrefix} {scholarshipDateString}{' '}
             {tag &&
+            <React.Fragment>
+            <br/>
             <Tag color={color} key={tag}>
                 {tag.toUpperCase()}
-            </Tag>}
+            </Tag>
+            </React.Fragment>
+            }
+            {dateAddedTag(date_time_created)}
         </React.Fragment>
     );
+}
+
+function dateAddedTag(date_time_created){
+
+    let tag = null;
+    let tagPrefix = 'Added';
+
+    let scholarshipDateMoment = moment(date_time_created);
+    const daysFromCreation = Math.abs(scholarshipDateMoment.diff(todayMoment, 'days'));
+
+    if (daysFromCreation <= 7) {
+        return (
+            <React.Fragment>
+                <Tag color="green" key={tag}>
+                    {`${tagPrefix} ${scholarshipDateMoment.fromNow()}`.toUpperCase()}
+                </Tag>
+                <br/>
+            </React.Fragment>
+        )
+    }
+
+    return null
+
+
 }
 
 ScholarshipDeadlineWithTags.defaultProps = {
