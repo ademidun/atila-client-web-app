@@ -13,6 +13,39 @@ export const UserProfileTest1 = {
     saved_scholarships: [],
 };
 
+export const userProfileFormOnboarding = [
+    {
+        keyName: 'major',
+        type: 'autocomplete_single',
+        suggestions: MAJORS_LIST,
+    },
+    {
+        keyName: 'post_secondary_school',
+        type: 'autocomplete_single',
+        suggestions: SCHOOLS_LIST,
+    },
+    {
+        keyName: 'gender',
+        type: 'select',
+        options: ['Male', 'Female', 'Other']
+    },
+    {
+        keyName: 'city',
+        type: 'location',
+        valueDisplay: model => model.city[0] && model.city[0].name,
+    },
+    {
+        keyName: 'province',
+        type: 'location',
+        valueDisplay: model => model.province[0] && model.province[0].name,
+    },
+    {
+        keyName: 'country',
+        type: 'location',
+        valueDisplay: model => model.country[0] && model.country[0].name,
+    },
+];
+
 export const userProfileFormConfig = [
     {
         keyName: 'first_name',

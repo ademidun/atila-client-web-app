@@ -305,18 +305,8 @@ class ScholarshipsList extends React.Component {
             }
             const title = (<React.Fragment>
                 <h1 className="text-center">
-                    <span role="img" aria-label="shrug shoulders emoji">
-                    🤷🏾‍♀
-                    </span>
-                        ️ Scholarships Found
-                    <br />
+                    Final Step
                 </h1>
-                <h2 className="text-center text-muted">
-                    <span role="img" aria-label="shrug shoulders emoji">
-                        🤷🏾‍♀️
-                    </span>
-                        in Funding
-                </h2>
                 <h1 className="text-center font-weight-bold">
                     Complete Your Profile to see all eligible scholarships
                 </h1>
@@ -325,7 +315,8 @@ class ScholarshipsList extends React.Component {
                 );
             return <UserProfileEdit title={title}
                                     className={"container mt-5"}
-                                    afterSubmitSuccess={this.afterProfileEdit} />
+                                    afterSubmitSuccess={this.afterProfileEdit}
+                                    startingPageNumber={0} />
         }
 
         const seoContent = {

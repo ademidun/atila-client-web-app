@@ -127,7 +127,7 @@ class Register extends React.Component {
 
         const userProfileSendData = {
             first_name: userProfile.firstName,
-            last_name: userProfile.firstName,
+            last_name: userProfile.lastName,
             email, username,
         };
 
