@@ -5,7 +5,7 @@ import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import FormDynamic from "../../components/Form/FormDynamic";
 import {scholarshipUserProfileSharedFormConfigs, toastNotify} from "../../models/Utils";
 import UserProfileAPI from "../../services/UserProfileAPI";
-import {userProfileFormConfig} from "../../models/UserProfile";
+import {userProfileFormConfig, userProfileFormOnboarding} from "../../models/UserProfile";
 import {transformLocation} from "../../services/utils";
 import {Button, Col, Row} from "antd";
 import {Link} from "react-router-dom";
@@ -22,7 +22,7 @@ class UserProfileEdit extends React.Component {
         super(props);
 
         this.state = {
-            pageNumber: 1,
+            pageNumber: props.startingPageNumber,
             locationData: {},
         }
     }
@@ -91,26 +91,36 @@ class UserProfileEdit extends React.Component {
 
     render () {
 
-        const {userProfile, title, className} = this.props;
+        const {userProfile, title, className, startingPageNumber} = this.props;
         const {pageNumber} = this.state;
 
         return (
             <div className={className}>
                 {title}
-                <Row style={{textAlign: 'left'}}>
-                    <Col sm={24} md={12}>
-                        <span><strong> Account Type: </strong> Student {userProfile.is_atila_premium ? 'Premium' : 'Free'}</span>
-                        {!userProfile.is_atila_premium &&
-                        <Button style={{ marginTop: 16 }}
-                                className="m-3"
-                                type="primary">
-                            <Link to="/premium">
-                                Go Premium
-                            </Link>
-                        </Button>
-                        }
-                    </Col>
-                </Row>
+                {/*startingPageNumber is zero when user first registers*/}
+                {/*Don't show Premium when first onboarding user. */}
+                {startingPageNumber !==0 &&
+                    <Row style={{textAlign: 'left'}}>
+                        <Col sm={24} md={12}>
+                            <span><strong> Account Type: </strong> Student {userProfile.is_atila_premium ? 'Premium' : 'Free'}</span>
+                            {!userProfile.is_atila_premium &&
+                            <Button style={{ marginTop: 16 }}
+                                    className="m-3"
+                                    type="primary">
+                                <Link to="/premium">
+                                    Go Premium
+                                </Link>
+                            </Button>
+                            }
+                        </Col>
+                    </Row>
+                }
+                {pageNumber === 0 &&
+                <FormDynamic onUpdateForm={this.updateForm}
+                             model={userProfile}
+                             inputConfigs=
+                                 {userProfileFormOnboarding}
+                />}
                 {pageNumber === 1 &&
                 <FormDynamic onUpdateForm={this.updateForm}
                              model={userProfile}
@@ -127,7 +137,7 @@ class UserProfileEdit extends React.Component {
                     {pageNumber !== 2 &&
                     <button className="btn btn-outline-primary float-right col-md-6"
                             onClick={() => this.changePage(pageNumber+1)}>Next</button>}
-                    {pageNumber !== 1 &&
+                    {pageNumber > 1 &&
                     <button className="btn btn-outline-primary float-left col-md-6"
                             onClick={() => this.changePage(pageNumber-1)}>Prev</button>}
                 </div>
@@ -149,6 +159,7 @@ const mapStateToProps = state => {
 UserProfileEdit.defaultProps = {
     title: (<h1>Edit Profile</h1>),
     className: '',
+    startingPageNumber: 1,
     afterSubmitSuccess: () => {},
 };
 
@@ -159,6 +170,7 @@ UserProfileEdit.propTypes = {
     title: PropTypes.node,
     className: PropTypes.string,
     afterSubmitSuccess: PropTypes.func,
+    startingPageNumber: PropTypes.number,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserProfileEdit);
