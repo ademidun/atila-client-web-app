@@ -289,20 +289,6 @@ class ScholarshipsList extends React.Component {
 
         if (userProfile && !isCompleteProfile) {
 
-            let missingSections = null;
-
-            if (!userProfile.post_secondary_school || !userProfile.major) {
-                missingSections = (<ul>
-                    The Following questions are missing:
-                    {! userProfile.major &&
-                    <li><strong>Major: </strong>What program are you currently or interested in?</li>
-                    }
-                    {! userProfile.post_secondary_school &&
-                    <li><strong>Post Secondary School</strong>: What school are you currently or interested in attending?</li>
-                    }
-
-                </ul>)
-            }
             const title = (<React.Fragment>
                 <h1 className="text-center">
                     Final Step
@@ -310,7 +296,6 @@ class ScholarshipsList extends React.Component {
                 <h1 className="text-center font-weight-bold">
                     Complete Your Profile to see all eligible scholarships
                 </h1>
-                {missingSections}
                 </React.Fragment>
                 );
             return <UserProfileEdit title={title}

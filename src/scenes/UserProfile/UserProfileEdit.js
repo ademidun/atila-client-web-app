@@ -5,7 +5,7 @@ import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import FormDynamic from "../../components/Form/FormDynamic";
 import {scholarshipUserProfileSharedFormConfigs, toastNotify} from "../../models/Utils";
 import UserProfileAPI from "../../services/UserProfileAPI";
-import {userProfileFormConfig, userProfileFormOnboarding} from "../../models/UserProfile";
+import {userProfileFormConfig, userProfileOnBoardingFormConfig} from "../../models/UserProfile";
 import {transformLocation} from "../../services/utils";
 import {Button, Col, Row} from "antd";
 import {Link} from "react-router-dom";
@@ -119,7 +119,7 @@ class UserProfileEdit extends React.Component {
                 <FormDynamic onUpdateForm={this.updateForm}
                              model={userProfile}
                              inputConfigs=
-                                 {userProfileFormOnboarding}
+                                 {userProfileOnBoardingFormConfig}
                 />}
                 {pageNumber === 1 &&
                 <FormDynamic onUpdateForm={this.updateForm}
