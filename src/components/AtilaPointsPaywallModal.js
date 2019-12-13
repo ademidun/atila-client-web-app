@@ -48,7 +48,7 @@ class AtilaPointsPaywallModal extends React.Component {
 
         if (userProfile) {
             const { viewCount, viewCountType, showReminder: visible } = getPageViewLimit(pageViews, pathname);
-            this.setState({viewCount, viewCountType, visible});
+            this.setState({viewCount, viewCountType, visible: visible});
         } else {
             this.setState({viewCount: pageViews.guestPageViews, visible: pageViews.guestPageViews % 5 === 0});
         }
@@ -76,6 +76,8 @@ class AtilaPointsPaywallModal extends React.Component {
         if (userProfile && userProfile.is_atila_premium) {
             return null
         }
+        const premiumOrRegisterCTA = userProfile ? (<Link to="/pricing">Go Premium</Link>):
+            (<Link to="/register">Register for free</Link>);
         if (userProfile) {
             guestOrUserProfileContent = (<span>
                         <h3>You have viewed {viewCount} {viewCountType} this Month</h3>
@@ -94,27 +96,35 @@ class AtilaPointsPaywallModal extends React.Component {
                             </Popover>
 
                         </h5>
+                        <br/>
+                        <h4>ways to keep viewing: </h4>
+                        <ol className="font-size-xl">
+                            <li className="font-weight-bold">
+                                {premiumOrRegisterCTA}
+                            </li>
+                            <li>
+                                <Link to="/scholarship/add">add a scholarship</Link>
+                            </li>
+                            <li>
+                                <Link to="/blog/add">add a blog post</Link>
+                            </li>
+                            <li>
+                                <Link to="/essay/add">add an essay</Link>
+                            </li>
+                        </ol>
                         </span>)
         } else {
             guestOrUserProfileContent = (<span>
                         <h3>You have viewed {viewCount} pages</h3>
-                        <h5>
-                            You have not <Link to="/pricing">
-                            created an account
+                        <br/>
+                        <br/>
+                        <h4>
+                            You need to <Link to="/register">
+                            create a free account
                         </Link> <br/> <br/>
-                            You have 0{' '}
-                            <Popover content={ATILA_POINTS_EXPLAIN_POPOVER}
-                                     title="What is Atila Points?">
-                                <Link to="/blog/atila/what-is-atila#atila-points">
-                                    Atila Points <FontAwesomeIcon icon={faQuestionCircle} />
-                                </Link>
-                            </Popover>
-
-                        </h5>
+                        </h4>
                         </span>)
         }
-        const premiumOrRegister = userProfile ? (<Link to="/pricing">Go Premium</Link>):
-            (<Link to="/register">Register for free</Link>);
         return (
             <div>
                 <Modal
@@ -132,28 +142,12 @@ class AtilaPointsPaywallModal extends React.Component {
                         <Button key="submit"
                                 type="primary"
                                 onClick={this.handleOk}>
-                            {premiumOrRegister}
+                            {premiumOrRegisterCTA}
                         </Button>,
                     ]}
                 >
                     <div className="p-3">
                         {guestOrUserProfileContent}
-                        <br/>
-                        <h4>ways to keep viewing: </h4>
-                        <ol className="font-size-xl">
-                            <li className="font-weight-bold">
-                                {premiumOrRegister}
-                            </li>
-                            <li>
-                                <Link to="/scholarship/add">add a scholarship</Link>
-                            </li>
-                            <li>
-                                <Link to="/blog/add">add a blog post</Link>
-                            </li>
-                            <li>
-                                <Link to="/essay/add">add an essay</Link>
-                            </li>
-                        </ol>
                     </div>
 
                 </Modal>
