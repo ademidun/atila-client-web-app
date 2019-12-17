@@ -12,6 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Navbar from "./components/Navbar/Navbar";
 import GoogleAnalyticsTracker from "./services/GoogleAnalyticsTracker";
 import ScrollToTop from "./components/ScrollToTop";
+import HighSchool from "./components/HighSchool";
 
 const Pricing = loadable(() => import('./scenes/AtilaPremium/Pricing'), {
     fallback: <Loading />,
@@ -84,6 +85,8 @@ function App(props) {
                         <Route path="/verify" component={GoogleAnalyticsTracker(VerifyAccount)} />
                         <Route path="/register" component={GoogleAnalyticsTracker(Register)} />
                         <Route path="/profile" component={GoogleAnalyticsTracker(UserProfile)} />
+                        <Route path="/high-school" component={GoogleAnalyticsTracker(HighSchool)} />
+                        <Route path="/highschool" component={GoogleAnalyticsTracker(HighSchool)} />
                         <Route path="/team" component={GoogleAnalyticsTracker(Team)} />
                         <Route path="/terms-and-conditions" component={GoogleAnalyticsTracker(TermsConditions)} />
                         <Route path="/contact" component={GoogleAnalyticsTracker(ContactUs)} />
