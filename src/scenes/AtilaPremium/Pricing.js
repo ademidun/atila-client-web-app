@@ -31,7 +31,8 @@ function Pricing() {
                         <div className="panel pricing-table">
 
                             <div className="pricing-plan">
-                                <img src="https://s28.postimg.cc/ju5bnc3x9/plane.png" alt="" className="pricing-img" />
+                                <img src="https://s22.postimg.cc/8mv5gn7w1/paper-plane.png
+                                " alt="" className="pricing-img" />
                                 <h2 className="pricing-header">Student</h2>
                                 <span className="pricing-price">Free</span>
                                 <Link to="/register" className="pricing-button">
@@ -45,8 +46,8 @@ function Pricing() {
                                 </ul>
                             </div>
 
-                            <div className="pricing-plan shadow">
-                                <img src="https://s21.postimg.cc/tpm0cge4n/space-ship.png" alt="" className="pricing-img" />
+                            <div className="pricing-plan">
+                                <img src="https://s28.postimg.cc/ju5bnc3x9/plane.png" alt="" className="pricing-img" />
                                 <h2 className="pricing-header">Student Premium</h2>
                                 <span className="pricing-price">${PREMIUM_PRICE_BEFORE_TAX}</span>
                                 <Link to="/premium" className="pricing-button is-featured">
@@ -62,6 +63,27 @@ function Pricing() {
                                     </li>
                                 </ul>
                             </div>
+
+
+                            <div className="pricing-plans">
+                                <br/>
+                                <img src="https://s21.postimg.cc/tpm0cge4n/space-ship.png" alt="" className="pricing-img" />
+                                <h3 className="pricing-header-last"> Schools or Organizations</h3>
+                                <span className="pricing-price">Contact</span>
+                                <Link to="/contact" className="pricing-button is-featured">
+                                    Get Estimate
+                                </Link>
+                                <ul className="pricing-features">
+                                    <li className="pricing-features-item">Unlimited scholarship views</li>
+                                    <li className="pricing-features-item">Unlimited essay views</li>
+                                    <li className="pricing-features-item">Unlimited blog views</li>
+                                    <li className="pricing-features-item">Weekly scholarship newsletter</li>
+                                    <li className="pricing-features-item">
+                                        Get notified before your scholarships are due
+                                    </li>
+                                </ul>
+                            </div>
+                            
 
                         </div>
 
