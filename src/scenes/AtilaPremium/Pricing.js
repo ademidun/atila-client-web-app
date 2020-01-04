@@ -69,11 +69,7 @@ function Pricing() {
                                 <br/>
                                 <img src="https://s21.postimg.cc/tpm0cge4n/space-ship.png" alt="" className="pricing-img" />
                                 <h3 className="pricing-header-last"> Schools or Organizations</h3>
-                                <span className="pricing-price">
-                                <Link to="/contact" className="pricing-button is-featured">
-                                Contact
-                                </Link>
-                                </span>
+                                <span className="pricing-price">Contact</span>
                                 <Link to="/contact" className="pricing-button is-featured">
                                     Get Estimate
                                 </Link>
