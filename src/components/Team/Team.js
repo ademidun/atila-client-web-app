@@ -189,10 +189,11 @@ function Team() {
             <div className="row ml-md-5">
 
                 {teamMembers.map(member => <TeamMemberCard key={member.first_name} teamMember={member} />)}
-
+                    <br/>
                 <div className="col-sm-12 col-md-8 px-0 pt-3" style={{ fontSize: 'larger' }}>
+                <br/>
                     If you would like to join the team or help out in some way,
-                    <a href="mailto:info@atila.ca" target="_blank" rel="noopener noreferrer">send an email </a> to <a
+                    <a href="mailto:info@atila.ca" target="_blank" rel="noopener noreferrer"> send an email </a> to <a
                     href="mailto:info@atila.ca" target="_blank" rel="noopener noreferrer">info@atila.ca</a> with your resume and/or links to cool stuff you've
                     done.
                 </div>
