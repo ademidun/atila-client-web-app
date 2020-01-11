@@ -7,7 +7,6 @@ import {faQuestionCircle} from "@fortawesome/free-solid-svg-icons/faQuestionCirc
 import {ATILA_POINTS_EXPLAIN_POPOVER} from "../../components/AtilaPointsPaywallModal";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import {PREMIUM_PRICE_BEFORE_TAX} from "./PremiumCheckoutForm";
-import {MAX_BLOG_PAGE_VIEWS, MAX_ESSAY_PAGE_VIEWS, MAX_SCHOLARSHIP_PAGE_VIEWS} from "../../models/Constants";
 import MoreFeatures from "../LandingPage/MoreFeatures";
 
 function Pricing() {
@@ -39,10 +38,6 @@ function Pricing() {
                                     Sign up
                                 </Link>
                                 <ul className="pricing-features">
-                                    <li className="pricing-features-item">{MAX_SCHOLARSHIP_PAGE_VIEWS} scholarship views per month</li>
-                                    <li className="pricing-features-item">{MAX_ESSAY_PAGE_VIEWS}  essay views per month</li>
-                                    <li className="pricing-features-item">{MAX_BLOG_PAGE_VIEWS}  blog views per month</li>
-                                    <li className="pricing-features-item">bi-weekly scholarship newsletter</li>
                                 </ul>
                             </div>
 
@@ -54,13 +49,9 @@ function Pricing() {
                                     Sign Up
                                 </Link>
                                 <ul className="pricing-features">
-                                    <li className="pricing-features-item">Unlimited scholarship views</li>
-                                    <li className="pricing-features-item">Unlimited essay views</li>
-                                    <li className="pricing-features-item">Unlimited blog views</li>
-                                    <li className="pricing-features-item">Weekly scholarship newsletter</li>
-                                    <li className="pricing-features-item">
-                                        Get notified before your scholarships are due
-                                    </li>
+                                    <li className="pricing-features-item">If you find Atila useful,
+                                        support Atila with a $9/month membership.</li>
+                                    <li className="pricing-features-item">You can cancel anytime.</li>
                                 </ul>
                             </div>
 
@@ -74,12 +65,9 @@ function Pricing() {
                                     Get Estimate
                                 </Link>
                                 <ul className="pricing-features">
-                                    <li className="pricing-features-item">Unlimited scholarship views</li>
-                                    <li className="pricing-features-item">Unlimited essay views</li>
-                                    <li className="pricing-features-item">Unlimited blog views</li>
-                                    <li className="pricing-features-item">Weekly scholarship newsletter</li>
                                     <li className="pricing-features-item">
-                                        Get notified before your scholarships are due
+                                        Get a discounted rate on Atila memberships
+                                        for students in your school or organization
                                     </li>
                                 </ul>
                             </div>
