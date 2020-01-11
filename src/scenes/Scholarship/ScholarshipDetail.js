@@ -9,7 +9,6 @@ import AnalyticsService from "../../services/AnalyticsService";
 import ScholarshipShareSaveButtons from "./ScholarshipShareSaveButtons";
 import HelmetSeo from "../../components/HelmetSeo";
 import UserProfileAPI from "../../services/UserProfileAPI";
-import AtilaPointsPaywallModal from "../../components/AtilaPointsPaywallModal";
 import ScholarshipExtraCriteria from "./ScholarshipExtraCriteria";
 import ScholarshipDeadlineWithTags from "../../components/ScholarshipDeadlineWithTags";
 import {Alert, message} from 'antd';
@@ -78,12 +77,12 @@ class ScholarshipDetail extends React.Component {
                     .savePageView(scholarship, userProfile)
                     .then(() => {
                         if(userProfile) {
-                            AnalyticsService
+                            /*AnalyticsService
                                 .getPageViews(userProfile.user)
                                 .then( res => {
                                     const { pageViews } = res.data;
                                     this.setState({pageViews});
-                                });
+                                });*/
                         } else {
                             const guestPageViews = guestPageViewsIncrement();
                             this.setState({pageViews: {guestPageViews}});
@@ -111,8 +110,7 @@ class ScholarshipDetail extends React.Component {
     render() {
 
         const { isLoadingScholarship, scholarship,
-            errorLoadingScholarship, scholarshipUserProfile,
-            pageViews} = this.state;
+            errorLoadingScholarship, scholarshipUserProfile} = this.state;
 
         if (errorLoadingScholarship) {
             return (<div className="text-center">
@@ -137,9 +135,6 @@ class ScholarshipDetail extends React.Component {
             <React.Fragment>
                 <HelmetSeo content={genericItemTransform(scholarship)} />
 
-                {pageViews &&
-                <AtilaPointsPaywallModal pageViews={pageViews} />
-                }
                 <div className="content-detail container mt-5">
                     <div className="row">
                         <div className="col-12">

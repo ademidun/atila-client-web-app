@@ -10,7 +10,6 @@ import AnalyticsService from "../../services/AnalyticsService";
 import HelmetSeo from "../HelmetSeo";
 import {genericItemTransform, guestPageViewsIncrement, scrollToElement, toTitleCase} from "../../services/utils";
 import {Button} from "antd";
-import AtilaPointsPaywallModal from "../AtilaPointsPaywallModal";
 
 class ContentDetail extends React.Component {
 
@@ -70,12 +69,12 @@ class ContentDetail extends React.Component {
                     .savePageView(content, userProfile)
                     .then(() => {
                         if(userProfile) {
-                            AnalyticsService
+                            /*AnalyticsService
                                 .getPageViews(userProfile.user)
                                 .then( res => {
                                     const { pageViews } = res.data;
                                     this.setState({pageViews});
-                                });
+                                });*/
                         } else {
                             const guestPageViews = guestPageViewsIncrement();
                             this.setState({pageViews: {guestPageViews}});
@@ -92,7 +91,7 @@ class ContentDetail extends React.Component {
     render () {
 
         const { className, contentType, userProfile, contentSlug } = this.props;
-        const { errorGettingContent, content, pageViews } = this.state;
+        const { errorGettingContent, content } = this.state;
 
         if (errorGettingContent) {
             return (<div className="text-center">
@@ -160,10 +159,6 @@ class ContentDetail extends React.Component {
                          style={{ maxWidth: '100%' }}
                          className="header-image"
                     />}
-
-                    {pageViews &&
-                    <AtilaPointsPaywallModal pageViews={pageViews} />
-                    }
 
                     {user &&
                     <div className="bg-light my-3 p-1">
