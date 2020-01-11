@@ -6,6 +6,7 @@ import ContentCard from "./ContentCard";
 import {genericItemTransform} from "../services/utils";
 import {Link} from "react-router-dom";
 import ResponseDisplay from "./ResponseDisplay";
+import {Col, Row} from "antd";
 
 class ContentList extends React.Component {
 
@@ -101,11 +102,14 @@ class ContentList extends React.Component {
         }
         else {
             contentList = contentItems.map( content =>
+                <Col xs={24} md={12} lg={8}>
                     <ContentCard key={content.id}
                                  content={genericItemTransform(content)}
-                                 className="col-12 mb-3"
+                                 className=" mb-3"
                                  hideImage={contentType==='Essays'}
+                                 customStyle={{height: '650px'}}
                     />
+                </Col>
                 );
         }
 
@@ -124,9 +128,9 @@ class ContentList extends React.Component {
                         </Link>
                     </div>
                 </div>
-                <div>
+                <Row gutter={{ xs: 8, sm: 16}}>
                     {contentList}
-                </div>
+                </Row>
                 {
                     contentItems.length < totalContentCount
                     &&

@@ -46,7 +46,7 @@ class AtilaPointsPaywallModal extends React.Component {
         }
 
         if (!userProfile) {
-            this.setState({viewCount: pageViews.guestPageViews, visible: true});
+            this.setState({viewCount: pageViews.guestPageViews, visible: pageViews.guestPageViews % 5 === 0});
         }
     };
 
