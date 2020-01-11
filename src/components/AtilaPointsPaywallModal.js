@@ -12,11 +12,10 @@ import {getPageViewLimit} from "../services/utils";
 export const ATILA_POINTS_EXPLAIN_POPOVER = (
     <span>
                 <p>
-                Points system where  you get points for adding content
+                Get points for adding content
                     like scholarships, blog posts and essays.
                 You can use those points for special features like viewing essays,
                     scholarships, easier applications and more.
-                You can also get paid for the content you contribute.
                 </p>
                 <Link to="/blog/atila/what-is-atila#atila-points"> Learn More </Link>
             </span>
@@ -46,11 +45,8 @@ class AtilaPointsPaywallModal extends React.Component {
             return
         }
 
-        if (userProfile) {
-            const { viewCount, viewCountType, showReminder: visible } = getPageViewLimit(pageViews, pathname);
-            this.setState({viewCount, viewCountType, visible});
-        } else {
-            this.setState({viewCount: pageViews.guestPageViews, visible: pageViews.guestPageViews % 5 === 0});
+        if (!userProfile) {
+            this.setState({viewCount: pageViews.guestPageViews, visible: true});
         }
     };
 
@@ -99,7 +95,7 @@ class AtilaPointsPaywallModal extends React.Component {
             guestOrUserProfileContent = (<span>
                         <h3>You have viewed {viewCount} pages</h3>
                         <h5>
-                            You have not <Link to="/pricing">
+                            You have not <Link to="/register">
                             created an account
                         </Link> <br/> <br/>
                             You have 0{' '}
@@ -139,21 +135,7 @@ class AtilaPointsPaywallModal extends React.Component {
                     <div className="p-3">
                         {guestOrUserProfileContent}
                         <br/>
-                        <h4>ways to keep viewing: </h4>
-                        <ol className="font-size-xl">
-                            <li className="font-weight-bold">
-                                {premiumOrRegister}
-                            </li>
-                            <li>
-                                <Link to="/scholarship/add">add a scholarship</Link>
-                            </li>
-                            <li>
-                                <Link to="/blog/add">add a blog post</Link>
-                            </li>
-                            <li>
-                                <Link to="/essay/add">add an essay</Link>
-                            </li>
-                        </ol>
+                        <h4><Link to="/register">Register for free</Link> to keep viewing</h4>
                     </div>
 
                 </Modal>
