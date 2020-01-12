@@ -69,14 +69,7 @@ class ContentDetail extends React.Component {
                 AnalyticsService
                     .savePageView(content, userProfile)
                     .then(() => {
-                        if(userProfile) {
-                            AnalyticsService
-                                .getPageViews(userProfile.user)
-                                .then( res => {
-                                    const { pageViews } = res.data;
-                                    this.setState({pageViews});
-                                });
-                        } else {
+                        if(!userProfile) {
                             const guestPageViews = guestPageViewsIncrement();
                             this.setState({pageViews: {guestPageViews}});
                         }

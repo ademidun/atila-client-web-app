@@ -135,7 +135,7 @@ function Footer({location, history}) {
               <Col md={6} sm={12} xs={12}>
                 <div className="footer-center">
                   <div>
-                    <a  target="_blank" rel="noopener noreferrer" href="https://www.divnkedin.com/company/atila-tech/">
+                    <a  target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/company/atila-tech/">
                       Linkedin <FontAwesomeIcon icon={faLinkedin} />
                     </a>
                   </div>

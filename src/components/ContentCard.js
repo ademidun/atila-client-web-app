@@ -27,7 +27,7 @@ class ContentCard extends React.Component {
 
     render() {
 
-        const { className, content, hideImage } = this.props;
+        const { className, content, hideImage, customStyle } = this.props;
         const { showPreview } = this.state;
         const { title, description, image, slug, type, user, published } = content;
 
@@ -40,7 +40,7 @@ class ContentCard extends React.Component {
             }
         }
         return (
-            <div className={`${className} card shadow p-3`}>
+            <div className={`${className} card shadow p-3`} style={customStyle}>
                 <div  className="card-title">
                     <h3>
                         <Link  title={title} to={slug}>
@@ -94,13 +94,15 @@ class ContentCard extends React.Component {
 
 ContentCard.defaultProps = {
     className: '',
+    customStyle: {},
     hideImage: false
 };
 
 ContentCard.propTypes = {
     hideImage: PropTypes.bool,
     className: PropTypes.string,
-    content: PropTypes.shape({})
+    content: PropTypes.shape({}),
+    customStyle: PropTypes.shape({})
 };
 
 export default ContentCard;
