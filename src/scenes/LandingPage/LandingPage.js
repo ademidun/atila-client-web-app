@@ -108,7 +108,6 @@ class LandingPage extends React.Component {
                     {!userProfile &&
                     <React.Fragment>
                         <Banner/>
-                        <hr/>
                         {scholarshipsContent}
                         <WhatIsAtila/>
                         <div className="p-5">
@@ -124,7 +123,6 @@ class LandingPage extends React.Component {
                     {userProfile &&
                     <React.Fragment>
                         <BannerLoggedIn/>
-                        <hr/>
                         {scholarshipsContent}
                         <hr />
                     </React.Fragment>

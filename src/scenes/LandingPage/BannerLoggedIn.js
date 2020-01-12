@@ -73,7 +73,7 @@ class BannerLoggedIn extends React.Component {
                 <QueueAnim className={`${className} page ${isMobile? 'justify-content-center' : null } `}
                            type="alpha" delay={150}>
                     <QueueAnim
-                        className="text-wrapper responsive-text"
+                        className="text-wrapper responsive-text pl-md-5"
                         key="text"
                         type="bottom"
                     >

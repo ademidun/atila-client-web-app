@@ -77,7 +77,7 @@ class Banner extends React.Component {
         </div>
         <QueueAnim className={`${className} page`} type="alpha" delay={150}>
           <QueueAnim
-            className="text-wrapper responsive-text"
+            className="text-wrapper responsive-text pl-md-5"
             key="text"
             type="bottom"
           >
@@ -86,7 +86,7 @@ class Banner extends React.Component {
             </h1>
             <h2 key="h2">
               Get more money for school.<br/>
-              Find and apply to scholarships. <br/>
+              Easily find and apply to scholarships. <br/>
               <img src={moneyFaceEmoji}
                    style={{height: '55px'}}
                    alt="money face emoji"/>
@@ -125,7 +125,7 @@ class Banner extends React.Component {
                   </p>
                 </div>
                 <Button type="primary"
-                        className="center-block my-3">
+                        className="center-block mb-3">
                   Find Scholarships
                 </Button>
               </div>
