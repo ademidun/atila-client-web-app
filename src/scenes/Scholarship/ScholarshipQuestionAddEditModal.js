@@ -23,6 +23,12 @@ class ScholarshipQuestionAddEditModal extends React.Component {
         });
     };
 
+    handleCancel = e => {
+        const {updateQuestion} = this.props;
+        updateQuestion(null);
+        this.setState({visible: false});
+    };
+
     updateForm = event => {
         event.preventDefault();
         const {question} = this.state;
@@ -40,7 +46,6 @@ class ScholarshipQuestionAddEditModal extends React.Component {
                     visible={visible}
                     onOk={this.handleOk}
                     onCancel={this.handleCancel}
-                    closable={false}
                 >
                     <div className="p-3">
                         <input placeholder="Question Key"
