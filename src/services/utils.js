@@ -464,3 +464,11 @@ export function getGuestUserId() {
     return guestUserId;
 
 }
+
+export function arrayToDictionary(array = []) {
+    const dict = {};
+    array.forEach(element => {
+        dict[element.key] = element;
+    });
+    return dict
+}

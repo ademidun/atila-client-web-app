@@ -2,6 +2,9 @@ import React from 'react';
 import PropTypes from "prop-types";
 import {Button, Table} from "antd";
 import ScholarshipQuestionAddEditModal from "./ScholarshipQuestionAddEditModal";
+import {updateScholarshipCurrentlyEditing} from "../../redux/actions/scholarship";
+import {connect} from "react-redux";
+import {arrayToDictionary} from "../../services/utils";
 
 class ScholarshipAutomationBuilder extends React.Component{
 
@@ -27,22 +30,42 @@ class ScholarshipAutomationBuilder extends React.Component{
 
     updateQuestion = (question) => {
         const { scholarshipQuestions, indexBeingEdited } = this.state;
+        const { updateScholarshipCurrentlyEditing, scholarship } = this.props;
         scholarshipQuestions[indexBeingEdited] = question;
         this.setState({scholarshipQuestions, isQuestionModalVisible: false});
+
+        const newScholarship = {
+            ...scholarship,
+            extra_questions: arrayToDictionary(scholarshipQuestions)
+        };
+        updateScholarshipCurrentlyEditing(newScholarship)
     };
 
     addQuestion = () => {
         const { scholarshipQuestions } = this.state;
         scholarshipQuestions.push({});
 
-        this.setState({scholarshipQuestions});
+        this.setState({
+            scholarshipQuestions,
+            questionBeingEdited: {},
+            indexBeingEdited: scholarshipQuestions.length-1,
+            isQuestionModalVisible: true
+        });
+
     };
 
     removeQuestion = (index) => {
         const { scholarshipQuestions } = this.state;
-        scholarshipQuestions.splice(index, 1);
+        const { updateScholarshipCurrentlyEditing, scholarship } = this.props;
 
+        scholarshipQuestions.splice(index, 1);
         this.setState({scholarshipQuestions});
+
+        const newScholarship = {
+            ...scholarship,
+            extra_questions: arrayToDictionary(scholarshipQuestions)
+        };
+        updateScholarshipCurrentlyEditing(newScholarship)
     };
 
     render() {
@@ -112,10 +135,26 @@ class ScholarshipAutomationBuilder extends React.Component{
 
     }
 }
-ScholarshipAutomationBuilder.defaultProps = {};
 
-ScholarshipAutomationBuilder.propTypes = {
-    scholarship: PropTypes.shape({}).isRequired,
+const mapDispatchToProps = {
+    updateScholarshipCurrentlyEditing,
 };
 
-export default ScholarshipAutomationBuilder;
+const mapStateToProps = state => {
+    return {
+        scholarship: state.data.scholarship.scholarshipCurrentlyEditing,
+    };
+};
+
+ScholarshipAutomationBuilder.defaultProps = {
+    // redux
+    scholarship: null,
+};
+
+ScholarshipAutomationBuilder.propTypes = {
+    // redux
+    scholarship: PropTypes.shape({}),
+    updateScholarshipCurrentlyEditing: PropTypes.func.isRequired,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ScholarshipAutomationBuilder);

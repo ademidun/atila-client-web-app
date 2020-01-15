@@ -318,8 +318,6 @@ class ScholarshipAddEdit extends React.Component{
             isLoadingScholarship, pageNumber, locationData } = this.state;
         const { userProfile, scholarship } = this.props;
 
-        console.log({scholarship});
-
         const title = isAddScholarshipMode ? 'Add Scholarship' : 'Edit Scholarship';
         return (
             <div className="ScholarshipAddEdit">
@@ -350,8 +348,8 @@ class ScholarshipAddEdit extends React.Component{
                                          onUpdateForm={this.updateForm}
                                          formError={scholarshipPostError}
                                          onSubmit={this.submitForm}/>
+                            <caption >Locations</caption>
                             <table className="table">
-                                <caption >Locations</caption>
                                 <thead>
                                 <tr>
                                     {['city','province','country'].map(location =>
@@ -389,7 +387,7 @@ class ScholarshipAddEdit extends React.Component{
                         </React.Fragment>}
                         {pageNumber === 3 &&
                         <React.Fragment>
-                            { scholarship && <ScholarshipAutomationBuilder scholarship={scholarship}/>}
+                            { scholarship && <ScholarshipAutomationBuilder />}
                         </React.Fragment>}
                         <div className="my-2" style={{clear: 'both'}}>
                             {pageNumber !== 3 &&
