@@ -6,16 +6,14 @@ class ScholarshipQuestionAddEditModal extends React.Component {
     constructor(props) {
         super(props);
 
-        const { question, visible } = props;
+        const { visible } = props;
         this.state = {
             visible,
-            question,
         }
     }
 
     handleOk = e => {
-        const {updateQuestion} = this.props;
-        const {question} = this.state;
+        const {updateQuestion, question} = this.props;
         updateQuestion(question);
 
         this.setState({
@@ -31,15 +29,14 @@ class ScholarshipQuestionAddEditModal extends React.Component {
 
     updateForm = event => {
         event.preventDefault();
-        const {question} = this.state;
+        const {updateQuestion, question} = this.props;
         question[event.target.name] = event.target.value;
-        this.setState({question})
+        updateQuestion(question, false);
     };
 
     render() {
 
-        const {visible} = this.props;
-        const {question} = this.state;
+        const {visible, question} = this.props;
         return (
             <div>
                 <Modal

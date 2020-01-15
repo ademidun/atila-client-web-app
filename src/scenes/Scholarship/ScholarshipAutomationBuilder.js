@@ -12,7 +12,6 @@ class ScholarshipAutomationBuilder extends React.Component{
         super(props);
 
         const { scholarship } = props;
-        console.log({scholarship, props});
         this.state = {
             scholarshipQuestions: Object.values(scholarship.extra_questions),
             isQuestionModalVisible: false,
@@ -28,17 +27,17 @@ class ScholarshipAutomationBuilder extends React.Component{
         this.setState({questionBeingEdited, indexBeingEdited, isQuestionModalVisible: true});
     };
 
-    updateQuestion = (question=null) => {
+    updateQuestion = (question=null, closeModal=true) => {
 
         if (question===null) {
-            this.setState({isQuestionModalVisible: false});
+            this.setState({isQuestionModalVisible: !closeModal});
             return;
         }
         const { scholarshipQuestions, indexBeingEdited } = this.state;
         const { updateScholarshipCurrentlyEditing, scholarship } = this.props;
 
         scholarshipQuestions[indexBeingEdited] = question;
-        this.setState({scholarshipQuestions, isQuestionModalVisible: false});
+        this.setState({scholarshipQuestions, isQuestionModalVisible: !closeModal});
 
         const newScholarship = {
             ...scholarship,
