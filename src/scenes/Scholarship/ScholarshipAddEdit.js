@@ -13,8 +13,6 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Link} from "react-router-dom";
 import './ScholarshipAddEdit.scss';
 import ScholarshipAutomationBuilder from "./ScholarshipAutomationBuilder";
-import {updateScholarshipCurrentlyEditing} from "../../redux/actions/scholarship";
-import PropTypes from "prop-types";
 
 const scholarshipFormConfigsPage1 = [
     {
@@ -123,6 +121,7 @@ class ScholarshipAddEdit extends React.Component{
         super(props);
 
         this.state = {
+            scholarship: defaultScholarship,
             isAddScholarshipMode: false,
             scholarshipPostError: null,
             isLoadingScholarship: true,
@@ -138,14 +137,14 @@ class ScholarshipAddEdit extends React.Component{
 
     componentDidMount() {
 
-        const { userProfile, updateScholarshipCurrentlyEditing } = this.props;
+        const { userProfile } = this.props;
 
         const { match : { path }} = this.props;
 
         if ( path==='/scholarship/add' ) {
             this.setState({isAddScholarshipMode: true});
             this.setState({isLoadingScholarship: false});
-            const scholarship = defaultScholarship;
+            const scholarship = this.state.scholarship;
 
             if(userProfile) {
                 scholarship.owner = userProfile.user;
@@ -153,7 +152,7 @@ class ScholarshipAddEdit extends React.Component{
             else {
                 toastNotify(`⚠️ Warning, you must be logged in to add a scholarship`);
             }
-            updateScholarshipCurrentlyEditing(scholarship);
+            this.setState({scholarship});
         } else {
             this.loadContent();
         }
@@ -162,12 +161,13 @@ class ScholarshipAddEdit extends React.Component{
     loadContent = () => {
 
         this.setState({ isLoadingScholarship: true });
-        const { match : { params : { slug }}, updateScholarshipCurrentlyEditing } = this.props;
+        const { match : { params : { slug }} } = this.props;
         ScholarshipsAPI.getSlug(slug)
             .then(res => {
                 const scholarship = ScholarshipsAPI.cleanScholarship(res.data);
-                updateScholarshipCurrentlyEditing(scholarship);
-                this.initializeLocations();
+                this.setState({ scholarship }, () => {
+                    this.initializeLocations();
+                });
             })
             .catch(err => {
                 this.setState({ errorLoadingScholarship: true });
@@ -181,8 +181,7 @@ class ScholarshipAddEdit extends React.Component{
     // https://github.com/ademidun/atila-angular/blob/dfe3cbdd5d9a5870e095c089d85394ba934718b5/src/app/scholarship/add-scholarship/add-scholarship.component.ts#L681
     initializeLocations = () => {
         // See createLocations() int edit-scholarship or add-scholarship.component.ts
-        const { locationData } = this.state;
-        const { scholarship } = this.props;
+        const { scholarship, locationData } = this.state;
 
         for (let index = 0; index <scholarship.country.length; index++) {
             let element =scholarship.country[index];
@@ -219,8 +218,6 @@ class ScholarshipAddEdit extends React.Component{
 
         let value = event.target.value;
 
-        const { updateScholarshipCurrentlyEditing } = this.props;
-
         if (event.target.type==='checkbox'){
             value = event.target.checked
         }
@@ -236,11 +233,11 @@ class ScholarshipAddEdit extends React.Component{
 
         }
         else if (event.target.name.includes('.')) {
-            const scholarship = nestedFieldUpdate(this.props.scholarship, event.target.name, value);
-            updateScholarshipCurrentlyEditing(scholarship);
+            const scholarship = nestedFieldUpdate(this.state.scholarship, event.target.name, value);
+            this.setState({scholarship});
         }
         else {
-            const {scholarship} = this.props;
+            const scholarship = this.state.scholarship;
 
             if ( Array.isArray(scholarship[event.target.name]) && !Array.isArray(value) ) {
                 scholarship[event.target.name].push(value);
@@ -251,17 +248,15 @@ class ScholarshipAddEdit extends React.Component{
             if(event.target.name==='name') {
                 scholarship.slug = slugify(event.target.value,{lower: true});
             }
-            updateScholarshipCurrentlyEditing(scholarship);
+            this.setState({scholarship});
         }
 
     };
 
     submitForm = (event) => {
-        const { updateScholarshipCurrentlyEditing } = this.props;
-
         event.preventDefault();
-        const scholarship = ScholarshipsAPI.cleanScholarship(this.props.scholarship);
-        updateScholarshipCurrentlyEditing(scholarship);
+        const scholarship = ScholarshipsAPI.cleanScholarship(this.state.scholarship);
+        this.setState({scholarship});
 
         const { isAddScholarshipMode, locationData } = this.state;
         const { userProfile } = this.props;
@@ -290,7 +285,7 @@ class ScholarshipAddEdit extends React.Component{
                 </p>);
 
                 toastNotify(successMessage, 'info', {position: 'bottom-right'});
-                updateScholarshipCurrentlyEditing(savedScholarship);
+                this.setState({ scholarship: savedScholarship });
             })
             .catch(err=> {
                 console.log({err});
@@ -314,11 +309,9 @@ class ScholarshipAddEdit extends React.Component{
 
     render() {
 
-        const { isAddScholarshipMode, scholarshipPostError,
+        const { scholarship, isAddScholarshipMode, scholarshipPostError,
             isLoadingScholarship, pageNumber, locationData } = this.state;
-        const { userProfile, scholarship } = this.props;
-
-        console.log({scholarship});
+        const { userProfile } = this.props;
 
         const title = isAddScholarshipMode ? 'Add Scholarship' : 'Edit Scholarship';
         return (
@@ -410,28 +403,8 @@ class ScholarshipAddEdit extends React.Component{
 
     }
 }
-const mapDispatchToProps = {
-    updateScholarshipCurrentlyEditing,
-};
 
 const mapStateToProps = state => {
-    return {
-        userProfile: state.data.user.loggedInUserProfile,
-        scholarship: state.data.scholarship.scholarshipCurrentlyEditing,
-    };
+    return { userProfile: state.data.user.loggedInUserProfile };
 };
-
-ScholarshipAddEdit.defaultProps = {
-    // redux
-    userProfile: null,
-    scholarship: null,
-};
-
-ScholarshipAddEdit.propTypes = {
-    // redux
-    userProfile: PropTypes.shape({}),
-    scholarship: PropTypes.shape({}),
-    updateScholarshipCurrentlyEditing: PropTypes.func.isRequired,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ScholarshipAddEdit);
+export default connect(mapStateToProps)(ScholarshipAddEdit);
