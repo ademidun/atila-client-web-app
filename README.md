@@ -16,6 +16,7 @@ staging: [![Netlify Status](https://api.netlify.com/api/v1/badges/ed4f5b21-da47-
 
 ## Steps for Adding a new item to Redux
 
-1. Create a new reducer in `reducers/data/<filename>.js` 
-you can use userReducer in `reducers/data/user.js` as an example.
-2. Add the reducer to `reducers/data/index.js`
+1. Create a new reducer in `src/redux/reducers/data/<item>.js` 
+you can use userReducer in `src/redux/reducers/data/user.js` as an example.
+2. Add the reducer to `src/redux/reducers/data/index.js`
+3. Create an action in `src/redux/actions/<item>.js` and add it to `src/redux/actions/index.js` 
