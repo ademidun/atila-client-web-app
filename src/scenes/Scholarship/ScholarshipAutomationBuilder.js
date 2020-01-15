@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from "prop-types";
 import {Button, Table} from "antd";
+import ScholarshipQuestionAddEditModal from "./ScholarshipQuestionAddEditModal";
 
 class ScholarshipAutomationBuilder extends React.Component{
 
@@ -10,9 +11,25 @@ class ScholarshipAutomationBuilder extends React.Component{
         const { scholarship } = props;
         console.log({scholarship, props});
         this.state = {
-            scholarshipQuestions: Object.values(scholarship.extra_questions)
+            scholarshipQuestions: Object.values(scholarship.extra_questions),
+            isQuestionModalVisible: false,
+            questionBeingEdited: null,
+            indexBeingEdited: null,
         }
     }
+
+    editQuestion = (indexBeingEdited) => {
+        const { scholarshipQuestions } = this.state;
+        const questionBeingEdited = scholarshipQuestions[indexBeingEdited];
+
+        this.setState({questionBeingEdited, indexBeingEdited, isQuestionModalVisible: true});
+    };
+
+    updateQuestion = (question) => {
+        const { scholarshipQuestions, indexBeingEdited } = this.state;
+        scholarshipQuestions[indexBeingEdited] = question;
+        this.setState({scholarshipQuestions, isQuestionModalVisible: false});
+    };
 
     addQuestion = () => {
         const { scholarshipQuestions } = this.state;
@@ -30,7 +47,7 @@ class ScholarshipAutomationBuilder extends React.Component{
 
     render() {
 
-        const { scholarshipQuestions } = this.state;
+        const { scholarshipQuestions, questionBeingEdited, isQuestionModalVisible } = this.state;
 
         const columns = [
             {
@@ -60,7 +77,7 @@ class ScholarshipAutomationBuilder extends React.Component{
                     <React.Fragment>
                         <Button type="link"
                                 onClick={()=>{
-                                    console.log({record});
+                                    this.editQuestion(index);
                                 }}>
                             Edit
                         </Button> | <Button type="link"
@@ -75,6 +92,11 @@ class ScholarshipAutomationBuilder extends React.Component{
         ];
         return (
             <React.Fragment>
+                {questionBeingEdited &&
+                <ScholarshipQuestionAddEditModal visible={isQuestionModalVisible}
+                                                 question={questionBeingEdited}
+                                                 updateQuestion={this.updateQuestion} />}
+
             <Table columns={columns} dataSource={scholarshipQuestions} rowKey="id" />
 
                 <Button type="primary"

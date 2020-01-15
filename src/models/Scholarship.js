@@ -76,6 +76,8 @@ export let defaultScholarship = {
     sports: [],
     disability: [],
     language: [],
+    extra_questions: {},
+    submission_info: {},
 };
 
 export const ScholarshipPropType = PropTypes.shape({
@@ -85,4 +87,6 @@ export const ScholarshipPropType = PropTypes.shape({
     female_only: PropTypes.boolean,
     international_students_eligible: PropTypes.boolean,
     form_url: PropTypes.string,
+    extra_questions: PropTypes.shape({}),
+    submission_info: PropTypes.shape({}),
 });
