@@ -1,5 +1,10 @@
 # Changelog
 
+## January 15, 2020
+### Scholarship Automation
+
+- We are bringing back the scholarship automation feature, using [atila-form-filler-chrome-extension](https://github.com/ademidun/atila-form-filler-chrome-extension/)
+
 ## November 30, 2019
 ### Save Page Views for Guest User
 

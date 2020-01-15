@@ -13,3 +13,9 @@ staging: [![Netlify Status](https://api.netlify.com/api/v1/badges/ed4f5b21-da47-
 ## Getting Started
 
 `npm install; npm start`
+
+## Steps for Adding a new item to Redux
+
+1. Create a new reducer in `reducers/data/<filename>.js` 
+you can use userReducer in `reducers/data/user.js` as an example.
+2. Add the reducer to `reducers/data/index.js`
