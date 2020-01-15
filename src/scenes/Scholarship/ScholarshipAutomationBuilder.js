@@ -51,7 +51,9 @@ class ScholarshipAutomationBuilder extends React.Component{
         scholarshipQuestions.push({});
 
         const indexBeingEdited = scholarshipQuestions.length-1;
-        const questionBeingEdited = scholarshipQuestions[indexBeingEdited];
+        const questionBeingEdited = {
+            ...scholarshipQuestions[indexBeingEdited],
+        };
 
         this.setState({
             scholarshipQuestions,
@@ -128,7 +130,7 @@ class ScholarshipAutomationBuilder extends React.Component{
                                                  question={questionBeingEdited}
                                                  updateQuestion={this.updateQuestion} />}
 
-            <Table columns={columns} dataSource={scholarshipQuestions} rowKey="id" />
+            <Table columns={columns} dataSource={scholarshipQuestions} />
 
                 <Button type="primary"
                         icon="plus"

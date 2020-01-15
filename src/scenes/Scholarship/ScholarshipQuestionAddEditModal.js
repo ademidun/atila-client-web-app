@@ -3,28 +3,15 @@ import PropTypes from "prop-types";
 import { Modal} from 'antd';
 
 class ScholarshipQuestionAddEditModal extends React.Component {
-    constructor(props) {
-        super(props);
-
-        const { visible } = props;
-        this.state = {
-            visible,
-        }
-    }
 
     handleOk = e => {
         const {updateQuestion, question} = this.props;
         updateQuestion(question);
-
-        this.setState({
-            visible: false,
-        });
     };
 
     handleCancel = e => {
         const {updateQuestion} = this.props;
         updateQuestion(null);
-        this.setState({visible: false});
     };
 
     updateForm = event => {
@@ -37,6 +24,8 @@ class ScholarshipQuestionAddEditModal extends React.Component {
     render() {
 
         const {visible, question} = this.props;
+
+        const dynamicFormTypes = ['file', 'textfield', 'textarea'];
         return (
             <div>
                 <Modal
@@ -45,21 +34,24 @@ class ScholarshipQuestionAddEditModal extends React.Component {
                     onCancel={this.handleCancel}
                 >
                     <div className="p-3">
-                        <input placeholder="Question Key"
+                        <input className="col-12 mb-3 form-control"
+                               placeholder="Question Key"
                                value={question.key} name="key"
                                onChange={this.updateForm}/>
-                        <input placeholder="Question Label"
+                        <input className="col-12 mb-3 form-control"
+                               placeholder="Question Label"
                                value={question.label} name="label"
                                onChange={this.updateForm}/>
-                        <input placeholder="Question CSS Selector"
+                        <input className="col-12 mb-3 form-control"
+                               placeholder="Question CSS Selector"
                                value={question.web_form_selector} name="web_form_selector"
                                onChange={this.updateForm}/>
-                        <select placeholder="Question Type"
-                                value={question.type} name="type"
+                        <select className="col-12 mb-3 form-control"
+                                placeholder="Question Type"
+                                value={question.type||''} name="type"
                                 onChange={this.updateForm}>
-                            <option key="file">File</option>
-                            <option key="textfield">textfield</option>
-                            <option key="textarea">textarea</option>
+                            <option key='' disabled hidden>{''}</option>
+                            {dynamicFormTypes.map(item =><option key={item}>{item}</option>)}
                         </select>
                     </div>
 

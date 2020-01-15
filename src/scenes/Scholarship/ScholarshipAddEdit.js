@@ -348,7 +348,7 @@ class ScholarshipAddEdit extends React.Component{
                                          onUpdateForm={this.updateForm}
                                          formError={scholarshipPostError}
                                          onSubmit={this.submitForm}/>
-                            <caption >Locations</caption>
+                            <label >Locations</label>
                             <table className="table">
                                 <thead>
                                 <tr>
