@@ -1,7 +1,8 @@
 import {UPDATE_SCHOLARSHIP_CURRENTLY_EDITING} from "../../actions/scholarship";
+import {defaultScholarship} from "../../../models/Scholarship";
 
 const initialState = {
-    scholarshipCurrentlyEditing: null
+    scholarshipCurrentlyEditing: defaultScholarship
 };
 
 export default function scholarshipReducer(state = initialState, action) {
