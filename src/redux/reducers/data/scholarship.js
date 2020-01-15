@@ -7,9 +7,10 @@ const initialState = {
 
 export default function scholarshipReducer(state = initialState, action) {
     if (action.type === UPDATE_SCHOLARSHIP_CURRENTLY_EDITING) {
-        return Object.assign({}, state, {
-            scholarshipCurrentlyEditing: action.payload
-        });
+        return {
+            ...state,
+            scholarshipCurrentlyEditing: {...action.payload}
+        } ;
     } else {
         return state
     }
