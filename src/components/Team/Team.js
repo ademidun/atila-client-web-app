@@ -1,12 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from "react-router-dom";
+
 import tomiwaImage from './assets/tomiwa.jpg';
 import jacobImage from './assets/jacob.jpg';
-import nikhilImage from './assets/nikhil.jpg';
-import leaImage from './assets/lea.jpg';
-import valentineImage from './assets/valentine.jpg';
-import auroritaImage from './assets/aurorita.jpg';
 import aaronImg from './assets/aaronImg.jpg'
 import elaineImg from './assets/elaineImg.jpeg'
 import hadiImg from './assets/hadiImg.jpg'
@@ -24,7 +21,7 @@ const teamMembers = [
         'username': 'tomiwa',
         'position': 'Founder',
         'img_url': tomiwaImage,
-        'description_1': 'Tomiwa is currently taking a year off a dual degree in software engineering and business at Ivey Business School in Canada to start Atila.',
+        'description_1': 'Tomiwa is currently studying a dual degree in software engineering and business at Ivey Business School',
         'description_2': 'He enjoys playing soccer and is a big Arsenal F.C. fan.',
         'link_type': 'Website',
         'link_url': 'http://tomiwa.ca'
@@ -47,6 +44,7 @@ const teamMembers = [
         // 'username': 'lhandal',
         'position': 'Software Developer',
         'img_url': devImg,
+        'description_1':'Dev is an Honours Mathematics student at UWaterloo',
         "link_type": "LinkedIn",
         "link_url": "https://www.linkedin.com/in/dev-pancea-018b7116a/"
     },
@@ -56,6 +54,7 @@ const teamMembers = [
         // 'username': 'lhandal',
         'position': 'Software Developer',
         'img_url': mitchellImg,
+        'description_1':'Mitchell is a second year student who is studying Hons Mathematics/Business administration at UWaterloo',
         "link_type": "LinkedIn",
         "link_url": "https://www.linkedin.com/in/mitchell-tz-li/"
     },
@@ -64,6 +63,7 @@ const teamMembers = [
         'last_name': 'Doerfler',
         'position': 'Marketing',
         'img_url': aaronImg,
+        'description_1':'Aaron is a second year Media Information and Techno-culture (MIT) student at Western university ',
         "link_type": "LinkedIn",
         "link_url": "https://www.linkedin.com/in/aaron-doerfler-3a2144197/"
     },
@@ -72,6 +72,7 @@ const teamMembers = [
         'last_name': 'Patil',
         'position': 'Software Developer',
         'img_url': abhiImg,
+        'description_1':'Abhi is a gade 12 IB student at Turner Fenton Secondary School',
         "link_type": "LinkedIn",
         "link_url": "https://www.linkedin.com/in/abhinit-patil/"
     },
@@ -80,6 +81,7 @@ const teamMembers = [
         'last_name': 'Yin',
         'position': 'Marketing',
         'img_url': elaineImg,
+        'description_1':'Elaine is a student at Western university ',
         "link_type": "LinkedIn",
         "link_url": "https://www.linkedin.com/in/elaine-yin-018a90198/"
     },
@@ -88,6 +90,7 @@ const teamMembers = [
         'last_name': 'Tang',
         'position': 'Marketing',
         'img_url': isaacImg,
+        'description_1':'Isaac is a first year student curently studying BMOS at Western university',
         "link_type": "LinkedIn",
         "link_url": "https://www.linkedin.com/in/isaac-tang-b42a8b198/"
     },
@@ -96,6 +99,7 @@ const teamMembers = [
         'last_name': 'Al Hakeem',
         'position': 'Software Developer',
         'img_url': hadiImg,
+        'description_1':'Hadi is a grade 12 student at Georges Vanier Secondary School',
         "link_type": "LinkedIn",
         "link_url": "https://www.linkedin.com/in/hadi-al-hakeem-24182819a/"
     },
@@ -104,32 +108,9 @@ const teamMembers = [
         'last_name': 'Wen',
         'position': 'Marketing',
         'img_url': melissaImg,
+        'description_1':'Melissa is a first year BMOS student at Western university',
         "link_type": "LinkedIn",
         "link_url": "https://www.linkedin.com/in/melissa-wen-63aa8b198/"
-    },
-    {
-        'first_name': 'Feyi',
-        'last_name': 'Adesanya',
-        'position': 'Member',
-        'img_url': null,
-        "link_type": "LinkedIn",
-        "link_url": " "
-    },
-    {
-        'first_name': 'Samuel',
-        'last_name': 'Kahessay',
-        'position': 'Member',
-        'img_url': null,
-        "link_type": "LinkedIn",
-        "link_url": " "
-    },
-    {
-        'first_name': 'Tyreek',
-        'last_name': 'Fray',
-        'position': 'Operations',
-        'img_url': null,
-        "link_type": "LinkedIn",
-        "link_url": " "
     },
 
 ];
@@ -163,10 +144,11 @@ function TeamMemberCard({ teamMember }) {
             
         </div>*/
 
-        <div class="col-xl-3 col-sm-6 mb-5">
+        <div class="col-xl-3 col-sm-6 mb-5" style={{ padding: 25 }}>
             <div class="bg-white rounded shadow py-5 px-4"><img src={teamMember.img_url} alt="" width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm" />
-                <h5 class="mb-0">{teamMember.first_name} {teamMember.last_name}</h5>
+                <h5 class="mb-0"><strong>{teamMember.first_name} {teamMember.last_name}</strong></h5>
                 <span class="small text-uppercase text-muted">{teamMember.position}</span>
+                <p style={{fontSize: 15}}>{teamMember.description_1}</p>
                 <ul class="social mb-0 list-inline mt-3">
                     <li class="list-inline-item"><Link to={`/profile/${teamMember.username}`}>Profile</Link></li>
                     <li class="list-inline-item"><a href={teamMember.link_url} class="social-link"><FaLinkedin/></a></li>
@@ -183,10 +165,9 @@ TeamMemberCard.propTypes = {
 function Team() {
     return (
         <div className="container mt-3">
-            <h1>Team</h1>
-            <h6 className="text-center text-mute">(past and present)</h6>
+            <h1>The Atila Team</h1>
             <br/>
-            <div className="row ml-md-5">
+            <div className="row ml-md-5" >
 
                 {teamMembers.map(member => <TeamMemberCard key={member.first_name} teamMember={member} />)}
                     <br/>
