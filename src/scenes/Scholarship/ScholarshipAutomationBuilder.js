@@ -1,44 +1,91 @@
 import React from 'react';
 import PropTypes from "prop-types";
-import {Table} from "antd";
+import {Button, Table} from "antd";
 
 class ScholarshipAutomationBuilder extends React.Component{
+
+    constructor(props) {
+        super(props);
+
+        const { scholarship } = props;
+        console.log({scholarship, props});
+        this.state = {
+            scholarshipQuestions: Object.values(scholarship.extra_questions)
+        }
+    }
+
+    addQuestion = () => {
+        const { scholarshipQuestions } = this.state;
+        scholarshipQuestions.push({});
+
+        this.setState({scholarshipQuestions});
+    };
+
+    removeQuestion = (index) => {
+        const { scholarshipQuestions } = this.state;
+        scholarshipQuestions.splice(index, 1);
+
+        this.setState({scholarshipQuestions});
+    };
+
     render() {
 
-        const dataSource = [
-            {
-                key: '1',
-                name: 'Mike',
-                age: 32,
-                address: '10 Downing Street',
-            },
-            {
-                key: '2',
-                name: 'John',
-                age: 42,
-                address: '10 Downing Street',
-            },
-        ];
+        const { scholarshipQuestions } = this.state;
 
         const columns = [
             {
-                title: 'Name',
-                dataIndex: 'name',
-                key: 'name',
+                title: 'Key',
+                dataIndex: 'key',
+                key: 'key',
             },
             {
-                title: 'Age',
-                dataIndex: 'age',
-                key: 'age',
+                title: 'Label',
+                dataIndex: 'label',
+                key: 'label',
             },
             {
-                title: 'Address',
-                dataIndex: 'address',
-                key: 'address',
+                title: 'Type',
+                dataIndex: 'type',
+                key: 'type',
+            },
+            {
+                title: 'Web Form Selector',
+                dataIndex: 'web_form_selector',
+                key: 'web_form_selector',
+            },
+            {
+                title: 'Modify',
+                key: 'action',
+                render: (text, record, index) => (
+                    <React.Fragment>
+                        <Button type="link"
+                                onClick={()=>{
+                                    console.log({record});
+                                }}>
+                            Edit
+                        </Button> | <Button type="link"
+                                onClick={()=>{
+                                    this.removeQuestion(index);
+                                }}>
+                            Remove
+                        </Button>
+                    </React.Fragment>
+                ),
             },
         ];
         return (
-            <Table columns={columns} dataSource={dataSource} rowKey="id" />
+            <React.Fragment>
+            <Table columns={columns} dataSource={scholarshipQuestions} rowKey="id" />
+
+                <Button type="primary"
+                        icon="plus"
+                        onClick={()=>{
+                            this.addQuestion();
+                        }}>
+                    Add Question
+                </Button>
+            </React.Fragment>
+
         );
 
     }

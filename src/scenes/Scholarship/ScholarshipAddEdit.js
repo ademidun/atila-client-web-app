@@ -12,6 +12,7 @@ import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Link} from "react-router-dom";
 import './ScholarshipAddEdit.scss';
+import ScholarshipAutomationBuilder from "./ScholarshipAutomationBuilder";
 
 const scholarshipFormConfigsPage1 = [
     {
@@ -379,8 +380,12 @@ class ScholarshipAddEdit extends React.Component{
                             />
 
                         </React.Fragment>}
+                        {pageNumber === 3 &&
+                        <React.Fragment>
+                            { scholarship && <ScholarshipAutomationBuilder scholarship={scholarship}/>}
+                        </React.Fragment>}
                         <div className="my-2" style={{clear: 'both'}}>
-                            {pageNumber !== 2 &&
+                            {pageNumber !== 3 &&
                             <button className="btn btn-outline-primary float-right col-md-6"
                                     onClick={() => this.changePage(pageNumber+1)}>Next</button>}
                             {pageNumber !== 1 &&
