@@ -1,7 +1,7 @@
 import React from 'react';
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import {Link} from "react-router-dom";
-import {formatCurrency, genericItemTransform, guestPageViewsIncrement} from "../../services/utils";
+import {formatCurrency, genericItemTransform, guestPageViewsIncrement, slugify} from "../../services/utils";
 import Loading from "../../components/Loading";
 import RelatedItems from "../../components/RelatedItems";
 import {connect} from "react-redux";
@@ -12,7 +12,8 @@ import UserProfileAPI from "../../services/UserProfileAPI";
 import AtilaPointsPaywallModal from "../../components/AtilaPointsPaywallModal";
 import ScholarshipExtraCriteria from "./ScholarshipExtraCriteria";
 import ScholarshipDeadlineWithTags from "../../components/ScholarshipDeadlineWithTags";
-import {Alert, message} from 'antd';
+import {Alert, Button, message} from 'antd';
+import ApplicationsApi from "../../services/ApplicationService";
 
 
 class ScholarshipDetail extends React.Component {
@@ -101,6 +102,17 @@ class ScholarshipDetail extends React.Component {
         this.props.history.goBack();
     };
 
+    startApplication = (event) => {
+        const { scholarship } = this.state;
+        const { userProfile } = this.props;
+
+        event.preventDefault();
+        this.props.history.push({
+            pathname: `/application/?user=${userProfile.user}&scholarship=${scholarship.id}`,
+        });
+
+    };
+
     render() {
 
         const { isLoadingScholarship, scholarship,
@@ -169,6 +181,10 @@ class ScholarshipDetail extends React.Component {
                                 <br/><br/>
                                 </React.Fragment>
                                 }
+
+                                <Button onClick={this.startApplication} type="primary">
+                                    Start Application
+                                </Button> <br/>
 
                                 <button onClick={this.goBack} className="btn btn-link pl-0">
                                     Go Back ←

@@ -23,6 +23,9 @@ const Premium = loadable(() => import('./scenes/AtilaPremium/Premium'), {
 const Scholarship = loadable(() => import('./scenes/Scholarship/Scholarship'), {
     fallback: <Loading />,
 });
+const Application = loadable(() => import('./scenes/Application/Application'), {
+    fallback: <Loading />,
+});
 const Search = loadable(() => import('./scenes/Search/Search'), {
     fallback: <Loading />,
 });
@@ -78,6 +81,7 @@ function App(props) {
                         <Route path="/blog" component={GoogleAnalyticsTracker(Blog)} />
                         <Route path="/essay" component={GoogleAnalyticsTracker(Essay)} />
                         <Route path="/scholarship" component={GoogleAnalyticsTracker(Scholarship)} />
+                        <Route path="/application" component={GoogleAnalyticsTracker(Application)} />
                         <Route path="/search" component={GoogleAnalyticsTracker(Search)} />
                         <Route path="/login" component={GoogleAnalyticsTracker(Login)} />
                         <Route path="/pricing" component={GoogleAnalyticsTracker(Pricing)} />
