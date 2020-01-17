@@ -12,7 +12,6 @@ import melissaImg from './assets/melissaImg.jpeg'
 import mitchellImg from './assets/mitchellImg.jpg'
 import abhiImg from './assets/abhiImg.jpeg'
 import devImg from './assets/devImg.jpeg'
-import { FaLinkedin } from "react-icons/fa";
 
 const teamMembers = [
     {
@@ -151,7 +150,7 @@ function TeamMemberCard({ teamMember }) {
                 <p style={{fontSize: 15}}>{teamMember.description_1}</p>
                 <ul class="social mb-0 list-inline mt-3">
                     <li class="list-inline-item"><Link to={`/profile/${teamMember.username}`}>Profile</Link></li>
-                    <li class="list-inline-item"><a href={teamMember.link_url} class="social-link"><FaLinkedin/></a></li>
+                    <li class="list-inline-item"><a href={teamMember.link_url} class="social-link">LinkedIn</a></li>
                 </ul>
             </div>
         </div>
