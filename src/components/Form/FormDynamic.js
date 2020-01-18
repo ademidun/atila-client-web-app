@@ -5,7 +5,6 @@ import FormDynamicInput from "./FormDynamicInput";
 
 function FormDynamic({model, onUpdateForm, inputConfigs, onSubmit, formError}) {
 
-    console.log({inputConfigs});
     return (
         <form className="row p-3 form-group text-left" onSubmit={onSubmit}>
             {inputConfigs.map(config => <FormDynamicInput key={config.keyName}

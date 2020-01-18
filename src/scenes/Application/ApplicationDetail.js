@@ -13,8 +13,9 @@ class ApplicationDetail extends React.Component {
         super(props);
 
         this.state = {
-            scholarship: null,
+            scholarshipQuestions: null,
             application: null,
+            applicationResponses: null,
         }
     }
 
@@ -44,7 +45,17 @@ class ApplicationDetail extends React.Component {
         applicationPromise
             .then(res => {
                 const {application, scholarship} = res.data;
-                this.setState({application, scholarship})
+
+
+                const applicationResponses = JSON.parse(application.responses);
+
+                const scholarshipQuestions = Object.values(scholarship.extra_questions).map(question => {
+                    question.keyName = question.key;
+                    question.placeholder = question.label;
+                    return question;
+                });
+
+                this.setState({application, scholarship, scholarshipQuestions, applicationResponses});
 
             })
             .catch(err => {
@@ -52,22 +63,27 @@ class ApplicationDetail extends React.Component {
             })
     };
 
+    updateForm = (event) => {
+        event.preventDefault();
+
+        const {applicationResponses} = this.state;
+
+        const applicationResponsesNew = {
+            ...applicationResponses,
+            [event.target.name]: event.target.value,
+        };
+        this.setState({applicationResponses: applicationResponsesNew});
+
+    };
+
     render () {
 
-        const {application, scholarship} = this.state;
+        const {application, scholarship, scholarshipQuestions, applicationResponses} = this.state;
         const { userProfile } = this.props;
 
         if (!application || ! scholarship) {
             return null;
         }
-
-        const responses = JSON.parse(application.responses);
-
-        const scholarshipQuestions = Object.values(scholarship.extra_questions).map(question => {
-            question.keyName = question.key;
-            question.placeholder = question.label;
-            return question;
-        });
 
         const title = `${userProfile.first_name}'s Application for ${scholarship.name}`;
         const seoContent = {
@@ -78,7 +94,7 @@ class ApplicationDetail extends React.Component {
                 <HelmetSeo content={seoContent} />
                 <h3 className="text-center">{title}</h3>
                 <FormDynamic onUpdateForm={this.updateForm}
-                             model={responses}
+                             model={applicationResponses}
                              inputConfigs={scholarshipQuestions}
                 />
             </div>
