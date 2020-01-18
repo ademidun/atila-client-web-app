@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import FormDynamic from "../../components/Form/FormDynamic";
 import HelmetSeo from "../../components/HelmetSeo";
-import ApplicationsApi from "../../services/ApplicationService";
+import ApplicationsApi from "../../services/ApplicationsAPI";
 import {Button} from "antd";
 import {updateFormHelper} from "../../services/utils";
 
