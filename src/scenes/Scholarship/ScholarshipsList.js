@@ -152,6 +152,8 @@ class ScholarshipsList extends React.Component {
     };
 
     afterProfileEdit = () => {
+        // scroll to the top of page so that the user can look at scholarship's list from the top
+        window.scrollTo(0, 0);
         const { userProfile } = this.props;
 
         this.setState({ isCompleteProfile: !userProfile || isCompleteUserProfile(userProfile) });
@@ -316,7 +318,8 @@ class ScholarshipsList extends React.Component {
             return <UserProfileEdit title={title}
                                     className={"container mt-5"}
                                     afterSubmitSuccess={this.afterProfileEdit}
-                                    startingPageNumber={0} />
+                                    startingPageNumber={0}
+                                    submitButtonText="Save and See Scholarships" />
         }
 
         const seoContent = {
