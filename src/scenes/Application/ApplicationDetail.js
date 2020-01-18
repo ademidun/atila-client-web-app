@@ -27,16 +27,12 @@ class ApplicationDetail extends React.Component {
         console.log('this.props', this.props);
 
         const {
-            location : { search, pathname },
+            location : { search },
             match : { params : { appId } },
         } = this.props;
         const params = new URLSearchParams(search);
-
-        console.log({pathname,search,appId, params});
-
         const userId = params.get('user');
         const scholarshipId = params.get('scholarship');
-
 
         let applicationPromise;
         if(userId && scholarshipId) {

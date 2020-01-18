@@ -107,7 +107,8 @@ class ScholarshipDetail extends React.Component {
 
         event.preventDefault();
         this.props.history.push({
-            pathname: `/application/?user=${userProfile.user}&scholarship=${scholarship.id}`,
+            pathname: '/application/',
+            search: `?user=${userProfile.user}&scholarship=${scholarship.id}`
         });
 
     };
