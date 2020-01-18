@@ -5,6 +5,8 @@ import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import FormDynamic from "../../components/Form/FormDynamic";
 import HelmetSeo from "../../components/HelmetSeo";
 import ApplicationsApi from "../../services/ApplicationService";
+import {Button} from "antd";
+import {updateFormHelper} from "../../services/utils";
 
 class ApplicationDetail extends React.Component {
 
@@ -24,8 +26,6 @@ class ApplicationDetail extends React.Component {
     }
 
     loadApplication = () => {
-
-        console.log('this.props', this.props);
 
         const {
             location : { search },
@@ -63,16 +63,22 @@ class ApplicationDetail extends React.Component {
             })
     };
 
-    updateForm = (event) => {
+    saveApplication = (event) => {
         event.preventDefault();
+        const {applicationResponses, application} = this.state;
+        ApplicationsApi
+            .patch(application.id, {responses: JSON.stringify(applicationResponses)})
+            .then(()=>{
+            })
+            .catch(err=> {
+                console.log({err});
+            })
+    };
 
+    updateForm = (event) => {
         const {applicationResponses} = this.state;
 
-        const applicationResponsesNew = {
-            ...applicationResponses,
-            [event.target.name]: event.target.value,
-        };
-        this.setState({applicationResponses: applicationResponsesNew});
+        this.setState({applicationResponses: updateFormHelper(applicationResponses, event)});
 
     };
 
@@ -97,6 +103,13 @@ class ApplicationDetail extends React.Component {
                              model={applicationResponses}
                              inputConfigs={scholarshipQuestions}
                 />
+                <br />
+
+                <Button onClick={this.saveApplication}
+                        type="primary"
+                        size="large">
+                    Save Application
+                </Button> <br/>
             </div>
         );
     }

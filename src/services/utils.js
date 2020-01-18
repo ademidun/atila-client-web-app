@@ -472,3 +472,22 @@ export function arrayToDictionary(array = []) {
     });
     return dict
 }
+
+export function updateFormHelper(objectOriginal, event) {
+    if (event.stopPropagation) {
+        event.stopPropagation(); // https://github.com/facebook/react/issues/3446#issuecomment-82751540
+    }
+
+    let value = event.target.value;
+    if (event.target.type==='checkbox'){
+        value = event.target.checked
+    }
+
+    const objectNew = {
+        ...objectOriginal,
+        [event.target.name]: value,
+    };
+
+    return objectNew
+
+}

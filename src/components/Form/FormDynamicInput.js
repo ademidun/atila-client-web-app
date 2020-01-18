@@ -51,6 +51,7 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
                           name={keyName}
                           value={modelValue}
                           onChange={onUpdateForm}
+                          style={{minHeight : '150px'}}
                 />
             );
             break;
