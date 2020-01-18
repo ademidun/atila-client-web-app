@@ -316,7 +316,8 @@ class ScholarshipsList extends React.Component {
             return <UserProfileEdit title={title}
                                     className={"container mt-5"}
                                     afterSubmitSuccess={this.afterProfileEdit}
-                                    startingPageNumber={0} />
+                                    startingPageNumber={0}
+                                    submitButtonText="Save and See Scholarships" />
         }
 
         const seoContent = {
