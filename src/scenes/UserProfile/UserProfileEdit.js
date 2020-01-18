@@ -91,7 +91,7 @@ class UserProfileEdit extends React.Component {
 
     render () {
 
-        const {userProfile, title, className, startingPageNumber} = this.props;
+        const {userProfile, title, className, startingPageNumber, submitButtonText} = this.props;
         const {pageNumber} = this.state;
 
         return (
@@ -143,7 +143,7 @@ class UserProfileEdit extends React.Component {
                 </div>
                 <button type="submit"
                         className="btn btn-primary col-12 mt-2"
-                        onClick={this.submitForm}>Save</button>
+                        onClick={this.submitForm}>{submitButtonText}</button>
             </div>
         );
     }
@@ -161,6 +161,7 @@ UserProfileEdit.defaultProps = {
     className: '',
     startingPageNumber: 1,
     afterSubmitSuccess: () => {},
+    submitButtonText: 'Save'
 };
 
 UserProfileEdit.propTypes = {
@@ -171,6 +172,7 @@ UserProfileEdit.propTypes = {
     className: PropTypes.string,
     afterSubmitSuccess: PropTypes.func,
     startingPageNumber: PropTypes.number,
+    submitButtonText: PropTypes.string
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserProfileEdit);
