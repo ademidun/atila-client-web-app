@@ -47,8 +47,7 @@ class ApplicationDetail extends React.Component {
             .then(res => {
                 const {application, scholarship} = res.data;
 
-
-                const applicationResponses = JSON.parse(application.responses);
+                const applicationResponses = ApplicationsService.transformApplicationResponsesToDict(application.responses);
 
                 const scholarshipQuestions = Object.values(scholarship.extra_questions).map(question => {
                     question.keyName = question.key;
@@ -64,14 +63,18 @@ class ApplicationDetail extends React.Component {
             })
     };
 
-    saveApplication = (event) => {
-        event.preventDefault();
-        const {applicationResponses, application} = this.state;
-
+    saveApplicationHelperPromise = () => {
+        const {application, applicationResponses} = this.state;
         const responses = ApplicationsService.transformDictToApplicationResponses(applicationResponses);
 
-        ApplicationsAPI
+        return ApplicationsAPI
             .patch(application.id, {responses: JSON.stringify(responses)})
+
+    };
+
+    saveApplication = (event) => {
+        event.preventDefault();
+        this.saveApplicationHelperPromise()
             .then(()=>{
             })
             .catch(err=> {
@@ -79,11 +82,12 @@ class ApplicationDetail extends React.Component {
             })
     };
 
+
     submitApplication = (event) => {
         event.preventDefault();
-        const {application, applicationResponses, scholarship} = this.state;
-        ApplicationsAPI
-            .patch(application.id, {responses: JSON.stringify(applicationResponses)})
+
+        const {scholarship} = this.state;
+        this.saveApplicationHelperPromise()
             .then(()=>{
                 window.open(scholarship.form_url);
             })
