@@ -75,6 +75,19 @@ class ApplicationDetail extends React.Component {
             })
     };
 
+    submitApplication = (event) => {
+        event.preventDefault();
+        const {application, applicationResponses, scholarship} = this.state;
+        ApplicationsApi
+            .patch(application.id, {responses: JSON.stringify(applicationResponses)})
+            .then(()=>{
+                window.open(scholarship.form_url);
+            })
+            .catch(err=> {
+                console.log({err});
+            })
+    };
+
     updateForm = (event) => {
         const {applicationResponses} = this.state;
 
@@ -106,10 +119,16 @@ class ApplicationDetail extends React.Component {
                 <br />
 
                 <Button onClick={this.saveApplication}
+                        size="large" className="mr-3">
+                    Save Application
+                </Button>
+
+                <Button onClick={this.submitApplication}
                         type="primary"
                         size="large">
-                    Save Application
-                </Button> <br/>
+                    Start Submission
+                </Button>
+
             </div>
         );
     }
