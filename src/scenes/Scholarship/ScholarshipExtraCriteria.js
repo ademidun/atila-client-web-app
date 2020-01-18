@@ -21,12 +21,16 @@ function ScholarshipExtraCriteria({scholarship, loggedInUserProfile, viewAsUserP
         return null;
     }
 
-    return (
-        <div className="other-criteria">
-            <h3>Other Criteria</h3>
-            {AUTOCOMPLETE_KEY_LIST
-                .filter(criteria=>(scholarship[criteria] && scholarship[criteria].length>0))
-                .map(criteria => (
+    let alreadyShownEditProfilePrompt = false;
+
+    const autoCompleteCriteriaDisplay = [];
+
+
+        AUTOCOMPLETE_KEY_LIST
+        .filter(criteria=>(scholarship[criteria] && scholarship[criteria].length>0))
+        .forEach(criteria => {
+            autoCompleteCriteriaDisplay.push(
+
                 <React.Fragment key={criteria}>
                     <p>
                         <strong>{prettifyKeys(criteria)}{criteria === 'citizenship' ? ' or permanent residency': ''}:{' '}</strong>
@@ -40,7 +44,7 @@ function ScholarshipExtraCriteria({scholarship, loggedInUserProfile, viewAsUserP
                         {JSON.stringify(userProfile[criteria], null, ' ')}
                     </p>
                     }
-                    {
+                    { !alreadyShownEditProfilePrompt &&
                         userProfile && userProfile[criteria] && userProfile[criteria].length===0 &&
                         <p>
                             Don't qualify for scholarships of these {prettifyKeys(criteria)}?
@@ -48,13 +52,22 @@ function ScholarshipExtraCriteria({scholarship, loggedInUserProfile, viewAsUserP
                                 Edit Profile</Link> to see correct scholarships
                         </p>
                     }
-                </React.Fragment>
-            ))}
+                </React.Fragment>);
+
+            if (userProfile && userProfile[criteria] && userProfile[criteria].length===0) {
+                alreadyShownEditProfilePrompt = true;
+            }
+        });
+
+    return (
+        <div className="other-criteria">
+            <h3>Other Criteria</h3>
+            {autoCompleteCriteriaDisplay}
             {['city', 'province', 'country'].map(locationType => (
                 <React.Fragment key={locationType}>
 
                     {scholarship[locationType] && scholarship[locationType].map((locationString, index) => (
-                        <p key={locationString.name}>
+                        <div key={locationString.name}>
                             {index===0 && <strong>{prettifyKeys(locationType)}: {' '}</strong>}
                             {' '}
                             {locationString.name}
@@ -72,7 +85,7 @@ function ScholarshipExtraCriteria({scholarship, loggedInUserProfile, viewAsUserP
                                         Edit Profile</Link> to see correct scholarships
                                 </p>
                             }
-                        </p>
+                        </div>
                     ))}
                 </React.Fragment>
             ))}

@@ -4,7 +4,8 @@ import {connect} from "react-redux";
 import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import FormDynamic from "../../components/Form/FormDynamic";
 import HelmetSeo from "../../components/HelmetSeo";
-import ApplicationsApi from "../../services/ApplicationsAPI";
+import ApplicationsAPI from "../../services/ApplicationsAPI";
+import ApplicationsService from "../../services/ApplicationsService";
 import {Button} from "antd";
 import {updateFormHelper} from "../../services/utils";
 
@@ -37,9 +38,9 @@ class ApplicationDetail extends React.Component {
 
         let applicationPromise;
         if(userId && scholarshipId) {
-            applicationPromise = ApplicationsApi.getOrCreate(userId, scholarshipId)
+            applicationPromise = ApplicationsAPI.getOrCreate(userId, scholarshipId)
         } else {
-            applicationPromise = ApplicationsApi.get(appId)
+            applicationPromise = ApplicationsAPI.get(appId)
         }
 
         applicationPromise
@@ -66,8 +67,11 @@ class ApplicationDetail extends React.Component {
     saveApplication = (event) => {
         event.preventDefault();
         const {applicationResponses, application} = this.state;
-        ApplicationsApi
-            .patch(application.id, {responses: JSON.stringify(applicationResponses)})
+
+        const responses = ApplicationsService.transformDictToApplicationResponses(applicationResponses);
+
+        ApplicationsAPI
+            .patch(application.id, {responses: JSON.stringify(responses)})
             .then(()=>{
             })
             .catch(err=> {
@@ -78,7 +82,7 @@ class ApplicationDetail extends React.Component {
     submitApplication = (event) => {
         event.preventDefault();
         const {application, applicationResponses, scholarship} = this.state;
-        ApplicationsApi
+        ApplicationsAPI
             .patch(application.id, {responses: JSON.stringify(applicationResponses)})
             .then(()=>{
                 window.open(scholarship.form_url);
