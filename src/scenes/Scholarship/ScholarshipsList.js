@@ -152,6 +152,8 @@ class ScholarshipsList extends React.Component {
     };
 
     afterProfileEdit = () => {
+        // scroll to the top of page so that the user can look at scholarship's list from the top
+        window.scrollTo(0, 0);
         const { userProfile } = this.props;
 
         this.setState({ isCompleteProfile: !userProfile || isCompleteUserProfile(userProfile) });
