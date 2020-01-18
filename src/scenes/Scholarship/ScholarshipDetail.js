@@ -1,7 +1,7 @@
 import React from 'react';
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import {Link} from "react-router-dom";
-import {formatCurrency, genericItemTransform, guestPageViewsIncrement, slugify} from "../../services/utils";
+import {formatCurrency, genericItemTransform, guestPageViewsIncrement} from "../../services/utils";
 import Loading from "../../components/Loading";
 import RelatedItems from "../../components/RelatedItems";
 import {connect} from "react-redux";
@@ -13,7 +13,6 @@ import AtilaPointsPaywallModal from "../../components/AtilaPointsPaywallModal";
 import ScholarshipExtraCriteria from "./ScholarshipExtraCriteria";
 import ScholarshipDeadlineWithTags from "../../components/ScholarshipDeadlineWithTags";
 import {Alert, Button, message} from 'antd';
-import ApplicationsApi from "../../services/ApplicationService";
 
 
 class ScholarshipDetail extends React.Component {
@@ -53,7 +52,7 @@ class ScholarshipDetail extends React.Component {
     componentDidMount() {
         this.loadContent();
     }
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate(prevProps, prevState, snapshot) {
         const { scholarship, errorLoadingScholarship } = this.state;
         if (scholarship === null && !errorLoadingScholarship) {
             this.loadContent();
