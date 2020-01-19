@@ -103,12 +103,11 @@ class ScholarshipDetail extends React.Component {
 
     startApplication = (event) => {
         const { scholarship } = this.state;
-        const { userProfile } = this.props;
 
         event.preventDefault();
         this.props.history.push({
             pathname: '/application/',
-            search: `?user=${userProfile.user}&scholarship=${scholarship.id}`
+            search: `?scholarship=${scholarship.id}`
         });
 
     };

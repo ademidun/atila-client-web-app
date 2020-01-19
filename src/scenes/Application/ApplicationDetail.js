@@ -33,12 +33,11 @@ class ApplicationDetail extends React.Component {
             match : { params : { appId } },
         } = this.props;
         const params = new URLSearchParams(search);
-        const userId = params.get('user');
         const scholarshipId = params.get('scholarship');
 
         let applicationPromise;
-        if(userId && scholarshipId) {
-            applicationPromise = ApplicationsAPI.getOrCreate(userId, scholarshipId)
+        if(scholarshipId) {
+            applicationPromise = ApplicationsAPI.getOrCreate(scholarshipId)
         } else {
             applicationPromise = ApplicationsAPI.get(appId)
         }

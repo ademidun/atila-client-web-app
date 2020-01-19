@@ -4,11 +4,11 @@ class ApplicationsApi {
 
     static applicationsApiUrl = `${Environment.apiUrl}/application/applications`;
 
-    static getOrCreate = (user, scholarship) => {
+    static getOrCreate = (scholarship) => {
 
         const apiCompletionPromise = request({
             method: 'get',
-            url: `${this.applicationsApiUrl}/get-or-create/?user=${user}&scholarship=${scholarship}`,
+            url: `${this.applicationsApiUrl}/get-or-create/?scholarship=${scholarship}`,
         });
 
         return apiCompletionPromise;
