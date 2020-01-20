@@ -142,9 +142,11 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
             );
             break;
         case 'html_editor':
+            console.log({inputConfig});
 
             inputForm = (
                 <React.Fragment>
+                    {inputConfig.placeholder && <label>{inputConfig.placeholder}</label>}
                     <CKEditor
                         editor={InlineEditor}
                         data={modelValue}

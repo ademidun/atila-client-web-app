@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Modal} from 'antd';
+import {prettifyKeys} from "../../services/utils";
 
 class ScholarshipQuestionAddEditModal extends React.Component {
 
@@ -25,7 +26,7 @@ class ScholarshipQuestionAddEditModal extends React.Component {
 
         const {visible, question} = this.props;
 
-        const dynamicFormTypes = ['file', 'textfield', 'textarea'];
+        const dynamicFormTypes = ['file', 'textfield', 'textarea','html_editor'];
         return (
             <div>
                 <Modal
@@ -51,7 +52,7 @@ class ScholarshipQuestionAddEditModal extends React.Component {
                                 value={question.type||''} name="type"
                                 onChange={this.updateForm}>
                             <option key='' disabled hidden>{''}</option>
-                            {dynamicFormTypes.map(item =><option key={item}>{item}</option>)}
+                            {dynamicFormTypes.map(item =><option key={item} value={item}>{prettifyKeys(item)}</option>)}
                         </select>
                     </div>
 

@@ -8,6 +8,7 @@ import ApplicationsAPI from "../../services/ApplicationsAPI";
 import ApplicationsService from "../../services/ApplicationsService";
 import {Button} from "antd";
 import {updateFormHelper} from "../../services/utils";
+import {Link} from "react-router-dom";
 
 class ApplicationDetail extends React.Component {
 
@@ -111,10 +112,14 @@ class ApplicationDetail extends React.Component {
             return null;
         }
 
-        const title = `${userProfile.first_name}'s Application for ${scholarship.name}`;
+        const seoTitle = `${userProfile.first_name}'s Application for ${scholarship.name}`;
         const seoContent = {
-            title,
+            title: seoTitle,
         };
+        const title = <p>{userProfile.first_name}'s Application
+            for <Link to={`/scholarship/${scholarship.slug}`}>
+            {scholarship.name}</Link></p>;
+
         return (
             <div className="container mt-5">
                 <HelmetSeo content={seoContent} />
@@ -135,6 +140,12 @@ class ApplicationDetail extends React.Component {
                         size="large">
                     Start Submission
                 </Button>
+
+                <a href={scholarship.form_url}
+                        target="_blank"
+                        rel="noopener noreferrer">
+                    View Application Form
+                </a>
 
             </div>
         );
