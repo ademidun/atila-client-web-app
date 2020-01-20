@@ -26,41 +26,40 @@ const teamMembers = [
         'link_url': 'http://tomiwa.ca'
     },
     {
-        'first_name': 'Jacob',
-        'last_name': 'Munene',
-        // 'username': 'lhandal',
-        'position': 'Marketing',
-        'img_url': jacobImage,
-        'description_1': 'Jacob is currently studying Financial Modeling and Applied Mathematics at Western University.' +
-            ' He also works as a Capital reporting intern at TD.',
-        'description_2': 'For fun, he enjoys working out and recording himself while doing it.',
+        'first_name': 'Mitchell',
+        'last_name': 'Li',
+        'position': 'Software Developer',
+        'username': null,
+        'img_url': mitchellImg,
+        'description_1':'Mitchell is a second year student who is studying Hons Mathematics/Business administration at the University of Waterloo',
         "link_type": "LinkedIn",
-        "link_url": "https://www.linkedin.com/in/jacob-munene-4561a4153/"
+        "link_url": "https://www.linkedin.com/in/mitchell-tz-li/"
+    },
+    {
+        'first_name': 'Melissa',
+        'last_name': 'Wen',
+        'position': 'Marketing',
+        'username': null,
+        'img_url': melissaImg,
+        'description_1':'Melissa is a first year BMOS student at Western university',
+        "link_type": "LinkedIn",
+        "link_url": "https://www.linkedin.com/in/melissa-wen-63aa8b198/"
     },
     {
         'first_name': 'Dev',
         'last_name': 'Pancea',
-        // 'username': 'lhandal',
         'position': 'Software Developer',
+        'username': null,
         'img_url': devImg,
-        'description_1':'Dev is an Honours Mathematics student at UWaterloo',
+        'description_1':'Dev is an Honours Mathematics student at the University of Waterloo',
         "link_type": "LinkedIn",
         "link_url": "https://www.linkedin.com/in/dev-pancea-018b7116a/"
-    },
-    {
-        'first_name': 'Mithcell',
-        'last_name': 'Li',
-        // 'username': 'lhandal',
-        'position': 'Software Developer',
-        'img_url': mitchellImg,
-        'description_1':'Mitchell is a second year student who is studying Hons Mathematics/Business administration at UWaterloo',
-        "link_type": "LinkedIn",
-        "link_url": "https://www.linkedin.com/in/mitchell-tz-li/"
     },
     {
         'first_name': 'Aaron',
         'last_name': 'Doerfler',
         'position': 'Marketing',
+        'username': null,
         'img_url': aaronImg,
         'description_1':'Aaron is a second year Media Information and Techno-culture (MIT) student at Western university ',
         "link_type": "LinkedIn",
@@ -70,6 +69,7 @@ const teamMembers = [
         'first_name': 'Abhinit',
         'last_name': 'Patil',
         'position': 'Software Developer',
+        'username': null,
         'img_url': abhiImg,
         'description_1':'Abhi is a gade 12 IB student at Turner Fenton Secondary School',
         "link_type": "LinkedIn",
@@ -79,6 +79,7 @@ const teamMembers = [
         'first_name': 'Elaine',
         'last_name': 'Yin',
         'position': 'Marketing',
+        'username': null,
         'img_url': elaineImg,
         'description_1':'Elaine is a student at Western university ',
         "link_type": "LinkedIn",
@@ -88,6 +89,7 @@ const teamMembers = [
         'first_name': 'Isaac',
         'last_name': 'Tang',
         'position': 'Marketing',
+        'username': null,
         'img_url': isaacImg,
         'description_1':'Isaac is a first year student curently studying BMOS at Western university',
         "link_type": "LinkedIn",
@@ -97,19 +99,23 @@ const teamMembers = [
         'first_name': 'Hadi',
         'last_name': 'Al Hakeem',
         'position': 'Software Developer',
+        'username': null,
         'img_url': hadiImg,
         'description_1':'Hadi is a grade 12 student at Georges Vanier Secondary School',
         "link_type": "LinkedIn",
         "link_url": "https://www.linkedin.com/in/hadi-al-hakeem-24182819a/"
     },
+
     {
-        'first_name': 'Melissa',
-        'last_name': 'Wen',
+        'first_name': 'Jacob',
+        'last_name': 'Munene',
         'position': 'Marketing',
-        'img_url': melissaImg,
-        'description_1':'Melissa is a first year BMOS student at Western university',
+        'username': null,
+        'img_url': jacobImage,
+        'description_1': 'Jacob is currently studying Financial Modeling and Applied Mathematics at Western University.',
+        'description_2': 'For fun, he enjoys working out and recording himself while doing it.',
         "link_type": "LinkedIn",
-        "link_url": "https://www.linkedin.com/in/melissa-wen-63aa8b198/"
+        "link_url": "https://www.linkedin.com/in/jacob-munene-4561a4153/"
     },
 
 ];
@@ -143,15 +149,16 @@ function TeamMemberCard({ teamMember }) {
             
         </div>*/
 
-        <div class="col-xl-3 col-sm-6 mb-5" style={{ padding: 25 }}>
-            <div class="bg-white rounded shadow py-5 px-4"><img src={teamMember.img_url} alt="" width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm" />
+        <div class="col-xl-3 col-sm-6 mb-5" style={{ padding: 25, overflow: 'hidden' }}>
+            <div class="bg-white rounded shadow py-5 px-4" style={{minHeight:400, maxHeight:400}}><img src={teamMember.img_url} alt="" width="100" style={{borderRadius: 50}}  />
                 <h5 class="mb-0"><strong>{teamMember.first_name} {teamMember.last_name}</strong></h5>
                 <span class="small text-uppercase text-muted">{teamMember.position}</span>
-                <p style={{fontSize: 15}}>{teamMember.description_1}</p>
                 <ul class="social mb-0 list-inline mt-3">
-                    <li class="list-inline-item"><Link to={`/profile/${teamMember.username}`}>Profile</Link></li>
-                    <li class="list-inline-item"><a href={teamMember.link_url} class="social-link">LinkedIn</a></li>
+                    <li class="list-inline-item"><a href={teamMember.link_url} class="social-link" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+                    <li class="list-inline-item"><Link style={{display: teamMember.username ? 'true': 'none'}} to={`/profile/${teamMember.username}`}>Profile</Link></li>
                 </ul>
+                <p style={{fontSize: 14}}>{teamMember.description_1}</p>
+                
             </div>
         </div>
     );
