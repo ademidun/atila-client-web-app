@@ -12,6 +12,7 @@ import melissaImg from './assets/melissaImg.jpeg'
 import mitchellImg from './assets/mitchellImg.jpg'
 import abhiImg from './assets/abhiImg.jpeg'
 import devImg from './assets/devImg.jpeg'
+import {Col, Row} from "antd";
 
 const teamMembers = [
     {
@@ -123,26 +124,23 @@ const teamMembers = [
 function TeamMemberCard({ teamMember }) {
 
     return (
+        <div className="bg-white rounded shadow mb-3 p-3" style={{height: '325px'}}>
+            <img className="mb-3"
+                 src={teamMember.img_url}
+                 alt={teamMember.first_name}
+                 style={{width: '100px', height: '100px', borderRadius: '50%'}}  />
+            <h5 className="mb-0"><strong>{teamMember.first_name} {teamMember.last_name}</strong></h5>
+            <span className="small text-uppercase text-muted">{teamMember.position}</span>
+            <ul className="social mb-0 list-inline mt-3">
+                {teamMember.username &&
+                <React.Fragment>
+                    <li className="list-inline-item"><Link to={`/profile/${teamMember.username}`}>Profile</Link></li>|
+                </React.Fragment>
+                }
+                <li className="list-inline-item"><a href={teamMember.link_url} className="social-link" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+            </ul>
+            <p style={{fontSize: 14}}>{teamMember.description_1}</p>
 
-        <div className="col-xl-3 col-sm-6 mb-3" style={{ padding: 25, overflow: 'hidden' }}>
-            <div className="bg-white rounded shadow py-5 px-4" style={{height: '400px'}}>
-                <img className="mb-3"
-                     src={teamMember.img_url}
-                     alt={teamMember.first_name}
-                     style={{width: '100px', height: '100px', borderRadius: '50%'}}  />
-                <h5 className="mb-0"><strong>{teamMember.first_name} {teamMember.last_name}</strong></h5>
-                <span className="small text-uppercase text-muted">{teamMember.position}</span>
-                <ul className="social mb-0 list-inline mt-3">
-                    {teamMember.username &&
-                        <React.Fragment>
-                            <li className="list-inline-item"><Link to={`/profile/${teamMember.username}`}>Profile</Link></li>|
-                        </React.Fragment>
-                    }
-                    <li className="list-inline-item"><a href={teamMember.link_url} className="social-link" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
-                </ul>
-                <p style={{fontSize: 14}}>{teamMember.description_1}</p>
-                
-            </div>
         </div>
     );
 }
@@ -156,18 +154,22 @@ function Team() {
         <div className="container mt-3">
             <h1>The Atila Team</h1>
             <br/>
-            <div className="row ml-md-5" >
+            <Row gutter={16}>
+                {teamMembers.map(member =>
+                    <Col xs={24} sm={12} md={8} lg={6} xl={4.8}>
+                        <TeamMemberCard key={member.first_name} teamMember={member} />
 
-                {teamMembers.map(member => <TeamMemberCard key={member.first_name} teamMember={member} />)}
+                    </Col>
+                    )}
                     <br/>
-                <div className="col-sm-12 col-md-8 px-0 pt-3" style={{ fontSize: 'larger' }}>
+                <Col span={24} className="my-3" style={{ fontSize: 'larger' }}>
                 <br/>
                     If you would like to join the team or help out in some way,
                     <a href="mailto:info@atila.ca" target="_blank" rel="noopener noreferrer"> send an email </a> to <a
                     href="mailto:info@atila.ca" target="_blank" rel="noopener noreferrer">info@atila.ca</a> with your resume and/or links to cool stuff you've
                     done.
-                </div>
-            </div>
+                </Col>
+            </Row>
         </div>
     );
 }
