@@ -31,7 +31,7 @@ const teamMembers = [
         'position': 'Software Developer',
         'username': null,
         'img_url': mitchellImg,
-        'description_1':'Mitchell is a second year student who is studying Hons Mathematics/Business administration at the University of Waterloo',
+        'description_1':'Mitchell is an Honours Mathematics and Business student at the University of Waterloo',
         "link_type": "LinkedIn",
         "link_url": "https://www.linkedin.com/in/mitchell-tz-li/"
     },
@@ -41,7 +41,7 @@ const teamMembers = [
         'position': 'Marketing',
         'username': null,
         'img_url': melissaImg,
-        'description_1':'Melissa is a first year BMOS student at Western university',
+        'description_1':'Melissa is a BMOS student at Western university',
         "link_type": "LinkedIn",
         "link_url": "https://www.linkedin.com/in/melissa-wen-63aa8b198/"
     },
@@ -61,7 +61,7 @@ const teamMembers = [
         'position': 'Marketing',
         'username': null,
         'img_url': aaronImg,
-        'description_1':'Aaron is a second year Media Information and Techno-culture (MIT) student at Western university ',
+        'description_1':'Aaron is a Media Information and Techno-culture (MIT) student at Western university ',
         "link_type": "LinkedIn",
         "link_url": "https://www.linkedin.com/in/aaron-doerfler-3a2144197/"
     },
@@ -71,7 +71,7 @@ const teamMembers = [
         'position': 'Software Developer',
         'username': null,
         'img_url': abhiImg,
-        'description_1':'Abhi is a gade 12 IB student at Turner Fenton Secondary School',
+        'description_1':'Abhinit is a grade 12 IB student at Turner Fenton Secondary School',
         "link_type": "LinkedIn",
         "link_url": "https://www.linkedin.com/in/abhinit-patil/"
     },
@@ -81,7 +81,7 @@ const teamMembers = [
         'position': 'Marketing',
         'username': null,
         'img_url': elaineImg,
-        'description_1':'Elaine is a student at Western university ',
+        'description_1':'Elaine currently studying BMOS at Western university ',
         "link_type": "LinkedIn",
         "link_url": "https://www.linkedin.com/in/elaine-yin-018a90198/"
     },
@@ -91,7 +91,7 @@ const teamMembers = [
         'position': 'Marketing',
         'username': null,
         'img_url': isaacImg,
-        'description_1':'Isaac is a first year student curently studying BMOS at Western university',
+        'description_1':'Isaac is a currently studying BMOS at Western university',
         "link_type": "LinkedIn",
         "link_url": "https://www.linkedin.com/in/isaac-tang-b42a8b198/"
     },
@@ -123,39 +123,22 @@ const teamMembers = [
 function TeamMemberCard({ teamMember }) {
 
     return (
-       /* <div className="card shadow col-xl-3 col-md-6 mb-4">
-            <div style={{ height: '100px' }}>
-                <h4>
-                {teamMember.first_name} {teamMember.last_name}
-                </h4>
-                <h5 className="text-muted">
-                    {teamMember.position}
-                </h5>
-            </div>
-            <div className="pb-3">
-                <img
-                    src={teamMember.img_url}
-                    className="card-img"
-                    alt={teamMember.first_name}
-                />
-            </div>
-            {teamMember.username && <Link to={`/profile/${teamMember.username}`}>Profile</Link>}
-            {teamMember.link_url && <a href={teamMember.link_url}
-                                       target="_blank"
-                                       rel="noopener noreferrer" >
-                {teamMember.link_type}
-            </a>}
 
-            
-        </div>*/
-
-        <div class="col-xl-3 col-sm-6 mb-5" style={{ padding: 25, overflow: 'hidden' }}>
-            <div class="bg-white rounded shadow py-5 px-4" style={{minHeight:400, maxHeight:400}}><img src={teamMember.img_url} alt="" width="100" style={{borderRadius: 50}}  />
-                <h5 class="mb-0"><strong>{teamMember.first_name} {teamMember.last_name}</strong></h5>
-                <span class="small text-uppercase text-muted">{teamMember.position}</span>
-                <ul class="social mb-0 list-inline mt-3">
-                    <li class="list-inline-item"><a href={teamMember.link_url} class="social-link" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
-                    <li class="list-inline-item"><Link style={{display: teamMember.username ? 'true': 'none'}} to={`/profile/${teamMember.username}`}>Profile</Link></li>
+        <div className="col-xl-3 col-sm-6 mb-3" style={{ padding: 25, overflow: 'hidden' }}>
+            <div className="bg-white rounded shadow py-5 px-4" style={{height: '400px'}}>
+                <img className="mb-3"
+                     src={teamMember.img_url}
+                     alt={teamMember.first_name}
+                     style={{width: '100px', height: '100px', borderRadius: '50%'}}  />
+                <h5 className="mb-0"><strong>{teamMember.first_name} {teamMember.last_name}</strong></h5>
+                <span className="small text-uppercase text-muted">{teamMember.position}</span>
+                <ul className="social mb-0 list-inline mt-3">
+                    {teamMember.username &&
+                        <React.Fragment>
+                            <li className="list-inline-item"><Link to={`/profile/${teamMember.username}`}>Profile</Link></li>|
+                        </React.Fragment>
+                    }
+                    <li className="list-inline-item"><a href={teamMember.link_url} className="social-link" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
                 </ul>
                 <p style={{fontSize: 14}}>{teamMember.description_1}</p>
                 
