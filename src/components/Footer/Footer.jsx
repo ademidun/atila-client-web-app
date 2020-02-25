@@ -91,11 +91,11 @@ function Footer({location, history}) {
                       Terms and Conditions
                     </Link>
                   </div>
-                  <div>
+                  {/*<div>
                     <Link to="/pricing">
                       Pricing
                     </Link>
-                  </div>
+                  </div>*/}
                   <div>
                     <Link to="/sitemap">
                       SiteMap
