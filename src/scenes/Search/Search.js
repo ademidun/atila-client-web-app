@@ -7,7 +7,8 @@ import {Helmet} from "react-helmet";
 import AutoComplete from "../../components/AutoComplete";
 import {MASTER_LIST_EVERYTHING_UNDERSCORE} from "../../models/ConstantsForm";
 import AnalyticsService from "../../services/AnalyticsService";
-import {slugify, unSlugify} from "../../services/utils";
+import {genericItemTransform, slugify, unSlugify} from "../../services/utils";
+import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 
 class Search extends React.Component {
 
@@ -130,12 +131,36 @@ class Search extends React.Component {
         const customTheme = {
             container: 'react-autosuggest__container col-sm-12 col-md-7 p-0 my-3 mx-1',
         };
+
+
+        const seoContent = {
+            title: searchQuery? `${searchQuery} - Search`: 'Search',
+            description: `Scholarships, Blogs, and Essays for ${searchQuery}`,
+            slug: `/search?q=${searchQuery}`
+        };
+
+        if (searchResults) {
+            let allResultsCount = 0;
+            ['scholarships', 'blogPosts', 'essays'].forEach(type => {
+                if (searchResults[type]) {
+                    allResultsCount += searchResults[type].length;
+                }
+            });
+
+            if(allResultsCount > 0) {
+                seoContent.title += ` (${allResultsCount} results) `;
+                seoContent.description = `${allResultsCount} Scholarships, Blogs, and Essays for ${searchQuery}`;
+
+            }
+
+        }
+
+        console.log({seoContent});
+
         return (
             <div className="container mt-5">
-                <Helmet>
-                    <meta charSet="utf-8" />
-                    <title>{searchQuery && `${searchQuery} -`} Search - Atila</title>
-                </Helmet>
+                <HelmetSeo content={seoContent} />
+
                 <h1>Search {searchQuery && `for ${searchQuery}`}</h1>
 
                 <form  onSubmit={this.submitSearch} className="row">
@@ -159,7 +184,6 @@ class Search extends React.Component {
                                  responseError={responseError}
                                  responseOkMessage={responseOkMessage} />
             </div>
-
         );
     }
 }
