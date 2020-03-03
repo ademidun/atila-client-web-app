@@ -3,12 +3,11 @@ import React from 'react';
 import SearchApi from "../../services/SearchAPI";
 import ResponseDisplay from "../../components/ResponseDisplay";
 import {SearchResultsDisplay} from "./SearchResultsDisplay";
-import {Helmet} from "react-helmet";
 import AutoComplete from "../../components/AutoComplete";
 import {MASTER_LIST_EVERYTHING_UNDERSCORE} from "../../models/ConstantsForm";
 import AnalyticsService from "../../services/AnalyticsService";
-import {genericItemTransform, slugify, unSlugify} from "../../services/utils";
-import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
+import {slugify, unSlugify} from "../../services/utils";
+import HelmetSeo from "../../components/HelmetSeo";
 
 class Search extends React.Component {
 
