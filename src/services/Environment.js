@@ -1,7 +1,7 @@
 export const EnvironmentDev = {
     name: 'dev',
     production: false,
-    apiUrl: 'https://api.myjson.com/bins/6ofzy?q=',
+    apiUrl: 'http://127.0.0.1:8000/api',
     apiUrlNodeMicroservice: 'http://127.0.0.1:9000',
     apiUrlBillingMicroservice: 'http://127.0.0.1:9001',
     apiUrlRecommender: 'http://127.0.0.1:5000',

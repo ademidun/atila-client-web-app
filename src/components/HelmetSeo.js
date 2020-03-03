@@ -26,6 +26,10 @@ function HelmetSeo({content}) {
             $('meta[itemprop="description"]').attr('content', content.description);
             $('meta[itemprop="image"]').attr('content', content.image);
 
+            $('meta[name="twitter:title"]').attr('content', content.title);
+            $('meta[name="twitter:description"]').attr('content', content.description);
+            $('meta[name="twitter:image"]').attr('content', content.image);
+
         }
     }
     catch (e) {
@@ -36,9 +40,9 @@ function HelmetSeo({content}) {
         <Helmet>
             <meta charSet="utf-8" />
             <title>{content.title} - Atila</title>
-            <meta property="og:title" content={content.title} />
             <meta name="Description" content={content.description} />
 
+            <meta property="og:title" content={content.title} />
             <meta property="og:url" content={window.location.href} />
             <meta property="og:type" content={content.type} />
             <meta property="og:description" content={content.description} />
@@ -48,11 +52,13 @@ function HelmetSeo({content}) {
             <meta itemProp="description" content={content.description} />
             <meta itemProp="image" content={content.image} />
             <meta property="og:type" content="article" />
+
             <meta name="twitter:card" content="summary_large_image" />
             <meta name="twitter:site" content="@atilatech" />
             <meta name="twitter:title" content={content.title} />
             <meta name="twitter:description" content={content.description} />
             <meta name="twitter:image" content={content.image} />
+
         </Helmet>
 
     )
