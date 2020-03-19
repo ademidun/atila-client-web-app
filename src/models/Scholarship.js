@@ -1,6 +1,16 @@
 import PropTypes from "prop-types";
 import {UserProfileTest1} from "./UserProfile";
 
+const now = new Date();
+let nextMonth = '';
+if (now.getMonth() === 11) {
+    nextMonth = new Date(now.getFullYear() + 1, 0, 1);
+} else {
+    nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+}
+
+nextMonth = nextMonth.toISOString();
+
 export const MILTON_LOCATION_OBJECT = {
     name: 'Milton',
     province: 'Ontario',
@@ -14,7 +24,7 @@ export const ScholarshipGeneral = {
     description: 'Anyone can secure the bag.',
     amount: '200',
     slug: 'general-scholarship',
-    deadline: '2020-02-17T04:59:00Z',
+    deadline: nextMonth,
 };
 
 export const ScholarshipEngineering = {
@@ -25,7 +35,7 @@ export const ScholarshipEngineering = {
     amount: '100',
     slug: 'engineering-scholarship',
     eligible_programs: ['Engineering'],
-    deadline: '2020-02-17T04:59:00Z',
+    deadline: nextMonth,
 };
 
 export const ScholarshipMilton = {
@@ -35,7 +45,7 @@ export const ScholarshipMilton = {
     amount: '100',
     slug: 'engineering-scholarship',
     city: [MILTON_LOCATION_OBJECT],
-    deadline: '2020-02-17T04:59:00Z',
+    deadline: nextMonth,
 };
 
 export const scholarshipsListMockData = [

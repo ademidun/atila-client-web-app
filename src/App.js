@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter as Router, Route} from "react-router-dom";
+import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import loadable from '@loadable/component';
 import 'bootstrap/dist/css/bootstrap.css';
 import {connect} from "react-redux";
@@ -73,7 +73,7 @@ function App(props) {
                     {isLoadingLoggedInUserProfile &&
                     <Loading loaderType="beat" title="" style={{ width: 'auto' }}/>}
                     {isFinishedLoadingLoggedInUserProfile &&
-                    <React.Fragment>
+                    <Switch>
                         <Route exact path="/" component={GoogleAnalyticsTracker(LandingPage)} />
                         <Route path="/blog" component={GoogleAnalyticsTracker(Blog)} />
                         <Route path="/essay" component={GoogleAnalyticsTracker(Essay)} />
@@ -91,7 +91,7 @@ function App(props) {
                         <Route path="/terms-and-conditions" component={GoogleAnalyticsTracker(TermsConditions)} />
                         <Route path="/contact" component={GoogleAnalyticsTracker(ContactUs)} />
                         <Route path="/siteMap" component={GoogleAnalyticsTracker(SiteMap)} />
-                    </React.Fragment>
+                    </Switch>
                     }
                     <Footer />
                 </div>

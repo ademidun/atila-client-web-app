@@ -154,8 +154,6 @@ class Search extends React.Component {
 
         }
 
-        console.log({seoContent});
-
         return (
             <div className="container mt-5">
                 <HelmetSeo content={seoContent} />
