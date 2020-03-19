@@ -23,22 +23,18 @@ const store = mockStore(initialReduxState);
 describe('<App />', () => {
     test('renders without crashing', () => {
         const wrapper = mount(
-            <MemoryRouter initialEntries={['/']}>
-                <Provider store={store}>
-                    <App/>
-                </Provider>
-            </MemoryRouter>
+            <Provider store={store}>
+                <App/>
+            </Provider>
         );
         expect(wrapper.html()).toBeTruthy();
     });
 
     test('renders LandingPageOld', () => {
         const wrapper = mount(
-            <MemoryRouter initialEntries={['/']}>
-                <Provider store={store}>
-                    <App/>
-                </Provider>
-            </MemoryRouter>
+            <Provider store={store}>
+                <App/>
+            </Provider>
         );
         expect(wrapper.html()).toContain('header');
         expect(wrapper.find(Navbar).length).toBe(1);
