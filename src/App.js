@@ -13,6 +13,7 @@ import Navbar from "./components/Navbar/Navbar";
 import GoogleAnalyticsTracker from "./services/GoogleAnalyticsTracker";
 import ScrollToTop from "./components/ScrollToTop";
 import HighSchool from "./components/HighSchool";
+import LogRocket from 'logrocket';
 
 const Pricing = loadable(() => import('./scenes/AtilaPremium/Pricing'), {
     fallback: <Loading />,
@@ -64,6 +65,7 @@ function App(props) {
         isFinishedLoadingLoggedInUserProfile,
     } = props;
 
+    LogRocket.init('guufgl/atila-prod');
     return (
             <Router>
                 <ScrollToTop />
