@@ -7,6 +7,8 @@ import {connect} from "react-redux";
 import './Navbar.scss'
 import UserProfileAPI from "../../services/UserProfileAPI";
 import Loading from "../../components/Loading";
+import LogRocket from 'logrocket';
+import Environment from "../../services/Environment";
 
 const {SubMenu} = Menu;
 
@@ -34,6 +36,18 @@ class Navbar extends React.Component {
         const { menuMode } = this.state;
         const { userProfile, isLoadingLoggedInUserProfile } = this.props;
         const { location: { pathname, search } } = this.props;
+
+        if(userProfile) {
+            const logRocketAppId = `guufgl/atila-${Environment.name}`;
+
+            LogRocket.identify(logRocketAppId, {
+                name: `${userProfile.first_name} ${userProfile.last_name}`,
+                email: `${userProfile.email}`,
+
+                // Add your own custom user variables here, ie:
+                userId: `${userProfile.user}`
+            });
+        }
 
         if (pathname === '/premium') {
             return (<div id="header"

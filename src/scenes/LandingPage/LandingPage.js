@@ -36,6 +36,11 @@ class LandingPage extends React.Component {
 
     loadContent = async () => {
 
+        // TODO: mock the loadContent() function in LandingPage.test.js
+        if (process.env.NODE_ENV ==='test') {
+            return
+        }
+
         this.setState({ scholarshipsDueSoonIsLoading: true });
         const { userProfile } = this.props;
 

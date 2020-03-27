@@ -13,6 +13,9 @@ import Navbar from "./components/Navbar/Navbar";
 import GoogleAnalyticsTracker from "./services/GoogleAnalyticsTracker";
 import ScrollToTop from "./components/ScrollToTop";
 import HighSchool from "./components/HighSchool";
+import LogRocket from 'logrocket';
+import setupLogRocketReact from 'logrocket-react';
+import Environment from "./services/Environment";
 
 const Pricing = loadable(() => import('./scenes/AtilaPremium/Pricing'), {
     fallback: <Loading />,
@@ -58,13 +61,28 @@ const Register = loadable(() => import('./components/Register'), {
 });
 
 
-function App(props) {
-    const {
-        isLoadingLoggedInUserProfile,
-        isFinishedLoadingLoggedInUserProfile,
-    } = props;
+class App extends React.Component {
 
-    return (
+    constructor(props) {
+        super(props);
+
+        if (process.env.NODE_ENV !=='test') {
+            // TODO: mock LogRocket.init and setupLogRocketReact and all uses of LogRocket in Navbar.js and Register.js
+            const logRocketAppId = `guufgl/atila-${Environment.name}`;
+            LogRocket.init(logRocketAppId);
+
+            setupLogRocketReact(LogRocket);
+        }
+    }
+
+    render () {
+
+        const {
+            isLoadingLoggedInUserProfile,
+            isFinishedLoadingLoggedInUserProfile,
+        } = this.props;
+
+        return (
             <Router>
                 <ScrollToTop />
                 <div className="App">
@@ -96,7 +114,9 @@ function App(props) {
                     <Footer />
                 </div>
             </Router>
-    );
+        );
+    }
+
 }
 
 const mapStateToProps = state => {
