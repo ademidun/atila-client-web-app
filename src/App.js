@@ -66,11 +66,13 @@ class App extends React.Component {
     constructor(props) {
         super(props);
 
-        const logRocketAppId = `guufgl/atila-${Environment.name}`;
-        console.log({logRocketAppId});
-        LogRocket.init(logRocketAppId);
+        if (process.env.NODE_ENV !=='test') {
+            const logRocketAppId = `guufgl/atila-${Environment.name}`;
+            console.log({logRocketAppId});
+            LogRocket.init(logRocketAppId);
 
-        setupLogRocketReact(LogRocket);
+            setupLogRocketReact(LogRocket);
+        }
     }
 
     render () {
