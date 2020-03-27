@@ -133,8 +133,7 @@ class Register extends React.Component {
             email, username,
         };
 
-        const logRocketAppId = `guufgl/atila-${Environment.name}`;
-        LogRocket.identify(logRocketAppId, {
+        LogRocket.identify(email, {
             name: `${userProfile.firstName} ${userProfile.lastName}`,
             email: email
         });
