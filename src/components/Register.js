@@ -8,6 +8,8 @@ import {connect} from "react-redux";
 import TermsConditions from "./TermsConditions";
 import {Modal} from "antd";
 import {Link} from "react-router-dom";
+import LogRocket from "logrocket";
+import Environment from "../services/Environment";
 
 export class PasswordShowHide extends React.Component {
 
@@ -130,6 +132,12 @@ class Register extends React.Component {
             last_name: userProfile.lastName,
             email, username,
         };
+
+        const logRocketAppId = `guufgl/atila-${Environment.name}`;
+        LogRocket.identify(logRocketAppId, {
+            name: `${userProfile.firstName} ${userProfile.lastName}`,
+            email: email
+        });
 
         UserProfileAPI
             .createUser({
