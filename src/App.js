@@ -67,6 +67,7 @@ class App extends React.Component {
         super(props);
 
         if (process.env.NODE_ENV !=='test') {
+            // TODO: mock LogRocket.init and setupLogRocketReact and all uses of LogRocket in Navbar.js and Register.js
             const logRocketAppId = `guufgl/atila-${Environment.name}`;
             console.log({logRocketAppId});
             LogRocket.init(logRocketAppId);
