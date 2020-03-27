@@ -8,7 +8,6 @@ import './Navbar.scss'
 import UserProfileAPI from "../../services/UserProfileAPI";
 import Loading from "../../components/Loading";
 import LogRocket from 'logrocket';
-import Environment from "../../services/Environment";
 
 const {SubMenu} = Menu;
 
