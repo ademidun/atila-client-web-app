@@ -37,11 +37,8 @@ class Navbar extends React.Component {
         const { userProfile, isLoadingLoggedInUserProfile } = this.props;
         const { location: { pathname, search } } = this.props;
 
-        console.log({userProfile});
-
         if(userProfile) {
             const logRocketAppId = `guufgl/atila-${Environment.name}`;
-            console.log({logRocketAppId});
 
             LogRocket.identify(logRocketAppId, {
                 name: `${userProfile.first_name} ${userProfile.last_name}`,
