@@ -8,7 +8,6 @@ import {connect} from "react-redux";
 import TermsConditions from "./TermsConditions";
 import {Modal} from "antd";
 import {Link} from "react-router-dom";
-import LogRocket from "logrocket";
 
 export class PasswordShowHide extends React.Component {
 
@@ -132,10 +131,11 @@ class Register extends React.Component {
             email, username,
         };
 
-        LogRocket.identify(email, {
-            name: `${userProfile.firstName} ${userProfile.lastName}`,
-            email: email
-        });
+        let contactMessage = (<React.Fragment>
+            Error logging in.{' '}
+            <Link to="/contact">
+                Contact us</Link> if this continues
+        </React.Fragment>);
 
         UserProfileAPI
             .createUser({
@@ -153,18 +153,22 @@ class Register extends React.Component {
             .catch(err => {
                 if (err.response && err.response.data) {
                     let isResponseError = err.response.data;
+                    let showContactMessage = false;
+
+                    if (typeof isResponseError.message === "string" &&
+                        'contact us' in isResponseError.message.toLowerCase()) {
+                        showContactMessage = true;
+                    }
+
                     isResponseError = (
                         <p className="text-danger">
+                            {showContactMessage && contactMessage}
                             {isResponseError.message || isResponseError.error}
                         </p>);
                     this.setState({ isResponseError });
+
                 } else {
-                    const responseError = (<React.Fragment>
-                        Error logging in.{' '}
-                        <Link to="/contact">
-                            Contact us</Link> if this continues
-                    </React.Fragment>);
-                    this.setState({ responseError });
+                    this.setState({ responseError: contactMessage });
                 }
             })
             .finally(res => {
@@ -188,6 +192,7 @@ class Register extends React.Component {
                                    name="firstName"
                                    value={firstName}
                                    onChange={this.updateForm}
+                                   required
                             />
                             <input placeholder="Last Name"
                                    name="lastName"
@@ -195,6 +200,7 @@ class Register extends React.Component {
                                    className="col-12 mb-3 form-control"
                                    value={lastName}
                                    onChange={this.updateForm}
+                                   required
                             />
                             <input placeholder="Email"
                                    className="col-12 mb-3 form-control"
@@ -203,6 +209,7 @@ class Register extends React.Component {
                                    value={email}
                                    autoComplete="email"
                                    onChange={this.updateForm}
+                                   required
                             />
                             <input placeholder="Username"
                                    className="col-12 mb-3 form-control"
@@ -210,6 +217,7 @@ class Register extends React.Component {
                                    value={username}
                                    autoComplete="username"
                                    onChange={this.updateForm}
+                                   required
                             />
                             <PasswordShowHide password={password} updateForm={this.updateForm} />
                             <div className="col-12 mb-3">
