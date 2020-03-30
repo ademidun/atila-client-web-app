@@ -16,6 +16,7 @@ import HighSchool from "./components/HighSchool";
 import LogRocket from 'logrocket';
 import setupLogRocketReact from 'logrocket-react';
 import Environment from "./services/Environment";
+import Ebook from "./scenes/Ebook/Ebook";
 
 const Pricing = loadable(() => import('./scenes/AtilaPremium/Pricing'), {
     fallback: <Loading />,
@@ -104,6 +105,7 @@ class App extends React.Component {
                         <Route path="/register" component={GoogleAnalyticsTracker(Register)} />
                         <Route path="/profile" component={GoogleAnalyticsTracker(UserProfile)} />
                         <Route path="/high-school" component={GoogleAnalyticsTracker(HighSchool)} />
+                        <Route path="/schools" component={GoogleAnalyticsTracker(Ebook)} />
                         <Route path="/highschool" component={GoogleAnalyticsTracker(HighSchool)} />
                         <Route path="/team" component={GoogleAnalyticsTracker(Team)} />
                         <Route path="/terms-and-conditions" component={GoogleAnalyticsTracker(TermsConditions)} />
