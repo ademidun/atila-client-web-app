@@ -1,18 +1,9 @@
 import React from "react";
-import HelmetSeo from "../../components/HelmetSeo";
 
 function EbookLandingBanner() {
-  const seoContent = {
-    title: 'Atila Schools and Jobs Report | The Best Canadian Universities for the Best Jobs',
-    description: 'The best Canadian Universities for getting jobs at Goldman Sachs, Google, McKinsey, Pfizer and more.',
-    image: 'https://i.imgur.com/pDvsRnZ.png',
-    slug: '/schools'
-  };
 
   return (
     <div className='container'>
-
-      <HelmetSeo content={seoContent} />
       <h1 className='col-sm-12 text-center'>Atila Schools and Jobs Report</h1>
 
       <div className='row'>
