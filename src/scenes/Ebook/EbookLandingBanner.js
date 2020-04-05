@@ -1,6 +1,7 @@
 import React from "react";
 
 function EbookLandingBanner() {
+
   return (
     <div className='container'>
       <h1 className='col-sm-12 text-center'>Atila Schools and Jobs Report</h1>
@@ -11,7 +12,7 @@ function EbookLandingBanner() {
           <br />
           <div>
             <h2 >
-                The best Canadian Universities for getting jobs at Goldman Sachs, Google, Mckinsey, Pfizer
+                The best Canadian Universities for getting jobs at Goldman Sachs, Google, McKinsey, Pfizer
                 and more.
             </h2>
           </div>
