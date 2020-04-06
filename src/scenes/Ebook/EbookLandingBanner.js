@@ -38,11 +38,6 @@ class EbookLandingBanner extends Component {
               </div>
               <div
                   className='card shadow col'
-                  style={
-                    this.state.showPreview
-                        ? { backgroundColor: "rgba(0, 0, 0, 0.5)" }
-                        : null
-                  }
               >
                 <div>
                   <img
@@ -51,17 +46,17 @@ class EbookLandingBanner extends Component {
                       alt='Book cover'
                   />
                 </div>
-                {!this.state.showPreview && (
-                    <button
-                        className='btn btn-primary'
-                        onClick={(e) => {
-                          this.setState({ showPreview: true });
-                          console.log(this.state.showPreview);
-                        }}
-                    >
-                      Click for preview
-                    </button>
-                )}
+
+                <Button
+                    className='my-3'
+                    type="primary"
+                    onClick={() => {
+                      this.setState({ showPreview: true });
+                      console.log(this.state.showPreview);
+                    }}
+                >
+                  Click for preview
+                </Button>
 
                 {this.state.showPreview && (
                     <div className='col text-center'>
