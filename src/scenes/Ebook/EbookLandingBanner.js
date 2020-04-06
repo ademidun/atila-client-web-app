@@ -17,7 +17,7 @@ class EbookLandingBanner extends Component {
                     : null
               }
           >
-            <h1 className='col-sm-12 text-center'>Atila Schools and Jobs Report</h1>
+            <h1 className='col-sm-12 text-center my-5'>Atila Schools and Jobs Report</h1>
 
             <div className='row'>
               <br />
@@ -52,7 +52,6 @@ class EbookLandingBanner extends Component {
                     type="primary"
                     onClick={() => {
                       this.setState({ showPreview: true });
-                      console.log(this.state.showPreview);
                     }}
                 >
                   Click for preview
