@@ -1,6 +1,7 @@
 import React from 'react';
 import EbookLandingBanner from "./EbookLandingBanner";
 import HelmetSeo from "../../components/HelmetSeo";
+import EmailSignUp from "./EmailSignUp";
 
 function Ebook() {
 
@@ -16,6 +17,8 @@ function Ebook() {
 
             <HelmetSeo content={seoContent} />
             <EbookLandingBanner/>
+            <hr />
+            <EmailSignUp/>
         </React.Fragment>
     );
 }
