@@ -15,8 +15,7 @@ class EbookLandingBanner extends Component {
             this.state.showPreview
               ? { backgroundColor: "rgba(0, 0, 0, 0.5)" }
               : {
-                  backgroundColor: "#add8e6",
-                  // backgroundImage: "linear-gradient(-90deg, red, #ff8c00)",
+                  backgroundColor: "#transparent",
                   border: "0px",
                   borderColor: "transparent",
                 }
@@ -47,8 +46,7 @@ class EbookLandingBanner extends Component {
             <div
               className='card col'
               style={{
-                backgroundColor: "#add8e6",
-                //backgroundImage: "linear-gradient(-90deg, red, #f05e23)",
+                backgroundColor: "transparent",
                 border: "0px",
                 borderColor: "transparent",
               }}

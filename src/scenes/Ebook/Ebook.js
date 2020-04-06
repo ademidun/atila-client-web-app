@@ -18,9 +18,7 @@ function Ebook() {
       <div
         style={{
           backgroundColor: "#add8e6",
-          //backgroundImage: "linear-gradient(-90deg, red, #f05e23)",
-          border: "0px",
-          borderColor: "transparent",
+          backgroundImage: "linear-gradient(-90deg, red, orange)",
         }}
       >
         <HelmetSeo content={seoContent} />

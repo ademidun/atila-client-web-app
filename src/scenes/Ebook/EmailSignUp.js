@@ -9,8 +9,7 @@ function EmailSignUp() {
         <div
           className='card '
           style={{
-            backgroundColor: "#add8e6",
-            //backgroundImage: "linear-gradient(-90deg, red, #f05e23)",
+            backgroundColor: "transparent",
             border: "0px",
             borderColor: "transparent",
           }}
