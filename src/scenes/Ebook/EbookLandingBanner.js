@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { render } from "enzyme";
+import {Button} from "antd";
 
 class EbookLandingBanner extends Component {
   state = {
@@ -47,11 +47,10 @@ class EbookLandingBanner extends Component {
               </button>
               <br />
               <iframe
-                width={450}
-                height={650}
-                src='https://storage.googleapis.com/atila-7.appspot.com/public/Atila-Schools-and-Jobs-Report-Body-Draft-2.pdf'
-                title='Preview'
-              ></iframe>
+                src='https://storage.googleapis.com/atila-7.appspot.com/public/atila-ebook-preview-sample.pdf'
+                title='Atila Schools and Jobs Ebook Preview'
+                style={{width: '90%', height: '90%'}}
+              />
             </div>
           )}
           <div
@@ -64,7 +63,7 @@ class EbookLandingBanner extends Component {
           >
             <div>
               <img
-                src='https://scontent.fyto1-1.fna.fbcdn.net/v/t1.15752-9/s2048x2048/92129151_668969287268274_8505358619993178112_n.png?_nc_cat=103&_nc_sid=b96e70&_nc_ohc=Fu52aSll0TcAX-EwpcO&_nc_ht=scontent.fyto1-1.fna&oh=f60201f4bbd865746bf791bb7b2bc1cb&oe=5EAE716A'
+                src='https://i.imgur.com/AM0KTy9.png'
                 style={{ maxHeight: "100%", maxWidth: "100%" }}
                 alt='Book cover'
               />
@@ -83,9 +82,9 @@ class EbookLandingBanner extends Component {
 
             {this.state.showPreview && (
               <div className='col text-center'>
-                <a>
+                <Button>
                   <h1 style={{ color: "white" }}>Buy Now for $29.99</h1>
-                </a>
+                </Button>
               </div>
             )}
           </div>
