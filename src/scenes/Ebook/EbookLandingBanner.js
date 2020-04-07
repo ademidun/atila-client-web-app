@@ -17,8 +17,7 @@ class EbookLandingBanner extends Component {
           </h1>
 
           <div className='row'>
-            <br />
-            <div className='col text-center'>
+            <div className='col text-center mx-5 px-5 buy-now-cta'>
               <br />
               <div className="px-5">
                 <h2>
@@ -37,14 +36,13 @@ class EbookLandingBanner extends Component {
               className='card col'
               style={{
                 backgroundColor: "transparent",
-                border: "0px",
-                borderColor: "transparent",
+                border: "none",
               }}
             >
               <div>
                 <img
                   src='https://i.imgur.com/AM0KTy9.png'
-                  style={{ maxHeight: "100%", maxWidth: "100%" }}
+                  style={{ maxHeight: "90%", maxWidth: "90%" }}
                   alt='Book cover'
                 />
               </div>

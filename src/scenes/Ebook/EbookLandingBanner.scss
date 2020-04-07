@@ -1,4 +1,15 @@
+@import '../../index';
+
 .EbookLandingBanner {
   background-color: #add8e6;
   background-image: linear-gradient(-90deg, red, orange);
+  color: white;
+
+  h1, h2, h3, h4, h5, h6, p {
+    color: white;
+  }
+
+  .buy-now-cta {
+    max-width: 700px;
+  }
 }
