@@ -34,6 +34,7 @@ class Navbar extends React.Component {
   };
 
   render() {
+    let navbarID = "header";
     const { menuMode } = this.state;
     const { userProfile, isLoadingLoggedInUserProfile } = this.props;
     const {
@@ -50,9 +51,6 @@ class Navbar extends React.Component {
       });
     }
 
-    if (pathname === "/schools") {
-      return null;
-    }
     if (pathname === "/premium") {
       return (
         <div id='header' className='header mx-3 mx-lg-5 mt-2'>
@@ -65,6 +63,10 @@ class Navbar extends React.Component {
           </Row>
         </div>
       );
+    }
+
+    if (pathname === "/schools") {
+      navbarID = "ebook";
     }
 
     const menu = (
@@ -138,7 +140,7 @@ class Navbar extends React.Component {
     );
 
     return (
-      <div id='header' className='header mx-3 mx-lg-5 mt-2'>
+      <div id={navbarID} className=' mx-3 mx-lg-5 mt-2'>
         <Row>
           <Col xxl={4} xl={5} lg={8} md={8} sm={8} xs={0}>
             <h2 id='logo' className='text-center4'>

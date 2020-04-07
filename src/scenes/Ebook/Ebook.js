@@ -18,7 +18,6 @@ function Ebook() {
       <div>
         <HelmetSeo content={seoContent} />
         <EbookLandingBanner />
-        <br />
         <hr />
         <EmailSignUp />
       </div>

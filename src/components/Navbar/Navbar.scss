@@ -6,7 +6,7 @@ $menu-item-border: 2px;
 #header,
 header {
   transition: all 0.3s;
-  background: transparent;
+  background: #fff;
   box-shadow: none;
   position: relative;
   z-index: 10;
@@ -89,4 +89,16 @@ header {
   width: 16px;
   height: 2px;
   position: absolute;
+}
+
+#ebook,
+.ebook {
+  transition: all 0.3s;
+  width: 90%;
+  background-color: #add8e6;
+  background-image: linear-gradient(-90deg, red, orange);
+  color: white;
+  box-shadow: none;
+  position: absolute;
+  z-index: 10;
 }
