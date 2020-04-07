@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
+// for some reason documentation shows exmaple of creating variables and not using them
+/* eslint-disable no-unused-vars */
+// noinspection ES6UnusedImports
 import tableau from 'tableau-api';
+/* eslint-enable no-unused-vars */
 
 
 class Test extends Component {
@@ -14,9 +18,12 @@ class Test extends Component {
         const techVizContainer = this.techVizContainer;
         const allIndustriesVizContainer = this.allIndustriesVizContainer;
 
-
+        /* eslint-disable no-unused-vars */
+        // noinspection JSUnusedLocalSymbols
         let techTierViz = new window.tableau.Viz(techVizContainer, techTierVizUrl);
+        // noinspection JSUnusedLocalSymbols
         let allIndustriesViz = new window.tableau.Viz(allIndustriesVizContainer, allIndustriesVizUrl);
+        /* eslint-enable no-unused-vars */
     }
 
 
