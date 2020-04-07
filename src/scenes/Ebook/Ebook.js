@@ -2,6 +2,7 @@ import React from "react";
 import EbookLandingBanner from "./EbookLandingBanner";
 import HelmetSeo from "../../components/HelmetSeo";
 import EmailSignUp from "./EmailSignUp";
+import TableauGraphsEmbed from "./TableauGraphsEmbed";
 
 function Ebook() {
   const seoContent = {
@@ -20,6 +21,8 @@ function Ebook() {
         <EbookLandingBanner />
         <hr/>
         <EmailSignUp />
+        <hr/>
+        <TableauGraphsEmbed/>
       </div>
     </React.Fragment>
   );
