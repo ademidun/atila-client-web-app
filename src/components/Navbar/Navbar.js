@@ -68,7 +68,12 @@ class Navbar extends React.Component {
     }
 
     const menu = (
-      <Menu mode={menuMode} id='nav' key='nav'>
+      <Menu
+        mode={menuMode}
+        id='nav'
+        key='nav'
+        style={{ backgroundColor: "transparent" }}
+      >
         <Menu.Item key='essays'>
           <Link to='/essay'>Essays</Link>
         </Menu.Item>
