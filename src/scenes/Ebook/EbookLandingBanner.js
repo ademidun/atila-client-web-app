@@ -39,24 +39,25 @@ class EbookLandingBanner extends Component {
                 border: "none",
               }}
             >
-              <div>
+              <div
+                  style={{ maxWidth: "80%" }}>
                 <img
                   src='https://i.imgur.com/MihHs7l.png'
-                  style={{ maxHeight: "90%", maxWidth: "90%" }}
                   alt='Book cover'
+                  style={{ maxWidth: "80%" }}
                 />
-              </div>
 
-              <Button
-                className='my-3'
-                type='primary'
-                style={{ width: "50%", left: "25%" }}
-                onClick={() => {
-                  this.setState({ showPreview: true });
-                }}
-              >
-                Click for preview
-              </Button>
+                <Button
+                    className='my-3'
+                    type='primary'
+                    style={{ width: "50%", left: "25%" }}
+                    onClick={() => {
+                      this.setState({ showPreview: true });
+                    }}
+                >
+                  Click for preview
+                </Button>
+              </div>
 
               {this.state.showPreview && (
                 <div className='col text-center'>
