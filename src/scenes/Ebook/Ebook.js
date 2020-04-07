@@ -18,7 +18,8 @@ function Ebook() {
       <div>
         <HelmetSeo content={seoContent} />
         <EbookLandingBanner />
-        <hr/>
+        <br />
+        <hr />
         <EmailSignUp />
       </div>
     </React.Fragment>

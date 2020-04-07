@@ -7,14 +7,14 @@ import {
   setLoggedInUserProfile,
 } from "../../redux/actions/user";
 import { connect } from "react-redux";
-import "./Navbar.scss";
+import "../../components/Navbar/Navbar.scss";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import Loading from "../../components/Loading";
 import LogRocket from "logrocket";
 
 const { SubMenu } = Menu;
 
-class Navbar extends React.Component {
+class EbookNav extends React.Component {
   state = {
     menuVisible: false,
     menuMode: "horizontal",
@@ -50,9 +50,6 @@ class Navbar extends React.Component {
       });
     }
 
-    if (pathname === "/schools") {
-      return null;
-    }
     if (pathname === "/premium") {
       return (
         <div id='header' className='header mx-3 mx-lg-5 mt-2'>
@@ -68,7 +65,12 @@ class Navbar extends React.Component {
     }
 
     const menu = (
-      <Menu mode={menuMode} id='nav' key='nav'>
+      <Menu
+        mode={menuMode}
+        id='nav'
+        key='nav'
+        style={{ backgroundColor: "transparent" }}
+      >
         <Menu.Item key='essays'>
           <Link to='/essay'>Essays</Link>
         </Menu.Item>
@@ -148,20 +150,7 @@ class Navbar extends React.Component {
             </div>
           </Col>
         </Row>
-        <Row>
-          <Col xxl={0} xl={0} lg={0} md={0} sm={0} xs={24}>
-            <h2 id='logo' className='text-center ant-col-xs-24'>
-              <Link to='/'>
-                <span>Atila</span>
-              </Link>
-            </h2>
-          </Col>
-          <Col xxl={0} xl={0} lg={0} md={0} sm={0} xs={24} className='ml-0'>
-            <div className='header-meta'>
-              <div id='menu'>{menu}</div>
-            </div>
-          </Col>
-        </Row>
+
         {isLoadingLoggedInUserProfile && (
           <Loading className='col-12' title='Loading UserProfile...' />
         )}
@@ -170,12 +159,12 @@ class Navbar extends React.Component {
   }
 }
 
-Navbar.defaultProps = {
+EbookNav.defaultProps = {
   userProfile: null,
   isLoadingLoggedInUserProfile: false,
 };
 
-Navbar.propTypes = {
+EbookNav.propTypes = {
   initializeLoggedInUserProfile: PropTypes.func.isRequired,
   setLoggedInUserProfile: PropTypes.func.isRequired,
   userProfile: PropTypes.shape({}),
@@ -192,4 +181,6 @@ const mapDispatchToProps = {
   initializeLoggedInUserProfile,
   setLoggedInUserProfile,
 };
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Navbar));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(EbookNav)
+);

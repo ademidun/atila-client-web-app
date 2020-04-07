@@ -6,7 +6,7 @@ $menu-item-border: 2px;
 #header,
 header {
   transition: all 0.3s;
-  background: #fff;
+  background: transparent;
   box-shadow: none;
   position: relative;
   z-index: 10;
@@ -17,15 +17,15 @@ header {
     float: left;
     text-decoration: none;
     white-space: nowrap;
-    transition: padding .3s ease-in-out;
+    transition: padding 0.3s ease-in-out;
     img {
       height: 50px;
       margin-right: 16px;
     }
     a {
-      color: $primary
+      color: $primary;
     }
-    img+img {
+    img + img {
       height: 16px;
       position: relative;
       top: 1px;
