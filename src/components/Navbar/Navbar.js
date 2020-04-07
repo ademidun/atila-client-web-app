@@ -60,6 +60,10 @@ class Navbar extends React.Component {
             )
         }
 
+        if (pathname === '/schools') {
+            return null
+        }
+
         const menu = (
             <Menu mode={menuMode} id="nav" key="nav">
                 <Menu.Item key="essays">

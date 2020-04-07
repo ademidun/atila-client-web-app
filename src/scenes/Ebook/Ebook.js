@@ -15,15 +15,10 @@ function Ebook() {
 
   return (
     <React.Fragment>
-      <div
-        style={{
-          backgroundColor: "#add8e6",
-          backgroundImage: "linear-gradient(-90deg, red, orange)",
-        }}
-      >
+      <div>
         <HelmetSeo content={seoContent} />
         <EbookLandingBanner />
-
+        <hr/>
         <EmailSignUp />
       </div>
     </React.Fragment>

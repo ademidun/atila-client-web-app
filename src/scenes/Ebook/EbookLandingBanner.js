@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Button, Modal } from "antd";
+import './EbookLandingBanner.scss';
 
 class EbookLandingBanner extends Component {
   state = {
@@ -8,19 +9,8 @@ class EbookLandingBanner extends Component {
 
   render() {
     return (
-      <React.Fragment>
-        <div
-          className='container'
-          style={
-            this.state.showPreview
-              ? { backgroundColor: "rgba(0, 0, 0, 0.5)" }
-              : {
-                  backgroundColor: "#transparent",
-                  border: "0px",
-                  borderColor: "transparent",
-                }
-          }
-        >
+      <div className="vh-100 EbookLandingBanner">
+        <div>
           <br />
           <h1 className='col-sm-12 text-center my-5'>
             Atila Schools and Jobs Report
@@ -30,7 +20,7 @@ class EbookLandingBanner extends Component {
             <br />
             <div className='col text-center'>
               <br />
-              <div>
+              <div className="px-5">
                 <h2>
                   The best Canadian Universities for getting jobs at Goldman
                   Sachs, Google, McKinsey, Pfizer and more.
@@ -107,7 +97,7 @@ class EbookLandingBanner extends Component {
             />
           </Modal>
         )}
-      </React.Fragment>
+      </div>
     );
   }
 }
