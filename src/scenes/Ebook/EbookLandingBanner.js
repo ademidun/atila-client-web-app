@@ -41,7 +41,7 @@ class EbookLandingBanner extends Component {
             >
               <div>
                 <img
-                  src='https://i.imgur.com/AM0KTy9.png'
+                  src='https://i.imgur.com/MihHs7l.png'
                   style={{ maxHeight: "90%", maxWidth: "90%" }}
                   alt='Book cover'
                 />
