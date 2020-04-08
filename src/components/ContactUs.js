@@ -74,7 +74,7 @@ class ContactUs extends  React.Component{
         else if (isReceivedResponse) {
             pageContent = <div className="text-center" style={{ height: '300px', marginTop: '150px' }}>
                 <h4>
-                    Thanks for your Response
+                    Thanks for Contacting Us
                     <span role="img" aria-label="happy face emoji">🙂</span>
                 </h4>
                 <h6>We will get back to you within 24 hours</h6>

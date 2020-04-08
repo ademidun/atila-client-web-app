@@ -71,7 +71,7 @@ class SubscribeMailingList extends  React.Component{
         const { fullName, email, isLoadingResponse,
             isReceivedResponse, errorReceivingResponse } = this.state;
 
-        const { buttonText, subscribeText } = this.props;
+        const { buttonText, subscribeText, successResponse } = this.props;
 
         let pageContent = null;
 
@@ -82,12 +82,7 @@ class SubscribeMailingList extends  React.Component{
                     title={`Sending Form Please wait...`} />);
         }
         else if (isReceivedResponse) {
-            pageContent = <div className="text-center">
-                <h4>
-                    Thanks for Subscribing
-                    <span role="img" aria-label="happy face emoji">🙂</span>
-                </h4>
-            </div>
+            pageContent = successResponse;
         }
         else if (errorReceivingResponse) {
             pageContent = <div className="text-center">
@@ -151,6 +146,12 @@ SubscribeMailingList.defaultProps = {
             <Link to="/essay" >essays</Link>, and new product features.
         </p>),
     formGoogleSheetName: 'mailinglist',
+    successResponse: (<div className="text-center">
+        <h4>
+            Thanks for Subscribing
+            <span role="img" aria-label="happy face emoji">🙂</span>
+        </h4>
+    </div>),
 };
 
 SubscribeMailingList.propTypes = {
@@ -158,6 +159,10 @@ SubscribeMailingList.propTypes = {
     skipSendEmail: PropTypes.string,
     formGoogleSheetName: PropTypes.string,
     subscribeText: PropTypes.oneOfType([
+        PropTypes.shape({}),
+        PropTypes.string,
+    ]),
+    successResponse: PropTypes.oneOfType([
         PropTypes.shape({}),
         PropTypes.string,
     ])
