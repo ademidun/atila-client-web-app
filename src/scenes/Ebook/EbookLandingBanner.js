@@ -25,9 +25,6 @@ class EbookLandingBanner extends Component {
                   Sachs, Google, McKinsey, Pfizer and more.
                 </h2>
               </div>
-              <div className='col text-center'>
-                <button className='btn btn-primary'>Buy Now for $29.99</button>
-              </div>
             </Col>
             <Col xs={24} md={16} lg={18}
               className='card'
@@ -42,25 +39,24 @@ class EbookLandingBanner extends Component {
                   alt='Book cover'
                 />
               </div>
+              <Button className='buy-book-button'
+                      type='primary'
+                      style={{ width: "50%", left: "25%" }}>
+                <a href="https://gum.co/BbFon" target="_blank" rel="noopener noreferrer" >
+                  Buy this Book
+                </a>
+              </Button>
+              <br/>
 
               <Button
-                className='my-3'
                 type='primary'
                 style={{ width: "50%", left: "25%" }}
                 onClick={() => {
                   this.setState({ showPreview: true });
                 }}
               >
-                Click for preview
+                See Preview of Book
               </Button>
-
-              {this.state.showPreview && (
-                <div className='col text-center'>
-                  <Button>
-                    <h1 className="text-white">Buy Now for $29.99</h1>
-                  </Button>
-                </div>
-              )}
             </Col>
           </Row>
         </div>
@@ -85,7 +81,7 @@ class EbookLandingBanner extends Component {
             ]}
           >
             <iframe
-              src='https://storage.googleapis.com/atila-7.appspot.com/public/atila-ebook-preview-sample.pdf'
+              src='https://storage.googleapis.com/atila-7.appspot.com/public/atila-ebook-online-preview.pdf'
               title='Atila Schools and Jobs Ebook Preview'
               style={{ width: "100%", height: "75vh" }}
             />
