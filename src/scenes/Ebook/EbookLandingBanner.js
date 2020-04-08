@@ -13,11 +13,11 @@ class EbookLandingBanner extends Component {
         <div>
           <br />
           <h1 className='col-sm-12 text-center my-md-5'>
-            Atila Schools and Jobs Report
+            Atila Schools and Jobs Guide
           </h1>
 
           <Row className='ebook-row'>
-            <Col xs={24} md={8} className='text-center buy-now-cta'>
+            <Col xs={24} md={8} lg={6} className='text-center buy-now-cta'>
               <div>
                 <h2>
                   The best Canadian Universities for getting jobs at Goldman
@@ -28,7 +28,7 @@ class EbookLandingBanner extends Component {
                 <button className='btn btn-primary'>Buy Now for $29.99</button>
               </div>
             </Col>
-            <Col xs={24} md={16}
+            <Col xs={24} md={16} lg={18}
               className='card'
               style={{
                 backgroundColor: "transparent",
@@ -37,7 +37,7 @@ class EbookLandingBanner extends Component {
             >
               <div className="ebook-image text-center">
                 <img
-                  src='https://i.imgur.com/MdJIaxq.png'
+                  src='https://i.imgur.com/PMg68If.png'
                   alt='Book cover'
                 />
               </div>

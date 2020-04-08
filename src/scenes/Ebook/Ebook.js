@@ -6,7 +6,7 @@ import EmailSignUp from "./EmailSignUp";
 function Ebook() {
   const seoContent = {
     title:
-      "Atila Schools and Jobs Report | The Best Canadian Universities for the Best Jobs",
+      "Atila Schools and Jobs Guide | The Best Canadian Universities for the Best Jobs",
     description:
       "The best Canadian Universities for getting jobs at Goldman Sachs, Google, McKinsey, Pfizer and more.",
     image: "https://i.imgur.com/fejhJZT.png",

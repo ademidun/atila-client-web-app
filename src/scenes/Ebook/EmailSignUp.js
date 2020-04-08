@@ -9,7 +9,7 @@ function EmailSignUp() {
         <div>
           <div width={"75%"}>
             <img
-              src='https://i.imgur.com/AM0KTy9.png'
+              src='https://i.imgur.com/RLc5YPU.png'
               style={{ maxHeight: "100%", maxWidth: "100%" }}
               alt='Book cover'
             />
