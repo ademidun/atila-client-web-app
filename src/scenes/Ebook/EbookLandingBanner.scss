@@ -2,20 +2,41 @@
 
 .EbookLandingBanner {
   width: 90%;
-  left: 10%;
 
   h1, h2 {
-    line-height: 5vw;
+    line-height: 3.5vw;
   }
 
   h1 {
     font-size: 5.5vw;
   }
   h2 {
-    font-size: 3.5vw;
+    font-size: 2.5vw;
   }
 
   .buy-now-cta {
-    max-width: 700px;
+    margin-top: 10%;
+  }
+  .ebook-row {
+    left: 15%;
+  }
+
+  .ebook-image img {
+    max-width: 45vh;
+  }
+
+
+  @media only screen and (max-width: 765px) {
+
+    h1 {
+      font-size: 5.5vw;
+    }
+    h2 {
+      font-size: 3.5vw;
+    }
+    .ebook-row {
+      left: 5%;
+    }
+
   }
 }

@@ -12,37 +12,32 @@ class EbookLandingBanner extends Component {
       <div className='vh-100 EbookLandingBanner'>
         <div>
           <br />
-          <h1 className='col-sm-12 text-center my-5'>
+          <h1 className='col-sm-12 text-center my-md-5'>
             Atila Schools and Jobs Report
           </h1>
 
-          <Row>
-            <Col  span={12} className='text-center buy-now-cta'>
-              <br />
-              <div className='px-5'>
+          <Row className='ebook-row'>
+            <Col xs={24} md={8} className='text-center buy-now-cta'>
+              <div>
                 <h2>
                   The best Canadian Universities for getting jobs at Goldman
                   Sachs, Google, McKinsey, Pfizer and more.
                 </h2>
               </div>
               <div className='col text-center'>
-                <p>Coming Soon</p>
-              </div>
-              <div className='col text-center'>
                 <button className='btn btn-primary'>Buy Now for $29.99</button>
               </div>
             </Col>
-            <Col span={12}
+            <Col xs={24} md={16}
               className='card'
               style={{
                 backgroundColor: "transparent",
                 border: "none",
               }}
             >
-              <div>
+              <div className="ebook-image text-center">
                 <img
-                  src='https://i.imgur.com/MihHs7l.png'
-                  style={{ maxHeight: "90%", maxWidth: "90%" }}
+                  src='https://i.imgur.com/MdJIaxq.png'
                   alt='Book cover'
                 />
               </div>
