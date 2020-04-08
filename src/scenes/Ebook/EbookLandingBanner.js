@@ -42,7 +42,7 @@ class EbookLandingBanner extends Component {
               <Button className='buy-book-button'
                       type='primary'
                       style={{ width: "50%", left: "25%" }}>
-                <a href="https://gum.co/BbFon" target="_blank">
+                <a href="https://gum.co/BbFon" target="_blank" rel="noopener noreferrer" >
                   Buy this Book
                 </a>
               </Button>
