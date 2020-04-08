@@ -62,7 +62,7 @@ class EbookLandingBanner extends Component {
               {this.state.showPreview && (
                 <div className='col text-center'>
                   <Button>
-                    <h1 style={{ color: "white" }}>Buy Now for $29.99</h1>
+                    <h1 className="text-white">Buy Now for $29.99</h1>
                   </Button>
                 </div>
               )}
