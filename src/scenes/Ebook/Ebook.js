@@ -2,6 +2,7 @@ import React from "react";
 import EbookLandingBanner from "./EbookLandingBanner";
 import HelmetSeo from "../../components/HelmetSeo";
 import EmailSignUp from "./EmailSignUp";
+import Team from "../../components/Team/Team";
 
 function Ebook() {
   const seoContent = {
@@ -20,6 +21,9 @@ function Ebook() {
         <EbookLandingBanner />
         <hr />
         <EmailSignUp />
+        <Team
+          showArray={["Tomiwa", "Melissa", "Isaac", "Elaine", "Aaron", "Dev"]}
+        />
       </div>
     </React.Fragment>
   );
