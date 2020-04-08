@@ -1,9 +1,10 @@
-import {makeXHRRequestAsPromise} from "./utils";
+import {getGuestUserId, makeXHRRequestAsPromise} from "./utils";
 class UtilsAPI {
 
     static postGoogleScript = (formData) => {
         const url = "https://script.google.com/macros/s/AKfycbyXvhP_6VQWYI-BMetdwDKqyndhOwpx841YzOvW0OaAcdlwFwM/exec";
 
+        formData.guestUserId = getGuestUserId();
         return makeXHRRequestAsPromise('POST', url, formData)
     };
 
