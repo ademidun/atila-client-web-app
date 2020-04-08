@@ -25,9 +25,6 @@ class EbookLandingBanner extends Component {
                   Sachs, Google, McKinsey, Pfizer and more.
                 </h2>
               </div>
-              <div className='col text-center'>
-                <a className="gumroad-button" href="https://gum.co/BbFon" target="_blank">Buy this Book</a>
-              </div>
             </Col>
             <Col xs={24} md={16} lg={18}
               className='card'
@@ -42,16 +39,23 @@ class EbookLandingBanner extends Component {
                   alt='Book cover'
                 />
               </div>
+              <Button className='buy-book-button'
+                      type='primary'
+                      style={{ width: "50%", left: "25%" }}>
+                <a href="https://gum.co/BbFon" target="_blank">
+                  Buy this Book
+                </a>
+              </Button>
+              <br/>
 
               <Button
-                className='my-3'
                 type='primary'
                 style={{ width: "50%", left: "25%" }}
                 onClick={() => {
                   this.setState({ showPreview: true });
                 }}
               >
-                Click for preview
+                See Preview of Book
               </Button>
             </Col>
           </Row>
