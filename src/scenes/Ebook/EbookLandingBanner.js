@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { Button, Modal } from "antd";
+import {Button, Col, Modal, Row} from "antd";
 import "./EbookLandingBanner.scss";
-import Navbar from "../../components/Navbar/Navbar";
 
 class EbookLandingBanner extends Component {
   state = {
@@ -17,8 +16,8 @@ class EbookLandingBanner extends Component {
             Atila Schools and Jobs Report
           </h1>
 
-          <div className='row'>
-            <div className='col text-center mx-5 px-5 buy-now-cta'>
+          <Row>
+            <Col  span={12} className='text-center buy-now-cta'>
               <br />
               <div className='px-5'>
                 <h2>
@@ -32,9 +31,9 @@ class EbookLandingBanner extends Component {
               <div className='col text-center'>
                 <button className='btn btn-primary'>Buy Now for $29.99</button>
               </div>
-            </div>
-            <div
-              className='card col'
+            </Col>
+            <Col span={12}
+              className='card'
               style={{
                 backgroundColor: "transparent",
                 border: "none",
@@ -66,8 +65,8 @@ class EbookLandingBanner extends Component {
                   </Button>
                 </div>
               )}
-            </div>
-          </div>
+            </Col>
+          </Row>
         </div>
 
         {this.state.showPreview && (

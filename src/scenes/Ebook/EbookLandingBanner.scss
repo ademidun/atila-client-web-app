@@ -1,20 +1,18 @@
 @import '../../index';
 
 .EbookLandingBanner {
-  background-color: #add8e6;
-  background-image: linear-gradient(-90deg, red, orange);
-  color: white;
+  width: 90%;
+  left: 10%;
 
   h1, h2 {
-    color: white;
-    line-height: 3rem;
+    line-height: 5vw;
   }
 
   h1 {
-    font-size: 3.5rem;
+    font-size: 5.5vw;
   }
   h2 {
-    font-size: 2.5rem;
+    font-size: 3.5vw;
   }
 
   .buy-now-cta {
