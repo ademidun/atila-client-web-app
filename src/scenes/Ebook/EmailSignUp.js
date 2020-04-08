@@ -1,6 +1,6 @@
 import React from "react";
-import ContactUs from "../../components/ContactUs";
 import { Col, Row } from "antd";
+import SubscribeMailingList from "../../components/SubscribeMailingList";
 
 function EmailSignUp() {
   return (
@@ -17,7 +17,8 @@ function EmailSignUp() {
         </div>
       </Col>
       <Col span={12}>
-        <ContactUs title={"Enter Email to Receive your Free Preview"} />
+        <SubscribeMailingList subscribeText="Enter Email to Receive your Free Preview"
+                              formGoogleSheetName="ebookPreview" />
       </Col>
     </Row>
   );
