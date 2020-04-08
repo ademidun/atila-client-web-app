@@ -26,7 +26,7 @@ class EbookLandingBanner extends Component {
                 </h2>
               </div>
               <div className='col text-center'>
-                <button className='btn btn-primary'>Buy Now for $29.99</button>
+                <a className="gumroad-button" href="https://gum.co/BbFon" target="_blank">Buy this Book</a>
               </div>
             </Col>
             <Col xs={24} md={16} lg={18}
@@ -53,14 +53,6 @@ class EbookLandingBanner extends Component {
               >
                 Click for preview
               </Button>
-
-              {this.state.showPreview && (
-                <div className='col text-center'>
-                  <Button>
-                    <h1 className="text-white">Buy Now for $29.99</h1>
-                  </Button>
-                </div>
-              )}
             </Col>
           </Row>
         </div>
