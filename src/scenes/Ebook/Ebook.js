@@ -8,7 +8,7 @@ function Ebook() {
     title:
       "Atila Schools and Jobs Guide | The Best Canadian Universities for the Best Jobs",
     description:
-      "The best Canadian Universities for getting jobs at Goldman Sachs, Google, McKinsey, Pfizer and more.",
+      "A guide to The best Canadian Universities for getting jobs at Goldman Sachs, Google, McKinsey, Pfizer and more.",
     image: "https://i.imgur.com/Lhxyq0T.png",
     slug: "/schools",
   };
