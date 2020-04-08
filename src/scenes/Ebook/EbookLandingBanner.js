@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Button, Modal } from "antd";
-import './EbookLandingBanner.scss';
+import {Button, Col, Modal, Row} from "antd";
+import "./EbookLandingBanner.scss";
 
 class EbookLandingBanner extends Component {
   state = {
@@ -9,65 +9,60 @@ class EbookLandingBanner extends Component {
 
   render() {
     return (
-      <div className="vh-100 EbookLandingBanner">
+      <div className='vh-100 EbookLandingBanner'>
         <div>
           <br />
-          <h1 className='col-sm-12 text-center my-5'>
-            Atila Schools and Jobs Report
+          <h1 className='col-sm-12 text-center my-md-5'>
+            Atila Schools and Jobs Guide
           </h1>
 
-          <div className='row'>
-            <div className='col text-center mx-5 px-5 buy-now-cta'>
-              <br />
-              <div className="px-5">
+          <Row className='ebook-row'>
+            <Col xs={24} md={8} lg={6} className='text-center buy-now-cta'>
+              <div>
                 <h2>
-                  The best Canadian Universities for getting jobs at Goldman
+                  A guide to
+                  the best Canadian Universities for getting jobs at Goldman
                   Sachs, Google, McKinsey, Pfizer and more.
                 </h2>
               </div>
               <div className='col text-center'>
-                <p>Coming Soon</p>
-              </div>
-              <div className='col text-center'>
                 <button className='btn btn-primary'>Buy Now for $29.99</button>
               </div>
-            </div>
-            <div
-              className='card col'
+            </Col>
+            <Col xs={24} md={16} lg={18}
+              className='card'
               style={{
                 backgroundColor: "transparent",
                 border: "none",
               }}
             >
-              <div
-                  style={{ maxWidth: "80%" }}>
+              <div className="ebook-image text-center">
                 <img
-                  src='https://i.imgur.com/MihHs7l.png'
+                  src='https://i.imgur.com/PMg68If.png'
                   alt='Book cover'
-                  style={{ maxWidth: "80%" }}
                 />
-
-                <Button
-                    className='my-3'
-                    type='primary'
-                    style={{ width: "50%", left: "25%" }}
-                    onClick={() => {
-                      this.setState({ showPreview: true });
-                    }}
-                >
-                  Click for preview
-                </Button>
               </div>
+
+              <Button
+                className='my-3'
+                type='primary'
+                style={{ width: "50%", left: "25%" }}
+                onClick={() => {
+                  this.setState({ showPreview: true });
+                }}
+              >
+                Click for preview
+              </Button>
 
               {this.state.showPreview && (
                 <div className='col text-center'>
                   <Button>
-                    <h1 style={{ color: "white" }}>Buy Now for $29.99</h1>
+                    <h1 className="text-white">Buy Now for $29.99</h1>
                   </Button>
                 </div>
               )}
-            </div>
-          </div>
+            </Col>
+          </Row>
         </div>
 
         {this.state.showPreview && (

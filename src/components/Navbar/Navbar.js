@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from "prop-types";
-import { Row, Col, Icon, Menu } from 'antd';
+import {Row, Col, Icon, Menu} from 'antd';
 import {Link, withRouter} from "react-router-dom";
 import {initializeLoggedInUserProfile, setLoggedInUserProfile} from "../../redux/actions/user";
 import {connect} from "react-redux";
@@ -60,12 +60,14 @@ class Navbar extends React.Component {
             )
         }
 
-        if (pathname === '/schools') {
-            return null
-        }
-
         const menu = (
             <Menu mode={menuMode} id="nav" key="nav">
+                {/*<Menu.Item key="schools">*/}
+                {/*    <Link to="/schools">*/}
+                {/*        Schools Ebook{' '}*/}
+                {/*        <Tag color="green">new</Tag>*/}
+                {/*    </Link>*/}
+                {/*</Menu.Item>*/}
                 <Menu.Item key="essays">
                     <Link to="/essay">Essays</Link>
                 </Menu.Item>
@@ -90,11 +92,11 @@ class Navbar extends React.Component {
 
                 {!userProfile && !isLoadingLoggedInUserProfile &&
                 <Menu.Item key="login">
-                        <Link to={`/login?redirect=${pathname}${search}`}
-                              style={{color:'#007bff'}}
-                              className="font-weight-bold">
-                            Login
-                        </Link>
+                    <Link to={`/login?redirect=${pathname}${search}`}
+                          style={{color:'#007bff'}}
+                          className="font-weight-bold">
+                        Login
+                    </Link>
                 </Menu.Item>
                 }
                 {
