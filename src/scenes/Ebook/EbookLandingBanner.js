@@ -17,7 +17,7 @@ class EbookLandingBanner extends Component {
           </h1>
 
           <Row className='ebook-row'>
-            <Col xs={24} md={8} lg={6} className='text-center buy-now-cta'>
+            <Col xs={24} md={10} lg={8} className='text-center buy-now-cta'>
               <div>
                 <h2>
                   A guide to
@@ -26,7 +26,7 @@ class EbookLandingBanner extends Component {
                 </h2>
               </div>
             </Col>
-            <Col xs={24} md={16} lg={18}
+            <Col xs={24} md={14} lg={16}
               className='card'
               style={{
                 backgroundColor: "transparent",
