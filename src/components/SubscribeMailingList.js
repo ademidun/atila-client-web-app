@@ -29,15 +29,26 @@ class SubscribeMailingList extends  React.Component{
             return
         }
 
-        const { formGoogleSheetName, location: { pathname } } = this.props;
+        const { formGoogleSheetName, location: { pathname }, skipSendEmail } = this.props;
 
         this.setState({ isLoadingResponse: true });
-        UtilsAPI.postGoogleScript({
+
+        const formData = {
             name: fullName,
             formGoogleSheetName: formGoogleSheetName,
-            skipSendEmail: true,
             referrer: pathname,
-            email, })
+            email,
+            };
+
+        // only set skipSendEmail if the value is true, because setting the value to false
+        // interprets it as "false" which becomes truthy in the Google Macros Script
+        // see: https://github.com/ademidun/atila-client-web-app/pull/4
+
+        if (skipSendEmail) {
+            formData.skipSendEmail = skipSendEmail
+        }
+
+        UtilsAPI.postGoogleScript(formData)
             .then(res=> {
                 this.setState({ isReceivedResponse: true });
             })
@@ -60,7 +71,7 @@ class SubscribeMailingList extends  React.Component{
         const { fullName, email, isLoadingResponse,
             isReceivedResponse, errorReceivingResponse } = this.state;
 
-        const { btnText, subscribeText } = this.props;
+        const { buttonText, subscribeText } = this.props;
 
         let pageContent = null;
 
@@ -114,7 +125,7 @@ class SubscribeMailingList extends  React.Component{
                         </Col>
                     </Row>
                     <button className="btn btn-primary col-12 mb-3" type="submit">
-                        {btnText}
+                        {buttonText}
                     </button>
 
                 </form>
@@ -132,7 +143,8 @@ class SubscribeMailingList extends  React.Component{
 }
 
 SubscribeMailingList.defaultProps = {
-    btnText: 'Subscribe',
+    buttonText: 'Subscribe',
+    skipSendEmail: true,
     subscribeText: (
         <p className="col-sm-12 col-md-6" style={{fontSize : 'medium'}}>Subscribe to get updates
             on new <Link to="/scholarship" >scholarships</Link>, <Link to="/blog" >blog</Link> and {' '}
@@ -142,7 +154,8 @@ SubscribeMailingList.defaultProps = {
 };
 
 SubscribeMailingList.propTypes = {
-    btnText: PropTypes.string,
+    buttonText: PropTypes.bool,
+    skipSendEmail: PropTypes.string,
     formGoogleSheetName: PropTypes.string,
     subscribeText: PropTypes.oneOfType([
         PropTypes.shape({}),
