@@ -81,7 +81,7 @@ class EbookLandingBanner extends Component {
             ]}
           >
             <iframe
-              src='https://storage.googleapis.com/atila-7.appspot.com/public/atila-ebook-online-preview.pdf'
+              src='https://atila-schools-and-jobs-guide.s3.amazonaws.com/atila-ebook-online-preview.pdf'
               title='Atila Schools and Jobs Ebook Preview'
               style={{ width: "100%", height: "75vh" }}
             />
