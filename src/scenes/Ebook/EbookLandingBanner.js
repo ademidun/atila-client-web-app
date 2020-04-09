@@ -50,7 +50,7 @@ class EbookLandingBanner extends Component {
 
               <Button
                 type='primary'
-                style={{ width: "50%", left: "25%" }}
+                style={{ width: "50%", left: "25%", fontSize: "larger" }}
                 onClick={() => {
                   this.setState({ showPreview: true });
                 }}
