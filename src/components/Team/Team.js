@@ -196,7 +196,13 @@ const Team = ({ showArray = null }) => {
   // first names match the showNames array inputs
   if (!(showArray === null)) {
     teamCards = showArray.map((person) => {
-      for (const index in teamMembers) {
+
+      // this line is redundant but I need it to avoid no-unused-vars
+      // see https://github.com/eslint/eslint/issues/12117#issue-482050517
+      // and see: https://stackoverflow.com/a/57833082/5405197
+      // and https://github.com/ademidun/atila-client-web-app/blob/51967b50354f330a1cdb8c428b46f87540193dd3/src/services/NotificationsService.js#L105
+      let index;
+      for (index in teamMembers) {
         if (teamMembers[index].first_name === person) {
           return (
             <Col
