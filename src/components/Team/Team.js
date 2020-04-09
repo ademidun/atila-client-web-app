@@ -192,11 +192,11 @@ const Team = ({ showArray = null }) => {
     </Col>
   ));
 
+  //if showArray has names, it will cycle through and will only create cards for members whos
+  // first names match the showNames array inputs
   if (!(showArray === null)) {
     teamCards = showArray.map((person) => {
-      console.log(person);
       for (const index in teamMembers) {
-        console.log(teamMembers[index].first_name);
         if (teamMembers[index].first_name === person) {
           return (
             <Col
@@ -212,6 +212,7 @@ const Team = ({ showArray = null }) => {
           );
         }
       }
+      return null;
     });
   }
 
