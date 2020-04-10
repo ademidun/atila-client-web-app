@@ -17,7 +17,7 @@ class EbookLandingBanner extends Component {
           </h1>
 
           <Row className='ebook-row'>
-            <Col xs={24} md={8} lg={6} className='text-center buy-now-cta'>
+            <Col xs={24} md={10} lg={8} className='text-center buy-now-cta'>
               <div>
                 <h2>
                   A guide to
@@ -26,7 +26,7 @@ class EbookLandingBanner extends Component {
                 </h2>
               </div>
             </Col>
-            <Col xs={24} md={16} lg={18}
+            <Col xs={24} md={14} lg={16}
               className='card'
               style={{
                 backgroundColor: "transparent",
@@ -50,7 +50,7 @@ class EbookLandingBanner extends Component {
 
               <Button
                 type='primary'
-                style={{ width: "50%", left: "25%" }}
+                style={{ width: "50%", left: "25%", fontSize: "larger" }}
                 onClick={() => {
                   this.setState({ showPreview: true });
                 }}
@@ -81,7 +81,7 @@ class EbookLandingBanner extends Component {
             ]}
           >
             <iframe
-              src='https://storage.googleapis.com/atila-7.appspot.com/public/atila-ebook-online-preview.pdf'
+              src='https://atila-schools-and-jobs-guide.s3.amazonaws.com/atila-ebook-online-preview.pdf'
               title='Atila Schools and Jobs Ebook Preview'
               style={{ width: "100%", height: "75vh" }}
             />

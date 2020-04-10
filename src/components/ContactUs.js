@@ -1,7 +1,6 @@
 import React from "react";
 import UtilsAPI from "../services/UtilsAPI";
 import Loading from "./Loading";
-import PropTypes from "prop-types";
 class ContactUs extends  React.Component{
 
 
@@ -64,8 +63,6 @@ class ContactUs extends  React.Component{
         const { fullName, email, contactMessage, isLoadingResponse,
             isReceivedResponse, errorReceivingResponse } = this.state;
 
-        const { title } = this.props;
-
         let pageContent = null;
 
         if (isLoadingResponse) {
@@ -77,7 +74,7 @@ class ContactUs extends  React.Component{
         else if (isReceivedResponse) {
             pageContent = <div className="text-center" style={{ height: '300px', marginTop: '150px' }}>
                 <h4>
-                    Thanks for your Response
+                    Thanks for Contacting Us
                     <span role="img" aria-label="happy face emoji">🙂</span>
                 </h4>
                 <h6>We will get back to you within 24 hours</h6>
@@ -97,7 +94,7 @@ class ContactUs extends  React.Component{
         }
         else {
             pageContent = (<React.Fragment>
-                <h3>{title}</h3>
+                <h3>Contact Us</h3>
                 <p>Or send us an email at {' '}
                     <a href="mailto:info@atila.ca" target="_blank" rel="noopener noreferrer">
                         info@atila.ca
@@ -143,11 +140,4 @@ class ContactUs extends  React.Component{
     }
 }
 
-ContactUs.defaultProps = {
-    title: 'Contact Us',
-};
-
-ContactUs.propTypes = {
-    title: PropTypes.string,
-};
 export default ContactUs;

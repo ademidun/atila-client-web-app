@@ -8,6 +8,7 @@ import './Navbar.scss'
 import UserProfileAPI from "../../services/UserProfileAPI";
 import Loading from "../../components/Loading";
 import LogRocket from 'logrocket';
+import Environment from "../../services/Environment";
 
 const {SubMenu} = Menu;
 
@@ -36,7 +37,7 @@ class Navbar extends React.Component {
         const { userProfile, isLoadingLoggedInUserProfile } = this.props;
         const { location: { pathname, search } } = this.props;
 
-        if(userProfile) {
+        if(userProfile && Environment.name !== 'dev') {
             LogRocket.identify(userProfile.user, {
                 name: `${userProfile.first_name} ${userProfile.last_name}`,
                 email: `${userProfile.email}`,
