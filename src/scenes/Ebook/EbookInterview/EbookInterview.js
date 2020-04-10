@@ -66,21 +66,44 @@ const interviewees = [
 
 function InterviewCard({ person }) {
   return (
+    /*<div className='item carousel-item'>
+      <div className='img-box'></div>
+      <p className='testimonial'>
+        Vestibulum quis quam ut magna consequat faucibus. Pellentesque eget nisi
+        a mi suscipit tincidunt. Utmtc tempus dictum risus. Pellentesque viverra
+        sagittis quam at mattis. Suspendisse potenti. Aliquam sit amet gravida
+        nibh, facilisis gravida odio. Phasellus auctor velit.
+      </p>
+      <p className='overview'>
+        <b>Antonio Moreno</b>Web Developer at
+      </p>
+    </div>*/
+
     <div
       className='bg-white rounded shadow mb-3 p-3'
-      style={{ height: "350px", overflow: "scroll" }}
+      style={{
+        width: "550px",
+        height: "350px",
+        overflow: "scroll",
+        textAlign: "center",
+      }}
     >
+      <strong style={{ fontSize: 24 }}>
+        {person.first_name} {person.last_name}
+      </strong>
+      <br />
       <img
         className='mb-3'
         src={person.img_url}
         alt={person.first_name}
-        style={{ width: "100px", height: "100px", borderRadius: "50%" }}
+        style={{
+          width: "100px",
+          height: "100px",
+          borderRadius: "50%",
+          left: "50%",
+        }}
       />
-      <h5 className='mb-0'>
-        <strong>
-          {person.first_name} {person.last_name}
-        </strong>
-      </h5>
+
       <p>{person.description_1}</p>
 
       <p>
@@ -103,7 +126,7 @@ const EbookInterviews = () => {
   };
 
   let interviewCards = interviewees.map((interviewee) => (
-    <Col xs={24} sm={12} md={8} lg={6} xl={4.8} key={interviewee.first_name}>
+    <Col xs={24} sm={12} md={12} lg={12} xl={4.8} key={interviewee.first_name}>
       <InterviewCard person={interviewee} />
     </Col>
   ));

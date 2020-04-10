@@ -196,7 +196,8 @@ const Team = ({ showArray = null }) => {
   // first names match the showNames array inputs
   if (!(showArray === null)) {
     teamCards = showArray.map((person) => {
-      for (const index in teamMembers) {
+      let index;
+      for (index in teamMembers) {
         if (teamMembers[index].first_name === person) {
           return (
             <Col

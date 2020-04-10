@@ -3,9 +3,15 @@ import {Button, Col, Modal, Row} from "antd";
 import "./EbookLandingBanner.scss";
 
 class EbookLandingBanner extends Component {
+
   state = {
     showPreview: false,
   };
+
+  closePreview = (event) => {
+    event.stopPropagation();
+    this.setState({ showPreview: false });
+  } ;
 
   render() {
     return (
@@ -17,7 +23,7 @@ class EbookLandingBanner extends Component {
           </h1>
 
           <Row className='ebook-row'>
-            <Col xs={24} md={8} lg={6} className='text-center buy-now-cta'>
+            <Col xs={24} md={10} lg={8} className='text-center buy-now-cta'>
               <div>
                 <h2>
                   A guide to
@@ -26,7 +32,7 @@ class EbookLandingBanner extends Component {
                 </h2>
               </div>
             </Col>
-            <Col xs={24} md={16} lg={18}
+            <Col xs={24} md={14} lg={16}
               className='card'
               style={{
                 backgroundColor: "transparent",
@@ -39,9 +45,8 @@ class EbookLandingBanner extends Component {
                   alt='Book cover'
                 />
               </div>
-              <Button className='buy-book-button'
-                      type='primary'
-                      style={{ width: "50%", left: "25%" }}>
+              <Button className='buy-book-button center-block'
+                      type='primary'>
                 <a href="https://gum.co/BbFon" target="_blank" rel="noopener noreferrer" >
                   Buy this Book
                 </a>
@@ -49,8 +54,9 @@ class EbookLandingBanner extends Component {
               <br/>
 
               <Button
+                className="center-block"
                 type='primary'
-                style={{ width: "50%", left: "25%" }}
+                style={{ fontSize: "larger" }}
                 onClick={() => {
                   this.setState({ showPreview: true });
                 }}
@@ -61,32 +67,28 @@ class EbookLandingBanner extends Component {
           </Row>
         </div>
 
-        {this.state.showPreview && (
-          <Modal
+        <Modal
             visible={this.state.showPreview}
-            maskClosable={true}
             width='75%'
+            closable={false}
             maskStyle={{ background: "rgba(0,0,0,0.93)", width: "100%" }}
-            closable={true}
             footer={[
               <Button
-                onClick={(e) => {
-                  this.setState({ showPreview: false });
-                  console.log(this.state.showPreview);
-                }}
-                type='primary'
+                  onClick={this.closePreview}
+                  type='primary'
               >
                 Close
               </Button>,
             ]}
-          >
-            <iframe
-              src='https://storage.googleapis.com/atila-7.appspot.com/public/atila-ebook-online-preview.pdf'
+            onCancel={this.closePreview}
+        >
+          <iframe
+              src='https://atila-schools-and-jobs-guide.s3.amazonaws.com/atila-ebook-online-preview.pdf'
               title='Atila Schools and Jobs Ebook Preview'
               style={{ width: "100%", height: "75vh" }}
-            />
-          </Modal>
-        )}
+          />
+        </Modal>
+
       </div>
     );
   }

@@ -4,6 +4,7 @@ import HelmetSeo from "../../components/HelmetSeo";
 import EmailSignUp from "./EmailSignUp";
 import Team from "../../components/Team/Team";
 import EbookInterviews from "./EbookInterview/EbookInterview";
+import TableauGraphsEmbed from "./TableauGraphsEmbed";
 
 function Ebook() {
   const seoContent = {
@@ -26,6 +27,8 @@ function Ebook() {
         <Team
           showArray={["Tomiwa", "Melissa", "Isaac", "Elaine", "Aaron", "Dev"]}
         />
+        <hr />
+        <TableauGraphsEmbed />
       </div>
     </React.Fragment>
   );
