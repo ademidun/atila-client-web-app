@@ -19,7 +19,8 @@ class SubscribeMailingList extends  React.Component{
             },
             isLoadingResponse: false,
             errorReceivingResponse: false,
-            isReceivedResponse: false
+            isReceivedResponse: false,
+            formError: null
         }
     }
 
@@ -30,6 +31,7 @@ class SubscribeMailingList extends  React.Component{
 
 
         if(!formData.fullName || !formData.email) {
+            this.setState({ formError: 'Full name and email is required' });
             return
         }
 
@@ -78,7 +80,7 @@ class SubscribeMailingList extends  React.Component{
     };
 
     render() {
-        const { isLoadingResponse, isReceivedResponse, errorReceivingResponse } = this.state;
+        const { isLoadingResponse, isReceivedResponse, errorReceivingResponse, formError } = this.state;
 
         const { formData: { fullName, email }, formData } = this.state;
 
@@ -130,8 +132,6 @@ class SubscribeMailingList extends  React.Component{
                             />
                         </Col>
 
-
-
                         {extraFormQuestions.map(config => <Col key={config.keyName}
                                                                span={24}
                                                                className="my-3">
@@ -142,6 +142,11 @@ class SubscribeMailingList extends  React.Component{
                         </Col> )
                         }
                     </Row>
+                    {formError &&
+                    <p className="text-danger" style={{ whiteSpace: 'pre-wrap' }}>
+                        {formError}
+                    </p>
+                    }
                     <button className="btn btn-primary col-12 mb-3" type="submit">
                         {buttonText}
                     </button>
