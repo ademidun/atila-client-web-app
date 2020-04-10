@@ -1,10 +1,24 @@
 import React from "react";
 import { Col, Row } from "antd";
 import SubscribeMailingList from "../../components/SubscribeMailingList";
+import {SCHOOLS_LIST} from "../../models/ConstantsForm";
 
 function EmailSignUp() {
 
     const subscribeText= (<h3>Enter Email to Receive your Free Preview</h3>);
+
+    const extraFormQuestions = [
+        {
+            keyName: 'preferred_industry',
+            placeholder: 'What Industry are you most interested in?',
+            type: 'autocomplete_single',
+            suggestions: [
+                'Tech',
+                'Investment Banking',
+                 'Pharmaceuticals (Biology and Chemistry)'
+            ]
+        },
+    ];
 
     const successResponse = (<div className="text-center" style={{ height: '300px', marginTop: '150px' }}>
         <h4>
@@ -30,6 +44,7 @@ function EmailSignUp() {
                               successResponse={successResponse}
                               buttonText="Submit"
                               formGoogleSheetName="ebookMailingList"
+                              extraFormQuestions={extraFormQuestions}
                               skipSendEmail={false}/>
       </Col>
     </Row>
