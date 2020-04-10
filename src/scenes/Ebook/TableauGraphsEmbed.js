@@ -30,7 +30,7 @@ class TableauGraphsEmbed extends Component {
     render() {
         return (
             <div className="container">
-                <h1>Preview of Some Graphics</h1>
+                <h1>Preview of Some Graphics <span role="img" aria-labelledby="eyes">👀</span></h1>
                 <div ref={(div) => { this.allIndustriesVizContainer = div }}>
                 </div>
                 <hr/>
