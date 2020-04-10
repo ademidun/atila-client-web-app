@@ -14,6 +14,7 @@ function EmailSignUp() {
             options: [
                 'Tech',
                 'Investment Banking',
+                'Consulting',
                 'Pharmaceuticals (Biology and Chemistry)'
             ],
             hideLabel: true
