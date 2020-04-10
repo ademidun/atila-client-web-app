@@ -1,7 +1,6 @@
 import React from "react";
 import { Col, Row } from "antd";
 import SubscribeMailingList from "../../components/SubscribeMailingList";
-import {SCHOOLS_LIST} from "../../models/ConstantsForm";
 
 function EmailSignUp() {
 
@@ -9,14 +8,15 @@ function EmailSignUp() {
 
     const extraFormQuestions = [
         {
-            keyName: 'preferred_industry',
+            keyName: 'preferredIndustry',
             placeholder: 'What Industry are you most interested in?',
-            type: 'autocomplete_single',
-            suggestions: [
+            type: 'select',
+            options: [
                 'Tech',
                 'Investment Banking',
-                 'Pharmaceuticals (Biology and Chemistry)'
-            ]
+                'Pharmaceuticals (Biology and Chemistry)'
+            ],
+            hideLabel: true
         },
     ];
 

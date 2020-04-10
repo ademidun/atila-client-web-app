@@ -130,10 +130,17 @@ class SubscribeMailingList extends  React.Component{
                             />
                         </Col>
 
-                        {extraFormQuestions.map(config => <FormDynamicInput key={config.keyName}
-                                                                      model={formData}
-                                                                      inputConfig={config}
-                                                                      onUpdateForm={this.updateForm} /> )}
+
+
+                        {extraFormQuestions.map(config => <Col key={config.keyName}
+                                                               span={24}
+                                                               className="my-3">
+                            <FormDynamicInput
+                                              model={formData}
+                                              inputConfig={config}
+                                              onUpdateForm={this.updateForm} />
+                        </Col> )
+                        }
                     </Row>
                     <button className="btn btn-primary col-12 mb-3" type="submit">
                         {buttonText}
