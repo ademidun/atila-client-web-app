@@ -1,4 +1,5 @@
 import {getGuestUserId, makeXHRRequestAsPromise} from "./utils";
+import request from "axios";
 class UtilsAPI {
 
     static postGoogleScript = (formData) => {
@@ -27,6 +28,18 @@ class UtilsAPI {
             })
             .finally(() => {
             });
+    };
+
+    static sendEbookPreviewEmail = (formData) => {
+
+        const apiCompletionPromise = request({
+            method: 'POST',
+            data: formData,
+            url: `http://127.0.0.1:5000/send-ebook-preview-email`,
+        });
+
+        return apiCompletionPromise;
+
     }
 }
 
