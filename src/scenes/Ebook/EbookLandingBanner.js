@@ -45,9 +45,8 @@ class EbookLandingBanner extends Component {
                   alt='Book cover'
                 />
               </div>
-              <Button className='buy-book-button'
-                      type='primary'
-                      style={{ width: "50%", left: "25%" }}>
+              <Button className='buy-book-button center-block'
+                      type='primary'>
                 <a href="https://gum.co/BbFon" target="_blank" rel="noopener noreferrer" >
                   Buy this Book
                 </a>
@@ -55,8 +54,9 @@ class EbookLandingBanner extends Component {
               <br/>
 
               <Button
+                className="center-block"
                 type='primary'
-                style={{ width: "50%", left: "25%", fontSize: "larger" }}
+                style={{ fontSize: "larger" }}
                 onClick={() => {
                   this.setState({ showPreview: true });
                 }}
