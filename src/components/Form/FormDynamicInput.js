@@ -21,7 +21,8 @@ const editorChange = ( event, editor, name, updateForm ) => {
 
 function FormDynamicInput({model, onUpdateForm, inputConfig}) {
 
-    const {type, keyName, html, suggestions, className, options, valueDisplay, isHidden} = inputConfig;
+    const { type, keyName, html, suggestions, className,
+        options, valueDisplay, isHidden, hideLabel } = inputConfig;
     let {placeholder} = inputConfig;
     let inputForm = null;
 
@@ -57,9 +58,11 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
         case 'checkbox':
             inputForm = (
                 <div className="col-12 mb-3">
+                    {!hideLabel &&
                     <label htmlFor={keyName} className="mr-3">
                         {placeholder}
                     </label>
+                    }
                     <input placeholder={placeholder}
                            type="checkbox"
                            name={keyName}
@@ -72,9 +75,10 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
         case 'select':
             inputForm = (
                 <div className="mb-3">
+                    {!hideLabel &&
                     <label htmlFor={keyName} className="float-left">
                         {placeholder}
-                    </label>
+                    </label>}
                     <select
                         className="form-control"
                         name={keyName}
