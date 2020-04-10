@@ -2,17 +2,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Col, Row } from "antd";
 import HelmetSeo from "../../../components/HelmetSeo";
-import tomiwaImg from "./assets/tomiwaImg.png";
-import sarahImg from "./assets/sarahImg.png";
-import razaImg from "./assets/razaImg.png";
-import anneImg from "./assets/anneImg.png";
-import emilyImg from "./assets/emilyImg.png";
-import alexImg from "./assets/alexImg.png";
+import "../Ebook.scss";
+
 const interviewees = [
   {
     first_name: "Alex",
     last_name: "Lamont",
-    img_url: alexImg,
+    img_url: "https://i.imgur.com/dC642Sr.png",
     description_1:
       "Alex attended McGill’s Desautels Business School, and was a varsity soccer athlete",
     quote:
@@ -21,7 +17,7 @@ const interviewees = [
   {
     first_name: "Anne",
     last_name: "Chung",
-    img_url: anneImg,
+    img_url: "https://i.imgur.com/GDPc4eC.png",
     description_1:
       "Anne is a Computer Science student at The University of Waterloo",
     quote:
@@ -30,7 +26,7 @@ const interviewees = [
   {
     first_name: "Emily ",
     last_name: "Chen",
-    img_url: emilyImg,
+    img_url: "https://i.imgur.com/P1utqdl.png",
     description_1: "Emily is at UofT medical school",
     quote:
       "At the end of the day, you’re going to graduate university as a person ... so work on the best version of yourself.",
@@ -38,7 +34,7 @@ const interviewees = [
   {
     first_name: "Raza ",
     last_name: "Khan",
-    img_url: razaImg,
+    img_url: "https://i.imgur.com/aqYks77.png",
     description_1:
       "Raza studied at the Ivey School of Business at Western University and is the marketing manager of TELUS.",
     quote:
@@ -47,7 +43,7 @@ const interviewees = [
   {
     first_name: "Sarah ",
     last_name: "Chin",
-    img_url: sarahImg,
+    img_url: "https://i.imgur.com/ROVNTFa.png",
     description_1:
       "Sarah studied Chemistry at Queen’s University and is currently working for the Ontario Ministry of Children, Community, and Social Services",
     quote:
@@ -56,7 +52,7 @@ const interviewees = [
   {
     first_name: "Tomiwa ",
     last_name: "Ademidun",
-    img_url: tomiwaImg,
+    img_url: "https://i.imgur.com/Da74ZDi.png",
     description_1:
       "Tomiwa attended Western University where he completed a dual degree in Engineering and Business at the Ivey School of Business.",
     quote:
@@ -79,29 +75,15 @@ function InterviewCard({ person }) {
       </p>
     </div>*/
 
-    <div
-      className='bg-white rounded shadow mb-3 p-3'
-      style={{
-        width: "550px",
-        height: "350px",
-        overflow: "scroll",
-        textAlign: "center",
-      }}
-    >
+    <div className='InterviewCard bg-white rounded shadow mb-3 p-3'>
       <strong style={{ fontSize: 24 }}>
         {person.first_name} {person.last_name}
       </strong>
       <br />
       <img
-        className='mb-3'
+        className='Image mb-3'
         src={person.img_url}
         alt={person.first_name}
-        style={{
-          width: "100px",
-          height: "100px",
-          borderRadius: "50%",
-          left: "50%",
-        }}
       />
 
       <p>{person.description_1}</p>

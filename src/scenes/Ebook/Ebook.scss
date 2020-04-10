@@ -1,8 +1,8 @@
-@import '../../index';
+@import "../../index";
 
 .EbookLandingBanner {
-
-  h1, h2 {
+  h1,
+  h2 {
     line-height: 3.5vw;
   }
 
@@ -24,9 +24,7 @@
     max-width: 43vh;
   }
 
-
   @media only screen and (max-width: 765px) {
-
     h1 {
       font-size: 5.5vw;
     }
@@ -36,11 +34,23 @@
     .ebook-row {
       margin-left: 0;
     }
-
   }
 
   .buy-book-button {
     height: 100%;
     font-size: 30px;
   }
+}
+
+.InterviewCard {
+  width: 550px;
+  height: 350px;
+  overflow: scroll;
+  text-align: center;
+}
+
+.Image {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
 }

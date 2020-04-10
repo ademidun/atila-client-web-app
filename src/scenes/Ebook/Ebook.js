@@ -26,6 +26,7 @@ function Ebook() {
         <EbookInterviews />
         <Team
           showArray={["Tomiwa", "Melissa", "Isaac", "Elaine", "Aaron", "Dev"]}
+          showLinkedin={false}
         />
         <hr />
         <TableauGraphsEmbed />

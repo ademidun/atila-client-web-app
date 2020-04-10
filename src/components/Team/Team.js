@@ -129,7 +129,7 @@ const teamMembers = [
   },
 ];
 
-function TeamMemberCard({ teamMember }) {
+function TeamMemberCard({ teamMember, showLinkedin = true }) {
   return (
     <div
       className='bg-white rounded shadow mb-3 p-3'
@@ -158,16 +158,18 @@ function TeamMemberCard({ teamMember }) {
             |{" "}
           </React.Fragment>
         )}
-        <li className='list-inline-item'>
-          <a
-            href={teamMember.link_url}
-            className='social-link'
-            target='_blank'
-            rel='noopener noreferrer'
-          >
-            LinkedIn
-          </a>
-        </li>
+        {showLinkedin && (
+          <li className='list-inline-item'>
+            <a
+              href={teamMember.link_url}
+              className='social-link'
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              LinkedIn
+            </a>
+          </li>
+        )}
       </ul>
       <p>{teamMember.description_1}</p>
     </div>
@@ -178,7 +180,7 @@ TeamMemberCard.propTypes = {
   teamMember: PropTypes.shape({}),
 };
 
-const Team = ({ showArray = null }) => {
+const Team = ({ showArray = null, showLinkedin = true }) => {
   const seoContent = {
     title: "Atila Team - The people that make Atila awesome",
     description: "Atila's team, the people that make Atila awesome.",
@@ -188,7 +190,7 @@ const Team = ({ showArray = null }) => {
 
   let teamCards = teamMembers.map((member) => (
     <Col xs={24} sm={12} md={8} lg={6} xl={4.8} key={member.first_name}>
-      <TeamMemberCard teamMember={member} />
+      <TeamMemberCard teamMember={member} showLinkedin={showLinkedin} />
     </Col>
   ));
 
@@ -208,7 +210,10 @@ const Team = ({ showArray = null }) => {
               xl={4.8}
               key={teamMembers[index].first_name}
             >
-              <TeamMemberCard teamMember={teamMembers[index]} />
+              <TeamMemberCard
+                teamMember={teamMembers[index]}
+                showLinkedin={showLinkedin}
+              />
             </Col>
           );
         }
