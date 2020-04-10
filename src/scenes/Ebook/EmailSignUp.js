@@ -6,6 +6,20 @@ function EmailSignUp() {
 
     const subscribeText= (<h3>Enter Email to Receive your Free Preview</h3>);
 
+    const extraFormQuestions = [
+        {
+            keyName: 'preferredIndustry',
+            placeholder: 'What Industry are you most interested in?',
+            type: 'select',
+            options: [
+                'Tech',
+                'Investment Banking',
+                'Pharmaceuticals (Biology and Chemistry)'
+            ],
+            hideLabel: true
+        },
+    ];
+
     const successResponse = (<div className="text-center" style={{ height: '300px', marginTop: '150px' }}>
         <h4>
             Thanks for your Response
@@ -30,6 +44,7 @@ function EmailSignUp() {
                               successResponse={successResponse}
                               buttonText="Submit"
                               formGoogleSheetName="ebookMailingList"
+                              extraFormQuestions={extraFormQuestions}
                               skipSendEmail={false}/>
       </Col>
     </Row>

@@ -4,6 +4,8 @@ import Loading from "./Loading";
 import {Link, withRouter} from "react-router-dom";
 import PropTypes from "prop-types";
 import {Col, Row} from "antd";
+import {InputConfigPropType} from "../models/Utils";
+import FormDynamicInput from "./Form/FormDynamicInput";
 class SubscribeMailingList extends  React.Component{
 
 
@@ -11,21 +13,25 @@ class SubscribeMailingList extends  React.Component{
         super(props);
 
         this.state = {
-            fullName: '',
-            email: '',
+            formData: {
+                fullName: '',
+                email: '',
+            },
             isLoadingResponse: false,
             errorReceivingResponse: false,
-            isReceivedResponse: false
+            isReceivedResponse: false,
+            formError: null
         }
     }
 
 
     submitContact = (event) => {
         event.preventDefault();
-        const { fullName, email } = this.state;
+        const { formData } = this.state;
 
 
-        if(!fullName || !email) {
+        if(!formData.fullName || !formData.email) {
+            this.setState({ formError: 'Full name and email is required' });
             return
         }
 
@@ -33,11 +39,10 @@ class SubscribeMailingList extends  React.Component{
 
         this.setState({ isLoadingResponse: true });
 
-        const formData = {
-            name: fullName,
-            formGoogleSheetName: formGoogleSheetName,
-            referrer: pathname,
-            email,
+        const formDataPost = {
+                formGoogleSheetName: formGoogleSheetName,
+                referrer: pathname,
+                ...formData
             };
 
         // only set skipSendEmail if the value is true, because setting the value to false
@@ -45,10 +50,10 @@ class SubscribeMailingList extends  React.Component{
         // see: https://github.com/ademidun/atila-client-web-app/pull/4
 
         if (skipSendEmail) {
-            formData.skipSendEmail = skipSendEmail
+            formDataPost.skipSendEmail = skipSendEmail
         }
 
-        UtilsAPI.postGoogleScript(formData)
+        UtilsAPI.postGoogleScript(formDataPost)
             .then(res=> {
                 this.setState({ isReceivedResponse: true });
             })
@@ -63,15 +68,23 @@ class SubscribeMailingList extends  React.Component{
 
     updateForm = (event) => {
         event.preventDefault();
-        this.setState({[event.target.name]: event.target.value});
+        const { formData } = this.state;
+
+        const newFormData = {
+            ...formData,
+            [event.target.name]: event.target.value
+        };
+
+        this.setState({formData: newFormData });
 
     };
 
     render() {
-        const { fullName, email, isLoadingResponse,
-            isReceivedResponse, errorReceivingResponse } = this.state;
+        const { isLoadingResponse, isReceivedResponse, errorReceivingResponse, formError } = this.state;
 
-        const { buttonText, subscribeText, successResponse } = this.props;
+        const { formData: { fullName, email }, formData } = this.state;
+
+        const { buttonText, subscribeText, successResponse, extraFormQuestions } = this.props;
 
         let pageContent = null;
 
@@ -118,7 +131,22 @@ class SubscribeMailingList extends  React.Component{
                                    onChange={this.updateForm}
                             />
                         </Col>
+
+                        {extraFormQuestions.map(config => <Col key={config.keyName}
+                                                               span={24}
+                                                               className="my-3">
+                            <FormDynamicInput
+                                              model={formData}
+                                              inputConfig={config}
+                                              onUpdateForm={this.updateForm} />
+                        </Col> )
+                        }
                     </Row>
+                    {formError &&
+                    <p className="text-danger" style={{ whiteSpace: 'pre-wrap' }}>
+                        {formError}
+                    </p>
+                    }
                     <button className="btn btn-primary col-12 mb-3" type="submit">
                         {buttonText}
                     </button>
@@ -152,6 +180,7 @@ SubscribeMailingList.defaultProps = {
             <span role="img" aria-label="happy face emoji">🙂</span>
         </h4>
     </div>),
+    extraFormQuestions: [],
 };
 
 SubscribeMailingList.propTypes = {
@@ -165,7 +194,8 @@ SubscribeMailingList.propTypes = {
     successResponse: PropTypes.oneOfType([
         PropTypes.shape({}),
         PropTypes.string,
-    ])
+    ]),
+    extraFormQuestions: PropTypes.arrayOf(InputConfigPropType),
 };
 
 export default withRouter(SubscribeMailingList);
