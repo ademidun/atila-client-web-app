@@ -3,9 +3,15 @@ import {Button, Col, Modal, Row} from "antd";
 import "./EbookLandingBanner.scss";
 
 class EbookLandingBanner extends Component {
+
   state = {
     showPreview: false,
   };
+
+  closePreview = (event) => {
+    event.stopPropagation();
+    this.setState({ showPreview: false });
+  } ;
 
   render() {
     return (
@@ -61,32 +67,28 @@ class EbookLandingBanner extends Component {
           </Row>
         </div>
 
-        {this.state.showPreview && (
-          <Modal
+        <Modal
             visible={this.state.showPreview}
-            maskClosable={true}
             width='75%'
+            closable={false}
             maskStyle={{ background: "rgba(0,0,0,0.93)", width: "100%" }}
-            closable={true}
             footer={[
               <Button
-                onClick={(e) => {
-                  this.setState({ showPreview: false });
-                  console.log(this.state.showPreview);
-                }}
-                type='primary'
+                  onClick={this.closePreview}
+                  type='primary'
               >
                 Close
               </Button>,
             ]}
-          >
-            <iframe
+            onCancel={this.closePreview}
+        >
+          <iframe
               src='https://atila-schools-and-jobs-guide.s3.amazonaws.com/atila-ebook-online-preview.pdf'
               title='Atila Schools and Jobs Ebook Preview'
               style={{ width: "100%", height: "75vh" }}
-            />
-          </Modal>
-        )}
+          />
+        </Modal>
+
       </div>
     );
   }
