@@ -23,7 +23,8 @@ const teamMembers = [
     position: "Founder",
     img_url: tomiwaImage,
     description_1:
-      "Tomiwa is currently studying a dual degree in software engineering and business at Ivey Business School",
+      "Tomiwa is a dual degree software engineering and business student at Ivey Business School," +
+        " Western University",
     description_2: "He enjoys playing soccer and is a big Arsenal F.C. fan.",
     link_type: "Website",
     link_url: "http://tomiwa.ca",
@@ -88,7 +89,7 @@ const teamMembers = [
     position: "Marketing",
     username: null,
     img_url: elaineImg,
-    description_1: "Elaine currently studying BMOS at Western university ",
+    description_1: "Elaine is currently studying BMOS at Western university ",
     link_type: "LinkedIn",
     link_url: "https://www.linkedin.com/in/elaine-yin-018a90198/",
   },
@@ -98,7 +99,7 @@ const teamMembers = [
     position: "Marketing",
     username: null,
     img_url: isaacImg,
-    description_1: "Isaac is a currently studying BMOS at Western university",
+    description_1: "Isaac is currently studying BMOS at Western university",
     link_type: "LinkedIn",
     link_url: "https://www.linkedin.com/in/isaac-tang-b42a8b198/",
   },

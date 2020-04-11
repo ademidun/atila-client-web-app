@@ -28,7 +28,7 @@ const interviewees = [
     last_name: "Khan",
     img_url: "https://i.imgur.com/aqYks77.png",
     description_1:
-      "Raza studied at the Ivey School of Business at Western University and is the marketing manager of TELUS.",
+      "Raza studied at the Ivey School of Business at Western University and is a marketing manager at TELUS.",
     quote:
       "Everything will work out because you don't stop working until it does.",
   },
@@ -39,7 +39,7 @@ const interviewees = [
     description_1:
       "Sarah studied Chemistry at Queen’s University and is currently working for the Ontario Ministry of Children, Community, and Social Services",
     quote:
-      "At the end of the day, you’re going to graduate university as a person ... so work on the best version of yourself.",
+      "Finding what motivates you and what excites you is important— and that might not be the first thing that you try.",
   },
   {
     first_name: "Emily ",
@@ -54,7 +54,7 @@ const interviewees = [
     last_name: "Ademidun",
     img_url: "https://i.imgur.com/Da74ZDi.png",
     description_1:
-      "Tomiwa is is a dual degree in Engineering and Business student at the Ivey School of Business, Western University.",
+      "Tomiwa is a dual degree Engineering and Business student at the Ivey School of Business, Western University.",
     quote:
       "You’re paying all this money for tuition, textbooks, and all that stuff. But the most value you get" +
         " are the friends you make and the people you meet..." +
