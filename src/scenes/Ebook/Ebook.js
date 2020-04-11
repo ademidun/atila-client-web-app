@@ -24,14 +24,14 @@ function Ebook() {
         <hr />
         <EmailSignUp />
         <hr />
+        <TableauGraphsEmbed />
+        <hr />
         <EbookInterviews />
         <hr />
         <Team
           showArray={["Tomiwa", "Melissa", "Isaac", "Elaine", "Aaron", "Dev"]}
           showLinkedin={false}
         />
-        <hr />
-        <TableauGraphsEmbed />
       </div>
     </React.Fragment>
   );
