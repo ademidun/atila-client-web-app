@@ -23,7 +23,9 @@ function Ebook() {
         <EbookLandingBanner />
         <hr />
         <EmailSignUp />
+        <hr />
         <EbookInterviews />
+        <hr />
         <Team
           showArray={["Tomiwa", "Melissa", "Isaac", "Elaine", "Aaron", "Dev"]}
           showLinkedin={false}
