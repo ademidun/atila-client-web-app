@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import {Button, Col, Modal, Row} from "antd";
-import "./EbookLandingBanner.scss";
+import { Button, Col, Modal, Row } from "antd";
+import "./Ebook.scss";
 
 class EbookLandingBanner extends Component {
-
   state = {
     showPreview: false,
   };
@@ -11,7 +10,7 @@ class EbookLandingBanner extends Component {
   closePreview = (event) => {
     event.stopPropagation();
     this.setState({ showPreview: false });
-  } ;
+  };
 
   render() {
     return (
@@ -19,42 +18,44 @@ class EbookLandingBanner extends Component {
         <div>
           <br />
           <h1 className='col-sm-12 text-center my-md-5'>
-            Atila Schools and Jobs Guide <span role="img" aria-labelledby="fire">🔥</span>
+            Atila Schools and Jobs Guide
           </h1>
 
           <Row className='ebook-row'>
             <Col xs={24} md={10} lg={8} className='text-center buy-now-cta'>
               <div>
                 <h2>
-                  A guide to
-                  the best Canadian Universities for getting jobs at Goldman
-                  Sachs, Google, McKinsey, Pfizer and more.
+                  A guide to the best Canadian Universities for getting jobs at
+                  Goldman Sachs, Google, McKinsey, Pfizer and more.
                 </h2>
               </div>
             </Col>
-            <Col xs={24} md={14} lg={16}
+            <Col
+              xs={24}
+              md={14}
+              lg={16}
               className='card'
               style={{
                 backgroundColor: "transparent",
                 border: "none",
               }}
             >
-              <div className="ebook-image text-center">
-                <img
-                  src='https://i.imgur.com/PMg68If.png'
-                  alt='Book cover'
-                />
+              <div className='ebook-image text-center'>
+                <img src='https://i.imgur.com/PMg68If.png' alt='Book cover' />
               </div>
-              <Button className='buy-book-button center-block'
-                      type='primary'>
-                <a href="https://gum.co/BbFon" target="_blank" rel="noopener noreferrer" >
+              <Button className='buy-book-button center-block' type='primary'>
+                <a
+                  href='https://gum.co/BbFon'
+                  target='_blank'
+                  rel='noopener noreferrer'
+                >
                   Buy this Book
                 </a>
               </Button>
-              <br/>
+              <br />
 
               <Button
-                className="center-block"
+                className='center-block'
                 type='primary'
                 style={{ fontSize: "larger" }}
                 onClick={() => {
@@ -68,27 +69,23 @@ class EbookLandingBanner extends Component {
         </div>
 
         <Modal
-            visible={this.state.showPreview}
-            width='75%'
-            closable={false}
-            maskStyle={{ background: "rgba(0,0,0,0.93)", width: "100%" }}
-            footer={[
-              <Button
-                  onClick={this.closePreview}
-                  type='primary'
-              >
-                Close
-              </Button>,
-            ]}
-            onCancel={this.closePreview}
+          visible={this.state.showPreview}
+          width='75%'
+          closable={false}
+          maskStyle={{ background: "rgba(0,0,0,0.93)", width: "100%" }}
+          footer={[
+            <Button onClick={this.closePreview} type='primary'>
+              Close
+            </Button>,
+          ]}
+          onCancel={this.closePreview}
         >
           <iframe
-              src='https://atila-schools-and-jobs-guide.s3.amazonaws.com/atila-ebook-online-preview.pdf'
-              title='Atila Schools and Jobs Ebook Preview'
-              style={{ width: "100%", height: "75vh" }}
+            src='https://atila-schools-and-jobs-guide.s3.amazonaws.com/atila-ebook-online-preview.pdf'
+            title='Atila Schools and Jobs Ebook Preview'
+            style={{ width: "100%", height: "75vh" }}
           />
         </Modal>
-
       </div>
     );
   }

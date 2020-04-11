@@ -9,7 +9,7 @@ function EmailSignUp() {
     const extraFormQuestions = [
         {
             keyName: 'preferredIndustry',
-            placeholder: 'What Industry are you most interested in?',
+            placeholder: 'What Industry chapter are you most interested in?',
             type: 'select',
             options: [
                 'Tech',

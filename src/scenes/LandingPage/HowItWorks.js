@@ -47,10 +47,8 @@ function HowItWorks() {
                 </div>
                 <div className="row">
                     <div className="card shadow m-3 p-5 col-lg-4 col-sm-12">
-                        <h3>3. Find Your Scholarships
-                            <span role="img" aria-label="eyes emoji">
-                            👀
-                            </span>
+                        <h3>
+                            3. Find Your Scholarships
                         </h3>
                         <p>Get matched with scholarships that are customized just for you based on your profile.</p>
                     </div>

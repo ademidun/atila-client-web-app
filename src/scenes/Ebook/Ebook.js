@@ -2,6 +2,8 @@ import React from "react";
 import EbookLandingBanner from "./EbookLandingBanner";
 import HelmetSeo from "../../components/HelmetSeo";
 import EmailSignUp from "./EmailSignUp";
+import Team from "../../components/Team/Team";
+import EbookInterviews from "./EbookInterview/EbookInterview";
 import TableauGraphsEmbed from "./TableauGraphsEmbed";
 
 function Ebook() {
@@ -23,6 +25,13 @@ function Ebook() {
         <EmailSignUp />
         <hr />
         <TableauGraphsEmbed />
+        <hr />
+        <EbookInterviews />
+        <hr />
+        <Team
+          showArray={["Tomiwa", "Melissa", "Isaac", "Elaine", "Aaron", "Dev"]}
+          showLinkedin={false}
+        />
       </div>
     </React.Fragment>
   );
