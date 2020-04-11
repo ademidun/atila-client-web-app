@@ -24,14 +24,6 @@ const interviewees = [
       "I think the opportunity to work with some really cool companies in undergrad is really unreal to me...that is why I went with Waterloo",
   },
   {
-    first_name: "Emily ",
-    last_name: "Chen",
-    img_url: "https://i.imgur.com/P1utqdl.png",
-    description_1: "Emily is at UofT medical school",
-    quote:
-      "At the end of the day, you’re going to graduate university as a person ... so work on the best version of yourself.",
-  },
-  {
     first_name: "Raza ",
     last_name: "Khan",
     img_url: "https://i.imgur.com/aqYks77.png",
@@ -50,35 +42,33 @@ const interviewees = [
       "At the end of the day, you’re going to graduate university as a person ... so work on the best version of yourself.",
   },
   {
+    first_name: "Emily ",
+    last_name: "Chen",
+    img_url: "https://i.imgur.com/P1utqdl.png",
+    description_1: "Emily is at medical school student at the University of Toronto",
+    quote:
+        "At the end of the day, you’re going to graduate university as a person ... so work on the best version of yourself.",
+  },
+  {
     first_name: "Tomiwa ",
     last_name: "Ademidun",
     img_url: "https://i.imgur.com/Da74ZDi.png",
     description_1:
-      "Tomiwa attended Western University where he completed a dual degree in Engineering and Business at the Ivey School of Business.",
+      "Tomiwa is is a dual degree in Engineering and Business student at the Ivey School of Business, Western University.",
     quote:
-      "When you pick a school, you’re paying all this money for tuition, courses, textbooks, and all that kind of stuff. But the most value you get, and the most fun part, are the friends you make and the people you meet ... that stuff is free, which I’ve always found kind of ironic.",
+      "You’re paying all this money for tuition, textbooks, and all that stuff. But the most value you get" +
+        " are the friends you make and the people you meet..." +
+        " that stuff is free, which is kind of ironic.",
   },
 ];
 
 function InterviewCard({ person }) {
   return (
-    /*<div className='item carousel-item'>
-      <div className='img-box'></div>
-      <p className='testimonial'>
-        Vestibulum quis quam ut magna consequat faucibus. Pellentesque eget nisi
-        a mi suscipit tincidunt. Utmtc tempus dictum risus. Pellentesque viverra
-        sagittis quam at mattis. Suspendisse potenti. Aliquam sit amet gravida
-        nibh, facilisis gravida odio. Phasellus auctor velit.
-      </p>
-      <p className='overview'>
-        <b>Antonio Moreno</b>Web Developer at
-      </p>
-    </div>*/
 
     <div className='InterviewCard bg-white rounded shadow mb-3 p-3'>
-      <strong style={{ fontSize: 24 }}>
+      <h2 className="mb-2">
         {person.first_name} {person.last_name}
-      </strong>
+      </h2>
       <br />
       <img
         className='Image mb-3'
@@ -86,11 +76,14 @@ function InterviewCard({ person }) {
         alt={person.first_name}
       />
 
-      <p>{person.description_1}</p>
-
-      <p>
-        <b>Quote:</b> "{person.quote}"
-      </p>
+      <blockquote className="blockquote">
+        <p className="mb-3">
+          "{person.quote}"
+        </p>
+        <p className="blockquote-footer text-right">
+          {person.description_1}
+        </p>
+      </blockquote>
     </div>
   );
 }
@@ -108,7 +101,7 @@ const EbookInterviews = () => {
   };
 
   let interviewCards = interviewees.map((interviewee) => (
-    <Col xs={24} sm={12} md={12} lg={12} xl={4.8} key={interviewee.first_name}>
+    <Col xs={24} md={12} xl={8} key={interviewee.first_name}>
       <InterviewCard person={interviewee} />
     </Col>
   ));
@@ -117,7 +110,7 @@ const EbookInterviews = () => {
     <React.Fragment>
       <HelmetSeo content={seoContent} />
       <div className='container mt-3'>
-        <h1>The people we interviewed</h1>
+        <h1>The Students we Interviewed</h1>
         <br />
         <Row gutter={16}>{interviewCards}</Row>
       </div>

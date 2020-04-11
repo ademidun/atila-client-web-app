@@ -64,7 +64,7 @@ const teamMembers = [
     first_name: "Aaron",
     last_name: "Doerfler",
     position: "Marketing",
-    username: null,
+    username: "aarondoerfler",
     img_url: aaronImg,
     description_1:
       "Aaron is a Media Information and Techno-culture (MIT) student at Western university ",

@@ -43,14 +43,13 @@
 }
 
 .InterviewCard {
-  width: 550px;
-  height: 350px;
-  overflow: scroll;
+  height: 650px;
   text-align: center;
+  img {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+  }
 }
 
-.Image {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-}
+
