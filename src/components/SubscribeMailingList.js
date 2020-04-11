@@ -53,6 +53,16 @@ class SubscribeMailingList extends  React.Component{
             formDataPost.skipSendEmail = skipSendEmail
         }
 
+        if(formGoogleSheetName === 'ebookMailingList') {
+            UtilsAPI.sendEbookPreviewEmail(formDataPost)
+                    .then(res=> {
+                        console.log({res});
+                    })
+                    .then(err=> {
+                        console.log({err});
+                    })
+        }
+
         UtilsAPI.postGoogleScript(formDataPost)
             .then(res=> {
                 this.setState({ isReceivedResponse: true });

@@ -18,7 +18,7 @@ class EbookLandingBanner extends Component {
         <div>
           <br />
           <h1 className='col-sm-12 text-center my-md-5'>
-            Atila Schools and Jobs Guide
+            Atila Schools and Jobs Guide <span role="img" aria-labelledby="fire">🔥</span>
           </h1>
 
           <Row className='ebook-row'>

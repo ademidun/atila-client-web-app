@@ -1,4 +1,6 @@
 import {getGuestUserId, makeXHRRequestAsPromise} from "./utils";
+import request from "axios";
+import Environment from "./Environment";
 class UtilsAPI {
 
     static postGoogleScript = (formData) => {
@@ -27,6 +29,18 @@ class UtilsAPI {
             })
             .finally(() => {
             });
+    };
+
+    static sendEbookPreviewEmail = (formData) => {
+
+        const apiCompletionPromise = request({
+            method: 'POST',
+            data: formData,
+            url: `${Environment.apiUrlEmailService}/send-ebook-preview-email`,
+        });
+
+        return apiCompletionPromise;
+
     }
 }
 
