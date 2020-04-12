@@ -31,7 +31,7 @@ function EmailSignUp() {
 
   return (
     <Row className='row' style={{ width: '90%', left: '10%' }}>
-      <Col span={12}>
+      <Col md={12}>
         <div>
             <img
               src='https://i.imgur.com/RLc5YPU.png'
@@ -40,7 +40,7 @@ function EmailSignUp() {
             />
         </div>
       </Col>
-      <Col span={12}>
+      <Col md={12}>
         <SubscribeMailingList subscribeText={subscribeText}
                               successResponse={successResponse}
                               buttonText="Submit"
