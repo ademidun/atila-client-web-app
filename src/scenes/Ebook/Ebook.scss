@@ -52,4 +52,20 @@
   }
 }
 
+.chapter-name {
+  text-align: left;
+  padding-left: 20px;
+}
 
+.subchapter-item {
+  text-align: left;
+  padding-left: 50px;
+  display: flex;
+  justify-content: space-between;
+  padding-right: 20px;
+}
+
+.chapter-item {
+  height: 350px;
+  overflow: scroll;
+}
