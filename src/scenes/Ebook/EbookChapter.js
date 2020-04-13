@@ -110,7 +110,7 @@ const chapters2 = [
 function ChaptersCard({ chapter }) {
   return (
     <React.Fragment>
-      <Col className='chapter-item'>
+      <Col className='chapter-item card shadow p-3'>
         <div>
           <h2>Chapter {chapter.number}</h2>
           <div className='chapter-name'>
@@ -130,6 +130,7 @@ function ChaptersCard({ chapter }) {
             ))}
         </div>
       </Col>
+      <br />
     </React.Fragment>
   );
 }
@@ -148,15 +149,24 @@ const EbookChapter = () => {
       </h4>
       <div>
         <br />
+
         <Row className='ebook-row'>
-          <Col xs={24} md={12} lg={12} xl={12} className='text-center'>
+          {/* left column of chapters */}
+          <Col xs={24} md={12} lg={12} xl={12} className='text-center left-col'>
             {chapters1.map((chapter) => (
               <React.Fragment>
                 <ChaptersCard chapter={chapter} />
               </React.Fragment>
             ))}
           </Col>
-          <Col xs={24} md={12} lg={12} xl={12} className='text-center'>
+          {/* right column of chapters */}
+          <Col
+            xs={24}
+            md={12}
+            lg={12}
+            xl={12}
+            className='text-center right-col'
+          >
             {chapters2.map((chapter) => (
               <React.Fragment>
                 <ChaptersCard chapter={chapter} />
