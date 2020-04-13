@@ -4,28 +4,6 @@ import "./Ebook.scss";
 
 const chapters1 = [
   {
-    number: 1,
-    name: "Introduction",
-    subchapters: [
-      {
-        name: "Am I a hypocrite?",
-        number: 1,
-      },
-      {
-        name: "What Should You optimize for?",
-        number: 2,
-      },
-      {
-        name: "How to read this guide",
-        number: 3,
-      },
-      {
-        name: "Methodology",
-        number: 4,
-      },
-    ],
-  },
-  {
     number: 2,
     name: "Tech",
     subchapters: [
@@ -52,9 +30,7 @@ const chapters1 = [
       },
     ],
   },
-];
 
-const chapters2 = [
   {
     number: 3,
     name: "Investment Banking",
@@ -83,6 +59,9 @@ const chapters2 = [
       },
     ],
   },
+];
+
+const chapters2 = [
   {
     number: 4,
     name: "Consulting",
@@ -104,6 +83,25 @@ const chapters2 = [
         name:
           "Canadian Schools don’t perform well in landing students in upper management",
         number: 4,
+      },
+    ],
+  },
+
+  {
+    number: 5,
+    name: "All Industires",
+    subchapters: [
+      {
+        name: "Are the most well-known Canadian universities even that good?",
+        number: 1,
+      },
+      {
+        name: "Canadian schools have their students employed mostly in tech",
+        number: 2,
+      },
+      {
+        name: "Which industry pays the best?",
+        number: 3,
       },
     ],
   },
