@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Button, Col, Row } from "antd";
+import React from "react";
+import { Col, Row } from "antd";
 import "./Ebook.scss";
 
 const EbookDescription = (props) => {
