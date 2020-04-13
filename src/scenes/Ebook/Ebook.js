@@ -5,6 +5,7 @@ import EmailSignUp from "./EmailSignUp";
 import Team from "../../components/Team/Team";
 import EbookInterviews from "./EbookInterview/EbookInterview";
 import TableauGraphsEmbed from "./TableauGraphsEmbed";
+import EbookDescription from "./EbookDescription";
 
 function Ebook() {
   const seoContent = {
@@ -23,6 +24,8 @@ function Ebook() {
         <EbookLandingBanner />
         <hr />
         <EmailSignUp />
+        <hr />
+        <EbookDescription />
         <hr />
         <TableauGraphsEmbed />
         <hr />
