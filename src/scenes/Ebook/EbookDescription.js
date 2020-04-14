@@ -12,7 +12,7 @@ const EbookDescription = (props) => {
             <div>
               <h2>Whats inside?</h2>
               <h5>
-                We have over XXX pages of interviews, rankings, and much more
+                We have over 100 pages of interviews, rankings, and much more
                 about what Canadian universities are the best for jobs
               </h5>
               <br />
@@ -47,14 +47,7 @@ const EbookDescription = (props) => {
             }}
           >
             <div className='ebook-image text-center'>
-              <h4>
-                Coming Soon{" "}
-                <span role='img' aria-labelledby='eyes'>
-                  👀
-                </span>
-              </h4>
-              <img src='https://i.imgur.com/PMg68If.png' alt='Book cover' />
-              <h4>Atila Schools and Jobs guide</h4>
+              <img src='https://i.imgur.com/7HtJNot.png' alt='Book cover' />
             </div>
 
             <br />
