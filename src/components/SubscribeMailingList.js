@@ -4,7 +4,7 @@ import Loading from "./Loading";
 import {Link, withRouter} from "react-router-dom";
 import PropTypes from "prop-types";
 import {Col, Row} from "antd";
-import {handleButtonClickEventFacebook, InputConfigPropType} from "../models/Utils";
+import {InputConfigPropType} from "../models/Utils";
 import FormDynamicInput from "./Form/FormDynamicInput";
 class SubscribeMailingList extends  React.Component{
 
