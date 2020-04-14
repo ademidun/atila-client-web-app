@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Button, Col, Modal, Row } from "antd";
 import "./Ebook.scss";
+import {handleButtonClickEventFacebook} from "../../models/Utils";
 
 class EbookLandingBanner extends Component {
   state = {
@@ -14,7 +15,7 @@ class EbookLandingBanner extends Component {
 
   render() {
     return (
-      <div className='vh-100 EbookLandingBanner'>
+      <div className='vh-100 EbookLandingBanner mx-sm-3'>
         <div>
           <br />
           <h1 className='col-sm-12 text-center my-md-5'>
@@ -48,6 +49,8 @@ class EbookLandingBanner extends Component {
                   href='https://gum.co/BbFon'
                   target='_blank'
                   rel='noopener noreferrer'
+                  name="AddToCart"
+                  onClick={handleButtonClickEventFacebook}
                 >
                   Buy this Book
                 </a>
@@ -57,9 +60,11 @@ class EbookLandingBanner extends Component {
               <Button
                 className='center-block'
                 type='primary'
+                name="PreviewBook"
                 style={{ fontSize: "larger" }}
-                onClick={() => {
+                onClick={(event) => {
                   this.setState({ showPreview: true });
+                  handleButtonClickEventFacebook(event);
                 }}
               >
                 See Preview of Book
@@ -86,6 +91,7 @@ class EbookLandingBanner extends Component {
             style={{ width: "100%", height: "75vh" }}
           />
         </Modal>
+        <link rel="preload" href="https://example.com/widget.html" as="document" />
       </div>
     );
   }
