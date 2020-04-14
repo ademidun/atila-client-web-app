@@ -148,7 +148,7 @@ const EbookChapter = () => {
             className='text-center chapter-col'
           >
             {chapters1.map((chapter) => (
-              <React.Fragment>
+              <React.Fragment key={chapter.name}>
                 <ChaptersCard chapter={chapter} />
               </React.Fragment>
             ))}
@@ -162,7 +162,7 @@ const EbookChapter = () => {
             className='text-center chapter-col'
           >
             {chapters2.map((chapter) => (
-              <React.Fragment>
+              <React.Fragment key={chapter.name}>
                 <ChaptersCard chapter={chapter} />
               </React.Fragment>
             ))}

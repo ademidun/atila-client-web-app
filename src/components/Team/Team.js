@@ -223,7 +223,6 @@ const Team = ({ showArray = null, showLinkedin = true, showSeo = true }) => {
     });
   }
 
-  console.log({showSeo});
   return (
     <React.Fragment>
       {showSeo && <HelmetSeo content={seoContent} />}
