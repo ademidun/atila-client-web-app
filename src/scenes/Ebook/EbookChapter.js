@@ -131,9 +131,6 @@ const EbookChapter = () => {
     <React.Fragment>
       <h1>
         Peek Inside
-        <span role='img' aria-labelledby='eyes'>
-          👀
-        </span>
       </h1>
       <h4 style={{ textAlign: "center" }}>
         Here are some of the contents of the guide

@@ -7,6 +7,7 @@ import EbookInterviews from "./EbookInterview/EbookInterview";
 import TableauGraphsEmbed from "./TableauGraphsEmbed";
 import EbookDescription from "./EbookDescription";
 import EbookChapter from "./EbookChapter";
+import EbookVideoEmbed from "./EbookVideoEmbed";
 
 function Ebook() {
   const seoContent = {
@@ -39,6 +40,9 @@ function Ebook() {
           showLinkedin={false}
           showSeo={false}
         />
+
+        <hr />
+        <EbookVideoEmbed />
       </div>
     </React.Fragment>
   );
