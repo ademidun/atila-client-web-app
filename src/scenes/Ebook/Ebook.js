@@ -5,6 +5,7 @@ import EmailSignUp from "./EmailSignUp";
 import Team from "../../components/Team/Team";
 import EbookInterviews from "./EbookInterview/EbookInterview";
 import TableauGraphsEmbed from "./TableauGraphsEmbed";
+import EbookDescription from "./EbookDescription";
 import EbookChapter from "./EbookChapter";
 
 function Ebook() {
@@ -24,6 +25,8 @@ function Ebook() {
         <EbookLandingBanner />
         <hr />
         <EmailSignUp />
+        <hr />
+        <EbookDescription />
         <hr />
         <EbookChapter />
         <hr />
