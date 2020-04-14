@@ -127,3 +127,30 @@ export const scholarshipUserProfileSharedFormConfigs = [
         </label>),
     },
 ];
+
+
+
+
+export const handleButtonClickEventFacebook = (event) => {
+
+    console.log(event.target.name);
+    console.log('window.fbq', window.fbq);
+    let eventName = event.target.name;
+
+    if('SubscribeBtn' === eventName) {
+        eventName = 'Lead';
+    }
+
+    if('PreviewBook' === eventName) {
+        eventName = 'ViewContent';
+    }
+
+    if('AddToCart' === eventName) {
+        eventName = 'InitiateCheckout';
+    }
+    console.log({eventName});
+
+    if (window.fbq) {
+        window.fbq('track', eventName);
+    }
+};

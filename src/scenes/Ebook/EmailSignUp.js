@@ -1,6 +1,7 @@
 import React from "react";
 import { Col, Row } from "antd";
 import SubscribeMailingList from "../../components/SubscribeMailingList";
+import {handleButtonClickEventFacebook} from "../../models/Utils";
 
 function EmailSignUp() {
 
@@ -46,7 +47,8 @@ function EmailSignUp() {
                               buttonText="Submit"
                               formGoogleSheetName="ebookMailingList"
                               extraFormQuestions={extraFormQuestions}
-                              skipSendEmail={false}/>
+                              skipSendEmail={false}
+                              onSubscribeClick={handleButtonClickEventFacebook}/>
       </Col>
     </Row>
   );
