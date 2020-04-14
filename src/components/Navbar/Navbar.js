@@ -63,33 +63,33 @@ class Navbar extends React.Component {
 
         const menu = (
             <Menu mode={menuMode} id="nav" key="nav">
+                <Menu.Item key="search">
+                    <Link to="/search">Search</Link>
+                </Menu.Item>
+                {(!userProfile || !userProfile.is_atila_premium) ? (
+                    <Menu.Item key="pricing">
+                        <Link to="/pricing">Pricing</Link>
+                    </Menu.Item>
+                ) : null
+                }
+                <Menu.Item key="essays">
+                    <Link to="/essay">Essays</Link>
+                </Menu.Item>
+                <Menu.Item key="blogs">
+                    <Link to="/blog">Blogs</Link>
+                </Menu.Item>
+                <Menu.Item key="scholarships">
+                    <Link to="/scholarship">Scholarships</Link>
+                </Menu.Item>
+                <Menu.Item key="high-school">
+                    <Link to="/high-school">High School</Link>
+                </Menu.Item>
                 <Menu.Item key="schools">
                     <Link to="/schools">
                         Schools Ebook{' '}
                         <Tag color="green">new</Tag>
                     </Link>
                 </Menu.Item>
-                <Menu.Item key="essays">
-                    <Link to="/essay">Essays</Link>
-                </Menu.Item>
-                <Menu.Item key="search">
-                    <Link to="/search">Search</Link>
-                </Menu.Item>
-                <Menu.Item key="scholarships">
-                    <Link to="/scholarship">Scholarships</Link>
-                </Menu.Item>
-                <Menu.Item key="blogs">
-                    <Link to="/blog">Blogs</Link>
-                </Menu.Item>
-                <Menu.Item key="high-school">
-                    <Link to="/high-school">High School</Link>
-                </Menu.Item>
-                {/*{(!userProfile || !userProfile.is_atila_premium) ? (*/}
-                {/*    <Menu.Item key="pricing">*/}
-                {/*        <Link to="/pricing">Pricing</Link>*/}
-                {/*    </Menu.Item>*/}
-                {/*) : null*/}
-                {/*}*/}
 
                 {!userProfile && !isLoadingLoggedInUserProfile &&
                 <Menu.Item key="login">
