@@ -37,6 +37,7 @@ function Ebook() {
         <Team
           showArray={["Tomiwa", "Melissa", "Isaac", "Elaine", "Aaron", "Dev"]}
           showLinkedin={false}
+          showSeo={false}
         />
       </div>
     </React.Fragment>

@@ -181,7 +181,7 @@ TeamMemberCard.propTypes = {
   teamMember: PropTypes.shape({}),
 };
 
-const Team = ({ showArray = null, showLinkedin = true }) => {
+const Team = ({ showArray = null, showLinkedin = true, showSeo = true }) => {
   const seoContent = {
     title: "Atila Team - The people that make Atila awesome",
     description: "Atila's team, the people that make Atila awesome.",
@@ -223,9 +223,10 @@ const Team = ({ showArray = null, showLinkedin = true }) => {
     });
   }
 
+  console.log({showSeo});
   return (
     <React.Fragment>
-      <HelmetSeo content={seoContent} />
+      {showSeo && <HelmetSeo content={seoContent} />}
       <div className='container mt-3'>
         <h1>The Atila Team</h1>
         <br />
