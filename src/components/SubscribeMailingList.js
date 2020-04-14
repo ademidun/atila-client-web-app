@@ -4,7 +4,7 @@ import Loading from "./Loading";
 import {Link, withRouter} from "react-router-dom";
 import PropTypes from "prop-types";
 import {Col, Row} from "antd";
-import {InputConfigPropType} from "../models/Utils";
+import {handleButtonClickEventFacebook, InputConfigPropType} from "../models/Utils";
 import FormDynamicInput from "./Form/FormDynamicInput";
 class SubscribeMailingList extends  React.Component{
 
@@ -54,6 +54,9 @@ class SubscribeMailingList extends  React.Component{
         }
 
         if(formGoogleSheetName === 'ebookMailingList') {
+
+            handleButtonClickEventFacebook(event);
+
             UtilsAPI.sendEbookPreviewEmail(formDataPost)
                     .then(res=> {
                         console.log({res});
@@ -157,7 +160,10 @@ class SubscribeMailingList extends  React.Component{
                         {formError}
                     </p>
                     }
-                    <button className="btn btn-primary col-12 mb-3" type="submit">
+                    <button
+                        className="btn btn-primary col-12 mb-3"
+                        type="submit"
+                        name="SubscribeBtn">
                         {buttonText}
                     </button>
 
