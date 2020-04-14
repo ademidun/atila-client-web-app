@@ -148,6 +148,7 @@ export const handleButtonClickEventFacebook = (event) => {
     if('AddToCart' === eventName) {
         eventName = 'InitiateCheckout';
     }
+    console.log({eventName});
 
     if (window.fbq) {
         window.fbq('track', eventName);
