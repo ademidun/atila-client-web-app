@@ -4,6 +4,28 @@ import "./Ebook.scss";
 
 const chapters1 = [
   {
+    number: 1,
+    name: "Introduction",
+    subchapters: [
+      {
+        name: "Methodology",
+        number: 1,
+      },
+      {
+        name: "How we Calculated Jobs",
+        number: 2,
+      },
+      {
+        name: "How we Calculated Salaries",
+        number: 3,
+      },
+      {
+        name: "Student Profiles Interviews",
+        number: 4,
+      },
+    ],
+  },
+  {
     number: 2,
     name: "Tech",
     subchapters: [
@@ -78,10 +100,34 @@ const chapters2 = [
       },
     ],
   },
-
   {
     number: 5,
-    name: "All Industires",
+    name: "Biomedical",
+    subchapters: [
+      {
+        name: "The top 5 Schools for Biomedical Industry:",
+        number: 1,
+      },
+      {
+        name: "Return of the Mac. McMaster Is Great at Biomedical but not Other Industries",
+        number: 2,
+      },
+      {
+        name:
+            "Biomedical is very Different from other Industries",
+        number: 3,
+      },
+      {
+        name:
+            "Quebec Schools perform Surprisingly well in Biomedical",
+        number: 4,
+      },
+    ],
+  },
+
+  {
+    number: 6,
+    name: "All Industries",
     subchapters: [
       {
         name: "Are the most well-known Canadian universities even that good?",
@@ -132,9 +178,37 @@ const EbookChapter = () => {
       <h1>
         Peek Inside
       </h1>
-      <h4 style={{ textAlign: "center" }}>
+      <div className='text-center'>
+        <img
+            style={{
+              backgroundColor: "transparent",
+              border: "none",
+              maxWidth: '90vw'
+            }}
+            src='https://i.imgur.com/7HtJNot.png' alt='Book cover' />
+      </div>
+      <div className='text-center'>
+        <img
+            style={{
+              backgroundColor: "transparent",
+              border: "none",
+              maxWidth: '90vw'
+            }}
+            src='https://i.imgur.com/XluzC2w.jpg' alt='Book cover' />
+      </div>
+
+      <div className='text-center'>
+        <img
+            style={{
+              backgroundColor: "transparent",
+              border: "none",
+              maxWidth: '90vw'
+            }}
+            src='https://i.imgur.com/Yr0CZL2.jpg' alt='Book cover' />
+      </div>
+      <h2 style={{ textAlign: "center" }} className="my-3">
         Here are some of the contents of the guide
-      </h4>
+      </h2>
       <div>
         <br />
 
