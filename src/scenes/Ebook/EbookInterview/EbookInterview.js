@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Col, Row } from "antd";
-import HelmetSeo from "../../../components/HelmetSeo";
 import "../Ebook.scss";
 
 const interviewees = [
@@ -146,12 +145,6 @@ InterviewCard.propTypes = {
 };
 
 const EbookInterviews = () => {
-  const seoContent = {
-    title: "Atila Team - The people that make Atila awesome",
-    description: "Atila's team, the people that make Atila awesome.",
-    image: "https://i.imgur.com/ekfz2sj.png",
-    slug: "/team",
-  };
 
   let interviewCards = interviewees.map((interviewee) => (
     <Col xs={24} md={12} xl={8} key={interviewee.first_name}>
@@ -161,7 +154,6 @@ const EbookInterviews = () => {
 
   return (
     <React.Fragment>
-      <HelmetSeo content={seoContent} />
       <div className='container mt-3'>
         <h1>The Students we Interviewed</h1>
         <br />
