@@ -14,7 +14,7 @@ class EbookLandingBanner extends Component {
 
   render() {
     return (
-      <div className='vh-100 EbookLandingBanner'>
+      <div className='vh-100 EbookLandingBanner mx-sm-3'>
         <div>
           <br />
           <h1 className='col-sm-12 text-center my-md-5'>
