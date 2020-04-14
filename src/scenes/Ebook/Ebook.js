@@ -40,9 +40,13 @@ function Ebook() {
           showLinkedin={false}
           showSeo={false}
         />
-
         <hr />
         <EbookVideoEmbed />
+        <hr />
+        <EbookLandingBanner />
+        <hr />
+        <EmailSignUp />
+        <hr />
       </div>
     </React.Fragment>
   );
