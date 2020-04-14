@@ -45,28 +45,85 @@ const interviewees = [
     first_name: "Emily ",
     last_name: "Chen",
     img_url: "https://i.imgur.com/P1utqdl.png",
-    description_1: "Emily is at medical school student at the University of Toronto",
+    description_1:
+      "Emily is at medical school student at the University of Toronto",
     quote:
-        "At the end of the day, you’re going to graduate university as a person ... so work on the best version of yourself.",
+      "At the end of the day, you’re going to graduate university as a person ... so work on the best version of yourself.",
   },
   {
     first_name: "Tomiwa ",
     last_name: "Ademidun",
     img_url: "https://i.imgur.com/Da74ZDi.png",
     description_1:
-      "Tomiwa is a dual degree Engineering and Business student at the Ivey School of Business, Western University.",
+      "Tomiwa is a dual degree Engineering and Business student at the Ivey School of Business, Western University",
     quote:
       "You’re paying all this money for tuition, textbooks, and all that stuff. But the most value you get" +
-        " are the friends you make and the people you meet..." +
-        " that stuff is free, which is kind of ironic.",
+      " are the friends you make and the people you meet..." +
+      " that stuff is free, which is kind of ironic.",
+  },
+  {
+    first_name: "Aaron",
+    last_name: "Doerfler",
+    img_url: "https://i.imgur.com/K4OQUN1.jpg",
+    description_1:
+      "Aaron is a Media Information and Techno-culture (MIT) student at Western university.",
+    quote:
+      "At Western I am surrounded by amazing students and faculty that provide me with an unmatched student experience",
+  },
+  {
+    first_name: "Jacob",
+    last_name: "Munene",
+    img_url: "https://i.imgur.com/ZlJV8PU.jpg",
+    description_1:
+      "Jacob is currently studying Financial Modeling and Applied Mathematics at Western University.",
+    quote:
+      "If you dont know what you want to do, you can take a year off and figure out what your interests are",
+  },
+  {
+    first_name: "Kitan",
+    last_name: "Ademidun",
+    img_url:
+      "https://media-exp1.licdn.com/dms/image/C5603AQF3tTcZ9IalLg/profile-displayphoto-shrink_100_100/0?e=1592438400&v=beta&t=cfw3ODlSZvx9J2BXXY4Czxfi3JuFJK11YAGEFnm4Ex4",
+    description_1:
+      "Kitan is a dual degree Engineering and Business student at the Ivey School of Business, Western University.",
+    quote:
+      "You can literally end up anywhere, it’s just a matter of where you decide to go forward.",
+  },
+  {
+    first_name: "Sameeksha",
+    last_name: "Tirikollur",
+    img_url:
+      "https://media-exp1.licdn.com/dms/image/C5603AQEizoVMgL3g3w/profile-displayphoto-shrink_200_200/0?e=1592438400&v=beta&t=6w8TaOAYl_fRuhAp8-cCjk3IeTcUePJcpIO2QSbwviM",
+    description_1:
+      "Sameeksha is at Ivey Business school at the University of Western Ontario.",
+    quote:
+      "If you do choose to do post-secondary, dont forget about life outside the classroom",
+  },
+  {
+    first_name: "Tashiya",
+    last_name: "Halahackone",
+    img_url:
+      "https://media-exp1.licdn.com/dms/image/C4D03AQG1IK-liQgVHQ/profile-displayphoto-shrink_800_800/0?e=1592438400&v=beta&t=hidHVqmg-nBeN97B0ne_-NK7r3AdtBBqVOW58wH8Yfg",
+    description_1:
+      "Tashiya is studying International relations and affairs at the University of Western Ontario.",
+    quote:
+      "Dont be afraid to ask for help when you need it, because its there for you",
+  },
+  {
+    first_name: "Tife",
+    last_name: "Ademidun",
+    img_url:
+      "https://media-exp1.licdn.com/dms/image/C5603AQFi8Go1z-NimA/profile-displayphoto-shrink_200_200/0?e=1592438400&v=beta&t=UFJjfCuJZflXtZDluTeblTGuynSdLlnCnmMOWcpsqbs",
+    description_1: "Tife is an engineering student at Western University",
+    quote:
+      "Dont compare yourself to others, just make sure your focused on you",
   },
 ];
 
 function InterviewCard({ person }) {
   return (
-
     <div className='InterviewCard bg-white rounded shadow mb-3 p-3'>
-      <h2 className="mb-2">
+      <h2 className='mb-2'>
         {person.first_name} {person.last_name}
       </h2>
       <br />
@@ -76,13 +133,9 @@ function InterviewCard({ person }) {
         alt={person.first_name}
       />
 
-      <blockquote className="blockquote">
-        <p className="mb-3">
-          "{person.quote}"
-        </p>
-        <p className="blockquote-footer text-right">
-          {person.description_1}
-        </p>
+      <blockquote className='blockquote'>
+        <p className='mb-3'>"{person.quote}"</p>
+        <p className='blockquote-footer text-right'>{person.description_1}</p>
       </blockquote>
     </div>
   );
