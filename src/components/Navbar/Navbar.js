@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from "prop-types";
-import {Row, Col, Icon, Menu} from 'antd';
+import {Row, Col, Icon, Menu, Tag} from 'antd';
 import {Link, withRouter} from "react-router-dom";
 import {initializeLoggedInUserProfile, setLoggedInUserProfile} from "../../redux/actions/user";
 import {connect} from "react-redux";
@@ -63,12 +63,12 @@ class Navbar extends React.Component {
 
         const menu = (
             <Menu mode={menuMode} id="nav" key="nav">
-                {/*<Menu.Item key="schools">*/}
-                {/*    <Link to="/schools">*/}
-                {/*        Schools Ebook{' '}*/}
-                {/*        <Tag color="green">new</Tag>*/}
-                {/*    </Link>*/}
-                {/*</Menu.Item>*/}
+                <Menu.Item key="schools">
+                    <Link to="/schools">
+                        Schools Ebook{' '}
+                        <Tag color="green">new</Tag>
+                    </Link>
+                </Menu.Item>
                 <Menu.Item key="essays">
                     <Link to="/essay">Essays</Link>
                 </Menu.Item>
