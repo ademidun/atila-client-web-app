@@ -90,3 +90,8 @@
   padding-left: 2%;
   padding-right: 2%;
 }
+
+#ebook-preview-embed {
+  -webkit-overflow-scrolling: touch;
+  overflow: scroll;
+}
