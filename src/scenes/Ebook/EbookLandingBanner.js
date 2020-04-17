@@ -58,7 +58,7 @@ class EbookLandingBanner extends Component {
               <br />
 
               <Button
-                className='center-block'
+                className='center-block d-none d-md-block'
                 type='primary'
                 name="PreviewBook"
                 style={{ fontSize: "larger" }}
@@ -68,6 +68,19 @@ class EbookLandingBanner extends Component {
                 }}
               >
                 See Preview of Book
+              </Button>
+              <Button
+                  className='center-block d-block d-md-none'
+                  type='primary'
+                  name="PreviewBook"
+                  style={{ fontSize: "larger" }}
+                  onClick={(event) => {
+                    handleButtonClickEventFacebook(event);
+                  }}>
+                <a  href="https://atila-schools-and-jobs-guide.s3.amazonaws.com/atila-ebook-online-preview.pdf"
+                    target="_blank" rel="noopener noreferrer">
+                See Preview of Book
+                </a>
               </Button>
             </Col>
           </Row>
