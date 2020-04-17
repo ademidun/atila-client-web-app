@@ -19,6 +19,8 @@ class EbookPremiumBanner extends Component {
   submitForm = (event) => {
     event.preventDefault();
     const { email, token } = this.state;
+    localStorage.setItem("email", email);
+    localStorage.setItem("token", token);
     this.setState({ isLoadingResponse: true, loggedIn: true });
   };
 
