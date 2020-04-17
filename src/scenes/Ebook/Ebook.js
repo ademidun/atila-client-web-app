@@ -26,9 +26,9 @@ function Ebook() {
         <hr />
         <EmailSignUp />
         <hr />
-        <EbookChapter />
-        <hr />
         <TableauGraphsEmbed />
+        <hr />
+        <EbookChapter />
         <hr />
         <EbookInterviews />
         <hr />

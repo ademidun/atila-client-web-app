@@ -55,12 +55,6 @@ class SubscribeMailingList extends  React.Component{
 
         if(formGoogleSheetName === 'ebookMailingList') {
 
-            if (formDataPost.fullName.includes('Tomiwa Ademidun')) {
-                console.log('formDataPost.fullName', formDataPost.fullName);
-                this.setState({ formError: 'Testing you Tomiwa' });
-                return;
-            }
-
             UtilsAPI.sendEbookPreviewEmail(formDataPost)
                     .then(res=> {
                         console.log({res});
