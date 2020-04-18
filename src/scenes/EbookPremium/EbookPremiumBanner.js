@@ -50,7 +50,7 @@ class EbookPremiumBanner extends Component {
                       />
 
                       <input
-                        placeholder='Token'
+                        placeholder='License Key'
                         className='col-12 mb-3 form-control'
                         name='token'
                         value={token}
