@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Button, Col, Modal, Row } from "antd";
 import "./Ebook.scss";
+import {handleButtonClickEventFacebook} from "../../models/Utils";
 
 class EbookLandingBanner extends Component {
   state = {
@@ -14,7 +15,7 @@ class EbookLandingBanner extends Component {
 
   render() {
     return (
-      <div className='vh-100 EbookLandingBanner'>
+      <div className='vh-100 EbookLandingBanner mx-sm-3'>
         <div>
           <br />
           <h1 className='col-sm-12 text-center my-md-5'>
@@ -48,6 +49,8 @@ class EbookLandingBanner extends Component {
                   href='https://gum.co/BbFon'
                   target='_blank'
                   rel='noopener noreferrer'
+                  name="AddToCart"
+                  onClick={handleButtonClickEventFacebook}
                 >
                   Buy this Book
                 </a>
@@ -55,14 +58,29 @@ class EbookLandingBanner extends Component {
               <br />
 
               <Button
-                className='center-block'
+                className='center-block d-none d-md-block'
                 type='primary'
+                name="PreviewBook"
                 style={{ fontSize: "larger" }}
-                onClick={() => {
+                onClick={(event) => {
                   this.setState({ showPreview: true });
+                  handleButtonClickEventFacebook(event);
                 }}
               >
                 See Preview of Book
+              </Button>
+              <Button
+                  className='center-block d-block d-md-none'
+                  type='primary'
+                  name="PreviewBook"
+                  style={{ fontSize: "larger" }}
+                  onClick={(event) => {
+                    handleButtonClickEventFacebook(event);
+                  }}>
+                <a  href="https://atila-schools-and-jobs-guide.s3.amazonaws.com/atila-ebook-online-preview.pdf"
+                    target="_blank" rel="noopener noreferrer">
+                See Preview of Book
+                </a>
               </Button>
             </Col>
           </Row>
@@ -83,9 +101,11 @@ class EbookLandingBanner extends Component {
           <iframe
             src='https://atila-schools-and-jobs-guide.s3.amazonaws.com/atila-ebook-online-preview.pdf'
             title='Atila Schools and Jobs Ebook Preview'
+            id='ebook-preview-embed'
             style={{ width: "100%", height: "75vh" }}
           />
         </Modal>
+        <link rel="preload" href="https://example.com/widget.html" as="document" />
       </div>
     );
   }

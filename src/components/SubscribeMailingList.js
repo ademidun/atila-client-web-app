@@ -54,6 +54,7 @@ class SubscribeMailingList extends  React.Component{
         }
 
         if(formGoogleSheetName === 'ebookMailingList') {
+
             UtilsAPI.sendEbookPreviewEmail(formDataPost)
                     .then(res=> {
                         console.log({res});
@@ -157,7 +158,11 @@ class SubscribeMailingList extends  React.Component{
                         {formError}
                     </p>
                     }
-                    <button className="btn btn-primary col-12 mb-3" type="submit">
+                    <button
+                        className="btn btn-primary col-12 mb-3"
+                        type="submit"
+                        name="SubscribeBtn"
+                        onClick={this.props.onSubscribeClick}>
                         {buttonText}
                     </button>
 
@@ -191,11 +196,12 @@ SubscribeMailingList.defaultProps = {
         </h4>
     </div>),
     extraFormQuestions: [],
+    onSubscribeClick: () => {},
 };
 
 SubscribeMailingList.propTypes = {
-    buttonText: PropTypes.bool,
-    skipSendEmail: PropTypes.string,
+    buttonText: PropTypes.string,
+    skipSendEmail: PropTypes.bool,
     formGoogleSheetName: PropTypes.string,
     subscribeText: PropTypes.oneOfType([
         PropTypes.shape({}),
@@ -206,6 +212,7 @@ SubscribeMailingList.propTypes = {
         PropTypes.string,
     ]),
     extraFormQuestions: PropTypes.arrayOf(InputConfigPropType),
+    onSubscribeClick: PropTypes.func,
 };
 
 export default withRouter(SubscribeMailingList);

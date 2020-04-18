@@ -13,8 +13,8 @@ class TableauGraphsEmbed extends Component {
 
 
     initViz() {
-        const techTierVizUrl = 'https://public.tableau.com/views/WhatSchoolsDoTechCompaniesHireFromOrganizedbyCompany/Sheet3?:display_count=y&:origin=viz_share_link';
-        const allIndustriesVizUrl = 'https://public.tableau.com/views/Allindustriesver_1/Sheet1?:display_count=y&:origin=viz_share_link';
+        const techTierVizUrl = 'https://public.tableau.com/views/TotalCareerSegmentationforCanadianSchools_15868721302310/Sheet2?:display_count=y&publish=yes&:origin=viz_share_link';
+        const allIndustriesVizUrl = 'https://public.tableau.com/views/WhatSchoolsDoBiomedCompaniesHireFromOrganizedbyPosition_15868717000150/Sheet2?:display_count=y&publish=yes&:origin=viz_share_link';
         const techVizContainer = this.techVizContainer;
         const allIndustriesVizContainer = this.allIndustriesVizContainer;
 
@@ -30,7 +30,7 @@ class TableauGraphsEmbed extends Component {
     render() {
         return (
             <div className="container">
-                <h1>Preview of Some Graphics <span role="img" aria-labelledby="eyes">👀</span></h1>
+                <h1>Preview of Some Graphics </h1>
                 <div ref={(div) => { this.allIndustriesVizContainer = div }}>
                 </div>
                 <hr/>

@@ -17,23 +17,39 @@
     margin-top: 10%;
   }
   .ebook-row {
-    margin-left: 23%;
+    margin-left: 20%;
   }
 
   .ebook-image img {
     max-width: 43vh;
   }
 
-  @media only screen and (max-width: 765px) {
-    h1 {
-      font-size: 5.5vw;
+  @media only screen and (max-width: $small-device-width) {
+    h1, h2 {
+      line-height: 5.5vw;
     }
+
+    h1 {
+      font-size: 6.5vw;
+      margin-top: 3%;
+    }
+
     h2 {
-      font-size: 3.5vw;
+      font-size: 4.5vw;
     }
     .ebook-row {
-      margin-left: 0;
+      margin-right: 1rem ;
+      margin-left: 1rem ;
     }
+
+    .buy-now-cta {
+      margin-top: 3%;
+    }
+
+    .ebook-image img {
+      max-width: 40vh;
+    }
+
   }
 
   .buy-book-button {
@@ -43,7 +59,7 @@
 }
 
 .InterviewCard {
-  height: 650px;
+  height: 715px;
   text-align: center;
   img {
     width: 250px;
@@ -52,4 +68,30 @@
   }
 }
 
+.chapter-name {
+  text-align: left;
+  padding-left: 20px;
+}
 
+.subchapter-item {
+  text-align: left;
+  padding-left: 50px;
+  display: flex;
+  justify-content: space-between;
+  padding-right: 20px;
+}
+
+.chapter-item {
+  min-height: 400px;
+  height: 90%;
+}
+
+.chapter-col {
+  padding-left: 2%;
+  padding-right: 2%;
+}
+
+#ebook-preview-embed {
+  -webkit-overflow-scrolling: touch;
+  overflow: scroll;
+}
