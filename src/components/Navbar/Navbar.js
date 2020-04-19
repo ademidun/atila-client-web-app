@@ -66,12 +66,12 @@ class Navbar extends React.Component {
                 <Menu.Item key="search">
                     <Link to="/search">Search</Link>
                 </Menu.Item>
-                {(!userProfile || !userProfile.is_atila_premium) ? (
-                    <Menu.Item key="pricing">
-                        <Link to="/pricing">Pricing</Link>
-                    </Menu.Item>
-                ) : null
-                }
+                {/*{(!userProfile || !userProfile.is_atila_premium) ? (*/}
+                {/*    <Menu.Item key="pricing">*/}
+                {/*        <Link to="/pricing">Pricing</Link>*/}
+                {/*    </Menu.Item>*/}
+                {/*) : null*/}
+                {/*}*/}
                 <Menu.Item key="essays">
                     <Link to="/essay">Essays</Link>
                 </Menu.Item>
