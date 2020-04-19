@@ -83,19 +83,6 @@ class EbookLandingBanner extends Component {
                 See Preview of Book
                 </a>
               </Button>
-               <Button
-                    className='center-block mt-3'
-                    type='primary'
-                    name="PreviewBook"
-                    style={{ fontSize: "larger" }}
-                    onClick={(event) => {
-                        handleButtonClickEventFacebook(event);
-                    }}
-                >
-                    <Link to="/schools/premium">
-                    See Premium content
-                    </Link>
-               </Button>
             </Col>
           </Row>
         </div>
