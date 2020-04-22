@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Button, Col, Modal, Row } from "antd";
 import "./Ebook.scss";
 import {handleButtonClickEventFacebook} from "../../models/Utils";
-import {Link} from "react-router-dom";
 
 class EbookLandingBanner extends Component {
   state = {
