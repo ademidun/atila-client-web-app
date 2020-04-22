@@ -3,6 +3,8 @@ $secondary: #FEFEFE;
 $tertiary: #326396;
 $my-lighten:#4080ff;
 $serif-font: Palatino,Georgia,Cambria,"Times New Roman",Times,serif;
+// Bootstrap: https://getbootstrap.com/docs/4.0/layout/overview/#responsive-breakpoints
+$small-device-width: 576px;
 
 body {
   margin: 0;

@@ -5,6 +5,8 @@ import EmailSignUp from "./EmailSignUp";
 import Team from "../../components/Team/Team";
 import EbookInterviews from "./EbookInterview/EbookInterview";
 import TableauGraphsEmbed from "./TableauGraphsEmbed";
+import EbookChapter from "./EbookChapter";
+import EbookVideoEmbed from "./EbookVideoEmbed";
 
 function Ebook() {
   const seoContent = {
@@ -26,12 +28,22 @@ function Ebook() {
         <hr />
         <TableauGraphsEmbed />
         <hr />
+        <EbookChapter />
+        <hr />
         <EbookInterviews />
         <hr />
         <Team
           showArray={["Tomiwa", "Melissa", "Isaac", "Elaine", "Aaron", "Dev"]}
           showLinkedin={false}
+          showSeo={false}
         />
+        <hr />
+        <EbookVideoEmbed />
+        <hr />
+        <EbookLandingBanner />
+        <hr />
+        <EmailSignUp />
+        <hr />
       </div>
     </React.Fragment>
   );
