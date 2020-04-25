@@ -12,12 +12,9 @@ import "react-toastify/dist/ReactToastify.css";
 import Navbar from "./components/Navbar/Navbar";
 import GoogleAnalyticsTracker from "./services/GoogleAnalyticsTracker";
 import ScrollToTop from "./components/ScrollToTop";
-import HighSchool from "./components/HighSchool";
 import LogRocket from "logrocket";
 import setupLogRocketReact from "logrocket-react";
 import Environment from "./services/Environment";
-import Ebook from "./scenes/Ebook/Ebook";
-import EbookPremiumBanner from "./scenes/EbookPremium/EbookPremiumBanner";
 
 const Pricing = loadable(() => import("./scenes/AtilaPremium/Pricing"), {
   fallback: <Loading />,
@@ -59,6 +56,16 @@ const VerifyAccount = loadable(() => import("./components/VerifyAccount"), {
   fallback: <Loading />,
 });
 const Register = loadable(() => import("./components/Register"), {
+  fallback: <Loading />,
+});
+
+const HighSchool = loadable(() => import("./components/HighSchool"), {
+  fallback: <Loading />,
+});
+const Ebook = loadable(() => import("./scenes/Ebook/Ebook"), {
+  fallback: <Loading />,
+});
+const EbookPremium = loadable(() => import("./scenes/EbookPremium/EbookPremium"), {
   fallback: <Loading />,
 });
 
@@ -134,16 +141,16 @@ class App extends React.Component {
                 component={GoogleAnalyticsTracker(HighSchool)}
               />
               <Route
+                  path='/highschool'
+                  component={GoogleAnalyticsTracker(HighSchool)}
+              />
+              <Route
                   path='/schools/premium'
-                  component={GoogleAnalyticsTracker(EbookPremiumBanner)}
+                  component={GoogleAnalyticsTracker(EbookPremium)}
               />
               <Route
                 path='/schools'
                 component={GoogleAnalyticsTracker(Ebook)}
-              />
-              <Route
-                path='/highschool'
-                component={GoogleAnalyticsTracker(HighSchool)}
               />
               <Route path='/team' component={GoogleAnalyticsTracker(Team)} />
               <Route

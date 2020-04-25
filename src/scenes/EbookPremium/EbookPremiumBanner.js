@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Row } from "antd";
 import "../Ebook/Ebook.scss";
 import { Link } from "react-router-dom";
-import EbookPremiumTabs from "./EbookPremiumTabs";
+import TableauPremium from "./TableaPremium";
 
 class EbookPremiumBanner extends Component {
   state = {
@@ -50,54 +50,49 @@ class EbookPremiumBanner extends Component {
                           onChange={this.updateForm}
                         />
 
-                        <input
-                          placeholder='Token'
-                          className='col-12 mb-3 form-control'
-                          name='token'
-                          value={token}
-                          onChange={this.updateForm}
-                        />
-                        <div className='w-100'>
-                          <button
-                            className='btn btn-primary col-sm-12 col-md-5 float-left mb-1'
-                            type='submit'
-                            disabled={isLoadingResponse}
-                          >
-                            Login
-                          </button>
-                          <Link
-                            to='/schools'
-                            className='btn btn-outline-primary col-sm-12 col-md-5 float-right'
-                          >
-                            Buy Ebook
-                          </Link>
-                        </div>
+                      <input
+                        placeholder='License Key'
+                        className='col-12 mb-3 form-control'
+                        name='token'
+                        value={token}
+                        onChange={this.updateForm}
+                      />
+                      <div className='w-100'>
                         <button
-                          className='btn btn-link max-width-fit-content'
-                          onClick={(event) => {
-                            event.preventDefault();
-                            this.setState({ forgotPassword: true });
-                          }}
+                          className='btn btn-primary col-sm-12 col-md-5 float-left mb-1'
+                          type='submit'
+                          disabled={isLoadingResponse}
                         >
-                          Forgot password?
+                          Login
                         </button>
-                      </form>
-                    </div>
+                        <Link
+                          to='/schools'
+                          className='btn btn-outline-primary col-sm-12 col-md-5 float-right'
+                        >
+                          Buy Ebook
+                        </Link>
+                      </div>
+                      <button
+                        className='btn btn-link max-width-fit-content'
+                        onClick={(event) => {
+                          event.preventDefault();
+                          this.setState({ forgotPassword: true });
+                        }}
+                      >
+                        Forgot password?
+                      </button>
+                    </form>
                   </div>
                 </div>
-              </Row>
-            </div>
-          </div>
-        )}
+              </div>
+            </Row>
+          )}
 
-        {loggedIn && (
-          <React.Fragment>
-            <h1>Premium Section</h1>
-            <EbookPremiumTabs />
-          </React.Fragment>
-        )}
-      </React.Fragment>
-    );
+          {loggedIn && <TableauPremium />}
+        </div>
+      </div>
+    )}
+      </React.Fragment>)
   }
 }
 export default EbookPremiumBanner;

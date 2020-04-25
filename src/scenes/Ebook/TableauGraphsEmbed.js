@@ -11,11 +11,9 @@ class TableauGraphsEmbed extends Component {
   }
 
   initViz() {
-    const techTierVizUrl =
-      "https://public.tableau.com/views/WhatSchoolsDoTechCompaniesHireFromOrganizedbyCompany/Sheet3?:display_count=y&:origin=viz_share_link";
-    const allIndustriesVizUrl =
-      "https://public.tableau.com/views/Allindustriesver_1/Sheet1?:display_count=y&:origin=viz_share_link";
-    const techVizContainer = this.techVizContainer;
+      const techTierVizUrl = 'https://public.tableau.com/views/TotalCareerSegmentationforCanadianSchools_15868721302310/Sheet2?:display_count=y&publish=yes&:origin=viz_share_link';
+      const allIndustriesVizUrl = 'https://public.tableau.com/views/WhatSchoolsDoBiomedCompaniesHireFromOrganizedbyPosition_15868717000150/Sheet2?:display_count=y&publish=yes&:origin=viz_share_link';
+      const techVizContainer = this.techVizContainer;
     const allIndustriesVizContainer = this.allIndustriesVizContainer;
 
     /* eslint-disable no-unused-vars */

@@ -156,7 +156,7 @@ function ChaptersCard({ chapter }) {
           </div>
           {chapter.subchapters &&
             chapter.subchapters.map((subchapter) => (
-              <div className='subchapter-item'>
+              <div className='subchapter-item' key={subchapter.name}>
                 <p>
                   <li>{subchapter.name}</li>
                 </p>
