@@ -6,6 +6,10 @@ $serif-font: Palatino,Georgia,Cambria,"Times New Roman",Times,serif;
 // Bootstrap: https://getbootstrap.com/docs/4.0/layout/overview/#responsive-breakpoints
 $small-device-width: 576px;
 
+.vh-100 {
+  min-height: 100vh !important;
+}
+
 body {
   margin: 0;
   font-family: $serif-font,

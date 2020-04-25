@@ -86,7 +86,7 @@ class Navbar extends React.Component {
                 </Menu.Item>
                 <Menu.Item key="schools">
                     <Link to="/schools">
-                        Schools Ebook{' '}
+                        Schools and Jobs Ebook{' '}
                         <Tag color="green">new</Tag>
                     </Link>
                 </Menu.Item>
