@@ -24,9 +24,9 @@ function Ebook() {
         <HelmetSeo content={seoContent} />
         <EbookLandingBanner />
         <hr />
-        <EmailSignUp />
-        <hr />
         <TableauGraphsEmbed />
+        <hr />
+        <EmailSignUp />
         <hr />
         <EbookChapter />
         <hr />
