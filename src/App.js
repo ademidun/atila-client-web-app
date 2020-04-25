@@ -134,12 +134,12 @@ class App extends React.Component {
                 component={GoogleAnalyticsTracker(HighSchool)}
               />
               <Route
-                path='/schools'
-                component={GoogleAnalyticsTracker(Ebook)}
+                  path='/schools/premium'
+                  component={GoogleAnalyticsTracker(EbookPremiumBanner)}
               />
               <Route
-                path='/ebookpremium'
-                component={GoogleAnalyticsTracker(EbookPremiumBanner)}
+                path='/schools'
+                component={GoogleAnalyticsTracker(Ebook)}
               />
               <Route
                 path='/highschool'
