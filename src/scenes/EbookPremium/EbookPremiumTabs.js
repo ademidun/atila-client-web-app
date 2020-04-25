@@ -1,6 +1,12 @@
 import React, { Component } from "react";
 import { Row, Col, Tabs } from "antd";
 import "../Ebook/Ebook.scss";
+/* eslint-disable no-unused-vars */
+// The tableau library needs to be imported even though it will be used
+// via window.tableau.Viz and not tableau.Viz
+// noinspection ES6UnusedImports
+import tableau from "tableau-api";
+/* eslint-enable no-unused-vars */
 
 const TabPane = Tabs.TabPane;
 let viz;
