@@ -16,58 +16,62 @@ export default class EbookPremiumTabs extends Component {
     super(props);
     this.state = {
       industry: "InvestmentBanking",
+      industryConfig: {
+        "Tech": {
+          name: "Tech",
+          label: "Google, Amazon, Facebook, and more",
+          vizUrl: "https://public.tableau.com/views/EntryLevelGoogleSoftwareEngineerBaseSalaryinWaterloovsMountainViewCAD/Sheet5?:display_count=y&:origin=viz_share_link",
+        },
+        "Biomedical": {
+          name: "Biomedical",
+          label: "Pfizer, GSK, and more",
+          vizUrl: "https://public.tableau.com/views/WhatSchoolsDoBiomedCompaniesHireFromOrganizedbyPosition/Sheet4?:display_count=y&:origin=viz_share_link",
+        },
+        "InvestmentBanking": {
+          name: "InvestmentBanking",
+          label: "Goldman Sachs, RBC Capital Markets and more",
+          vizUrl: "https://public.tableau.com/views/EntryLevelGoogleProductManagervsGoldmanSachsAnalystinNYCUSD/Sheet4?:display_count=y&:origin=viz_share_link",
+        },
+        "Consulting": {
+          name: "Consulting",
+          label: "McKinsey, Bain, BCG, and more",
+          vizUrl: "https://public.tableau.com/views/WhatSchoolsDoCompaniesHireFromOrganizedbyCompanySchoolsNumbers/Sheet2?:display_count=y&:origin=viz_share_link",
+        },
+      }
     };
   }
 
-  componentDidMount() {
-    console.log(this.state.industry);
-    const vizUrl =
-      "https://public.tableau.com/views/EntryLevelGoogleProductManagervsGoldmanSachsAnalystinNYCUSD/Sheet4?:display_count=y&:origin=viz_share_link";
+  createViz(industry) {
+    const { industryConfig } = this.state;
+    const vizUrl = industryConfig[industry].vizUrl;
 
     const vizContainer = this.vizContainer;
     viz = new window.tableau.Viz(vizContainer, vizUrl);
   }
 
-  componentDidUpdate() {
-    console.log(this.state.industry);
+  componentDidMount() {
+    const { industry } = this.state;
+    console.log(industry);
 
-    viz.dispose();
-
-    if (this.state.industry === "Tech") {
-      const vizUrl =
-        "https://public.tableau.com/views/EntryLevelGoogleSoftwareEngineerBaseSalaryinWaterloovsMountainViewCAD/Sheet5?:display_count=y&:origin=viz_share_link";
-      const vizContainer = this.vizContainer;
-      viz = new window.tableau.Viz(vizContainer, vizUrl);
-    }
-
-    if (this.state.industry === "Biomedical") {
-      const vizUrl =
-        "https://public.tableau.com/views/WhatSchoolsDoBiomedCompaniesHireFromOrganizedbyPosition/Sheet4?:display_count=y&:origin=viz_share_link";
-      const vizContainer = this.vizContainer;
-      viz = new window.tableau.Viz(vizContainer, vizUrl);
-    }
-    if (this.state.industry === "InvestmentBanking") {
-      const vizUrl =
-        "https://public.tableau.com/views/EntryLevelGoogleProductManagervsGoldmanSachsAnalystinNYCUSD/Sheet4?:display_count=y&:origin=viz_share_link";
-
-      const vizContainer = this.vizContainer;
-      viz = new window.tableau.Viz(vizContainer, vizUrl);
-    }
-
-    if (this.state.industry === "Consulting") {
-      const vizUrl =
-        "https://public.tableau.com/views/WhatSchoolsDoCompaniesHireFromOrganizedbyCompanySchoolsNumbers/Sheet2?:display_count=y&:origin=viz_share_link";
-      const vizContainer = this.vizContainer;
-      viz = new window.tableau.Viz(vizContainer, vizUrl);
-    }
+    this.createViz(industry);
   }
 
+  componentDidUpdate() {
+    const { industry } = this.state;
+    console.log(industry);
+
+    viz.dispose();
+    this.createViz(industry);
+
+  }
+
+  changeTab = (activeKey) => {
+    this.setState({
+      industry: activeKey,
+    });
+  };
+
   render() {
-    const changeTab = (activeKey) => {
-      this.setState({
-        industry: activeKey,
-      });
-    };
 
     return (
       <Row>
@@ -76,7 +80,7 @@ export default class EbookPremiumTabs extends Component {
             <Tabs
               defaultActiveKey='InvestmentBanking'
               id='UserProfileViewTabs'
-              onChange={(e) => changeTab(e)}
+              onChange={(e) => this.changeTab(e)}
             >
               <TabPane tab='InvestmentBanking' key='InvestmentBanking'>
                 <React.Fragment>
