@@ -69,8 +69,11 @@ class TableauPremium extends Component {
   }
 }
 
+TableauPremium.defaultProps = {
+  industry: 'Tech',
+};
 TableauPremium.propTypes = {
-  industry: PropTypes.string.isRequired,
+  industry: PropTypes.string,
 };
 
 export default TableauPremium;

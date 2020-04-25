@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Row } from "antd";
 import "../Ebook/Ebook.scss";
 import { Link } from "react-router-dom";
-import TableauPremium from "./TableaPremium";
+import EbookPremiumTabs from "./EbookPremiumTabs";
 
 class EbookPremiumBanner extends Component {
   state = {
@@ -87,11 +87,10 @@ class EbookPremiumBanner extends Component {
               </div>
             </Row>
           )}
-
-          {loggedIn && <TableauPremium />}
         </div>
       </div>
-    )}
+        )}
+      {loggedIn && <EbookPremiumTabs />}
       </React.Fragment>)
   }
 }
