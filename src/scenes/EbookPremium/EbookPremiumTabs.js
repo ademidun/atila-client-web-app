@@ -20,22 +20,42 @@ export default class EbookPremiumTabs extends Component {
         "Tech": {
           name: "Tech",
           label: "Google, Amazon, Facebook, and more",
-          url: "https://public.tableau.com/views/EntryLevelGoogleSoftwareEngineerBaseSalaryinWaterloovsMountainViewCAD/Sheet5?:display_count=y&:origin=viz_share_link",
+          urls: [
+              "https://public.tableau.com/views/TechTierList2/Sheet3?:display_count=y&:origin=viz_share_link",
+              "https://public.tableau.com/views/EntryLevelGoogleSoftwareEngineerBaseSalaryinWaterloovsMountainViewCAD/Sheet5?:display_count=y&:origin=viz_share_link",
+          ],
         },
         "Biomedical": {
           name: "Biomedical",
           label: "Pfizer, GSK, and more",
-          url: "https://public.tableau.com/views/WhatSchoolsDoBiomedCompaniesHireFromOrganizedbyPosition/Sheet4?:display_count=y&:origin=viz_share_link",
+          urls: [
+              "https://public.tableau.com/views/WhatSchoolsDoBiomedCompaniesHireFromOrganizedbyPosition/Sheet4?:display_count=y&:origin=viz_share_link",
+              "https://public.tableau.com/views/WhatSchoolsDoBiomedCompaniesHireFromOrganizedbyPosition/Sheet4?:display_count=y&:origin=viz_share_link",
+          ],
         },
         "InvestmentBanking": {
           name: "InvestmentBanking",
           label: "Goldman Sachs, RBC Capital Markets and more",
-          url: "https://public.tableau.com/views/EntryLevelGoogleProductManagervsGoldmanSachsAnalystinNYCUSD/Sheet4?:display_count=y&:origin=viz_share_link",
+          urls: [
+              "https://public.tableau.com/views/EntryLevelGoogleProductManagervsGoldmanSachsAnalystinNYCUSD/Sheet4?:display_count=y&:origin=viz_share_link",
+              "https://public.tableau.com/views/EntryLevelGoogleProductManagervsGoldmanSachsAnalystinNYCUSD/Sheet4?:display_count=y&:origin=viz_share_link",
+          ],
         },
         "Consulting": {
           name: "Consulting",
           label: "McKinsey, Bain, BCG, and more",
-          url: "https://public.tableau.com/views/WhatSchoolsDoCompaniesHireFromOrganizedbyCompanySchoolsNumbers/Sheet2?:display_count=y&:origin=viz_share_link",
+          urls: [
+              "https://public.tableau.com/views/WhatSchoolsDoCompaniesHireFromOrganizedbyCompanySchoolsNumbers/Sheet2?:display_count=y&:origin=viz_share_link",
+              "https://public.tableau.com/views/WhatSchoolsDoCompaniesHireFromOrganizedbyCompanySchoolsNumbers/Sheet2?:display_count=y&:origin=viz_share_link",
+          ],
+        },
+        "All Industries": {
+          name: "All Industries",
+          label: "McKinsey, Bain, BCG, and more",
+          urls: [
+              "https://public.tableau.com/views/WhatSchoolsDoCompaniesHireFromOrganizedbyCompanySchoolsNumbers/Sheet2?:display_count=y&:origin=viz_share_link",
+              "https://public.tableau.com/views/WhatSchoolsDoCompaniesHireFromOrganizedbyCompanySchoolsNumbers/Sheet2?:display_count=y&:origin=viz_share_link",
+          ],
         },
       }
     };
@@ -62,7 +82,7 @@ export default class EbookPremiumTabs extends Component {
               {Object.keys(industryConfig).map( industry => (
                   <TabPane tab={industry} key={industry}>
                     <React.Fragment>
-                      <TableauViz url={industryConfig[industry].url} />
+                      <TableauViz url={industryConfig[industry].urls[0]} />
                     </React.Fragment>
                   </TabPane>
               ))}
