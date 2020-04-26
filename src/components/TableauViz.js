@@ -23,10 +23,21 @@ export default class TableauViz extends Component {
         this.createViz(url);
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps, prevState, snapShot) {
         const { url } = this.props;
-        console.log('componentDidUpdate', url);
-        this.viz.dispose();
+        const { url: prevUrl } = prevProps;
+        console.log({ url, prevProps, prevState, snapShot });
+        console.log('this.props', this.props);
+        console.log('componentDidUpdate', { url, prevUrl });
+
+        if (url === prevUrl) {
+            console.log('no url change');
+            return
+        }
+
+        if (this.viz && this.viz.dispose) {
+            this.viz.dispose();
+        }
         this.createViz(url);
 
     }
