@@ -65,14 +65,15 @@ export default class EbookPremiumTabs extends Component {
 
   }
 
-  changeTab = (activeKey) => {
+  changeTab = (industry) => {
     this.setState({
-      industry: activeKey,
+      industry,
     });
   };
 
   render() {
 
+    const { industryConfig } = this.state;
     return (
       <Row>
         <Col>
@@ -82,48 +83,18 @@ export default class EbookPremiumTabs extends Component {
               id='UserProfileViewTabs'
               onChange={(e) => this.changeTab(e)}
             >
-              <TabPane tab='InvestmentBanking' key='InvestmentBanking'>
-                <React.Fragment>
-                  Hello
-                  <div
-                    ref={(div) => {
-                      this.vizContainer = div;
-                    }}
-                  ></div>
-                </React.Fragment>
-              </TabPane>
-
-              <TabPane tab='Tech' key='Tech'>
-                <React.Fragment>
-                  hi
-                  <div
-                    ref={(div) => {
-                      this.vizContainer = div;
-                    }}
-                  ></div>
-                </React.Fragment>
-              </TabPane>
-
-              <TabPane tab='Biomedical' key='Biomedical'>
-                <React.Fragment>
-                  howdy
-                  <div
-                    ref={(div) => {
-                      this.vizContainer = div;
-                    }}
-                  ></div>
-                </React.Fragment>
-              </TabPane>
-              <TabPane tab='Consulting' key='Consulting'>
-                <React.Fragment>
-                  meow
-                  <div
-                    ref={(div) => {
-                      this.vizContainer = div;
-                    }}
-                  ></div>
-                </React.Fragment>
-              </TabPane>
+              {Object.keys(industryConfig).map( industry => (
+                  <TabPane tab={industry} key={industry}>
+                    <React.Fragment>
+                      Hello
+                      <div
+                          ref={(div) => {
+                            this.vizContainer = div;
+                          }}
+                      ></div>
+                    </React.Fragment>
+                  </TabPane>
+              ))}
             </Tabs>
           </div>
         </Col>
