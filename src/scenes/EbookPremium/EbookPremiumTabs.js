@@ -6,10 +6,10 @@ import "../Ebook/Ebook.scss";
 // via window.tableau.Viz and not tableau.Viz
 // noinspection ES6UnusedImports
 import tableau from "tableau-api";
+import TableauViz from "../../components/TableauViz";
 /* eslint-enable no-unused-vars */
 
 const TabPane = Tabs.TabPane;
-let viz;
 
 export default class EbookPremiumTabs extends Component {
   constructor(props) {
@@ -41,30 +41,6 @@ export default class EbookPremiumTabs extends Component {
     };
   }
 
-  createViz(industry) {
-    const { industryConfig } = this.state;
-    const vizUrl = industryConfig[industry].vizUrl;
-
-    const vizContainer = this.vizContainer;
-    viz = new window.tableau.Viz(vizContainer, vizUrl);
-  }
-
-  componentDidMount() {
-    const { industry } = this.state;
-    console.log(industry);
-
-    this.createViz(industry);
-  }
-
-  componentDidUpdate() {
-    const { industry } = this.state;
-    console.log(industry);
-
-    viz.dispose();
-    this.createViz(industry);
-
-  }
-
   changeTab = (industry) => {
     this.setState({
       industry,
@@ -86,18 +62,12 @@ export default class EbookPremiumTabs extends Component {
               {Object.keys(industryConfig).map( industry => (
                   <TabPane tab={industry} key={industry}>
                     <React.Fragment>
-                      Hello
+                      <TableauViz url={industryConfig[industry].vizUrl} />
                     </React.Fragment>
                   </TabPane>
               ))}
             </Tabs>
 
-            <div
-                className="container"
-                ref={(div) => {
-                  this.vizContainer = div;
-                }}
-            ></div>
           </div>
         </Col>
       </Row>
