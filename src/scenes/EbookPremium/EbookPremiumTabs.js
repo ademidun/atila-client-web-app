@@ -87,15 +87,17 @@ export default class EbookPremiumTabs extends Component {
                   <TabPane tab={industry} key={industry}>
                     <React.Fragment>
                       Hello
-                      <div
-                          ref={(div) => {
-                            this.vizContainer = div;
-                          }}
-                      ></div>
                     </React.Fragment>
                   </TabPane>
               ))}
             </Tabs>
+
+            <div
+                className="container"
+                ref={(div) => {
+                  this.vizContainer = div;
+                }}
+            ></div>
           </div>
         </Col>
       </Row>
