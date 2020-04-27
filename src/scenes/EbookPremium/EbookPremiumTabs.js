@@ -21,9 +21,9 @@ export default class EbookPremiumTabs extends Component {
           name: "Tech",
           label: "Google, Amazon, Facebook, and more",
           urls: [
-              "https://public.tableau.com/views/TechTierList2/Sheet3?:display_count=y&:origin=viz_share_link",
               "https://public.tableau.com/views/WhatSchoolsDoTechCompaniesHireFromOrganizedbyCompany/Sheet3?:display_count=y&:origin=viz_share_link",
               "https://public.tableau.com/views/TotalCareerSegmentationPerSchoolIncludingTopInternationalSchools/Sheet1?:display_count=y&:origin=viz_share_link",
+              "https://public.tableau.com/views/TechTierList2/Sheet3?:display_count=y&:origin=viz_share_link",
           ],
         },
         "Biomedical": {

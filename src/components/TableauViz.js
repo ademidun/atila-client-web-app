@@ -4,19 +4,33 @@ import React, {Component} from "react";
 // via window.tableau.Viz and not tableau.Viz
 // noinspection ES6UnusedImports
 import tableau from "tableau-api";
+import Loading from "./Loading";
 /* eslint-enable no-unused-vars */
 export default class TableauViz extends Component {
 
-    createViz(url) {
+    constructor(props) {
+        super(props);
 
+        this.state = {
+            isLoadedViz: false
+        }
+    }
+
+    createViz(url) {
+        const noShareUrl = `${url}&:showShareOptions=false`;
         const vizContainer = this.vizContainer;
-        this.viz = new window.tableau.Viz(vizContainer, url);
+
+        const options = {
+            onFirstInteractive: () => {
+                this.setState({isLoadedViz: true})
+            },
+        };
+        this.viz = new window.tableau.Viz(vizContainer, noShareUrl, options);
     }
 
     componentDidMount() {
         const { url } = this.props;
 
-        console.log('componentDidMount', url);
         if (this.viz && this.viz.dispose) {
             this.viz.dispose();
         }
@@ -26,12 +40,8 @@ export default class TableauViz extends Component {
     componentDidUpdate(prevProps, prevState, snapShot) {
         const { url } = this.props;
         const { url: prevUrl } = prevProps;
-        console.log({ url, prevProps, prevState, snapShot });
-        console.log('this.props', this.props);
-        console.log('componentDidUpdate', { url, prevUrl });
 
         if (url === prevUrl) {
-            console.log('no url change');
             return
         }
 
@@ -45,6 +55,7 @@ export default class TableauViz extends Component {
     render() {
         return (
             <div className="text-center container">
+                {!this.vizContainer && <Loading title="Loading visualization..." />}
                 <div
                     ref={(div) => {
                         this.vizContainer = div;
