@@ -3,7 +3,6 @@ import { Row } from "antd";
 import "../Ebook/Ebook.scss";
 import { Link } from "react-router-dom";
 import EbookPremiumTabs from "./EbookPremiumTabs";
-import Loading from "../../components/Loading";
 import UtilsAPI from "../../services/UtilsAPI";
 import ResponseDisplay from "../../components/ResponseDisplay";
 
