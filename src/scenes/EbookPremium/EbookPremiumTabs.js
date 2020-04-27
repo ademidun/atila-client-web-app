@@ -15,46 +15,51 @@ export default class EbookPremiumTabs extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      industry: "InvestmentBanking",
+      industry: "Investment Banking",
       industryConfig: {
         "Tech": {
           name: "Tech",
           label: "Google, Amazon, Facebook, and more",
           urls: [
               "https://public.tableau.com/views/TechTierList2/Sheet3?:display_count=y&:origin=viz_share_link",
-              "https://public.tableau.com/views/EntryLevelGoogleSoftwareEngineerBaseSalaryinWaterloovsMountainViewCAD/Sheet5?:display_count=y&:origin=viz_share_link",
+              "https://public.tableau.com/views/WhatSchoolsDoTechCompaniesHireFromOrganizedbyCompany/Sheet3?:display_count=y&:origin=viz_share_link",
+              "https://public.tableau.com/views/TotalCareerSegmentationPerSchoolIncludingTopInternationalSchools/Sheet1?:display_count=y&:origin=viz_share_link",
           ],
         },
         "Biomedical": {
           name: "Biomedical",
           label: "Pfizer, GSK, and more",
           urls: [
+              "https://public.tableau.com/views/WhatSchoolsDoBiomedCompaniesHireFromOrganizedbyCompany/Sheet3?:display_count=y&:origin=viz_share_link",
               "https://public.tableau.com/views/WhatSchoolsDoBiomedCompaniesHireFromOrganizedbyPosition/Sheet4?:display_count=y&:origin=viz_share_link",
-              "https://public.tableau.com/views/WhatSchoolsDoBiomedCompaniesHireFromOrganizedbyPosition/Sheet4?:display_count=y&:origin=viz_share_link",
+              "https://public.tableau.com/views/WhatSchoolsDoBiomedCompaniesHireFromOrganizedbyPositiontop5/Sheet5?:display_count=y&:origin=viz_share_link",
           ],
         },
-        "InvestmentBanking": {
-          name: "InvestmentBanking",
+        "Investment Banking": {
+          name: "Investment Banking",
           label: "Goldman Sachs, RBC Capital Markets and more",
           urls: [
-              "https://public.tableau.com/views/EntryLevelGoogleProductManagervsGoldmanSachsAnalystinNYCUSD/Sheet4?:display_count=y&:origin=viz_share_link",
-              "https://public.tableau.com/views/EntryLevelGoogleProductManagervsGoldmanSachsAnalystinNYCUSD/Sheet4?:display_count=y&:origin=viz_share_link",
+              "https://public.tableau.com/views/AmericanFirms_15860728549960/Sheet3?:display_count=y&:origin=viz_share_link",
+              "https://public.tableau.com/views/CanadianBanks/Sheet2?:display_count=y&:origin=viz_share_link",
+              "https://public.tableau.com/views/AmericanFirms_15860728549960/FunnelChart1?:display_count=y&publish=yes&:origin=viz_share_link",
           ],
         },
         "Consulting": {
           name: "Consulting",
           label: "McKinsey, Bain, BCG, and more",
           urls: [
-              "https://public.tableau.com/views/WhatSchoolsDoCompaniesHireFromOrganizedbyCompanySchoolsNumbers/Sheet2?:display_count=y&:origin=viz_share_link",
-              "https://public.tableau.com/views/WhatSchoolsDoCompaniesHireFromOrganizedbyCompanySchoolsNumbers/Sheet2?:display_count=y&:origin=viz_share_link",
+              "https://public.tableau.com/views/TotalMBBFunnel/Sheet1?:display_count=y&:origin=viz_share_link",
+              "https://public.tableau.com/views/TotalDAFunnel/Sheet1?:display_count=y&:origin=viz_share_link",
+              "https://public.tableau.com/views/TOP10Treemap/Sheet1?:display_count=y&:origin=viz_share_link",
           ],
         },
         "All Industries": {
           name: "All Industries",
-          label: "McKinsey, Bain, BCG, and more",
+          label: "Tech, Consulting, Investment Banking, Biomedical",
           urls: [
-              "https://public.tableau.com/views/WhatSchoolsDoCompaniesHireFromOrganizedbyCompanySchoolsNumbers/Sheet2?:display_count=y&:origin=viz_share_link",
-              "https://public.tableau.com/views/WhatSchoolsDoCompaniesHireFromOrganizedbyCompanySchoolsNumbers/Sheet2?:display_count=y&:origin=viz_share_link",
+              "https://public.tableau.com/views/WhatSchoolsDoCompaniesHireFromOrganizedbyCompany/Sheet1?:display_count=y&:origin=viz_share_link",
+              "https://public.tableau.com/views/UniversityRankingsApril2020/Sheet1?:display_count=y&:origin=viz_share_link",
+              "https://public.tableau.com/views/AllIndustries2/Sheet2?:display_count=y&:origin=viz_share_link",
           ],
         },
       }
@@ -75,14 +80,19 @@ export default class EbookPremiumTabs extends Component {
         <Col>
           <div className='text-center'>
             <Tabs
-              defaultActiveKey='InvestmentBanking'
+              defaultActiveKey='Tech'
               id='UserProfileViewTabs'
               onChange={(e) => this.changeTab(e)}
             >
               {Object.keys(industryConfig).map( industry => (
                   <TabPane tab={industry} key={industry}>
                     <React.Fragment>
-                      <TableauViz url={industryConfig[industry].urls[0]} />
+                      {industryConfig[industry].urls.map( url => (
+                          <React.Fragment>
+                            <TableauViz url={url} />
+                            <hr/>
+                          </React.Fragment>
+                      ))}
                     </React.Fragment>
                   </TabPane>
               ))}
