@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col } from 'antd';
+import {Row, Col, Tag} from 'antd';
 import './Footer.scss';
 import {Link, withRouter} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -42,6 +42,17 @@ function Footer({location, history}) {
               <Col md={6} sm={12} xs={12}>
                 <div className="footer-center">
                   <div>
+                    <Link to="/schools">
+                      Schools and Jobs Ebook
+                      <Tag color="green">new</Tag>
+                    </Link>
+                  </div>
+                  <div>
+                    <Link to="/high-school">
+                      High School
+                    </Link>
+                  </div>
+                  <div>
                     <Link to="/blog/atila/what-is-atila">
                       About
                     </Link>
@@ -49,11 +60,6 @@ function Footer({location, history}) {
                   <div>
                     <Link to="/team">
                       Team
-                    </Link>
-                  </div>
-                  <div>
-                    <Link to="/contact">
-                      Contact
                     </Link>
                   </div>
                   <div>
@@ -66,18 +72,13 @@ function Footer({location, history}) {
                       Blogs
                     </Link>
                   </div>
-                  <div>
-                    <Link to="/high-school">
-                      High School
-                    </Link>
-                  </div>
                 </div>
               </Col>
               <Col md={6} sm={12} xs={12}>
                 <div className="footer-center">
                   <div>
-                    <Link to="/schools">
-                      Atila Schools and Jobs Guide Ebook
+                    <Link to="/contact">
+                      Contact
                     </Link>
                   </div>
                   <div>
@@ -106,11 +107,6 @@ function Footer({location, history}) {
                   <div>
                     <Link to="/sitemap">
                       SiteMap
-                    </Link>
-                  </div>
-                  <div>
-                    <Link to="/blog">
-                      Blogs
                     </Link>
                   </div>
                 </div>

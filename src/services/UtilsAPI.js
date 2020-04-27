@@ -42,6 +42,18 @@ class UtilsAPI {
         return apiCompletionPromise;
 
     }
+
+    static authenticateEbookUser = (email, licenseKey) => {
+
+        const apiCompletionPromise = request({
+            method: 'POST',
+            data: {email, license_key: licenseKey},
+            url: `${Environment.apiUrlEmailService}/ebook/authenticate-user`,
+        });
+
+        return apiCompletionPromise;
+
+    }
 }
 
 export default UtilsAPI;

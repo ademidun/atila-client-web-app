@@ -178,33 +178,16 @@ const EbookChapter = () => {
       <h1>
         Peek Inside
       </h1>
-      <div className='text-center'>
         <img
-            style={{
-              backgroundColor: "transparent",
-              border: "none",
-              maxWidth: '90vw'
-            }}
+            className="responsive-images"
             src='https://i.imgur.com/7HtJNot.png' alt='Book cover' />
-      </div>
       <div className='text-center'>
         <img
-            style={{
-              backgroundColor: "transparent",
-              border: "none",
-              maxWidth: '90vw'
-            }}
+            className="responsive-images"
             src='https://i.imgur.com/XluzC2w.jpg' alt='Book cover' />
       </div>
 
       <div className='text-center'>
-        <img
-            style={{
-              backgroundColor: "transparent",
-              border: "none",
-              maxWidth: '90vw'
-            }}
-            src='https://i.imgur.com/Yr0CZL2.jpg' alt='Book cover' />
       </div>
       <h2 style={{ textAlign: "center" }} className="my-3">
         Here are some of the contents of the guide
