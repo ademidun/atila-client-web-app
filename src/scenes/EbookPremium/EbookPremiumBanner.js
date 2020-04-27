@@ -5,8 +5,6 @@ import {Link, withRouter} from "react-router-dom";
 import EbookPremiumTabs from "./EbookPremiumTabs";
 import UtilsAPI from "../../services/UtilsAPI";
 import ResponseDisplay from "../../components/ResponseDisplay";
-import {unSlugify} from "../../services/utils";
-import {connect} from "react-redux";
 
 class EbookPremiumBanner extends Component {
 
