@@ -88,7 +88,7 @@ export default class EbookPremiumTabs extends Component {
                   <TabPane tab={industry} key={industry}>
                     <React.Fragment>
                       {industryConfig[industry].urls.map( url => (
-                          <React.Fragment>
+                          <React.Fragment key={url}>
                             <TableauViz url={url} />
                             <hr/>
                           </React.Fragment>
