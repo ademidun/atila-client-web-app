@@ -1,19 +1,39 @@
 import React, { Component } from "react";
 import { Row } from "antd";
 import "../Ebook/Ebook.scss";
-import { Link } from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 import EbookPremiumTabs from "./EbookPremiumTabs";
 import UtilsAPI from "../../services/UtilsAPI";
 import ResponseDisplay from "../../components/ResponseDisplay";
+import {unSlugify} from "../../services/utils";
+import {connect} from "react-redux";
 
 class EbookPremiumBanner extends Component {
-  state = {
-    email: "",
-    token: "",
-    isLoadingResponse: false,
-    responseError: false,
-    loggedIn: false,
-  };
+
+
+  constructor(props) {
+    super(props);
+
+
+    const {
+      location : { search },
+    } = this.props;
+
+
+    const params = new URLSearchParams(search);
+    const email = params.get('email') || '';
+    const licenseKey = params.get('licenseKey') || '';
+
+    this.state = {
+      email,
+      token: licenseKey,
+      isLoadingResponse: false,
+      responseError: false,
+      loggedIn: false,
+    };
+  }
+
+
 
   componentDidMount() {
     if(localStorage.getItem('ebookUserEmail')) {
@@ -115,4 +135,4 @@ class EbookPremiumBanner extends Component {
       </React.Fragment>)
   }
 }
-export default EbookPremiumBanner;
+export default  withRouter(EbookPremiumBanner);
