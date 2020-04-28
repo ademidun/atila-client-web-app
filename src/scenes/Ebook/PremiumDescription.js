@@ -12,22 +12,22 @@ export default function PremiumDescription() {
 
                 <img
                     className="responsive-images"
-                    src='https://i.imgur.com/Yr0CZL2.jpg' alt='Book cover' />
+                    src='https://i.imgur.com/RLc5YPU.png' alt='Book cover' />
                 <div className="my-3">
                     <ol>
                         <li>
-                            Access to 15 interactive graphics (new graphs added weekly)
+                            Access to Premium Portal containing 15 interactive graphics (new graphs added weekly)
                         </li>
                         <li>
                             150 Page ebook available in PDF and EPUB
                         </li>
                         <li>
-                            Receive Free updates of new videos, data, and content for the next 4 months
+                            Receive Free updates to the book until August 2020
                         </li>
                     </ol>
                     <div className="text-center">
                         <Row gutter={16}>
-                            {['Login'].map( text => (
+                            {['Login to Premium Portal'].map( text => (
                                 <Col key={text} span={12}>
                                     <Button type="primary">
                                         <Link to="schools/premium">
