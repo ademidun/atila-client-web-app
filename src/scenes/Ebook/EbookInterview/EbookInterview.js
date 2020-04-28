@@ -148,7 +148,6 @@ const EbookInterviews = () => {
 
   let interviewCards = interviewees.map((interviewee, index) => (
       <React.Fragment key={interviewee.first_name}>
-        {console.log({index})}
         {['0','6'].includes(index.toString()) &&
         <Col span={24} className="text-center">
           <img
