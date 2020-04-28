@@ -66,7 +66,7 @@ class EbookLandingBanner extends Component {
                   name="AddToCart"
                   onClick={handleButtonClickEventFacebook}
                 >
-                  Buy this Book
+                  Buy this Book - $33
                 </a>
               </Button>
               <br />
