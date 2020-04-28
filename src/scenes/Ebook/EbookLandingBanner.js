@@ -105,7 +105,6 @@ class EbookLandingBanner extends Component {
             style={{ width: "100%", height: "75vh" }}
           />
         </Modal>
-        <link rel="preload" href="https://example.com/widget.html" as="document" />
       </div>
     );
   }
