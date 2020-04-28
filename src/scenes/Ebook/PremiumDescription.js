@@ -9,10 +9,11 @@ export default function PremiumDescription() {
         <div className="PremiumDescription container mt-5">
             <div className="card shadow p-3">
                 <h1>Ebook Features</h1>
-
-                <img
-                    className="responsive-images"
-                    src='https://i.imgur.com/RLc5YPU.png' alt='Book cover' />
+                <div className="text-center">
+                    <img
+                        className="responsive-images"
+                        src='https://i.imgur.com/RLc5YPU.png' alt='Book cover' />
+                </div>
                 <div className="my-3">
                     <ol>
                         <li>

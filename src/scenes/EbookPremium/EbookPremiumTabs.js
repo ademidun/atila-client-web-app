@@ -40,7 +40,7 @@ export default class EbookPremiumTabs extends Component {
           label: "Goldman Sachs, RBC Capital Markets and more",
           urls: [
               "https://public.tableau.com/views/AmericanFirms_15860728549960/Sheet3?:display_count=y&:origin=viz_share_link",
-              "https://public.tableau.com/views/CanadianBanks/Sheet2?:display_count=y&:origin=viz_share_link",
+              "https://public.tableau.com/views/TotalCanadianBanks/Sheet1?:display_count=y&:origin=viz_share_link",
               "https://public.tableau.com/views/AmericanFirms_15860728549960/FunnelChart1?:display_count=y&publish=yes&:origin=viz_share_link",
           ],
         },
