@@ -16,10 +16,7 @@ export default function PremiumDescription() {
                 <div className="my-3">
                     <ol>
                         <li>
-                            Access to over 25 interactive graphics
-                        </li>
-                        <li>
-                            Access to 10 filterable and sortable tables containing our primary data.
+                            Access to 15 interactive graphics (new graphs added weekly)
                         </li>
                         <li>
                             150 Page ebook available in PDF and EPUB
@@ -30,7 +27,7 @@ export default function PremiumDescription() {
                     </ol>
                     <div className="text-center">
                         <Row gutter={16}>
-                            {['Preview Premium Portal', 'Login'].map( text => (
+                            {['Login'].map( text => (
                                 <Col key={text} span={12}>
                                     <Button type="primary">
                                         <Link to="schools/premium">
