@@ -105,9 +105,6 @@ class EbookLandingBanner extends Component {
             style={{ width: "100%", height: "75vh" }}
           />
         </Modal>
-        <link rel="preload"
-              href="https://atila-schools-and-jobs-guide.s3.amazonaws.com/atila-ebook-online-preview.pdf"
-              as="document" />
       </div>
     );
   }
