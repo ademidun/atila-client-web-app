@@ -68,11 +68,6 @@ class EbookPremiumBanner extends Component {
         {!loggedIn && (
           <div className='vh-100 EbookPremiumBanner'>
             <div>
-              <br />
-              <h1 className='col-sm-12 text-center my-md-5'>
-                Atila Schools and Jobs Guide Premium Section
-              </h1>
-
               <Row className='text-center'>
                 <div className='container mt-5'>
                   <div className='card shadow p-3'>

@@ -14,8 +14,17 @@ function Ebook() {
 
     return (
         <React.Fragment>
+            <HelmetSeo content={seoContent} />
             <div>
-                <HelmetSeo content={seoContent} />
+                <h1 className='col-sm-12 text-center mt-md-5 mb-md-2'>
+                    Atila Schools and Jobs Guide Premium Section
+                </h1>
+                <h4 className='col-sm-12 text-center d-sm-block d-md-none'>
+                    (Works best on desktop)
+                </h4>
+                <h4 className='col-sm-12 text-center'>
+                    (New graphs added weekly)
+                </h4>
                 <EbookPremiumBanner />
                 <hr />
             </div>

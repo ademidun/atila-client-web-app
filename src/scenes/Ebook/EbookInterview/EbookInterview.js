@@ -146,10 +146,22 @@ InterviewCard.propTypes = {
 
 const EbookInterviews = () => {
 
-  let interviewCards = interviewees.map((interviewee) => (
-    <Col xs={24} md={12} xl={8} key={interviewee.first_name}>
-      <InterviewCard person={interviewee} />
-    </Col>
+  let interviewCards = interviewees.map((interviewee, index) => (
+      <React.Fragment key={interviewee.first_name}>
+        {console.log({index})}
+        {['0','6'].includes(index.toString()) &&
+        <Col span={24} className="text-center">
+          <img
+              className="responsive-images"
+              src={index === 6 ?'https://i.imgur.com/XluzC2w.jpg' : 'https://i.imgur.com/Yr0CZL2.jpg'}
+              alt='Western Students' />
+        </Col>
+        }
+        <Col xs={24} md={12} xl={8}>
+          <InterviewCard person={interviewee} />
+        </Col>
+
+      </React.Fragment>
   ));
 
   return (
