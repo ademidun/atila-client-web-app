@@ -24,7 +24,7 @@ class EbookPremiumBanner extends Component {
 
     this.state = {
       email,
-      token: licenseKey,
+      licenseKey,
       isLoadingResponse: false,
       responseError: false,
       loggedIn: false,
@@ -46,10 +46,16 @@ class EbookPremiumBanner extends Component {
 
   submitForm = (event) => {
     event.preventDefault();
-    const { email, token } = this.state;
+    const { email, licenseKey } = this.state;
+
+    if (!email || !licenseKey) {
+      this.setState({responseError: `${!email ? 'Email' : 'License Key'} cannot be blank`});
+        return
+    }
+
     this.setState({ isLoadingResponse: true, responseError: false });
 
-    UtilsAPI.authenticateEbookUser(email, token)
+    UtilsAPI.authenticateEbookUser(email, licenseKey)
         .then( res => {
           console.log({res});
           localStorage.setItem("ebookUserEmail", email);
@@ -62,7 +68,7 @@ class EbookPremiumBanner extends Component {
   };
 
   render() {
-    const { email, token, isLoadingResponse, loggedIn, responseError } = this.state;
+    const { email, licenseKey, isLoadingResponse, loggedIn, responseError } = this.state;
     return (
       <React.Fragment>
         {!loggedIn && (
@@ -85,8 +91,8 @@ class EbookPremiumBanner extends Component {
                       <input
                         placeholder='License Key you received after purchasing book (check your email)'
                         className='col-12 mb-3 form-control'
-                        name='token'
-                        value={token}
+                        name='licenseKey'
+                        value={licenseKey}
                         onChange={this.updateForm}
                       />
                         <ResponseDisplay isLoadingResponse={isLoadingResponse}
