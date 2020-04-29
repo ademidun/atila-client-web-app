@@ -47,6 +47,12 @@ class EbookPremiumBanner extends Component {
   submitForm = (event) => {
     event.preventDefault();
     const { email, token } = this.state;
+
+    if (!email || !token) {
+      this.setState({responseError: `${!email ? 'Email' : 'License Key'} cannot be blank`});
+        return
+    }
+
     this.setState({ isLoadingResponse: true, responseError: false });
 
     UtilsAPI.authenticateEbookUser(email, token)
