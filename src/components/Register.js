@@ -98,11 +98,17 @@ class Register extends React.Component {
             event.stopPropagation();
         }
         const userProfile = {...this.state.userProfile};
-        userProfile[event.target.name] = event.target.value;
 
-        if (event.target.type==='checkbox'){
-            userProfile[event.target.name] = event.target.checked
+        let value = event.target.value;
+        if (event.target.name === 'username') {
+            value = value.replace(/\s/g, '');
         }
+        if (event.target.type==='checkbox'){
+            value = event.target.checked
+        }
+        userProfile[event.target.name] = value;
+
+
 
         this.setState({ userProfile });
     };
