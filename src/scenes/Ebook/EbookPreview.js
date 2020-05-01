@@ -3,28 +3,71 @@ import ScrollMenu from 'react-horizontal-scrolling-menu';
 
 // list of items
 const list = [
-    { name: 'item1' },
-    { name: 'item2' },
-    { name: 'item3' },
-    { name: 'item4' },
-    { name: 'item5' },
-    { name: 'item6' },
-    { name: 'item7' },
-    { name: 'item8' },
-    { name: 'item9' }
+    {
+        title: 'Book Cover',
+        url: 'https://i.imgur.com/kkV3Cra.png',
+    },
+    {
+        title: 'Back Image',
+        url: 'https://i.imgur.com/pLaJDbn.png',
+    },
+    {
+        title: 'Methodology',
+        url: 'https://i.imgur.com/tubBv4w.png',
+    },
+    {
+        title: 'Methodology Continued',
+        url: 'https://i.imgur.com/po09bdf.png',
+    },
+    {
+        title: 'Student Profiles',
+        url: 'https://i.imgur.com/VKwEAYC.png',
+    },
+    {
+        title: 'Student Profiles (perspectives)',
+        url: 'https://i.imgur.com/qCYu9rL.png',
+    },
+    {
+        title: 'How Much do I Really Make?',
+        url: 'https://i.imgur.com/z1WJibU.png',
+    },
+    {
+        title: 'More Student Profiles',
+        url: 'https://i.imgur.com/nrFwWei.png',
+    },
+    {
+        title: 'Industry Analysis',
+        url: 'https://i.imgur.com/X4l5XGn.png',
+    },
+    {
+        title: 'Detailed Graphics',
+        url: 'https://i.imgur.com/CxMZCwk.png',
+    },
+    {
+        title: 'Student Profiles (Western)',
+        url: 'https://i.imgur.com/EeHtEBd.png',
+    },
+    {
+        title: 'Student Interviews',
+        url: 'https://i.imgur.com/9EdP2Jt.png',
+    },
+    {
+        title: 'Back Image',
+        url: 'https://i.imgur.com/pLaJDbn.png',
+    },
 ];
 
 // One item component
 // selected prop will be passed
-const MenuItem = ({text, selected}) => {
+const MenuItem = ({data, selected}) => {
     return <div
         className={`menu-item ${selected ? 'active' : ''}`}
     >
-        {text}
-        <div className='text-center'>
+        <div className='text-center card shadow'>
+            <h4 className="my-3">{data.title}</h4>
             <img
                 className="responsive-images"
-                src='https://i.imgur.com/XluzC2w.jpg' alt='Book cover' />
+                src={data.url} alt={`Page ${data.title}`} />
         </div>
     </div>;
 };
@@ -33,9 +76,9 @@ const MenuItem = ({text, selected}) => {
 // Important! add unique key
 export const Menu = (list, selected) =>
     list.map(el => {
-        const {name} = el;
+        const {title} = el;
 
-        return <MenuItem text={name} key={name} selected={selected} />;
+        return <MenuItem data={el} key={title} selected={selected} />;
     });
 
 

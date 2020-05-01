@@ -17,6 +17,22 @@ class EbookLandingBanner extends Component {
   render() {
     const { showPreview } = this.state;
 
+    const bookPreviewButton = (
+        <Button
+            className='center-block d-none d-md-block'
+            type='primary'
+            name="PreviewBook"
+            style={{ fontSize: "larger" }}
+            onClick={(event) => {
+                const { showPreview } = this.state;
+                this.setState({ showPreview: !showPreview });
+                handleButtonClickEventFacebook(event);
+            }}
+        >
+            {showPreview ? 'Hide' : 'See'} Inside the Book
+        </Button>
+    );
+
     return (
       <div className='vh-100-min EbookLandingBanner mx-sm-3'>
         <div>
@@ -59,38 +75,18 @@ class EbookLandingBanner extends Component {
                 </a>
               </Button>
               <br />
-
-              <Button
-                className='center-block d-none d-md-block'
-                type='primary'
-                name="PreviewBook"
-                style={{ fontSize: "larger" }}
-                onClick={(event) => {
-                  this.setState({ showPreview: true });
-                  handleButtonClickEventFacebook(event);
-                }}
-              >
-                See Preview of Book
-              </Button>
-              <Button
-                  className='center-block d-block d-md-none'
-                  type='primary'
-                  name="PreviewBook"
-                  style={{ fontSize: "larger" }}
-                  onClick={(event) => {
-                    handleButtonClickEventFacebook(event);
-                  }}>
-                <a  href="https://atila-schools-and-jobs-guide.s3.amazonaws.com/atila-ebook-online-preview.pdf"
-                    target="_blank" rel="noopener noreferrer">
-                See Preview of Book
-                </a>
-              </Button>
+                {bookPreviewButton}
             </Col>
           </Row>
         </div>
 
           {showPreview &&
-            <EbookPreview />
+            <React.Fragment>
+                <hr/>
+                <EbookPreview />
+                {bookPreviewButton}
+            </React.Fragment>
+
           }
 
         <link rel="preload" href="https://example.com/widget.html" as="document" />
