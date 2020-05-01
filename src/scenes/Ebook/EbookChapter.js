@@ -178,9 +178,11 @@ const EbookChapter = () => {
       <h1>
         Peek Inside
       </h1>
+      <div className='text-center'>
         <img
             className="responsive-images"
             src='https://i.imgur.com/7HtJNot.png' alt='Book cover' />
+      </div>
       <div className='text-center'>
         <img
             className="responsive-images"

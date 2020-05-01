@@ -68,6 +68,21 @@
   }
 }
 
+.EbookPreview {
+  .menu-item {
+    padding: 10px 40px;
+    margin: 5px 10px;
+    user-select: none;
+    cursor: pointer;
+    border: none;
+  }
+
+  .scroll-menu-arrow {
+    padding: 20px;
+    cursor: pointer;
+  }
+}
+
 .chapter-name {
   text-align: left;
   padding-left: 20px;

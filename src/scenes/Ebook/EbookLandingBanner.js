@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { Button, Col, Modal, Row } from "antd";
+import { Button, Col, Row } from "antd";
 import "./Ebook.scss";
 import {handleButtonClickEventFacebook} from "../../models/Utils";
+import EbookPreview from "./EbookPreview";
 
 class EbookLandingBanner extends Component {
   state = {
@@ -14,8 +15,10 @@ class EbookLandingBanner extends Component {
   };
 
   render() {
+    const { showPreview } = this.state;
+
     return (
-      <div className='vh-100 EbookLandingBanner mx-sm-3'>
+      <div className='vh-100-min EbookLandingBanner mx-sm-3'>
         <div>
           <br />
           <h1 className='col-sm-12 text-center my-md-5'>
@@ -86,25 +89,10 @@ class EbookLandingBanner extends Component {
           </Row>
         </div>
 
-        <Modal
-          visible={this.state.showPreview}
-          width='75%'
-          closable={false}
-          maskStyle={{ background: "rgba(0,0,0,0.93)", width: "100%" }}
-          footer={[
-            <Button onClick={this.closePreview} type='primary'>
-              Close
-            </Button>,
-          ]}
-          onCancel={this.closePreview}
-        >
-          <iframe
-            src='https://atila-schools-and-jobs-guide.s3.amazonaws.com/atila-ebook-online-preview.pdf'
-            title='Atila Schools and Jobs Ebook Preview'
-            id='ebook-preview-embed'
-            style={{ width: "100%", height: "75vh" }}
-          />
-        </Modal>
+          {showPreview &&
+            <EbookPreview />
+          }
+
         <link rel="preload" href="https://example.com/widget.html" as="document" />
       </div>
     );
