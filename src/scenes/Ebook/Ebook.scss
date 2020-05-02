@@ -68,6 +68,21 @@
   }
 }
 
+.EbookPreview {
+  .menu-item {
+    padding: 10px 40px;
+    margin: 5px 10px;
+    user-select: none;
+    cursor: pointer;
+    border: none;
+  }
+
+  .scroll-menu-arrow {
+    padding: 20px;
+    cursor: pointer;
+  }
+}
+
 .chapter-name {
   text-align: left;
   padding-left: 20px;
@@ -101,8 +116,8 @@
 }
 
 .responsive-images {
-  max-width: 90%;
-  max-height: 500px;
+  max-width: 90vw;
+  max-height: 750px;
   background-color: transparent;
   border: none;
 }

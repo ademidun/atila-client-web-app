@@ -1,21 +1,35 @@
 import React, { Component } from "react";
-import { Button, Col, Modal, Row } from "antd";
+import { Button, Col, Row } from "antd";
 import "./Ebook.scss";
 import {handleButtonClickEventFacebook} from "../../models/Utils";
+import EbookPreview from "./EbookPreview";
 
 class EbookLandingBanner extends Component {
   state = {
     showPreview: false,
   };
 
-  closePreview = (event) => {
-    event.stopPropagation();
-    this.setState({ showPreview: false });
-  };
-
   render() {
+    const { showPreview } = this.state;
+
+    const bookPreviewButton = (
+        <Button
+            className='center-block d-none d-md-block'
+            type='primary'
+            name="PreviewBook"
+            style={{ fontSize: "larger" }}
+            onClick={(event) => {
+                const { showPreview } = this.state;
+                this.setState({ showPreview: !showPreview });
+                handleButtonClickEventFacebook(event);
+            }}
+        >
+            {showPreview ? 'Hide' : ''} Show Inside the Book
+        </Button>
+    );
+
     return (
-      <div className='vh-100 EbookLandingBanner mx-sm-3'>
+      <div className='vh-100-min EbookLandingBanner mx-sm-3'>
         <div>
           <br />
           <h1 className='col-sm-12 text-center my-md-5'>
@@ -56,55 +70,21 @@ class EbookLandingBanner extends Component {
                 </a>
               </Button>
               <br />
-
-              <Button
-                className='center-block d-none d-md-block'
-                type='primary'
-                name="PreviewBook"
-                style={{ fontSize: "larger" }}
-                onClick={(event) => {
-                  this.setState({ showPreview: true });
-                  handleButtonClickEventFacebook(event);
-                }}
-              >
-                See Preview of Book
-              </Button>
-              <Button
-                  className='center-block d-block d-md-none'
-                  type='primary'
-                  name="PreviewBook"
-                  style={{ fontSize: "larger" }}
-                  onClick={(event) => {
-                    handleButtonClickEventFacebook(event);
-                  }}>
-                <a  href="https://atila-schools-and-jobs-guide.s3.amazonaws.com/atila-ebook-online-preview.pdf"
-                    target="_blank" rel="noopener noreferrer">
-                See Preview of Book
-                </a>
-              </Button>
+                {bookPreviewButton}
             </Col>
           </Row>
         </div>
 
-        <Modal
-          visible={this.state.showPreview}
-          width='75%'
-          closable={false}
-          maskStyle={{ background: "rgba(0,0,0,0.93)", width: "100%" }}
-          footer={[
-            <Button onClick={this.closePreview} type='primary'>
-              Close
-            </Button>,
-          ]}
-          onCancel={this.closePreview}
-        >
-          <iframe
-            src='https://atila-schools-and-jobs-guide.s3.amazonaws.com/atila-ebook-online-preview.pdf'
-            title='Atila Schools and Jobs Ebook Preview'
-            id='ebook-preview-embed'
-            style={{ width: "100%", height: "75vh" }}
-          />
-        </Modal>
+          {showPreview &&
+            <React.Fragment>
+                <hr/>
+                <EbookPreview />
+                {bookPreviewButton}
+            </React.Fragment>
+
+          }
+
+        <link rel="preload" href="https://example.com/widget.html" as="document" />
       </div>
     );
   }
