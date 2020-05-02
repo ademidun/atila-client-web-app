@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ScrollMenu from 'react-horizontal-scrolling-menu';
+import {scrollToElement} from "../../services/utils";
 
 // list of items
 const list = [
@@ -94,7 +95,7 @@ const Arrow = ({ text, className }) => {
 const ArrowLeft = Arrow({ text: '<', className: 'arrow-prev' });
 const ArrowRight = Arrow({ text: '>', className: 'arrow-next' });
 
-const selected = 'item1';
+const selected = list[0].title;
 
 class EbookPreview extends Component {
     constructor(props) {
@@ -109,8 +110,11 @@ class EbookPreview extends Component {
 
     onSelect = key => {
         this.setState({ selected: key });
-    }
+    };
 
+    componentDidMount() {
+        scrollToElement('#EbookPreview');
+    }
 
     render() {
         const { selected } = this.state;
@@ -118,13 +122,19 @@ class EbookPreview extends Component {
         const menu = this.menuItems;
 
         return (
-            <div className="EbookPreview">
+            <div className="EbookPreview" id="EbookPreview">
+                {/*lineHeight: '7.5vw' so title is not truncated when offset*/}
+                <h1 className="text-center mt-3"
+                    style={{lineHeight: '7.5vw'}}>
+                    See Inside the Book
+                </h1>
                 <ScrollMenu
                     data={menu}
                     arrowLeft={ArrowLeft}
                     arrowRight={ArrowRight}
                     selected={selected}
                     onSelect={this.onSelect}
+                    wheel={false}
                 />
             </div>
         );

@@ -9,11 +9,6 @@ class EbookLandingBanner extends Component {
     showPreview: false,
   };
 
-  closePreview = (event) => {
-    event.stopPropagation();
-    this.setState({ showPreview: false });
-  };
-
   render() {
     const { showPreview } = this.state;
 
@@ -29,7 +24,7 @@ class EbookLandingBanner extends Component {
                 handleButtonClickEventFacebook(event);
             }}
         >
-            {showPreview ? 'Hide' : 'See'} Inside the Book
+            {showPreview ? 'Hide' : ''} Show Inside the Book
         </Button>
     );
 
