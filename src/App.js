@@ -76,10 +76,12 @@ class App extends React.Component {
     if ((process.env.NODE_ENV !== "test" || Environment.name !== "dev") &&
         !navigator.userAgent.includes('https://github.com/prerender/prerender')) {
       // TODO: mock LogRocket.init and setupLogRocketReact and all uses of LogRocket in Navbar.js and Register.js
+
       const logRocketAppId = `guufgl/atila-${Environment.name}`;
       LogRocket.init(logRocketAppId);
-
       setupLogRocketReact(LogRocket);
+
+      console.log('navigator.userAgent', navigator, navigator.userAgent);
     }
   }
 
