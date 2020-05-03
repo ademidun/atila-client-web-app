@@ -12,6 +12,7 @@ import melissaImg from "./assets/melissaImg.jpeg";
 import mitchellImg from "./assets/mitchellImg.jpg";
 import abhiImg from "./assets/abhiImg.jpeg";
 import devImg from "./assets/devImg.jpeg";
+const emilyImg = 'https://i.imgur.com/VGAaH5L.jpg';
 import { Col, Row } from "antd";
 import HelmetSeo from "../HelmetSeo";
 
@@ -46,6 +47,16 @@ const teamMembers = [
     position: "Marketing",
     username: null,
     img_url: melissaImg,
+    description_1: "Melissa is a BMOS student at Western university",
+    link_type: "LinkedIn",
+    link_url: "https://www.linkedin.com/in/melissa-wen-63aa8b198/",
+  },
+  {
+    first_name: "Emily",
+    last_name: "Chen",
+    position: "Designer",
+    username: null,
+    img_url: emilyImg,
     description_1: "Melissa is a BMOS student at Western university",
     link_type: "LinkedIn",
     link_url: "https://www.linkedin.com/in/melissa-wen-63aa8b198/",
