@@ -12,9 +12,9 @@ import melissaImg from "./assets/melissaImg.jpeg";
 import mitchellImg from "./assets/mitchellImg.jpg";
 import abhiImg from "./assets/abhiImg.jpeg";
 import devImg from "./assets/devImg.jpeg";
-const emilyImg = 'https://i.imgur.com/VGAaH5L.jpg';
 import { Col, Row } from "antd";
 import HelmetSeo from "../HelmetSeo";
+const emilyImg = 'https://i.imgur.com/VGAaH5L.jpg';
 
 const teamMembers = [
   {
