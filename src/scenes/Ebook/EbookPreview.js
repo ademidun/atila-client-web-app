@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import ScrollMenu from 'react-horizontal-scrolling-menu';
-import {scrollToElement} from "../../services/utils";
 
 // list of items
 const list = [
@@ -111,10 +110,6 @@ class EbookPreview extends Component {
     onSelect = key => {
         this.setState({ selected: key });
     };
-
-    componentDidMount() {
-        scrollToElement('#EbookPreview');
-    }
 
     render() {
         const { selected } = this.state;

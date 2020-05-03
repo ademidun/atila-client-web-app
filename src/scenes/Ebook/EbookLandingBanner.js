@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Button, Col, Row } from "antd";
 import "./Ebook.scss";
 import {handleButtonClickEventFacebook} from "../../models/Utils";
-import EbookPreview from "./EbookPreview";
+import EbookChapter from "./EbookChapter";
 
 class EbookLandingBanner extends Component {
   state = {
@@ -78,7 +78,7 @@ class EbookLandingBanner extends Component {
           {showPreview &&
             <React.Fragment>
                 <hr/>
-                <EbookPreview />
+                <EbookChapter />
                 {bookPreviewButton}
             </React.Fragment>
 
