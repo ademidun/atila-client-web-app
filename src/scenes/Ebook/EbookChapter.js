@@ -174,30 +174,17 @@ function ChaptersCard({ chapter }) {
 
 const EbookChapter = () => {
   return (
-    <React.Fragment>
-      <h1>
+    <div className="EbookChapter">
+      <h2 className="text-center">
         Peek Inside
-      </h1>
-      <div className='text-center'>
-        <img
-            className="responsive-images"
-            src='https://i.imgur.com/7HtJNot.png' alt='Book cover' />
-      </div>
-      <div className='text-center'>
-        <img
-            className="responsive-images"
-            src='https://i.imgur.com/XluzC2w.jpg' alt='Book cover' />
-      </div>
+      </h2>
 
       <div className='text-center'>
       </div>
-      <h2 style={{ textAlign: "center" }} className="my-3">
-        Here are some of the contents of the guide
-      </h2>
       <div>
         <br />
 
-        <Row className='ebook-row'>
+        <Row>
           {/* left column of chapters */}
           <Col
             xs={24}
@@ -228,7 +215,12 @@ const EbookChapter = () => {
           </Col>
         </Row>
       </div>
-    </React.Fragment>
+      <div className='text-center'>
+        <img
+            className="responsive-images"
+            src='https://i.imgur.com/7HtJNot.png' alt='Book cover' />
+      </div>
+    </div>
   );
 };
 
