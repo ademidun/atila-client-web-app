@@ -5,9 +5,9 @@ import EmailSignUp from "./EmailSignUp";
 import Team from "../../components/Team/Team";
 import EbookInterviews from "./EbookInterview/EbookInterview";
 import TableauGraphsEmbed from "./TableauGraphsEmbed";
-import EbookChapter from "./EbookChapter";
 import EbookVideoEmbed from "./EbookVideoEmbed";
 import PremiumDescription from "./PremiumDescription";
+import EbookPreview from "./EbookPreview";
 
 function Ebook() {
   const seoContent = {
@@ -25,11 +25,11 @@ function Ebook() {
         <HelmetSeo content={seoContent} />
         <EbookLandingBanner />
         <hr />
+        <EbookPreview />
+        <hr />
         <TableauGraphsEmbed />
         <hr />
         <EmailSignUp />
-        <hr />
-        <EbookChapter />
         <hr />
         <PremiumDescription />
         <hr />

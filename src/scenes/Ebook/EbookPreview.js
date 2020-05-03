@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import ScrollMenu from 'react-horizontal-scrolling-menu';
-import {scrollToElement} from "../../services/utils";
 
-// list of items
-const list = [
+// list of pages
+const pages = [
     {
         title: 'Book Cover',
         url: 'https://i.imgur.com/kkV3Cra.png',
@@ -41,6 +40,10 @@ const list = [
         url: 'https://i.imgur.com/X4l5XGn.png',
     },
     {
+        title: 'Industry Analysis - Consulting',
+        url: 'https://i.imgur.com/yLrt8Y4.png',
+    },
+    {
         title: 'Detailed Graphics',
         url: 'https://i.imgur.com/CxMZCwk.png',
     },
@@ -53,7 +56,7 @@ const list = [
         url: 'https://i.imgur.com/9EdP2Jt.png',
     },
     {
-        title: 'Back Image',
+        title: 'And Much More!',
         url: 'https://i.imgur.com/pLaJDbn.png',
     },
 ];
@@ -95,13 +98,13 @@ const Arrow = ({ text, className }) => {
 const ArrowLeft = Arrow({ text: '<', className: 'arrow-prev' });
 const ArrowRight = Arrow({ text: '>', className: 'arrow-next' });
 
-const selected = list[0].title;
+const selected = pages[0].title;
 
 class EbookPreview extends Component {
     constructor(props) {
         super(props);
         // call it again if items count changes
-        this.menuItems = Menu(list, selected);
+        this.menuItems = Menu(pages, selected);
     }
 
     state = {
@@ -111,10 +114,6 @@ class EbookPreview extends Component {
     onSelect = key => {
         this.setState({ selected: key });
     };
-
-    componentDidMount() {
-        scrollToElement('#EbookPreview');
-    }
 
     render() {
         const { selected } = this.state;

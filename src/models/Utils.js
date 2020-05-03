@@ -133,8 +133,6 @@ export const scholarshipUserProfileSharedFormConfigs = [
 
 export const handleButtonClickEventFacebook = (event) => {
 
-    console.log(event.target.name);
-    console.log('window.fbq', window.fbq);
     let eventName = event.target.name;
 
     if('SubscribeBtn' === eventName) {
@@ -148,7 +146,6 @@ export const handleButtonClickEventFacebook = (event) => {
     if('AddToCart' === eventName) {
         eventName = 'InitiateCheckout';
     }
-    console.log({eventName});
 
     if (window.fbq) {
         window.fbq('track', eventName);
