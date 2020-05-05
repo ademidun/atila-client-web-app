@@ -13,6 +13,7 @@ import devImg from "./assets/devImg.jpeg";
 import { Col, Row } from "antd";
 import HelmetSeo from "../HelmetSeo";
 const emilyImg = 'https://i.imgur.com/VGAaH5L.jpg';
+const graceImg = 'https://i.imgur.com/rqzHKLh.jpg';
 
 const teamMembers = [
   {
@@ -46,7 +47,7 @@ const teamMembers = [
     img_url: emilyImg,
     description_1: "Emily Chen is a medical student at the University of Toronto.",
     link_type: "LinkedIn",
-    link_url: "https://www.linkedin.com/in/melissa-wen-63aa8b198/",
+    link_url: "https://www.linkedin.com/in/emily-chen-66578672/",
   },
   {
     first_name: "Dev",
@@ -79,6 +80,16 @@ const teamMembers = [
     description_1: "Elaine is currently studying BMOS at Western university.",
     link_type: "LinkedIn",
     link_url: "https://www.linkedin.com/in/elaine-yin-018a90198/",
+  },
+  {
+    first_name: "Grace",
+    last_name: "Tse",
+    position: "Marketing",
+    username: null,
+    img_url: graceImg,
+    description_1: "Grace is a grade 12 AP student at Markville Secondary School.",
+    link_type: "LinkedIn",
+    link_url: "https://www.linkedin.com/in/grace-tse-a17648174/",
   },
   {
     first_name: "Isaac",
