@@ -14,7 +14,7 @@ class EbookLandingBanner extends Component {
 
     const bookPreviewButton = (
         <Button
-            className='center-block d-none d-md-block'
+            className='center-block'
             type='primary'
             name="PreviewBook"
             style={{ fontSize: "larger" }}
