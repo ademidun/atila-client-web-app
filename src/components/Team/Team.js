@@ -9,8 +9,6 @@ import elaineImg from "./assets/elaineImg.jpeg";
 import hadiImg from "./assets/hadiImg.jpg";
 import isaacImg from "./assets/isaacImg.jpeg";
 import melissaImg from "./assets/melissaImg.jpeg";
-import mitchellImg from "./assets/mitchellImg.jpg";
-import abhiImg from "./assets/abhiImg.jpeg";
 import devImg from "./assets/devImg.jpeg";
 import { Col, Row } from "antd";
 import HelmetSeo from "../HelmetSeo";
@@ -29,17 +27,6 @@ const teamMembers = [
     description_2: "He enjoys playing soccer and is a big Arsenal F.C. fan.",
     link_type: "Website",
     link_url: "http://tomiwa.ca",
-  },
-  {
-    first_name: "Mitchell",
-    last_name: "Li",
-    position: "Software Developer",
-    username: null,
-    img_url: mitchellImg,
-    description_1:
-      "Mitchell is an Honours Mathematics and Business student at the University of Waterloo",
-    link_type: "LinkedIn",
-    link_url: "https://www.linkedin.com/in/mitchell-tz-li/",
   },
   {
     first_name: "Melissa",
@@ -82,17 +69,6 @@ const teamMembers = [
       "Aaron is a Media Information and Techno-culture (MIT) student at Western university ",
     link_type: "LinkedIn",
     link_url: "https://www.linkedin.com/in/aaron-doerfler-3a2144197/",
-  },
-  {
-    first_name: "Abhinit",
-    last_name: "Patil",
-    position: "Software Developer",
-    username: null,
-    img_url: abhiImg,
-    description_1:
-      "Abhinit is a grade 12 IB student at Turner Fenton Secondary School",
-    link_type: "LinkedIn",
-    link_url: "https://www.linkedin.com/in/abhinit-patil/",
   },
   {
     first_name: "Elaine",
