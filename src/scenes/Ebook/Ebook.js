@@ -8,6 +8,7 @@ import TableauGraphsEmbed from "./TableauGraphsEmbed";
 import EbookVideoEmbed from "./EbookVideoEmbed";
 import PremiumDescription from "./PremiumDescription";
 import EbookPreview from "./EbookPreview";
+import {BackTop} from "antd";
 
 function Ebook() {
   const seoContent = {
@@ -23,6 +24,7 @@ function Ebook() {
     <React.Fragment>
       <div>
         <HelmetSeo content={seoContent} />
+        <BackTop />
         <EbookLandingBanner />
         <hr />
         <EbookPreview />
