@@ -1,6 +1,5 @@
 import React from 'react';
 import Banner from './Banner';
-import 'antd/dist/antd.css';
 import './LandingPage.scss';
 import './Reponsive.scss';
 import WhatIsAtila from "./WhatIsAtila";
