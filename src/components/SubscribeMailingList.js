@@ -42,7 +42,8 @@ class SubscribeMailingList extends  React.Component{
         const formDataPost = {
                 formGoogleSheetName: formGoogleSheetName,
                 referrer: pathname,
-                ...formData
+                ...formData,
+                device: navigator.userAgent
             };
 
         // only set skipSendEmail if the value is true, because setting the value to false
