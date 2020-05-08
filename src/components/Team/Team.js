@@ -136,7 +136,7 @@ function TeamMemberCard({ teamMember, showLinkedin = true }) {
     >
 
       <img
-        className='center-block'
+        className='center-block-2'
         src={teamMember.img_url}
         alt={teamMember.first_name}
         style={{ width: "100px", height: "100px", borderRadius: "50%"}}
