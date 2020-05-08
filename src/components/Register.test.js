@@ -1,10 +1,24 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import Register from "./Register";
-import { validateEmailAndPasswordPresence } from "../extra/validations";
+import { mount } from "enzyme";
+import Adapter from "enzyme-adapter-react-16";
+import { Provider } from "react-redux";
+import configureStore from "redux-mock-store";
+import { initialReduxState } from "../models/Constants";
+
+const Enzyme = require("enzyme");
+Enzyme.configure({ adapter: new Adapter() });
+
+const mockStore = configureStore();
+const store = mockStore(initialReduxState);
 
 describe("<Register />", () => {
-  const wrapper = shallow(<Register />);
+  const wrapper = mount(
+    <Provider store={store}>
+      <Register />
+    </Provider>
+  );
 
   it("should have input for email and password", () => {
     //Email and password input field should be present
@@ -16,29 +30,15 @@ describe("<Register />", () => {
     expect(wrapper.find("input#agreeTermsConditions")).toHaveLength(1);
   });
 
-  it("should test email and password presence", () => {
-    //should return true
-    expect(
-      validateEmailAndPasswordPresence("email@email.com", "password").toEqual(
-        true
-      )
-    );
-
-    //should return false
-    expect(validateEmailAndPasswordPresence("", "").toEqual(false));
-  });
-
   it("strips usernames with spaces", () => {
-    const component = Enzyme.mount(<Register onSubmit={onSubmitMock} />);
-
-    component
+    wrapper
       .find("input.username")
-      .simulate("change", { target: { value: "myUser" } });
-    component
+      .simulate("change", { target: { value: "my User" } });
+    wrapper
       .find("input.password")
-      .simulate("change", { target: { value: "my Password" } });
-    component.find("form").simulate("submit");
+      .simulate("change", { target: { value: "myPassword" } });
+    wrapper.find("form").simulate("submit");
 
-    expect(wrapper.userProfile.state("password")).toEqual("myPassword");
+    expect(wrapper.userProfile.state("username")).toEqual("myUser");
   });
 });
