@@ -12,6 +12,7 @@ import melissaImg from "./assets/melissaImg.jpeg";
 import devImg from "./assets/devImg.jpeg";
 import { Col, Row } from "antd";
 import HelmetSeo from "../HelmetSeo";
+import {faAlignCenter} from "@fortawesome/free-solid-svg-icons";
 const emilyImg = 'https://i.imgur.com/VGAaH5L.jpg';
 const graceImg = 'https://i.imgur.com/rqzHKLh.jpg';
 
@@ -134,11 +135,13 @@ function TeamMemberCard({ teamMember, showLinkedin = true }) {
       className='bg-white rounded shadow mb-3 p-3'
       style={{ height: "350px" }}
     >
+
       <img
-        className='mb-3'
+        className='center-block'
         src={teamMember.img_url}
         alt={teamMember.first_name}
-        style={{ width: "100px", height: "100px", borderRadius: "50%" }}
+        style={{ width: "100px", height: "100px", borderRadius: "50%"}}
+
       />
       <h5 className='mb-0'>
         <strong>
