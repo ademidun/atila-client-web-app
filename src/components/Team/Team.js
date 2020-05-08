@@ -12,7 +12,6 @@ import melissaImg from "./assets/melissaImg.jpeg";
 import devImg from "./assets/devImg.jpeg";
 import { Col, Row } from "antd";
 import HelmetSeo from "../HelmetSeo";
-import {faAlignCenter} from "@fortawesome/free-solid-svg-icons";
 const emilyImg = 'https://i.imgur.com/VGAaH5L.jpg';
 const graceImg = 'https://i.imgur.com/rqzHKLh.jpg';
 
