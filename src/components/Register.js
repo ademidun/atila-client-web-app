@@ -7,7 +7,7 @@ import {setLoggedInUserProfile} from "../redux/actions/user";
 import {connect} from "react-redux";
 import TermsConditions from "./TermsConditions";
 import {Modal} from "antd";
-import {Link} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 
 export class PasswordShowHide extends React.Component {
 
@@ -280,4 +280,4 @@ Register.propTypes = {
     setLoggedInUserProfile: PropTypes.func.isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(Register);
+export default withRouter(connect(null, mapDispatchToProps)(Register));
