@@ -26,7 +26,7 @@ export default class EbookPremiumTabs extends Component {
               "https://public.tableau.com/views/TotalCareerSegmentationPerSchoolIncludingTopInternationalSchools/Sheet1?:display_count=y&:origin=viz_share_link",
               "https://public.tableau.com/views/TechTierList2/Sheet3?:display_count=y&:origin=viz_share_link",
           ],
-            flourishUrls: [
+          flourishUrls: [
                 {
                     visualizationId: '1818468',
                     isNew: true,
@@ -65,7 +65,7 @@ export default class EbookPremiumTabs extends Component {
               "https://public.tableau.com/views/TotalDAFunnel/Sheet1?:display_count=y&:origin=viz_share_link",
               "https://public.tableau.com/views/TOP10Treemap/Sheet1?:display_count=y&:origin=viz_share_link",
           ],
-            flourishUrls: [
+          flourishUrls: [
                 {
                     visualizationId: '1647836',
                     isNew: true,
@@ -118,13 +118,15 @@ export default class EbookPremiumTabs extends Component {
                           <React.Fragment>
                               {industryConfig[industry].flourishUrls &&
                               industryConfig[industry].flourishUrls.map( item => (
-                                  <div key={item.visualizationId}
-                                       style={item.isNew ? {border: 'solid #B7EB8F'} : null}>
+                                  <div>
                                       {item.isNew &&
-                                          <Tag color="green">new</Tag>
+                                        <Tag color="green">new</Tag>
                                       }
-                                      <FlourishViz visualizationId={item.visualizationId}
-                                                   title={item.title} />
+                                      <div key={item.visualizationId}
+                                           style={item.isNew ? {border: 'solid #B7EB8F', marginBottom: '1%'} : null}>
+                                          <FlourishViz visualizationId={item.visualizationId}
+                                                       title={item.title} />
+                                      </div>
                                   </div>
                               ))}
                           </React.Fragment>
