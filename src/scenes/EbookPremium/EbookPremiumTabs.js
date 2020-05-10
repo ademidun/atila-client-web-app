@@ -16,7 +16,7 @@ export default class EbookPremiumTabs extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      industry: "Investment Banking",
+      industry: "Tech",
       industryConfig: {
         "Tech": {
           name: "Tech",
@@ -26,6 +26,18 @@ export default class EbookPremiumTabs extends Component {
               "https://public.tableau.com/views/TotalCareerSegmentationPerSchoolIncludingTopInternationalSchools/Sheet1?:display_count=y&:origin=viz_share_link",
               "https://public.tableau.com/views/TechTierList2/Sheet3?:display_count=y&:origin=viz_share_link",
           ],
+            flourishUrls: [
+                {
+                    visualizationId: '1818468',
+                    isNew: true,
+                    title: 'Jobs at Tech Companies by Canadian Universities\n'
+                },
+                {
+                    visualizationId: '1704268',
+                    isNew: true,
+                    title: 'Software Engineers by School'
+                }
+            ]
         },
         "Biomedical": {
           name: "Biomedical",
@@ -53,6 +65,13 @@ export default class EbookPremiumTabs extends Component {
               "https://public.tableau.com/views/TotalDAFunnel/Sheet1?:display_count=y&:origin=viz_share_link",
               "https://public.tableau.com/views/TOP10Treemap/Sheet1?:display_count=y&:origin=viz_share_link",
           ],
+            flourishUrls: [
+                {
+                    visualizationId: '1647836',
+                    isNew: true,
+                    title: 'Top 5 Schools for MBB Consulting'
+                }
+            ]
         },
         "All Industries": {
           name: "All Industries",
@@ -64,11 +83,11 @@ export default class EbookPremiumTabs extends Component {
           ],
           flourishUrls: [
               {
-                  url: 'https://flo.uri.sh/visualisation/1924813/embed',
                   visualizationId: '1924813',
                   isNew: true,
+                  title: 'School Rankings By Industry'
               }
-          ]
+          ],
         },
       }
     };
@@ -83,25 +102,9 @@ export default class EbookPremiumTabs extends Component {
   render() {
 
     const { industryConfig } = this.state;
-    let loadFlourishEmbedLibrary = false;
-
-    let industryEntry;
-    for (industryEntry in industryConfig) {
-
-        if (!industryConfig.hasOwnProperty(industryEntry)) {
-            continue;
-        }
-        if (industryConfig[industryEntry].flourishUrls && industryConfig[industryEntry].flourishUrls.length > 0) {
-
-            loadFlourishEmbedLibrary = (<script src="https://public.flourish.studio/resources/embed.js" />);
-
-            console.log({industry: industryEntry, industryConfig});
-        }
-    }
 
     return (
         <div>
-            {loadFlourishEmbedLibrary}
           <Row>
             <Col>
               <div className='text-center'>
@@ -115,12 +118,14 @@ export default class EbookPremiumTabs extends Component {
                           <React.Fragment>
                               {industryConfig[industry].flourishUrls &&
                               industryConfig[industry].flourishUrls.map( item => (
-                                  <React.Fragment key={item.visualizationId}>
+                                  <div key={item.visualizationId}
+                                       style={item.isNew ? {border: 'solid #B7EB8F'} : null}>
                                       {item.isNew &&
                                           <Tag color="green">new</Tag>
                                       }
-                                      <FlourishViz visualizationId={item.visualizationId} />
-                                  </React.Fragment>
+                                      <FlourishViz visualizationId={item.visualizationId}
+                                                   title={item.title} />
+                                  </div>
                               ))}
                           </React.Fragment>
                         <React.Fragment>
