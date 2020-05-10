@@ -13,6 +13,7 @@ import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {Button} from "antd";
+import {FREE_PREVIEW_EMAIL} from "./EbookPremiumBanner";
 /* eslint-enable no-unused-vars */
 
 const TabPane = Tabs.TabPane;
@@ -122,7 +123,7 @@ class EbookPremiumTabs extends Component {
 
     const { industryConfig } = this.state;
     const { ebookUserProfile } = this.props;
-    const isPreviewMode = ebookUserProfile.email === 'preview@atila.ca';
+    const isPreviewMode = ebookUserProfile.email === FREE_PREVIEW_EMAIL;
 
     const visualizationTypes = {
       tableau: isPreviewMode ? 'tableauUrlsPreview' :  'tableauUrls',
@@ -134,9 +135,15 @@ class EbookPremiumTabs extends Component {
           <Row>
             <Col>
               <div className='text-center'>
+                  {ebookUserProfile.email === FREE_PREVIEW_EMAIL &&
+                  <div>
+                      <h4><strong>Preview Mode</strong></h4>
+                  </div>
+                  }
                   {ebookUserProfile && ebookUserProfile.email &&
                   <div className="text-right small">
                       Viewing as: <strong>{ebookUserProfile.email}</strong>
+
                       <Button
                           onClick={this.logoutEbookUser}
                           type="link">

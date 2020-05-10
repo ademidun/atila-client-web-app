@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row } from "antd";
+import {Button, Row} from "antd";
 import "../Ebook/Ebook.scss";
 import {Link, withRouter} from "react-router-dom";
 import EbookPremiumTabs from "./EbookPremiumTabs";
@@ -8,6 +8,10 @@ import ResponseDisplay from "../../components/ResponseDisplay";
 import {connect} from "react-redux";
 import {updateEbookUserProfile} from "../../redux/actions/user";
 import PropTypes from "prop-types";
+
+
+export const FREE_PREVIEW_EMAIL = 'preview@atila.ca';
+export const FREE_PREVIEW_LICENSE_KEY = 'freepreview7';
 
 class EbookPremiumBanner extends Component {
 
@@ -71,6 +75,15 @@ class EbookPremiumBanner extends Component {
         });
   };
 
+  autoFillPreview = (event) => {
+    event.preventDefault();
+
+    this.setState({
+      email: FREE_PREVIEW_EMAIL,
+      licenseKey: FREE_PREVIEW_LICENSE_KEY
+    })
+  };
+
   render() {
     const { email, licenseKey, isLoadingResponse, responseError } = this.state;
     const { ebookUserProfile } = this.props;
@@ -95,6 +108,16 @@ class EbookPremiumBanner extends Component {
                           value={email}
                           onChange={this.updateForm}
                         />
+                        <small>
+                          Hint: For a free preview use,
+                          email: <code>{FREE_PREVIEW_EMAIL}</code>{' '}
+                          License key: <code>{FREE_PREVIEW_LICENSE_KEY}</code>{' '}
+                          <Button onClick={this.autoFillPreview}
+                                  type="link">
+                            Auto Fill Free preview
+                          </Button>
+
+                        </small>
 
                       <input
                         placeholder='License Key you received after purchasing book (check your email)'
@@ -120,15 +143,6 @@ class EbookPremiumBanner extends Component {
                           Buy Ebook
                         </Link>
                       </div>
-                      {/*<button*/}
-                      {/*  className='btn btn-link max-width-fit-content'*/}
-                      {/*  onClick={(event) => {*/}
-                      {/*    event.preventDefault();*/}
-                      {/*    this.setState({ forgotPassword: true });*/}
-                      {/*  }}*/}
-                      {/*>*/}
-                      {/*  Forgot password?*/}
-                      {/*</button>*/}
                     </form>
                   </div>
                 </div>
