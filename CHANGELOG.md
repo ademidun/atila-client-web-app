@@ -1,5 +1,14 @@
 # Changelog
 
+## May 10,2020
+### Logic for Ebook Premium User 
+
+- If a user buys a book they can log in to the premium portal
+- How do you know if a user is logged in, they have an email in local storage?
+- The current PR [#146](https://github.com/ademidun/atila-client-web-app/issues)
+will allow users to use Redux to store their ebook information
+- either use a free preview email or a signed in email
+
 ## November 30, 2019
 ### Save Page Views for Guest User
 

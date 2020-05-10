@@ -7,6 +7,7 @@ import UtilsAPI from "../../services/UtilsAPI";
 import ResponseDisplay from "../../components/ResponseDisplay";
 import {connect} from "react-redux";
 import {updateEbookUserProfile} from "../../redux/actions/user";
+import PropTypes from "prop-types";
 
 class EbookPremiumBanner extends Component {
 
@@ -29,15 +30,14 @@ class EbookPremiumBanner extends Component {
       licenseKey,
       isLoadingResponse: false,
       responseError: false,
-      loggedIn: false,
     };
   }
 
-
-
   componentDidMount() {
-    if(localStorage.getItem('ebookUserEmail')) {
-      this.setState({ loggedIn: true });
+    const { updateEbookUserProfile } = this.props;
+    const email = localStorage.getItem('ebookUserEmail');
+    if(email) {
+      updateEbookUserProfile({email});
     }
   }
 
@@ -62,7 +62,7 @@ class EbookPremiumBanner extends Component {
         .then( res => {
           console.log({res});
           localStorage.setItem("ebookUserEmail", email);
-          this.setState({ loggedIn: true, isLoadingResponse: false });
+          this.setState({ isLoadingResponse: false });
           updateEbookUserProfile({email, licenseKey});
         })
         .catch( err => {
@@ -72,7 +72,11 @@ class EbookPremiumBanner extends Component {
   };
 
   render() {
-    const { email, licenseKey, isLoadingResponse, loggedIn, responseError } = this.state;
+    const { email, licenseKey, isLoadingResponse, responseError } = this.state;
+    const { ebookUserProfile } = this.props;
+
+    const loggedIn = ebookUserProfile && ebookUserProfile.email;
+
     return (
       <React.Fragment>
         {!loggedIn && (
@@ -143,6 +147,12 @@ const mapDispatchToProps = {
 };
 const mapStateToProps = state => {
   return { ebookUserProfile: state.data.user.ebookUserProfile };
+};
+
+EbookPremiumBanner.propTypes = {
+  // redux
+  ebookUserProfile: PropTypes.shape({}),
+  updateEbookUserProfile: PropTypes.func.isRequired,
 };
 
 export default  withRouter(connect(mapStateToProps, mapDispatchToProps)(EbookPremiumBanner));

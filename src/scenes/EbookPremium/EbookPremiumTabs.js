@@ -8,11 +8,16 @@ import "../Ebook/Ebook.scss";
 import tableau from "tableau-api";
 import TableauViz from "../../components/TableauViz";
 import {FlourishViz} from "../../components/FlourishViz";
+import {updateEbookUserProfile} from "../../redux/actions/user";
+import PropTypes from "prop-types";
+import {connect} from "react-redux";
+import {withRouter} from "react-router-dom";
+import {Button} from "antd";
 /* eslint-enable no-unused-vars */
 
 const TabPane = Tabs.TabPane;
 
-export default class EbookPremiumTabs extends Component {
+class EbookPremiumTabs extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -99,15 +104,33 @@ export default class EbookPremiumTabs extends Component {
     });
   };
 
+  logoutEbookUser = (event) => {
+      event.preventDefault();
+      const { updateEbookUserProfile } = this.props;
+
+      updateEbookUserProfile(null);
+      localStorage.removeItem('ebookUserEmail');
+  };
+
   render() {
 
     const { industryConfig } = this.state;
+      const { ebookUserProfile } = this.props;
 
     return (
         <div>
           <Row>
             <Col>
               <div className='text-center'>
+                  {ebookUserProfile && ebookUserProfile.email &&
+                  <div className="text-right small">
+                      Viewing as: <strong>{ebookUserProfile.email}</strong>
+                      <Button
+                          onClick={this.logoutEbookUser}
+                          type="link">
+                          Logout
+                      </Button>
+                  </div>}
                 <Tabs
                   defaultActiveKey='Tech'
                   id='UserProfileViewTabs'
@@ -149,3 +172,18 @@ export default class EbookPremiumTabs extends Component {
     );
   }
 }
+
+const mapDispatchToProps = {
+    updateEbookUserProfile,
+};
+const mapStateToProps = state => {
+    return { ebookUserProfile: state.data.user.ebookUserProfile };
+};
+
+EbookPremiumTabs.propTypes = {
+    // redux
+    ebookUserProfile: PropTypes.shape({}).isRequired,
+    updateEbookUserProfile: PropTypes.func.isRequired,
+};
+
+export default  withRouter(connect(mapStateToProps, mapDispatchToProps)(EbookPremiumTabs));
