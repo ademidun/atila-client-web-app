@@ -29,18 +29,18 @@ export default function PremiumDescription() {
                     </ol>
                     <div className="text-center">
                         <Row gutter={16}>
-                            <Col span={12}>
+                            <Col sm={24} md={12} className="mb-3">
                                 <Button type="primary">
                                     <Link to="schools/premium">
                                         Login to Premium Portal
                                     </Link>
                                 </Button>
                             </Col>
-                            <Col span={12}>
+                            <Col sm={24} md={12}>
                                 <Button type="primary">
                                     <Link
                                         to={`schools/premium?email=${FREE_PREVIEW_EMAIL}&licenseKey=${FREE_PREVIEW_LICENSE_KEY}`}>
-                                        Preview Premium Portal
+                                        Premium Portal - Free Preview
                                     </Link>
                                 </Button>
                             </Col>
