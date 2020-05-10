@@ -1,6 +1,7 @@
 import React from "react";
 import {Button, Col, Row} from "antd";
 import {Link} from "react-router-dom";
+import {FREE_PREVIEW_EMAIL, FREE_PREVIEW_LICENSE_KEY} from "../EbookPremium/EbookPremiumBanner";
 
 export default function PremiumDescription() {
 
@@ -28,15 +29,21 @@ export default function PremiumDescription() {
                     </ol>
                     <div className="text-center">
                         <Row gutter={16}>
-                            {['Login to Premium Portal'].map( text => (
-                                <Col key={text} span={12}>
-                                    <Button type="primary">
-                                        <Link to="schools/premium">
-                                            {text}
-                                        </Link>
-                                    </Button>
-                                </Col>
-                            ))}
+                            <Col sm={24} md={12} className="mb-3">
+                                <Button type="primary">
+                                    <Link to="schools/premium">
+                                        Login to Premium Portal
+                                    </Link>
+                                </Button>
+                            </Col>
+                            <Col sm={24} md={12}>
+                                <Button type="primary">
+                                    <Link
+                                        to={`schools/premium?email=${FREE_PREVIEW_EMAIL}&licenseKey=${FREE_PREVIEW_LICENSE_KEY}`}>
+                                        Premium Portal - Free Preview
+                                    </Link>
+                                </Button>
+                            </Col>
                         </Row>
 
 

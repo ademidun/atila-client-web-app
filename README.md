@@ -13,3 +13,17 @@ staging: [![Netlify Status](https://api.netlify.com/api/v1/badges/ed4f5b21-da47-
 ## Getting Started
 
 `npm install; npm start`
+
+## Steps for Adding a new Item to Redux
+
+Taken from [PR #8](https://github.com/ademidun/atila-client-web-app/pull/8/files)
+
+- Go to `src/redux/reducers/data` and add a data item to a reducer in the respective `.js` file
+- If you are creating a new reducer you will also need to add the reducer to `index.js` in `src/redux/reducers/data`
+
+
+- For adding actions:
+- Go to `src/redux/actions/<yourActionFile>.js` and add an action that will trigger that data item
+
+- Then you can reference the redux state from `mapStateToProps()` and `state.data.user.loggedInUserProfile`
+- If you are adding an action, you can do: `mapDispatchToProps()`

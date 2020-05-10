@@ -124,7 +124,7 @@ class EbookPreview extends Component {
             <div className="EbookPreview" id="EbookPreview">
                 {/*lineHeight: '7.5vw' so title is not truncated when offset*/}
                 <h1 className="text-center mt-3"
-                    style={{lineHeight: '7.5vw'}}>
+                    style={{lineHeight: '11vw'}}>
                     See Inside the Book
                 </h1>
                 <ScrollMenu
