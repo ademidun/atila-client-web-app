@@ -31,6 +31,9 @@ class EbookPremiumTabs extends Component {
               "https://public.tableau.com/views/TotalCareerSegmentationPerSchoolIncludingTopInternationalSchools/Sheet1?:display_count=y&:origin=viz_share_link",
               "https://public.tableau.com/views/TechTierList2/Sheet3?:display_count=y&:origin=viz_share_link",
           ],
+          tableauUrlsPreview: [
+              "https://public.tableau.com/views/TotalCareerSegmentationforCanadianSchools_15868721302310/Sheet2?:display_count=y&publish=yes&:origin=viz_share_link",
+          ],
           flourishUrls: [
                 {
                     visualizationId: '1818468',
@@ -86,6 +89,9 @@ class EbookPremiumTabs extends Component {
               "https://public.tableau.com/views/UniversityRankingsApril2020/Sheet1?:display_count=y&:origin=viz_share_link",
               "https://public.tableau.com/views/AllIndustries2/Sheet2?:display_count=y&:origin=viz_share_link",
           ],
+          tableauUrlsPreview: [
+              "https://public.tableau.com/views/WhatSchoolsDoBiomedCompaniesHireFromOrganizedbyPosition_15868717000150/Sheet2?:display_count=y&publish=yes&:origin=viz_share_link",
+          ],
           flourishUrls: [
               {
                   visualizationId: '1924813',
@@ -115,7 +121,13 @@ class EbookPremiumTabs extends Component {
   render() {
 
     const { industryConfig } = this.state;
-      const { ebookUserProfile } = this.props;
+    const { ebookUserProfile } = this.props;
+    const isPreviewMode = ebookUserProfile.email === 'preview@atila.ca';
+
+    const visualizationTypes = {
+      tableau: isPreviewMode ? 'tableauUrlsPreview' :  'tableauUrls',
+      flourish: isPreviewMode ? 'flourishUrlsPreview' :  'flourishUrls',
+    };
 
     return (
         <div>
@@ -136,35 +148,35 @@ class EbookPremiumTabs extends Component {
                   id='UserProfileViewTabs'
                   onChange={(e) => this.changeTab(e)}
                 >
-                  {Object.keys(industryConfig).map( industry => (
-                      <TabPane tab={industry} key={industry}>
-                          <React.Fragment>
-                              {industryConfig[industry].flourishUrls &&
-                              industryConfig[industry].flourishUrls.map( item => (
-                                  <div key={item.visualizationId}>
-                                      {item.isNew &&
+                    {Object.keys(industryConfig).map( industry => (
+                        <TabPane tab={industry} key={industry}>
+                            <React.Fragment>
+                                {industryConfig[industry][visualizationTypes.flourish] &&
+                                industryConfig[industry][visualizationTypes.flourish].map( item => (
+                                    <div key={item.visualizationId}>
+                                        {item.isNew &&
                                         <Tag color="green">new</Tag>
-                                      }
-                                      <div
-                                           style={item.isNew ? {border: 'solid #B7EB8F', marginBottom: '1%'} : null}>
-                                          <FlourishViz visualizationId={item.visualizationId}
-                                                       title={item.title} />
-                                      </div>
-                                  </div>
-                              ))}
-                          </React.Fragment>
-                        <React.Fragment>
-                          {industryConfig[industry].tableauUrls.map( url => (
-                              <React.Fragment key={url}>
-                                <TableauViz url={url} />
-                                <hr/>
-                              </React.Fragment>
-                          ))}
-                        </React.Fragment>
-                      </TabPane>
-                  ))}
+                                        }
+                                        <div
+                                            style={item.isNew ? {border: 'solid #B7EB8F', marginBottom: '1%'} : null}>
+                                            <FlourishViz visualizationId={item.visualizationId}
+                                                         title={item.title} />
+                                        </div>
+                                    </div>
+                                ))}
+                            </React.Fragment>
+                            <React.Fragment>
+                                {industryConfig[industry][visualizationTypes.tableau] &&
+                                    industryConfig[industry][visualizationTypes.tableau].map( url => (
+                                    <React.Fragment key={url}>
+                                        <TableauViz url={url} />
+                                        <hr/>
+                                    </React.Fragment>
+                                ))}
+                            </React.Fragment>
+                        </TabPane>
+                    ))}
                 </Tabs>
-
               </div>
             </Col>
           </Row>
