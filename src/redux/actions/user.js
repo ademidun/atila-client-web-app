@@ -3,6 +3,7 @@ export const UPDATE_LOGGED_IN_USER_PROFILE = "UPDATE_LOGGED_IN_USER_PROFILE";
 export const SET_IS_LOADING_LOGGED_IN_USER_PROFILE_GET = "SET_IS_LOADING_LOGGED_IN_USER_PROFILE_GET";
 export const SET_IS_FINISHED_LOADING_LOGGED_IN_USER_PROFILE_GET = "SET_IS_FINISHED_LOADING_LOGGED_IN_USER_PROFILE_GET";
 export const INITIALIZE_LOGGED_IN_USER_PROFILE = "INITIALIZE_LOGGED_IN_USER_PROFILE";
+export const UPDATE_LOGGED_IN_EBOOK_USER_PROFILE = "UPDATE_LOGGED_IN_EBOOK_USER_PROFILE";
 
 export function setLoggedInUserProfile(payload) {
     return {type: SET_LOGGED_IN_USER_PROFILE, payload}
@@ -15,4 +16,7 @@ export function initializeLoggedInUserProfile() {
 }
 export function updateLoggedInUserProfile(payload) {
     return {type: UPDATE_LOGGED_IN_USER_PROFILE, payload}
+}
+export function updateEbookUserProfile(payload) {
+    return {type: UPDATE_LOGGED_IN_EBOOK_USER_PROFILE, payload}
 }

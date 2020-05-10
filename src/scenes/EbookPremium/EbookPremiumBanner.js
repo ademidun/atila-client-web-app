@@ -5,6 +5,8 @@ import {Link, withRouter} from "react-router-dom";
 import EbookPremiumTabs from "./EbookPremiumTabs";
 import UtilsAPI from "../../services/UtilsAPI";
 import ResponseDisplay from "../../components/ResponseDisplay";
+import {connect} from "react-redux";
+import {updateEbookUserProfile} from "../../redux/actions/user";
 
 class EbookPremiumBanner extends Component {
 
@@ -47,6 +49,7 @@ class EbookPremiumBanner extends Component {
   submitForm = (event) => {
     event.preventDefault();
     const { email, licenseKey } = this.state;
+    const { updateEbookUserProfile } = this.props;
 
     if (!email || !licenseKey) {
       this.setState({responseError: `${!email ? 'Email' : 'License Key'} cannot be blank`});
@@ -60,6 +63,7 @@ class EbookPremiumBanner extends Component {
           console.log({res});
           localStorage.setItem("ebookUserEmail", email);
           this.setState({ loggedIn: true, isLoadingResponse: false });
+          updateEbookUserProfile({email, licenseKey});
         })
         .catch( err => {
           console.log({err});
@@ -134,4 +138,11 @@ class EbookPremiumBanner extends Component {
       </React.Fragment>)
   }
 }
-export default  withRouter(EbookPremiumBanner);
+const mapDispatchToProps = {
+  updateEbookUserProfile,
+};
+const mapStateToProps = state => {
+  return { ebookUserProfile: state.data.user.ebookUserProfile };
+};
+
+export default  withRouter(connect(mapStateToProps, mapDispatchToProps)(EbookPremiumBanner));

@@ -118,11 +118,11 @@ export default class EbookPremiumTabs extends Component {
                           <React.Fragment>
                               {industryConfig[industry].flourishUrls &&
                               industryConfig[industry].flourishUrls.map( item => (
-                                  <div>
+                                  <div key={item.visualizationId}>
                                       {item.isNew &&
                                         <Tag color="green">new</Tag>
                                       }
-                                      <div key={item.visualizationId}
+                                      <div
                                            style={item.isNew ? {border: 'solid #B7EB8F', marginBottom: '1%'} : null}>
                                           <FlourishViz visualizationId={item.visualizationId}
                                                        title={item.title} />
