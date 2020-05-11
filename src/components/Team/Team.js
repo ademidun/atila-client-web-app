@@ -9,11 +9,11 @@ import elaineImg from "./assets/elaineImg.jpeg";
 import hadiImg from "./assets/hadiImg.jpg";
 import isaacImg from "./assets/isaacImg.jpeg";
 import melissaImg from "./assets/melissaImg.jpeg";
-import mitchellImg from "./assets/mitchellImg.jpg";
-import abhiImg from "./assets/abhiImg.jpeg";
 import devImg from "./assets/devImg.jpeg";
 import { Col, Row } from "antd";
 import HelmetSeo from "../HelmetSeo";
+const emilyImg = 'https://i.imgur.com/VGAaH5L.jpg';
+const graceImg = 'https://i.imgur.com/rqzHKLh.jpg';
 
 const teamMembers = [
   {
@@ -24,21 +24,10 @@ const teamMembers = [
     img_url: tomiwaImage,
     description_1:
       "Tomiwa is a dual degree software engineering and business student at Ivey Business School," +
-        " Western University",
+        " Western University.",
     description_2: "He enjoys playing soccer and is a big Arsenal F.C. fan.",
     link_type: "Website",
     link_url: "http://tomiwa.ca",
-  },
-  {
-    first_name: "Mitchell",
-    last_name: "Li",
-    position: "Software Developer",
-    username: null,
-    img_url: mitchellImg,
-    description_1:
-      "Mitchell is an Honours Mathematics and Business student at the University of Waterloo",
-    link_type: "LinkedIn",
-    link_url: "https://www.linkedin.com/in/mitchell-tz-li/",
   },
   {
     first_name: "Melissa",
@@ -46,9 +35,19 @@ const teamMembers = [
     position: "Marketing",
     username: null,
     img_url: melissaImg,
-    description_1: "Melissa is a BMOS student at Western university",
+    description_1: "Melissa is a BMOS student at Western university.",
     link_type: "LinkedIn",
     link_url: "https://www.linkedin.com/in/melissa-wen-63aa8b198/",
+  },
+  {
+    first_name: "Emily",
+    last_name: "Chen",
+    position: "Designer",
+    username: null,
+    img_url: emilyImg,
+    description_1: "Emily Chen is a medical student at the University of Toronto.",
+    link_type: "LinkedIn",
+    link_url: "https://www.linkedin.com/in/emily-chen-66578672/",
   },
   {
     first_name: "Dev",
@@ -57,7 +56,7 @@ const teamMembers = [
     username: null,
     img_url: devImg,
     description_1:
-      "Dev is an Honours Mathematics student at the University of Waterloo",
+      "Dev is an Honours Mathematics student at the University of Waterloo.",
     link_type: "LinkedIn",
     link_url: "https://www.linkedin.com/in/dev-pancea-018b7116a/",
   },
@@ -68,20 +67,9 @@ const teamMembers = [
     username: "aarondoerfler",
     img_url: aaronImg,
     description_1:
-      "Aaron is a Media Information and Techno-culture (MIT) student at Western university ",
+      "Aaron is a Media Information and Techno-culture (MIT) student at Western university.",
     link_type: "LinkedIn",
     link_url: "https://www.linkedin.com/in/aaron-doerfler-3a2144197/",
-  },
-  {
-    first_name: "Abhinit",
-    last_name: "Patil",
-    position: "Software Developer",
-    username: null,
-    img_url: abhiImg,
-    description_1:
-      "Abhinit is a grade 12 IB student at Turner Fenton Secondary School",
-    link_type: "LinkedIn",
-    link_url: "https://www.linkedin.com/in/abhinit-patil/",
   },
   {
     first_name: "Elaine",
@@ -89,9 +77,19 @@ const teamMembers = [
     position: "Marketing",
     username: null,
     img_url: elaineImg,
-    description_1: "Elaine is currently studying BMOS at Western university ",
+    description_1: "Elaine is currently studying BMOS at Western university.",
     link_type: "LinkedIn",
     link_url: "https://www.linkedin.com/in/elaine-yin-018a90198/",
+  },
+  {
+    first_name: "Grace",
+    last_name: "Tse",
+    position: "Marketing",
+    username: null,
+    img_url: graceImg,
+    description_1: "Grace is a grade 12 AP student at Markville Secondary School.",
+    link_type: "LinkedIn",
+    link_url: "https://www.linkedin.com/in/grace-tse-a17648174/",
   },
   {
     first_name: "Isaac",
@@ -99,7 +97,7 @@ const teamMembers = [
     position: "Marketing",
     username: null,
     img_url: isaacImg,
-    description_1: "Isaac is currently studying BMOS at Western university",
+    description_1: "Isaac is currently studying BMOS at Western university.",
     link_type: "LinkedIn",
     link_url: "https://www.linkedin.com/in/isaac-tang-b42a8b198/",
   },
@@ -110,7 +108,7 @@ const teamMembers = [
     username: null,
     img_url: hadiImg,
     description_1:
-      "Hadi is a grade 12 student at Georges Vanier Secondary School",
+      "Hadi is a grade 12 student at Georges Vanier Secondary School.",
     link_type: "LinkedIn",
     link_url: "https://www.linkedin.com/in/hadi-al-hakeem-24182819a/",
   },
@@ -136,11 +134,13 @@ function TeamMemberCard({ teamMember, showLinkedin = true }) {
       className='bg-white rounded shadow mb-3 p-3'
       style={{ height: "350px" }}
     >
+
       <img
-        className='mb-3'
+        className='center-block-2'
         src={teamMember.img_url}
         alt={teamMember.first_name}
-        style={{ width: "100px", height: "100px", borderRadius: "50%" }}
+        style={{ width: "100px", height: "100px", borderRadius: "50%"}}
+
       />
       <h5 className='mb-0'>
         <strong>

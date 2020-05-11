@@ -38,7 +38,7 @@ function Ebook() {
         <EbookInterviews />
         <hr />
         <Team
-          showArray={["Tomiwa", "Melissa", "Isaac", "Elaine", "Aaron", "Dev"]}
+          showArray={["Tomiwa", "Melissa", "Isaac", "Elaine", "Aaron", "Dev", "Hadi", "Grace", "Emily"]}
           showLinkedin={false}
           showSeo={false}
         />
