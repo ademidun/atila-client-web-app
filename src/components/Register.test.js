@@ -33,7 +33,7 @@ describe("<Register />", () => {
 
   });
 
-  it("should have input for email and password", () => {
+  it("Email and password input field should be present", () => {
     //Email and password input field should be present
     expect(wrapper.find("input#firstName")).toHaveLength(1);
     expect(wrapper.find("input#lastName")).toHaveLength(1);
