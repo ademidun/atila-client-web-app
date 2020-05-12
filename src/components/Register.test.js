@@ -36,7 +36,7 @@ describe("<Register />", () => {
   it("should have input for email and password", () => {
     //Email and password input field should be present
     expect(wrapper.find("input#firstName")).toHaveLength(1);
-    expect(wrapper.find("input#lasttName")).toHaveLength(1);
+    expect(wrapper.find("input#lastName")).toHaveLength(1);
     expect(wrapper.find("input#email")).toHaveLength(1);
     expect(wrapper.find("input#password")).toHaveLength(1);
     expect(wrapper.find("input#username")).toHaveLength(1);
