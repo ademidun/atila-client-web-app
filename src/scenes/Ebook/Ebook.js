@@ -27,11 +27,11 @@ function Ebook() {
         <BackTop />
         <EbookLandingBanner />
         <hr />
+        <EmailSignUp />
+        <hr />
         <EbookPreview />
         <hr />
         <TableauGraphsEmbed />
-        <hr />
-        <EmailSignUp />
         <hr />
         <PremiumDescription />
         <hr />
