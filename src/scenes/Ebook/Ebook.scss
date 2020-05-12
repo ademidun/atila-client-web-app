@@ -85,10 +85,11 @@
 
   @media only screen and (max-width: $small-device-width) {
     .menu-item-wrapper .responsive-images {
-      width: 60%;
+      width: 70%;
     }
     .menu-item {
-      width: 475px;
+      width: 425px;
+      height: 450px;
       padding: 5px 10px;
       margin: 1px 5px;
       user-select: none;

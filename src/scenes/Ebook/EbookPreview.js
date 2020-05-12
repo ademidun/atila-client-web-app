@@ -68,11 +68,9 @@ const MenuItem = ({data, selected}) => {
         className={`menu-item ${selected ? 'active' : ''} text-center card shadow`}
     >
         <h4 className="my-3">{data.title}</h4>
-        <div className="responsive-images-container">
         <img
-            className="responsive-images"
+            className="responsive-images center-block"
             src={data.url} alt={`Page ${data.title}`} />
-        </div>
     </div>;
 };
 
