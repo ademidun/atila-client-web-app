@@ -65,14 +65,12 @@ const pages = [
 // selected prop will be passed
 const MenuItem = ({data, selected}) => {
     return <div
-        className={`menu-item ${selected ? 'active' : ''}`}
+        className={`menu-item ${selected ? 'active' : ''} text-center card shadow`}
     >
-        <div className='text-center card shadow'>
-            <h4 className="my-3">{data.title}</h4>
-            <img
-                className="responsive-images"
-                src={data.url} alt={`Page ${data.title}`} />
-        </div>
+        <h4 className="my-3">{data.title}</h4>
+        <img
+            className="responsive-images center-block"
+            src={data.url} alt={`Page ${data.title}`} />
     </div>;
 };
 

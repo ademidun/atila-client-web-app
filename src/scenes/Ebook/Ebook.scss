@@ -83,8 +83,26 @@
     border: none;
   }
 
+  @media only screen and (max-width: $small-device-width) {
+    .menu-item-wrapper .responsive-images {
+      width: 70%;
+    }
+    .menu-item {
+      width: 425px;
+      height: 450px;
+      padding: 5px 10px;
+      margin: 1px 5px;
+      user-select: none;
+      cursor: pointer;
+      border: none;
+    }
+    .menu-wrapper {
+      height: 500px;
+    }
+  }
+
   .scroll-menu-arrow {
-    padding: 20px;
+    padding: 10px;
     cursor: pointer;
   }
 }
