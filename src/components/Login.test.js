@@ -1,11 +1,11 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import Login from "./Login";
 import { mount } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import { initialReduxState } from "../models/Constants";
+import { MemoryRouter } from "react-router-dom";
 
 const Enzyme = require("enzyme");
 Enzyme.configure({ adapter: new Adapter() });
@@ -15,10 +15,19 @@ const store = mockStore(initialReduxState);
 
 describe("<Login />", () => {
   const wrapper = mount(
-    <Provider store={store}>
-      <Login />
-    </Provider>
+    <MemoryRouter>
+      <Login store={store} />
+    </MemoryRouter>
   );
+
+  it("renders <Login /> without crashing", () => {
+    const wrapper = mount(
+      <MemoryRouter>
+        <Login store={store} />
+      </MemoryRouter>
+    );
+    expect(wrapper.html()).toBeTruthy();
+  });
 
   it("should have input for email and password", () => {
     //Email and password input field should be present

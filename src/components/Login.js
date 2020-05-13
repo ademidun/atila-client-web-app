@@ -1,190 +1,212 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {Link} from "react-router-dom";
-import {connect} from "react-redux";
+import React from "react";
+import PropTypes from "prop-types";
+import { Link, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
 
 import UserProfileAPI from "../services/UserProfileAPI";
-import {PasswordShowHide} from "./Register";
-import {setLoggedInUserProfile} from "../redux/actions/user";
+import { PasswordShowHide } from "./Register";
+import { setLoggedInUserProfile } from "../redux/actions/user";
 import ResponseDisplay from "./ResponseDisplay";
 
 class Login extends React.Component {
+  _isMounted = false;
 
-    _isMounted = false;
+  constructor(props) {
+    super(props);
 
-    constructor(props){
-        super(props);
+    const {
+      location: { search },
+    } = this.props;
+    const params = new URLSearchParams(search);
 
+    let nextLocation = params.get("redirect") || "/scholarship";
 
-        const {
-            location : { search },
-        } = this.props;
-        const params = new URLSearchParams(search);
+    if (nextLocation === "/") {
+      nextLocation = "/scholarship";
+    }
 
-        let nextLocation = params.get('redirect') || '/scholarship';
+    this.state = {
+      username: "",
+      password: "",
+      nextLocation,
+      responseError: null,
+      isLoadingResponse: null,
+      responseOkMessage: null,
+      forgotPassword: false,
+      resetPasswordResponse: "",
+    };
+  }
+  componentDidMount() {
+    this._isMounted = true;
+  }
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 
-        if (nextLocation==='/') {
-            nextLocation = '/scholarship';
+  updateForm = (event) => {
+    event.preventDefault();
+    this.setState({ [event.target.name]: event.target.value });
+  };
+
+  submitForm = (event) => {
+    event.preventDefault();
+    const { username, password, nextLocation } = this.state;
+    const { setLoggedInUserProfile } = this.props;
+    this.setState({ isLoadingResponse: true });
+    this.setState({ responseError: null });
+    UserProfileAPI.login({ username, password })
+      .then((res) => {
+        this.setState({
+          responseOkMessage: "Login successful 🙂! Redirecting...",
+        });
+        setLoggedInUserProfile(res.data.user_profile);
+        UserProfileAPI.authenticateRequests(res.data.token, res.data.id);
+
+        this.props.history.push(nextLocation);
+      })
+      .catch((err) => {
+        if (err.response && err.response.data) {
+          this.setState({ responseError: err.response.data });
+        } else {
+          const responseError = (
+            <React.Fragment>
+              Error logging in. <Link to='/contact'>Contact us</Link> if this
+              continues
+            </React.Fragment>
+          );
+          this.setState({ responseError });
         }
+      })
+      .finally((res) => {
+        if (this._isMounted) {
+          this.setState({ isLoadingResponse: false });
+        }
+      });
+  };
 
-        this.state = {
-            username: '',
-            password: '',
-            nextLocation,
-            responseError: null,
-            isLoadingResponse: null,
-            responseOkMessage: null,
-            forgotPassword: false,
-            resetPasswordResponse: '',
-        };
-    }
-    componentDidMount() {
-        this._isMounted = true;
-    }
-    componentWillUnmount() {
-        this._isMounted = false;
-    }
+  submitResetPasswordForm = (event) => {
+    event.preventDefault();
+    const { username } = this.state;
+    this.setState({ isLoadingResponse: true });
+    this.setState({ responseError: null });
+    UserProfileAPI.resetPassword(username)
+      .then((res) => {
+        this.setState({ responseOkMessage: res.data.message });
+      })
+      .catch((err) => {
+        if (err.response && err.response.data) {
+          this.setState({ responseError: err.response.data });
+        }
+      })
+      .finally((res) => {
+        if (this._isMounted) {
+          this.setState({ isLoadingResponse: false });
+        }
+      });
+  };
 
-    updateForm = (event) => {
-        event.preventDefault();
-        this.setState({[event.target.name]: event.target.value})
-    };
+  render() {
+    const {
+      username,
+      password,
+      responseError,
+      isLoadingResponse,
+      responseOkMessage,
+      forgotPassword,
+      nextLocation,
+    } = this.state;
 
-    submitForm = (event) => {
-        event.preventDefault();
-        const { username, password, nextLocation } = this.state;
-        const { setLoggedInUserProfile } = this.props;
-        this.setState({ isLoadingResponse: true});
-        this.setState({ responseError: null});
-        UserProfileAPI
-            .login({ username, password })
-            .then(res => {
-                this.setState({ responseOkMessage: 'Login successful 🙂! Redirecting...'});
-                setLoggedInUserProfile(res.data.user_profile);
-                UserProfileAPI.authenticateRequests(res.data.token, res.data.id);
+    return (
+      <div className='container mt-5'>
+        <div className='card shadow p-3'>
+          <div>
+            <h1>Login</h1>
+            <form className='row p-3' onSubmit={this.submitForm}>
+              <input
+                placeholder='Username or Email'
+                className='col-12 mb-3 form-control'
+                name='username'
+                value={username}
+                autoComplete='username'
+                onChange={this.updateForm}
+              />
+              <PasswordShowHide
+                password={password}
+                updateForm={this.updateForm}
+              />
+              <div className='w-100'>
+                <button
+                  className='btn btn-primary col-sm-12 col-md-5 float-left mb-1'
+                  type='submit'
+                  disabled={isLoadingResponse}
+                >
+                  Login
+                </button>
+                <Link
+                  to={`/register?redirect=${nextLocation}`}
+                  className='btn btn-outline-primary col-sm-12 col-md-5 float-right'
+                >
+                  Register
+                </Link>
+              </div>
+              <button
+                className='btn btn-link max-width-fit-content'
+                onClick={(event) => {
+                  event.preventDefault();
+                  this.setState({ forgotPassword: true });
+                }}
+              >
+                Forgot password?
+              </button>
+            </form>
+            {forgotPassword && (
+              <form className='row p-3' onSubmit={this.submitResetPasswordForm}>
+                <label>
+                  Enter username or email to receive password reset token
+                </label>
+                <input
+                  placeholder='Username or Email'
+                  className='col-12 mb-3 form-control'
+                  name='username'
+                  value={username}
+                  autoComplete='username'
+                  onChange={this.updateForm}
+                />
+                <button
+                  className='btn btn-primary col-sm-12 col-md-5 float-left mb-3'
+                  type='submit'
+                  disabled={isLoadingResponse}
+                >
+                  Send Email
+                </button>
+                <label className='w-100'>
+                  Already have a reset token?
+                  <Link to='/verify?verification_type=reset_password'>
+                    {" "}
+                    Reset password{" "}
+                  </Link>
+                </label>
+              </form>
+            )}
 
-                this.props.history.push(nextLocation);
-            })
-            .catch(err => {
-                if (err.response && err.response.data) {
-                    this.setState({ responseError: err.response.data});
-                } else {
-                    const responseError = (<React.Fragment>
-                        Error logging in.{' '}
-                        <Link to="/contact">
-                            Contact us</Link> if this continues
-                    </React.Fragment>);
-                    this.setState({ responseError });
-                }
-            })
-            .finally(res => {
-                if (this._isMounted) {
-                    this.setState({ isLoadingResponse: false});
-                }
-            })
-    };
-
-    submitResetPasswordForm = (event) => {
-        event.preventDefault();
-        const { username } = this.state;
-        this.setState({ isLoadingResponse: true});
-        this.setState({ responseError: null});
-        UserProfileAPI
-            .resetPassword(username)
-            .then(res => {
-                this.setState({ responseOkMessage: res.data.message });
-
-            })
-            .catch(err => {
-                if (err.response && err.response.data) {
-                    this.setState({ responseError: err.response.data});
-                }
-            })
-            .finally(res => {
-                if (this._isMounted) {
-                    this.setState({ isLoadingResponse: false});
-                }
-            })
-    };
-
-    render () {
-        const { username, password,
-            responseError, isLoadingResponse,
-            responseOkMessage, forgotPassword, nextLocation } = this.state;
-
-
-        return (
-            <div className="container mt-5">
-                <div className="card shadow p-3">
-                    <div>
-                        <h1>Login</h1>
-                        <form className="row p-3" onSubmit={this.submitForm}>
-                            <input placeholder="Username or Email"
-                                   className="col-12 mb-3 form-control"
-                                   name="username"
-                                   value={username}
-                                   autoComplete="username"
-                                   onChange={this.updateForm}
-                            />
-                            <PasswordShowHide password={password} updateForm={this.updateForm} />
-                            <div className="w-100">
-                                <button className="btn btn-primary col-sm-12 col-md-5 float-left mb-1"
-                                        type="submit"
-                                        disabled={isLoadingResponse}>
-                                    Login
-                                </button>
-                                <Link to={`/register?redirect=${nextLocation}`}
-                                      className="btn btn-outline-primary col-sm-12 col-md-5 float-right">
-                                    Register
-                                </Link>
-                            </div>
-                            <button className="btn btn-link max-width-fit-content"
-                                    onClick={event=> {
-                                        event.preventDefault();
-                                        this.setState({forgotPassword: true});
-                                    }}>
-                                Forgot password?
-                            </button>
-                        </form>
-                        {forgotPassword &&
-                        <form className="row p-3" onSubmit={this.submitResetPasswordForm}>
-                            <label>Enter username or email to receive password reset token</label>
-                            <input placeholder="Username or Email"
-                                   className="col-12 mb-3 form-control"
-                                   name="username"
-                                   value={username}
-                                   autoComplete="username"
-                                   onChange={this.updateForm}
-                            />
-                            <button className="btn btn-primary col-sm-12 col-md-5 float-left mb-3"
-                                    type="submit"
-                                    disabled={isLoadingResponse}>
-                                Send Email
-                            </button>
-                            <label className="w-100">
-                                Already have a reset token?
-                                <Link to="/verify?verification_type=reset_password"> Reset password </Link>
-                            </label>
-                        </form>
-
-                        }
-
-                        <ResponseDisplay isLoadingResponse={isLoadingResponse}
-                                         responseError={responseError}
-                                         responseOkMessage={responseOkMessage} />
-                    </div>
-                </div>
-            </div>
-        )
-    }
+            <ResponseDisplay
+              isLoadingResponse={isLoadingResponse}
+              responseError={responseError}
+              responseOkMessage={responseOkMessage}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 
 const mapDispatchToProps = {
-    setLoggedInUserProfile
+  setLoggedInUserProfile,
 };
 
 Login.propTypes = {
-    setLoggedInUserProfile: PropTypes.func.isRequired,
+  setLoggedInUserProfile: PropTypes.func.isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(Login);
+export default withRouter(connect(null, mapDispatchToProps)(Login));
