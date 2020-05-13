@@ -1,6 +1,6 @@
 import React from "react";
 import Login from "./Login";
-import { mount } from "enzyme";
+import { shallow, mount } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
@@ -29,21 +29,25 @@ describe("<Login />", () => {
     expect(wrapper.html()).toBeTruthy();
   });
 
-  it("should have input for email and password", () => {
+  it("Email and password input field should be present", () => {
     //Email and password input field should be present
-    expect(wrapper.find("input#email")).toHaveLength(1);
-    expect(wrapper.find("input#password")).toHaveLength(1);
+    expect(wrapper.find('[placeholder="Username or Email"]')).toHaveLength(1);
+    expect(wrapper.find('[name="password"]')).toHaveLength(1);
   });
 
   it("strips usernames with spaces", () => {
     wrapper
-      .find("input.username")
+      .find('[placeholder="Username or Email"]')
       .simulate("change", { target: { value: "my User" } });
     wrapper
-      .find("input.password")
+      .find('[name="password"]')
       .simulate("change", { target: { value: "myPassword" } });
     wrapper.find("form").simulate("submit");
 
-    expect(wrapper.userProfile.state("username")).toEqual("myUser");
+    wrapper.update();
+    const mycomponent = wrapper.instance();
+    //wrapper.update()
+
+    expect(mycomponent.state.username).toEqual("myUser");
   });
 });
