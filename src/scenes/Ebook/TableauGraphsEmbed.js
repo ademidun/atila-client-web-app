@@ -11,19 +11,20 @@ class TableauGraphsEmbed extends Component {
   }
 
   initViz() {
-      const techTierVizUrl = 'https://public.tableau.com/views/TotalCareerSegmentationforCanadianSchools_15868721302310/Sheet2?:display_count=y&publish=yes&:origin=viz_share_link';
-      const allIndustriesVizUrl = 'https://public.tableau.com/views/WhatSchoolsDoBiomedCompaniesHireFromOrganizedbyPosition_15868717000150/Sheet2?:display_count=y&publish=yes&:origin=viz_share_link';
+      const allIndustriesVizUrl = 'https://public.tableau.com/views/WhatSchoolsDoCompaniesHireFromOrganizedbyCompanySchoolsNumbersmobileupdated/Dashboard1?:display_count=y&publish=yes&:origin=viz_share_link';
+      const allIndustriesVizContainer = this.allIndustriesVizContainer;
+
+      const techTierVizUrl = 'https://public.tableau.com/views/WhatSchoolDoTechCompainesHireFrommobilefriendly/Dashboard1?:display_count=y&:origin=viz_share_link';
       const techVizContainer = this.techVizContainer;
-    const allIndustriesVizContainer = this.allIndustriesVizContainer;
 
     /* eslint-disable no-unused-vars */
+      // noinspection JSUnusedLocalSymbols
+      let allIndustriesViz = new window.tableau.Viz(
+          allIndustriesVizContainer,
+          allIndustriesVizUrl
+      );
     // noinspection JSUnusedLocalSymbols
     let techTierViz = new window.tableau.Viz(techVizContainer, techTierVizUrl);
-    // noinspection JSUnusedLocalSymbols
-    let allIndustriesViz = new window.tableau.Viz(
-      allIndustriesVizContainer,
-      allIndustriesVizUrl
-    );
     /* eslint-enable no-unused-vars */
   }
 
@@ -37,16 +38,16 @@ class TableauGraphsEmbed extends Component {
           </span>
         </h1>
         <div
-          ref={(div) => {
-            this.allIndustriesVizContainer = div;
-          }}
-        ></div>
+            ref={(div) => {
+                this.allIndustriesVizContainer = div;
+            }}
+        />
         <hr />
         <div
           ref={(div) => {
             this.techVizContainer = div;
           }}
-        ></div>
+        />
       </div>
     );
   }
