@@ -33,7 +33,7 @@ class EbookPremiumTabs extends Component {
               "https://public.tableau.com/views/TechTierList2/Sheet3?:display_count=y&:origin=viz_share_link",
           ],
           tableauUrlsPreview: [
-              "https://public.tableau.com/views/TotalCareerSegmentationforCanadianSchools_15868721302310/Sheet2?:display_count=y&publish=yes&:origin=viz_share_link",
+              "https://public.tableau.com/views/WhatSchoolDoTechCompainesHireFrommobilefriendly/Dashboard1?:display_count=y&:origin=viz_share_link",
           ],
           flourishUrls: [
                 {
@@ -91,7 +91,7 @@ class EbookPremiumTabs extends Component {
               "https://public.tableau.com/views/AllIndustries2/Sheet2?:display_count=y&:origin=viz_share_link",
           ],
           tableauUrlsPreview: [
-              "https://public.tableau.com/views/WhatSchoolsDoBiomedCompaniesHireFromOrganizedbyPosition_15868717000150/Sheet2?:display_count=y&publish=yes&:origin=viz_share_link",
+              "https://public.tableau.com/views/WhatSchoolsDoCompaniesHireFromOrganizedbyCompanySchoolsNumbersmobileupdated/Dashboard1?:display_count=y&publish=yes&:origin=viz_share_link",
           ],
           flourishUrls: [
               {
