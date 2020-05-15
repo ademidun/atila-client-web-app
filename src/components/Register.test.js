@@ -41,9 +41,9 @@ describe("<Register />", () => {
     //Email and password input field should be present
     console.log(wrapper);
 
-    expect(wrapper.find("#firstName")).toHaveLength(1);
-    expect(wrapper.find("#lastName")).toHaveLength(1);
-    expect(wrapper.find("#email")).toHaveLength(1);
+    expect(wrapper.find('[name="firstName"]')).toHaveLength(1);
+    expect(wrapper.find('[name="lastName"]')).toHaveLength(1);
+    expect(wrapper.find('[name="email"]')).toHaveLength(1);
   });
 
   it("strips usernames with spaces", () => {
