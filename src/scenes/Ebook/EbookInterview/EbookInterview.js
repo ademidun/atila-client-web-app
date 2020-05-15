@@ -64,35 +64,37 @@ const interviewees = [
     first_name: "Tashiya",
     last_name: "Halahackone",
     img_url:
-        "https://lh3.googleusercontent.com/8gM1DH9B4KdDbG6lcazHEaRwbLkNRC06WZkhOl8zYcKnG9Nr9qMmMd0cKS8ESozIFyufchTmwPYPakBMWxo3csagyC6LFi5IYppsyenbKjDgoX3F2gnoJarwtOdYNo-tSifApFpiOSM4wO6-pnOss_45ASmK7yjXp3WpxtOOYMWpqTNdwCLpXQ9jXVByEH59UpaZTa4fm717FXaNhOMrpDbC_PrIgMKb1O-sdUTvsInpIBreK-vivAgtXcmsNRXsmOlB0H_szLxGzzsgMV3y-GN1TyiErFFZVsVD65ShlYSSIXHT2RJDA_oNyyYFy9NYd9RlG0q-t6imPHe6T0GEERr2sZCwFrmwVoLOgjQJQ0NFhj9w6PcAVWLXDQsRwSQ3QmTPv_dE5ukgX8UufjeqTB41Vrkl_ZUfoofmYe_-C1wgc88nD8wtyk2mvKhCfKQ3Mz_JAdeUP1YhljteLyWxsnGT8GEC3ZVAA1ye3nQ9Wq83NrOjvpeyMpr_reh-8zTWZveEN88JW4TG_-QkG2Y_cF_ym-7a2-YCoqcTxyiK8ipnkxJoTnyASxlczk4vy2xZiWVc2PdbGzRs6y_ky3WIiPlzXbiUEEfwCixKhB1Fc6QcH5MzuxjUhrLWtmfrXPyqgOokw08e4PVDKNK5yb-PqpPyXnjf0QyLGQZtloCh0Ph9pRoDija-1GRB8WO2BqTXEZxNAH-I4mygFKbMhw9kMiSi8JahEGFMkk0oLXbBcL6wgN3KIQVDQDTg=w904-h902-no",
+      "https://lh3.googleusercontent.com/8gM1DH9B4KdDbG6lcazHEaRwbLkNRC06WZkhOl8zYcKnG9Nr9qMmMd0cKS8ESozIFyufchTmwPYPakBMWxo3csagyC6LFi5IYppsyenbKjDgoX3F2gnoJarwtOdYNo-tSifApFpiOSM4wO6-pnOss_45ASmK7yjXp3WpxtOOYMWpqTNdwCLpXQ9jXVByEH59UpaZTa4fm717FXaNhOMrpDbC_PrIgMKb1O-sdUTvsInpIBreK-vivAgtXcmsNRXsmOlB0H_szLxGzzsgMV3y-GN1TyiErFFZVsVD65ShlYSSIXHT2RJDA_oNyyYFy9NYd9RlG0q-t6imPHe6T0GEERr2sZCwFrmwVoLOgjQJQ0NFhj9w6PcAVWLXDQsRwSQ3QmTPv_dE5ukgX8UufjeqTB41Vrkl_ZUfoofmYe_-C1wgc88nD8wtyk2mvKhCfKQ3Mz_JAdeUP1YhljteLyWxsnGT8GEC3ZVAA1ye3nQ9Wq83NrOjvpeyMpr_reh-8zTWZveEN88JW4TG_-QkG2Y_cF_ym-7a2-YCoqcTxyiK8ipnkxJoTnyASxlczk4vy2xZiWVc2PdbGzRs6y_ky3WIiPlzXbiUEEfwCixKhB1Fc6QcH5MzuxjUhrLWtmfrXPyqgOokw08e4PVDKNK5yb-PqpPyXnjf0QyLGQZtloCh0Ph9pRoDija-1GRB8WO2BqTXEZxNAH-I4mygFKbMhw9kMiSi8JahEGFMkk0oLXbBcL6wgN3KIQVDQDTg=w904-h902-no",
     description_1:
-        "Tashiya is studying International relations and affairs at Western University.",
+      "Tashiya is studying International relations and affairs at Western University.",
     quote:
-        "Dont be afraid to ask for help when you need it, because its there for you",
+      "It’s completely fine to ask for resources because you’re paying for them, so you should use them whenever you need",
   },
   {
     first_name: "Aaron",
     last_name: "Doerfler",
-    img_url: "https://lh3.googleusercontent.com/KYz8aaJ6adKC30PVS6q_b7-Bt11dBEqyD4vrEkgwXJsZ1gbpfepIaPYrW20QAalpwmSUHJpG52cdtCvzAziztu_NlXRADUwGzy0Iz0hkHVTwCXuathra_Gj-lKTTNgOAmy-8krW7HerPO70ROXvIFGowqdbgBroNx4i1SODNQYNqsmSXhFQ5Ur69GLC6rTLpzbXPeEyH6lwid8BT7enTvEn0QBzV7AOidwolDIaa-m6qzJar-X1RNR_45mskivLEgUISHjvjnEYRH2Cz4T26xj3ljNgkBduRaonCLeHkUtXyeZHNZcH24N6LLHkeF7CG8x5-dm-upUCNKugMG-SA1MAZp0PxA63qu8dKdotUE6AFFrVzi43FtNT3-co5StJe3bI-K6z1KV2ev1JYCT00KFlGVVVHReC6HyoT9NYLsohmNS1uQLEjRf7A3B4zVeYgRwj2fqGVxMmAeuhF6jM-RMER8AiTh5jBUFUN8Pn0vYDgUOypCxEOKynxq40I53SLwqDrOp0aLLmADqdJ3ONsYSx2JnYoaa1u_TZEJpnhs3C2SweV9fA_KpzWj77JzHqR6TpdWGWbQK2UJQbR2gs6I9086ovo8zK1Euk2Nh4egCqvihNKBILc7yMWAXOl7cjcAxVBLik5wnLqpjv64VIDIibt1rtBUiqhpIspRMjuvKtg_r_qEINnl492bN80kD_dh0JXucsR3eHmgxRYwqrOLct_1VPr5XslpcZDSIieJmCQCkxphbe8fnJR=w904-h884-no",
+    img_url:
+      "https://lh3.googleusercontent.com/KYz8aaJ6adKC30PVS6q_b7-Bt11dBEqyD4vrEkgwXJsZ1gbpfepIaPYrW20QAalpwmSUHJpG52cdtCvzAziztu_NlXRADUwGzy0Iz0hkHVTwCXuathra_Gj-lKTTNgOAmy-8krW7HerPO70ROXvIFGowqdbgBroNx4i1SODNQYNqsmSXhFQ5Ur69GLC6rTLpzbXPeEyH6lwid8BT7enTvEn0QBzV7AOidwolDIaa-m6qzJar-X1RNR_45mskivLEgUISHjvjnEYRH2Cz4T26xj3ljNgkBduRaonCLeHkUtXyeZHNZcH24N6LLHkeF7CG8x5-dm-upUCNKugMG-SA1MAZp0PxA63qu8dKdotUE6AFFrVzi43FtNT3-co5StJe3bI-K6z1KV2ev1JYCT00KFlGVVVHReC6HyoT9NYLsohmNS1uQLEjRf7A3B4zVeYgRwj2fqGVxMmAeuhF6jM-RMER8AiTh5jBUFUN8Pn0vYDgUOypCxEOKynxq40I53SLwqDrOp0aLLmADqdJ3ONsYSx2JnYoaa1u_TZEJpnhs3C2SweV9fA_KpzWj77JzHqR6TpdWGWbQK2UJQbR2gs6I9086ovo8zK1Euk2Nh4egCqvihNKBILc7yMWAXOl7cjcAxVBLik5wnLqpjv64VIDIibt1rtBUiqhpIspRMjuvKtg_r_qEINnl492bN80kD_dh0JXucsR3eHmgxRYwqrOLct_1VPr5XslpcZDSIieJmCQCkxphbe8fnJR=w904-h884-no",
     description_1:
       "Aaron is a Media Information and Techno-culture (MIT) student at Western university.",
     quote:
-      "At Western I am surrounded by amazing students and faculty that provide me with an unmatched student experience",
+      "Dont second guess your choices, even if you dont know what you want to do",
   },
   {
     first_name: "Kitan",
     last_name: "Ademidun",
     img_url:
-        "https://lh3.googleusercontent.com/9MtWFIKYwCnAJs5EDiwke3tY_nGTt1O1OfEAEyyCWupXPOE4RMacWe7GK8okoL_fNUThUx4VcsJQCboNRsdogkXNNPixfieoJnTReRJIET3aM6fr1BswwZ2RNv7L-9AQrot2wB4eWjABAw-uoOMmZNzsN2T_7LklVUbzMFjhQ1fCpLvgkofHcb57UsIMlXNuHCMRM74uzEtrCI9-xNcYjqvjV0FBBSd1NOqWyi97X7O2Ww-kxXtuZFHTTTgue0fZQFRll79febn6G0icGd12k9_dfvfxhLsV7fWYURLslo67bjA8bjV7RhbhHN1GsncHF7Oz_1V6-1sZY0nv8MoE9L6BlBbUi3ON0244SiSX8L0ymB7W9LmVr3L0Eo1U0nP_6DhIEPX7qBimaNOcUYSMDVoxBQEfKWQS7Jdd9LXX4SS17ofeZlHoQQwaVBS4IPPcv-NOjFKZtcyrDr46pGus2s9wRBEBbLkYZWSjw1PssdtrOUTc2oKYXQvjvbDTD3mfjx4zGATq-5Xq-96kD8ciz9A6VBHYrNtZHBUwaI2n-zV3dVHt-O0LQ32VqesZQPa8JijyAKT4ietRjvs5771SRrO5rA03mHD9rElMIR8kYFX_HCda-4BgYu4NYWniRkyok_v22qF4CXDlX9z9A5LEFZWZKclPW8TtUdjFcWezRlH4PXiLdz2qkE-e29PNmO6bOAH6CC-80173iFwDXJ-Jk05hwB1lYEKKHoBPmlkR41IHFXckazAvGg50=w904-h893-no",
+      "https://lh3.googleusercontent.com/9MtWFIKYwCnAJs5EDiwke3tY_nGTt1O1OfEAEyyCWupXPOE4RMacWe7GK8okoL_fNUThUx4VcsJQCboNRsdogkXNNPixfieoJnTReRJIET3aM6fr1BswwZ2RNv7L-9AQrot2wB4eWjABAw-uoOMmZNzsN2T_7LklVUbzMFjhQ1fCpLvgkofHcb57UsIMlXNuHCMRM74uzEtrCI9-xNcYjqvjV0FBBSd1NOqWyi97X7O2Ww-kxXtuZFHTTTgue0fZQFRll79febn6G0icGd12k9_dfvfxhLsV7fWYURLslo67bjA8bjV7RhbhHN1GsncHF7Oz_1V6-1sZY0nv8MoE9L6BlBbUi3ON0244SiSX8L0ymB7W9LmVr3L0Eo1U0nP_6DhIEPX7qBimaNOcUYSMDVoxBQEfKWQS7Jdd9LXX4SS17ofeZlHoQQwaVBS4IPPcv-NOjFKZtcyrDr46pGus2s9wRBEBbLkYZWSjw1PssdtrOUTc2oKYXQvjvbDTD3mfjx4zGATq-5Xq-96kD8ciz9A6VBHYrNtZHBUwaI2n-zV3dVHt-O0LQ32VqesZQPa8JijyAKT4ietRjvs5771SRrO5rA03mHD9rElMIR8kYFX_HCda-4BgYu4NYWniRkyok_v22qF4CXDlX9z9A5LEFZWZKclPW8TtUdjFcWezRlH4PXiLdz2qkE-e29PNmO6bOAH6CC-80173iFwDXJ-Jk05hwB1lYEKKHoBPmlkR41IHFXckazAvGg50=w904-h893-no",
     description_1:
-        "Kitan is a dual degree Engineering and Business student at the Ivey School of Business, Western University.",
+      "Kitan is a dual degree Engineering and Business student at the Ivey School of Business, Western University.",
     quote:
-        "You can literally end up anywhere, it’s just a matter of where you decide to go forward.",
+      "University changed the way I look at gaining experience, in that I’m trying to gain more experience in things that build character",
   },
   {
     first_name: "Jacob",
     last_name: "Munene",
-    img_url: "https://lh3.googleusercontent.com/f6jLcq4ZiCa8VPLlFgYPpYb2IVj4CsHUUE4x7uFs4ReMhF89hGicSvPLYcRe0mFlrQP91rq85H3FCjFnNUlYKxv8LGwosLQZEHzBO5ZKxVXInBtTLu-yo02_zkKQpCI3CisgG-10VsizOC1FOuGjrs_7x3hDuqxGIR1gBPLwqYzunJIdZ1_th9wFSuidzsALYogCn1_2KfHeblgOCvn2Xcllvql3_tDXhxzEqvHL14vSClUplj3zKbq6TCJ3sFn05t1uUvGTuqocxPX1h2DXC1FmfqWdg2AyOzO7GbP2kcXR5cPzRIOOmCvE77wA7YVc_N9ivXgF18E8gNtaI2FStK1p0Cpy21lOO0lCu9Wl5XAs82rNUhj5gDXrEPXNvWXdh4xb69vSHkH7PQZqIlvHnTOEh0nhIuRoc4BGLMYr6IuNmmfbtHMiXH5pBiOb7mEwlpuc2oAhZIjre3Iquufyu6m8YbRNz9N9tXjquWbBmPx_1fXGjSG3nLt7Tni2S_VmOwWlbnCes7m4RN8j--OP2sxWCDDp1kAgkOLtYI1STFhwmkQWUteAxj9L68mNOQ0z-3u_pCnFIY6V1wE0zeEhj2aQB5tk59ymZ1hn5F0xKXkO3MSu2t6oGJ4-wjtWqUy1wAFAXeQ1Yx22AvsaSlUxvMGVo8hJmUASvBvYJzNuRTzfdZ9wHANUd7e5ChZ5Cllg7svBl_67fGkntbuE4pXunALjaHf9yifSGZtDob7fCxmsuoIiLNtlKKnS=w904-h828-no",
+    img_url:
+      "https://lh3.googleusercontent.com/f6jLcq4ZiCa8VPLlFgYPpYb2IVj4CsHUUE4x7uFs4ReMhF89hGicSvPLYcRe0mFlrQP91rq85H3FCjFnNUlYKxv8LGwosLQZEHzBO5ZKxVXInBtTLu-yo02_zkKQpCI3CisgG-10VsizOC1FOuGjrs_7x3hDuqxGIR1gBPLwqYzunJIdZ1_th9wFSuidzsALYogCn1_2KfHeblgOCvn2Xcllvql3_tDXhxzEqvHL14vSClUplj3zKbq6TCJ3sFn05t1uUvGTuqocxPX1h2DXC1FmfqWdg2AyOzO7GbP2kcXR5cPzRIOOmCvE77wA7YVc_N9ivXgF18E8gNtaI2FStK1p0Cpy21lOO0lCu9Wl5XAs82rNUhj5gDXrEPXNvWXdh4xb69vSHkH7PQZqIlvHnTOEh0nhIuRoc4BGLMYr6IuNmmfbtHMiXH5pBiOb7mEwlpuc2oAhZIjre3Iquufyu6m8YbRNz9N9tXjquWbBmPx_1fXGjSG3nLt7Tni2S_VmOwWlbnCes7m4RN8j--OP2sxWCDDp1kAgkOLtYI1STFhwmkQWUteAxj9L68mNOQ0z-3u_pCnFIY6V1wE0zeEhj2aQB5tk59ymZ1hn5F0xKXkO3MSu2t6oGJ4-wjtWqUy1wAFAXeQ1Yx22AvsaSlUxvMGVo8hJmUASvBvYJzNuRTzfdZ9wHANUd7e5ChZ5Cllg7svBl_67fGkntbuE4pXunALjaHf9yifSGZtDob7fCxmsuoIiLNtlKKnS=w904-h828-no",
     description_1:
       "Jacob is currently studying Financial Modeling and Applied Mathematics at Western University.",
     quote:
@@ -145,22 +147,25 @@ InterviewCard.propTypes = {
 };
 
 const EbookInterviews = () => {
-
   let interviewCards = interviewees.map((interviewee, index) => (
-      <React.Fragment key={interviewee.first_name}>
-        {['0','6'].includes(index.toString()) &&
-        <Col span={24} className="text-center">
+    <React.Fragment key={interviewee.first_name}>
+      {["0", "6"].includes(index.toString()) && (
+        <Col span={24} className='text-center'>
           <img
-              className="responsive-images"
-              src={index === 6 ?'https://i.imgur.com/XluzC2w.jpg' : 'https://i.imgur.com/Yr0CZL2.jpg'}
-              alt='Western Students' />
+            className='responsive-images'
+            src={
+              index === 6
+                ? "https://i.imgur.com/XluzC2w.jpg"
+                : "https://i.imgur.com/Yr0CZL2.jpg"
+            }
+            alt='Western Students'
+          />
         </Col>
-        }
-        <Col xs={24} md={12} xl={8}>
-          <InterviewCard person={interviewee} />
-        </Col>
-
-      </React.Fragment>
+      )}
+      <Col xs={24} md={12} xl={8}>
+        <InterviewCard person={interviewee} />
+      </Col>
+    </React.Fragment>
   ));
 
   return (
