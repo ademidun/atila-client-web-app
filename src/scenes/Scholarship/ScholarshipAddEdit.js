@@ -282,6 +282,12 @@ class ScholarshipAddEdit extends React.Component {
   };
 
   clearForm = () => {
+    //
+    //
+    // TODO
+    //
+    //
+
     //this.refs["user-form"].form.reset();
     console.log("form cleared");
     document.getElementById("create-course-form").reset();
