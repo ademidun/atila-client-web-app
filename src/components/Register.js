@@ -83,6 +83,13 @@ class Register extends React.Component {
         password: "",
         agreeTermsConditions: false,
       },
+      errors: {
+        firstName: false,
+        lastName: false,
+        username: false,
+        email: false,
+        password: false,
+      },
       nextLocation,
       isResponseError: null,
       responseOkMessage: null,
@@ -118,6 +125,35 @@ class Register extends React.Component {
     });
   };
 
+  validate = (first, last, inputEmail, inputUsername) => {
+    var letters = /^[A-Za-z]+$/;
+    var pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+    let firstName, lastName, email, username;
+
+    if (!inputUsername.match(pattern)) {
+      username = true;
+    }
+
+    if (!inputEmail.match(pattern)) {
+      email = true;
+    }
+
+    if (!last.match(letters)) {
+      lastName = true;
+    }
+
+    if (!first.match(letters)) {
+      firstName = true;
+    }
+
+    return {
+      username,
+      email,
+      firstName,
+      lastName,
+    };
+  };
+
   submitForm = (event) => {
     event.preventDefault();
     const { setLoggedInUserProfile } = this.props;
@@ -126,50 +162,6 @@ class Register extends React.Component {
 
     this.setState({ loadingResponse: true });
     this.setState({ isResponseError: null });
-
-    var letters = /^[A-Za-z]+$/;
-    var pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
-
-    if (!username.match(pattern)) {
-      let isResponseError;
-      isResponseError = (
-        <p className='text-danger'>
-          ERROR, Usernames can only contain:
-          <ul>
-            <li>Letters</li>
-            <li>Numbers</li>
-            <li>"@" and "."</li>
-          </ul>
-        </p>
-      );
-      this.setState({ isResponseError });
-    }
-
-    if (!userProfile.lastName.match(letters)) {
-      let isResponseError;
-      isResponseError = (
-        <p className='text-danger'>
-          ERROR, Last name can only contain:
-          <ul>
-            <li>Letters</li>
-          </ul>
-        </p>
-      );
-      this.setState({ isResponseError });
-    }
-
-    if (!userProfile.firstName.match(letters)) {
-      let isResponseError;
-      isResponseError = (
-        <p className='text-danger'>
-          ERROR, First name can only contain:
-          <ul>
-            <li>Letters</li>
-          </ul>
-        </p>
-      );
-      this.setState({ isResponseError });
-    }
 
     const userProfileSendData = {
       first_name: userProfile.firstName,
@@ -242,6 +234,9 @@ class Register extends React.Component {
       password,
       agreeTermsConditions,
     } = userProfile;
+
+    const errors = this.validate(firstName, lastName, email, username);
+
     return (
       <div className='container mt-5'>
         <div className='card shadow p-3'>
@@ -250,7 +245,11 @@ class Register extends React.Component {
             <form className='row p-3 form-group' onSubmit={this.submitForm}>
               <input
                 placeholder='First name'
-                className='col-12 mb-3 form-control'
+                className={
+                  errors.firstName
+                    ? "col-12 mb-3 form-control error"
+                    : "col-12 mb-3 form-control"
+                }
                 name='firstName'
                 value={firstName}
                 onChange={this.updateForm}
@@ -260,14 +259,22 @@ class Register extends React.Component {
                 placeholder='Last Name'
                 name='lastName'
                 type='lastName'
-                className='col-12 mb-3 form-control'
+                className={
+                  errors.lastName
+                    ? "col-12 mb-3 form-control error"
+                    : "col-12 mb-3 form-control"
+                }
                 value={lastName}
                 onChange={this.updateForm}
                 required
               />
               <input
                 placeholder='Email'
-                className='col-12 mb-3 form-control'
+                className={
+                  errors.email
+                    ? "col-12 mb-3 form-control error"
+                    : "col-12 mb-3 form-control"
+                }
                 type='email'
                 name='email'
                 value={email}
@@ -277,7 +284,11 @@ class Register extends React.Component {
               />
               <input
                 placeholder='Username'
-                className='col-12 mb-3 form-control'
+                className={
+                  errors.username
+                    ? "col-12 mb-3 form-control error"
+                    : "col-12 mb-3 form-control"
+                }
                 name='username'
                 value={username}
                 autoComplete='username'
@@ -319,6 +330,41 @@ class Register extends React.Component {
                   onChange={this.updateForm}
                 />
               </div>
+
+              {/*{errors.firstName && (
+                <p className='text-danger'>
+                  ERROR, First name can only contain:
+                  <ul>
+                    <li>Letters</li>
+                  </ul>
+                </p>
+              )}
+
+              {errors.lastName && (
+                <p className='text-danger'>
+                  ERROR, last name can only contain:
+                  <ul>
+                    <li>Letters</li>
+                  </ul>
+                </p>
+              )}
+
+              {errors.email && (
+                <p className='text-danger'>
+                  ERROR, you have not entered a valid email yet
+                </p>
+              )}
+
+              {errors.username && (
+                <p className='text-danger'>
+                  ERROR, Usernames can only contain:
+                  <ul>
+                    <li>Letters</li>
+                    <li>Numbers</li>
+                    <li>"@" and "."</li>
+                  </ul>
+                </p>
+              )}*/}
               {responseOkMessage && (
                 <p className='text-success'>{responseOkMessage}</p>
               )}
