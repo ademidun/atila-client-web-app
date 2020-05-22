@@ -56,7 +56,7 @@ const scholarshipFormConfigsPage1 = [
         keyName: 'deadline',
         type: 'datetime-local',
         html: () =>(<label htmlFor="deadline">
-            Deadline (yyyy-mm-dd time) <span role="img" aria-label="clock emoji">🕐</span>
+            Deadline (yyyy-mm-dd, time) <span role="img" aria-label="clock emoji">🕐</span>
         </label>),
     },
     {
