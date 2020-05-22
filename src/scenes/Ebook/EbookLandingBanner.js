@@ -1,31 +1,37 @@
 import React, { Component } from "react";
 import { Button, Col, Row } from "antd";
 import "./Ebook.scss";
-import {handleButtonClickEventFacebook} from "../../models/Utils";
+import { handleButtonClickEventFacebook } from "../../models/Utils";
 import EbookChapter from "./EbookChapter";
 
 class EbookLandingBanner extends Component {
   state = {
     showPreview: false,
+    page: 2,
   };
 
   render() {
     const { showPreview } = this.state;
+    const { page } = this.state;
+    const links = [
+      "https://i.imgur.com/PMg68If.png",
+      "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg",
+    ];
 
     const bookPreviewButton = (
-        <Button
-            className='center-block'
-            type='primary'
-            name="PreviewBook"
-            style={{ fontSize: "larger" }}
-            onClick={(event) => {
-                const { showPreview } = this.state;
-                this.setState({ showPreview: !showPreview });
-                handleButtonClickEventFacebook(event);
-            }}
-        >
-            {showPreview ? 'Hide' : ''} Show Inside the Book
-        </Button>
+      <Button
+        className='center-block'
+        type='primary'
+        name='PreviewBook'
+        style={{ fontSize: "larger" }}
+        onClick={(event) => {
+          const { showPreview } = this.state;
+          this.setState({ showPreview: !showPreview });
+          handleButtonClickEventFacebook(event);
+        }}
+      >
+        {showPreview ? "Hide" : ""} Show Inside the Book
+      </Button>
     );
 
     return (
@@ -56,35 +62,39 @@ class EbookLandingBanner extends Component {
               }}
             >
               <div className='ebook-image text-center'>
-                <img src='https://i.imgur.com/PMg68If.png' alt='Book cover' />
+                <img src={links[page - 1]} alt='Book cover' />
               </div>
+
               <Button className='buy-book-button center-block' type='primary'>
                 <a
                   href='https://gum.co/BbFon'
                   target='_blank'
                   rel='noopener noreferrer'
-                  name="AddToCart"
+                  name='AddToCart'
                   onClick={handleButtonClickEventFacebook}
                 >
                   Buy this Book - $33
                 </a>
               </Button>
               <br />
-                {bookPreviewButton}
+              {bookPreviewButton}
             </Col>
           </Row>
         </div>
 
-          {showPreview &&
-            <React.Fragment>
-                <hr/>
-                <EbookChapter />
-                {bookPreviewButton}
-            </React.Fragment>
+        {showPreview && (
+          <React.Fragment>
+            <hr />
+            <EbookChapter />
+            {bookPreviewButton}
+          </React.Fragment>
+        )}
 
-          }
-
-        <link rel="preload" href="https://example.com/widget.html" as="document" />
+        <link
+          rel='preload'
+          href='https://example.com/widget.html'
+          as='document'
+        />
       </div>
     );
   }
