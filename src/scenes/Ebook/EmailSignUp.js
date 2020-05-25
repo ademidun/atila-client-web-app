@@ -5,16 +5,16 @@ import { handleButtonClickEventFacebook } from "../../models/Utils";
 
 class EmailSignUp extends Component {
   state = {
-    page: 1,
+    audience: this.props.audience,
   };
 
   render() {
     const subscribeText = <h3>Enter Email to Receive your Free Preview</h3>;
     const links = [
       "https://i.imgur.com/RLc5YPU.png",
-      "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg",
+      "https://i.imgur.com/sXj8xYA.png",
     ];
-    const { page } = this.state;
+    const { audience } = this.state;
 
     const extraFormQuestions = [
       {
@@ -46,7 +46,7 @@ class EmailSignUp extends Component {
         <Col md={12}>
           <div>
             <img
-              src={links[page - 1]}
+              src={links[audience - 1]}
               style={{ maxHeight: "100%", maxWidth: "100%" }}
               alt='Book cover'
             />

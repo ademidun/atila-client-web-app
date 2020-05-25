@@ -7,15 +7,15 @@ import EbookChapter from "./EbookChapter";
 class EbookLandingBanner extends Component {
   state = {
     showPreview: false,
-    page: 2,
+    audience: this.props.audience,
   };
 
   render() {
     const { showPreview } = this.state;
-    const { page } = this.state;
+    const { audience } = this.state;
     const links = [
       "https://i.imgur.com/PMg68If.png",
-      "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg",
+      "https://i.imgur.com/UM1vr31.png",
     ];
 
     const bookPreviewButton = (
@@ -62,7 +62,7 @@ class EbookLandingBanner extends Component {
               }}
             >
               <div className='ebook-image text-center'>
-                <img src={links[page - 1]} alt='Book cover' />
+                <img src={links[audience - 1]} alt='Book cover' />
               </div>
 
               <Button className='buy-book-button center-block' type='primary'>

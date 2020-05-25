@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import EbookLandingBanner from "./EbookLandingBanner";
 import HelmetSeo from "../../components/HelmetSeo";
 import EmailSignUp from "./EmailSignUp";
@@ -8,50 +8,66 @@ import TableauGraphsEmbed from "./TableauGraphsEmbed";
 import EbookVideoEmbed from "./EbookVideoEmbed";
 import PremiumDescription from "./PremiumDescription";
 import EbookPreview from "./EbookPreview";
-import {BackTop} from "antd";
+import { withRouter } from "react-router";
+import { BackTop } from "antd";
+import queryString from "query-string";
 
-function Ebook() {
-  const seoContent = {
-    title:
-      "Atila Schools and Jobs Guide | The Best Canadian Universities for the Best Jobs",
-    description:
-      "A guide to The best Canadian Universities for getting jobs at Goldman Sachs, Google, McKinsey, Pfizer and more.",
-    image: "https://i.imgur.com/Lhxyq0T.png",
-    slug: "/schools",
-  };
+class Ebook extends Component {
+  render() {
+    const seoContent = {
+      title:
+        "Atila Schools and Jobs Guide | The Best Canadian Universities for the Best Jobs",
+      description:
+        "A guide to The best Canadian Universities for getting jobs at Goldman Sachs, Google, McKinsey, Pfizer and more.",
+      image: "https://i.imgur.com/Lhxyq0T.png",
+      slug: "/schools",
+    };
 
-  return (
-    <React.Fragment>
-      <div>
-        <HelmetSeo content={seoContent} />
-        <BackTop />
-        <EbookLandingBanner />
-        <hr />
-        <EmailSignUp />
-        <hr />
-        <EbookPreview />
-        <hr />
-        <TableauGraphsEmbed />
-        <hr />
-        <PremiumDescription />
-        <hr />
-        <EbookInterviews />
-        <hr />
-        <Team
-          showArray={["Tomiwa", "Melissa", "Isaac", "Elaine", "Aaron", "Dev", "Hadi", "Grace", "Emily"]}
-          showLinkedin={false}
-          showSeo={false}
-        />
-        <hr />
-        <EbookVideoEmbed />
-        <hr />
-        <EbookLandingBanner />
-        <hr />
-        <EmailSignUp />
-        <hr />
-      </div>
-    </React.Fragment>
-  );
+    const audience = queryString.parse(this.props.location.search).audience;
+
+    return (
+      <React.Fragment>
+        <div>
+          <HelmetSeo content={seoContent} />
+          <BackTop />
+          <EbookLandingBanner audience={audience} />
+          <hr />
+          <EmailSignUp audience={audience} />
+          <hr />
+          <EbookPreview audience={audience} />
+          <hr />
+          <TableauGraphsEmbed />
+          <hr />
+          <PremiumDescription audience={audience} />
+          <hr />
+          <EbookInterviews />
+          <hr />
+          <Team
+            showArray={[
+              "Tomiwa",
+              "Melissa",
+              "Isaac",
+              "Elaine",
+              "Aaron",
+              "Dev",
+              "Hadi",
+              "Grace",
+              "Emily",
+            ]}
+            showLinkedin={false}
+            showSeo={false}
+          />
+          <hr />
+          <EbookVideoEmbed audience={audience} />
+          <hr />
+          <EbookLandingBanner audience={audience} />
+          <hr />
+          <EmailSignUp audience={audience} />
+          <hr />
+        </div>
+      </React.Fragment>
+    );
+  }
 }
 
-export default Ebook;
+export default withRouter(Ebook);
