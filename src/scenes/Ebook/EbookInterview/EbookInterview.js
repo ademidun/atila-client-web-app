@@ -78,7 +78,7 @@ const interviewees = [
     description_1:
       "Aaron is a Media Information and Techno-culture (MIT) student at Western university.",
     quote:
-      "Dont second guess your choices, even if you dont know what you want to do",
+      "If you think that you're making the best choice for you, and someone else is telling you it’s not, don’t second guess your own passion or your own truth, just go for it.",
   },
   {
     first_name: "Kitan",
