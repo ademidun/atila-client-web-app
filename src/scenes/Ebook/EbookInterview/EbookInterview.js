@@ -11,7 +11,8 @@ const interviewees = [
     description_1:
       "Alex attended McGill’s Desautels Business School, and was a varsity soccer athlete",
     quote:
-      "Just learn from your experiences and don’t be afraid to take risks.",
+      "Sometimes you think if you do something it can be a waste of time,\n" +
+        "but everything you do, you learn from it. Learn from your experiences and don’t be afraid to take risks.",
   },
   {
     first_name: "Anne",
@@ -20,7 +21,9 @@ const interviewees = [
     description_1:
       "Anne is a Computer Science student at The University of Waterloo",
     quote:
-      "I think the opportunity to work with some really cool companies in undergrad is really unreal to me...that is why I went with Waterloo",
+      "You never know where you\n" +
+        "could meet your closest friends and this is the\n" +
+        "time to build these relationships that will last a lifetime.",
   },
   {
     first_name: "Raza ",
@@ -29,7 +32,11 @@ const interviewees = [
     description_1:
       "Raza studied at the Ivey School of Business at Western University and is a marketing manager at TELUS.",
     quote:
-      "Everything will work out because you don't stop working until it does.",
+      "When you go through things like your\n" +
+        "first midterms and you fail a bunch, that’s fine.\n" +
+        "You don’t have to accept it as a case fact. You\n" +
+        "can just take it and then change it so you kind of\n" +
+        "own your own destiny.",
   },
   {
     first_name: "Sarah ",
@@ -66,9 +73,9 @@ const interviewees = [
     img_url:
       "https://lh3.googleusercontent.com/8gM1DH9B4KdDbG6lcazHEaRwbLkNRC06WZkhOl8zYcKnG9Nr9qMmMd0cKS8ESozIFyufchTmwPYPakBMWxo3csagyC6LFi5IYppsyenbKjDgoX3F2gnoJarwtOdYNo-tSifApFpiOSM4wO6-pnOss_45ASmK7yjXp3WpxtOOYMWpqTNdwCLpXQ9jXVByEH59UpaZTa4fm717FXaNhOMrpDbC_PrIgMKb1O-sdUTvsInpIBreK-vivAgtXcmsNRXsmOlB0H_szLxGzzsgMV3y-GN1TyiErFFZVsVD65ShlYSSIXHT2RJDA_oNyyYFy9NYd9RlG0q-t6imPHe6T0GEERr2sZCwFrmwVoLOgjQJQ0NFhj9w6PcAVWLXDQsRwSQ3QmTPv_dE5ukgX8UufjeqTB41Vrkl_ZUfoofmYe_-C1wgc88nD8wtyk2mvKhCfKQ3Mz_JAdeUP1YhljteLyWxsnGT8GEC3ZVAA1ye3nQ9Wq83NrOjvpeyMpr_reh-8zTWZveEN88JW4TG_-QkG2Y_cF_ym-7a2-YCoqcTxyiK8ipnkxJoTnyASxlczk4vy2xZiWVc2PdbGzRs6y_ky3WIiPlzXbiUEEfwCixKhB1Fc6QcH5MzuxjUhrLWtmfrXPyqgOokw08e4PVDKNK5yb-PqpPyXnjf0QyLGQZtloCh0Ph9pRoDija-1GRB8WO2BqTXEZxNAH-I4mygFKbMhw9kMiSi8JahEGFMkk0oLXbBcL6wgN3KIQVDQDTg=w904-h902-no",
     description_1:
-      "Tashiya is studying International relations and affairs at Western University.",
+      "Tashiya is studying International Relations and Affairs at Western University.",
     quote:
-      "It’s completely fine to ask for resources because you’re paying for them, so you should use them whenever you need",
+      "It’s completely fine to ask for resources because you’re paying for them, so you should use them whenever you.",
   },
   {
     first_name: "Aaron",
@@ -76,7 +83,7 @@ const interviewees = [
     img_url:
       "https://lh3.googleusercontent.com/KYz8aaJ6adKC30PVS6q_b7-Bt11dBEqyD4vrEkgwXJsZ1gbpfepIaPYrW20QAalpwmSUHJpG52cdtCvzAziztu_NlXRADUwGzy0Iz0hkHVTwCXuathra_Gj-lKTTNgOAmy-8krW7HerPO70ROXvIFGowqdbgBroNx4i1SODNQYNqsmSXhFQ5Ur69GLC6rTLpzbXPeEyH6lwid8BT7enTvEn0QBzV7AOidwolDIaa-m6qzJar-X1RNR_45mskivLEgUISHjvjnEYRH2Cz4T26xj3ljNgkBduRaonCLeHkUtXyeZHNZcH24N6LLHkeF7CG8x5-dm-upUCNKugMG-SA1MAZp0PxA63qu8dKdotUE6AFFrVzi43FtNT3-co5StJe3bI-K6z1KV2ev1JYCT00KFlGVVVHReC6HyoT9NYLsohmNS1uQLEjRf7A3B4zVeYgRwj2fqGVxMmAeuhF6jM-RMER8AiTh5jBUFUN8Pn0vYDgUOypCxEOKynxq40I53SLwqDrOp0aLLmADqdJ3ONsYSx2JnYoaa1u_TZEJpnhs3C2SweV9fA_KpzWj77JzHqR6TpdWGWbQK2UJQbR2gs6I9086ovo8zK1Euk2Nh4egCqvihNKBILc7yMWAXOl7cjcAxVBLik5wnLqpjv64VIDIibt1rtBUiqhpIspRMjuvKtg_r_qEINnl492bN80kD_dh0JXucsR3eHmgxRYwqrOLct_1VPr5XslpcZDSIieJmCQCkxphbe8fnJR=w904-h884-no",
     description_1:
-      "Aaron is a Media Information and Techno-culture (MIT) student at Western university.",
+      "Aaron is a Media Information and Techno-culture (MIT) student at Western University.",
     quote:
       "If you think that you're making the best choice for you, and someone else is telling you it’s not, don’t second guess your own passion or your own truth, just go for it.",
   },
@@ -88,7 +95,7 @@ const interviewees = [
     description_1:
       "Kitan is a dual degree Engineering and Business student at the Ivey School of Business, Western University.",
     quote:
-      "University changed the way I look at gaining experience, in that I’m trying to gain more experience in things that build character",
+      "University changed the way I look at gaining experience, in that I’m trying to gain more experience in things that build character.",
   },
   {
     first_name: "Jacob",
@@ -98,7 +105,9 @@ const interviewees = [
     description_1:
       "Jacob is currently studying Financial Modeling and Applied Mathematics at Western University.",
     quote:
-      "If you dont know what you want to do, you can take a year off and figure out what your interests are",
+      "I was telling my dad, that after school I want to take a year\n" +
+        "off and focus on real estate, business, whatever it may be, and he wants me to jump straight\n" +
+        "into work because he says 'you’ll be behind,' then I think, what am I being behind in?",
   },
   {
     first_name: "Sameeksha",
@@ -108,16 +117,16 @@ const interviewees = [
     description_1:
       "Sameeksha is at Ivey Business school at Western University.",
     quote:
-      "If you do choose to do post-secondary, dont forget about life outside the classroom",
+      "Don’t neglect the academics, but don’t forget there’s a whole lot more to be learned outside of it by doing things that aren’t conventionally good for your resume or builds your skills.",
   },
   {
     first_name: "Tife",
     last_name: "Ademidun",
     img_url:
       "https://lh3.googleusercontent.com/IvY7RfmvfZ3apMJvlo1BhefH_fXejG5N0qabBZp4eW8qJ9AvnlsT8CZq09c7gdOcSCCIib2UdisWLZG6gf0ddGM12Thu2XjK04XmyqKxAxU8S9plasEEY9C5ekybNHUOr8Xr-na48U4M76nDMVU-f7GYAg9lwbnlvqm21-l-_gaCaYm0mZD2V0mHnzImVFhsPVvTnfYa8DACLdauq7k8_mTELMWQhH5GbBnYIIFlPXVzx_LXeCeKplzUuLWTswFe5biWHuqF0mD4urw3YlzqU1npEKvZ63e9EvU4I-5Vjef88CxPQLLp5A4OzrbSr6IMryki487yc17tiGl5cgXGUQRv2RcIXBfFLZ7ZStfpDLLMzDcnY_IPoOsWaTZmF4BTD1caUxxIHA7qvkrUPte6BTY0D46M8azY9d_uBIw6uVo4a4k0E-26QkCHp4nzft61EjAK0hoVg4PYTdDiC2-IEOGqSruX-Lzr_dv1bWU2QzudSUU5-bSfQu4urLfHhYcmLYmMqrhyJC3pnBqkkULHpeTxvGLnBicWgwXjAZ6qT-whDcA4nYB4Q0sYsJZLMYheLy4u028Vche5y21o0HOjOspqPLFj1b8aeVI0P0Q5M7bBHRffAZqjlJ70CDj7z3JpoNbvZ4bRIMxGD7p2XG-VI9-zmJs7xf0AtI_AonLg9jKiXjPwzx_M49NlKGtjvGY04bij7aCkfWMNSC8maO0OlLqzMAoIgAKtx8rnhCmB_js35k8VLBm5NGml=w901-h952-no",
-    description_1: "Tife is an engineering student at Western University",
+    description_1: "Tife is an Engineering student at Western University",
     quote:
-      "Dont compare yourself to others, just make sure your focused on you",
+      "Don't just keep looking at other people and what they're doing... make sure you're personally focused on trying to get better instead of seeing how you measure up against other people.",
   },
 ];
 
