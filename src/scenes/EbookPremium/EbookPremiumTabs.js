@@ -28,9 +28,9 @@ class EbookPremiumTabs extends Component {
           name: "Tech",
           label: "Google, Amazon, Facebook, and more",
           tableauUrls: [
-              "https://public.tableau.com/views/WhatSchoolsDoTechCompaniesHireFromOrganizedbyCompany/Sheet3?:display_count=y&:origin=viz_share_link",
-              "https://public.tableau.com/views/TotalCareerSegmentationPerSchoolIncludingTopInternationalSchools/Sheet1?:display_count=y&:origin=viz_share_link",
-              "https://public.tableau.com/views/TechTierList2/Sheet3?:display_count=y&:origin=viz_share_link",
+              "https://public.tableau.com/views/WhatSchoolsDoTechCompaniesHireFromOrganizedbyCompanymobile/Dashboard1?:display_count=y&publish=yes&:origin=viz_share_link",
+              "https://public.tableau.com/views/TotalCareerSegmentationPerSchoolIncludingTopInternationalSchoolsmobile/Dashboard1?:display_count=y&publish=yes&:origin=viz_share_link",
+              "https://public.tableau.com/profile/aaron.doerfler4661#!/vizhome/TechTierList2mobile/Dashboard1",
           ],
           tableauUrlsPreview: [
               "https://public.tableau.com/views/WhatSchoolDoTechCompainesHireFrommobilefriendly/Dashboard1?:display_count=y&:origin=viz_share_link",
@@ -52,27 +52,27 @@ class EbookPremiumTabs extends Component {
           name: "Biomedical",
           label: "Pfizer, GSK, and more",
           tableauUrls: [
-              "https://public.tableau.com/views/WhatSchoolsDoBiomedCompaniesHireFromOrganizedbyCompany/Sheet3?:display_count=y&:origin=viz_share_link",
-              "https://public.tableau.com/views/WhatSchoolsDoBiomedCompaniesHireFromOrganizedbyPosition/Sheet4?:display_count=y&:origin=viz_share_link",
-              "https://public.tableau.com/views/WhatSchoolsDoBiomedCompaniesHireFromOrganizedbyPositiontop5/Sheet5?:display_count=y&:origin=viz_share_link",
+              "https://public.tableau.com/views/WhatSchoolsDoBiomedCompaniesHireFromOrganizedbyCompanymobile/Dashboard1?:display_count=y&publish=yes&:origin=viz_share_link",
+              "https://public.tableau.com/views/WhatSchoolsDoBiomedCompaniesHireFromOrganizedbyPositionmobile/Dashboard1?:display_count=y&publish=yes&:origin=viz_share_link",
+              "https://public.tableau.com/views/WhatSchoolsDoBiomedCompaniesHireFromOrganizedbyPositiontop5mobile/Dashboard1?:display_count=y&publish=yes&:origin=viz_share_link",
           ],
         },
         "Investment Banking": {
           name: "Investment Banking",
           label: "Goldman Sachs, RBC Capital Markets and more",
           tableauUrls: [
-              "https://public.tableau.com/views/AmericanFirms_15860728549960/Sheet3?:display_count=y&:origin=viz_share_link",
-              "https://public.tableau.com/views/TotalCanadianBanks/Sheet1?:display_count=y&:origin=viz_share_link",
-              "https://public.tableau.com/views/AmericanFirms_15860728549960/FunnelChart1?:display_count=y&publish=yes&:origin=viz_share_link",
+              "https://public.tableau.com/profile/elaine.yin#!/vizhome/TotalAmericanBanks-Anonmobile/Dashboard1?publish=yes",
+              "https://public.tableau.com/profile/elaine.yin#!/vizhome/totalcanadianbanks-anonmobile/Dashboard1?publish=yes",
+              "https://public.tableau.com/profile/elaine.yin#!/vizhome/AmericanFirmsFunnelReal-Anonmobile/Dashboard1?publish=yes",
           ],
         },
         "Consulting": {
           name: "Consulting",
           label: "McKinsey, Bain, BCG, and more",
           tableauUrls: [
-              "https://public.tableau.com/views/TotalMBBFunnel/Sheet1?:display_count=y&:origin=viz_share_link",
-              "https://public.tableau.com/views/TotalDAFunnel/Sheet1?:display_count=y&:origin=viz_share_link",
-              "https://public.tableau.com/views/TOP10Treemap/Sheet1?:display_count=y&:origin=viz_share_link",
+              "https://public.tableau.com/views/TotalMBBFunnel-MobilePreview/Dashboard1?:retry=yes&:display_count=y&:origin=viz_share_link",
+              "https://public.tableau.com/views/TotalDAFunnel-Mobile/Dashboard1?:retry=yes&:display_count=y&:origin=viz_share_link",
+              "https://public.tableau.com/views/TOP10Treemap-Mobile/Dashboard1?:display_count=y&publish=yes&:origin=viz_share_link",
           ],
           flourishUrls: [
                 {
@@ -86,9 +86,9 @@ class EbookPremiumTabs extends Component {
           name: "All Industries",
           label: "Tech, Consulting, Investment Banking, Biomedical",
           tableauUrls: [
-              "https://public.tableau.com/views/WhatSchoolsDoCompaniesHireFromOrganizedbyCompany/Sheet1?:display_count=y&:origin=viz_share_link",
-              "https://public.tableau.com/views/UniversityRankingsApril2020/Sheet1?:display_count=y&:origin=viz_share_link",
-              "https://public.tableau.com/views/AllIndustries2/Sheet2?:display_count=y&:origin=viz_share_link",
+              "https://public.tableau.com/views/WhatSchoolsDoCompaniesHireFromOrganizedbyCompanySchoolsNumbersmobileupdated/Dashboard1?:display_count=y&publish=yes&:origin=viz_share_link",
+              "https://public.tableau.com/views/UniversityRankingsApril2020noschoolnamesmobile/Dashboard1?:display_count=y&publish=yes&:origin=viz_share_link",
+              "https://public.tableau.com/views/AllIndustriesJobLevelsnoschoolnamemobile/Dashboard1?:display_count=y&publish=yes&:origin=viz_share_link",
           ],
           tableauUrlsPreview: [
               "https://public.tableau.com/views/WhatSchoolsDoCompaniesHireFromOrganizedbyCompanySchoolsNumbersmobileupdated/Dashboard1?:display_count=y&publish=yes&:origin=viz_share_link",
