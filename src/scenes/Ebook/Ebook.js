@@ -10,29 +10,33 @@ import PremiumDescription from "./PremiumDescription";
 import EbookPreview from "./EbookPreview";
 import {BackTop} from "antd";
 import {unSlugify} from "../../services/utils";
+import {EBOOK_AUDIENCE_IMAGES} from "../../models/Constants";
 
 function Ebook({location: { search }}) {
-  const seoContent = {
-    title:
-      "Atila Schools and Jobs Guide | The Best Canadian Universities for the Best Jobs",
-    description:
-      "A guide to The best Canadian Universities for getting jobs at Goldman Sachs, Google, McKinsey, Pfizer and more.",
-    image: "https://i.imgur.com/Lhxyq0T.png",
-    slug: "/schools",
-  };
-
 
   const params = new URLSearchParams(search);
   const audience = unSlugify(params.get('audience') || '1');
 
 
   console.log({search, audience});
+
+
+  const seoContent = {
+    title:
+        "Atila Schools and Jobs Guide | The Best Canadian Universities for the Best Jobs",
+    description:
+        "A guide to The best Canadian Universities for getting jobs at Goldman Sachs, Google, McKinsey, Pfizer and more.",
+    image: EBOOK_AUDIENCE_IMAGES[audience].seoImage,
+    slug: "/schools",
+  };
+
+
   return (
     <React.Fragment>
       <div>
         <HelmetSeo content={seoContent} />
         <BackTop />
-        <EbookLandingBanner />
+        <EbookLandingBanner audience={audience} />
         <hr />
         <EmailSignUp />
         <hr />
