@@ -14,6 +14,23 @@ export const MAX_BLOG_PAGE_VIEWS = 5;
 export const MAX_ESSAY_PAGE_VIEWS = 3;
 export const MAX_SCHOLARSHIP_PAGE_VIEWS = 10;
 
+export const EBOOK_AUDIENCE_IMAGES = {
+    '1': {
+        name: 'default',
+        ebookLandingImage: 'https://i.imgur.com/PMg68If.png',
+        ebookMultipleDevices: 'https://i.imgur.com/RLc5YPU.png',
+        bookCoverImage: 'https://i.imgur.com/kkV3Cra.png',
+        seoImage: 'https://i.imgur.com/Lhxyq0T.png',
+    },
+    '2': {
+        name: 'east-asian',
+        ebookLandingImage: 'https://i.imgur.com/UM1vr31.png',
+        ebookMultipleDevices: 'https://i.imgur.com/sXj8xYA.png',
+        bookCoverImage: 'https://i.imgur.com/KdYNLId.png',
+        seoImage: 'https://i.imgur.com/Lhxyq0T.png',
+    },
+};
+
 export const emojiDictionary = {
     'aboriginal/first nations': <span role="img" className="text-dark" aria-label="ethnic hand raised emoji">🙋🏽‍♂</span>,
     'asian/east-asian': <span role="img" className="text-dark" aria-label="ethnic hand raised emoji">️🙋🏻 </span>,

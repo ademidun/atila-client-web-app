@@ -9,8 +9,9 @@ import EbookVideoEmbed from "./EbookVideoEmbed";
 import PremiumDescription from "./PremiumDescription";
 import EbookPreview from "./EbookPreview";
 import {BackTop} from "antd";
+import {unSlugify} from "../../services/utils";
 
-function Ebook() {
+function Ebook({location: { search }}) {
   const seoContent = {
     title:
       "Atila Schools and Jobs Guide | The Best Canadian Universities for the Best Jobs",
@@ -20,6 +21,12 @@ function Ebook() {
     slug: "/schools",
   };
 
+
+  const params = new URLSearchParams(search);
+  const audience = unSlugify(params.get('audience') || '1');
+
+
+  console.log({search, audience});
   return (
     <React.Fragment>
       <div>
