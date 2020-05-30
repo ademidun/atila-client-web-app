@@ -7,6 +7,7 @@ import UserProfileAPI from "../services/UserProfileAPI";
 import {PasswordShowHide} from "./Register";
 import {setLoggedInUserProfile} from "../redux/actions/user";
 import ResponseDisplay from "./ResponseDisplay";
+import HelmetSeo, {defaultSeoContent} from "./HelmetSeo";
 
 class Login extends React.Component {
 
@@ -23,8 +24,9 @@ class Login extends React.Component {
 
         let nextLocation = params.get('redirect') || '/scholarship';
 
-        if (nextLocation==='/') {
+        if (nextLocation==='/' || nextLocation.includes('/register')) {
             nextLocation = '/scholarship';
+            window.history.replaceState(null, 'Login', `login/?redirect=${nextLocation}`)
         }
 
         this.state = {
@@ -112,11 +114,15 @@ class Login extends React.Component {
             responseError, isLoadingResponse,
             responseOkMessage, forgotPassword, nextLocation } = this.state;
 
-
+        const seoContent = {
+            ...defaultSeoContent,
+            title: 'Login'
+        };
         return (
             <div className="container mt-5">
                 <div className="card shadow p-3">
                     <div>
+                        <HelmetSeo content={seoContent}/>
                         <h1>Login</h1>
                         <form className="row p-3" onSubmit={this.submitForm}>
                             <input placeholder="Username or Email"
