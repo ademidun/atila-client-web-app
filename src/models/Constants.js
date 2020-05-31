@@ -24,10 +24,10 @@ export const EBOOK_AUDIENCE_IMAGES = {
     },
     '2': {
         name: 'east-asian',
-        ebookLandingImage: 'https://i.imgur.com/UM1vr31.png',
+        ebookLandingImage: 'https://i.imgur.com/Y2GsEBf.png',
         ebookMultipleDevices: 'https://i.imgur.com/sXj8xYA.png',
         bookCoverImage: 'https://i.imgur.com/KdYNLId.png',
-        seoImage: 'https://i.imgur.com/Lhxyq0T.png',
+        seoImage: 'https://i.imgur.com/EO6FA0r.png',
     },
 };
 

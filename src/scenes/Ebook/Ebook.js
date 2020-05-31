@@ -50,7 +50,7 @@ class Ebook extends React.Component {
                     <BackTop />
                     <EbookLandingBanner audience={audience} />
                     <hr />
-                    <EmailSignUp />
+                    <EmailSignUp audience={audience} />
                     <hr />
                     <EbookPreview />
                     <hr />

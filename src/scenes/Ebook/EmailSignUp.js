@@ -2,8 +2,9 @@ import React from "react";
 import { Col, Row } from "antd";
 import SubscribeMailingList from "../../components/SubscribeMailingList";
 import {handleButtonClickEventFacebook} from "../../models/Utils";
+import {EBOOK_AUDIENCE_IMAGES} from "../../models/Constants";
 
-function EmailSignUp() {
+function EmailSignUp({audience}) {
 
     const subscribeText= (<h3>Enter Email to Receive your Free Preview</h3>);
 
@@ -35,7 +36,7 @@ function EmailSignUp() {
       <Col md={12}>
         <div>
             <img
-              src='https://i.imgur.com/RLc5YPU.png'
+              src={EBOOK_AUDIENCE_IMAGES[audience || '1'].ebookMultipleDevices}
               style={{ maxHeight: "100%", maxWidth: "100%" }}
               alt='Book cover'
             />
