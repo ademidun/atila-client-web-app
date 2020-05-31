@@ -9,49 +9,73 @@ import EbookVideoEmbed from "./EbookVideoEmbed";
 import PremiumDescription from "./PremiumDescription";
 import EbookPreview from "./EbookPreview";
 import {BackTop} from "antd";
+import {unSlugify} from "../../services/utils";
+import {EBOOK_AUDIENCE_IMAGES} from "../../models/Constants";
 
-function Ebook() {
-  const seoContent = {
-    title:
-      "Atila Schools and Jobs Guide | The Best Canadian Universities for the Best Jobs",
-    description:
-      "A guide to The best Canadian Universities for getting jobs at Goldman Sachs, Google, McKinsey, Pfizer and more.",
-    image: "https://i.imgur.com/Lhxyq0T.png",
-    slug: "/schools",
-  };
+class Ebook extends React.Component {
 
-  return (
-    <React.Fragment>
-      <div>
-        <HelmetSeo content={seoContent} />
-        <BackTop />
-        <EbookLandingBanner />
-        <hr />
-        <EmailSignUp />
-        <hr />
-        <EbookPreview />
-        <hr />
-        <TableauGraphsEmbed />
-        <hr />
-        <PremiumDescription />
-        <hr />
-        <EbookInterviews />
-        <hr />
-        <Team
-          showArray={["Tomiwa", "Melissa", "Isaac", "Elaine", "Aaron", "Dev", "Hadi", "Grace", "Emily"]}
-          showLinkedin={false}
-          showSeo={false}
-        />
-        <hr />
-        <EbookVideoEmbed />
-        <hr />
-        <EbookLandingBanner />
-        <hr />
-        <EmailSignUp />
-        <hr />
-      </div>
-    </React.Fragment>
-  );
+    constructor(props){
+        super(props);
+        const {location: { search }} = props;
+        const params = new URLSearchParams(search);
+        const audience = unSlugify(params.get('audience') || '1');
+        console.log({search, audience});
+
+        this.state = {
+            audience,
+        }
+
+    }
+
+
+    render() {
+
+        const { audience } = this.state;
+        console.log({audience});
+
+        const seoContent = {
+            title:
+                "Atila Schools and Jobs Guide | The Best Canadian Universities for the Best Jobs",
+            description:
+                "A guide to The best Canadian Universities for getting jobs at Goldman Sachs, Google, McKinsey, Pfizer and more.",
+            image: EBOOK_AUDIENCE_IMAGES[audience].seoImage,
+            slug: "/schools",
+        };
+
+
+        return (
+            <React.Fragment>
+                <div>
+                    <HelmetSeo content={seoContent} />
+                    <BackTop />
+                    <EbookLandingBanner audience={audience} />
+                    <hr />
+                    <EmailSignUp audience={audience} />
+                    <hr />
+                    <EbookPreview />
+                    <hr />
+                    <TableauGraphsEmbed />
+                    <hr />
+                    <PremiumDescription />
+                    <hr />
+                    <EbookInterviews />
+                    <hr />
+                    <Team
+                        showArray={["Tomiwa", "Melissa", "Isaac", "Elaine", "Aaron", "Dev", "Hadi", "Grace", "Emily"]}
+                        showLinkedin={false}
+                        showSeo={false}
+                    />
+                    <hr />
+                    <EbookVideoEmbed />
+                    <hr />
+                    <EbookLandingBanner audience={audience} />
+                    <hr />
+                    <EmailSignUp audience={audience} />
+                    <hr />
+                </div>
+            </React.Fragment>
+        );
+    }
 }
 
 export default Ebook;
