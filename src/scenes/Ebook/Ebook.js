@@ -68,9 +68,9 @@ class Ebook extends React.Component {
                     <hr />
                     <EbookVideoEmbed />
                     <hr />
-                    <EbookLandingBanner />
+                    <EbookLandingBanner audience={audience} />
                     <hr />
-                    <EmailSignUp />
+                    <EmailSignUp audience={audience} />
                     <hr />
                 </div>
             </React.Fragment>
