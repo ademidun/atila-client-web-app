@@ -82,6 +82,20 @@ class ScholarshipsList extends React.Component {
         }
     }
 
+    viewAllScholarships = () => {
+
+        const searchPayload = {
+            previewMode: "showAll",
+            filter_by_user_show_eligible_only: true,
+            sort_by: "relevance_new"
+        };
+
+        this.setState({searchPayload}, () => {
+            this.loadScholarships();
+        })
+
+    };
+
     loadScholarships = (page=1) => {
 
         const {
@@ -348,6 +362,10 @@ class ScholarshipsList extends React.Component {
                     <React.Fragment>
                         <h1 className="text-center">
                             {dynamicTitle}
+                            <br/>
+                            <Button type="link" onClick={this.viewAllScholarships}>
+                                View All Scholarships
+                            </Button>
                             <br />
                         </h1>
                         {searchPayload.filter_by_user &&
@@ -369,6 +387,11 @@ class ScholarshipsList extends React.Component {
                         {!userProfile && !searchString &&
                         <h6 className="text-center text-muted">
                             No Search query. Displaying all valid Scholarships
+                        </h6>
+                        }
+                        {userProfile && searchPayload.previewMode === 'showAll' &&
+                        <h6 className="text-center text-muted">
+                            No Search Filtering. Displaying all valid Scholarships
                         </h6>
                         }
                     </React.Fragment>
