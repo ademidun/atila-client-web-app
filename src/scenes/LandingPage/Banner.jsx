@@ -126,7 +126,9 @@ class Banner extends React.Component {
                 </div>
                 <Button type="primary"
                         className="center-block mb-3">
-                  Find Scholarships
+                  <Link to="/scholarship">
+                    Find Scholarships
+                  </Link>
                 </Button>
               </div>
             </form>
