@@ -82,15 +82,15 @@ class ScholarshipsList extends React.Component {
         }
     }
 
-    viewAllScholarships = () => {
+    toggleViewAllScholarships = () => {
 
-        const searchPayload = {
-            previewMode: "universalSearch",
-            filter_by_user_show_eligible_only: true,
-            sort_by: "relevance_new"
+        const { searchPayload } = this.state;
+        const updatedSearchPayload = {
+            ...searchPayload,
+            previewMode: searchPayload.previewMode === "universalSearch" ? null : 'universalSearch',
         };
 
-        this.setState({searchPayload}, () => {
+        this.setState({searchPayload: updatedSearchPayload}, () => {
             this.loadScholarships();
         })
 
@@ -359,8 +359,9 @@ class ScholarshipsList extends React.Component {
                         <h1 className="text-center">
                             {dynamicTitle}
                             <br/>
-                            <Button type="link" onClick={this.viewAllScholarships}>
-                                View All Scholarships
+                            <Button type="link" onClick={this.toggleViewAllScholarships}>
+                                View {searchPayload.previewMode === 'universalSearch' ? 'Scholarships for my profile' :
+                                'All Scholarships' }
                             </Button>
                             <br />
                         </h1>
@@ -385,7 +386,7 @@ class ScholarshipsList extends React.Component {
                             No Search query. Displaying all valid Scholarships
                         </h6>
                         }
-                        {userProfile && searchPayload.previewMode === 'showAll' &&
+                        {userProfile && searchPayload.previewMode === 'universalSearch' &&
                         <h6 className="text-center text-muted">
                             No Search Filtering. Displaying all valid Scholarships
                         </h6>
