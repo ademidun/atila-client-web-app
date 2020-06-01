@@ -30,7 +30,7 @@ class ScholarshipsList extends React.Component {
             scholarships: null,
             searchPayload: {
                 searchString ,
-                previewMode: 'universalSearch' ,
+                previewMode: userProfile && !searchString ? null : 'universalSearch',
                 filter_by_user_show_eligible_only: true,
                 sort_by: 'relevance_new'
             },
@@ -85,7 +85,7 @@ class ScholarshipsList extends React.Component {
     viewAllScholarships = () => {
 
         const searchPayload = {
-            previewMode: "showAll",
+            previewMode: "universalSearch",
             filter_by_user_show_eligible_only: true,
             sort_by: "relevance_new"
         };
@@ -108,10 +108,6 @@ class ScholarshipsList extends React.Component {
         if (totalScholarshipsCount && scholarships
             && scholarships.length >= totalScholarshipsCount) {
             return
-        }
-
-        if (userProfile && !searchPayload.searchString) {
-            delete searchPayload.previewMode;
         }
 
         ScholarshipsAPI.searchScholarships(searchPayload, page)
