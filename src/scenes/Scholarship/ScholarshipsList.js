@@ -110,6 +110,8 @@ class ScholarshipsList extends React.Component {
             return
         }
 
+        this.setState({ isLoadingScholarships: true });
+
         ScholarshipsAPI.searchScholarships(searchPayload, page)
             .then(res => {
 
