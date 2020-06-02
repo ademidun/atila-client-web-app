@@ -90,7 +90,10 @@ class ScholarshipsList extends React.Component {
             previewMode: searchPayload.previewMode === "universalSearch" ? null : 'universalSearch',
         };
 
-        this.setState({searchPayload: updatedSearchPayload}, () => {
+        this.setState({
+            searchPayload: updatedSearchPayload,
+            scholarships: []
+        }, () => {
             this.loadScholarships();
         })
 
