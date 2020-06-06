@@ -113,7 +113,7 @@ class ScholarshipsList extends React.Component {
             return
         }
 
-        this.setState({ isLoadingScholarships: true });
+        this.setState({ isLoadingScholarships: true, errorGettingScholarships: null });
 
         ScholarshipsAPI.searchScholarships(searchPayload, page)
             .then(res => {
