@@ -78,8 +78,8 @@ const Arrow = ({ text, className }) => {
 };
 
 
-const ArrowLeft = Arrow({ text: '<', className: 'arrow-prev' });
-const ArrowRight = Arrow({ text: '>', className: 'arrow-next' });
+const ArrowLeft = Arrow({ text: 'Prev', className: 'arrow-prev' });
+const ArrowRight = Arrow({ text: 'Next', className: 'arrow-next' });
 
 const selected = pages[0].title;
 
