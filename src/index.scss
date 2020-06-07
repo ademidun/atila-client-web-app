@@ -2,6 +2,7 @@ $primary: #194F87;
 $secondary: #FEFEFE;
 $tertiary: #326396;
 $my-lighten:#4080ff;
+$default-font: sans-serif;
 $serif-font: Palatino,Georgia,Cambria,"Times New Roman",Times,serif;
 // Bootstrap: https://getbootstrap.com/docs/4.0/layout/overview/#responsive-breakpoints
 $small-device-width: 576px;
@@ -12,7 +13,7 @@ $small-device-width: 576px;
 
 body {
   margin: 0;
-  font-family: $serif-font,
+  font-family: $default-font,
   sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
