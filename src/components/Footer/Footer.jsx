@@ -39,7 +39,7 @@ function Footer({location, history}) {
         <footer id="footer">
           <div className="footer-wrap p-1">
             <Row>
-              <Col md={6} sm={12} xs={12}>
+              <Col md={6} sm={12} xs={24}>
                 <div className="footer-center">
                   <div>
                     <Link to="/schools">
@@ -74,7 +74,7 @@ function Footer({location, history}) {
                   </div>
                 </div>
               </Col>
-              <Col md={6} sm={12} xs={12}>
+              <Col md={6} sm={12} xs={24}>
                 <div className="footer-center">
                   <div>
                     <Link to="/contact">
@@ -111,7 +111,7 @@ function Footer({location, history}) {
                   </div>
                 </div>
               </Col>
-              <Col md={6} sm={12} xs={12}>
+              <Col md={6} sm={12} xs={24}>
                 <div className="footer-center">
                   <div>
                     <a  target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/channel/UCG2iWiYgJYkjBl4EdYGI5mw/">
@@ -135,7 +135,7 @@ function Footer({location, history}) {
                   </div>
                 </div>
               </Col>
-              <Col md={6} sm={12} xs={12}>
+              <Col md={6} sm={12} xs={24}>
                 <div className="footer-center">
                   <div>
                     <a  target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/company/atila-tech/">
@@ -158,12 +158,6 @@ function Footer({location, history}) {
                     </a>
                   </div>
                 </div>
-              </Col>
-              <Col md={{ span: 6, offset: 3 }} sm={{ span: 12, offset: 6 }} xs={{ span: 12, offset: 6 }}>
-                <a  target="_blank"
-                    rel="noopener noreferrer" href="https://www.instagram.com/atilatech/">
-                    Follow @atilatech on Instagram <FontAwesomeIcon icon={faInstagram} />
-                </a>
               </Col>
             </Row>
           </div>

@@ -4,59 +4,45 @@ import ScrollMenu from 'react-horizontal-scrolling-menu';
 // list of pages
 const pages = [
     {
-        title: 'Book Cover',
         url: 'https://i.imgur.com/kkV3Cra.png',
     },
     {
-        title: 'Back Image',
         url: 'https://i.imgur.com/pLaJDbn.png',
     },
     {
-        title: 'Methodology',
         url: 'https://i.imgur.com/tubBv4w.png',
     },
     {
-        title: 'Methodology Continued',
         url: 'https://i.imgur.com/po09bdf.png',
     },
     {
-        title: 'Student Profiles',
         url: 'https://i.imgur.com/VKwEAYC.png',
     },
     {
-        title: 'Student Profiles (perspectives)',
         url: 'https://i.imgur.com/qCYu9rL.png',
     },
     {
-        title: 'How Much do I Really Make?',
         url: 'https://i.imgur.com/z1WJibU.png',
     },
     {
-        title: 'More Student Profiles',
         url: 'https://i.imgur.com/nrFwWei.png',
     },
     {
-        title: 'Industry Analysis',
         url: 'https://i.imgur.com/X4l5XGn.png',
     },
     {
-        title: 'Industry Analysis - Consulting',
         url: 'https://i.imgur.com/yLrt8Y4.png',
     },
     {
-        title: 'Detailed Graphics',
         url: 'https://i.imgur.com/CxMZCwk.png',
     },
     {
-        title: 'Student Profiles (Western)',
         url: 'https://i.imgur.com/EeHtEBd.png',
     },
     {
-        title: 'Student Interviews',
         url: 'https://i.imgur.com/9EdP2Jt.png',
     },
     {
-        title: 'And Much More!',
         url: 'https://i.imgur.com/pLaJDbn.png',
     },
 ];
@@ -67,7 +53,6 @@ const MenuItem = ({data, selected}) => {
     return <div
         className={`menu-item ${selected ? 'active' : ''} text-center card shadow`}
     >
-        <h4 className="my-3">{data.title}</h4>
         <img
             className="responsive-images center-block"
             src={data.url} alt={`Page ${data.title}`} />

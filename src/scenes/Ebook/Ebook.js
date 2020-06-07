@@ -2,7 +2,6 @@ import React from "react";
 import EbookLandingBanner from "./EbookLandingBanner";
 import HelmetSeo from "../../components/HelmetSeo";
 import EmailSignUp from "./EmailSignUp";
-import Team from "../../components/Team/Team";
 import EbookInterviews from "./EbookInterview/EbookInterview";
 import TableauGraphsEmbed from "./TableauGraphsEmbed";
 import EbookVideoEmbed from "./EbookVideoEmbed";
@@ -37,15 +36,7 @@ function Ebook() {
         <hr />
         <EbookInterviews />
         <hr />
-        <Team
-          showArray={["Tomiwa", "Melissa", "Isaac", "Elaine", "Aaron", "Dev", "Hadi", "Grace", "Emily"]}
-          showLinkedin={false}
-          showSeo={false}
-        />
-        <hr />
         <EbookVideoEmbed />
-        <hr />
-        <EbookLandingBanner />
         <hr />
         <EmailSignUp />
         <hr />

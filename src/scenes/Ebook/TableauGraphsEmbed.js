@@ -33,9 +33,6 @@ class TableauGraphsEmbed extends Component {
       <div className='container'>
         <h1>
           Preview of Some Graphics{" "}
-          <span role='img' aria-labelledby='eyes'>
-            👀
-          </span>
         </h1>
         <div
             ref={(div) => {

@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Col, Row } from "antd";
 import "../Ebook.scss";
+import { Button } from "antd";
 
 const interviewees = [
   {
@@ -170,6 +171,12 @@ const EbookInterviews = () => {
         <br />
         <Row gutter={16}>{interviewCards}</Row>
       </div>
+      <a href='/team'><Button className='buy-book-button center-block' 
+              style={{fontSize: 20}} 
+              type='primary' 
+              >
+                  The Atila Team
+              </Button></a>
     </React.Fragment>
   );
 };
