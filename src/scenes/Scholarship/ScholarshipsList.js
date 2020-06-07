@@ -108,12 +108,17 @@ class ScholarshipsList extends React.Component {
         const { scholarships, totalScholarshipsCount, scholarshipsScoreBreakdown } = this.state;
         let { searchPayload } = this.state;
 
+        searchPayload = {
+            ...searchPayload,
+            previewMode: searchPayload.view_as_user ? null : searchPayload.previewMode,
+        };
+
         if (totalScholarshipsCount && scholarships
             && scholarships.length >= totalScholarshipsCount) {
             return
         }
 
-        this.setState({ isLoadingScholarships: true });
+        this.setState({ isLoadingScholarships: true, errorGettingScholarships: null });
 
         ScholarshipsAPI.searchScholarships(searchPayload, page)
             .then(res => {
