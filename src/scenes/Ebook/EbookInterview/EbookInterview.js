@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Col, Row } from "antd";
 import "../Ebook.scss";
 import { Button } from "antd";
+import {Link} from "react-router-dom";
 
 const interviewees = [
   {
@@ -153,7 +154,7 @@ const EbookInterviews = () => {
         <Col span={24} className="text-center">
           <img
               className="responsive-images"
-              src={index === 6 ?'https://i.imgur.com/XluzC2w.jpg' : 'https://i.imgur.com/YKTod6l.jpg'}
+              src={index === 6 ?'https://i.imgur.com/XluzC2w.jpg' : 'https://i.imgur.com/8GP6ohn.jpg'}
               alt='Western Students' />
         </Col>
         }
@@ -171,12 +172,11 @@ const EbookInterviews = () => {
         <br />
         <Row gutter={16}>{interviewCards}</Row>
       </div>
-      <a href='/team'><Button className='buy-book-button center-block' 
-              style={{fontSize: 20}} 
-              type='primary' 
-              >
-                  The Atila Team
-              </Button></a>
+      <Link to='/team'
+            className="text-center center-block"
+            style={{fontSize: 40}} >
+         See The Atila Team that made this book
+      </Link>
     </React.Fragment>
   );
 };

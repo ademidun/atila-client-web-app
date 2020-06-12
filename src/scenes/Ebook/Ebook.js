@@ -34,9 +34,9 @@ function Ebook() {
         <hr />
         <PremiumDescription />
         <hr />
-        <EbookInterviews />
-        <hr />
         <EbookVideoEmbed />
+        <hr />
+        <EbookInterviews />
         <hr />
       </div>
     </React.Fragment>

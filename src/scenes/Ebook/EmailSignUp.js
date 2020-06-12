@@ -10,7 +10,7 @@ function EmailSignUp() {
     const extraFormQuestions = [
         {
             keyName: 'preferredIndustry',
-            placeholder: 'Industry you\'re curious about?',
+            placeholder: 'Industry you\'re interested in?',
             type: 'select',
             options: [
                 'Tech',
