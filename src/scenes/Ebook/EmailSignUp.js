@@ -36,7 +36,7 @@ function EmailSignUp() {
       <Col md={12}>
         <div>
             <img
-              src='https://i.imgur.com/RLc5YPU.png'
+              src='https://i.imgur.com/CwPiFjJ.png'
               style={{ maxHeight: "100%", maxWidth: "100%" }}
               alt='Book cover'
             />

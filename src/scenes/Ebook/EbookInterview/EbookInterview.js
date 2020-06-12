@@ -153,7 +153,7 @@ const EbookInterviews = () => {
         <Col span={24} className="text-center">
           <img
               className="responsive-images"
-              src={index === 6 ?'https://i.imgur.com/XluzC2w.jpg' : 'https://i.imgur.com/BLv4RQt.jpg'}
+              src={index === 6 ?'https://i.imgur.com/XluzC2w.jpg' : 'https://i.imgur.com/YKTod6l.jpg'}
               alt='Western Students' />
         </Col>
         }

@@ -38,8 +38,6 @@ function Ebook() {
         <hr />
         <EbookVideoEmbed />
         <hr />
-        <EmailSignUp />
-        <hr />
       </div>
     </React.Fragment>
   );
