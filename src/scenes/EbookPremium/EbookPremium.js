@@ -7,7 +7,7 @@ function Ebook() {
         title:
             "Atila Schools and Jobs Guide | The Best Canadian Universities for the Best Jobs",
         description:
-            "A guide to The best Canadian Universities for getting jobs at Goldman Sachs, Google, McKinsey, Pfizer and more.",
+            "A guide to the best Canadian universities for getting jobs at Goldman Sachs, Google, McKinsey, Pfizer and more.",
         image: "https://i.imgur.com/Lhxyq0T.png",
         slug: "/schools",
     };
@@ -21,9 +21,6 @@ function Ebook() {
                 </h1>
                 <h4 className='col-sm-12 text-center d-sm-block d-md-none'>
                     (Works best on desktop)
-                </h4>
-                <h4 className='col-sm-12 text-center'>
-                    (New graphs added weekly)
                 </h4>
                 <EbookPremiumBanner />
                 <hr />

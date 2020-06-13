@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Col, Row } from "antd";
 import "../Ebook.scss";
+import {Link} from "react-router-dom";
 
 const interviewees = [
   {
@@ -161,14 +162,9 @@ const EbookInterviews = () => {
       {["0", "6"].includes(index.toString()) && (
         <Col span={24} className='text-center'>
           <img
-            className='responsive-images'
-            src={
-              index === 6
-                ? "https://i.imgur.com/XluzC2w.jpg"
-                : "https://i.imgur.com/Yr0CZL2.jpg"
-            }
-            alt='Western Students'
-          />
+              className="responsive-images"
+              src={index === 6 ?'https://i.imgur.com/XluzC2w.jpg' : 'https://i.imgur.com/8GP6ohn.jpg'}
+              alt='Western Students' />
         </Col>
       )}
       <Col xs={24} md={12} xl={8}>
@@ -184,6 +180,11 @@ const EbookInterviews = () => {
         <br />
         <Row gutter={16}>{interviewCards}</Row>
       </div>
+      <Link to='/team'
+            className="text-center center-block"
+            style={{fontSize: 40}} >
+         See The Atila Team that made this book
+      </Link>
     </React.Fragment>
   );
 };

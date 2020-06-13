@@ -22,7 +22,7 @@ class EbookLandingBanner extends Component {
     const bookPreviewButton = (
         <Button
             className='center-block'
-            type='primary'
+            type='info'
             name="PreviewBook"
             style={{ fontSize: "larger" }}
             onClick={(event) => {
@@ -47,8 +47,8 @@ class EbookLandingBanner extends Component {
             <Col xs={24} md={10} lg={8} className='text-center buy-now-cta'>
               <div>
                 <h2>
-                  A guide to the best Canadian Universities for getting jobs at
-                  Goldman Sachs, Google, McKinsey, Pfizer and more.
+                    A guide to the best Canadian universities
+                    for getting jobs at Goldman Sachs, Google, McKinsey, Pfizer and more.
                 </h2>
               </div>
             </Col>

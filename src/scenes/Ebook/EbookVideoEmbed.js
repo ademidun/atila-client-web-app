@@ -1,4 +1,6 @@
 import React from 'react';
+import { Button } from "antd";
+import "./Ebook.scss";
 
 function YoutubeVideoEmbed() {
 
@@ -13,6 +15,11 @@ function YoutubeVideoEmbed() {
                         width="560" height="314" style={{maxWidth: '80%'}}>
                 </iframe>
             </div>
+            <br/>
+            <Button className='buy-book-button center-block' onClick={() => window.scrollTo(10, 5)}
+             style={{fontSize: 20}} type='primary'>
+                  Interested in buying the book?
+              </Button>
         </div>
     );
 }

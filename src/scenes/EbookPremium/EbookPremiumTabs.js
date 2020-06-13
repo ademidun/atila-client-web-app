@@ -48,15 +48,6 @@ class EbookPremiumTabs extends Component {
                 }
             ]
         },
-        "Biomedical": {
-          name: "Biomedical",
-          label: "Pfizer, GSK, and more",
-          tableauUrls: [
-              "https://public.tableau.com/views/WhatSchoolsDoBiomedCompaniesHireFromOrganizedbyCompanymobile/Dashboard1?:display_count=y&publish=yes&:origin=viz_share_link",
-              "https://public.tableau.com/views/WhatSchoolsDoBiomedCompaniesHireFromOrganizedbyPositionmobile/Dashboard1?:display_count=y&publish=yes&:origin=viz_share_link",
-              "https://public.tableau.com/views/WhatSchoolsDoBiomedCompaniesHireFromOrganizedbyPositiontop5mobile/Dashboard1?:display_count=y&publish=yes&:origin=viz_share_link",
-          ],
-        },
         "Investment Banking": {
           name: "Investment Banking",
           label: "Goldman Sachs, RBC Capital Markets and more",
@@ -64,6 +55,10 @@ class EbookPremiumTabs extends Component {
               "https://public.tableau.com/profile/elaine.yin#!/vizhome/TotalAmericanBanks-Anonmobile/Dashboard1?publish=yes",
               "https://public.tableau.com/profile/elaine.yin#!/vizhome/totalcanadianbanks-anonmobile/Dashboard1?publish=yes",
               "https://public.tableau.com/profile/elaine.yin#!/vizhome/AmericanFirmsFunnelReal-Anonmobile/Dashboard1?publish=yes",
+          ],
+          tableauUrlsPreview: [
+            "https://public.tableau.com/views/TotalAmericanBanks-Anon/AmericanAnon?:display_count=y&publish=yes&:origin=viz_share_link",
+            "https://public.tableau.com/views/totalcanadianbanks-anon/Sheet1?:display_count=y&publish=yes&:origin=viz_share_link",
           ],
         },
         "Consulting": {
@@ -74,6 +69,11 @@ class EbookPremiumTabs extends Component {
               "https://public.tableau.com/views/TotalDAFunnel-Mobile/Dashboard1?:retry=yes&:display_count=y&:origin=viz_share_link",
               "https://public.tableau.com/views/TOP10Treemap-Mobile/Dashboard1?:display_count=y&publish=yes&:origin=viz_share_link",
           ],
+          tableauUrlsPreview: [
+            "https://public.tableau.com/views/TotalDAFunnel-MobilePreview/Dashboard1?:retry=yes&:display_count=y&:origin=viz_share_link",
+            "https://public.tableau.com/views/FunnelMBBPreview/Sheet1?:display_count=y&:origin=viz_share_link",
+            "https://public.tableau.com/views/Top10-PreviewMobile/Dashboard1?:display_count=y&publish=yes&:origin=viz_share_link",
+          ],
           flourishUrls: [
                 {
                     visualizationId: '1647836',
@@ -82,6 +82,15 @@ class EbookPremiumTabs extends Component {
                 }
             ]
         },
+        "Biomedical": {
+              name: "Biomedical",
+              label: "Pfizer, GSK, and more",
+              tableauUrls: [
+                  "https://public.tableau.com/views/WhatSchoolsDoBiomedCompaniesHireFromOrganizedbyCompanymobile/Dashboard1?:display_count=y&publish=yes&:origin=viz_share_link",
+                  "https://public.tableau.com/views/WhatSchoolsDoBiomedCompaniesHireFromOrganizedbyPositionmobile/Dashboard1?:display_count=y&publish=yes&:origin=viz_share_link",
+                  "https://public.tableau.com/views/WhatSchoolsDoBiomedCompaniesHireFromOrganizedbyPositiontop5mobile/Dashboard1?:display_count=y&publish=yes&:origin=viz_share_link",
+              ],
+          },
         "All Industries": {
           name: "All Industries",
           label: "Tech, Consulting, Investment Banking, Biomedical",
@@ -92,6 +101,7 @@ class EbookPremiumTabs extends Component {
           ],
           tableauUrlsPreview: [
               "https://public.tableau.com/views/WhatSchoolsDoCompaniesHireFromOrganizedbyCompanySchoolsNumbersmobileupdated/Dashboard1?:display_count=y&publish=yes&:origin=viz_share_link",
+              "https://public.tableau.com/views/UniversityRankingsApril2020noschoolnames/Sheet1?:display_count=y&:origin=viz_share_link",
           ],
           flourishUrls: [
               {
@@ -137,7 +147,12 @@ class EbookPremiumTabs extends Component {
               <div className='text-center'>
                   {ebookUserProfile.email === FREE_PREVIEW_EMAIL &&
                   <div>
-                      <h4><strong>Preview Mode</strong></h4>
+                      <h4>
+                          <strong>
+                              Preview Mode <br/>
+                              (buy ebook to see actual school names and more graphs)
+                          </strong>
+                      </h4>
                   </div>
                   }
                   {ebookUserProfile && ebookUserProfile.email &&
@@ -180,6 +195,12 @@ class EbookPremiumTabs extends Component {
                                         <hr/>
                                     </React.Fragment>
                                 ))}
+                            </React.Fragment>
+                            <React.Fragment>
+                                {!industryConfig[industry][visualizationTypes.tableau] &&
+                                 !industryConfig[industry][visualizationTypes.flourish] &&
+                                <h4>No Graphs for {industry} yet, check back in a few days.</h4>
+                                }
                             </React.Fragment>
                         </TabPane>
                     ))}

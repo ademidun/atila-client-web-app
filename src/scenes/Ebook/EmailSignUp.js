@@ -11,13 +11,14 @@ function EmailSignUp({audience}) {
     const extraFormQuestions = [
         {
             keyName: 'preferredIndustry',
-            placeholder: 'What Industry chapter are you most interested in?',
+            placeholder: 'Industry you\'re interested in?',
             type: 'select',
             options: [
                 'Tech',
                 'Investment Banking',
                 'Consulting',
-                'Biomedical'
+                'Biomedical',
+                "Other"
             ],
             hideLabel: true
         },

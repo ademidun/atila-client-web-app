@@ -250,6 +250,8 @@ class ScholarshipAddEdit extends React.Component{
             this.setState({scholarship});
         }
 
+        console.log(event.target.name + " " + event.target.value)
+
     };
 
     submitForm = (event) => {

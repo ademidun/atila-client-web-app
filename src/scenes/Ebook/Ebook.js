@@ -2,7 +2,6 @@ import React from "react";
 import EbookLandingBanner from "./EbookLandingBanner";
 import HelmetSeo from "../../components/HelmetSeo";
 import EmailSignUp from "./EmailSignUp";
-import Team from "../../components/Team/Team";
 import EbookInterviews from "./EbookInterview/EbookInterview";
 import TableauGraphsEmbed from "./TableauGraphsEmbed";
 import EbookVideoEmbed from "./EbookVideoEmbed";
@@ -14,9 +13,9 @@ import {EBOOK_AUDIENCE_IMAGES} from "../../models/Constants";
 
 class Ebook extends React.Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
-        const {location: { search }} = props;
+        const {location: {search}} = props;
         const params = new URLSearchParams(search);
         const audience = unSlugify(params.get('audience') || '1');
         console.log({search, audience});
@@ -30,48 +29,37 @@ class Ebook extends React.Component {
 
     render() {
 
-        const { audience } = this.state;
+        const {audience} = this.state;
         console.log({audience});
 
         const seoContent = {
             title:
                 "Atila Schools and Jobs Guide | The Best Canadian Universities for the Best Jobs",
             description:
-                "A guide to The best Canadian Universities for getting jobs at Goldman Sachs, Google, McKinsey, Pfizer and more.",
+                "A guide to the best Canadian universities for getting jobs at Goldman Sachs, Google, McKinsey, Pfizer and more.",
             image: EBOOK_AUDIENCE_IMAGES[audience].seoImage,
             slug: "/schools",
         };
 
-
         return (
             <React.Fragment>
                 <div>
-                    <HelmetSeo content={seoContent} />
-                    <BackTop />
+                    <HelmetSeo content={seoContent}/>
+                    <BackTop/>
                     <EbookLandingBanner audience={audience} />
-                    <hr />
+                    <hr/>
                     <EmailSignUp audience={audience} />
-                    <hr />
-                    <EbookPreview />
-                    <hr />
-                    <TableauGraphsEmbed />
-                    <hr />
-                    <PremiumDescription />
-                    <hr />
-                    <EbookInterviews />
-                    <hr />
-                    <Team
-                        showArray={["Tomiwa", "Melissa", "Isaac", "Elaine", "Aaron", "Dev", "Hadi", "Grace", "Emily"]}
-                        showLinkedin={false}
-                        showSeo={false}
-                    />
-                    <hr />
-                    <EbookVideoEmbed />
-                    <hr />
-                    <EbookLandingBanner audience={audience} />
-                    <hr />
-                    <EmailSignUp audience={audience} />
-                    <hr />
+                    <hr/>
+                    <EbookPreview/>
+                    <hr/>
+                    <TableauGraphsEmbed/>
+                    <hr/>
+                    <PremiumDescription/>
+                    <hr/>
+                    <EbookVideoEmbed/>
+                    <hr/>
+                    <EbookInterviews/>
+                    <hr/>
                 </div>
             </React.Fragment>
         );
