@@ -75,6 +75,7 @@ class UserProfileEdit extends React.Component {
 
         event.preventDefault();
         const { userProfile, afterSubmitSuccess } = this.props;
+        userProfile.metadata['stale_cache'] = true;
         const { locationData } = this.state;
         UserProfileAPI
             .update({userProfile, locationData }, userProfile.user)

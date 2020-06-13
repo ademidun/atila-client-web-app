@@ -63,7 +63,7 @@ class ScholarshipCard extends React.Component {
                             <img src={img_url} className="card-img mt-4" alt={name} />
                         </div>
                         <div className={isOneColumn ? null: "col-md-8"}>
-                            <div className="card-body">
+                            <div className="card-body" style={{maxHeight: '500px', overflowX: 'scroll'}}>
                                 <Link to={`/scholarship/${slug}`}>
                                     <h1 className="card-title text-left">{name}</h1>
                                 </Link>

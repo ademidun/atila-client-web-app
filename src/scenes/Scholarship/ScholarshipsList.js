@@ -30,7 +30,7 @@ class ScholarshipsList extends React.Component {
             scholarships: null,
             searchPayload: {
                 searchString ,
-                previewMode: 'universalSearch' ,
+                previewMode: userProfile && !searchString ? null : 'universalSearch',
                 filter_by_user_show_eligible_only: true,
                 sort_by: 'relevance_new'
             },
@@ -82,6 +82,23 @@ class ScholarshipsList extends React.Component {
         }
     }
 
+    toggleViewAllScholarships = () => {
+
+        const { searchPayload } = this.state;
+        const updatedSearchPayload = {
+            ...searchPayload,
+            previewMode: searchPayload.previewMode === "universalSearch" ? null : 'universalSearch',
+        };
+
+        this.setState({
+            searchPayload: updatedSearchPayload,
+            scholarships: []
+        }, () => {
+            this.loadScholarships();
+        })
+
+    };
+
     loadScholarships = (page=1) => {
 
         const {
@@ -91,14 +108,17 @@ class ScholarshipsList extends React.Component {
         const { scholarships, totalScholarshipsCount, scholarshipsScoreBreakdown } = this.state;
         let { searchPayload } = this.state;
 
+        searchPayload = {
+            ...searchPayload,
+            previewMode: searchPayload.view_as_user ? null : searchPayload.previewMode,
+        };
+
         if (totalScholarshipsCount && scholarships
             && scholarships.length >= totalScholarshipsCount) {
             return
         }
 
-        if (userProfile && !searchPayload.searchString) {
-            delete searchPayload.previewMode;
-        }
+        this.setState({ isLoadingScholarships: true, errorGettingScholarships: null });
 
         ScholarshipsAPI.searchScholarships(searchPayload, page)
             .then(res => {
@@ -345,33 +365,47 @@ class ScholarshipsList extends React.Component {
                     loadingTitle={"Loading Scholarships..."}
                 />
                 {scholarships &&
-                    <React.Fragment>
-                        <h1 className="text-center">
+                    <div className="text-center">
+                        <h1>
                             {dynamicTitle}
                             <br />
                         </h1>
                         {searchPayload.filter_by_user &&
-                        <h3 className="text-center">
+                        <h3>
                             (Filtering by {prettifyKeys(searchPayload.filter_by_user)}: {' '}
                             {transformFilterDisplay(searchPayload.filter_by_user, userProfile)} )
                         </h3>
                         }
-                        <h2 className="text-center text-muted">
+                        <h2 className="text-muted">
                             {totalFunding && `${totalFunding} in funding`}
                         </h2>
+                        <h3>
+
+                            <Button type="link"
+                                    onClick={this.toggleViewAllScholarships}
+                                    style={{fontSize: '1.5rem'}}>
+                                View {searchPayload.previewMode === 'universalSearch' ? 'Scholarships for my profile' :
+                                'All Scholarships' }
+                            </Button>
+                        </h3>
 
                         {viewAsUserProfile &&
-                        <h5 className="text-center text-success">Viewing as {viewAsUserProfile.username}</h5>
+                        <h5 className="text-success">Viewing as {viewAsUserProfile.username}</h5>
                         }
                         {viewAsUserError &&
-                        <h5 className="text-center text-danger">{viewAsUserError}</h5>
+                        <h5 className="text-danger">{viewAsUserError}</h5>
                         }
                         {!userProfile && !searchString &&
-                        <h6 className="text-center text-muted">
+                        <h6 className="text-muted">
                             No Search query. Displaying all valid Scholarships
                         </h6>
                         }
-                    </React.Fragment>
+                        {userProfile && searchPayload.previewMode === 'universalSearch' &&
+                        <h6 className="text-muted">
+                            No Search Filtering. Displaying all valid Scholarships
+                        </h6>
+                        }
+                    </div>
                 }
                 <div className="w-100 mb-3">
                     <Link to={`/scholarship/add`} className="btn btn-link">
