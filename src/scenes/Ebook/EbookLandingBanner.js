@@ -47,8 +47,8 @@ class EbookLandingBanner extends Component {
             <Col xs={24} md={10} lg={8} className='text-center buy-now-cta'>
               <div>
                 <h2>
-                  A guide to which Canadian Universities are the best for getting jobs at
-                  Goldman Sachs, Google, McKinsey, Pfizer and more.
+                    A guide to the best Canadian universities
+                    for getting jobs at Goldman Sachs, Google, McKinsey, Pfizer and more.
                 </h2>
               </div>
             </Col>

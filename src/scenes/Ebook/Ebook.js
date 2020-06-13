@@ -36,7 +36,7 @@ class Ebook extends React.Component {
             title:
                 "Atila Schools and Jobs Guide | The Best Canadian Universities for the Best Jobs",
             description:
-                "A guide to The best Canadian Universities for getting jobs at Goldman Sachs, Google, McKinsey, Pfizer and more.",
+                "A guide to the best Canadian universities for getting jobs at Goldman Sachs, Google, McKinsey, Pfizer and more.",
             image: EBOOK_AUDIENCE_IMAGES[audience].seoImage,
             slug: "/schools",
         };
