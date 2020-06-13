@@ -22,9 +22,6 @@ function Ebook() {
                 <h4 className='col-sm-12 text-center d-sm-block d-md-none'>
                     (Works best on desktop)
                 </h4>
-                <h4 className='col-sm-12 text-center'>
-                    (New graphs added weekly)
-                </h4>
                 <EbookPremiumBanner />
                 <hr />
             </div>
