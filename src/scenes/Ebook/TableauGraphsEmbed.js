@@ -11,7 +11,7 @@ class TableauGraphsEmbed extends Component {
   }
 
   initViz() {
-      const allIndustriesVizUrl = 'https://public.tableau.com/views/WhatSchoolsDoCompaniesHireFromOrganizedbyCompanySchoolsNumbersmobileupdated/Dashboard1?:display_count=y&publish=yes&:origin=viz_share_link';
+      const allIndustriesVizUrl = 'https://public.tableau.com/views/UpdatedWhatSchoolsdoCompaniesHireFromOrganizedbyCompanymobile/Dashboard1?:display_count=y&publish=yes&:origin=viz_share_link';
       const allIndustriesVizContainer = this.allIndustriesVizContainer;
 
       const techTierVizUrl = 'https://public.tableau.com/views/WhatSchoolDoTechCompainesHireFrommobilefriendly/Dashboard1?:display_count=y&:origin=viz_share_link';
