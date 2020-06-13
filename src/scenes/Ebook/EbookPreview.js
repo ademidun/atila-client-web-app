@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import ScrollMenu from 'react-horizontal-scrolling-menu';
-
+import {Button} from "antd";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {
+    faCaretLeft,
+    faCaretRight
+} from "@fortawesome/free-solid-svg-icons";
 // list of pages
 const pages = [
     {
@@ -71,15 +76,15 @@ export const Menu = (list, selected) =>
 
 const Arrow = ({ text, className }) => {
     return (
-        <div
-            className={className}
-        >{text}</div>
+        <Button
+            className={`${className}`}
+        >{text}</Button>
     );
 };
 
 
-const ArrowLeft = Arrow({ text: 'Prev', className: 'arrow-prev' });
-const ArrowRight = Arrow({ text: 'Next', className: 'arrow-next' });
+const ArrowLeft = Arrow({ text: <FontAwesomeIcon icon={faCaretLeft} />, className: 'arrow-prev' });
+const ArrowRight = Arrow({ text: <FontAwesomeIcon icon={faCaretRight} />, className: 'arrow-next' });
 
 const selected = pages[0].title;
 
