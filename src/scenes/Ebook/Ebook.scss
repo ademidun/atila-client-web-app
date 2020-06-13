@@ -83,6 +83,12 @@
     border: none;
   }
 
+  .menu-wrapper {
+      -moz-box-shadow:    0 0 10px #000000;
+      -webkit-box-shadow: 0 0 10px #000000;
+      box-shadow:         0 0 10px #000000;
+  }
+
   @media only screen and (max-width: $small-device-width) {
     .menu-item-wrapper .responsive-images {
       width: 70%;

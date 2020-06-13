@@ -24,6 +24,12 @@ const pages = [
         url: 'https://i.imgur.com/VKwEAYC.png',
     },
     {
+        url: 'https://i.imgur.com/EeHtEBd.png',
+    },
+    {
+        url: 'https://i.imgur.com/9EdP2Jt.png',
+    },
+    {
         url: 'https://i.imgur.com/qCYu9rL.png',
     },
     {
@@ -40,12 +46,6 @@ const pages = [
     },
     {
         url: 'https://i.imgur.com/CxMZCwk.png',
-    },
-    {
-        url: 'https://i.imgur.com/EeHtEBd.png',
-    },
-    {
-        url: 'https://i.imgur.com/9EdP2Jt.png',
     },
     {
         url: 'https://i.imgur.com/pLaJDbn.png',
@@ -67,10 +67,12 @@ const MenuItem = ({data, selected}) => {
 // All items component
 // Important! add unique key
 export const Menu = (list, selected) =>
-    list.map(el => {
-        const {title} = el;
+    list.map((el, index) => {
+        const {url} = el;
 
-        return <MenuItem data={el} key={title} selected={selected} />;
+        return <MenuItem data={el}
+                         key={`${url}-${index}`}
+                         selected={selected} />;
     });
 
 
@@ -86,7 +88,7 @@ const Arrow = ({ text, className }) => {
 const ArrowLeft = Arrow({ text: <FontAwesomeIcon icon={faCaretLeft} />, className: 'arrow-prev' });
 const ArrowRight = Arrow({ text: <FontAwesomeIcon icon={faCaretRight} />, className: 'arrow-next' });
 
-const selected = pages[0].title;
+const selected = pages[0].url;
 
 class EbookPreview extends Component {
     constructor(props) {
