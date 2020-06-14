@@ -95,12 +95,12 @@ class EbookPremiumTabs extends Component {
           name: "All Industries",
           label: "Tech, Consulting, Investment Banking, Biomedical",
           tableauUrls: [
-              "https://public.tableau.com/views/WhatSchoolsDoCompaniesHireFromOrganizedbyCompanySchoolsNumbersmobileupdated/Dashboard1?:display_count=y&publish=yes&:origin=viz_share_link",
-              "https://public.tableau.com/views/UniversityRankingsApril2020noschoolnamesmobile/Dashboard1?:display_count=y&publish=yes&:origin=viz_share_link",
-              "https://public.tableau.com/views/AllIndustriesJobLevelsnoschoolnamemobile/Dashboard1?:display_count=y&publish=yes&:origin=viz_share_link",
+              "https://public.tableau.com/views/WhatSchoolsDoCompaniesHireFromOrganizedbyCompany/Sheet1?:display_count=y&:origin=viz_share_link",
+              "https://public.tableau.com/views/UniversityRankingsApril2020mobile/Dashboard1?:display_count=y&publish=yes&:origin=viz_share_link",
+              "https://public.tableau.com/views/AllIndustriesJobLevelsmobile/Dashboard1?:display_count=y&publish=yes&:origin=viz_share_link",
           ],
           tableauUrlsPreview: [
-              "https://public.tableau.com/views/WhatSchoolsDoCompaniesHireFromOrganizedbyCompanySchoolsNumbersmobileupdated/Dashboard1?:display_count=y&:origin=viz_share_link",
+              "https://public.tableau.com/views/UpdatedWhatSchoolsdoCompaniesHireFromOrganizedbyCompanymobile/Dashboard1?:display_count=y&publish=yes&:origin=viz_share_link",
               "https://public.tableau.com/views/AllIndustriesJobLevelsnoschoolnamemobile/Dashboard1?:display_count=y&publish=yes&:origin=viz_share_link",
               "https://public.tableau.com/views/UniversityRankingsApril2020noschoolnamesmobile/Dashboard1?:display_count=y&publish=yes&:origin=viz_share_link",
           ],
