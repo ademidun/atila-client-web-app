@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from "antd";
 import "./Ebook.scss";
+import {handleButtonClickEventFacebook} from "../../models/Utils";
 
 function YoutubeVideoEmbed() {
 
@@ -16,9 +17,16 @@ function YoutubeVideoEmbed() {
                 </iframe>
             </div>
             <br/>
-            <Button className='buy-book-button center-block' onClick={() => window.scrollTo(10, 5)}
-             style={{fontSize: 20}} type='primary'>
+            <Button className='buy-book-button center-block' style={{fontSize: 20}} type='primary'>
+                <a
+                    href='https://gum.co/BbFon'
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    name="AddToCart"
+                    onClick={handleButtonClickEventFacebook}
+                >
                   Interested in buying the book?
+                </a>
               </Button>
         </div>
     );
