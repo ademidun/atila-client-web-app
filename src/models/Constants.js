@@ -29,12 +29,12 @@ export const EBOOK_AUDIENCE_IMAGES = {
         bookCoverImage: 'https://i.imgur.com/KdYNLId.png',
         seoImage: 'https://i.imgur.com/EO6FA0r.png',
     },
-    '3':
+    '3': {
         name: 'south-east-asian',
-    ebookLandingImage: 'https://i.imgur.com/c6TIcS7.png',
-    ebookMultipleDevices: 'https://i.imgur.com/7jJlBRf.png',
-    bookCoverImage: 'https://i.imgur.com/JRpVcyh.png',
-    seoImage: 'https://i.imgur.com/56jt7rU.png',
+        ebookLandingImage: 'https://i.imgur.com/c6TIcS7.png',
+        ebookMultipleDevices: 'https://i.imgur.com/7jJlBRf.png',
+        bookCoverImage: 'https://i.imgur.com/JRpVcyh.png',
+        seoImage: 'https://i.imgur.com/56jt7rU.png',
     },
 };
 
