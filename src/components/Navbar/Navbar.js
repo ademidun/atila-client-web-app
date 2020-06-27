@@ -116,7 +116,7 @@ class Navbar extends React.Component {
         const menuItems = (mode="inline") => (
             <Menu id="nav" key="nav" mode={mode}
                   style={mode === "inline" ?
-                      { width: 'fit-content', marginLeft: '-33%' }
+                      { width: 'fit-content'}
                        : null}>
                 {mode === "inline" && userProfileMenu}
                 <Menu.Item key="search">
@@ -148,15 +148,22 @@ class Navbar extends React.Component {
         const menu = menuItems("horizontal");
 
         const mobileMenu = (
-            <div>
+            <div style={{
+                direction: "rtl",
+                textAlign: "justify",
+            }}>
                 <FontAwesomeIcon
                     icon={faBars}
-                    onClick={this.toggleShowMobileMenu} />
+                    onClick={this.toggleShowMobileMenu}
+                    style={{ fontSize: '26px',
+                             color: '#194F87'
+                    }} />
 
                 {
                 showMobileMenu &&
                 menuItems()
                 }
+                {/*<hr className="mt-0"/>*/}
             </div>
         );
 
