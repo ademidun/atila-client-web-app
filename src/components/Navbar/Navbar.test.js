@@ -8,7 +8,9 @@ const mockStore = configureStore();
 
 import Navbar from './Navbar';
 import {UserProfileTest1} from "../../models/UserProfile";
-import {initialReduxState} from "../../models/Constants";
+import {initialReduxState, relatedItems} from "../../models/Constants";
+import ContentList from "../ContentList";
+import {EssayIveyApplication} from "../../models/Essay";
 
 describe('<Navbar />', () => {
     it('renders without crashing', () => {
@@ -35,6 +37,6 @@ describe('<Navbar />', () => {
             </MemoryRouter>
         );
         wrapper.update();
-        expect(wrapper.find('.anticon-user').length).toBe(2);
+        expect(wrapper.find('.anticon-user').length).toBe(1);
     });
 });
