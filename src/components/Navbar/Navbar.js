@@ -9,13 +9,15 @@ import UserProfileAPI from "../../services/UserProfileAPI";
 import Loading from "../../components/Loading";
 import LogRocket from 'logrocket';
 import Environment from "../../services/Environment";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faBars} from "@fortawesome/free-solid-svg-icons";
 
 const {SubMenu} = Menu;
 
 class Navbar extends React.Component {
     state = {
         menuVisible: false,
-        menuMode: 'horizontal',
+        showMobileMenu: false,
     };
 
     componentDidMount() {
@@ -32,8 +34,13 @@ class Navbar extends React.Component {
         this.props.history.push("/");
     };
 
+    toggleShowMobileMenu = event => {
+        const { showMobileMenu } = this.state;
+        this.setState({showMobileMenu: !showMobileMenu});
+    };
+
     render() {
-        const { menuMode } = this.state;
+        const { showMobileMenu } = this.state;
         const { userProfile, isLoadingLoggedInUserProfile } = this.props;
         const { location: { pathname, search } } = this.props;
 
@@ -61,17 +68,60 @@ class Navbar extends React.Component {
             )
         }
 
-        const menu = (
-            <Menu mode={menuMode} id="nav" key="nav">
+        const userProfileMenu = (<Menu.ItemGroup>
+            {!userProfile && !isLoadingLoggedInUserProfile &&
+            <Menu.Item key="login">
+                <Link to={`/login?redirect=${pathname}${search}`}
+                      style={{color:'#007bff'}}
+                      className="font-weight-bold">
+                    Login
+                </Link>
+            </Menu.Item>
+            }
+            {
+                userProfile &&
+                <SubMenu
+                    key="user"
+                    title={<Icon type="user" />}
+                >
+                    <Menu.Item key="add-scholarship">
+                        <Link to="/scholarship/add">
+                            Add Scholarship
+                        </Link>
+                    </Menu.Item>
+                    <Menu.Item key="view-profile">
+                        <Link to={`/profile/${userProfile.username}`}>
+                            View Profile
+                        </Link>
+                    </Menu.Item>
+                    <Menu.Item key="search">
+                        <Link to={`/search`}>
+                            Search
+                        </Link>
+                    </Menu.Item>
+                    <Menu.Item key="edit-profile">
+                        <Link to={`/profile/${userProfile.username}/edit`}>
+                            Edit Profile
+                        </Link>
+                    </Menu.Item>
+                    <Menu.Item key="logout">
+                        <button onClick={this.logout}
+                                className="btn btn-link"
+                                style={{ display: 'inherit' }}
+                        >Logout</button></Menu.Item>
+                </SubMenu>
+            }
+        </Menu.ItemGroup>);
+
+        const menuItems = (mode="inline") => (
+            <Menu id="nav" key="nav" mode={mode}
+                  style={mode === "inline" ?
+                      { width: 'fit-content', marginLeft: '-33%' }
+                       : null}>
+                {mode === "inline" && userProfileMenu}
                 <Menu.Item key="search">
                     <Link to="/search">Search</Link>
                 </Menu.Item>
-                {/*{(!userProfile || !userProfile.is_atila_premium) ? (*/}
-                {/*    <Menu.Item key="pricing">*/}
-                {/*        <Link to="/pricing">Pricing</Link>*/}
-                {/*    </Menu.Item>*/}
-                {/*) : null*/}
-                {/*}*/}
                 <Menu.Item key="essays">
                     <Link to="/essay">Essays</Link>
                 </Menu.Item>
@@ -90,50 +140,33 @@ class Navbar extends React.Component {
                         <Tag color="green">new</Tag>
                     </Link>
                 </Menu.Item>
+                {mode !== "inline" && userProfileMenu}
 
-                {!userProfile && !isLoadingLoggedInUserProfile &&
-                <Menu.Item key="login">
-                    <Link to={`/login?redirect=${pathname}${search}`}
-                          style={{color:'#007bff'}}
-                          className="font-weight-bold">
-                        Login
-                    </Link>
-                </Menu.Item>
-                }
-                {
-                    userProfile &&
-                    <SubMenu
-                        key="user"
-                        title={<Icon type="user" />}
-                    >
-                        <Menu.Item key="add-scholarship">
-                            <Link to="/scholarship/add">
-                                Add Scholarship
-                            </Link>
-                        </Menu.Item>
-                        <Menu.Item key="view-profile">
-                            <Link to={`/profile/${userProfile.username}`}>
-                                View Profile
-                            </Link>
-                        </Menu.Item>
-                        <Menu.Item key="search">
-                            <Link to={`/search`}>
-                                Search
-                            </Link>
-                        </Menu.Item>
-                        <Menu.Item key="edit-profile">
-                            <Link to={`/profile/${userProfile.username}/edit`}>
-                                Edit Profile
-                            </Link>
-                        </Menu.Item>
-                        <Menu.Item key="logout">
-                            <button onClick={this.logout}
-                                    className="btn btn-link"
-                                    style={{ display: 'inherit' }}
-                            >Logout</button></Menu.Item>
-                    </SubMenu>
-                }
             </Menu>
+        );
+
+        const menu = menuItems("horizontal");
+
+        const mobileMenu = (
+            <div>
+                <FontAwesomeIcon
+                    icon={faBars}
+                    onClick={this.toggleShowMobileMenu} />
+
+                {
+                showMobileMenu &&
+                menuItems()
+                }
+            </div>
+        );
+
+        const navbarLogo = (
+            <h2 id="logo"
+                className="text-center ant-col-xs-24">
+                <Link to="/">
+                    <span>Atila</span>
+                </Link>
+            </h2>
         );
 
         return (
@@ -141,34 +174,17 @@ class Navbar extends React.Component {
                  className="header mx-3 mx-lg-5 mt-2">
                 <Row>
                     <Col xxl={4} xl={5} lg={8} md={8} sm={8} xs={0}>
-                        <h2 id="logo" className="text-center4">
-                            <Link to="/">
-                                <span>Atila</span>
-                            </Link>
-                        </h2>
+                        {navbarLogo}
                     </Col>
                     <Col xxl={20} xl={19} lg={16} md={16} sm={16} xs={0}>
-                        <div className="header-meta">
-                            <div id="menu">{menu}</div>
-                        </div>
+                        {menu}
                     </Col>
-                </Row>
-                <Row>
-                    <Col xxl={0} xl={0} lg={0} md={0} sm={0} xs={24}>
-                        <h2 id="logo"
-                            className="text-center ant-col-xs-24">
-                            <Link to="/">
-                                <span>Atila</span>
-                            </Link>
-                        </h2>
+
+                    <Col xxl={0} xl={0} lg={0} md={0} sm={0} xs={6}>
+                        {navbarLogo}
                     </Col>
-                    <Col xxl={0} xl={0} lg={0} md={0} sm={0} xs={24}
-                         className="ml-0">
-                        <div className="header-meta">
-                            <div id="menu">
-                                {menu}
-                            </div>
-                        </div>
+                    <Col xxl={0} xl={0} lg={0} md={0} sm={0} xs={6} offset={12}>
+                        {mobileMenu}
                     </Col>
                 </Row>
                 {
