@@ -430,11 +430,11 @@ export function getGreetingTime () {
     const currentHour = parseFloat(m.format("HH"));
 
     if(currentHour >= split_afternoon && currentHour <= split_evening) {
-        greeting = "afternoon";
+        greeting = "Afternoon";
     } else if(currentHour >= split_evening) {
-        greeting = "evening";
+        greeting = "Evening";
     } else {
-        greeting = "morning";
+        greeting = "Morning";
     }
 
     return greeting;
