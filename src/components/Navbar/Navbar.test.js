@@ -39,4 +39,16 @@ describe('<Navbar />', () => {
         wrapper.update();
         expect(wrapper.find('.anticon-user').length).toBe(1);
     });
+
+    it('does not render userprofile nav item if not logged in', () => {
+        initialReduxState.data.user.loggedInUserProfile = null;
+        const store = mockStore(initialReduxState);
+        const wrapper = mount(
+            <MemoryRouter>
+                <Navbar store={store} />
+            </MemoryRouter>
+        );
+        wrapper.update();
+        expect(wrapper.find('.anticon-user').length).toBe(0);
+    });
 });
