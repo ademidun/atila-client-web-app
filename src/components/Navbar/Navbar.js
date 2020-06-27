@@ -171,17 +171,18 @@ class Navbar extends React.Component {
             <div id="header"
                  className="header mx-3 mx-lg-5 mt-2">
                 <Row>
-                    <Col xxl={4} xl={5} lg={8} md={8} sm={8} xs={0}>
+                    <Col xxl={4} xl={5} lg={8} md={8} sm={0}>
                         {navbarLogo}
                     </Col>
-                    <Col xxl={20} xl={19} lg={16} md={16} sm={16} xs={0}>
+                    <Col xxl={20} xl={19} lg={16} md={16} sm={0}>
                         {menu}
                     </Col>
-
-                    <Col xxl={0} xl={0} lg={0} md={0} sm={0} xs={6}>
+                </Row>
+                <Row>
+                    <Col xxl={0} xl={0} lg={0} md={0} sm={6}>
                         {navbarLogo}
                     </Col>
-                    <Col xxl={0} xl={0} lg={0} md={0} sm={0} xs={6} offset={12}>
+                    <Col xxl={0} xl={0} lg={0} md={0} sm={6} offset={12}>
                         {mobileMenu}
                     </Col>
                 </Row>
