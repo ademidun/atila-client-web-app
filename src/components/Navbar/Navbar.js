@@ -160,7 +160,7 @@ class Navbar extends React.Component {
 
         const navbarLogo = (
             <h2 id="logo"
-                className="text-center ant-col-xs-24">
+                className="text-center">
                 <Link to="/">
                     <span>Atila</span>
                 </Link>
