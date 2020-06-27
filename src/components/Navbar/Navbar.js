@@ -68,57 +68,17 @@ class Navbar extends React.Component {
             )
         }
 
-        const userProfileMenu = (<Menu.ItemGroup>
-            {!userProfile && !isLoadingLoggedInUserProfile &&
-            <Menu.Item key="login">
-                <Link to={`/login?redirect=${pathname}${search}`}
-                      style={{color:'#007bff'}}
-                      className="font-weight-bold">
-                    Login
-                </Link>
-            </Menu.Item>
-            }
-            {
-                userProfile &&
-                <SubMenu
-                    key="user"
-                    title={<Icon type="user" />}
-                >
-                    <Menu.Item key="add-scholarship">
-                        <Link to="/scholarship/add">
-                            Add Scholarship
-                        </Link>
-                    </Menu.Item>
-                    <Menu.Item key="view-profile">
-                        <Link to={`/profile/${userProfile.username}`}>
-                            View Profile
-                        </Link>
-                    </Menu.Item>
-                    <Menu.Item key="search">
-                        <Link to={`/search`}>
-                            Search
-                        </Link>
-                    </Menu.Item>
-                    <Menu.Item key="edit-profile">
-                        <Link to={`/profile/${userProfile.username}/edit`}>
-                            Edit Profile
-                        </Link>
-                    </Menu.Item>
-                    <Menu.Item key="logout">
-                        <button onClick={this.logout}
-                                className="btn btn-link"
-                                style={{ display: 'inherit' }}
-                        >Logout</button></Menu.Item>
-                </SubMenu>
-            }
-        </Menu.ItemGroup>);
-
         const menuItems = (mode="inline") => (
             <Menu id="nav" key="nav" mode={mode}
                   style={mode === "inline" ?
                       { width: 'fit-content'}
                        : null}>
-                {mode === "inline" && userProfileMenu}
+                <Menu.Item key="schools">
+                    <Link to="/schools">
+                        Schools and Jobs Ebook{' '}
+                        <Tag color="green">new</Tag>
+                    </Link>
+                </Menu.Item>
                 <Menu.Item key="search">
                     <Link to="/search">Search</Link>
                 </Menu.Item>
@@ -134,13 +94,44 @@ class Navbar extends React.Component {
                 <Menu.Item key="high-school">
                     <Link to="/high-school">High School</Link>
                 </Menu.Item>
-                <Menu.Item key="schools">
-                    <Link to="/schools">
-                        Schools and Jobs Ebook{' '}
-                        <Tag color="green">new</Tag>
+                {!userProfile && !isLoadingLoggedInUserProfile &&
+                <Menu.Item key="login">
+                    <Link to={`/login?redirect=${pathname}${search}`}
+                          style={{color:'#007bff'}}
+                          className="font-weight-bold">
+                        Login
                     </Link>
                 </Menu.Item>
-                {mode !== "inline" && userProfileMenu}
+                }
+                {
+                    userProfile &&
+                    <SubMenu
+                        key="user"
+                        title={<Icon type="user" />}
+                    >
+                        <Menu.Item key="add-scholarship">
+                            <Link to="/scholarship/add">
+                                Add Scholarship
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item key="view-profile">
+                            <Link to={`/profile/${userProfile.username}`}>
+                                View Profile
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item key="edit-profile">
+                            <Link to={`/profile/${userProfile.username}/edit`}>
+                                Edit Profile
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item key="logout">
+                            <button onClick={this.logout}
+                                    className="btn btn-link"
+                                    style={{ display: 'inherit' }}
+                            >Logout</button>
+                        </Menu.Item>
+                    </SubMenu>
+                }
 
             </Menu>
         );
