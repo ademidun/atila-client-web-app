@@ -8,7 +8,6 @@ import {Button} from "antd";
 import {Link} from "react-router-dom";
 import {enquireScreen} from 'enquire-js';
 import {getGreetingTime} from "../../services/utils";
-import moneyFaceEmoji from './assets/moneyFaceEmoji.png';
 import {connect} from "react-redux";
 
 const loop = {
@@ -44,9 +43,9 @@ class BannerLoggedIn extends React.Component {
 
         const timeOfDay = getGreetingTime();
         const greetingEmojiDict = {
-            'morning': '🌅',
-            'afternoon': '☀️',
-            'evening': '🌇',
+            'Morning': '🌅',
+            'Afternoon': '☀️',
+            'Evening': '🌇',
         };
 
         const { userProfile, className } = this.props;
@@ -80,19 +79,13 @@ class BannerLoggedIn extends React.Component {
                         <h1 key="h1" className="mt-sm-5">
                             {humanizedGreeting}
                         </h1>
-                        <h2 key="h2">
-                            See your Scholarships <br/>
-                            <img src={moneyFaceEmoji}
-                                 style={{height: '55px'}}
-                                 alt="money face emoji"/>
-                        </h2>
-                        <h2>
+                        <div className="mt-sm-3 text-center">
                             <Link to="/scholarship">
                                 <Button type="primary">
                                     View Scholarships
                                 </Button>
                             </Link>
-                        </h2>
+                        </div>
                     </QueueAnim>
                     <div className="img-wrapper" key="image">
                         <ScrollParallax location="banner" component={BannerImage} animation={{ playScale: [1, 1.5], y: 80 }} />
