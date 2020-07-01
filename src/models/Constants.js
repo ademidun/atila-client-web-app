@@ -29,6 +29,13 @@ export const EBOOK_AUDIENCE_IMAGES = {
         bookCoverImage: 'https://i.imgur.com/KdYNLId.png',
         seoImage: 'https://i.imgur.com/EO6FA0r.png',
     },
+    '4': {
+    name: 'black',
+        ebookLandingImage: 'https://imgur.com/rN8b2wv.png',
+        ebookMultipleDevices: 'https://imgur.com/XNA5jO9.png',
+        bookCoverImage: 'https://imgur.com/y748luJ.png',
+        seoImage: '',
+}
 };
 
 export const emojiDictionary = {
