@@ -10,6 +10,7 @@ import EbookPreview from "./EbookPreview";
 import {BackTop} from "antd";
 import {unSlugify} from "../../services/utils";
 import {EBOOK_AUDIENCE_IMAGES} from "../../models/Constants";
+import EbookFAQ from "./EbookFAQ";
 
 class Ebook extends React.Component {
 
@@ -51,6 +52,8 @@ class Ebook extends React.Component {
                     <EmailSignUp audience={audience} />
                     <hr/>
                     <EbookPreview/>
+                    <hr/>
+                    <EbookFAQ />
                     <hr/>
                     <TableauGraphsEmbed/>
                     <hr/>
