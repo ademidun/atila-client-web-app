@@ -49,11 +49,11 @@ class Ebook extends React.Component {
                     <BackTop/>
                     <EbookLandingBanner audience={audience} />
                     <hr/>
-                    <EmailSignUp audience={audience} />
-                    <hr/>
                     <EbookPreview/>
                     <hr/>
                     <EbookFAQ />
+                    <hr/>
+                    <EmailSignUp audience={audience} />
                     <hr/>
                     <TableauGraphsEmbed/>
                     <hr/>
