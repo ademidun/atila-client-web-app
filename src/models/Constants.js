@@ -31,10 +31,10 @@ export const EBOOK_AUDIENCE_IMAGES = {
     },
     '4': {
     name: 'black',
-        ebookLandingImage: 'https://imgur.com/rN8b2wv.png',
-        ebookMultipleDevices: 'https://imgur.com/XNA5jO9.png',
-        bookCoverImage: 'https://imgur.com/y748luJ.png',
-        seoImage: '',
+        ebookLandingImage: 'https://imgur.com/5b7freh.png',
+        ebookMultipleDevices: 'https://imgur.com/YXVmRGQ.png',
+        bookCoverImage: 'https://imgur.com/SLFwXcy.png',
+        seoImage: 'https://imgur.com/cdD0Lgz.png',
 }
 };
 
