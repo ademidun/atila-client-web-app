@@ -34,7 +34,7 @@ export const EBOOK_AUDIENCE_IMAGES = {
         ebookLandingImage: 'https://imgur.com/5b7freh.png',
         ebookMultipleDevices: 'https://imgur.com/YXVmRGQ.png',
         bookCoverImage: 'https://imgur.com/SLFwXcy.png',
-        seoImage: 'https://imgur.com/cdD0Lgz.png',
+        seoImage: 'https://i.imgur.com/dfoocUY.png',
 }
 };
 
