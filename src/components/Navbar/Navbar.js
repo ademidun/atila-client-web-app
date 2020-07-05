@@ -40,11 +40,11 @@ class Navbar extends React.Component {
     };
 
     render() {
-        const { showMobileMenu } = this.state;
-        const { userProfile, isLoadingLoggedInUserProfile } = this.props;
-        const { location: { pathname, search } } = this.props;
+        const {showMobileMenu} = this.state;
+        const {userProfile, isLoadingLoggedInUserProfile} = this.props;
+        const {location: {pathname, search}} = this.props;
 
-        if(userProfile && Environment.name !== 'dev') {
+        if (userProfile && Environment.name !== 'dev') {
             LogRocket.identify(userProfile.user, {
                 name: `${userProfile.first_name} ${userProfile.last_name}`,
                 email: `${userProfile.email}`,
@@ -68,11 +68,11 @@ class Navbar extends React.Component {
             )
         }
 
-        const menuItems = (mode="inline") => (
+        const menuItems = (mode = "inline") => (
             <Menu id="nav" key="nav" mode={mode}
                   style={mode === "inline" ?
-                      { width: 'fit-content'}
-                       : null}>
+                      {width: 'fit-content'}
+                      : null}>
                 <Menu.Item key="schools">
                     <Link to="/schools">
                         Schools and Jobs Ebook{' '}
@@ -97,7 +97,7 @@ class Navbar extends React.Component {
                 {!userProfile && !isLoadingLoggedInUserProfile &&
                 <Menu.Item key="login">
                     <Link to={`/login?redirect=${pathname}${search}`}
-                          style={{color:'#007bff'}}
+                          style={{color: '#007bff'}}
                           className="font-weight-bold">
                         Login
                     </Link>
@@ -107,7 +107,7 @@ class Navbar extends React.Component {
                     userProfile &&
                     <SubMenu
                         key="user"
-                        title={<Icon type="user" />}
+                        title={<Icon type="user"/>}
                     >
                         <Menu.Item key="add-scholarship">
                             <Link to="/scholarship/add">
@@ -127,8 +127,9 @@ class Navbar extends React.Component {
                         <Menu.Item key="logout">
                             <button onClick={this.logout}
                                     className="btn btn-link"
-                                    style={{ display: 'inherit' }}
-                            >Logout</button>
+                                    style={{display: 'inherit'}}
+                            >Logout
+                            </button>
                         </Menu.Item>
                     </SubMenu>
                 }
@@ -146,13 +147,14 @@ class Navbar extends React.Component {
                 <FontAwesomeIcon
                     icon={faBars}
                     onClick={this.toggleShowMobileMenu}
-                    style={{ fontSize: '26px',
-                             color: '#194F87'
-                    }} />
+                    style={{
+                        fontSize: '26px',
+                        color: '#194F87'
+                    }}/>
 
                 {
-                showMobileMenu &&
-                menuItems()
+                    showMobileMenu &&
+                    menuItems()
                 }
                 {/*<hr className="mt-0"/>*/}
             </div>
@@ -166,7 +168,6 @@ class Navbar extends React.Component {
                 </Link>
             </h2>
         );
-
         return (
             <div id="header"
                  className="header mx-3 mx-lg-5 mt-2">
@@ -178,20 +179,25 @@ class Navbar extends React.Component {
                         {menu}
                     </Col>
                 </Row>
-                <Row>
-                    <Col xxl={0} xl={0} lg={0} md={0} sm={6}>
-                        {navbarLogo}
-                    </Col>
-                    <Col xxl={0} xl={0} lg={0} md={0} sm={6} offset={12}>
-                        {mobileMenu}
-                    </Col>
-                </Row>
+
                 {
                     isLoadingLoggedInUserProfile &&
-                    <Loading className="col-12" title="Loading UserProfile..." />
+                    <Loading className="col-12" title="Loading UserProfile..."/>
                 }
             </div>
         );
+
+            return(
+            <Row>
+                <Col xxl={0} xl={0} lg={0} md={0} sm={6}>
+                    {navbarLogo}
+                </Col>
+                <Col xxl={0} xl={0} lg={0} md={0} sm={6} offset={12}>
+                    {mobileMenu}
+                </Col>
+            </Row>
+            )
+
     }
 }
 
