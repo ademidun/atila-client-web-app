@@ -179,25 +179,20 @@ class Navbar extends React.Component {
                         {menu}
                     </Col>
                 </Row>
-
+                <Row>
+                    <Col xxl={0} xl={0} lg={0} md={0} sm={6}>
+                        {navbarLogo}
+                    </Col>
+                    <Col xxl={0} xl={0} lg={0} md={0} sm={6} offset={12}>
+                        {mobileMenu}
+                    </Col>
+                </Row>
                 {
                     isLoadingLoggedInUserProfile &&
                     <Loading className="col-12" title="Loading UserProfile..."/>
                 }
             </div>
         );
-
-            return(
-            <Row>
-                <Col xxl={0} xl={0} lg={0} md={0} sm={6}>
-                    {navbarLogo}
-                </Col>
-                <Col xxl={0} xl={0} lg={0} md={0} sm={6} offset={12}>
-                    {mobileMenu}
-                </Col>
-            </Row>
-            )
-
     }
 }
 
