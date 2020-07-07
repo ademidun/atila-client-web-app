@@ -13,6 +13,7 @@ export function doesScholarshipHaveExtraCriteria(scholarship) {
         ))
 }
 
+
 function ScholarshipExtraCriteria({scholarship, loggedInUserProfile, viewAsUserProfile}) {
 
     const userProfile = viewAsUserProfile || loggedInUserProfile;
