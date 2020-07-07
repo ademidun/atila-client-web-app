@@ -33,7 +33,29 @@ const faqAnswers = [
             <p>We used levels.fyi to cross-reference salaries specifically for jobs in the tech industry.</p>
             <h3>Currency Conversion Rates</h3>
             <p>When comparing Canadian salaries to American salaries, we converted American Dollars to Canadian Dollars using an exchange rate of 1 USD = 1.3147 CAD exchange rate. This rate is based on the XE Money transfer rates on January 26, 2020, 5pm UTC.</p>
-        </div>)}
+        </div>)},
+    { question: "Who are the people in the student profiles section?",
+        answer: (<span>
+            <p>The student profile section is dedicated to interviews we conducted with students from top Canadian universities about their experiences. These students are either currently studying or alumni of their respective institutions.</p>
+        </span>)},
+    { question: "Won’t this information eventually become outdated?",
+        answer: (<span>
+            <p>The Atila Team is working very hard to keep up-to-date with industry changes and plan to continue to update with new versions of the ebook for the next 6 months. Once you purchase the ebook, you will have access to all past and future versions of the Atila Schools and Jobs Guide ebook.</p>
+        </span>)},
+    { question: "Why is this ebook so expensive?",
+        answer: (<span>
+            <p>The ebook is priced at $33 because individuals who purchase a copy will have access to updated editions for the next six months and exclusive access to special Atila content!</p>
+        </span>)},
+    { question: "What makes this different from other guides out there?",
+        answer: (<span>
+            <p>This ebook focuses on the consulting, investment banking, high tech, and biomedical industries with in-depth analysis and explanations as to why some schools have more graduates in some top companies. There are also interviews from students who attend some of Canada’s top undergraduate programs that may provide insight on each school and program.
+                Not to mention that individuals who purchase an ebook will have access to new editions for the next 6 months and have exclusive access to Atila content.</p>
+        </span>)},
+    { question: "Can I get a preview of this ebook? \n",
+        answer: (<span>
+            <p>Definitely! Scroll through this page for a free preview of the ebook.</p>
+            <p>If you have any additional questions/comments/concerns, send us an email at <a href="mailto:info@atila.ca">info@atila.ca</a> and we’ll reply as soon as we can!</p>
+        </span>)},
 ];
 
 
