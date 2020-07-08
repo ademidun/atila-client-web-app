@@ -20,7 +20,7 @@ export const EBOOK_AUDIENCE_IMAGES = {
         ebookLandingImage: 'https://i.imgur.com/PMg68If.png',
         ebookMultipleDevices: 'https://i.imgur.com/CwPiFjJ.png',
         bookCoverImage: 'https://i.imgur.com/kkV3Cra.png',
-        seoImage: 'https://i.imgur.com/Lhxyq0T.png',
+        seoImage: 'https://i.imgur.com/w7qc7gQ.png',
     },
     '2': {
         name: 'east-asian',
@@ -29,13 +29,20 @@ export const EBOOK_AUDIENCE_IMAGES = {
         bookCoverImage: 'https://i.imgur.com/KdYNLId.png',
         seoImage: 'https://i.imgur.com/EO6FA0r.png',
     },
+    '3': {
+        name: 'south-east-asian',
+        ebookLandingImage: 'https://i.imgur.com/IdS3Dy8.png',
+        ebookMultipleDevices: 'https://i.imgur.com/7jJlBRf.png',
+        bookCoverImage: 'https://i.imgur.com/JRpVcyh.png',
+        seoImage: 'https://i.imgur.com/56jt7rU.png',
+    },
     '4': {
-    name: 'black',
+        name: 'black',
         ebookLandingImage: 'https://imgur.com/5b7freh.png',
         ebookMultipleDevices: 'https://imgur.com/YXVmRGQ.png',
         bookCoverImage: 'https://imgur.com/SLFwXcy.png',
         seoImage: 'https://i.imgur.com/dfoocUY.png',
-}
+    }
 };
 
 export const emojiDictionary = {
