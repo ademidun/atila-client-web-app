@@ -13,6 +13,7 @@ export function doesScholarshipHaveExtraCriteria(scholarship) {
         ))
 }
 
+
 function ScholarshipExtraCriteria({scholarship, loggedInUserProfile, viewAsUserProfile}) {
 
     const userProfile = viewAsUserProfile || loggedInUserProfile;
@@ -30,14 +31,14 @@ function ScholarshipExtraCriteria({scholarship, loggedInUserProfile, viewAsUserP
                 <React.Fragment key={criteria}>
                     <p>
                         <strong>{prettifyKeys(criteria)}{criteria === 'citizenship' ? ' or permanent residency': ''}:{' '}</strong>
-                        {JSON.stringify(scholarship[criteria], null, ' ')}
+                        {scholarship[criteria].join(', ')}
                     </p>
                     {userProfile &&
                     <p>
                         <strong>Your {prettifyKeys(criteria)}:{' '}</strong>
                         {criteria === 'eligible_programs' && `${userProfile.major} and `}
                         {criteria === 'eligible_schools' && `${userProfile.post_secondary_school} and `}
-                        {JSON.stringify(userProfile[criteria], null, ' ')}
+                        {userProfile[criteria].join(', ')}
                     </p>
                     }
                     {
