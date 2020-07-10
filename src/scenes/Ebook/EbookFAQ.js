@@ -61,7 +61,7 @@ const faqAnswers = [
             <p>If you have any additional questions or comments, send us an email at <a href="mailto:info@atila.ca"  target="_blank" rel="noopener noreferrer">info@atila.ca</a>{' '}
                 or dm us on <a href="https://twitter.com/atilatech" target="_blank" rel="noopener noreferrer">Twitter</a> or{' '}
                 <a href="https://instagram.com/atilatech" target="_blank" rel="noopener noreferrer">Instagram</a>{' '}
-                <a target="_blank" rel="noopener noreferrer" href="https://instagram.com/atilatech">(@atilatech)</a>
+                <a target="_blank" rel="noopener noreferrer" href="https://instagram.com/atilatech">(@atilatech)</a>.
             </p>
         </span>)},
 ];
