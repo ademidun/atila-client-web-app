@@ -68,7 +68,7 @@ function EbookFAQ() {
     );
 
     return (
-        <div className="container EbookFAQ">
+        <div className="container EbookFAQ" id="faq">
             <h1>Frequently Asked Questions (FAQ)</h1>
             <Collapse defaultActiveKey={[faqAnswers[0].question]} onChange={callback}>
                 {faqAnswerPanels}
