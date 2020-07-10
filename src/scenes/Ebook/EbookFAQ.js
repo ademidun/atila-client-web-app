@@ -40,8 +40,10 @@ const faqAnswers = [
         </span>)},
     { question: "Won’t this information eventually become outdated?",
         answer: (<span>
-            <p>The Atila Team is working very hard to keep up-to-date with industry changes and plan to continue to update with new versions of the ebook for the rest of the year.
-                Once you purchase the ebook, you will have access to all past and future versions of the Atila Schools and Jobs Guide ebook.</p>
+            <p>We plan to continue to update with new versions of the ebook for the rest of the year.
+                Once you purchase the ebook, you will have access to all past and future versions of the Atila Schools and Jobs Guide ebook.
+                Our data also looks at a wide range of schools across the country and many different companies in a variety of industries, thus we believe this information
+            will remain relevant for at least the next five years.</p>
         </span>)},
     { question: "Why does the ebook cost $33?",
         answer: (<span>
@@ -53,7 +55,7 @@ const faqAnswers = [
             <p>This ebook focuses on the consulting, investment banking, high tech, and biomedical industries with in-depth analysis and explanations as to why some schools have more graduates in some top companies. There are also interviews from students who attend some of Canada’s top undergraduate programs that may provide insight on each school and program.
                 Not to mention that individuals who purchase an ebook will have access to new editions for the next 6 months and have exclusive access to Atila content.</p>
         </span>)},
-    { question: "Can I get a free preview of this ebook? \n",
+    { question: "Can I get a free preview of this ebook?",
         answer: (<span>
             <p>Definitely! Scroll through this page for a free preview of the ebook and you can scroll down to get a free preview PDF of the actual ebook sent to your email</p>
             <p>If you have any additional questions/comments/concerns, send us an email at
