@@ -40,21 +40,27 @@ const faqAnswers = [
         </span>)},
     { question: "Won’t this information eventually become outdated?",
         answer: (<span>
-            <p>The Atila Team is working very hard to keep up-to-date with industry changes and plan to continue to update with new versions of the ebook for the next 6 months. Once you purchase the ebook, you will have access to all past and future versions of the Atila Schools and Jobs Guide ebook.</p>
+            <p>The Atila Team is working very hard to keep up-to-date with industry changes and plan to continue to update with new versions of the ebook for the rest of the year.
+                Once you purchase the ebook, you will have access to all past and future versions of the Atila Schools and Jobs Guide ebook.</p>
         </span>)},
-    { question: "Why is this ebook so expensive?",
+    { question: "Why does the ebook cost $33?",
         answer: (<span>
-            <p>The ebook is priced at $33 because individuals who purchase a copy will have access to updated editions for the next six months and exclusive access to special Atila content!</p>
+            <p>The ebook is priced at $33 because individuals who purchase a copy will have access to updated editions for the rest of the year and exclusive access to special Atila content.
+            The level of detailed information we were able to collect is not available anywhere else</p>
         </span>)},
     { question: "What makes this different from other guides out there?",
         answer: (<span>
             <p>This ebook focuses on the consulting, investment banking, high tech, and biomedical industries with in-depth analysis and explanations as to why some schools have more graduates in some top companies. There are also interviews from students who attend some of Canada’s top undergraduate programs that may provide insight on each school and program.
                 Not to mention that individuals who purchase an ebook will have access to new editions for the next 6 months and have exclusive access to Atila content.</p>
         </span>)},
-    { question: "Can I get a preview of this ebook? \n",
+    { question: "Can I get a free preview of this ebook? \n",
         answer: (<span>
-            <p>Definitely! Scroll through this page for a free preview of the ebook.</p>
-            <p>If you have any additional questions/comments/concerns, send us an email at <a href="mailto:info@atila.ca">info@atila.ca</a> and we’ll reply as soon as we can!</p>
+            <p>Definitely! Scroll through this page for a free preview of the ebook and you can scroll down to get a free preview PDF of the actual ebook sent to your email</p>
+            <p>If you have any additional questions/comments/concerns, send us an email at
+                <a href="mailto:info@atila.ca"  target="_blank">info@atila.ca</a>
+                r dm us on <a target="_blank" href="https://twitter.com/atilatech">twitter</a> or
+                                                                <a target="_blank" href="https://instagram.com/atilatech">instagram</a>  <a target="_blank" href="https://instagram.com/atilatech">(@atilatech)</a>
+                and we’ll reply as soon as we can!</p>
         </span>)},
 ];
 
