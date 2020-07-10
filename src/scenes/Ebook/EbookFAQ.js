@@ -57,13 +57,12 @@ const faqAnswers = [
         </span>)},
     { question: "Can I get a free preview of this ebook?",
         answer: (<span>
-            <p>Definitely! Scroll through this page for a free preview of the ebook and you can scroll down to get a free preview PDF of the actual ebook sent to your email</p>
-            <p>If you have any additional questions/comments/concerns, send us an email at
-                <a href="mailto:info@atila.ca"  target="_blank" rel="noopener noreferrer">info@atila.ca</a>
-                r dm us on <a href="https://twitter.com/atilatech" target="_blank" rel="noopener noreferrer">twitter</a> or
-
-                                                                <a href="https://instagram.com/atilatech" target="_blank" rel="noopener noreferrer">Instagram</a>  <a target="_blank" rel="noopener noreferrer" href="https://instagram.com/atilatech">(@atilatech)</a>
-                and we’ll reply as soon as we can!</p>
+            <p>Yes! Scroll through this page for a free preview of the ebook and you can scroll down to get a free preview PDF of the actual ebook sent to your email.</p>
+            <p>If you have any additional questions or comments, send us an email at <a href="mailto:info@atila.ca"  target="_blank" rel="noopener noreferrer">info@atila.ca</a>{' '}
+                or dm us on <a href="https://twitter.com/atilatech" target="_blank" rel="noopener noreferrer">twitter</a> or{' '}
+                <a href="https://instagram.com/atilatech" target="_blank" rel="noopener noreferrer">Instagram</a>
+                <a target="_blank" rel="noopener noreferrer" href="https://instagram.com/atilatech">(@atilatech)</a>
+            </p>
         </span>)},
 ];
 
