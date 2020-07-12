@@ -13,7 +13,7 @@ import devImg from "./assets/devImg.jpeg";
 import { Col, Row } from "antd";
 import HelmetSeo from "../HelmetSeo";
 const emilyImg = 'https://i.imgur.com/VGAaH5L.jpg';
-const graceImg = 'https://i.imgur.com/rqzHKLh.jpg';
+const graceImg = 'https://i.imgur.com/n2OqROn.jpg';
 
 const teamMembers = [
   {
@@ -33,7 +33,7 @@ const teamMembers = [
     first_name: "Melissa",
     last_name: "Wen",
     position: "Marketing",
-    username: null,
+    username: "Melissa",
     img_url: melissaImg,
     description_1: "Melissa is a BMOS student at Western university.",
     link_type: "LinkedIn",
@@ -53,7 +53,7 @@ const teamMembers = [
     first_name: "Dev",
     last_name: "Pancea",
     position: "Software Developer",
-    username: null,
+    username: "Dev12345",
     img_url: devImg,
     description_1:
       "Dev is an Honours Mathematics student at the University of Waterloo.",
@@ -75,7 +75,7 @@ const teamMembers = [
     first_name: "Elaine",
     last_name: "Yin",
     position: "Marketing",
-    username: null,
+    username: "elaineyin",
     img_url: elaineImg,
     description_1: "Elaine is currently studying BMOS at Western university.",
     link_type: "LinkedIn",
@@ -85,7 +85,7 @@ const teamMembers = [
     first_name: "Grace",
     last_name: "Tse",
     position: "Marketing",
-    username: null,
+    username: "gracetse",
     img_url: graceImg,
     description_1: "Grace is a grade 12 AP student at Markville Secondary School.",
     link_type: "LinkedIn",
@@ -95,7 +95,7 @@ const teamMembers = [
     first_name: "Isaac",
     last_name: "Tang",
     position: "Marketing",
-    username: null,
+    username: "imisaactang",
     img_url: isaacImg,
     description_1: "Isaac is currently studying BMOS at Western university.",
     link_type: "LinkedIn",
@@ -105,7 +105,7 @@ const teamMembers = [
     first_name: "Hadi",
     last_name: "Al Hakeem",
     position: "Software Developer",
-    username: null,
+    username: "hadi",
     img_url: hadiImg,
     description_1:
       "Hadi is a grade 12 student at Georges Vanier Secondary School.",
