@@ -59,13 +59,14 @@ class ScholarshipCard extends React.Component {
                 <div className={`${className} card shadow my-4`}
                         style={{...scholarshipCardStyle,...interpolatingStyle}} >
                     <div className="row no-gutters">
-                        <div className={isOneColumn ? null: "col-md-4"} style={{height: '400px', width: '100%'}}>
+                        <div className={isOneColumn ? null: "col-md-4"} style={{height: "250px", width: "100%"}}>
                             <img src={img_url}
                                  className="card-img mt-4"
                                  alt={name}
                                  style={{
                                      height: "auto",
-                                     maxHeight: "350px",
+                                     maxHeight: "200px",
+                                     objectFit: "contain"
                                  }} />
                         </div>
                         <div className={isOneColumn ? null: "col-md-8"}>
