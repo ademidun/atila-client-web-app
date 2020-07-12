@@ -33,7 +33,37 @@ const faqAnswers = [
             <p>We used levels.fyi to cross-reference salaries specifically for jobs in the tech industry.</p>
             <h3>Currency Conversion Rates</h3>
             <p>When comparing Canadian salaries to American salaries, we converted American Dollars to Canadian Dollars using an exchange rate of 1 USD = 1.3147 CAD exchange rate. This rate is based on the XE Money transfer rates on January 26, 2020, 5pm UTC.</p>
-        </div>)}
+        </div>)},
+    { question: "Who are the people in the student profiles section?",
+        answer: (<span>
+            <p>The student profile section is dedicated to interviews we conducted with students from top Canadian universities about their experiences. These students are either currently studying or alumni of their respective institutions.</p>
+        </span>)},
+    { question: "Won’t this information eventually become outdated?",
+        answer: (<span>
+            <p>We plan to continue to update with new versions of the ebook for the rest of the year.
+                Once you purchase the ebook, you will have access to all past and future versions of the Atila Schools and Jobs Guide ebook.
+                Our data also looks at a wide range of schools across the country and many different companies in a variety of industries, thus we believe this information
+            will remain relevant for at least the next five years.</p>
+        </span>)},
+    { question: "Why does the ebook cost $33?",
+        answer: (<span>
+            <p>The ebook is priced at $33 because individuals who purchase a copy will have access to updated editions for the rest of the year and exclusive access to special Atila content.
+            The level of detailed information we were able to collect is not available anywhere else</p>
+        </span>)},
+    { question: "What makes this different from other guides out there?",
+        answer: (<span>
+            <p>This ebook focuses on the consulting, investment banking, high tech, and biomedical industries with in-depth analysis and explanations as to why some schools have more graduates in some top companies. There are also interviews from students who attend some of Canada’s top undergraduate programs that may provide insight on each school and program.
+                Not to mention that individuals who purchase an ebook will have access to new editions for the next 6 months and have exclusive access to Atila content.</p>
+        </span>)},
+    { question: "Can I get a free preview of this ebook?",
+        answer: (<span>
+            <p>Yes! Scroll through this page for a free preview of the ebook and you can scroll down to get a free preview PDF of the actual ebook sent to your email.</p>
+            <p>If you have any additional questions or comments, send us an email at <a href="mailto:info@atila.ca"  target="_blank" rel="noopener noreferrer">info@atila.ca</a>{' '}
+                or dm us on <a href="https://twitter.com/atilatech" target="_blank" rel="noopener noreferrer">Twitter</a> or{' '}
+                <a href="https://instagram.com/atilatech" target="_blank" rel="noopener noreferrer">Instagram</a>{' '}
+                <a target="_blank" rel="noopener noreferrer" href="https://instagram.com/atilatech">(@atilatech)</a>.
+            </p>
+        </span>)},
 ];
 
 
@@ -46,7 +76,7 @@ function EbookFAQ() {
     );
 
     return (
-        <div className="container EbookFAQ">
+        <div className="container EbookFAQ" id="faq">
             <h1>Frequently Asked Questions (FAQ)</h1>
             <Collapse defaultActiveKey={[faqAnswers[0].question]} onChange={callback}>
                 {faqAnswerPanels}
