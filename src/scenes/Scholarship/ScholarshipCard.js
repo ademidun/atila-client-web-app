@@ -59,11 +59,18 @@ class ScholarshipCard extends React.Component {
                 <div className={`${className} card shadow my-4`}
                         style={{...scholarshipCardStyle,...interpolatingStyle}} >
                     <div className="row no-gutters">
-                        <div className={isOneColumn ? null: "col-md-4"}>
-                            <img src={img_url} className="card-img mt-4" alt={name} />
+                        <div className={isOneColumn ? null: "col-md-4"} style={{height: "250px", width: "100%"}}>
+                            <img src={img_url}
+                                 className="card-img mt-4"
+                                 alt={name}
+                                 style={{
+                                     height: "auto",
+                                     maxHeight: "200px",
+                                     objectFit: "contain"
+                                 }} />
                         </div>
                         <div className={isOneColumn ? null: "col-md-8"}>
-                            <div className="card-body" style={{maxHeight: '500px', overflowX: 'scroll'}}>
+                            <div className="card-body" style={{maxHeight: '500px', overflow: 'auto'}}>
                                 <Link to={`/scholarship/${slug}`}>
                                     <h1 className="card-title text-left">{name}</h1>
                                 </Link>
