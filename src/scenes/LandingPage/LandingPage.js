@@ -79,7 +79,7 @@ class LandingPage extends React.Component {
         const { scholarshipsDueSoon, scholarshipsDueSoonIsLoading,
             scholarshipsRecentlyAdded, scholarshipsForLocation, searchLocation } = this.state;
 
-        const scholarshipsContent = (<React.Fragment>
+        const scholarshipsContentDueSoon = (<React.Fragment>
             {scholarshipsDueSoonIsLoading &&
             <Loading title="Loading Scholarships ..." />
             }
@@ -88,6 +88,9 @@ class LandingPage extends React.Component {
                                 contentList={scholarshipsDueSoon}
                                 contentType="scholarship" />
             }
+            }
+        </React.Fragment>);
+        const scholarshipsContentRecentAndLocation = (<React.Fragment>
             {scholarshipsRecentlyAdded &&
             <React.Fragment>
             <hr/>
@@ -112,8 +115,9 @@ class LandingPage extends React.Component {
                     {!userProfile &&
                     <React.Fragment>
                         <Banner/>
-                        {scholarshipsContent}
+                        {scholarshipsContentDueSoon}
                         <WhatIsAtila/>
+                        {scholarshipsContentRecentAndLocation}
                         <div className="p-5">
                             <Link to="/register" className="btn btn-primary center-block font-size-xl">
                                 Register for Free
@@ -127,7 +131,7 @@ class LandingPage extends React.Component {
                     {userProfile &&
                     <React.Fragment>
                         <BannerLoggedIn/>
-                        {scholarshipsContent}
+                        {scholarshipsContentRecentAndLocation}
                         <hr />
                     </React.Fragment>
                     }
