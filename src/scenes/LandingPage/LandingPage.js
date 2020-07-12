@@ -88,7 +88,6 @@ class LandingPage extends React.Component {
                                 contentList={scholarshipsDueSoon}
                                 contentType="scholarship" />
             }
-            }
         </React.Fragment>);
         const scholarshipsContentRecentAndLocation = (<React.Fragment>
             {scholarshipsRecentlyAdded &&
