@@ -11,9 +11,9 @@ const faqAnswers = [
     { question: "What's inside the ebook?",
         answer: (
             <ol>
-                <li>This ebook analyzes the employment statistics of university students in the consulting, investment banking, high tech, and biomedical industries.</li>
-                <li>This ebook also contains interviews of students who attend top university programs who describe their experiences so far.</li>
-                <li>There are also interviews of students who are in top university programs, and describe their experiences throughout university.</li>
+                <li>Employment statistics of university students in the consulting, investment banking, high tech, and biomedical industries.</li>
+                <li>Advice and tips on what it takes to get acceptance into a top school</li>
+                <li>Interviews of current and past students in top university programs, and describe their experiences before, during and after university.</li>
             </ol>
         ),},
     { question: "What can I expect to learn after reading this ebook?",
