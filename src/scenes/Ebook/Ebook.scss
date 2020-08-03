@@ -157,3 +157,12 @@
   background-color: transparent;
   border: none;
 }
+
+.EbookPreview {
+  @media only screen and (max-width: $small-device-width) {
+    .image-gallery-right-nav, .image-gallery-left-nav {
+      display: none;
+    }
+  }
+
+}

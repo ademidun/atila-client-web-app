@@ -36,7 +36,7 @@ class EbookLandingBanner extends Component {
     );
 
     return (
-      <div className='vh-100-min EbookLandingBanner mx-sm-3'>
+      <div className='vh-100-min EbookLandingBanner mx-sm-3' id="EbookLandingBanner">
         <div>
           <br />
           <h1 className='col-sm-12 text-center my-md-5'>
@@ -74,7 +74,7 @@ class EbookLandingBanner extends Component {
                   name="AddToCart"
                   onClick={handleButtonClickEventFacebook}
                 >
-                  Buy this Book - $33
+                  Buy this Book
                 </a>
               </Button>
               <br />
