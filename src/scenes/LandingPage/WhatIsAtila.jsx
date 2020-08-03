@@ -1,7 +1,7 @@
 import React from 'react';
 import QueueAnim from 'rc-queue-anim';
 import { Row, Col } from 'antd';
-import { Link } from 'bisheng/router';
+import { Link } from "react-router-dom";
 import moneyFaceEmoji from './assets/moneyFaceEmoji.png';
 import relievedFaceEmoji from './assets/relievedFaceEmoji.png';
 import magnifyingGlassEmoji from './assets/magnifyingGlassEmoji.png';
