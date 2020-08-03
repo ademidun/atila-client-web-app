@@ -1,8 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Col, Row } from "antd";
+import {Button, Col, Row} from "antd";
 import "../Ebook.scss";
 import {Link} from "react-router-dom";
+import {scrollToElement} from "../../../services/utils";
 
 const interviewees = [
   {
@@ -185,6 +186,13 @@ const EbookInterviews = () => {
             style={{fontSize: 40}} >
          See The Atila Team that made this book
       </Link>
+
+      <Button
+          type="primary"
+          className="text-center center-block"
+          onClick={event=>{ event.preventDefault(); scrollToElement("#EbookLandingBanner")}}>
+        Scroll To Top
+      </Button>
     </React.Fragment>
   );
 };

@@ -303,6 +303,12 @@ export function handleError(error) {
 }
 
 export function scrollToElement(elementSelector) {
+    if(!$(elementSelector).offset()) {
+        console.error(`Element with selector:${elementSelector} not found. `+
+        `Make sure you included a css prefix: '#' for ID or '.' for class.`);
+        return;
+    }
+
     $('html, body').animate({scrollTop: $(elementSelector).offset().top}, 1000);
 }
 
