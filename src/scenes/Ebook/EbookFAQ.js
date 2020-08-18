@@ -48,7 +48,7 @@ const faqAnswers = [
     { question: "Why does the ebook cost $33?",
         answer: (<span>
             <p>The ebook is priced at $33 because individuals who purchase a copy will have access to updated editions for the rest of the year and exclusive access to special Atila content.
-            The level of detailed information we were able to collect is not available anywhere else</p>
+            The level of detailed information we were able to collect is not available anywhere else.</p>
         </span>)},
     { question: "What makes this different from other guides out there?",
         answer: (<span>
