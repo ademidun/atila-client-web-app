@@ -9,29 +9,29 @@ import ScholarshipsListFilter from "../Scholarship/ScholarshipsListFilter";
 
 class EbookLandingBanner extends Component {
   state = {
-    showPreview: false,
+    showBookChapters: false,
   };
 
   render() {
-    const { showPreview } = this.state;
+    const { showBookChapters } = this.state;
 
     const { audience } = this.props;
 
     console.log('this.props', this.props);
 
-    const bookPreviewButton = (
+    const showBookChaptersButton = (
         <Button
             className='center-block'
             type='info'
             name="PreviewBook"
             style={{ fontSize: "larger" }}
             onClick={(event) => {
-                const { showPreview } = this.state;
-                this.setState({ showPreview: !showPreview });
+                const { showBookChapters } = this.state;
+                this.setState({ showBookChapters: !showBookChapters });
                 handleButtonClickEventFacebook(event);
             }}
         >
-            {showPreview ? 'Hide' : ''} Show Inside the Book
+            {showBookChapters ? 'Hide' : 'Show'} Book Chapters
         </Button>
     );
 
@@ -78,21 +78,22 @@ class EbookLandingBanner extends Component {
                 </a>
               </Button>
               <br />
-                {bookPreviewButton}
+                {showBookChaptersButton}
             </Col>
           </Row>
         </div>
 
-          {showPreview &&
+          {showBookChapters &&
             <React.Fragment>
                 <hr/>
                 <EbookChapter />
-                {bookPreviewButton}
+                {showBookChaptersButton}
             </React.Fragment>
 
           }
 
-        <link rel="preload" href="https://example.com/widget.html" as="document" />
+        <link rel="preload" href="https://gum.co/BbFon" as="document" />
+        <link rel="preload" href="https://gumroad.com/l/BbFon" as="document" />
       </div>
     );
   }
