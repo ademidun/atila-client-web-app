@@ -56,17 +56,17 @@ class Ebook extends React.Component {
                     <hr/>
                     <EbookPreview/>
                     <hr/>
+                    <TableauGraphsEmbed/>
+                    <hr/>
+                    <EbookInterviews/>
+                    <hr/>
                     <EbookFAQ />
                     <hr/>
                     <EmailSignUp audience={audience} />
                     <hr/>
-                    <TableauGraphsEmbed/>
-                    <hr/>
                     <PremiumDescription/>
                     <hr/>
                     <EbookVideoEmbed/>
-                    <hr/>
-                    <EbookInterviews/>
                     <hr/>
                 </div>
             </React.Fragment>
