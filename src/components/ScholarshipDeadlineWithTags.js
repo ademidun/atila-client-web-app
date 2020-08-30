@@ -19,7 +19,7 @@ function ScholarshipDeadlineWithTags({scholarship, datePrefix}) {
         datePrefix = 'Opens: ';
     }
     const daysFromDeadline = scholarshipDateMoment.diff(todayMoment, 'days');
-    const scholarshipDateString = scholarshipDateMoment.format('dddd, MMMM DD, YYYY');
+    let scholarshipDateString = scholarshipDateMoment.format('dddd, MMMM DD, YYYY');
 
     if (daysFromDeadline < 0) {
         color = 'volcano';
@@ -31,6 +31,12 @@ function ScholarshipDeadlineWithTags({scholarship, datePrefix}) {
             color = 'geekblue';
         }
         tag = `${tagPrefix} ${scholarshipDateMoment.fromNow()}`;
+    }
+
+
+    if (deadline.includes("2022-01-01")) {
+        scholarshipDateString = "TBA";
+        tag = null
     }
     return (
         <React.Fragment>

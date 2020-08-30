@@ -50,7 +50,12 @@ class ScholarshipCard extends React.Component {
 
         const scholarshipCardStyle = {display: scholarshipHideFinish? 'none' : 'flex'};
 
-        const fundingString = formatCurrency(Number.parseInt(funding_amount), true);
+        let fundingString = formatCurrency(Number.parseInt(funding_amount), true);
+
+        if (funding_amount === 0) {
+            fundingString = "varies";
+        }
+
         return (
             <Motion defaultStyle={{maxHeight: 1000}}
                     style={{maxHeight: spring(scholarshipHideStart? 0 : 1000)}}

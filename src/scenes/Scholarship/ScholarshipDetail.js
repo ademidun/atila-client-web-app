@@ -124,7 +124,11 @@ class ScholarshipDetail extends React.Component {
         }
         const { id, name, description, funding_amount,
             slug, img_url, criteria_info, scholarship_url, form_url, is_not_available } = scholarship;
-        const fundingString = formatCurrency(Number.parseInt(funding_amount), true);
+        let fundingString = formatCurrency(Number.parseInt(funding_amount), true);
+
+        if (Number.parseInt(funding_amount) === 0) {
+            fundingString = "varies";
+        }
 
         return (
             <React.Fragment>
