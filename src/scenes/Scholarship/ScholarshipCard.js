@@ -5,6 +5,7 @@ import {formatCurrency} from "../../services/utils";
 import ScholarshipShareSaveButtons from "./ScholarshipShareSaveButtons";
 import ScholarshipExtraCriteria from "./ScholarshipExtraCriteria";
 import ScholarshipDeadlineWithTags from "../../components/ScholarshipDeadlineWithTags";
+import "./ScholarshipCard.scss";
 
 import {Motion, spring} from 'react-motion';
 
@@ -59,7 +60,7 @@ class ScholarshipCard extends React.Component {
                 <div className={`${className} card shadow my-4`}
                         style={{...scholarshipCardStyle,...interpolatingStyle}} >
                     <div className="row no-gutters">
-                        <div className={isOneColumn ? null: "col-md-4"} style={{height: "250px", width: "100%"}}>
+                        <div className={`card-img-container ${isOneColumn ? "" : "col-md-4"}`}>
                             <img src={img_url}
                                  className="card-img mt-4"
                                  alt={name}

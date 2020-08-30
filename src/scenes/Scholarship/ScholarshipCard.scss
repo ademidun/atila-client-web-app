@@ -1,0 +1,16 @@
+@import "../../index";
+
+.card-img-container {
+  height: 250px;
+  width: 100%;
+}
+
+@media only screen and (max-width: $small-device-width) {
+  .card-img-container {
+    height: fit-content;
+  }
+
+  h1 {
+    font-size: 7vw;
+  }
+}
