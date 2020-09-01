@@ -6,7 +6,6 @@ import WhatIsAtila from "./WhatIsAtila";
 import HowItWorks from "./HowItWorks";
 import MoreFeatures from "./MoreFeatures";
 import LandingPageContent from "./LandingPageContent";
-import LandingPageLiveDemo from "./LandingPageLiveDemo";
 import SubscribeMailingList from "../../components/SubscribeMailingList";
 import {Link} from "react-router-dom";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
@@ -16,6 +15,8 @@ import BannerLoggedIn from "./BannerLoggedIn";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
 import SearchApi from "../../services/SearchAPI";
+import EbookLandingBanner from "../Ebook/EbookLandingBanner";
+import EbookPreview from "../Ebook/EbookPreview";
 
 class LandingPage extends React.Component {
 
@@ -144,7 +145,9 @@ class LandingPage extends React.Component {
                         description={!userProfile? "Read the essays that got students acceptance to top schools and win major scholarships.": null}
                         contentList={essays} />
                     <hr />
-                    <LandingPageLiveDemo />
+                    <EbookLandingBanner showTitleCTA={true}/>
+                    <hr/>
+                    <EbookPreview/>
                     <hr />
                     <SubscribeMailingList />
                     <div className="p-5">

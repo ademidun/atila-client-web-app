@@ -1,11 +1,12 @@
 import React, { Component } from "react";
-import { Button, Col, Row } from "antd";
+import {Button, Col, Row, Tag} from "antd";
 import "./Ebook.scss";
 import {handleButtonClickEventFacebook} from "../../models/Utils";
 import EbookChapter from "./EbookChapter";
 import {EBOOK_AUDIENCE_IMAGES} from "../../models/Constants";
 import PropTypes from "prop-types";
 import ScholarshipsListFilter from "../Scholarship/ScholarshipsListFilter";
+import {Link} from "react-router-dom";
 
 class EbookLandingBanner extends Component {
   state = {
@@ -15,7 +16,7 @@ class EbookLandingBanner extends Component {
   render() {
     const { showBookChapters } = this.state;
 
-    const { audience } = this.props;
+    const { audience, showTitleCTA } = this.props;
 
     console.log('this.props', this.props);
 
@@ -35,12 +36,25 @@ class EbookLandingBanner extends Component {
         </Button>
     );
 
+    const title = "Atila Schools and Jobs Guide";
+
     return (
       <div className='vh-100-min EbookLandingBanner mx-sm-3' id="EbookLandingBanner">
         <div>
           <br />
           <h1 className='col-sm-12 text-center my-md-5'>
-            Atila Schools and Jobs Guide
+              {showTitleCTA &&
+              <Link to="/schools">
+                  {title}
+                  <br/>
+                  <Tag color="green">New</Tag>
+              </Link>
+              }
+              {!showTitleCTA &&
+                <React.Fragment>
+                    {title}
+                </React.Fragment>
+              }
           </h1>
 
           <Row className='ebook-row'>
@@ -101,9 +115,11 @@ class EbookLandingBanner extends Component {
 
 ScholarshipsListFilter.defaultProps = {
     audience: '1',
+    showTitleCTA: false
 };
 
 EbookLandingBanner.propTypes = {
     audience: PropTypes.string,
+    showTitleCTA: PropTypes.bool,
 };
 export default EbookLandingBanner;
