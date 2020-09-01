@@ -6,7 +6,9 @@ $my-lighten:#4080ff;
 $default-font: sans-serif;
 $serif-font: Palatino,Georgia,Cambria,"Times New Roman",Times,serif;
 // Bootstrap: https://getbootstrap.com/docs/4.0/layout/overview/#responsive-breakpoints
+// Might consider Ant-design breakpoints as well: https://ant.design/components/grid/#Col
 $small-device-width: 576px;
+$extra-large-device-width: 1200px;
 
 .vh-100-min {
   min-height: 100vh !important;

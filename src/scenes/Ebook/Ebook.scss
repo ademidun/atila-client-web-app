@@ -16,9 +16,6 @@
   .buy-now-cta {
     margin-top: 10%;
   }
-  .ebook-row {
-    margin-left: 20%;
-  }
 
   .ebook-image img {
     max-width: 43vh;
@@ -50,6 +47,12 @@
       max-width: 40vh;
     }
 
+  }
+
+  @media only screen and (min-width: $extra-large-device-width) {
+    .ebook-row {
+      margin-left: 20%;
+    }
   }
 
   .buy-book-button {
