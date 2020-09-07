@@ -38,6 +38,11 @@ export const toastNotify = (message, messageType='info', customOptions={}) => {
 
     // I could refactor this to make it more concise but then I would lose the typechecking and inspection benefits.
     if(messageType==='error') {
+
+        if (message.toLowerCase().includes("signature has expired")){
+            message += "\nTry refreshing page or logging out then logging back in.";
+        }
+
         toast.error(message, options);
     } else {
         toast.info(message, options);

@@ -86,6 +86,7 @@ class UserProfileEdit extends React.Component {
             .catch(err=> {
                 let postError = err.response && err.response.data;
                 postError = JSON.stringify(postError, null, 4);
+
                 toastNotify(`🙁${postError}`, 'error');
         });
     };
