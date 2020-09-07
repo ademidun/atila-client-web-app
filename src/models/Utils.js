@@ -128,8 +128,18 @@ export const scholarshipUserProfileSharedFormConfigs = [
     },
 ];
 
+// TODO get this list from a propert third party source
+export const forbiddenCharacters = ["+", "%", "$", "&", "~", "/", "\\"];
 
+export const hasForbiddenCharacters = (testSequence) => {
+    for (let i = 0; i < forbiddenCharacters.length; i++) {
+        if (testSequence.includes(forbiddenCharacters[i])) {
+            return true
+        }
+    }
 
+    return false
+};
 
 export const handleButtonClickEventFacebook = (event) => {
 

@@ -153,3 +153,9 @@ label {
 .ck-editor__editable {
   width: 100%;
 }
+
+.input-error {
+  box-shadow: 0 0 3px #CC0000;
+  color: #CC0000;
+  border: solid 1px #CC0000;
+}
