@@ -317,7 +317,7 @@ class ScholarshipsList extends React.Component {
                 missingSections = (<ul>
                     The Following questions are missing:
                     {! userProfile.major &&
-                    <li><strong>Major: </strong>What program are you currently or interested in?</li>
+                    <li><strong>Major: </strong>What program are you currently or interested in pursuing?</li>
                     }
                     {! userProfile.post_secondary_school &&
                     <li><strong>Post Secondary School</strong>: What school are you currently or interested in attending?</li>

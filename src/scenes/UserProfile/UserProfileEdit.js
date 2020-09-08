@@ -3,7 +3,12 @@ import PropTypes from 'prop-types';
 import {connect} from "react-redux";
 import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import FormDynamic from "../../components/Form/FormDynamic";
-import {scholarshipUserProfileSharedFormConfigs, toastNotify} from "../../models/Utils";
+import {
+    forbiddenCharacters,
+    hasForbiddenCharacters,
+    scholarshipUserProfileSharedFormConfigs,
+    toastNotify
+} from "../../models/Utils";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import {userProfileFormConfig, userProfileFormOnboarding} from "../../models/UserProfile";
 import {transformLocation} from "../../services/utils";
@@ -24,6 +29,7 @@ class UserProfileEdit extends React.Component {
         this.state = {
             pageNumber: props.startingPageNumber,
             locationData: {},
+            formErrors: {},
         }
     }
 
@@ -75,6 +81,31 @@ class UserProfileEdit extends React.Component {
 
         event.preventDefault();
         const { userProfile, afterSubmitSuccess } = this.props;
+        const { formErrors} = this.state;
+
+        if (!userProfile.major) {
+
+            formErrors['major'] = (
+                <p className="text-danger">
+                    Major is a required field, please fill
+                </p>);
+
+        }
+        else {
+            delete formErrors['major'];
+        }
+
+        if (!userProfile.post_secondary_school) {
+            formErrors['post_secondary_school'] = (
+                <p className="text-danger">
+                    Post secondary school is a required field, please fill.
+                </p>);
+
+        }
+        else {
+            delete formErrors['post_secondary_school'];
+        }
+        this.setState({ formErrors });
         userProfile.metadata['stale_cache'] = true;
         const { locationData } = this.state;
         UserProfileAPI
@@ -93,8 +124,27 @@ class UserProfileEdit extends React.Component {
 
     render () {
 
-        const {userProfile, title, className, startingPageNumber, submitButtonText} = this.props;
-        const {pageNumber} = this.state;
+        const { userProfile, title, className, startingPageNumber, submitButtonText } = this.props;
+        const { pageNumber, formErrors } = this.state;
+
+        let formErrorsContent = Object.keys(formErrors).map((errorType) => (
+            <div key={errorType}>
+                {formErrors[errorType]}
+            </div>
+        ));
+
+        [userProfileFormOnboarding, userProfileFormConfig, userProfileSharedFormConfigs]
+            .forEach(formConfigSettings => {
+            for (let i = 0; i < formConfigSettings.length; i++) {
+                if (Object.keys(formErrors).includes( formConfigSettings[i].keyName)) {
+                    formConfigSettings[i].error = formErrors[ formConfigSettings[i].keyName];
+                } else {
+                    formConfigSettings[i].error = null;
+                }
+            }
+        });
+
+
 
         return (
             <div className={className}>
@@ -104,7 +154,8 @@ class UserProfileEdit extends React.Component {
                 {startingPageNumber !==0 &&
                     <Row style={{textAlign: 'left'}}>
                         <Col sm={24} md={12}>
-                            <span><strong> Account Type: </strong> Student {userProfile.is_atila_premium ? 'Premium' : 'Free'}</span>
+                            <span><strong> Account Type: </strong>
+                                Student {userProfile.is_atila_premium ? 'Premium' : 'Free'}</span>
                             {!userProfile.is_atila_premium &&
                             <Button style={{ marginTop: 16 }}
                                     className="m-3"
@@ -143,6 +194,10 @@ class UserProfileEdit extends React.Component {
                     <button className="btn btn-outline-primary float-left col-md-6"
                             onClick={() => this.changePage(pageNumber-1)}>Prev</button>}
                 </div>
+                {
+                    Object.keys(formErrors).length > 0 &&
+                    formErrorsContent
+                }
                 <button type="submit"
                         className="btn btn-primary col-12 mt-2"
                         onClick={this.submitForm}>{submitButtonText}</button>
