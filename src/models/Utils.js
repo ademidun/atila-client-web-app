@@ -101,7 +101,7 @@ export const scholarshipUserProfileSharedFormConfigs = [
     },
     {
         keyName: 'heritage',
-        placeholder: 'Heritage (Indian, Nigerian, Chinese) 🇮🇳 🇳🇬 🇨🇳',
+        placeholder: 'Heritage (India, Nigeria, China) 🇮🇳 🇳🇬 🇨🇳',
         type: 'autocomplete',
         suggestions: COUNTRIES,
         className: 'col-md-6',
