@@ -168,7 +168,7 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
     }
 
     inputForm = (
-        <div className={`w-100${className ? ` ${className}` : ''}`}>
+        <div className={`w-100${className ? ` ${className}` : ''} + ${inputConfig.error ? ' input-error' : ''}`}>
             {html && html(model)}
             {inputForm}
         </div>

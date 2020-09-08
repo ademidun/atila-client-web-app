@@ -68,7 +68,6 @@ class UserProfileAPI {
         registrationDataPost.userProfile.metadata_private =  {
             geo_ip_registration: await AnalyticsService.getGeoIp(IP_DATA_URL),
         };
-        console.log({registrationDataPost});
         const apiCompletionPromise = request({
             method: 'post',
             data: registrationDataPost,

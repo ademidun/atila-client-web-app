@@ -949,7 +949,7 @@ export const LANGUAGES = [
     'Malayalam',
     'Maltese',
     'Manchu',
-    'Mandar',
+    'Mandarin',
     'Mandingo',
     'Manipuri',
     'Manx',

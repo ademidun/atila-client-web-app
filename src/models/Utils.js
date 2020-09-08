@@ -38,6 +38,11 @@ export const toastNotify = (message, messageType='info', customOptions={}) => {
 
     // I could refactor this to make it more concise but then I would lose the typechecking and inspection benefits.
     if(messageType==='error') {
+
+        if (message.toLowerCase().includes("signature has expired")){
+            message += "\nTry refreshing page or logging out then logging back in.";
+        }
+
         toast.error(message, options);
     } else {
         toast.info(message, options);
@@ -96,7 +101,7 @@ export const scholarshipUserProfileSharedFormConfigs = [
     },
     {
         keyName: 'heritage',
-        placeholder: 'Heritage (Indian, Nigerian, Chinese) 🇮🇳 🇳🇬 🇨🇳',
+        placeholder: 'Heritage (India, Nigeria, China) 🇮🇳 🇳🇬 🇨🇳',
         type: 'autocomplete',
         suggestions: COUNTRIES,
         className: 'col-md-6',
@@ -128,8 +133,18 @@ export const scholarshipUserProfileSharedFormConfigs = [
     },
 ];
 
+// TODO get this list from a propert third party source
+export const forbiddenCharacters = ["+", "%", "$", "&", "~", "/", "\\"];
 
+export const hasForbiddenCharacters = (testSequence) => {
+    for (let i = 0; i < forbiddenCharacters.length; i++) {
+        if (testSequence.includes(forbiddenCharacters[i])) {
+            return true
+        }
+    }
 
+    return false
+};
 
 export const handleButtonClickEventFacebook = (event) => {
 

@@ -6,8 +6,9 @@ import './LoginRegister.scss';
 import {setLoggedInUserProfile} from "../redux/actions/user";
 import {connect} from "react-redux";
 import TermsConditions from "./TermsConditions";
-import {Modal} from "antd";
+import { Modal} from "antd";
 import {Link} from "react-router-dom";
+import {forbiddenCharacters, hasForbiddenCharacters} from "../models/Utils";
 
 export class PasswordShowHide extends React.Component {
 
@@ -89,6 +90,7 @@ class Register extends React.Component {
             responseOkMessage: null,
             loadingResponse: null,
             isTermsConditionsModalVisible: false,
+            formErrors: {},
         };
     }
 
@@ -99,10 +101,32 @@ class Register extends React.Component {
         }
         const userProfile = {...this.state.userProfile};
 
+        const { formErrors } = this.state;
+
         let value = event.target.value;
         if (event.target.name === 'username') {
             value = value.replace(/\s/g, '');
+
+            if (value.includes('@')) {
+
+                formErrors['username'] = (
+                    <p className="text-danger">
+                        '@' symbol not allowed in username. <br/>
+                        Make sure you're not using your email as your username by accident.
+                    </p>);
+
+            } else if (hasForbiddenCharacters(value)) {
+                formErrors['username'] = (
+                    <p className="text-danger">
+                        The following characters, <em> {forbiddenCharacters.toString()}</em> are not allowed in your username.
+                    </p>);
+
+            } else {
+                delete formErrors['username'];
+            }
+            this.setState({ formErrors });
         }
+
         if (event.target.type==='checkbox'){
             value = event.target.checked
         }
@@ -185,8 +209,14 @@ class Register extends React.Component {
     render () {
 
         const { userProfile, isResponseError, responseOkMessage,
-            loadingResponse, isTermsConditionsModalVisible } = this.state;
+            loadingResponse, isTermsConditionsModalVisible, formErrors } = this.state;
         const { firstName, lastName, username, email, password, agreeTermsConditions } = userProfile;
+
+        let formErrorsContent = Object.keys(formErrors).map((errorType) => (
+            <div key={errorType}>
+                {formErrors[errorType]}
+            </div>
+        ));
         return (
             <div className="container mt-5">
                 <div className="card shadow p-3">
@@ -208,6 +238,11 @@ class Register extends React.Component {
                                    onChange={this.updateForm}
                                    required
                             />
+                            {email &&
+                                <label>
+                                    Email
+                                </label>
+                            }
                             <input placeholder="Email"
                                    className="col-12 mb-3 form-control"
                                    type="email"
@@ -217,9 +252,16 @@ class Register extends React.Component {
                                    onChange={this.updateForm}
                                    required
                             />
+                            {username &&
+                                <label>
+                                    Username
+                                </label>
+                            }
                             <input placeholder="Username"
-                                   className="col-12 mb-3 form-control"
+                                   className={"col-12 mb-3 form-control" +
+                                   `${formErrors['username']? ' input-error': ''}`}
                                    name="username"
+                                   type="username"
                                    value={username}
                                    autoComplete="username"
                                    onChange={this.updateForm}
@@ -254,6 +296,11 @@ class Register extends React.Component {
                                 {responseOkMessage}
                             </p>
                             }
+                            {
+                                Object.keys(formErrors).length > 0 &&
+                                formErrorsContent
+                            }
+
                             {isResponseError &&
                              isResponseError
                             }
@@ -261,7 +308,8 @@ class Register extends React.Component {
                             <Loading title="Loading Response..." className="center-block my-3"/>}
                             <button className="btn btn-primary col-12 mb-3"
                                     type="submit"
-                                    disabled={loadingResponse || !agreeTermsConditions}>
+                                    disabled={loadingResponse || !agreeTermsConditions ||
+                                    Object.keys(formErrors).length > 0}>
                                 Register
                             </button>
 

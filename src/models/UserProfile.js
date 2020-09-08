@@ -70,17 +70,6 @@ export const userProfileFormConfig = [
         type: 'email'
     },
     {
-        keyName: 'post_secondary_school',
-        type: 'autocomplete_single',
-        suggestions: SCHOOLS_LIST,
-    },
-    {
-        keyName: 'eligible_schools',
-        placeholder: 'Any other schools? 🏫',
-        type: 'autocomplete',
-        suggestions: SCHOOLS_LIST,
-    },
-    {
         keyName: 'major',
         type: 'autocomplete_single',
         suggestions: MAJORS_LIST,
@@ -90,6 +79,17 @@ export const userProfileFormConfig = [
         placeholder: 'Any other Programs? 📚',
         type: 'autocomplete',
         suggestions: MAJORS_LIST,
+    },
+    {
+        keyName: 'post_secondary_school',
+        type: 'autocomplete_single',
+        suggestions: SCHOOLS_LIST,
+    },
+    {
+        keyName: 'eligible_schools',
+        placeholder: 'Any other schools? 🏫',
+        type: 'autocomplete',
+        suggestions: SCHOOLS_LIST,
     },
     {
         keyName: 'grade_level',
