@@ -4,8 +4,6 @@ import {connect} from "react-redux";
 import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import FormDynamic from "../../components/Form/FormDynamic";
 import {
-    forbiddenCharacters,
-    hasForbiddenCharacters,
     scholarshipUserProfileSharedFormConfigs,
     toastNotify
 } from "../../models/Utils";
