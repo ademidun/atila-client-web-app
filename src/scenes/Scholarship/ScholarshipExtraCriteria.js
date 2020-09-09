@@ -44,7 +44,7 @@ function ScholarshipExtraCriteria({scholarship, loggedInUserProfile, viewAsUserP
                     {
                         userProfile && userProfile[criteria] && userProfile[criteria].length===0 &&
                         <p>
-                            Don't qualify for scholarships of these {prettifyKeys(criteria)}?&nbsp;
+                            Don't qualify for scholarships of these {prettifyKeys(criteria).toLowerCase()}?&nbsp;
                             <Link to={`/profile/${userProfile.username}/edit`}>
                                 Edit Profile</Link> to see correct scholarships
                         </p>
@@ -68,7 +68,7 @@ function ScholarshipExtraCriteria({scholarship, loggedInUserProfile, viewAsUserP
                                 userProfile[locationType].length===0 &&
                                 index===0 &&
                                 <p>
-                                    Don't qualify for scholarships of these {prettifyKeys(locationType)}?&nbsp;
+                                    Don't qualify for scholarships of these {prettifyKeys(locationType).toLowerCase()}?&nbsp;
                                     <Link to={`/profile/${userProfile.username}/edit`}>
                                         Edit Profile</Link> to see correct scholarships
                                 </p>
