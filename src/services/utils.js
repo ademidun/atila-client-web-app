@@ -233,7 +233,12 @@ export function transformFilterDisplay(filter_type, inputUserProfile) {
     let filterValue = null;
 
     if (['city', 'province', 'country'].includes(filter_type)) {
-        filterValue = userProfile[filter_type][0]['name']
+        if (userProfile[filter_type][0] == null){
+            filterValue = ""
+        }
+        else {
+            filterValue = userProfile[filter_type][0]['name']
+        }
     } else {
         filterValue = userProfile[filter_type];
     }
