@@ -2,6 +2,7 @@ import $ from 'jquery';
 import {toastNotify} from "../models/Utils";
 import {MAX_BLOG_PAGE_VIEWS, MAX_ESSAY_PAGE_VIEWS, MAX_SCHOLARSHIP_PAGE_VIEWS} from "../models/Constants";
 import moment from "moment";
+import UserProfile from "../scenes/UserProfile/UserProfile";
 
 export function makeXHRRequestAsPromise (method, url, data) {
     return new Promise(function (resolve, reject) {
@@ -195,6 +196,36 @@ export function  transformLocation(placeResult) {
 }
 
 export function transformFilterDisplay(filter_type, userProfile) {
+    console.log(filter_type)
+    const mockUserProfile = {
+        'city': 'Toronto',
+        'province': 'Ontario',
+        'country': 'Canada',
+        'major': 'Engineering',
+        'post_secondary_school': 'University of Western Ontario',
+        'ethnicity': 'Asian/East-Asian',
+        'heritage': 'India',
+        'citizenship': 'Canada',
+        'religion': 'Christianity',
+        'activities': 'Drawing',
+        'sports': 'Soccer',
+        'disability': 'Autism',
+        'language': 'French',
+        'eligible_schools': [
+            'Ivey Business School',
+            'University of Waterloo',
+            'DeGroote School of Medicine'
+        ],
+        'eligible_programs': [
+            'Health Sciences',
+            'Computer Engineering',
+            'Biomedical Engineering'
+        ]
+    }
+
+    if (UserProfile){
+        console.log(userProfile)
+    }
 
     let filterValue = null;
 
@@ -271,6 +302,7 @@ export function transformFilterDisplay(filter_type, userProfile) {
     }
     else if (['city', 'province', 'country'].includes(filter_type)) {
         filterValue = userProfile[filter_type][0]['name']
+
     } else {
         filterValue = userProfile[filter_type];
     }
