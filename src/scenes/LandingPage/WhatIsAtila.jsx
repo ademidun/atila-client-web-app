@@ -17,7 +17,7 @@ const atilaThreeThings = [
     },
     {
         img: relievedFaceEmoji,
-        name: 'Makes it Easy to apply for scholarships',
+        name: 'Makes it easy to apply for scholarships',
     },
 ];
 
