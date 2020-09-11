@@ -2,7 +2,6 @@ import $ from 'jquery';
 import {toastNotify} from "../models/Utils";
 import {MAX_BLOG_PAGE_VIEWS, MAX_ESSAY_PAGE_VIEWS, MAX_SCHOLARSHIP_PAGE_VIEWS} from "../models/Constants";
 import moment from "moment";
-import UserProfile from "../scenes/UserProfile/UserProfile";
 
 export function makeXHRRequestAsPromise (method, url, data) {
     return new Promise(function (resolve, reject) {
