@@ -408,7 +408,7 @@ class ScholarshipsList extends React.Component {
                     </div>
                 }
                 <div className="w-100 mb-3">
-                    <Link to={`/scholarship/add`}>
+                    <Link to={`/scholarship/add`} className="btn btn-outline-primary">
                         Add a Scholarship
                     </Link>
                 </div>
