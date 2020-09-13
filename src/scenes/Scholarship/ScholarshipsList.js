@@ -384,8 +384,8 @@ class ScholarshipsList extends React.Component {
                             <Button type="link"
                                     onClick={this.toggleViewAllScholarships}
                                     style={{fontSize: '1.5rem'}}>
-                                View {searchPayload.previewMode === 'universalSearch' ? 'Scholarships for my profile' :
-                                'All Scholarships' }
+                                View {searchPayload.previewMode === 'universalSearch' ? 'scholarships for my profile' :
+                                'all Scholarships' }
                             </Button>
                         </h3>
 
@@ -397,12 +397,12 @@ class ScholarshipsList extends React.Component {
                         }
                         {!userProfile && !searchString &&
                         <h6 className="text-muted">
-                            No Search query. Displaying all valid Scholarships
+                            No search query. Displaying all valid scholarships.
                         </h6>
                         }
                         {userProfile && searchPayload.previewMode === 'universalSearch' &&
                         <h6 className="text-muted">
-                            No Search Filtering. Displaying all valid Scholarships
+                            No search filtering. Displaying all valid scholarships.
                         </h6>
                         }
                     </div>
