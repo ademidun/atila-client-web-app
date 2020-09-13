@@ -372,7 +372,7 @@ class ScholarshipsList extends React.Component {
                         </h1>
                         {searchPayload.filter_by_user &&
                         <h3>
-                            (Filtering by {prettifyKeys(searchPayload.filter_by_user)}: {' '}
+                            (Filtering by {prettifyKeys(searchPayload.filter_by_user).toLowerCase()}: {' '}
                             {transformFilterDisplay(searchPayload.filter_by_user, userProfile)} )
                         </h3>
                         }
