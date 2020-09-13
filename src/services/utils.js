@@ -470,3 +470,12 @@ export function getGuestUserId() {
     return guestUserId;
 
 }
+
+export function myJoin(value, separator) {
+    // This function is equivalent to .join(), however also works on strings unlike .join()
+    if (typeof value === 'string'){
+        return value
+    } else {
+        return value.join(separator)
+    }
+}
