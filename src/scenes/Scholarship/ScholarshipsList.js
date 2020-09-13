@@ -372,7 +372,7 @@ class ScholarshipsList extends React.Component {
                         </h1>
                         {searchPayload.filter_by_user &&
                         <h3>
-                            (Filtering by {prettifyKeys(searchPayload.filter_by_user)}: {' '}
+                            (Filtering by {prettifyKeys(searchPayload.filter_by_user).toLowerCase()}: {' '}
                             {transformFilterDisplay(searchPayload.filter_by_user, userProfile)} )
                         </h3>
                         }
@@ -384,8 +384,8 @@ class ScholarshipsList extends React.Component {
                             <Button type="link"
                                     onClick={this.toggleViewAllScholarships}
                                     style={{fontSize: '1.5rem'}}>
-                                View {searchPayload.previewMode === 'universalSearch' ? 'Scholarships for my profile' :
-                                'All Scholarships' }
+                                View {searchPayload.previewMode === 'universalSearch' ? 'scholarships for my profile' :
+                                'all Scholarships' }
                             </Button>
                         </h3>
 
@@ -397,18 +397,18 @@ class ScholarshipsList extends React.Component {
                         }
                         {!userProfile && !searchString &&
                         <h6 className="text-muted">
-                            No Search query. Displaying all valid Scholarships
+                            No search query. Displaying all valid scholarships.
                         </h6>
                         }
                         {userProfile && searchPayload.previewMode === 'universalSearch' &&
                         <h6 className="text-muted">
-                            No Search Filtering. Displaying all valid Scholarships
+                            No search filtering. Displaying all valid scholarships.
                         </h6>
                         }
                     </div>
                 }
                 <div className="w-100 mb-3">
-                    <Link to={`/scholarship/add`} className="btn btn-link">
+                    <Link to={`/scholarship/add`} className="btn btn-outline-primary">
                         Add a Scholarship
                     </Link>
                 </div>
