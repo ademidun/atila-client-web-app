@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {FILTER_TYPES, SORT_TYPES} from "../../models/ConstantsForm";
-import {prettifyKeys, transformFilterDisplay} from "../../services/utils";
+import {prettifyKeys, transformFilterDisplay, myJoin} from "../../services/utils";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTimes} from "@fortawesome/free-solid-svg-icons";
 
@@ -76,7 +76,7 @@ class ScholarshipsListFilter extends React.Component {
                     {filterValue !== 'Select Filter' &&
                     <div className="font-weight-bold">
                         {/*Change here*/}
-                        {transformFilterDisplay(filterValue, model)}
+                        {myJoin(transformFilterDisplay(filterValue, model), ', ')}
                     </div>
                     }
                 </div>
