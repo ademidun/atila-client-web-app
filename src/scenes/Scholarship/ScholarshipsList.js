@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {prettifyKeys, toTitleCase, transformFilterDisplay, unSlugify} from "../../services/utils";
+import {myJoin, prettifyKeys, toTitleCase, transformFilterDisplay, unSlugify} from "../../services/utils";
 import ScholarshipCard from "./ScholarshipCard";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import {connect} from "react-redux";
@@ -347,7 +347,8 @@ class ScholarshipsList extends React.Component {
         };
         let dynamicTitle = '';
         if (scholarships) {
-            dynamicTitle = `${totalScholarshipsCount} Scholarships ${searchString ? `for ${toTitleCase(searchString)} ` : ''}found`;
+            dynamicTitle = `${totalScholarshipsCount} Scholarship${totalScholarshipsCount === 1 ? '' :'s'}
+             ${searchString ? `for ${toTitleCase(searchString)} ` : ''}found`;
             seoContent.title = `${dynamicTitle}${totalFunding !== '$0'? ` and ${totalFunding} in funding` : ''}`;
             seoContent.title += `${searchString ? ` available for ${toTitleCase(searchString)} scholarships` : ''}`;
             seoContent.title += ' - Atila';
@@ -372,8 +373,11 @@ class ScholarshipsList extends React.Component {
                         </h1>
                         {searchPayload.filter_by_user &&
                         <h3>
-                            (Filtering by {prettifyKeys(searchPayload.filter_by_user).toLowerCase()}: {' '}
-                            {transformFilterDisplay(searchPayload.filter_by_user, userProfile)} )
+                            (Filtering by {prettifyKeys(searchPayload.filter_by_user)}: {' '}
+                            {/*change next line*/}
+                            <strong>
+                            {myJoin(transformFilterDisplay(searchPayload.filter_by_user, userProfile), ', ')})
+                            </strong>
                         </h3>
                         }
                         <h2 className="text-muted">
