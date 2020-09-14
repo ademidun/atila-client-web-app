@@ -194,83 +194,50 @@ export function  transformLocation(placeResult) {
 
 }
 
-export function transformFilterDisplay(filter_type, userProfile) {
+export function transformFilterDisplay(filter_type, inputUserProfile) {
+    console.log(filter_type)
+    const mockUserProfile = {
+        'city': [{id: 22, province: "Ontario", name: "Halton Hills", country: "Canada"}],
+        'province':  [{id: 1, name: "Ontario", country: "Canada"}],
+        'country': [{name: "Canada"}],
+        'major': 'Engineering',
+        'post_secondary_school': 'University of Western Ontario',
+        'ethnicity': 'Asian/East-Asian',
+        'heritage': 'India',
+        'citizenship': 'Canada',
+        'religion': 'Christianity',
+        'activities': 'Drawing',
+        'sports': 'Soccer',
+        'disability': 'Autism',
+        'language': 'French',
+        'eligible_schools': [
+            'Ivey Business School',
+            'University of Waterloo',
+            'DeGroote School of Medicine'
+        ],
+        'eligible_programs': [
+            'Health Sciences',
+            'Computer Engineering',
+            'Biomedical Engineering'
+        ]
+    }
+    let userProfile = "";
+
+    if (inputUserProfile){
+        userProfile = inputUserProfile;
+    } else {
+        userProfile = mockUserProfile;
+    }
 
     let filterValue = null;
 
-    if (!userProfile) {
-        if (['city', 'province', 'country'].includes(filter_type)) {
-            switch (filter_type) {
-                case 'city':
-                    filterValue = 'Toronto';
-                    break;
-                case 'province':
-                    filterValue = 'Ontario';
-                    break;
-                case 'country':
-                    filterValue = 'Canada';
-                    break;
-                default:
-                    break;
-            }
+    if (['city', 'province', 'country'].includes(filter_type)) {
+        if (userProfile[filter_type][0] == null){
+            filterValue = ""
         }
         else {
-            switch (filter_type) {
-
-                // todo: pick default categories based on what is most popular
-                // amongst students or has the most scholarships
-                case 'major':
-                    filterValue = 'Engineering';
-                    break;
-                case 'post_secondary_school':
-                    filterValue = 'University of Western Ontario';
-                    break;
-                case 'ethnicity':
-                    filterValue = 'Asian/East-Asian';
-                    break;
-                case 'heritage':
-                    filterValue = 'India';
-                    break;
-                case 'citizenship':
-                    filterValue = 'Canada';
-                    break;
-                case 'religion':
-                    filterValue = 'Christianity';
-                    break;
-                case 'activities':
-                    filterValue = 'Drawing';
-                    break;
-                case 'sports':
-                    filterValue = 'Soccer';
-                    break;
-                case 'disability':
-                    filterValue = 'Autism';
-                    break;
-                case 'language':
-                    filterValue = 'French';
-                    break;
-                case 'eligible_schools':
-                    filterValue = [
-                        'Ivey Business School',
-                        'University of Waterloo',
-                        'DeGroote School of Medicine'
-                    ];
-                    break;
-                case 'eligible_programs':
-                    filterValue = [
-                        'Health Sciences',
-                        'Computer Engineering',
-                        'Biomedical Engineering'
-                    ];
-                    break;
-                default:
-                    break;
-            }
+            filterValue = userProfile[filter_type][0]['name']
         }
-
-    }
-    else if (['city', 'province', 'country'].includes(filter_type)) {
-        filterValue = userProfile[filter_type][0]['name']
     } else {
         filterValue = userProfile[filter_type];
     }
