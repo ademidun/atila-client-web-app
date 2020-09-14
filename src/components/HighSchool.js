@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 
 function HighSchool() {
 
-    const presentationDescription = 'This is a presentation for High school students' +
+    const presentationDescription = 'This is a presentation for high school students' +
         ' about your life after high school: what are your options, ' +
         'how to learn what path is best for you and how can they achieve your goals.';
     const seoContent = {
