@@ -374,7 +374,9 @@ class ScholarshipsList extends React.Component {
                         <h3>
                             (Filtering by {prettifyKeys(searchPayload.filter_by_user)}: {' '}
                             {/*change next line*/}
+                            <strong>
                             {myJoin(transformFilterDisplay(searchPayload.filter_by_user, userProfile), ', ')})
+                            </strong>
                         </h3>
                         }
                         <h2 className="text-muted">
