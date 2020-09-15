@@ -85,7 +85,7 @@ const teamMembers = [
     first_name: "Grace",
     last_name: "Tse",
     position: "Marketing",
-    username: "gracetse",
+    username: "grace",
     img_url: graceImg,
     description_1: "Grace is a grade 12 AP student at Markville Secondary School.",
     link_type: "LinkedIn",
