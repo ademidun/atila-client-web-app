@@ -70,6 +70,10 @@ header {
 .ant-menu-item {
   padding: 0 15px;
 }
+.disable-ant-menu-item-active {
+  border-bottom: none !important;
+  background-color: transparent !important;
+}
 .nav-phone-icon {
   display: none;
   position: absolute;
