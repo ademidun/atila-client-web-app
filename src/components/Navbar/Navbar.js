@@ -103,6 +103,15 @@ class Navbar extends React.Component {
                     </Link>
                 </Menu.Item>
                 }
+                {!userProfile && !isLoadingLoggedInUserProfile &&
+                <Menu.Item key="register">
+                    <Link to={`/register`}
+                          style={{color:'#ffffff'}}
+                          className="btn btn-primary">
+                        Sign Up
+                    </Link>
+                </Menu.Item>
+                }
                 {
                     userProfile &&
                     <SubMenu
