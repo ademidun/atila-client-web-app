@@ -2,10 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {connect} from "react-redux";
-import {Dropdown} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faBookmark, faShareAlt, faMailBulk, faSms, faFrown} from "@fortawesome/free-solid-svg-icons";
-import { faFacebookMessenger, faWhatsapp, faFacebook } from '@fortawesome/free-brands-svg-icons';
+import {faBookmark, faQuestionCircle} from "@fortawesome/free-solid-svg-icons";
 import {toastNotify} from "../../models/Utils";
 import NotificationsService from "../../services/NotificationsService";
 import {Link} from "react-router-dom";
@@ -107,60 +105,9 @@ class ScholarshipShareSaveButtons extends React.Component {
 
     render () {
         const { isSavedScholarship } = this.state;
-        const { scholarship } = this.props;
 
-        const shareData = [
-            {
-                icon: faFacebookMessenger,
-                name: 'Facebook Messenger',
-                url: 'http://www.facebook.com/dialog/send?app_id=401124503672116&link=https://atila.ca/scholarship/'
-                    +scholarship.slug+'&redirect_uri=https://atila.ca/'
-            },
-            {
-                icon: faFacebook,
-                name: 'Facebook',
-                url: 'https://www.facebook.com/sharer.php?display=popup&quote=Check out this scholarship from Atila?: '
-                    +scholarship.name+'+&u=https://atila.ca/scholarship/'+scholarship.slug+'&app_id=401124503672116'
-            },
-            {
-                icon: faMailBulk,
-                name: 'Email',
-                url: 'mailto:?body=Check out this scholarship from Atila%0A%0Ahttps://atila.ca/scholarship/'
-                    +scholarship.slug+'&subject=Scholarship From Atila - '+ scholarship.name
-            },
-            {
-                icon: faWhatsapp,
-                url: `https://web.whatsapp.com/send?text=https://atila.ca/scholarship/${scholarship.slug}`,
-                name: 'WhatsApp'
-            },
-            {
-                icon: faSms,
-                url: `sms:?&body=Check out this scholarship from Atila: https://atila.ca/scholarship/${scholarship.slug}`,
-                name: 'SMS (android)'
-            },
-        ];
         return (
             <div className="mb-3 d-inline">
-                <Dropdown className="d-inline mx-3">
-                    <Dropdown.Toggle variant="outline-primary"
-                                     id="dropdown-basic"
-                                     title="Share Scholarship">
-                        <FontAwesomeIcon className="ml-1" icon={faShareAlt}/>
-                    </Dropdown.Toggle>
-
-                    <Dropdown.Menu className="w-auto">
-                        {shareData.map(shareItem => (
-                            <Dropdown.Item href={shareItem.url}
-                                           key={shareItem.name}
-                                           target="_blank"
-                                           title={`Share on ${shareItem.name}`}>
-                                <FontAwesomeIcon className="ml-1"
-                                                 icon={shareItem.icon}/> {' '}
-                                {`Share on ${shareItem.name}`}
-                            </Dropdown.Item>
-                        ))}
-                    </Dropdown.Menu>
-                </Dropdown>
                 <Tooltip placement="right"
                          title={isSavedScholarship?
                              "You've already saved this scholarship 👌🏿": 'Save Scholarship'}>
@@ -171,13 +118,9 @@ class ScholarshipShareSaveButtons extends React.Component {
                         <FontAwesomeIcon className="ml-1" icon={faBookmark}/>
                     </button>
                 </Tooltip>
-
                 <Tooltip placement="right"
-                         title="I'm Not eligible for this scholarship">
-                    <button className="btn btn-outline-primary ml-1"
-                            onClick={this.notInterestedInScholarship}>
-                        <FontAwesomeIcon icon={faFrown}/>
-                    </button>
+                         title="Save scholarship and get an email reminder 1 week and 1 day before the deadline.">
+                    <FontAwesomeIcon className="ml-1 btn-outline-primary" icon={faQuestionCircle}/>
                 </Tooltip>
 
 

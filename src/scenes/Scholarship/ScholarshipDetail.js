@@ -96,11 +96,6 @@ class ScholarshipDetail extends React.Component {
             });
     };
 
-    goBack = (event) => {
-        event.preventDefault();
-        this.props.history.goBack();
-    };
-
     render() {
 
         const { isLoadingScholarship, scholarship,
@@ -183,10 +178,6 @@ class ScholarshipDetail extends React.Component {
                                         </div>
                                     </React.Fragment>
                                 }
-
-                                <button onClick={this.goBack} className="btn btn-link pl-0">
-                                    Go Back ←
-                                </button>
                                 <p className="font-weight-bold">
                                     <ScholarshipDeadlineWithTags scholarship={scholarship} />
                                     <br/>
