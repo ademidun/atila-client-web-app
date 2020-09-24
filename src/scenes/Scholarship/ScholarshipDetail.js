@@ -9,6 +9,7 @@ import AnalyticsService from "../../services/AnalyticsService";
 import ScholarshipShareSaveButtons from "./ScholarshipShareSaveButtons";
 import HelmetSeo from "../../components/HelmetSeo";
 import UserProfileAPI from "../../services/UserProfileAPI";
+import ApplicationsAPI from "../../services/ApplicationsAPI";
 import AtilaPointsPaywallModal from "../../components/AtilaPointsPaywallModal";
 import ScholarshipExtraCriteria from "./ScholarshipExtraCriteria";
 import ScholarshipDeadlineWithTags from "../../components/ScholarshipDeadlineWithTags";
@@ -96,6 +97,24 @@ class ScholarshipDetail extends React.Component {
             });
     };
 
+    getOrCreateApplication = () => {
+        const { userProfile } = this.props;
+        const { scholarship } = this.state;
+        console.log({userProfile, scholarship});
+        ApplicationsAPI.getOrCreate(scholarship.id, userProfile.user)
+            .then(res=>{
+                console.log({res});
+
+                const {data: { application }} = res;
+
+                this.props.history.push(`/application/${application.id}`);
+            })
+            .catch(err => {
+                console.log({err});
+            })
+
+    };
+
     render() {
 
         const { isLoadingScholarship, scholarship,
@@ -162,7 +181,9 @@ class ScholarshipDetail extends React.Component {
                                     Edit Scholarship
                                 </Link><br/>
                                 {scholarship.is_atila_direct_application &&
-                                <Button type="primary" size="large" className="mt-3" style={{fontSize: "20px"}}>
+                                <Button type="primary" size="large"
+                                        className="mt-3" style={{fontSize: "20px"}}
+                                        onClick={this.getOrCreateApplication}>
                                     Apply Now
                                 </Button>
                                 }
