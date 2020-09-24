@@ -13,6 +13,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Link} from "react-router-dom";
 import './ScholarshipAddEdit.scss';
 import {Tag} from "antd";
+import ScholarshipQuestionBuilder from "./ScholarshipQuestionBuilder";
 
 const scholarshipFormConfigsPage1 = [
     {
@@ -379,7 +380,7 @@ class ScholarshipAddEdit extends React.Component{
                         }
                         {pageNumber === 2 &&
                         <React.Fragment>
-                            <h6>Leave blank for each criteria that is open to any</h6>
+                            <h6>Scholarship Specific Questions</h6>
                             <FormDynamic model={scholarship}
                                          inputConfigs={scholarshipUserProfileSharedFormConfigs}
                                          onUpdateForm={this.updateForm}
@@ -387,6 +388,11 @@ class ScholarshipAddEdit extends React.Component{
                                          onSubmit={this.submitForm}
                             />
 
+                        </React.Fragment>}
+                        {pageNumber === 1 &&
+                        <React.Fragment>
+                            <h6>Leave blank for each criteria that is open to any</h6>
+                            <ScholarshipQuestionBuilder />
                         </React.Fragment>}
                         <div className="my-2" style={{clear: 'both'}}>
                             {pageNumber !== 2 &&
