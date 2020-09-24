@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from "prop-types";
-import {Row, Col, Icon, Menu, Tag} from 'antd';
+import {Row, Col, Menu, Tag,} from 'antd';
+import { UserOutlined } from '@ant-design/icons';
 import {Link, withRouter} from "react-router-dom";
 import {initializeLoggedInUserProfile, setLoggedInUserProfile} from "../../redux/actions/user";
 import {connect} from "react-redux";
@@ -107,7 +108,7 @@ class Navbar extends React.Component {
                     userProfile &&
                     <SubMenu
                         key="user"
-                        title={<Icon type="user" />}
+                        title={<span><UserOutlined /></span>}
                     >
                         <Menu.Item key="add-scholarship">
                             <Link to="/scholarship/add">
