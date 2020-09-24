@@ -3,16 +3,16 @@ import {Table, Input, Button, Popconfirm, Form} from 'antd';
 
 const EditableContext = React.createContext();
 
-const Item  = {
+/*const Item  = {
     key: "",
     name: "",
     age: "",
     address: "",
-};
+};*/
 
-const EditableRowProps = {
+/*const EditableRowProps = {
     index: "",
-};
+};*/
 
 const EditableRow =  ({ index, ...props }) => {
     const [form] = Form.useForm();
@@ -24,7 +24,7 @@ const EditableRow =  ({ index, ...props }) => {
         </Form>
     );
 };
-
+/*
 const EditableCellProps = {
     title: "",
     editable: "",
@@ -32,7 +32,7 @@ const EditableCellProps = {
     dataIndex: "",
     record: "",
     handleSave: "",
-}
+}*/
 
 const EditableCell = ({
                        title,
@@ -119,7 +119,7 @@ export default class ScholarshipQuestionBuilder extends React.Component {
                 render: (text, record) =>
                     this.state.dataSource.length >= 1 ? (
                         <Popconfirm title="Sure to delete?" onConfirm={() => this.handleDelete(record.key)}>
-                            <a>Delete</a>
+                            <Button>Delete</Button>
                         </Popconfirm>
                     ) : null,
             },
