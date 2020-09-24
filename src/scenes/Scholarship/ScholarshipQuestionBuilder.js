@@ -1,18 +1,16 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
+import PropTypes from "prop-types";
 import {Table, Input, Button, Popconfirm, Form} from 'antd';
 
 const EditableContext = React.createContext();
 
-/*const Item  = {
-    key: "",
-    name: "",
-    age: "",
-    address: "",
-};*/
+export const QuestionPropTypes = PropTypes.shape({
+    key: PropTypes.string,
+    name: PropTypes.string,
+    age: PropTypes.string,
+    address: PropTypes.string,
+});
 
-/*const EditableRowProps = {
-    index: "",
-};*/
 
 const EditableRow =  ({ index, ...props }) => {
     const [form] = Form.useForm();
@@ -24,15 +22,10 @@ const EditableRow =  ({ index, ...props }) => {
         </Form>
     );
 };
-/*
-const EditableCellProps = {
-    title: "",
-    editable: "",
-    children: "",
-    dataIndex: "",
-    record: "",
-    handleSave: "",
-}*/
+
+EditableRow.propTypes = {
+    index: PropTypes.number,
+};
 
 const EditableCell = ({
                        title,
@@ -73,26 +66,29 @@ let childNode = children;
 
 if (editable) {
 childNode = editing ? (
-<Form.Item
-style={{ margin: 0 }}
-name={dataIndex}
-rules={[
-{
-required: true,
-message: `${title} is required.`,
-},
-]}
->
-<Input ref={inputRef} onPressEnter={save} onBlur={save} />
-</Form.Item>
+<Form.Item style={{ margin: 0 }} name={dataIndex}
+    rules={[{
+        required: true,
+        message: `${title} is required.`,
+        }]}>
+        <Input ref={inputRef} onPressEnter={save} onBlur={save} />
+    </Form.Item>
 ) : (
-<div className="editable-cell-value-wrap" style={{ paddingRight: 24 }} onClick={toggleEdit}>
-{children}
-</div>
+    <div className="editable-cell-value-wrap" style={{ paddingRight: 24 }} onClick={toggleEdit}>
+    {children}
+    </div>
 );
 }
 
 return <td {...restProps}>{childNode}</td>;
+};
+EditableCell.propTypes = {
+    title: PropTypes.node,
+    editable: PropTypes.bool,
+    children: PropTypes.node,
+    dataIndex: PropTypes.node,
+    record: QuestionPropTypes,
+    handleSave: PropTypes.func,
 };
 
 export default class ScholarshipQuestionBuilder extends React.Component {
