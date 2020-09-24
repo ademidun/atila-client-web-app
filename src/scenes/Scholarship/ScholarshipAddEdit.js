@@ -12,6 +12,7 @@ import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Link} from "react-router-dom";
 import './ScholarshipAddEdit.scss';
+import {Tag} from "antd";
 
 const scholarshipFormConfigsPage1 = [
     {
@@ -31,6 +32,12 @@ const scholarshipFormConfigsPage1 = [
             What should they do to apply?
             You will be able to give more details later.
         </label>),
+    },
+    {
+        keyName: 'is_atila_direct_application',
+        placeholder: 'Directly Apply Through Atila? ',
+        html: () =>(<Tag color="green">new</Tag>),
+        type: 'checkbox',
     },
     {
         keyName: 'scholarship_url',

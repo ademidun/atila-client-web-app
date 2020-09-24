@@ -70,6 +70,7 @@ export let defaultScholarship = {
     metadata: {},
     no_essay_required: false,
     eligible_schools: [],
+    is_atila_direct_application: false,
     eligible_programs: [],
     email_contact: '',
     activities: [],

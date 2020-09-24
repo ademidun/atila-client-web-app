@@ -12,7 +12,7 @@ import UserProfileAPI from "../../services/UserProfileAPI";
 import AtilaPointsPaywallModal from "../../components/AtilaPointsPaywallModal";
 import ScholarshipExtraCriteria from "./ScholarshipExtraCriteria";
 import ScholarshipDeadlineWithTags from "../../components/ScholarshipDeadlineWithTags";
-import {Alert, message} from 'antd';
+import {Alert, Button, message} from 'antd';
 
 
 class ScholarshipDetail extends React.Component {
@@ -160,7 +160,12 @@ class ScholarshipDetail extends React.Component {
                                 </React.Fragment>}
                                 <Link to={`/scholarship/edit/${slug}`}>
                                     Edit Scholarship
-                                </Link>
+                                </Link><br/>
+                                {scholarship.is_atila_direct_application &&
+                                <Button type="primary" size="large" className="mt-3" style={{fontSize: "20px"}}>
+                                    Apply Now
+                                </Button>
+                                }
                                 <br/><br/>
                                 {
                                     scholarshipUserProfile &&
