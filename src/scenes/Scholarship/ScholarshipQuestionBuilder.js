@@ -1,18 +1,8 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
-import PropTypes from "prop-types";
-import {Table, Input, Button, Popconfirm, Form} from 'antd';
-
+import { Table, Input, Button, Popconfirm, Form } from 'antd';
 const EditableContext = React.createContext();
 
-export const QuestionPropTypes = PropTypes.shape({
-    key: PropTypes.string,
-    name: PropTypes.string,
-    age: PropTypes.string,
-    address: PropTypes.string,
-});
-
-
-const EditableRow =  ({ index, ...props }) => {
+const EditableRow = ({ index, ...props }) => {
     const [form] = Form.useForm();
     return (
         <Form form={form} component={false}>
@@ -23,72 +13,73 @@ const EditableRow =  ({ index, ...props }) => {
     );
 };
 
-EditableRow.propTypes = {
-    index: PropTypes.number,
-};
-
 const EditableCell = ({
-                       title,
-                       editable,
-                       children,
-                       dataIndex,
-                       record,
-                       handleSave,
-                       ...restProps
-                       }) => {
-const [editing, setEditing] = useState(false);
-const inputRef = useRef();
-const form = useContext(EditableContext);
+                          title,
+                          editable,
+                          children,
+                          dataIndex,
+                          record,
+                          handleSave,
+                          ...restProps
+                      }) => {
+    const [editing, setEditing] = useState(false);
+    const inputRef = useRef();
+    const form = useContext(EditableContext);
+    useEffect(() => {
+        if (editing) {
+            inputRef.current.focus();
+        }
+    }, [editing]);
 
-useEffect(() => {
-if (editing) {
-inputRef.current.focus();
-}
-}, [editing]);
+    const toggleEdit = () => {
+        setEditing(!editing);
+        form.setFieldsValue({
+            [dataIndex]: record[dataIndex],
+        });
+    };
 
-const toggleEdit = () => {
-setEditing(!editing);
-form.setFieldsValue({ [dataIndex]: record[dataIndex] });
-};
+    const save = async (e) => {
+        try {
+            const values = await form.validateFields();
+            toggleEdit();
+            handleSave({ ...record, ...values });
+        } catch (errInfo) {
+            console.log('Save failed:', errInfo);
+        }
+    };
 
-const save = async e => {
-try {
-const values = await form.validateFields();
+    let childNode = children;
 
-toggleEdit();
-handleSave({ ...record, ...values });
-} catch (errInfo) {
-console.log('Save failed:', errInfo);
-}
-};
+    if (editable) {
+        childNode = editing ? (
+            <Form.Item
+                style={{
+                    margin: 0,
+                }}
+                name={dataIndex}
+                rules={[
+                    {
+                        required: true,
+                        message: `${title} is required.`,
+                    },
+                ]}
+            >
+                <Input ref={inputRef} onPressEnter={save} onBlur={save} />
+            </Form.Item>
+        ) : (
+            <div
+                className="editable-cell-value-wrap"
+                style={{
+                    paddingRight: 24,
+                }}
+                onClick={toggleEdit}
+            >
+                {children}
+            </div>
+        );
+    }
 
-let childNode = children;
-
-if (editable) {
-childNode = editing ? (
-<Form.Item style={{ margin: 0 }} name={dataIndex}
-    rules={[{
-        required: true,
-        message: `${title} is required.`,
-        }]}>
-        <Input ref={inputRef} onPressEnter={save} onBlur={save} />
-    </Form.Item>
-) : (
-    <div className="editable-cell-value-wrap" style={{ paddingRight: 24 }} onClick={toggleEdit}>
-    {children}
-    </div>
-);
-}
-
-return <td {...restProps}>{childNode}</td>;
-};
-EditableCell.propTypes = {
-    title: PropTypes.node,
-    editable: PropTypes.bool,
-    children: PropTypes.node,
-    dataIndex: PropTypes.node,
-    record: QuestionPropTypes,
-    handleSave: PropTypes.func,
+    return <td {...restProps}>{childNode}</td>;
 };
 
 export default class ScholarshipQuestionBuilder extends React.Component {
@@ -115,12 +106,11 @@ export default class ScholarshipQuestionBuilder extends React.Component {
                 render: (text, record) =>
                     this.state.dataSource.length >= 1 ? (
                         <Popconfirm title="Sure to delete?" onConfirm={() => this.handleDelete(record.key)}>
-                            <Button>Delete</Button>
+                            <a>Delete</a>
                         </Popconfirm>
                     ) : null,
             },
         ];
-
         this.state = {
             dataSource: [
                 {
@@ -140,11 +130,12 @@ export default class ScholarshipQuestionBuilder extends React.Component {
         };
     }
 
-    handleDelete = key => {
+    handleDelete = (key) => {
         const dataSource = [...this.state.dataSource];
-        this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
+        this.setState({
+            dataSource: dataSource.filter((item) => item.key !== key),
+        });
     };
-
     handleAdd = () => {
         const { count, dataSource } = this.state;
         const newData = {
@@ -158,16 +149,14 @@ export default class ScholarshipQuestionBuilder extends React.Component {
             count: count + 1,
         });
     };
-
-    handleSave = row => {
+    handleSave = (row) => {
         const newData = [...this.state.dataSource];
-        const index = newData.findIndex(item => row.key === item.key);
+        const index = newData.findIndex((item) => row.key === item.key);
         const item = newData[index];
-        newData.splice(index, 1, {
-            ...item,
-            ...row,
+        newData.splice(index, 1, { ...item, ...row });
+        this.setState({
+            dataSource: newData,
         });
-        this.setState({ dataSource: newData });
     };
 
     render() {
@@ -178,13 +167,14 @@ export default class ScholarshipQuestionBuilder extends React.Component {
                 cell: EditableCell,
             },
         };
-        const columns = this.columns.map(col => {
+        const columns = this.columns.map((col) => {
             if (!col.editable) {
                 return col;
             }
+
             return {
                 ...col,
-                onCell: record => ({
+                onCell: (record) => ({
                     record,
                     editable: col.editable,
                     dataIndex: col.dataIndex,
@@ -195,7 +185,13 @@ export default class ScholarshipQuestionBuilder extends React.Component {
         });
         return (
             <div>
-                <Button onClick={this.handleAdd} type="primary" style={{ marginBottom: 16 }}>
+                <Button
+                    onClick={this.handleAdd}
+                    type="primary"
+                    style={{
+                        marginBottom: 16,
+                    }}
+                >
                     Add a row
                 </Button>
                 <Table

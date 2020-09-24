@@ -380,7 +380,7 @@ class ScholarshipAddEdit extends React.Component{
                         }
                         {pageNumber === 2 &&
                         <React.Fragment>
-                            <h6>Scholarship Specific Questions</h6>
+                            <h6>Leave blank for each criteria that is open to any</h6>
                             <FormDynamic model={scholarship}
                                          inputConfigs={scholarshipUserProfileSharedFormConfigs}
                                          onUpdateForm={this.updateForm}
@@ -391,7 +391,7 @@ class ScholarshipAddEdit extends React.Component{
                         </React.Fragment>}
                         {pageNumber === 1 &&
                         <React.Fragment>
-                            <h6>Leave blank for each criteria that is open to any</h6>
+                            <h6>Scholarship Specific Questions</h6>
                             <ScholarshipQuestionBuilder />
                         </React.Fragment>}
                         <div className="my-2" style={{clear: 'both'}}>
