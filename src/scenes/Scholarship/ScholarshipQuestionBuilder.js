@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
-import { Table, Input, Button, Popconfirm, Form } from 'antd';
+import {Table, Input, Button, Popconfirm, Form, Select} from 'antd';
+
 const EditableContext = React.createContext();
 
 const EditableRow = ({ index, ...props }) => {
@@ -195,6 +196,47 @@ export default class ScholarshipQuestionBuilder extends React.Component {
                     Add a question
                 </Button>
             </div>
+        );
+    }
+}
+
+const { Option } = Select;
+const children = [];
+const userProfileQuestionOptions = [
+    "first_name",
+    "last_name",
+    "email",
+    "post_secondary_school",
+    "major",
+    "eligible_programs",
+    "eligible_major",
+    "ethnicity",
+    "country",
+    "citizenship",
+];
+
+for (let i in userProfileQuestionOptions) {
+    const questionOption = userProfileQuestionOptions[i];
+    children.push(<Option key={questionOption}
+                          value={questionOption}>{questionOption}</Option>);
+}
+
+function handleChange(value) {
+    console.log(`selected ${value}`);
+}
+export class ScholarshipUserProfileQuestionBuilder extends React.Component {
+    state = {
+        size: 'default',
+    };
+
+    render() {
+        return (
+            <Select mode="tags" style={{ width: '100%' }}
+                    defaultValue={['first_name', 'last_name']}
+                    placeholder="User Profile Questions"
+                    onChange={handleChange}>
+                {children}
+            </Select>
         );
     }
 }

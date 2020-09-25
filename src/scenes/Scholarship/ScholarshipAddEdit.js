@@ -13,7 +13,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Link} from "react-router-dom";
 import './ScholarshipAddEdit.scss';
 import {Tag} from "antd";
-import ScholarshipQuestionBuilder from "./ScholarshipQuestionBuilder";
+import ScholarshipQuestionBuilder, {ScholarshipUserProfileQuestionBuilder} from "./ScholarshipQuestionBuilder";
 
 const scholarshipFormConfigsPage1 = [
     {
@@ -391,8 +391,11 @@ class ScholarshipAddEdit extends React.Component{
                         </React.Fragment>}
                         {pageNumber === 1 &&
                         <React.Fragment>
-                            <h6>Scholarship Specific Questions</h6>
-                            <ScholarshipQuestionBuilder />
+                            <h3>User Profile Questions</h3>
+                                <ScholarshipUserProfileQuestionBuilder />
+                                <hr/>
+                            <h3>Scholarship Specific Questions</h3>
+                                <ScholarshipQuestionBuilder/>
                         </React.Fragment>}
                         <div className="my-2" style={{clear: 'both'}}>
                             {pageNumber !== 2 &&
