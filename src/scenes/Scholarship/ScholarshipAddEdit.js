@@ -36,7 +36,7 @@ const scholarshipFormConfigsPage1 = [
     },
     {
         keyName: 'is_atila_direct_application',
-        placeholder: 'Directly Apply Through Atila? ',
+        placeholder: 'Allow applicants to directly apply for scholarship through Atila? ',
         html: () =>(<Tag color="green">new</Tag>),
         type: 'checkbox',
     },
@@ -121,6 +121,8 @@ const scholarshipFormConfigsPage1 = [
         type: 'location',
     },
 ];
+
+const NUMBER_OF_PAGES = 3;
 
 class ScholarshipAddEdit extends React.Component{
 
@@ -389,20 +391,21 @@ class ScholarshipAddEdit extends React.Component{
                             />
 
                         </React.Fragment>}
-                        {pageNumber === 1 &&
+                        {pageNumber === 3 &&
                         <React.Fragment>
                             <h3>User Profile Questions</h3>
-                                <ScholarshipUserProfileQuestionBuilder />
+                                <ScholarshipUserProfileQuestionBuilder scholarship={scholarship}
+                                                                       onUpdate={this.updateForm} />
                                 <hr/>
                             <h3>Scholarship Specific Questions</h3>
                                 <ScholarshipQuestionBuilder scholarship={scholarship}
                                                             onUpdate={this.updateForm} />
                         </React.Fragment>}
                         <div className="my-2" style={{clear: 'both'}}>
-                            {pageNumber !== 2 &&
+                            {pageNumber < NUMBER_OF_PAGES &&
                             <button className="btn btn-outline-primary float-right col-md-6"
                                     onClick={() => this.changePage(pageNumber+1)}>Next</button>}
-                            {pageNumber !== 1 &&
+                            {pageNumber > 1 &&
                             <button className="btn btn-outline-primary float-left col-md-6"
                                     onClick={() => this.changePage(pageNumber-1)}>Prev</button>}
                         </div>

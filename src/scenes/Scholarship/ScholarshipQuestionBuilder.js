@@ -86,18 +86,26 @@ const EditableCell = ({
     return <td {...restProps}>{childNode}</td>;
 };
 
-const defaultSpecificQuestions = [
-    {
-        key: 'why-do-you-deserve-this-scholarship',
-        question: "Why do you deserve this scholarship?",
-        question_type: 'short_answer',
-    },
-    {
-        key: 'tell-me-about-yourself',
-        question: "Tell me about yourself",
-        question_type: 'long_answer',
-    },
+const defaultSpecificQuestion = {
+    key: 'why-do-you-deserve-this-scholarship',
+    question: "Why do you deserve this scholarship?",
+    question_type: 'short_answer',
+};
+const userProfileQuestionOptions = [
+    "first_name",
+    "last_name",
+    "email",
+    "post_secondary_school",
+    "major",
+    "eligible_programs",
+    "eligible_major",
+    "ethnicity",
+    "country",
+    "citizenship",
+    "extracurricular_description",
+    "academic_career_goals",
 ];
+const defaultUserProfileQuestions = [userProfileQuestionOptions[0], userProfileQuestionOptions[1], userProfileQuestionOptions[2]];
 
 export default class ScholarshipQuestionBuilder extends React.Component {
     constructor(props) {
@@ -116,62 +124,51 @@ export default class ScholarshipQuestionBuilder extends React.Component {
             {
                 title: 'Remove Question',
                 dataIndex: 'operation',
-                render: (text, record) =>
-                    this.state.specificQuestions.length >= 1 ? (
-                        <Popconfirm title="Sure to delete?" onConfirm={() => this.handleDelete(record.key)}>
-                            <p className="text-danger">Remove</p>
-                        </Popconfirm>
-                    ) : null,
+                render: (text, record) => (
+                    <Popconfirm title="Sure to delete?" onConfirm={() => this.handleDelete(record.key)}>
+                        <p className="text-danger cursor-pointer">Remove</p>
+                    </Popconfirm>
+                ),
             },
         ];
-
-        const { scholarship } = props;
-
-        console.log({scholarship});
-
-        this.state = {
-            specificQuestions: scholarship.specific_questions.length ? scholarship.specific_questions : defaultSpecificQuestions,
-            count: 2,
-        };
     }
 
     handleDelete = (key) => {
-        const specificQuestions = [...this.state.specificQuestions];
-        this.setState({
-            specificQuestions: specificQuestions.filter((item) => item.key !== key),
-        });
+
+        const { scholarship } = this.props;
+        let specificQuestions = scholarship.specific_questions;
+        specificQuestions = [...specificQuestions];
+
+        const newQuestions = specificQuestions.filter((item) => item.key !== key);
+        this.updateParent(newQuestions);
     };
     handleAdd = () => {
-        const { count, specificQuestions } = this.state;
-        const newData = {
-            key: 'why-do-you-deserve-this-scholarship-new',
-            question: "Why do you deserve this scholarship?",
-            question_type: 'short_answer',
-        };
-        this.setState({
-            specificQuestions: [...specificQuestions, newData],
-            count: count + 1,
-        });
+        const { scholarship } = this.props;
+
+        let specificQuestions = scholarship.specific_questions;
+        const newData = defaultSpecificQuestion;
+        const newQuestions = [...specificQuestions, newData];
+        this.updateParent(newQuestions);
     };
     handleSave = (row) => {
+        const { scholarship } = this.props;
+        let specificQuestions = scholarship.specific_questions;
+        const newQuestions = [...specificQuestions];
+        const index = newQuestions.findIndex((item) => row.question === item.question);
+        const item = newQuestions[index];
 
-        const newSpecificQuestions = [...this.state.specificQuestions];
-        const index = newSpecificQuestions.findIndex((item) => row.question === item.question);
-        const item = newSpecificQuestions[index];
 
+        newQuestions.splice(index, 1, { ...item, ...row });
 
-        newSpecificQuestions.splice(index, 1, { ...item, ...row });
-
-        newSpecificQuestions.forEach((specificQuestion, index, theArray) => {
+        newQuestions.forEach((specificQuestion, index, theArray) => {
             console.log("theArray[index]", theArray[index]);
             theArray[index].key = slugify(theArray[index].question);
             console.log(theArray[index], theArray[index]);
         });
+        this.updateParent(newQuestions);
+    };
 
-        this.setState({
-            specificQuestions: newSpecificQuestions,
-        });
-
+    updateParent = (newQuestions) => {
         const { onUpdate } = this.props;
 
         /*
@@ -179,7 +176,7 @@ export default class ScholarshipQuestionBuilder extends React.Component {
          */
         const syntheticEvent = {
             target: {
-                value: newSpecificQuestions,
+                value: newQuestions.slice(),
                 name: "specific_questions"
             }
         };
@@ -188,7 +185,10 @@ export default class ScholarshipQuestionBuilder extends React.Component {
     };
 
     render() {
-        const { specificQuestions } = this.state;
+        const { scholarship } = this.props;
+
+        let specificQuestions = scholarship.specific_questions;
+
         const components = {
             body: {
                 row: EditableRow,
@@ -241,18 +241,6 @@ ScholarshipQuestionBuilder.propTypes = {
 
 const { Option } = Select;
 const children = [];
-const userProfileQuestionOptions = [
-    "first_name",
-    "last_name",
-    "email",
-    "post_secondary_school",
-    "major",
-    "eligible_programs",
-    "eligible_major",
-    "ethnicity",
-    "country",
-    "citizenship",
-];
 
 for (let i in userProfileQuestionOptions) {
     const questionOption = userProfileQuestionOptions[i];
@@ -260,22 +248,53 @@ for (let i in userProfileQuestionOptions) {
                           value={questionOption}>{questionOption}</Option>);
 }
 
-function handleChange(value) {
-    console.log(`selected ${value}`);
-}
 export class ScholarshipUserProfileQuestionBuilder extends React.Component {
-    state = {
-        size: 'default',
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            userProfileQuestions: defaultUserProfileQuestions,
+            size: 'default',
+        };
+    }
+
+    handleChange = (value) => {
+        console.log(`selected ${value}`);
+
+        const { onUpdate } = this.props;
+        const newUserProfileQuestions = value.map(question => (
+            {key: question}
+        ));
+        const syntheticEvent = {
+            target: {
+                value: newUserProfileQuestions,
+                name: "user_profile_questions"
+            }
+        };
+
+        onUpdate(syntheticEvent);
     };
 
     render() {
+
+        const { scholarship } = this.props;
+
+        let userProfileQuestions = scholarship.user_profile_questions.length > 0 ?
+            scholarship.user_profile_questions.map(question => question.key) : defaultUserProfileQuestions;
+
         return (
             <Select mode="tags" style={{ width: '100%' }}
-                    defaultValue={['first_name', 'last_name']}
+                    value={userProfileQuestions}
                     placeholder="User Profile Questions"
-                    onChange={handleChange}>
+                    onChange={this.handleChange}>
                 {children}
             </Select>
         );
     }
 }
+
+ScholarshipUserProfileQuestionBuilder.propTypes = {
+    scholarship: ScholarshipPropType.isRequired,
+    onUpdate: PropTypes.func,
+};
