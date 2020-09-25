@@ -15,6 +15,7 @@ import './ScholarshipAddEdit.scss';
 import {Button, Steps, Tag} from "antd";
 import ScholarshipQuestionBuilder, {ScholarshipUserProfileQuestionBuilder} from "./ScholarshipQuestionBuilder";
 import {ATILA_SCHOLARSHIP_FEE} from "../../models/Constants";
+import {ScholarshipAddEditReview} from "./ScholarshipAddEditReview";
 const { Step } = Steps;
 
 const scholarshipFormConfigsPage1 = [
@@ -431,7 +432,7 @@ class ScholarshipAddEdit extends React.Component{
                                                             onUpdate={this.updateForm} />
                         </React.Fragment>}
                         {pageNumber === 4 &&
-                            <ScholarshipAddEditReviewPage scholarship={scholarship} />
+                            <ScholarshipAddEditReview scholarship={scholarship} />
                         }
                         <div className="my-2" style={{clear: 'both'}}>
                             {pageNumber < scholarshipEditPages.length &&
@@ -456,35 +457,6 @@ class ScholarshipAddEdit extends React.Component{
         );
 
     }
-}
-
-function ScholarshipAddEditReviewPage ({scholarship}){
-
-    const totalFundingAmount = scholarship.funding_amount * scholarship.number_available_scholarships;
-
-    const atilaFee = scholarship.funding_amount * scholarship.number_available_scholarships * ATILA_SCHOLARSHIP_FEE;
-
-    const totalScholarshipPlusFees = totalFundingAmount + atilaFee;
-    return (
-        <div className="container mt-5">
-            <div className="card shadow p-3">
-                <h2>Review Your Scholarship</h2>
-                <p style={{fontSize: "1.5rem", lineHeight: "45px"}}>
-                    Total Funding: {formatCurrency(totalFundingAmount)}
-                    <br/>
-                    Scholarships Awarded: {scholarship.number_available_scholarships}
-                    <br/>
-                    Atila Fee ({ATILA_SCHOLARSHIP_FEE * 100}%): {formatCurrency(atilaFee)}
-                    <br/>
-                    Total Amount: {formatCurrency(totalScholarshipPlusFees)}
-                </p>
-                <Button type="primary">
-                    Fund Scholarship
-                </Button>
-
-            </div>
-        </div>
-    )
 }
 
 const mapStateToProps = state => {
