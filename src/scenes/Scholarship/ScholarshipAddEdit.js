@@ -3,7 +3,7 @@ import {Helmet} from "react-helmet";
 import FormDynamic from "../../components/Form/FormDynamic";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import {connect} from "react-redux";
-import {nestedFieldUpdate, prettifyKeys, slugify, transformLocation} from "../../services/utils";
+import {formatCurrency, nestedFieldUpdate, prettifyKeys, slugify, transformLocation} from "../../services/utils";
 import Loading from "../../components/Loading";
 import {MAJORS_LIST, SCHOOLS_LIST} from "../../models/ConstantsForm";
 import {scholarshipUserProfileSharedFormConfigs, toastNotify} from "../../models/Utils";
@@ -12,8 +12,9 @@ import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Link} from "react-router-dom";
 import './ScholarshipAddEdit.scss';
-import {Steps, Tag} from "antd";
+import {Button, Steps, Tag} from "antd";
 import ScholarshipQuestionBuilder, {ScholarshipUserProfileQuestionBuilder} from "./ScholarshipQuestionBuilder";
+import {ATILA_SCHOLARSHIP_FEE} from "../../models/Constants";
 const { Step } = Steps;
 
 const scholarshipFormConfigsPage1 = [
@@ -125,21 +126,6 @@ const scholarshipFormConfigsPage1 = [
             Is the scholarship limited to certain locations? <span role="img" aria-label="globe emoji">🌏</span>
         </label>),
         type: 'location',
-    },
-];
-const NUMBER_OF_PAGES = 3;
-const scholarshipEditPages = [
-    {
-        title: 'Basic Info',
-        content: 'First-content',
-    },
-    {
-        title: 'More Details',
-        content: 'Second-content',
-    },
-    {
-        title: 'Scholarship Specific Questions',
-        content: 'Last-content',
     },
 ];
 
@@ -342,9 +328,25 @@ class ScholarshipAddEdit extends React.Component{
 
         const { is_atila_direct_application } = scholarship;
 
+
+        let scholarshipEditPages = [
+            {
+                title: 'Basic Info',
+            },
+            {
+                title: 'More Details',
+            },
+            {
+                title: 'Scholarship Specific Questions',
+            },
+            {
+                title: 'Review',
+            },
+        ];
+        scholarshipEditPages = scholarshipEditPages.slice(0, is_atila_direct_application ? scholarshipEditPages.length : 2);
+
         const scholarshipSteps = (<Steps current={pageNumber-1} progressDot  onChange={(current) => this.changePage(current+1)}>
-            {scholarshipEditPages.slice(0, is_atila_direct_application ? scholarshipEditPages.length : 2)
-                .map(item => (
+            { scholarshipEditPages.map(item => (
                 <Step key={item.title} title={item.title} />
             ))}
         </Steps>);
@@ -428,8 +430,11 @@ class ScholarshipAddEdit extends React.Component{
                                 <ScholarshipQuestionBuilder scholarship={scholarship}
                                                             onUpdate={this.updateForm} />
                         </React.Fragment>}
+                        {pageNumber === 4 &&
+                            <ScholarshipAddEditReviewPage scholarship={scholarship} />
+                        }
                         <div className="my-2" style={{clear: 'both'}}>
-                            {pageNumber < NUMBER_OF_PAGES &&
+                            {pageNumber < scholarshipEditPages.length &&
                             <button className="btn btn-outline-primary float-right col-md-6"
                                     onClick={() => this.changePage(pageNumber+1)}>Next</button>}
                             {pageNumber > 1 &&
@@ -451,6 +456,35 @@ class ScholarshipAddEdit extends React.Component{
         );
 
     }
+}
+
+function ScholarshipAddEditReviewPage ({scholarship}){
+
+    const totalFundingAmount = scholarship.funding_amount * scholarship.number_available_scholarships;
+
+    const atilaFee = scholarship.funding_amount * scholarship.number_available_scholarships * ATILA_SCHOLARSHIP_FEE;
+
+    const totalScholarshipPlusFees = totalFundingAmount + atilaFee;
+    return (
+        <div className="container mt-5">
+            <div className="card shadow p-3">
+                <h2>Review Your Scholarship</h2>
+                <p style={{fontSize: "1.5rem", lineHeight: "45px"}}>
+                    Total Funding: {formatCurrency(totalFundingAmount)}
+                    <br/>
+                    Scholarships Awarded: {scholarship.number_available_scholarships}
+                    <br/>
+                    Atila Fee ({ATILA_SCHOLARSHIP_FEE * 100}%): {formatCurrency(atilaFee)}
+                    <br/>
+                    Total Amount: {formatCurrency(totalScholarshipPlusFees)}
+                </p>
+                <Button type="primary">
+                    Fund Scholarship
+                </Button>
+
+            </div>
+        </div>
+    )
 }
 
 const mapStateToProps = state => {
