@@ -59,6 +59,7 @@ export let defaultScholarship = {
     description: '',
     img_url: '',
     scholarship_url: '',
+    specific_questions: [],
     form_url: '',
     deadline: '2022-12-31T23:59:00',
     open_date: '2022-12-31',

@@ -222,7 +222,7 @@ class ScholarshipAddEdit extends React.Component{
     };
 
     updateForm = (event) => {
-
+        console.log({event});
         let value = event.target.value;
 
         if (event.target.type==='checkbox'){
@@ -395,7 +395,8 @@ class ScholarshipAddEdit extends React.Component{
                                 <ScholarshipUserProfileQuestionBuilder />
                                 <hr/>
                             <h3>Scholarship Specific Questions</h3>
-                                <ScholarshipQuestionBuilder/>
+                                <ScholarshipQuestionBuilder scholarship={scholarship}
+                                                            onUpdate={this.updateForm} />
                         </React.Fragment>}
                         <div className="my-2" style={{clear: 'both'}}>
                             {pageNumber !== 2 &&

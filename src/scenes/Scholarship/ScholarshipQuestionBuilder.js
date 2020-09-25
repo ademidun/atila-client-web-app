@@ -1,5 +1,8 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
+import PropTypes from "prop-types";
 import {Table, Input, Button, Popconfirm, Form, Select} from 'antd';
+import {ScholarshipPropType} from "../../models/Scholarship";
+import {slugify} from "../../services/utils";
 
 const EditableContext = React.createContext();
 
@@ -83,6 +86,19 @@ const EditableCell = ({
     return <td {...restProps}>{childNode}</td>;
 };
 
+const defaultSpecificQuestions = [
+    {
+        key: 'why-do-you-deserve-this-scholarship',
+        question: "Why do you deserve this scholarship?",
+        question_type: 'short_answer',
+    },
+    {
+        key: 'tell-me-about-yourself',
+        question: "Tell me about yourself",
+        question_type: 'long_answer',
+    },
+];
+
 export default class ScholarshipQuestionBuilder extends React.Component {
     constructor(props) {
         super(props);
@@ -101,60 +117,78 @@ export default class ScholarshipQuestionBuilder extends React.Component {
                 title: 'Remove Question',
                 dataIndex: 'operation',
                 render: (text, record) =>
-                    this.state.dataSource.length >= 1 ? (
+                    this.state.specificQuestions.length >= 1 ? (
                         <Popconfirm title="Sure to delete?" onConfirm={() => this.handleDelete(record.key)}>
                             <p className="text-danger">Remove</p>
                         </Popconfirm>
                     ) : null,
             },
         ];
+
+        const { scholarship } = props;
+
+        console.log({scholarship});
+
         this.state = {
-            dataSource: [
-                {
-                    key: 'why-do-you-deserve-this-scholarship',
-                    question: "Why do you deserve this scholarship?",
-                    question_type: 'short_answer',
-                },
-                {
-                    key: 'tell-me-about-yourself',
-                    question: "Tell me about yourself",
-                    question_type: 'long_answer',
-                },
-            ],
+            specificQuestions: scholarship.specific_questions.length ? scholarship.specific_questions : defaultSpecificQuestions,
             count: 2,
         };
     }
 
     handleDelete = (key) => {
-        const dataSource = [...this.state.dataSource];
+        const specificQuestions = [...this.state.specificQuestions];
         this.setState({
-            dataSource: dataSource.filter((item) => item.key !== key),
+            specificQuestions: specificQuestions.filter((item) => item.key !== key),
         });
     };
     handleAdd = () => {
-        const { count, dataSource } = this.state;
+        const { count, specificQuestions } = this.state;
         const newData = {
-            key: 'why-do-you-deserve-this-scholarship',
+            key: 'why-do-you-deserve-this-scholarship-new',
             question: "Why do you deserve this scholarship?",
             question_type: 'short_answer',
         };
         this.setState({
-            dataSource: [...dataSource, newData],
+            specificQuestions: [...specificQuestions, newData],
             count: count + 1,
         });
     };
     handleSave = (row) => {
-        const newData = [...this.state.dataSource];
-        const index = newData.findIndex((item) => row.key === item.key);
-        const item = newData[index];
-        newData.splice(index, 1, { ...item, ...row });
-        this.setState({
-            dataSource: newData,
+
+        const newSpecificQuestions = [...this.state.specificQuestions];
+        const index = newSpecificQuestions.findIndex((item) => row.question === item.question);
+        const item = newSpecificQuestions[index];
+
+
+        newSpecificQuestions.splice(index, 1, { ...item, ...row });
+
+        newSpecificQuestions.forEach((specificQuestion, index, theArray) => {
+            console.log("theArray[index]", theArray[index]);
+            theArray[index].key = slugify(theArray[index].question);
+            console.log(theArray[index], theArray[index]);
         });
+
+        this.setState({
+            specificQuestions: newSpecificQuestions,
+        });
+
+        const { onUpdate } = this.props;
+
+        /*
+            ScholarshipAddEdit.updateForm() expects data in the form event.target.value and event.target.name.
+         */
+        const syntheticEvent = {
+            target: {
+                value: newSpecificQuestions,
+                name: "specific_questions"
+            }
+        };
+
+        onUpdate(syntheticEvent);
     };
 
     render() {
-        const { dataSource } = this.state;
+        const { specificQuestions } = this.state;
         const components = {
             body: {
                 row: EditableRow,
@@ -183,7 +217,7 @@ export default class ScholarshipQuestionBuilder extends React.Component {
                     components={components}
                     rowClassName={() => 'editable-row'}
                     bordered
-                    dataSource={dataSource}
+                    dataSource={specificQuestions}
                     columns={columns}
                 />
                 <Button
@@ -199,6 +233,11 @@ export default class ScholarshipQuestionBuilder extends React.Component {
         );
     }
 }
+
+ScholarshipQuestionBuilder.propTypes = {
+    scholarship: ScholarshipPropType.isRequired,
+    onUpdate: PropTypes.func,
+};
 
 const { Option } = Select;
 const children = [];
