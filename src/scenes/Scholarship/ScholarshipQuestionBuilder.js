@@ -87,26 +87,22 @@ export default class ScholarshipQuestionBuilder extends React.Component {
         super(props);
         this.columns = [
             {
-                title: 'name',
-                dataIndex: 'name',
-                width: '30%',
+                title: 'Question',
+                dataIndex: 'question',
                 editable: true,
             },
             {
-                title: 'age',
-                dataIndex: 'age',
+                title: 'Question Type',
+                dataIndex: 'question_type',
+                editable: true,
             },
             {
-                title: 'address',
-                dataIndex: 'address',
-            },
-            {
-                title: 'operation',
+                title: 'Remove Question',
                 dataIndex: 'operation',
                 render: (text, record) =>
                     this.state.dataSource.length >= 1 ? (
                         <Popconfirm title="Sure to delete?" onConfirm={() => this.handleDelete(record.key)}>
-                            <a>Delete</a>
+                            <p className="text-danger">Remove</p>
                         </Popconfirm>
                     ) : null,
             },
@@ -114,16 +110,14 @@ export default class ScholarshipQuestionBuilder extends React.Component {
         this.state = {
             dataSource: [
                 {
-                    key: '0',
-                    name: 'Edward King 0',
-                    age: '32',
-                    address: 'London, Park Lane no. 0',
+                    key: 'why-do-you-deserve-this-scholarship',
+                    question: "Why do you deserve this scholarship?",
+                    question_type: 'short_answer',
                 },
                 {
-                    key: '1',
-                    name: 'Edward King 1',
-                    age: '32',
-                    address: 'London, Park Lane no. 1',
+                    key: 'tell-me-about-yourself',
+                    question: "Tell me about yourself",
+                    question_type: 'long_answer',
                 },
             ],
             count: 2,
@@ -139,10 +133,9 @@ export default class ScholarshipQuestionBuilder extends React.Component {
     handleAdd = () => {
         const { count, dataSource } = this.state;
         const newData = {
-            key: count,
-            name: `Edward King ${count}`,
-            age: 32,
-            address: `London, Park Lane no. ${count}`,
+            key: 'why-do-you-deserve-this-scholarship',
+            question: "Why do you deserve this scholarship?",
+            question_type: 'short_answer',
         };
         this.setState({
             dataSource: [...dataSource, newData],
@@ -185,15 +178,6 @@ export default class ScholarshipQuestionBuilder extends React.Component {
         });
         return (
             <div>
-                <Button
-                    onClick={this.handleAdd}
-                    type="primary"
-                    style={{
-                        marginBottom: 16,
-                    }}
-                >
-                    Add a row
-                </Button>
                 <Table
                     components={components}
                     rowClassName={() => 'editable-row'}
@@ -201,6 +185,15 @@ export default class ScholarshipQuestionBuilder extends React.Component {
                     dataSource={dataSource}
                     columns={columns}
                 />
+                <Button
+                    onClick={this.handleAdd}
+                    type="primary"
+                    style={{
+                        marginBottom: 16,
+                    }}
+                >
+                    Add a question
+                </Button>
             </div>
         );
     }
