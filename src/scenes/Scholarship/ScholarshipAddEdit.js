@@ -12,8 +12,9 @@ import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Link} from "react-router-dom";
 import './ScholarshipAddEdit.scss';
-import {Tag} from "antd";
+import {Steps, Tag} from "antd";
 import ScholarshipQuestionBuilder, {ScholarshipUserProfileQuestionBuilder} from "./ScholarshipQuestionBuilder";
+const { Step } = Steps;
 
 const scholarshipFormConfigsPage1 = [
     {
@@ -121,8 +122,21 @@ const scholarshipFormConfigsPage1 = [
         type: 'location',
     },
 ];
-
 const NUMBER_OF_PAGES = 3;
+const scholarshipEditPages = [
+    {
+        title: 'Basic Info',
+        content: 'First-content',
+    },
+    {
+        title: 'More Details',
+        content: 'Second-content',
+    },
+    {
+        title: 'Scholarship Specific Questions',
+        content: 'Last-content',
+    },
+];
 
 class ScholarshipAddEdit extends React.Component{
 
@@ -324,6 +338,15 @@ class ScholarshipAddEdit extends React.Component{
             isLoadingScholarship, pageNumber, locationData } = this.state;
         const { userProfile } = this.props;
 
+        const { is_atila_direct_application } = scholarship;
+
+        const scholarshipSteps = (<Steps current={pageNumber-1} progressDot>
+            {scholarshipEditPages.slice(0, is_atila_direct_application ? scholarshipEditPages.length : 2)
+                .map(item => (
+                <Step key={item.title} title={item.title} />
+            ))}
+        </Steps>);
+
         const title = isAddScholarshipMode ? 'Add Scholarship' : 'Edit Scholarship';
         return (
             <div className="ScholarshipAddEdit">
@@ -335,6 +358,8 @@ class ScholarshipAddEdit extends React.Component{
                     {isLoadingScholarship && <Loading  title="Loading Scholarships..."/>}
                     <div className="card shadow p-3">
                         <h1>{title}: {scholarship.name}</h1>
+                        <hr/>
+                        {scholarshipSteps}
                         {!userProfile &&
                         <h4>
                             <span role="img" aria-label="warning emoji">
@@ -409,6 +434,11 @@ class ScholarshipAddEdit extends React.Component{
                             <button className="btn btn-outline-primary float-left col-md-6"
                                     onClick={() => this.changePage(pageNumber-1)}>Prev</button>}
                         </div>
+                        <hr/>
+
+                        {scholarshipSteps}
+
+                        <hr/>
 
                         <button type="submit"
                                 className="btn btn-primary col-12 mt-2"
