@@ -161,9 +161,7 @@ export default class ScholarshipQuestionBuilder extends React.Component {
         newQuestions.splice(index, 1, { ...item, ...row });
 
         newQuestions.forEach((specificQuestion, index, theArray) => {
-            console.log("theArray[index]", theArray[index]);
             theArray[index].key = slugify(theArray[index].question);
-            console.log(theArray[index], theArray[index]);
         });
         this.updateParent(newQuestions);
     };
@@ -260,7 +258,6 @@ export class ScholarshipUserProfileQuestionBuilder extends React.Component {
     }
 
     handleChange = (value) => {
-        console.log(`selected ${value}`);
 
         const { onUpdate } = this.props;
         const newUserProfileQuestions = value.map(question => (

@@ -62,6 +62,11 @@ const scholarshipFormConfigsPage1 = [
         type: 'number',
     },
     {
+        keyName: 'number_available_scholarships',
+        placeholder: 'Number of Available Scholarships',
+        type: 'number',
+    },
+    {
         keyName: 'deadline',
         type: 'datetime-local',
         html: () =>(<label htmlFor="deadline">
@@ -238,7 +243,6 @@ class ScholarshipAddEdit extends React.Component{
     };
 
     updateForm = (event) => {
-        console.log({event});
         let value = event.target.value;
 
         if (event.target.type==='checkbox'){
@@ -273,8 +277,6 @@ class ScholarshipAddEdit extends React.Component{
             }
             this.setState({scholarship});
         }
-
-        console.log(event.target.name + " " + event.target.value)
 
     };
 
@@ -340,7 +342,7 @@ class ScholarshipAddEdit extends React.Component{
 
         const { is_atila_direct_application } = scholarship;
 
-        const scholarshipSteps = (<Steps current={pageNumber-1} progressDot>
+        const scholarshipSteps = (<Steps current={pageNumber-1} progressDot  onChange={(current) => this.changePage(current+1)}>
             {scholarshipEditPages.slice(0, is_atila_direct_application ? scholarshipEditPages.length : 2)
                 .map(item => (
                 <Step key={item.title} title={item.title} />
