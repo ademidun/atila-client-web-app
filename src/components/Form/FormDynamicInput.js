@@ -147,7 +147,7 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
         case 'html_editor':
 
             inputForm = (
-                <div>
+                <div className="mb-3">
                     {label && <label htmlFor={keyName} className="float-left">
                         {label}
                     </label>}
@@ -171,7 +171,7 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
     }
 
     inputForm = (
-        <div className={`w-100${className ? ` ${className}` : ''} + ${inputConfig.error ? ' input-error' : ''}`}>
+        <div className={`FormDynamicInput w-100 ${className ? ` ${className}` : ''} + ${inputConfig.error ? ' input-error' : ''}`}>
             {html && html(model)}
             {inputForm}
         </div>
