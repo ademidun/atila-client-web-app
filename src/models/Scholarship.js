@@ -93,3 +93,10 @@ export const ScholarshipPropType = PropTypes.shape({
     international_students_eligible: PropTypes.boolean,
     form_url: PropTypes.string,
 });
+
+
+export const SCHOLARSHIP_QUESTIONS_TYPES_TO_FORM_TYPES = {
+    "short_answer": "text",
+    "long_answer": "html_editor",
+    // "long_answer": "html_editor", TODO how to differentiate questions that require: 'text', 'textarea', 'html'
+};

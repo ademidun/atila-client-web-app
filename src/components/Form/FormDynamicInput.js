@@ -22,7 +22,7 @@ const editorChange = ( event, editor, name, updateForm ) => {
 function FormDynamicInput({model, onUpdateForm, inputConfig}) {
 
     const { type, keyName, html, suggestions, className,
-        options, valueDisplay, isHidden, hideLabel } = inputConfig;
+        options, valueDisplay, isHidden, hideLabel, label } = inputConfig;
     let {placeholder} = inputConfig;
     let inputForm = null;
 
@@ -78,7 +78,7 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
                     {!hideLabel &&
                     <label htmlFor={keyName} className="float-left">
                         {placeholder}
-                    </label>}
+                    </label> }
                     <select
                         className="form-control"
                         name={keyName}
@@ -147,13 +147,16 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
         case 'html_editor':
 
             inputForm = (
-                <React.Fragment>
+                <div>
+                    {label && <label htmlFor={keyName} className="float-left">
+                        {label}
+                    </label>}
                     <CKEditor
                         editor={InlineEditor}
                         data={modelValue}
                         onChange={ (event, editor) => editorChange(event, editor, keyName, onUpdateForm) }
                     />
-                </React.Fragment>
+                </div>
             );
             break;
         default:

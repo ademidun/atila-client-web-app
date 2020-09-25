@@ -89,7 +89,7 @@ const EditableCell = ({
 const defaultSpecificQuestion = {
     key: 'why-do-you-deserve-this-scholarship',
     question: "Why do you deserve this scholarship?",
-    question_type: 'short_answer',
+    type: 'long_answer',
 };
 const userProfileQuestionOptions = [
     "first_name",
@@ -118,7 +118,7 @@ export default class ScholarshipQuestionBuilder extends React.Component {
             },
             {
                 title: 'Question Type',
-                dataIndex: 'question_type',
+                dataIndex: 'type',
                 editable: true,
             },
             {

@@ -23,6 +23,16 @@ class ApplicationsAPI {
 
         return apiCompletionPromise;
     };
+
+    static get = (applicationID) => {
+
+        const apiCompletionPromise = request({
+            method: 'get',
+            url: `${ApplicationsAPI.applicationsApiUrl}/${applicationID}/`,
+        });
+
+        return apiCompletionPromise;
+    };
 }
 
 export default ApplicationsAPI;
