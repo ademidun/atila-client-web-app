@@ -7,6 +7,7 @@ import {userProfileFormConfig} from "../../models/UserProfile";
 import {scholarshipUserProfileSharedFormConfigs} from "../../models/Utils";
 import FormDynamic from "../../components/Form/FormDynamic";
 import {Link} from "react-router-dom";
+import {Button} from "antd";
 
 class ApplicationDetail extends  React.Component{
 
@@ -55,15 +56,40 @@ class ApplicationDetail extends  React.Component{
         this.setState({scholarshipQuestionsFormConfig, scholarshipUserProfileQuestionsFormConfig});
     };
 
-    updateForm = (event) => {
+    updateForm = (event, applicationResponseType) => {
+        if (event.stopPropagation) {
+            event.stopPropagation();
+        }
+
+        let { application } = this.state;
+
+        application[applicationResponseType][event.target.name] = event.target.value;
+
+        this.setState(prevState => ({
+            application: {
+                ...prevState.application,           // copy all other key-value pairs of food object
+                [applicationResponseType]: {                     // specific object of food object
+                    ...prevState.application[applicationResponseType],   // copy all pizza key-value pairs
+                    [event.target.name]: event.target.value          // update value of specific key
+                }
+            }
+        }))
 
     };
 
     render() {
 
-        const { match : { params : { applicationID }}, userProfile } = this.props;
+        const { match : { params : { applicationID }} } = this.props;
         const { application, isLoadingApplication, scholarship,
             scholarshipUserProfileQuestionsFormConfig, scholarshipQuestionsFormConfig } = this.state;
+
+        const userProfileResponses = {};
+        if (application.user_profile_responses) {
+            application.user_profile_responses.forEach(response => {
+                userProfileResponses[response.key] = response.value;
+            });
+        }
+
 
         return (
             <div className="container mt-5">
@@ -78,18 +104,22 @@ class ApplicationDetail extends  React.Component{
                         {scholarshipUserProfileQuestionsFormConfig && scholarshipQuestionsFormConfig &&
                         <div>
                             <h2>Profile Questions</h2>
-                            <FormDynamic onUpdateForm={this.updateForm}
-                                         model={userProfile}
+                            <FormDynamic onUpdateForm={event => this.updateForm(event, 'user_profile_responses')}
+                                         model={userProfileResponses}
                                          inputConfigs=
                                              {scholarshipUserProfileQuestionsFormConfig}
                             />
                             <h2>Scholarship Questions</h2>
-                            <FormDynamic onUpdateForm={this.updateForm}
+                            <FormDynamic onUpdateForm={event => this.updateForm(event, 'scholarship_responses')}
                                          model={application.scholarship_responses}
                                          inputConfigs=
                                              {scholarshipQuestionsFormConfig}
                             />
+                            <Button onClick={this.saveApplication}>
+                                    Save Now
+                            </Button>
                         </div>
+
 
                         }
                     </div>

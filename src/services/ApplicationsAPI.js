@@ -33,6 +33,17 @@ class ApplicationsAPI {
 
         return apiCompletionPromise;
     };
+
+    static patch = (data, id) => {
+
+        const apiCompletionPromise = request({
+            method: 'patch',
+            data,
+            url: `${this.applicationsApiUrl}/${id}/`,
+        });
+
+        return apiCompletionPromise;
+    };
 }
 
 export default ApplicationsAPI;
