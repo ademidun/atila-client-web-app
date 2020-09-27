@@ -23,26 +23,18 @@ class RelatedItems extends React.Component {
         const { itemType, id } = this.props;
         this.setState({ isLoadingRelatedItems: true });
         let relatedItemsPromise  = Promise.resolve();
-        if (itemType === 'scholarship') {
-            relatedItemsPromise = ScholarshipsAPI
-                .relatedItems(`${itemType}-${id}`);
-            relatedItemsPromise
-                .then(res => {
-                    let relatedItems = [];
-                    if (res.data.results) {
-                        relatedItems = res.data.results.slice(0,3);
-                    }
-                    this.setState({ relatedItems });
-                });
-        } else {
-            relatedItemsPromise = SearchApi.relatedItems(`?type=${itemType}&id=${id}`);
-            relatedItemsPromise
-                .then(res => {
 
-                    const relatedItems = (res.data.items.map(item => genericItemTransform(item)));
-                    this.setState({ relatedItems });
-                });
-        }
+        relatedItemsPromise = ScholarshipsAPI
+            .relatedItems(`${itemType}-${id}`);
+        relatedItemsPromise
+            .then(res => {
+                let relatedItems = [];
+                if (res.data.results) {
+                    relatedItems = res.data.results.slice(0,3);
+                }
+                this.setState({ relatedItems });
+            });
+
         relatedItemsPromise
             .catch(err => {
                 console.log({ err});
