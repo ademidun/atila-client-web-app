@@ -7,7 +7,7 @@ import {InputConfigPropType} from "../../models/Utils";
 import LocationSearchInput from "../LocationSearchInput/LocationSearchInput";
 import CKEditor from "@ckeditor/ckeditor5-react";
 import InlineEditor from "@ckeditor/ckeditor5-build-inline";
-
+import "./FormDynamicInput.scss";
 
 const editorChange = ( event, editor, name, updateForm ) => {
     const newEvent = {
@@ -147,28 +147,35 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
         case 'html_editor':
 
             inputForm = (
-                <React.Fragment>
+                <div className="mb-3">
                     <CKEditor
                         editor={InlineEditor}
                         data={modelValue}
                         onChange={ (event, editor) => editorChange(event, editor, keyName, onUpdateForm) }
                     />
-                </React.Fragment>
+                </div>
             );
             break;
         default:
             inputForm = (
-                <input placeholder={placeholder}
-                       className="col-12 mb-3 form-control"
-                       name={keyName}
-                       value={modelValue}
-                       onChange={onUpdateForm}
-                       type={type}
-                />);
+                <div className="floating mb-3">
+                    <input placeholder={placeholder}
+                           className="col-12 form-control floating__input"
+                           name={keyName}
+                           value={modelValue}
+                           onChange={onUpdateForm}
+                           type={type}
+                    />
+                    <label htmlFor="input__username" className="floating__label" data-content={placeholder}>
+                            <span className="hidden--visually">
+                              {placeholder}
+                            </span>
+                    </label>
+                </div>);
     }
 
     inputForm = (
-        <div className={`w-100${className ? ` ${className}` : ''} + ${inputConfig.error ? ' input-error' : ''}`}>
+        <div className={`w-100 ${className ? ` ${className}` : ''} ${inputConfig.error ? ' input-error' : ''}`}>
             {html && html(model)}
             {inputForm}
         </div>
