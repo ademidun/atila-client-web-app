@@ -17,7 +17,7 @@ const userProfileSharedFormConfigs = scholarshipUserProfileSharedFormConfigs
     .map(config => {
         config.className = null;
         return config;
-    }).filter(config => config.keyName !== 'criteria_info');
+    });
 
 class UserProfileEdit extends React.Component {
 

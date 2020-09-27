@@ -150,11 +150,13 @@ class LandingPage extends React.Component {
                     <EbookPreview/>
                     <hr />
                     <SubscribeMailingList />
+                    {!userProfile &&
                     <div className="p-5">
                         <Link to="/register" className="btn btn-primary center-block font-size-xl">
                             Register for Free
                         </Link>
                     </div>
+                    }
                 </div>
         );
     }

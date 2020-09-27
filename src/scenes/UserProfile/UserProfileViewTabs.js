@@ -8,7 +8,6 @@ import {genericItemTransform} from '../../services/utils';
 import Loading from '../../components/Loading';
 import UserProfileEdit from './UserProfileEdit';
 import UserProfileViewSavedScholarships from './UserProfileSavedScholarships';
-import UserProfileSettings from "./UserProfileSettings";
 import {RESERVED_USERNAMES} from "../../models/Constants";
 
 class UserProfileViewTabs extends React.Component {
@@ -73,12 +72,12 @@ class UserProfileViewTabs extends React.Component {
                             <UserProfileEdit />
                         </Tab>
                     }
-                    {isProfileEditable &&
+                    {/*{isProfileEditable &&*/}
 
-                    <Tab eventKey='settings' title='Settings'>
-                        <UserProfileSettings />
-                    </Tab>
-                    }
+                    {/*<Tab eventKey='settings' title='Settings'>*/}
+                    {/*    <UserProfileSettings />*/}
+                    {/*</Tab>*/}
+                    {/*}*/}
                     <Tab eventKey='blogs' title='Blogs'>
                         <TabItemContentList
                             contentList={blogs}
