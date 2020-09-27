@@ -59,7 +59,7 @@ const scholarshipFormConfigsPage1 = [
     },
     {
         keyName: 'funding_amount',
-        placeholder: 'Funding Amount 💵 🤑',
+        placeholder: 'Funding Amount 💵',
         type: 'number',
     },
     {
