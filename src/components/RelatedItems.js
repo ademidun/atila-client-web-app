@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import ContentCard from "./ContentCard";
-import {genericItemTransform} from "../services/utils";
-import SearchApi from "../services/SearchAPI";
 import Loading from "./Loading";
 import ScholarshipsAPI from "../services/ScholarshipsAPI";
 
