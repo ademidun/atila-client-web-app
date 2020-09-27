@@ -35,6 +35,13 @@ const scholarshipFormConfigsPage1 = [
         </label>),
     },
     {
+        keyName: 'is_atila_direct_application',
+        placeholder: 'Allow applicants to directly apply for scholarship through Atila? ',
+        html: () =>(<Tag color="green">new</Tag>),
+        type: 'checkbox',
+        className: 'font-weight-bold',
+    },
+    {
         keyName: 'criteria_info',
         type: 'html_editor',
         placeholder: 'Additional Information',
@@ -44,12 +51,6 @@ const scholarshipFormConfigsPage1 = [
             👇🏿
             </span>
         </label>),
-    },
-    {
-        keyName: 'is_atila_direct_application',
-        placeholder: 'Allow applicants to directly apply for scholarship through Atila? ',
-        html: () =>(<Tag color="green">new</Tag>),
-        type: 'checkbox',
     },
     {
         keyName: 'scholarship_url',
