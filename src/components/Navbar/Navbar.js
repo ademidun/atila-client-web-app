@@ -103,6 +103,15 @@ class Navbar extends React.Component {
                     </Link>
                 </Menu.Item>
                 }
+                {!userProfile && !isLoadingLoggedInUserProfile &&
+                <Menu.Item key="register" className="disable-ant-menu-item-active">
+                    <Link to={`/register`}
+                          style={{color:'white', "margin-bottom": "5px", "max-width": "100px"}}
+                          className="btn btn-primary">
+                        Sign Up
+                    </Link>
+                </Menu.Item>
+                }
                 {
                     userProfile &&
                     <SubMenu
