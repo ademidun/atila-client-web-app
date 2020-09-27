@@ -12,7 +12,6 @@ import {
     SCHOOLS_LIST,
     SPORTS
 } from "./ConstantsForm";
-import React from "react";
 
 export const InputConfigPropType = PropTypes.shape({
     type: PropTypes.string,
@@ -119,18 +118,7 @@ export const scholarshipUserProfileSharedFormConfigs = [
         type: 'autocomplete',
         suggestions: MAJORS_LIST,
         className: 'col-md-6',
-    },
-    {
-        keyName: 'criteria_info',
-        type: 'html_editor',
-        placeholder: 'Additional Information',
-        html: () => (<label htmlFor="description">
-            Everything else you want people to know about the scholarship, put it here
-            <span role="img" aria-label="pointing down emoji">
-            👇🏿
-            </span>
-        </label>),
-    },
+    }
 ];
 
 // TODO get this list from a propert third party source

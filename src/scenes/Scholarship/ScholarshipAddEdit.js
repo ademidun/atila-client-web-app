@@ -29,7 +29,17 @@ const scholarshipFormConfigsPage1 = [
         html: () => (<label htmlFor="description">
             Short Description: Who is eligible for this scholarship?
             What should they do to apply?
-            You will be able to give more details later.
+        </label>),
+    },
+    {
+        keyName: 'criteria_info',
+        type: 'html_editor',
+        placeholder: 'Additional Information',
+        html: () => (<label htmlFor="description">
+            Everything else you want people to know about the scholarship, put it here
+            <span role="img" aria-label="pointing down emoji">
+            👇🏿
+            </span>
         </label>),
     },
     {
