@@ -147,13 +147,13 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
         case 'html_editor':
 
             inputForm = (
-                <React.Fragment>
+                <div className="mb-3">
                     <CKEditor
                         editor={InlineEditor}
                         data={modelValue}
                         onChange={ (event, editor) => editorChange(event, editor, keyName, onUpdateForm) }
                     />
-                </React.Fragment>
+                </div>
             );
             break;
         default:
@@ -168,7 +168,7 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
     }
 
     inputForm = (
-        <div className={`w-100${className ? ` ${className}` : ''} + ${inputConfig.error ? ' input-error' : ''}`}>
+        <div className={`w-100 ${className ? ` ${className}` : ''} + ${inputConfig.error ? ' input-error' : ''}`}>
             {html && html(model)}
             {inputForm}
         </div>
