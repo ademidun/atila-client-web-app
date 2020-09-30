@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import {Table, Input, Button, Popconfirm, Form, Select} from 'antd';
 import {ScholarshipPropType} from "../../models/Scholarship";
 import {slugify} from "../../services/utils";
+import {DynamicFieldSet} from "../../components/DynamicForm";
 
 const EditableContext = React.createContext();
 
@@ -133,23 +134,6 @@ export default class ScholarshipQuestionBuilder extends React.Component {
         ];
     }
 
-    handleDelete = (key) => {
-
-        const { scholarship } = this.props;
-        let specificQuestions = scholarship.specific_questions;
-        specificQuestions = [...specificQuestions];
-
-        const newQuestions = specificQuestions.filter((item) => item.key !== key);
-        this.updateParent(newQuestions);
-    };
-    handleAdd = () => {
-        const { scholarship } = this.props;
-
-        let specificQuestions = scholarship.specific_questions;
-        const newData = defaultSpecificQuestion;
-        const newQuestions = [...specificQuestions, newData];
-        this.updateParent(newQuestions);
-    };
     handleSave = (row) => {
         const { scholarship } = this.props;
         let specificQuestions = scholarship.specific_questions;
@@ -187,46 +171,9 @@ export default class ScholarshipQuestionBuilder extends React.Component {
 
         let specificQuestions = scholarship.specific_questions;
 
-        const components = {
-            body: {
-                row: EditableRow,
-                cell: EditableCell,
-            },
-        };
-        const columns = this.columns.map((col) => {
-            if (!col.editable) {
-                return col;
-            }
-
-            return {
-                ...col,
-                onCell: (record) => ({
-                    record,
-                    editable: col.editable,
-                    dataIndex: col.dataIndex,
-                    title: col.title,
-                    handleSave: this.handleSave,
-                }),
-            };
-        });
         return (
             <div>
-                <Table
-                    components={components}
-                    rowClassName={() => 'editable-row'}
-                    bordered
-                    dataSource={specificQuestions}
-                    columns={columns}
-                />
-                <Button
-                    onClick={this.handleAdd}
-                    type="primary"
-                    style={{
-                        marginBottom: 16,
-                    }}
-                >
-                    Add a question
-                </Button>
+                <DynamicFieldSet />
             </div>
         );
     }
