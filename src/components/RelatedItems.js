@@ -59,9 +59,14 @@ class RelatedItems extends React.Component {
         return (
             <div className={`${className}`}>
                 <h3 className="text-center">Related</h3>
-                {relatedItems.map(item => <ContentCard key={item.slug}
-                                                       content={item}
-                                                       className="mb-3" />)}
+                {relatedItems.map(item => {
+                    if (["blog", "essay"].includes(item.type)) {
+                        item.slug = `/${item.type}/${item.slug}`;
+                    }
+                    return (<ContentCard key={item.slug}
+                                         content={item}
+                                         className="mb-3" />)
+                })}
             </div>
         );
     }
