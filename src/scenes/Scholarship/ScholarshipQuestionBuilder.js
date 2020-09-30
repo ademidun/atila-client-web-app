@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import {Table, Input, Button, Popconfirm, Form, Select} from 'antd';
 import {ScholarshipPropType} from "../../models/Scholarship";
 import {slugify} from "../../services/utils";
-import {DynamicFieldSet} from "../../components/DynamicForm";
+import {DynamicForm} from "../../components/DynamicForm";
 
 const EditableContext = React.createContext();
 
@@ -173,7 +173,7 @@ export default class ScholarshipQuestionBuilder extends React.Component {
 
         return (
             <div>
-                <DynamicFieldSet />
+                <DynamicForm />
             </div>
         );
     }
