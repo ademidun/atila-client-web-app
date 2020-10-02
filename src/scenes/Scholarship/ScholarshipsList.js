@@ -259,6 +259,23 @@ class ScholarshipsList extends React.Component {
         })
     };
 
+    getFilterHeader = (filterItems, filterValue, username) => {
+        if (filterItems.length === 0) {
+
+            return (<h3>
+                    No {filterValue} found for your profile <br/>
+                <Link to={`/profile/${username}/edit`}>Edit profile</Link> to filter by {filterValue}.
+            </h3>)
+        } else {
+            return (<h3>
+                (Filtering by {filterValue}: {' '}
+                {/*change next line*/}
+                <strong>
+                    {myJoin(filterItems, ', ')})
+                </strong>
+            </h3>)
+        }
+    };
 
     render () {
         const {
@@ -372,13 +389,8 @@ class ScholarshipsList extends React.Component {
                             <br />
                         </h1>
                         {searchPayload.filter_by_user &&
-                        <h3>
-                            (Filtering by {prettifyKeys(searchPayload.filter_by_user)}: {' '}
-                            {/*change next line*/}
-                            <strong>
-                            {myJoin(transformFilterDisplay(searchPayload.filter_by_user, userProfile), ', ')})
-                            </strong>
-                        </h3>
+                        this.getFilterHeader(transformFilterDisplay(searchPayload.filter_by_user, userProfile),
+                            prettifyKeys(searchPayload.filter_by_user), userProfile.username)
                         }
                         <h2 className="text-muted">
                             {totalFunding && `${totalFunding} in funding`}
