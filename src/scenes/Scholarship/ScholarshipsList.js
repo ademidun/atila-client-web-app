@@ -261,13 +261,12 @@ class ScholarshipsList extends React.Component {
 
     getFilterHeader = (filterItems, filterValue, username) => {
         if (filterItems.length === 0) {
-            console.log('empty ', filterItems, filterValue)
 
             return (<h3>
+                    No {filterValue} found for your profile <br/>
                 <Link to={`/profile/${username}/edit`}>Edit profile</Link> to filter by {filterValue}.
             </h3>)
         } else {
-            console.log('not empty ', filterItems, filterValue)
             return (<h3>
                 (Filtering by {filterValue}: {' '}
                 {/*change next line*/}
@@ -276,7 +275,7 @@ class ScholarshipsList extends React.Component {
                 </strong>
             </h3>)
         }
-    }
+    };
 
     render () {
         const {
