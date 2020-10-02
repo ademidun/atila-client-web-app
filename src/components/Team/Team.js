@@ -20,8 +20,10 @@ const teamMembers = [
     description_1:
       "Tomiwa is a dual degree software engineering and business graduate from Ivey Business School," +
         " Western University.",
-    link_type: "Website",
-    link_url: "http://tomiwa.ca",
+    link_type: "LinkedIn",
+    link_url: "https://www.linkedin.com/in/tademidun/",
+    link2_type: "Website",
+    website_url: "https://tomiwa.ca/",
   },
   {
     first_name: "Aaron",
@@ -33,6 +35,8 @@ const teamMembers = [
       "Aaron is a Media Information and Techno-culture (MIT) student at Western university.",
     link_type: "LinkedIn",
     link_url: "https://www.linkedin.com/in/aaron-doerfler-3a2144197/",
+    link2_type: "Website",
+    website_url: "https://aarondoerfler.github.io/",
   },
   {
     first_name: "Hadi",
@@ -44,6 +48,8 @@ const teamMembers = [
         "Hadi is currently studying Mathematics at the University of Waterloo.",
     link_type: "LinkedIn",
     link_url: "https://www.linkedin.com/in/hadi-al-hakeem-24182819a/",
+    link2_type: "Website",
+    website_url: "https://hadihakeem.com/",
   },
   {
     first_name: "Yasith",
@@ -52,6 +58,10 @@ const teamMembers = [
     username: "Yasith",
     img_url: yasithImage,
     description_1: "Yasith is currently studying Mechatronics Engineering at the University of Waterloo.",
+    link_type: "LinkedIn",
+    link_url: "https://www.linkedin.com/in/yasith-ellewela-573b781b5/",
+    link2_type: "Website",
+    website_url: "https://yasithellewela.github.io/",
   },
 ];
 
@@ -85,6 +95,24 @@ function TeamMemberCard({ teamMember, showLinkedin = true }) {
             </li>
           </React.Fragment>
         )}
+
+        {showLinkedin && teamMember.website_url && (
+            <React.Fragment>
+              |{" "}
+              <li className='list-inline-item'>
+                <a
+                    href={teamMember.website_url}
+                    className='social-link'
+                    target='_blank'
+                    rel='noopener noreferrer'
+                >
+                  {teamMember.link2_type}
+                </a>
+              </li>
+
+            </React.Fragment>
+        )}
+
         {showLinkedin && teamMember.link_url && (
             <React.Fragment>
               |{" "}
@@ -101,6 +129,7 @@ function TeamMemberCard({ teamMember, showLinkedin = true }) {
 
             </React.Fragment>
         )}
+
       </ul>
       <p>{teamMember.description_1}</p>
     </div>
