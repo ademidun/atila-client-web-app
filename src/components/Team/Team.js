@@ -3,16 +3,11 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
 import tomiwaImage from "./assets/tomiwa.jpg";
-import jacobImage from "./assets/jacob.jpg";
-import aaronImg from "./assets/aaronImg.jpg";
-import elaineImg from "./assets/elaineImg.jpeg";
-import hadiImg from "./assets/hadiImg.jpg";
-import isaacImg from "./assets/isaacImg.jpeg";
-import melissaImg from "./assets/melissaImg.jpeg";
-import devImg from "./assets/devImg.jpeg";
+import aaronImage from "./assets/aaron.jpg";
+import hadiImage from "./assets/hadi.jpg";
 import { Col, Row } from "antd";
 import HelmetSeo from "../HelmetSeo";
-const emilyImg = 'https://i.imgur.com/VGAaH5L.jpg';
+const yasithImage = 'https://i.imgur.com/XDSsPD7.jpg';
 const graceImg = 'https://i.imgur.com/n2OqROn.jpg';
 
 const teamMembers = [
@@ -23,108 +18,40 @@ const teamMembers = [
     position: "Founder",
     img_url: tomiwaImage,
     description_1:
-      "Tomiwa is a dual degree software engineering and business student at Ivey Business School," +
+      "Tomiwa is a dual degree software engineering and business graduate from Ivey Business School," +
         " Western University.",
-    description_2: "He enjoys playing soccer and is a big Arsenal F.C. fan.",
     link_type: "Website",
     link_url: "http://tomiwa.ca",
-  },
-  {
-    first_name: "Melissa",
-    last_name: "Wen",
-    position: "Marketing",
-    username: "Melissa",
-    img_url: melissaImg,
-    description_1: "Melissa is a BMOS student at Western university.",
-    link_type: "LinkedIn",
-    link_url: "https://www.linkedin.com/in/melissa-wen-63aa8b198/",
-  },
-  {
-    first_name: "Emily",
-    last_name: "Chen",
-    position: "Designer",
-    username: null,
-    img_url: emilyImg,
-    description_1: "Emily Chen is a medical student at the University of Toronto.",
-    link_type: "LinkedIn",
-    link_url: "https://www.linkedin.com/in/emily-chen-66578672/",
-  },
-  {
-    first_name: "Dev",
-    last_name: "Pancea",
-    position: "Software Developer",
-    username: "Dev12345",
-    img_url: devImg,
-    description_1:
-      "Dev is an Honours Mathematics student at the University of Waterloo.",
-    link_type: "LinkedIn",
-    link_url: "https://www.linkedin.com/in/dev-pancea-018b7116a/",
   },
   {
     first_name: "Aaron",
     last_name: "Doerfler",
     position: "Marketing",
     username: "aarondoerfler",
-    img_url: aaronImg,
+    img_url: aaronImage,
     description_1:
       "Aaron is a Media Information and Techno-culture (MIT) student at Western university.",
     link_type: "LinkedIn",
     link_url: "https://www.linkedin.com/in/aaron-doerfler-3a2144197/",
   },
   {
-    first_name: "Elaine",
-    last_name: "Yin",
-    position: "Marketing",
-    username: "elaineyin",
-    img_url: elaineImg,
-    description_1: "Elaine is currently studying BMOS at Western university.",
-    link_type: "LinkedIn",
-    link_url: "https://www.linkedin.com/in/elaine-yin-018a90198/",
-  },
-  {
-    first_name: "Grace",
-    last_name: "Tse",
-    position: "Marketing",
-    username: "grace",
-    img_url: graceImg,
-    description_1: "Grace is a grade 12 AP student at Markville Secondary School.",
-    link_type: "LinkedIn",
-    link_url: "https://www.linkedin.com/in/grace-tse-a17648174/",
-  },
-  {
-    first_name: "Isaac",
-    last_name: "Tang",
-    position: "Marketing",
-    username: "imisaactang",
-    img_url: isaacImg,
-    description_1: "Isaac is currently studying BMOS at Western university.",
-    link_type: "LinkedIn",
-    link_url: "https://www.linkedin.com/in/isaac-tang-b42a8b198/",
-  },
-  {
     first_name: "Hadi",
     last_name: "Al Hakeem",
-    position: "Software Developer",
+    position: "Software",
     username: "hadi",
-    img_url: hadiImg,
+    img_url: hadiImage,
     description_1:
-      "Hadi is a grade 12 student at Georges Vanier Secondary School.",
+        "Hadi is currently studying Mathematics at the University of Waterloo.",
     link_type: "LinkedIn",
     link_url: "https://www.linkedin.com/in/hadi-al-hakeem-24182819a/",
   },
-
   {
-    first_name: "Jacob",
-    last_name: "Munene",
-    position: "Marketing",
-    username: null,
-    img_url: jacobImage,
-    description_1:
-      "Jacob is currently studying Financial Modeling and Applied Mathematics at Western University.",
-    description_2:
-      "For fun, he enjoys working out and recording himself while doing it.",
-    link_type: "LinkedIn",
-    link_url: "https://www.linkedin.com/in/jacob-munene-4561a4153/",
+    first_name: "Yasith",
+    last_name: "Ellewela",
+    position: "Software",
+    username: "Yasith",
+    img_url: yasithImage,
+    description_1: "Yasith is currently studying Mechatronics Engineering at the University of Waterloo.",
   },
 ];
 
@@ -156,20 +83,23 @@ function TeamMemberCard({ teamMember, showLinkedin = true }) {
             <li className='list-inline-item'>
               <Link to={`/profile/${teamMember.username}`}>Profile</Link>
             </li>
-            |{" "}
           </React.Fragment>
         )}
-        {showLinkedin && (
-          <li className='list-inline-item'>
-            <a
-              href={teamMember.link_url}
-              className='social-link'
-              target='_blank'
-              rel='noopener noreferrer'
-            >
-              LinkedIn
-            </a>
-          </li>
+        {showLinkedin && teamMember.link_url && (
+            <React.Fragment>
+              |{" "}
+              <li className='list-inline-item'>
+                <a
+                    href={teamMember.link_url}
+                    className='social-link'
+                    target='_blank'
+                    rel='noopener noreferrer'
+                >
+                  {teamMember.link_type}
+                </a>
+              </li>
+
+            </React.Fragment>
         )}
       </ul>
       <p>{teamMember.description_1}</p>
@@ -251,7 +181,10 @@ const Team = ({ showArray = null, showLinkedin = true, showSeo = true }) => {
             >
               info@atila.ca
             </a>{" "}
-            with your resume and/or links to cool stuff you've done.
+            with your resume and links to cool stuff you've done.
+            <br/>
+            <br/>
+            Or message us on any of our social media platforms, found at the bottom of this page.
           </Col>
         </Row>
       </div>
