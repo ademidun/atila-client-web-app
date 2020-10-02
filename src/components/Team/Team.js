@@ -8,7 +8,6 @@ import hadiImage from "./assets/hadi.jpg";
 import { Col, Row } from "antd";
 import HelmetSeo from "../HelmetSeo";
 const yasithImage = 'https://i.imgur.com/XDSsPD7.jpg';
-const graceImg = 'https://i.imgur.com/n2OqROn.jpg';
 
 const teamMembers = [
   {
