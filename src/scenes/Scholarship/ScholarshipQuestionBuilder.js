@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from "prop-types";
-import {Input, Button, Popconfirm, Form, Select, Space} from 'antd';
+import {Input, Button, Popconfirm, Select, Space, Col, Row} from 'antd';
 import {ScholarshipPropType} from "../../models/Scholarship";
 import {getRandomString, prettifyKeys, slugify} from "../../services/utils";
 import {MinusCircleOutlined, PlusOutlined} from "@ant-design/icons";
@@ -67,9 +67,6 @@ export default class ScholarshipQuestionBuilder extends React.Component {
     };
 
     updateQuestions = (event, eventType, questionIndex) => {
-        if(event.preventDefault) {
-            event.preventDefault();
-        }
 
         const { scholarship, onUpdate } = this.props;
 
@@ -83,7 +80,9 @@ export default class ScholarshipQuestionBuilder extends React.Component {
         if (eventType === "question") {
             value = event.target.value;
             let questionKey = slugify(value, 50);
-            if (specificQuestions.findIndex((question) => question.key === questionKey) > -1) {
+            let existingQuestionIndex = specificQuestions.findIndex((question) =>
+                question.key === questionKey);
+            if ( existingQuestionIndex > -1 && existingQuestionIndex !== questionIndex) {
                 questionKey = `${questionKey}-${getRandomString(5)}`
             }
             questionToEdit.key = questionKey;
@@ -92,12 +91,9 @@ export default class ScholarshipQuestionBuilder extends React.Component {
 
         specificQuestions[questionIndex] = questionToEdit;
 
-        console.log("Updated Form");
-        console.log({event, eventType, questionIndex});
-
         const syntheticEvent = {
             target: {
-                value: specificQuestions,
+                value: specificQuestions.slice(),
                 name: "specific_questions"
             }
         };
@@ -126,24 +122,37 @@ export default class ScholarshipQuestionBuilder extends React.Component {
         return (
             <div>
                     {specificQuestions.map((specificQuestion, index) => (
-                        <div className="mb-3">
-                            <Input value={specificQuestion.question}
-                                   onChange={(event) =>
-                                       this.updateQuestions(event,'question', index)}/>
-                            <Select placeholder="Choose Type"
-                                    value={specificQuestion.type} onChange={(value) =>
-                                this.updateQuestions(value,'type', index)}>
-                                {questionTypes.map(item => (
-                                    <Select.Option key={item} value={item}>
-                                        {prettifyKeys(item)}
-                                    </Select.Option>
-                                ))}
-                            </Select>
-                            <MinusCircleOutlined
-                                onClick={() => {
-                                    this.removeQuestion(specificQuestion.key);
-                                }}
-                            />
+                        <React.Fragment>
+                            <Row className="mb-3" gutter={[{ xs: 8, sm: 16}, 16]}>
+                                    <Col sm={24} md={16} lg={10}>
+                                        <Input value={specificQuestion.question}
+                                               className="col-12"
+                                               onChange={(event) =>
+                                                   this.updateQuestions(event,'question', index)}/>
+
+                                    </Col>
+                                    <Col xs={24} md={6} lg={12}>
+                                        <Space>
+                                            <Select placeholder="Choose Type"
+                                                    value={specificQuestion.type} onChange={(value) =>
+                                                this.updateQuestions(value,'type', index)}>
+                                                {questionTypes.map(item => (
+                                                    <Select.Option key={item} value={item}>
+                                                        {prettifyKeys(item)}
+                                                    </Select.Option>
+                                                ))}
+                                            </Select>
+                                            <MinusCircleOutlined
+                                                onClick={() => {
+                                                    this.removeQuestion(specificQuestion.key);
+                                                }}
+                                            />
+                                        </Space>
+
+                                    </Col>
+                            </Row>
+                            <hr/>
+                        </React.Fragment>
                     ))}
 
                 <Button
