@@ -1,112 +1,12 @@
-import React, { useContext, useState, useEffect, useRef } from 'react';
+import React from 'react';
 import PropTypes from "prop-types";
-import {Table, Input, Button, Popconfirm, Form, Select} from 'antd';
+import {Input, Button, Popconfirm, Form, Select, Space} from 'antd';
 import {ScholarshipPropType} from "../../models/Scholarship";
 import {slugify} from "../../services/utils";
-import {ScholarshipQuestionBuilderForm} from "../../components/ScholarshipQuestionBuilderForm";
+import {MinusCircleOutlined, PlusOutlined} from "@ant-design/icons";
 
-const EditableContext = React.createContext();
 
-const EditableRow = ({ index, ...props }) => {
-    const [form] = Form.useForm();
-    return (
-        <Form form={form} component={false}>
-            <EditableContext.Provider value={form}>
-                <tr {...props} />
-            </EditableContext.Provider>
-        </Form>
-    );
-};
-
-const EditableCell = ({
-                          title,
-                          editable,
-                          children,
-                          dataIndex,
-                          record,
-                          handleSave,
-                          ...restProps
-                      }) => {
-    const [editing, setEditing] = useState(false);
-    const inputRef = useRef();
-    const form = useContext(EditableContext);
-    useEffect(() => {
-        if (editing) {
-            inputRef.current.focus();
-        }
-    }, [editing]);
-
-    const toggleEdit = () => {
-        setEditing(!editing);
-        form.setFieldsValue({
-            [dataIndex]: record[dataIndex],
-        });
-    };
-
-    const save = async (e) => {
-        try {
-            const values = await form.validateFields();
-            toggleEdit();
-            handleSave({ ...record, ...values });
-        } catch (errInfo) {
-            console.log('Save failed:', errInfo);
-        }
-    };
-
-    let childNode = children;
-
-    if (editable) {
-        childNode = editing ? (
-            <Form.Item
-                style={{
-                    margin: 0,
-                }}
-                name={dataIndex}
-                rules={[
-                    {
-                        required: true,
-                        message: `${title} is required.`,
-                    },
-                ]}
-            >
-                <Input ref={inputRef} onPressEnter={save} onBlur={save} />
-            </Form.Item>
-        ) : (
-            <div
-                className="editable-cell-value-wrap"
-                style={{
-                    paddingRight: 24,
-                }}
-                onClick={toggleEdit}
-            >
-                {children}
-            </div>
-        );
-    }
-
-    return <td {...restProps}>{childNode}</td>;
-};
-
-const defaultSpecificQuestion = {
-    key: 'why-do-you-deserve-this-scholarship',
-    question: "Why do you deserve this scholarship?",
-    type: 'long_answer',
-};
-const userProfileQuestionOptions = [
-    "first_name",
-    "last_name",
-    "email",
-    "post_secondary_school",
-    "major",
-    "eligible_programs",
-    "eligible_major",
-    "ethnicity",
-    "country",
-    "citizenship",
-    "extracurricular_description",
-    "academic_career_goals",
-];
-const defaultUserProfileQuestions = [userProfileQuestionOptions[0], userProfileQuestionOptions[1], userProfileQuestionOptions[2]];
+const questionTypes = ['Short Answer', 'Medium Answer', 'Long Answer'];
 
 export default class ScholarshipQuestionBuilder extends React.Component {
     constructor(props) {
@@ -167,10 +67,12 @@ export default class ScholarshipQuestionBuilder extends React.Component {
     };
 
     updateForm = (event) => {
-        event.preventDefault()
+        event.preventDefault();
         console.log("Updated Form")
-    }
-
+    };
+    onFinish = values => {
+        console.log('Received values of form:', values);
+    };
     render() {
         const { scholarship } = this.props;
 
@@ -178,7 +80,69 @@ export default class ScholarshipQuestionBuilder extends React.Component {
 
         return (
             <div>
-                <ScholarshipQuestionBuilderForm />
+
+                <Form name="dynamic_form_nest_item" onFinish={this.onFinish} autoComplete="off">
+                    <Form.List name="questions_form">
+                        {(fields, { add, remove }) => {
+                            return (
+                                <div>
+                                    {fields.map(field => (
+                                        <Space key={field.key} style={{ display: 'flex', marginBottom: 8 }} align="start">
+                                            <Form.Item
+                                                {...field}
+                                                name={[field.name, 'question']}
+                                                fieldKey={[field.fieldKey, 'question']}
+                                                rules={[{ required: true, message: 'Missing Question' }]}
+                                            >
+                                                <Input placeholder="Question" />
+                                            </Form.Item>
+
+                                            <Form.Item
+                                                {...field}
+                                                label="Question Type"
+                                                name={[field.name, 'type']}
+                                                fieldKey={[field.fieldKey, 'type']}
+                                                rules={[{ required: true, message: 'Missing question type' }]}
+                                            >
+                                                <Select placeholder="Choose Type">
+                                                    {questionTypes.map(item => (
+                                                        <Select.Option key={item} value={item}>
+                                                            {item}
+                                                        </Select.Option>
+                                                    ))}
+                                                </Select>
+                                            </Form.Item>
+
+                                            <MinusCircleOutlined
+                                                onClick={() => {
+                                                    remove(field.name);
+                                                }}
+                                            />
+                                        </Space>
+                                    ))}
+
+                                    <Form.Item>
+                                        <Button
+                                            type="dashed"
+                                            onClick={() => {
+                                                add();
+                                            }}
+                                            block
+                                        >
+                                            <PlusOutlined /> Add Question
+                                        </Button>
+                                    </Form.Item>
+                                </div>
+                            );
+                        }}
+                    </Form.List>
+
+                    <Form.Item>
+                        <Button type="primary" htmlType="submit">
+                            Submit
+                        </Button>
+                    </Form.Item>
+                </Form>
             </div>
         );
     }
@@ -189,14 +153,34 @@ ScholarshipQuestionBuilder.propTypes = {
     onUpdate: PropTypes.func,
 };
 
+
+
+// ---------------------- ScholarshipUserProfileQuestionBuilder
 const { Option } = Select;
 const children = [];
+
+const userProfileQuestionOptions = [
+    "first_name",
+    "last_name",
+    "email",
+    "post_secondary_school",
+    "major",
+    "eligible_programs",
+    "eligible_major",
+    "ethnicity",
+    "country",
+    "citizenship",
+    "extracurricular_description",
+    "academic_career_goals",
+];
 
 for (let i in userProfileQuestionOptions) {
     const questionOption = userProfileQuestionOptions[i];
     children.push(<Option key={questionOption}
                           value={questionOption}>{questionOption}</Option>);
 }
+
+const defaultUserProfileQuestions = [userProfileQuestionOptions[0], userProfileQuestionOptions[1], userProfileQuestionOptions[2]];
 
 export class ScholarshipUserProfileQuestionBuilder extends React.Component {
 
