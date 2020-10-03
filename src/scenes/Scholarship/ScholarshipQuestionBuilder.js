@@ -1,111 +1,23 @@
-import React, { useContext, useState, useEffect, useRef } from 'react';
+import React from 'react';
 import PropTypes from "prop-types";
-import {Table, Input, Button, Popconfirm, Form, Select} from 'antd';
+import {Input, Button, Popconfirm, Select, Space, Col, Row} from 'antd';
 import {ScholarshipPropType} from "../../models/Scholarship";
-import {slugify} from "../../services/utils";
-
-const EditableContext = React.createContext();
-
-const EditableRow = ({ index, ...props }) => {
-    const [form] = Form.useForm();
-    return (
-        <Form form={form} component={false}>
-            <EditableContext.Provider value={form}>
-                <tr {...props} />
-            </EditableContext.Provider>
-        </Form>
-    );
-};
-
-const EditableCell = ({
-                          title,
-                          editable,
-                          children,
-                          dataIndex,
-                          record,
-                          handleSave,
-                          ...restProps
-                      }) => {
-    const [editing, setEditing] = useState(false);
-    const inputRef = useRef();
-    const form = useContext(EditableContext);
-    useEffect(() => {
-        if (editing) {
-            inputRef.current.focus();
-        }
-    }, [editing]);
-
-    const toggleEdit = () => {
-        setEditing(!editing);
-        form.setFieldsValue({
-            [dataIndex]: record[dataIndex],
-        });
-    };
-
-    const save = async (e) => {
-        try {
-            const values = await form.validateFields();
-            toggleEdit();
-            handleSave({ ...record, ...values });
-        } catch (errInfo) {
-            console.log('Save failed:', errInfo);
-        }
-    };
-
-    let childNode = children;
-
-    if (editable) {
-        childNode = editing ? (
-            <Form.Item
-                style={{
-                    margin: 0,
-                }}
-                name={dataIndex}
-                rules={[
-                    {
-                        required: true,
-                        message: `${title} is required.`,
-                    },
-                ]}
-            >
-                <Input ref={inputRef} onPressEnter={save} onBlur={save} />
-            </Form.Item>
-        ) : (
-            <div
-                className="editable-cell-value-wrap"
-                style={{
-                    paddingRight: 24,
-                }}
-                onClick={toggleEdit}
-            >
-                {children}
-            </div>
-        );
-    }
-
-    return <td {...restProps}>{childNode}</td>;
-};
+import {getRandomString, slugify} from "../../services/utils";
+import {MinusCircleOutlined, PlusOutlined} from "@ant-design/icons";
 
 const defaultSpecificQuestion = {
     key: 'why-do-you-deserve-this-scholarship',
     question: "Why do you deserve this scholarship?",
     type: 'long_answer',
 };
-const userProfileQuestionOptions = [
-    "first_name",
-    "last_name",
-    "email",
-    "post_secondary_school",
-    "major",
-    "eligible_programs",
-    "eligible_major",
-    "ethnicity",
-    "country",
-    "citizenship",
-    "extracurricular_description",
-    "academic_career_goals",
-];
-const defaultUserProfileQuestions = [userProfileQuestionOptions[0], userProfileQuestionOptions[1], userProfileQuestionOptions[2]];
+
+const questionTypesLabel = {
+    "short_answer": "Short Answer",
+    "medium_answer": "Medium Answer (Under 300 words)",
+    "long_answer": "Long Answer (Over 300 words)",
+};
+
+const questionTypes = ['short_answer', 'medium_answer', 'long_answer'];
 
 export default class ScholarshipQuestionBuilder extends React.Component {
     constructor(props) {
@@ -133,48 +45,80 @@ export default class ScholarshipQuestionBuilder extends React.Component {
         ];
     }
 
-    handleDelete = (key) => {
+    updateQuestions = (event, eventType, questionIndex) => {
 
-        const { scholarship } = this.props;
-        let specificQuestions = scholarship.specific_questions;
-        specificQuestions = [...specificQuestions];
-
-        const newQuestions = specificQuestions.filter((item) => item.key !== key);
-        this.updateParent(newQuestions);
-    };
-    handleAdd = () => {
-        const { scholarship } = this.props;
+        const { scholarship, onUpdate } = this.props;
 
         let specificQuestions = scholarship.specific_questions;
-        const newData = defaultSpecificQuestion;
-        const newQuestions = [...specificQuestions, newData];
-        this.updateParent(newQuestions);
-    };
-    handleSave = (row) => {
-        const { scholarship } = this.props;
-        let specificQuestions = scholarship.specific_questions;
-        const newQuestions = [...specificQuestions];
-        const index = newQuestions.findIndex((item) => row.question === item.question);
-        const item = newQuestions[index];
 
+        const questionToEdit = specificQuestions[questionIndex];
 
-        newQuestions.splice(index, 1, { ...item, ...row });
+        let value = event;
+        let name = eventType;
 
-        newQuestions.forEach((specificQuestion, index, theArray) => {
-            theArray[index].key = slugify(theArray[index].question);
-        });
-        this.updateParent(newQuestions);
-    };
+        if (eventType === "question") {
+            value = event.target.value;
 
-    updateParent = (newQuestions) => {
-        const { onUpdate } = this.props;
+            // If the question has a key that is already in the list, append a random hash to the
+            // end of the question key.
+            let questionKey = slugify(value, 50);
+            let existingQuestionIndex = specificQuestions.findIndex((question) =>
+                question.key === questionKey);
+            if ( existingQuestionIndex > -1 && existingQuestionIndex !== questionIndex) {
+                questionKey = `${questionKey}-${getRandomString(5)}`
+            }
+            questionToEdit.key = questionKey;
+        }
+        questionToEdit[name] = value;
 
-        /*
-            ScholarshipAddEdit.updateForm() expects data in the form event.target.value and event.target.name.
-         */
+        specificQuestions[questionIndex] = questionToEdit;
+
         const syntheticEvent = {
             target: {
-                value: newQuestions.slice(),
+                value: [...specificQuestions],
+                name: "specific_questions"
+            }
+        };
+
+        onUpdate(syntheticEvent);
+
+
+    };
+
+    addQuestion = () => {
+        const { scholarship, onUpdate } = this.props;
+        let specificQuestions = scholarship.specific_questions;
+
+        const newSpecificQuestion = {...defaultSpecificQuestion};
+        // If the newSpecificQuestion has a key that is already in the list, append the index to
+        // the end of the question key.
+        if (specificQuestions.findIndex((question) =>
+            question.key === newSpecificQuestion.key) > -1) {
+            newSpecificQuestion.key = `${newSpecificQuestion.key}-${specificQuestions.length}`;
+        }
+
+        specificQuestions.push(newSpecificQuestion);
+
+        const syntheticEvent = {
+            target: {
+                value: [...specificQuestions],
+                name: "specific_questions"
+            }
+        };
+
+        onUpdate(syntheticEvent);
+    };
+
+    removeQuestion = (questionIndex) => {
+
+        const { scholarship, onUpdate } = this.props;
+        let specificQuestions = scholarship.specific_questions;
+
+        specificQuestions.splice(questionIndex, 1);
+
+        const syntheticEvent = {
+            target: {
+                value: [...specificQuestions],
                 name: "specific_questions"
             }
         };
@@ -187,45 +131,50 @@ export default class ScholarshipQuestionBuilder extends React.Component {
 
         let specificQuestions = scholarship.specific_questions;
 
-        const components = {
-            body: {
-                row: EditableRow,
-                cell: EditableCell,
-            },
-        };
-        const columns = this.columns.map((col) => {
-            if (!col.editable) {
-                return col;
-            }
-
-            return {
-                ...col,
-                onCell: (record) => ({
-                    record,
-                    editable: col.editable,
-                    dataIndex: col.dataIndex,
-                    title: col.title,
-                    handleSave: this.handleSave,
-                }),
-            };
-        });
         return (
             <div>
-                <Table
-                    components={components}
-                    rowClassName={() => 'editable-row'}
-                    bordered
-                    dataSource={specificQuestions}
-                    columns={columns}
-                />
+                    {specificQuestions.map((specificQuestion, index) => (
+                        <React.Fragment>
+                            <Row className="mb-3" gutter={[{ xs: 8, sm: 16}, 16]}>
+                                    <Col sm={24} md={24} lg={16}>
+                                        <Input value={specificQuestion.question}
+                                               className="col-12"
+                                               onChange={(event) =>
+                                                   this.updateQuestions(event,'question', index)}/>
+
+                                    </Col>
+                                    <Col xs={24} md={24} lg={8}>
+                                        <Space>
+                                            <Select placeholder="Choose Type"
+                                                    value={specificQuestion.type} onChange={(value) =>
+                                                this.updateQuestions(value,'type', index)}>
+                                                {questionTypes.map(item => (
+                                                    <Select.Option key={item} value={item}>
+                                                        {questionTypesLabel[item]}
+                                                    </Select.Option>
+                                                ))}
+                                            </Select>
+                                            <MinusCircleOutlined
+                                                onClick={() => {
+                                                    this.removeQuestion(index);
+                                                }}
+                                            />
+                                        </Space>
+
+                                    </Col>
+                            </Row>
+                            <hr/>
+                        </React.Fragment>
+                    ))}
+
                 <Button
-                    onClick={this.handleAdd}
-                    type="primary"
-                    style={{
-                        marginBottom: 16,
+                    type="dashed"
+                    onClick={() => {
+                        this.addQuestion();
                     }}
+                    block
                 >
-                    Add a question
+                    <PlusOutlined /> Add Question
                 </Button>
             </div>
         );
@@ -237,14 +186,34 @@ ScholarshipQuestionBuilder.propTypes = {
     onUpdate: PropTypes.func,
 };
 
+
+
+// ---------------------- ScholarshipUserProfileQuestionBuilder
 const { Option } = Select;
 const children = [];
+
+const userProfileQuestionOptions = [
+    "first_name",
+    "last_name",
+    "email",
+    "post_secondary_school",
+    "major",
+    "eligible_programs",
+    "eligible_major",
+    "ethnicity",
+    "country",
+    "citizenship",
+    "extracurricular_description",
+    "academic_career_goals",
+];
 
 for (let i in userProfileQuestionOptions) {
     const questionOption = userProfileQuestionOptions[i];
     children.push(<Option key={questionOption}
                           value={questionOption}>{questionOption}</Option>);
 }
+
+const defaultUserProfileQuestions = [userProfileQuestionOptions[0], userProfileQuestionOptions[1], userProfileQuestionOptions[2]];
 
 export class ScholarshipUserProfileQuestionBuilder extends React.Component {
 
