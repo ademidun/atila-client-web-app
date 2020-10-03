@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from "prop-types";
 import {Input, Button, Popconfirm, Form, Select, Space} from 'antd';
 import {ScholarshipPropType} from "../../models/Scholarship";
-import {slugify} from "../../services/utils";
+import {prettifyKeys, slugify} from "../../services/utils";
 import {MinusCircleOutlined, PlusOutlined} from "@ant-design/icons";
 
 
-const questionTypes = ['Short Answer', 'Medium Answer', 'Long Answer'];
+const questionTypes = ['short_answer', 'medium_answer', 'long_answer'];
 
 export default class ScholarshipQuestionBuilder extends React.Component {
     constructor(props) {
@@ -73,6 +73,15 @@ export default class ScholarshipQuestionBuilder extends React.Component {
     onFinish = values => {
         console.log('Received values of form:', values);
     };
+
+    addQuestion = () => {
+        console.log("addQuestion");
+    };
+
+    removeQuestion = (questionKey) => {
+        console.log({questionKey});
+    };
+
     render() {
         const { scholarship } = this.props;
 
@@ -80,69 +89,37 @@ export default class ScholarshipQuestionBuilder extends React.Component {
 
         return (
             <div>
-
-                <Form name="dynamic_form_nest_item" onFinish={this.onFinish} autoComplete="off">
-                    <Form.List name="questions_form">
-                        {(fields, { add, remove }) => {
-                            return (
-                                <div>
-                                    {fields.map(field => (
-                                        <Space key={field.key} style={{ display: 'flex', marginBottom: 8 }} align="start">
-                                            <Form.Item
-                                                {...field}
-                                                name={[field.name, 'question']}
-                                                fieldKey={[field.fieldKey, 'question']}
-                                                rules={[{ required: true, message: 'Missing Question' }]}
-                                            >
-                                                <Input placeholder="Question" />
-                                            </Form.Item>
-
-                                            <Form.Item
-                                                {...field}
-                                                label="Question Type"
-                                                name={[field.name, 'type']}
-                                                fieldKey={[field.fieldKey, 'type']}
-                                                rules={[{ required: true, message: 'Missing question type' }]}
-                                            >
-                                                <Select placeholder="Choose Type">
-                                                    {questionTypes.map(item => (
-                                                        <Select.Option key={item} value={item}>
-                                                            {item}
-                                                        </Select.Option>
-                                                    ))}
-                                                </Select>
-                                            </Form.Item>
-
-                                            <MinusCircleOutlined
-                                                onClick={() => {
-                                                    remove(field.name);
-                                                }}
-                                            />
-                                        </Space>
+                    {specificQuestions.map(specificQuestion => {
+                        console.log({specificQuestion});
+                        return (
+                            <div className="mb-3">
+                                <Input value={specificQuestion.question}/>
+                                <Select placeholder="Choose Type"
+                                        value={specificQuestion.type}>
+                                    {questionTypes.map(item => (
+                                        <Select.Option key={item} value={item}>
+                                            {prettifyKeys(item)}
+                                        </Select.Option>
                                     ))}
+                                </Select>
+                                <MinusCircleOutlined
+                                    onClick={() => {
+                                        this.removeQuestion(specificQuestion.key);
+                                    }}
+                                />
+                            </div>
+                        )
+                    })}
 
-                                    <Form.Item>
-                                        <Button
-                                            type="dashed"
-                                            onClick={() => {
-                                                add();
-                                            }}
-                                            block
-                                        >
-                                            <PlusOutlined /> Add Question
-                                        </Button>
-                                    </Form.Item>
-                                </div>
-                            );
-                        }}
-                    </Form.List>
-
-                    <Form.Item>
-                        <Button type="primary" htmlType="submit">
-                            Submit
-                        </Button>
-                    </Form.Item>
-                </Form>
+                <Button
+                    type="dashed"
+                    onClick={() => {
+                        this.addQuestion();
+                    }}
+                    block
+                >
+                    <PlusOutlined /> Add Question
+                </Button>
             </div>
         );
     }
