@@ -13,7 +13,7 @@ export const ScholarshipQuestionBuilderForm = () => {
 
     return (
         <Form name="dynamic_form_nest_item" onFinish={onFinish} autoComplete="off">
-            <Form.List name="users">
+            <Form.List name="questions">
                 {(fields, { add, remove }) => {
                     return (
                         <div>
@@ -21,8 +21,8 @@ export const ScholarshipQuestionBuilderForm = () => {
                                 <Space key={field.key} style={{ display: 'flex', marginBottom: 8 }} align="start">
                                     <Form.Item
                                         {...field}
-                                        name={[field.name, 'first']}
-                                        fieldKey={[field.fieldKey, 'first']}
+                                        name={[field.name, 'question']}
+                                        fieldKey={[field.fieldKey, 'question']}
                                         rules={[{ required: true, message: 'Missing Question' }]}
                                     >
                                         <Input placeholder="Question" />
