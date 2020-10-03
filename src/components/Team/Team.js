@@ -22,7 +22,7 @@ const teamMembers = [
     link_type: "LinkedIn",
     link_url: "https://www.linkedin.com/in/tademidun/",
     link2_type: "Website",
-    website_url: "https://tomiwa.ca/",
+    link2_url: "https://tomiwa.ca/",
   },
   {
     first_name: "Aaron",
@@ -35,7 +35,7 @@ const teamMembers = [
     link_type: "LinkedIn",
     link_url: "https://www.linkedin.com/in/aaron-doerfler-3a2144197/",
     link2_type: "Website",
-    website_url: "https://aarondoerfler.github.io/",
+    link2_url: "https://aarondoerfler.github.io/",
   },
   {
     first_name: "Hadi",
@@ -48,7 +48,7 @@ const teamMembers = [
     link_type: "LinkedIn",
     link_url: "https://www.linkedin.com/in/hadi-al-hakeem-24182819a/",
     link2_type: "Website",
-    website_url: "https://hadihakeem.com/",
+    link2_url: "https://hadihakeem.com/",
   },
   {
     first_name: "Yasith",
@@ -68,7 +68,7 @@ function TeamMemberCard({ teamMember, showLinkedin = true }) {
   return (
     <div
       className='bg-white rounded shadow mb-3 p-3'
-      style={{ height: "350px" }}
+      style={{ height: "400px" }}
     >
 
       <img
