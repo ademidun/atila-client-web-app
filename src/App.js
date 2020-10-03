@@ -19,6 +19,10 @@ import Environment from "./services/Environment";
 const Pricing = loadable(() => import("./scenes/AtilaPremium/Pricing"), {
   fallback: <Loading />,
 });
+
+const Payment = loadable(() => import("./scenes/Payment/Payment"), {
+  fallback: <Loading />,
+});
 const Premium = loadable(() => import("./scenes/AtilaPremium/Premium"), {
   fallback: <Loading />,
 });
@@ -123,6 +127,10 @@ class App extends React.Component {
                 component={GoogleAnalyticsTracker(Search)}
               />
               <Route path='/login' component={GoogleAnalyticsTracker(Login)} />
+              <Route
+                path='/payment'
+                component={GoogleAnalyticsTracker(Payment)}
+              />
               <Route
                 path='/pricing'
                 component={GoogleAnalyticsTracker(Pricing)}

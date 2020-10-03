@@ -135,7 +135,7 @@ class ApplicationDetail extends  React.Component{
                             {formatCurrency(Number.parseInt(scholarship.funding_amount))}
                         </h3>
                         <Button onClick={this.saveApplication} type="primary">
-                            <Link to={`/payments/onboarding/start/?application=${application.id}`}>
+                            <Link to={`/payment/onboarding/start/?application=${application.id}`}>
                                 Accept Payment
                             </Link>
                         </Button>
