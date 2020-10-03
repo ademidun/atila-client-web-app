@@ -60,7 +60,7 @@ const teamMembers = [
     link_type: "LinkedIn",
     link_url: "https://www.linkedin.com/in/yasith-ellewela-573b781b5/",
     link2_type: "Website",
-    website_url: "https://yasithellewela.github.io/",
+    link2_url: "https://yasithellewela.github.io/",
   },
 ];
 
@@ -95,12 +95,12 @@ function TeamMemberCard({ teamMember, showLinkedin = true }) {
           </React.Fragment>
         )}
 
-        {showLinkedin && teamMember.website_url && (
+        {showLinkedin && teamMember.link2_url && (
             <React.Fragment>
               |{" "}
               <li className='list-inline-item'>
                 <a
-                    href={teamMember.website_url}
+                    href={teamMember.link2_url}
                     className='social-link'
                     target='_blank'
                     rel='noopener noreferrer'
