@@ -49,7 +49,7 @@ function ScholarshipDeadlineWithTags({scholarship, datePrefix}) {
             </Tag>
             </React.Fragment>
             }
-            {dateAddedTag(date_time_created)}
+            {date_time_created && dateAddedTag(date_time_created)}
         </React.Fragment>
     );
 }

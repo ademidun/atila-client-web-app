@@ -16,7 +16,7 @@ import ScholarshipQuestionBuilder, {ScholarshipUserProfileQuestionBuilder} from 
 import {ScholarshipAddEditReview} from "./ScholarshipAddEditReview";
 const { Step } = Steps;
 
-const scholarshipFormConfigsPage1 = [
+let scholarshipFormConfigsPage1 = [
     {
         keyName: 'name',
         placeholder: 'Scholarship Name',
@@ -354,6 +354,15 @@ class ScholarshipAddEdit extends React.Component{
             },
         ];
         scholarshipEditPages = scholarshipEditPages.slice(0, is_atila_direct_application ? scholarshipEditPages.length : 2);
+
+        // BETA MODE: Only show the Atila direct Applications stuff to is_atila_admin users
+        if (!userProfile || !userProfile.is_atila_admin) {
+            scholarshipFormConfigsPage1 = scholarshipFormConfigsPage1.filter((formConfig) => formConfig.keyName !== "is_atila_direct_application");
+
+            scholarshipEditPages = scholarshipEditPages.slice(0, 2);
+        } else {
+            scholarshipEditPages = scholarshipEditPages.slice(0, is_atila_direct_application ? scholarshipEditPages.length : 2);
+        }
 
         const scholarshipSteps = (<Steps current={pageNumber-1} progressDot  onChange={(current) => this.changePage(current+1)}>
             { scholarshipEditPages.map(item => (

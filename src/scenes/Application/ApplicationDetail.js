@@ -18,6 +18,7 @@ class ApplicationDetail extends  React.Component{
             application: {},
             scholarship: null,
             isLoadingApplication: false,
+            isSavingApplication: false,
             scholarshipUserProfileQuestionsFormConfig: null,
             scholarshipQuestionsFormConfig: null,
         }
@@ -45,6 +46,30 @@ class ApplicationDetail extends  React.Component{
                 this.setState({isLoadingApplication: false});
             })
     };
+
+    saveApplication = () => {
+
+        const { application } = this.state;
+
+        const {scholarship_responses, user_profile_responses, id } = application;
+        this.setState({isSavingApplication: true});
+
+        ApplicationsAPI
+            .patch(id, {scholarship_responses, user_profile_responses})
+            .then(res=>{
+                const { data: application } = res;
+                const { scholarship } = application;
+                this.setState({application, scholarship});
+                this.makeScholarshipQuestionsForm(scholarship)
+            })
+            .catch(err => {
+                console.log({err});
+            })
+            .finally(() => {
+                this.setState({isSavingApplication: false});
+            })
+    };
+
 
     makeScholarshipQuestionsForm = (scholarship) => {
 
@@ -82,7 +107,7 @@ class ApplicationDetail extends  React.Component{
     render() {
 
         const { match : { params : { applicationID }} } = this.props;
-        const { application, isLoadingApplication, scholarship,
+        const { application, isLoadingApplication, scholarship, isSavingApplication,
             scholarshipUserProfileQuestionsFormConfig, scholarshipQuestionsFormConfig } = this.state;
 
         const userProfileResponses = {};
@@ -117,8 +142,8 @@ class ApplicationDetail extends  React.Component{
                                          inputConfigs=
                                              {scholarshipQuestionsFormConfig}
                             />
-                            <Button onClick={this.saveApplication}>
-                                    Save Now
+                            <Button onClick={this.saveApplication} type="primary">
+                                    Save
                             </Button>
                         </div>
 
@@ -126,6 +151,7 @@ class ApplicationDetail extends  React.Component{
                         }
                     </div>
                     {isLoadingApplication && <Loading  title="Loading Application..."/>}
+                    {isSavingApplication && <Loading  title="Saving Application..."/>}
                 </div>
             </div>
         );
