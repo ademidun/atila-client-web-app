@@ -97,6 +97,6 @@ export const ScholarshipPropType = PropTypes.shape({
 
 export const SCHOLARSHIP_QUESTIONS_TYPES_TO_FORM_TYPES = {
     "short_answer": "text",
+    "medium_answer": "textarea",
     "long_answer": "html_editor",
-    // "long_answer": "html_editor", TODO how to differentiate questions that require: 'text', 'textarea', 'html'
 };

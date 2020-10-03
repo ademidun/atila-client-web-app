@@ -34,7 +34,7 @@ class ApplicationsAPI {
         return apiCompletionPromise;
     };
 
-    static patch = (data, id) => {
+    static patch = (id, data) => {
 
         const apiCompletionPromise = request({
             method: 'patch',
