@@ -2,9 +2,20 @@ import React from 'react';
 import PropTypes from "prop-types";
 import {Input, Button, Popconfirm, Select, Space, Col, Row} from 'antd';
 import {ScholarshipPropType} from "../../models/Scholarship";
-import {getRandomString, prettifyKeys, slugify} from "../../services/utils";
+import {getRandomString, slugify} from "../../services/utils";
 import {MinusCircleOutlined, PlusOutlined} from "@ant-design/icons";
 
+const defaultSpecificQuestion = {
+    key: 'why-do-you-deserve-this-scholarship',
+    question: "Why do you deserve this scholarship?",
+    type: 'long_answer',
+};
+
+const questionTypesLabel = {
+    "short_answer": "Short Answer",
+    "medium_answer": "Medium Answer (Under 300 words)",
+    "long_answer": "Long Answer (Over 300 words)",
+};
 
 const questionTypes = ['short_answer', 'medium_answer', 'long_answer'];
 
@@ -34,38 +45,6 @@ export default class ScholarshipQuestionBuilder extends React.Component {
         ];
     }
 
-    handleSave = (row) => {
-        const { scholarship } = this.props;
-        let specificQuestions = scholarship.specific_questions;
-        const newQuestions = [...specificQuestions];
-        const index = newQuestions.findIndex((item) => row.question === item.question);
-        const item = newQuestions[index];
-
-
-        newQuestions.splice(index, 1, { ...item, ...row });
-
-        newQuestions.forEach((specificQuestion, index, theArray) => {
-            theArray[index].key = slugify(theArray[index].question);
-        });
-        this.updateParent(newQuestions);
-    };
-
-    updateParent = (newQuestions) => {
-        const { onUpdate } = this.props;
-
-        /*
-            ScholarshipAddEdit.updateForm() expects data in the form event.target.value and event.target.name.
-         */
-        const syntheticEvent = {
-            target: {
-                value: newQuestions.slice(),
-                name: "specific_questions"
-            }
-        };
-
-        onUpdate(syntheticEvent);
-    };
-
     updateQuestions = (event, eventType, questionIndex) => {
 
         const { scholarship, onUpdate } = this.props;
@@ -79,6 +58,9 @@ export default class ScholarshipQuestionBuilder extends React.Component {
 
         if (eventType === "question") {
             value = event.target.value;
+
+            // If the question has a key that is already in the list, append a random hash to the
+            // end of the question key.
             let questionKey = slugify(value, 50);
             let existingQuestionIndex = specificQuestions.findIndex((question) =>
                 question.key === questionKey);
@@ -93,7 +75,7 @@ export default class ScholarshipQuestionBuilder extends React.Component {
 
         const syntheticEvent = {
             target: {
-                value: specificQuestions.slice(),
+                value: [...specificQuestions],
                 name: "specific_questions"
             }
         };
@@ -102,16 +84,46 @@ export default class ScholarshipQuestionBuilder extends React.Component {
 
 
     };
-    onFinish = values => {
-        console.log('Received values of form:', values);
-    };
 
     addQuestion = () => {
-        console.log("addQuestion");
+        const { scholarship, onUpdate } = this.props;
+        let specificQuestions = scholarship.specific_questions;
+
+        const newSpecificQuestion = {...defaultSpecificQuestion};
+        // If the newSpecificQuestion has a key that is already in the list, append the index to
+        // the end of the question key.
+        if (specificQuestions.findIndex((question) =>
+            question.key === newSpecificQuestion.key) > -1) {
+            newSpecificQuestion.key = `${newSpecificQuestion.key}-${specificQuestions.length}`;
+        }
+
+        specificQuestions.push(newSpecificQuestion);
+
+        const syntheticEvent = {
+            target: {
+                value: [...specificQuestions],
+                name: "specific_questions"
+            }
+        };
+
+        onUpdate(syntheticEvent);
     };
 
-    removeQuestion = (questionKey) => {
-        console.log({questionKey});
+    removeQuestion = (questionIndex) => {
+
+        const { scholarship, onUpdate } = this.props;
+        let specificQuestions = scholarship.specific_questions;
+
+        specificQuestions.splice(questionIndex, 1);
+
+        const syntheticEvent = {
+            target: {
+                value: [...specificQuestions],
+                name: "specific_questions"
+            }
+        };
+
+        onUpdate(syntheticEvent);
     };
 
     render() {
@@ -124,27 +136,27 @@ export default class ScholarshipQuestionBuilder extends React.Component {
                     {specificQuestions.map((specificQuestion, index) => (
                         <React.Fragment>
                             <Row className="mb-3" gutter={[{ xs: 8, sm: 16}, 16]}>
-                                    <Col sm={24} md={16} lg={10}>
+                                    <Col sm={24} md={24} lg={16}>
                                         <Input value={specificQuestion.question}
                                                className="col-12"
                                                onChange={(event) =>
                                                    this.updateQuestions(event,'question', index)}/>
 
                                     </Col>
-                                    <Col xs={24} md={6} lg={12}>
+                                    <Col xs={24} md={24} lg={8}>
                                         <Space>
                                             <Select placeholder="Choose Type"
                                                     value={specificQuestion.type} onChange={(value) =>
                                                 this.updateQuestions(value,'type', index)}>
                                                 {questionTypes.map(item => (
                                                     <Select.Option key={item} value={item}>
-                                                        {prettifyKeys(item)}
+                                                        {questionTypesLabel[item]}
                                                     </Select.Option>
                                                 ))}
                                             </Select>
                                             <MinusCircleOutlined
                                                 onClick={() => {
-                                                    this.removeQuestion(specificQuestion.key);
+                                                    this.removeQuestion(index);
                                                 }}
                                             />
                                         </Space>
