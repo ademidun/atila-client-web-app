@@ -2,7 +2,6 @@ import React from 'react';
 import Banner from './Banner';
 import './LandingPage.scss';
 import './Reponsive.scss';
-import WhatIsAtila from "./WhatIsAtila";
 import HowItWorks from "./HowItWorks";
 import MoreFeatures from "./MoreFeatures";
 import LandingPageContent from "./LandingPageContent";
@@ -92,14 +91,17 @@ class LandingPage extends React.Component {
                     {!userProfile &&
                     <React.Fragment>
                         <Banner/>
-                        <WhatIsAtila/>
+                        <hr/>
+                        <HowItWorks accountType={"Student"}/>
+                        <hr/>
+                        <HowItWorks accountType={"Sponsor"}/>
+                        <hr/>
+                        <MoreFeatures/>
                         <div className="p-5">
                             <Link to="/register" className="btn btn-primary center-block font-size-xl">
                                 Register for Free
                             </Link>
                         </div>
-                        <HowItWorks/>
-                        <MoreFeatures/>
                         {scholarshipsContentDueSoon}
                         {scholarshipsContentRecentlyAdded}
                         <hr/>
