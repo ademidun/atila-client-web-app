@@ -2,7 +2,7 @@ export const EnvironmentDev = {
     name: 'dev',
     production: false,
     apiUrl: 'http://127.0.0.1:8000/api',
-    //apiUrl: 'https://111ec86312cd.ngrok.io/api',
+    //apiUrl: 'https://126ee17e12c7.ngrok.io/api',
     apiUrlNodeMicroservice: 'http://127.0.0.1:9000',
     apiUrlBillingMicroservice: 'http://127.0.0.1:9001',
     apiUrlRecommender: 'http://127.0.0.1:5000',

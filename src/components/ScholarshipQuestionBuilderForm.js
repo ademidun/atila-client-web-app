@@ -5,15 +5,13 @@ import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 const questionTypes = ['Short Answer', 'Medium Answer', 'Long Answer'];
 
 export const ScholarshipQuestionBuilderForm = () => {
-    const [form] = Form.useForm();
-
     const onFinish = values => {
         console.log('Received values of form:', values);
     };
 
     return (
         <Form name="dynamic_form_nest_item" onFinish={onFinish} autoComplete="off">
-            <Form.List name="questions">
+            <Form.List name="questions_form">
                 {(fields, { add, remove }) => {
                     return (
                         <div>
@@ -31,11 +29,11 @@ export const ScholarshipQuestionBuilderForm = () => {
                                     <Form.Item
                                         {...field}
                                         label="Question Type"
-                                        name={[field.name, 'question_type']}
-                                        fieldKey={[field.fieldKey, 'question_type']}
+                                        name={[field.name, 'type']}
+                                        fieldKey={[field.fieldKey, 'type']}
                                         rules={[{ required: true, message: 'Missing question type' }]}
                                     >
-                                        <Select>
+                                        <Select placeholder="Choose Type">
                                             {questionTypes.map(item => (
                                                 <Select.Option key={item} value={item}>
                                                     {item}
