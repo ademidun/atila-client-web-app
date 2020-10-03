@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from "prop-types";
-import {Input, Button, Popconfirm, Select, Space, Col, Row} from 'antd';
-import {ScholarshipPropType} from "../../models/Scholarship";
-import {getRandomString, slugify} from "../../services/utils";
+import {Button, Col, Input, Popconfirm, Row, Select, Space} from 'antd';
+import {ScholarshipPropType, scholarshipUserProfileQuestionOptions} from "../../models/Scholarship";
+import {getRandomString, prettifyKeys, slugify} from "../../services/utils";
 import {MinusCircleOutlined, PlusOutlined} from "@ant-design/icons";
 
 const defaultSpecificQuestion = {
@@ -190,30 +190,9 @@ ScholarshipQuestionBuilder.propTypes = {
 
 // ---------------------- ScholarshipUserProfileQuestionBuilder
 const { Option } = Select;
-const children = [];
 
-const userProfileQuestionOptions = [
-    "first_name",
-    "last_name",
-    "email",
-    "post_secondary_school",
-    "major",
-    "eligible_programs",
-    "eligible_major",
-    "ethnicity",
-    "country",
-    "citizenship",
-    "extracurricular_description",
-    "academic_career_goals",
-];
 
-for (let i in userProfileQuestionOptions) {
-    const questionOption = userProfileQuestionOptions[i];
-    children.push(<Option key={questionOption}
-                          value={questionOption}>{questionOption}</Option>);
-}
-
-const defaultUserProfileQuestions = [userProfileQuestionOptions[0], userProfileQuestionOptions[1], userProfileQuestionOptions[2]];
+const defaultUserProfileQuestions = [scholarshipUserProfileQuestionOptions[0], scholarshipUserProfileQuestionOptions[1], scholarshipUserProfileQuestionOptions[2]];
 
 export class ScholarshipUserProfileQuestionBuilder extends React.Component {
 
@@ -254,7 +233,10 @@ export class ScholarshipUserProfileQuestionBuilder extends React.Component {
                     value={userProfileQuestions}
                     placeholder="User Profile Questions"
                     onChange={this.handleChange}>
-                {children}
+                {scholarshipUserProfileQuestionOptions.map(question => (
+                    <Option key={question}
+                            value={question}>{prettifyKeys(question)}</Option>
+                ))}
             </Select>
         );
     }

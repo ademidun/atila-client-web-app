@@ -53,14 +53,45 @@ export const scholarshipsListResponseMockData = {
         length: 2
     }
 };
-export let defaultScholarship = {
+export const scholarshipUserProfileQuestionOptions = [
+    "first_name",
+    "last_name",
+    "email",
+    "post_secondary_school",
+    "major",
+    "eligible_programs",
+    "eligible_major",
+    "ethnicity",
+    "country",
+    "citizenship",
+    "extracurricular_description",
+    "academic_career_goals",
+];
+
+export const ScholarshipPropType = PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    deadline: PropTypes.string,
+    is_not_available: PropTypes.boolean,
+    female_only: PropTypes.boolean,
+    international_students_eligible: PropTypes.boolean,
+    form_url: PropTypes.string,
+});
+
+
+export const SCHOLARSHIP_QUESTIONS_TYPES_TO_FORM_TYPES = {
+    "short_answer": "text",
+    "medium_answer": "textarea",
+    "long_answer": "html_editor",
+};
+
+export let DEFAULT_SCHOLARSHIP = {
     name: '',
     slug: '',
     description: '',
     img_url: '',
     scholarship_url: '',
     specific_questions: [],
-    user_profile_questions: [],
+    user_profile_questions: scholarshipUserProfileQuestionOptions.slice(0,3).map(question => ({key: question})),
     form_url: '',
     deadline: '2022-12-31T23:59:00',
     open_date: '2022-12-31',
@@ -83,20 +114,4 @@ export let defaultScholarship = {
     sports: [],
     disability: [],
     language: [],
-};
-
-export const ScholarshipPropType = PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    deadline: PropTypes.string,
-    is_not_available: PropTypes.boolean,
-    female_only: PropTypes.boolean,
-    international_students_eligible: PropTypes.boolean,
-    form_url: PropTypes.string,
-});
-
-
-export const SCHOLARSHIP_QUESTIONS_TYPES_TO_FORM_TYPES = {
-    "short_answer": "text",
-    "medium_answer": "textarea",
-    "long_answer": "html_editor",
 };

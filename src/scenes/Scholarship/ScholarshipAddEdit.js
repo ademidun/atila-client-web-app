@@ -7,7 +7,7 @@ import {nestedFieldUpdate, prettifyKeys, slugify, transformLocation} from "../..
 import Loading from "../../components/Loading";
 import {MAJORS_LIST, SCHOOLS_LIST} from "../../models/ConstantsForm";
 import {scholarshipUserProfileSharedFormConfigs, toastNotify} from "../../models/Utils";
-import {defaultScholarship} from "../../models/Scholarship";
+import {DEFAULT_SCHOLARSHIP} from "../../models/Scholarship";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Link} from "react-router-dom";
@@ -145,7 +145,7 @@ class ScholarshipAddEdit extends React.Component{
         super(props);
 
         this.state = {
-            scholarship: defaultScholarship,
+            scholarship: DEFAULT_SCHOLARSHIP,
             isAddScholarshipMode: false,
             scholarshipPostError: null,
             isLoadingScholarship: true,
