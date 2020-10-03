@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import {Table, Input, Button, Popconfirm, Form, Select} from 'antd';
 import {ScholarshipPropType} from "../../models/Scholarship";
 import {slugify} from "../../services/utils";
-import {DynamicForm} from "../../components/DynamicForm";
+import {ScholarshipQuestionBuilderForm} from "../../components/ScholarshipQuestionBuilderForm";
 
 const EditableContext = React.createContext();
 
@@ -166,6 +166,11 @@ export default class ScholarshipQuestionBuilder extends React.Component {
         onUpdate(syntheticEvent);
     };
 
+    updateForm = (event) => {
+        event.preventDefault()
+        console.log("Updated Form")
+    }
+
     render() {
         const { scholarship } = this.props;
 
@@ -173,7 +178,7 @@ export default class ScholarshipQuestionBuilder extends React.Component {
 
         return (
             <div>
-                <DynamicForm />
+                <ScholarshipQuestionBuilderForm />
             </div>
         );
     }

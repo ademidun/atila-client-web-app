@@ -1,8 +1,12 @@
 import React from 'react';
-import { Form, Input, Button, Space } from 'antd';
+import { Form, Input, Button, Space , Select} from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 
-export const DynamicForm = () => {
+const questionTypes = ['Short Answer', 'Medium Answer', 'Long Answer'];
+
+export const ScholarshipQuestionBuilderForm = () => {
+    const [form] = Form.useForm();
+
     const onFinish = values => {
         console.log('Received values of form:', values);
     };
@@ -19,17 +23,25 @@ export const DynamicForm = () => {
                                         {...field}
                                         name={[field.name, 'first']}
                                         fieldKey={[field.fieldKey, 'first']}
-                                        rules={[{ required: true, message: 'Missing first name' }]}
+                                        rules={[{ required: true, message: 'Missing Question' }]}
                                     >
-                                        <Input placeholder="First Name" />
+                                        <Input placeholder="Question" />
                                     </Form.Item>
+
                                     <Form.Item
                                         {...field}
-                                        name={[field.name, 'last']}
-                                        fieldKey={[field.fieldKey, 'last']}
-                                        rules={[{ required: true, message: 'Missing last name' }]}
+                                        label="Question Type"
+                                        name={[field.name, 'question_type']}
+                                        fieldKey={[field.fieldKey, 'question_type']}
+                                        rules={[{ required: true, message: 'Missing question type' }]}
                                     >
-                                        <Input placeholder="Last Name" />
+                                        <Select>
+                                            {questionTypes.map(item => (
+                                                <Select.Option key={item} value={item}>
+                                                    {item}
+                                                </Select.Option>
+                                            ))}
+                                        </Select>
                                     </Form.Item>
 
                                     <MinusCircleOutlined
