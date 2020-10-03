@@ -62,16 +62,18 @@ class ApplicationDetail extends  React.Component{
         }
 
         let { application } = this.state;
-
-        application[applicationResponseType][event.target.name] = event.target.value;
+        const name = event.target.name;
+        const value = event.target.value;
+        application[applicationResponseType][name] = value;
 
         this.setState(prevState => ({
             application: {
                 ...prevState.application,           // copy all other key-value pairs of food object
                 [applicationResponseType]: {                     // specific object of food object
                     ...prevState.application[applicationResponseType],   // copy all pizza key-value pairs
-                    [event.target.name]: event.target.value          // update value of specific key
+                    [name]: value // update value of specific key
                 }
+
             }
         }))
 
