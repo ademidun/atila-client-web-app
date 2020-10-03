@@ -269,7 +269,7 @@ class ScholarshipAddEdit extends React.Component{
             }
 
             if(event.target.name==='name') {
-                scholarship.slug = slugify(event.target.value,{lower: true});
+                scholarship.slug = slugify(event.target.value);
             }
             this.setState({scholarship});
         }

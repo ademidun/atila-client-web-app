@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from "prop-types";
 import {Input, Button, Popconfirm, Form, Select, Space} from 'antd';
 import {ScholarshipPropType} from "../../models/Scholarship";
-import {prettifyKeys, slugify} from "../../services/utils";
+import {getRandomString, prettifyKeys, slugify} from "../../services/utils";
 import {MinusCircleOutlined, PlusOutlined} from "@ant-design/icons";
 
 
@@ -66,9 +66,45 @@ export default class ScholarshipQuestionBuilder extends React.Component {
         onUpdate(syntheticEvent);
     };
 
-    updateForm = (event) => {
-        event.preventDefault();
-        console.log("Updated Form")
+    updateQuestions = (event, eventType, questionIndex) => {
+        if(event.preventDefault) {
+            event.preventDefault();
+        }
+
+        const { scholarship, onUpdate } = this.props;
+
+        let specificQuestions = scholarship.specific_questions;
+
+        const questionToEdit = specificQuestions[questionIndex];
+
+        let value = event;
+        let name = eventType;
+
+        if (eventType === "question") {
+            value = event.target.value;
+            let questionKey = slugify(value, 50);
+            if (specificQuestions.findIndex((question) => question.key === questionKey) > -1) {
+                questionKey = `${questionKey}-${getRandomString(5)}`
+            }
+            questionToEdit.key = questionKey;
+        }
+        questionToEdit[name] = value;
+
+        specificQuestions[questionIndex] = questionToEdit;
+
+        console.log("Updated Form");
+        console.log({event, eventType, questionIndex});
+
+        const syntheticEvent = {
+            target: {
+                value: specificQuestions,
+                name: "specific_questions"
+            }
+        };
+
+        onUpdate(syntheticEvent);
+
+
     };
     onFinish = values => {
         console.log('Received values of form:', values);
@@ -89,27 +125,26 @@ export default class ScholarshipQuestionBuilder extends React.Component {
 
         return (
             <div>
-                    {specificQuestions.map(specificQuestion => {
-                        console.log({specificQuestion});
-                        return (
-                            <div className="mb-3">
-                                <Input value={specificQuestion.question}/>
-                                <Select placeholder="Choose Type"
-                                        value={specificQuestion.type}>
-                                    {questionTypes.map(item => (
-                                        <Select.Option key={item} value={item}>
-                                            {prettifyKeys(item)}
-                                        </Select.Option>
-                                    ))}
-                                </Select>
-                                <MinusCircleOutlined
-                                    onClick={() => {
-                                        this.removeQuestion(specificQuestion.key);
-                                    }}
-                                />
-                            </div>
-                        )
-                    })}
+                    {specificQuestions.map((specificQuestion, index) => (
+                        <div className="mb-3">
+                            <Input value={specificQuestion.question}
+                                   onChange={(event) =>
+                                       this.updateQuestions(event,'question', index)}/>
+                            <Select placeholder="Choose Type"
+                                    value={specificQuestion.type} onChange={(value) =>
+                                this.updateQuestions(value,'type', index)}>
+                                {questionTypes.map(item => (
+                                    <Select.Option key={item} value={item}>
+                                        {prettifyKeys(item)}
+                                    </Select.Option>
+                                ))}
+                            </Select>
+                            <MinusCircleOutlined
+                                onClick={() => {
+                                    this.removeQuestion(specificQuestion.key);
+                                }}
+                            />
+                    ))}
 
                 <Button
                     type="dashed"
