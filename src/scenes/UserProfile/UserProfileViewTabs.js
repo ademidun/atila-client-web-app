@@ -63,6 +63,11 @@ class UserProfileViewTabs extends React.Component {
             <div className='mt-3'>
                 <Tabs defaultActiveKey={defaultActiveKey} transition={false} id="UserProfileViewTabs">
                     {isProfileEditable &&
+                    <Tab eventKey='applications' title='My Applications'>
+                        <UserProfileViewSavedScholarships />
+                    </Tab>
+                    }
+                    {isProfileEditable &&
                     <Tab eventKey='scholarships' title='Saved Scholarships'>
                         <UserProfileViewSavedScholarships />
                     </Tab>
