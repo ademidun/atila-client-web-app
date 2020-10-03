@@ -10,8 +10,6 @@ import {
 import UserProfileAPI from "../../services/UserProfileAPI";
 import {userProfileFormConfig, userProfileFormOnboarding} from "../../models/UserProfile";
 import {transformLocation} from "../../services/utils";
-import {Button, Col, Row} from "antd";
-import {Link} from "react-router-dom";
 
 const userProfileSharedFormConfigs = scholarshipUserProfileSharedFormConfigs
     .map(config => {
@@ -122,7 +120,7 @@ class UserProfileEdit extends React.Component {
 
     render () {
 
-        const { userProfile, title, className, startingPageNumber, submitButtonText } = this.props;
+        const { userProfile, title, className, submitButtonText } = this.props;
         const { pageNumber, formErrors } = this.state;
 
         let formErrorsContent = Object.keys(formErrors).map((errorType) => (
@@ -149,23 +147,23 @@ class UserProfileEdit extends React.Component {
                 {title}
                 {/*startingPageNumber is zero when user first registers*/}
                 {/*Don't show Premium when first onboarding user. */}
-                {startingPageNumber !==0 &&
-                    <Row style={{textAlign: 'left'}}>
-                        <Col sm={24} md={12}>
-                            <span><strong> Account Type: </strong>
-                                Student {userProfile.is_atila_premium ? 'Premium' : 'Free'}</span>
-                            {!userProfile.is_atila_premium &&
-                            <Button style={{ marginTop: 16 }}
-                                    className="m-3"
-                                    type="primary">
-                                <Link to="/premium">
-                                    Go Premium
-                                </Link>
-                            </Button>
-                            }
-                        </Col>
-                    </Row>
-                }
+                {/*{startingPageNumber !==0 &&*/}
+                {/*    <Row style={{textAlign: 'left'}}>*/}
+                {/*        <Col sm={24} md={12}>*/}
+                {/*            <span><strong> Account Type: </strong>*/}
+                {/*                Student {userProfile.is_atila_premium ? 'Premium' : 'Free'}</span>*/}
+                {/*            {!userProfile.is_atila_premium &&*/}
+                {/*            <Button style={{ marginTop: 16 }}*/}
+                {/*                    className="m-3"*/}
+                {/*                    type="primary">*/}
+                {/*                <Link to="/premium">*/}
+                {/*                    Go Premium*/}
+                {/*                </Link>*/}
+                {/*            </Button>*/}
+                {/*            }*/}
+                {/*        </Col>*/}
+                {/*    </Row>*/}
+                {/*}*/}
                 {pageNumber === 0 &&
                 <FormDynamic onUpdateForm={this.updateForm}
                              model={userProfile}
@@ -212,7 +210,7 @@ const mapStateToProps = state => {
 };
 
 UserProfileEdit.defaultProps = {
-    title: (<h1>Edit Profile</h1>),
+    title: (<h1 className="mt-3">Edit Profile</h1>),
     className: '',
     startingPageNumber: 1,
     afterSubmitSuccess: () => {},
