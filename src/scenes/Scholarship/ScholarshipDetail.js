@@ -120,6 +120,7 @@ class ScholarshipDetail extends React.Component {
         const { isLoadingScholarship, scholarship,
             errorLoadingScholarship, scholarshipUserProfile,
             pageViews} = this.state;
+        const { userProfile } = this.props;
 
         if (errorLoadingScholarship) {
             return (<div className="text-center">
@@ -180,7 +181,8 @@ class ScholarshipDetail extends React.Component {
                                 <Link to={`/scholarship/edit/${slug}`}>
                                     Edit Scholarship
                                 </Link><br/>
-                                {scholarship.is_atila_direct_application &&
+                                {userProfile && userProfile.is_atila_admin &&
+                                scholarship.is_atila_direct_application &&
                                 <Button type="primary" size="large"
                                         className="mt-3" style={{fontSize: "20px"}}
                                         onClick={this.getOrCreateApplication}>
