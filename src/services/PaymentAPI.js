@@ -30,6 +30,17 @@ class PaymentAPI {
         return apiCompletionPromise;
     };
 
+    static getClientSecret = (paymentData) => {
+
+        const apiCompletionPromise = request({
+            url: `${PaymentAPI.apiUrlPayment}/payment/get-client-secret`,
+            method: 'post',
+            data: paymentData,
+        });
+
+        return apiCompletionPromise;
+    };
+
 }
 
 export default PaymentAPI;

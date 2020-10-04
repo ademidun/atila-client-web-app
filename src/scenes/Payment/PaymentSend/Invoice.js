@@ -3,7 +3,6 @@ import './Invoice.scss'
 import {connect} from "react-redux";
 import {UserProfilePropType} from "../../../models/UserProfile";
 import moment from "moment";
-import {PREMIUM_PRICE_BEFORE_TAX, PREMIUM_PRICE_WITH_TAX} from "./PaymentSendForm";
 import {ScholarshipPropType} from "../../../models/Scholarship";
 import {ATILA_SCHOLARSHIP_FEE, ATILA_SCHOLARSHIP_FEE_TAX} from "../../../models/Constants";
 import {formatCurrency} from "../../../services/utils";

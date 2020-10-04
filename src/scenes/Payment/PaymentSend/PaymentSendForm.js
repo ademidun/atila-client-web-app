@@ -3,10 +3,8 @@ import React from 'react';
 import {CardElement, injectStripe} from 'react-stripe-elements';
 import {Alert, Button, Col, Result, Row} from "antd";
 import {Link, withRouter} from "react-router-dom";
-import BillingAPI from "../../../services/BillingAPI";
 import {connect} from "react-redux";
 import {UserProfilePropType} from "../../../models/UserProfile";
-import UserProfileAPI from "../../../services/UserProfileAPI";
 import {updateLoggedInUserProfile} from "../../../redux/actions/user";
 import Loading from "../../../components/Loading";
 import HelmetSeo, {defaultSeoContent} from "../../../components/HelmetSeo";
@@ -14,6 +12,7 @@ import Invoice from "./Invoice";
 import ScholarshipsAPI from "../../../services/ScholarshipsAPI";
 import {ATILA_SCHOLARSHIP_FEE} from "../../../models/Constants";
 import {formatCurrency} from "../../../services/utils";
+import PaymentAPI from "../../../services/PaymentAPI";
 
 export const PREMIUM_PRICE_BEFORE_TAX = 9;
 export const PREMIUM_PRICE_WITH_TAX = 10.17;
@@ -34,6 +33,8 @@ class PaymentSendForm extends React.Component {
             // have to set it here, otherwise it may get set after user subscribes for an account
             // then instead of showing 'Payment successful' it showed 'You already have a premium account'
         }
+
+        this.cardElementRef = React.createRef();
     }
 
     componentDidMount() {
@@ -69,63 +70,125 @@ class PaymentSendForm extends React.Component {
             })
             .finally(() => {
                 this.setState({isResponseLoading: null});
+                // this.createStripeElements();
             })
     };
 
     handleSubmit = async (ev) => {
         ev.preventDefault();
-        const { stripe, userProfile, updateLoggedInUserProfile } = this.props;
+        const { stripe, userProfile, elements } = this.props;
+        console.log({elements});
+        console.log({stripe});
+        console.log("stripe.elements", stripe.elements);
+        console.log("stripe.elements()", stripe.elements());
 
-        const { first_name, last_name, email, user } = userProfile;
+        const { first_name, last_name } = userProfile;
         const fullName = `${first_name} ${last_name}`;
-        const metadata = {
-            atila_user_id: user,
-        };
-        const { cardHolderName} = this.state;
+        const { scholarship, totalPaymentAmount} = this.state;
 
         this.setState({isResponseLoading: true});
         this.setState({isResponseLoadingMessage: 'Processing Payment'});
         this.setState({isResponseErrorMessage: null});
-        const createTokenResult = await stripe.createToken({name: cardHolderName});
-        if (createTokenResult.token) {
 
+        const paymentData = {
+            scholarship: {funding_amount: totalPaymentAmount, name: scholarship.name}
+        };
+
+        try{
+            const {data: clientSecretData} = await PaymentAPI.getClientSecret(paymentData);
+             console.log({clientSecretData});
             try {
-                const { data : { data : { customerId } }} = await BillingAPI
-                    .chargePayment(createTokenResult.token.id, fullName, email, metadata);
+                console.log("this.cardElementRef", this.cardElementRef);
+                console.log({CardElement});
+                console.log({clientSecretData});
+                console.log(clientSecretData.client_secret);
+                const cardPaymentResult = await stripe.confirmCardPayment(clientSecretData.client_secret, {
+                    payment_method: {
+                        card: this.cardElementRef.current._element,
+                        billing_details: {
+                            name: fullName
+                        }
+                    }
+                });
 
-                this.setState({isResponseLoadingMessage: 'Payment Successful! 🙂 Saving UserProfile'});
+                console.log({cardPaymentResult});
 
-                try {
-                    const {data : updateUserProfileResponse} = await UserProfileAPI
-                        .patch({is_atila_premium: true, stripe_customer_id: customerId}, user);
-                    updateLoggedInUserProfile(updateUserProfileResponse);
-
-                } catch (patchUserProfileError) {
-                    BillingAPI
-                        .sendBillingError(patchUserProfileError, {email, name: fullName});
-                }
-                const isResponseLoadingFinishedText = (<div>
-                    Payment was successful Check out <Link to="/scholarship" >scholarships</Link>, <Link to="/blog" >blog</Link> and {' '}
-                    <Link to="/essay" >essays</Link>
-                </div>);
-                this.setState({isResponseLoadingFinishedText, isPaymentSuccess: true});
-
-            } catch (chargePaymentError) {
-                BillingAPI
-                    .sendBillingError(chargePaymentError, {email, name: fullName});
-                const { response } = chargePaymentError;
-                if (response && response.data && response.data.error) {
-                    this.setState({isResponseErrorMessage: response.data.error.message});
+                if (cardPaymentResult.error) {
+                    // Show error to your customer (e.g., insufficient funds)
+                    console.log(cardPaymentResult.error.message);
                 } else {
-                    this.setState({isResponseErrorMessage: chargePaymentError.message || JSON.stringify(chargePaymentError)});
+                    // The payment has been processed!
+                    if (cardPaymentResult.paymentIntent.status === 'succeeded') {
+                        const isResponseLoadingFinishedText = (<div>
+                            Payment was successful. See your live scholarship at:
+                            <Link to={`/scholarship/${scholarship.slug}`} >{scholarship.name}</Link>
+                        </div>);
+                        this.setState({isResponseLoadingFinishedText, isPaymentSuccess: true});
+                        // Show a success message to your customer
+                        // There's a risk of the customer closing the window before callback
+                        // execution. Set up a webhook or plugin to listen for the
+                        // payment_intent.succeeded event that handles any business critical
+                        // post-payment actions.
+                        // TODO Update Scholarship.is_funded attribute and Scholarship.published
+                    }
                 }
+
+            } catch (confirmCardPaymentError) {
+                console.log({confirmCardPaymentError});
+                this.setState({isResponseErrorMessage: JSON.stringify(confirmCardPaymentError)});
             }
 
-        } else if (createTokenResult.error) {
-            console.log(createTokenResult.error);
-            this.setState({isResponseErrorMessage: createTokenResult.error.message || createTokenResult.error});
+        } catch (getClientSecretError) {
+            console.log({getClientSecretError});
+            this.setState({isResponseErrorMessage: JSON.stringify(getClientSecretError)});
         }
+
         this.setState({isResponseLoading: false});
+
+        /*
+
+            const createTokenResult = await stripe.createToken({name: cardHolderName});
+            if (createTokenResult.token) {
+
+                try {
+                    const { data : { data : { customerId } }} = await BillingAPI
+                        .chargePayment(createTokenResult.token.id, fullName, email, metadata);
+
+                    this.setState({isResponseLoadingMessage: 'Payment Successful! 🙂 Saving UserProfile'});
+
+                    try {
+                        const {data : updateUserProfileResponse} = await UserProfileAPI
+                            .patch({is_atila_premium: true, stripe_customer_id: customerId}, user);
+                        updateLoggedInUserProfile(updateUserProfileResponse);
+
+                    } catch (patchUserProfileError) {
+                        BillingAPI
+                            .sendBillingError(patchUserProfileError, {email, name: fullName});
+                    }
+                    const isResponseLoadingFinishedText = (<div>
+                        Payment was successful Check out <Link to="/scholarship" >scholarships</Link>, <Link to="/blog" >blog</Link> and {' '}
+                        <Link to="/essay" >essays</Link>
+                    </div>);
+                    this.setState({isResponseLoadingFinishedText, isPaymentSuccess: true});
+
+                } catch (chargePaymentError) {
+                    BillingAPI
+                        .sendBillingError(chargePaymentError, {email, name: fullName});
+                    const { response } = chargePaymentError;
+                    if (response && response.data && response.data.error) {
+                        this.setState({isResponseErrorMessage: response.data.error.message});
+                    } else {
+                        this.setState({isResponseErrorMessage: chargePaymentError.message || JSON.stringify(chargePaymentError)});
+                    }
+                }
+
+            } else if (createTokenResult.error) {
+                console.log(createTokenResult.error);
+                this.setState({isResponseErrorMessage: createTokenResult.error.message || createTokenResult.error});
+            }
+            this.setState({isResponseLoading: false});
+
+        */
     };
 
     updateForm = (event) => {
@@ -224,7 +287,11 @@ class PaymentSendForm extends React.Component {
                                             />
                                         </Col>
                                         <Col span={24}>
-                                            <CardElement style={{base: {fontSize: '18px'}}} />
+                                            <div id="card-element">
+
+                                            </div>
+
+                                            <CardElement style={{base: {fontSize: '18px'}}} ref={this.cardElementRef} />
 
                                             <p className="my-3">
                                                 Test with: 4000001240000000
