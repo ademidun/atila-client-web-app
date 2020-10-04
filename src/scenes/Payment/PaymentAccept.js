@@ -5,6 +5,8 @@ import PaymentAPI from "../../services/PaymentAPI";
 import Loading from "../../components/Loading";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import {updateLoggedInUserProfile} from "../../redux/actions/user";
+import ApplicationsAPI from "../../services/ApplicationsAPI";
+import {formatCurrency} from "../../services/utils";
 
 const { Step } = Steps;
 
@@ -19,12 +21,15 @@ class PaymentAccept extends React.Component {
             isLoading: null,
             // Enum of type: "link_bank_account", "request_payment"
             currentPaymentAcceptanceStep: ALL_PAYMENT_ACCEPTANCE_STEPS[0],
+            application: null,
+            scholarship: null,
         }
     }
 
     componentDidMount() {
 
         const { userProfile } = this.props;
+        this.getApplication();
 
         if (!userProfile.stripe_connected_account_id) {
             // User has not linked their bank account yet so they need to do that first.
@@ -40,6 +45,28 @@ class PaymentAccept extends React.Component {
         }
     }
 
+    getApplication = () => {
+        const {
+            location : { search },
+        } = this.props;
+        const params = new URLSearchParams(search);
+
+        let applicationID = params.get('application');
+        this.setState({isLoading: "Retrieving Application..."});
+        ApplicationsAPI.get(applicationID)
+            .then(res=>{
+                const { data: application } = res;
+                const { scholarship } = application;
+                this.setState({application, scholarship});
+            })
+            .catch(err => {
+                console.log({err});
+            })
+            .finally(() => {
+                this.setState({isLoading: null});
+            })
+    };
+
     linkBankAccount = (event=null) => {
 
         if(event) {
@@ -53,10 +80,14 @@ class PaymentAccept extends React.Component {
 
         this.setState({isLoading: "Connecting Bank Account"});
 
+        const accountData = {
+            user_profile: { first_name, last_name, email },
+            return_url: window.location.href,
+            refresh_url: window.location.href,
+        };
         PaymentAPI
-            .createAccount({first_name, last_name, email})
+            .createAccount(accountData)
             .then(res => {
-                console.log({res});
 
                 const { data: { redirect_url, account_id } } = res;
                 this.saveUserConnectedAccountId(account_id, redirect_url);
@@ -66,7 +97,6 @@ class PaymentAccept extends React.Component {
                 this.setState({isLoading: null});
             })
             .finally(() => {
-                console.log("linkBankAccount finally");
             });
 
 
@@ -80,26 +110,37 @@ class PaymentAccept extends React.Component {
         UserProfileAPI
             .patch({stripe_connected_account_id: account_id}, user)
             .then(res => {
-                console.log({res});
                 updateLoggedInUserProfile(res.data);
-                console.log(redirect_url);
-                // for some reason the auto redirect line below is not working
                 window.location.href = redirect_url;
             })
             .catch(err => {
                 console.log({err})
             })
             .finally(() => {
-                console.log("saveUserConnectedAccountId finally");
                 this.setState({isLoading: null});
             });
+    };
+
+    acceptPayment = () => {
+
     };
 
     render () {
 
         const { userProfile } = this.props;
-        const { isLoading, currentPaymentAcceptanceStep } = this.state;
+        const { isLoading, currentPaymentAcceptanceStep, application, scholarship } = this.state;
 
+        if (!application) {
+            return (
+                <div className="container mt-5">
+                    <div className="card shadow p-3">
+                        {isLoading &&
+                        <Loading title={isLoading} />
+                        }
+                    </div>
+                </div>
+            )
+        }
         return (
             <div className="container mt-5">
                 <div className="card shadow p-3">
@@ -125,12 +166,22 @@ class PaymentAccept extends React.Component {
                                 <Input value={userProfile.email} disabled={true}/>
                             </Col>
                             <Col span={24}>
-                                <Button onClick={this.linkBankAccount}
-                                        className="center-block"
-                                        type="primary"
-                                        disabled={isLoading}>
-                                    Link Bank Account with Stripe (Step 1)
-                                </Button>
+                                    <Button onClick={this.linkBankAccount}
+                                            className="center-block mt-3"
+                                            type="primary"
+                                            disabled={isLoading || currentPaymentAcceptanceStep !== ALL_PAYMENT_ACCEPTANCE_STEPS[0]}>
+                                        Link Bank Account with Stripe (Step 1)
+                                    </Button>
+                                    <Button onClick={this.acceptPayment}
+                                            className="center-block mt-3"
+                                            type="primary"
+                                            disabled={isLoading || currentPaymentAcceptanceStep !== ALL_PAYMENT_ACCEPTANCE_STEPS[1]}>
+                                        Accept Payment for {scholarship.name}
+                                        (
+                                        {formatCurrency(Number.parseInt(scholarship.funding_amount))}
+                                        ){' '}(Step 2)
+                                    </Button>
+
                                 <p className="mt-3">
                                     You will be redirected to{' '}
                                     <a href="https://stripe.com/" target="_blank" rel="noopener noreferrer" >

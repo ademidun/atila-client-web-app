@@ -5,12 +5,25 @@ class PaymentAPI {
 
     static apiUrlPayment = `${Environment.apiUrlPayment}`;
 
-
-    static createAccount = (userProfile) => {
+    /**
+     *
+     * @param accountData:{
+      "user_profile": {
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+      },
+      "return_url": "https://atila.ca/payment/accept/?application=<application_id>",
+      "refresh_url": "https://atila.ca/payment/accept/?application=<application_id>"
+    }
+     *
+     * @returns {AxiosPromise}
+     */
+    static createAccount = (accountData) => {
 
         const apiCompletionPromise = request({
             url: `${PaymentAPI.apiUrlPayment}/accounts/create`,
-            data: userProfile,
+            data: accountData,
             method: 'post',
         });
 
