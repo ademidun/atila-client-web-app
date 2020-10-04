@@ -74,7 +74,7 @@ function SponsoredScholarshipsTable({ sponsoredScholarships }){
             dataIndex: 'deadline',
             render: () => (
                 <Link to={`/`} className="btn btn-outline-primary">
-                    More Info
+                    Manage
                 </Link>
             ),
         }
