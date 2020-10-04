@@ -22,7 +22,7 @@ class UserProfileSponsoredScholarships extends React.Component {
 
         const { userProfile: {user : userId} } = this.props;
         this.setState({isLoading: true});
-        UserProfileAPI.getUserContent(userId, 'sponsoredScholarships')
+        UserProfileAPI.getUserContent(userId, 'sponsored_scholarships')
             .then(res => {
                 const sponsoredScholarships =  res.data.applications;
                 this.setState({sponsoredScholarships});
@@ -52,14 +52,6 @@ function SponsoredScholarshipsTable({ sponsoredScholarships }){
 
     const columns = [
         {
-            title: 'ID',
-            dataIndex: 'id',
-            key: 'applicationID',
-            render: (text, application) => (
-                <Link to={`/application/${application.id}`}>View Application <br/>({text})</Link>
-            ),
-        },
-        {
             title: 'Scholarship Name',
             dataIndex: ['scholarship', 'name'],
             key: 'description',
@@ -75,6 +67,16 @@ function SponsoredScholarshipsTable({ sponsoredScholarships }){
             dataIndex: 'deadline',
             render: (deadline, application) => (<ScholarshipDeadlineWithTags scholarship={application.scholarship}
                                                                              datePrefix="" />),
+        },
+        {
+            title: '',
+            key: 'deadline',
+            dataIndex: 'deadline',
+            render: () => (
+                <Link to={`/`} className="btn btn-outline-primary">
+                    More Info
+                </Link>
+            ),
         }
     ];
 
