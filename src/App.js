@@ -16,6 +16,9 @@ import LogRocket from "logrocket";
 import setupLogRocketReact from "logrocket-react";
 import Environment from "./services/Environment";
 
+const Payment = loadable(() => import("./scenes/Payment/Payment"), {
+  fallback: <Loading />,
+});
 // const Pricing = loadable(() => import("./scenes/AtilaPremium/Pricing"), {
 //   fallback: <Loading />,
 // });
@@ -132,6 +135,10 @@ class App extends React.Component {
               {/*  path='/premium'*/}
               {/*  component={GoogleAnalyticsTracker(Premium)}*/}
               {/*/>*/}
+              <Route
+                path='/payment'
+                component={GoogleAnalyticsTracker(Payment)}
+              />
               <Route
                 path='/verify'
                 component={GoogleAnalyticsTracker(VerifyAccount)}
