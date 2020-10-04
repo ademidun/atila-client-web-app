@@ -19,9 +19,9 @@ import Environment from "./services/Environment";
 const Payment = loadable(() => import("./scenes/Payment/Payment"), {
   fallback: <Loading />,
 });
-const Pricing = loadable(() => import("./scenes/Payment/Pricing"), {
-  fallback: <Loading />,
-});
+// const Pricing = loadable(() => import("./scenes/Payment/Pricing"), {
+//   fallback: <Loading />,
+// });
 const Scholarship = loadable(() => import("./scenes/Scholarship/Scholarship"), {
   fallback: <Loading />,
 });
@@ -123,10 +123,10 @@ class App extends React.Component {
                 component={GoogleAnalyticsTracker(Search)}
               />
               <Route path='/login' component={GoogleAnalyticsTracker(Login)} />
-              <Route
-                path='/pricing'
-                component={GoogleAnalyticsTracker(Pricing)}
-              />
+              {/*<Route*/}
+              {/*  path='/pricing'*/}
+              {/*  component={GoogleAnalyticsTracker(Pricing)}*/}
+              {/*/>*/}
               <Route
                 path='/payment'
                 component={GoogleAnalyticsTracker(Payment)}
