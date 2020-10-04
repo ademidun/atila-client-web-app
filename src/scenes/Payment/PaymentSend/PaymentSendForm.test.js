@@ -6,16 +6,16 @@ import {
     PREMIUM_PRICE_BEFORE_TAX,
     PREMIUM_PRICE_WITH_TAX,
     PremiumCheckoutFormTest as PremiumCheckoutForm
-} from "./PremiumCheckoutForm";
+} from "./PaymentSendForm";
 import {MemoryRouter} from "react-router-dom";
-import {UserProfileTest1} from "../../models/UserProfile";
+import {UserProfileTest1} from "../../../models/UserProfile";
 import {Provider} from "react-redux";
 
 configure({ adapter: new Adapter() });
 jest.mock('react-stripe-elements', () => {
     return {
         injectStripe: () => {
-            const PremiumCheckoutFormTest2 = require('./PremiumCheckoutForm').PremiumCheckoutFormTest;
+            const PremiumCheckoutFormTest2 = require('./PaymentSendForm').PremiumCheckoutFormTest;
             return PremiumCheckoutFormTest2;
         },
         CardElement: () => {
@@ -26,7 +26,7 @@ jest.mock('react-stripe-elements', () => {
 
 const mockStore = configureStore();
 import configureStore from "redux-mock-store";
-import {initialReduxStateLoggedIn} from "../../models/Constants";
+import {initialReduxStateLoggedIn} from "../../../models/Constants";
 const store = mockStore(initialReduxStateLoggedIn);
 
 // Invoice component uses Redux so you need to use a provider for them
@@ -83,7 +83,7 @@ describe.skip('<PremiumCheckoutForm />', () => {
                 </Provider>
             </MemoryRouter>
         );
-        const checkoutTitle = "<h1>Student Premium Checkout</h1>";
+        const checkoutTitle = "<h1>Student PaymentSend Checkout</h1>";
 
         expect(wrapper.html()).toContain(checkoutTitle);
     });

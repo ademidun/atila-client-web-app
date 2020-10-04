@@ -6,7 +6,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faQuestionCircle} from "@fortawesome/free-solid-svg-icons/faQuestionCircle";
 import {ATILA_POINTS_EXPLAIN_POPOVER} from "../../components/AtilaPointsPaywallModal";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
-import {PREMIUM_PRICE_BEFORE_TAX} from "./PremiumCheckoutForm";
+import {PREMIUM_PRICE_BEFORE_TAX} from "./PaymentSend/PaymentSendForm";
 import MoreFeatures from "../LandingPage/MoreFeatures";
 
 function Pricing() {

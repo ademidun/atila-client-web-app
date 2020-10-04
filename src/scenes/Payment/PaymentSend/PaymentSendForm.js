@@ -3,18 +3,18 @@ import React from 'react';
 import {CardElement, injectStripe} from 'react-stripe-elements';
 import {Alert, Button, Col, Modal, Result, Row} from "antd";
 import {Link, withRouter} from "react-router-dom";
-import BillingAPI from "../../services/BillingAPI";
+import BillingAPI from "../../../services/BillingAPI";
 import {connect} from "react-redux";
-import {UserProfilePropType} from "../../models/UserProfile";
-import UserProfileAPI from "../../services/UserProfileAPI";
-import {updateLoggedInUserProfile} from "../../redux/actions/user";
-import Loading from "../../components/Loading";
-import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
+import {UserProfilePropType} from "../../../models/UserProfile";
+import UserProfileAPI from "../../../services/UserProfileAPI";
+import {updateLoggedInUserProfile} from "../../../redux/actions/user";
+import Loading from "../../../components/Loading";
+import HelmetSeo, {defaultSeoContent} from "../../../components/HelmetSeo";
 import Invoice from "./Invoice";
 
 export const PREMIUM_PRICE_BEFORE_TAX = 9;
 export const PREMIUM_PRICE_WITH_TAX = 10.17;
-class PremiumCheckoutForm extends React.Component {
+class PaymentSendForm extends React.Component {
 
     constructor(props) {
         super(props);
@@ -121,7 +121,7 @@ class PremiumCheckoutForm extends React.Component {
         </div>);
 
         const seoContent = {
-            title: 'Atila Student Premium Checkout - $9/month',
+            title: 'Atila Student PaymentSend Checkout - $9/month',
             description: 'Get a premium student membership to Atila starting at just $9/month',
             image: defaultSeoContent.image,
             slug: '/premium'
@@ -267,11 +267,11 @@ class PremiumCheckoutForm extends React.Component {
     }
 }
 
-PremiumCheckoutForm.defaultProps = {
+PaymentSendForm.defaultProps = {
     userProfile: null
 };
 
-PremiumCheckoutForm.propTypes = {
+PaymentSendForm.propTypes = {
     userProfile: UserProfilePropType
 };
 const mapDispatchToProps = {
@@ -281,6 +281,6 @@ const mapDispatchToProps = {
 const mapStateToProps = state => {
     return { userProfile: state.data.user.loggedInUserProfile };
 };
-export default injectStripe(withRouter(connect(mapStateToProps, mapDispatchToProps)(PremiumCheckoutForm)));
+export default injectStripe(withRouter(connect(mapStateToProps, mapDispatchToProps)(PaymentSendForm)));
 
-export const  PremiumCheckoutFormTest = PremiumCheckoutForm;
+export const  PremiumCheckoutFormTest = PaymentSendForm;

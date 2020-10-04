@@ -1,9 +1,9 @@
 import React from "react";
 import './Invoice.scss'
 import {connect} from "react-redux";
-import {UserProfilePropType} from "../../models/UserProfile";
+import {UserProfilePropType} from "../../../models/UserProfile";
 import moment from "moment";
-import {PREMIUM_PRICE_BEFORE_TAX, PREMIUM_PRICE_WITH_TAX} from "./PremiumCheckoutForm";
+import {PREMIUM_PRICE_BEFORE_TAX, PREMIUM_PRICE_WITH_TAX} from "./PaymentSendForm";
 
 // source: https://github.com/sparksuite/simple-html-invoice-template
 const logoImageData = "https://firebasestorage.googleapis.com/v0/b/atila-7.appspot.com/o/public%2Fatila-logo-right-way-circle-transparent.png?alt=media&token=c7b77a1a-9563-41ef-90e9-57025a7dbd87";
