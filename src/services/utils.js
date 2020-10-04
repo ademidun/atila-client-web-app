@@ -149,7 +149,11 @@ export function formatCurrency(input) {
     return input.toLocaleString('en-ca', {style : 'currency', currency: 'CAD'});
 }
 
-export function slugify(text) {
+export function slugify(text, maxLength=null) {
+
+    if (maxLength) {
+        text = text.substring(0,maxLength);
+    }
     return text
         .trim()
         .toLowerCase()
@@ -413,15 +417,18 @@ export function getGreetingTime () {
     return greeting;
 }
 
-export function getRandomString() {
+export function getRandomString(maxLength=null) {
     // https://gist.github.com/gordonbrander/2230317
-    let id = '';
+    let randomString = '';
 
     for (let i =0; i< 4; i++) {
-        id += Math.random().toString(36).substr(2, 8);
+        randomString += Math.random().toString(36).substr(2, 8);
+    }
+    if (maxLength) {
+        randomString = randomString.substring(0, maxLength);
     }
 
-    return id;
+    return randomString;
 }
 
 export function getGuestUserId() {

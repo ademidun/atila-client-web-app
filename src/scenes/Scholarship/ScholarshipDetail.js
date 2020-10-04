@@ -9,10 +9,11 @@ import AnalyticsService from "../../services/AnalyticsService";
 import ScholarshipShareSaveButtons from "./ScholarshipShareSaveButtons";
 import HelmetSeo from "../../components/HelmetSeo";
 import UserProfileAPI from "../../services/UserProfileAPI";
+import ApplicationsAPI from "../../services/ApplicationsAPI";
 import AtilaPointsPaywallModal from "../../components/AtilaPointsPaywallModal";
 import ScholarshipExtraCriteria from "./ScholarshipExtraCriteria";
 import ScholarshipDeadlineWithTags from "../../components/ScholarshipDeadlineWithTags";
-import {Alert, message} from 'antd';
+import {Alert, Button, message} from 'antd';
 
 
 class ScholarshipDetail extends React.Component {
@@ -96,9 +97,22 @@ class ScholarshipDetail extends React.Component {
             });
     };
 
-    goBack = (event) => {
-        event.preventDefault();
-        this.props.history.goBack();
+    getOrCreateApplication = () => {
+        const { userProfile } = this.props;
+        const { scholarship } = this.state;
+        console.log({userProfile, scholarship});
+        ApplicationsAPI.getOrCreate(scholarship.id, userProfile.user)
+            .then(res=>{
+                console.log({res});
+
+                const {data: { application }} = res;
+
+                this.props.history.push(`/application/${application.id}`);
+            })
+            .catch(err => {
+                console.log({err});
+            })
+
     };
 
     render() {
@@ -106,6 +120,7 @@ class ScholarshipDetail extends React.Component {
         const { isLoadingScholarship, scholarship,
             errorLoadingScholarship, scholarshipUserProfile,
             pageViews} = this.state;
+        const { userProfile } = this.props;
 
         if (errorLoadingScholarship) {
             return (<div className="text-center">
@@ -165,7 +180,16 @@ class ScholarshipDetail extends React.Component {
                                 </React.Fragment>}
                                 <Link to={`/scholarship/edit/${slug}`}>
                                     Edit Scholarship
-                                </Link>
+                                </Link><br/>
+                                {/*// BETA MODE: Only allow is_debug_mode users to do Direct Applications*/}
+                                {userProfile && userProfile.is_debug_mode &&
+                                scholarship.is_atila_direct_application &&
+                                <Button type="primary" size="large"
+                                        className="mt-3" style={{fontSize: "20px"}}
+                                        onClick={this.getOrCreateApplication}>
+                                    Apply Now
+                                </Button>
+                                }
                                 <br/><br/>
                                 {
                                     scholarshipUserProfile &&
@@ -183,10 +207,6 @@ class ScholarshipDetail extends React.Component {
                                         </div>
                                     </React.Fragment>
                                 }
-
-                                <button onClick={this.goBack} className="btn btn-link pl-0">
-                                    Go Back ←
-                                </button>
                                 <p className="font-weight-bold">
                                     <ScholarshipDeadlineWithTags scholarship={scholarship} />
                                     <br/>

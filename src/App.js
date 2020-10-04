@@ -25,6 +25,9 @@ import Environment from "./services/Environment";
 const Scholarship = loadable(() => import("./scenes/Scholarship/Scholarship"), {
   fallback: <Loading />,
 });
+const Application = loadable(() => import("./scenes/Application/Application"), {
+  fallback: <Loading />,
+});
 const Search = loadable(() => import("./scenes/Search/Search"), {
   fallback: <Loading />,
 });
@@ -110,6 +113,10 @@ class App extends React.Component {
               <Route
                 path='/scholarship'
                 component={GoogleAnalyticsTracker(Scholarship)}
+              />
+              <Route
+                path='/application'
+                component={GoogleAnalyticsTracker(Application)}
               />
               <Route
                 path='/search'

@@ -2,10 +2,10 @@ export const EnvironmentDev = {
     name: 'dev',
     production: false,
     apiUrl: 'http://127.0.0.1:8000/api',
-    //apiUrl: 'https://fa8f975b2f0b.ngrok.io/api',
+    //apiUrl: 'https://111ec86312cd.ngrok.io/api',
     apiUrlNodeMicroservice: 'http://127.0.0.1:9000',
     apiUrlBillingMicroservice: 'http://127.0.0.1:9001',
-    apiUrlRecommender: 'http://127.0.0.1:5001',
+    apiUrlRecommender: 'http://127.0.0.1:5000',
     apiUrlEmailService: 'http://127.0.0.1:5001',
     STRIPE_PUBLIC_KEY: 'pk_test_AxhlK7IudWRlQCa4azz4WElP00QVVE6SNM',
 };
