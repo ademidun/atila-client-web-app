@@ -24,7 +24,7 @@ class UserProfileSponsoredScholarships extends React.Component {
         this.setState({isLoading: true});
         UserProfileAPI.getUserContent(userId, 'sponsored_scholarships')
             .then(res => {
-                const sponsoredScholarships =  res.data.sponsored_scholarships;
+                const sponsoredScholarships =  res.data.scholarships;
                 this.setState({sponsoredScholarships});
                 console.log("sponsored: ", sponsoredScholarships)
             })
@@ -48,31 +48,26 @@ class UserProfileSponsoredScholarships extends React.Component {
 
 }
 
-
 function SponsoredScholarshipsTable({ sponsoredScholarships }){
-
     const columns = [
         {
             title: 'Scholarship',
-            dataIndex: ['scholarship', 'name'],
-            key: 'description',
-            render: (text, application) => (
-                <Link to={`/scholarship/${application.scholarship.slug}`}>
-                    {`${text.substr(0, 140)}...`}
-                </Link>
+            dataIndex: 'name',
+            key: 'name',
+            render: (text, record) => (
+                <Link to={`/scholarship/${record.slug}`}>{text}</Link>
             ),
         },
         {
             title: 'Deadline',
             key: 'deadline',
             dataIndex: 'deadline',
-            render: (deadline, application) => (<ScholarshipDeadlineWithTags scholarship={application.scholarship}
-                                                                             datePrefix="" />),
+            render: (deadline, scholarship) => (<ScholarshipDeadlineWithTags scholarship={scholarship} datePrefix="" />),
         },
         {
             title: '',
-            key: 'deadline',
-            dataIndex: 'deadline',
+            key: '',
+            dataIndex: '',
             render: () => (
                 <Link to={`/`} className="btn btn-outline-primary">
                     Manage
@@ -83,7 +78,6 @@ function SponsoredScholarshipsTable({ sponsoredScholarships }){
 
     return (<Table columns={columns} dataSource={sponsoredScholarships} rowKey="id" />)
 }
-
 
 const mapDispatchToProps = {
     updateLoggedInUserProfile
