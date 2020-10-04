@@ -355,8 +355,8 @@ class ScholarshipAddEdit extends React.Component{
         ];
         scholarshipEditPages = scholarshipEditPages.slice(0, is_atila_direct_application ? scholarshipEditPages.length : 2);
 
-        // BETA MODE: Only show the Atila direct Applications stuff to is_atila_admin users
-        if (!userProfile || !userProfile.is_atila_admin) {
+        // BETA MODE: Only show the Atila direct Applications stuff to is_debug_mode users
+        if (!userProfile || !userProfile.is_debug_mode) {
             scholarshipFormConfigsPage1 = scholarshipFormConfigsPage1.filter((formConfig) => formConfig.keyName !== "is_atila_direct_application");
 
             scholarshipEditPages = scholarshipEditPages.slice(0, 2);

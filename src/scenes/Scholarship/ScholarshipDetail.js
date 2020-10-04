@@ -181,7 +181,8 @@ class ScholarshipDetail extends React.Component {
                                 <Link to={`/scholarship/edit/${slug}`}>
                                     Edit Scholarship
                                 </Link><br/>
-                                {userProfile && userProfile.is_atila_admin &&
+                                {/*// BETA MODE: Only allow is_debug_mode users to do Direct Applications*/}
+                                {userProfile && userProfile.is_debug_mode &&
                                 scholarship.is_atila_direct_application &&
                                 <Button type="primary" size="large"
                                         className="mt-3" style={{fontSize: "20px"}}

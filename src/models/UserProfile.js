@@ -9,6 +9,7 @@ export const UserProfileTest1 = {
     id: 1,
     user: 1,
     is_atila_admin: false,
+    is_debug_mode: false,
     eligible_programs: [],
     saved_scholarships: [],
 };
@@ -143,5 +144,6 @@ export const UserProfilePropType = PropTypes.shape({
     last_name: PropTypes.string,
     email: PropTypes.string,
     is_atila_admin: PropTypes.boolean,
+    is_debug_mode: PropTypes.boolean,
     stripe_customer_id: PropTypes.string,
 });
