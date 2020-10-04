@@ -24,8 +24,9 @@ class UserProfileSponsoredScholarships extends React.Component {
         this.setState({isLoading: true});
         UserProfileAPI.getUserContent(userId, 'sponsored_scholarships')
             .then(res => {
-                const sponsoredScholarships =  res.data.applications;
+                const sponsoredScholarships =  res.data.sponsored_scholarships;
                 this.setState({sponsoredScholarships});
+                console.log("sponsored: ", sponsoredScholarships)
             })
             .finally(() => {
                 this.setState({isLoading: false});
@@ -52,7 +53,7 @@ function SponsoredScholarshipsTable({ sponsoredScholarships }){
 
     const columns = [
         {
-            title: 'Scholarship Name',
+            title: 'Scholarship',
             dataIndex: ['scholarship', 'name'],
             key: 'description',
             render: (text, application) => (
