@@ -18,7 +18,8 @@ describe('<Pricing />', () => {
 
     });
 
-    it('renders correct price', () => {
+    // TODO remove skip when we introduce new pricing mechanism
+    it.skip('renders correct price', () => {
         const wrapper = mount(
             <MemoryRouter>
                 <Pricing />
