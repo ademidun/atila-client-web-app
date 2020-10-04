@@ -70,7 +70,7 @@ class ContentCard extends React.Component {
                 </div>}
                 <div  className="card-image mb-3">
                     {
-                    !hideImage &&
+                    !hideImage && image &&
                     <Link to={slug}>
                         <img  src={image}
                               alt={title}

@@ -18,8 +18,6 @@ class EbookLandingBanner extends Component {
 
     const { audience, showTitleCTA } = this.props;
 
-    console.log('this.props', this.props);
-
     const showBookChaptersButton = (
         <Button
             className='center-block'
