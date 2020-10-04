@@ -6,7 +6,7 @@ import Loading from "../../components/Loading";
 
 
 
-class PaymentOnboarding extends React.Component {
+class PaymentAccept extends React.Component {
 
     constructor(props) {
         super(props);
@@ -91,4 +91,4 @@ class PaymentOnboarding extends React.Component {
 const mapStateToProps = state => {
     return { userProfile: state.data.user.loggedInUserProfile };
 };
-export default connect(mapStateToProps)(PaymentOnboarding);
+export default connect(mapStateToProps)(PaymentAccept);

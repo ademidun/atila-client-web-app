@@ -1,11 +1,11 @@
 import React from 'react';
 import { Route, Switch } from "react-router-dom";
-import PaymentOnboarding from "./PaymentOnboarding";
+import PaymentAccept from "./PaymentAccept";
 
 function Blog({ match }) {
     return (
         <Switch>
-            <Route path={`${match.path}/onboarding/start`} component={PaymentOnboarding} />
+            <Route path={`${match.path}/accept`} component={PaymentAccept} />
         </Switch>
     );
 }
