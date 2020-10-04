@@ -1,7 +1,7 @@
 // CheckoutForm.js
 import React from 'react';
 import {CardElement, injectStripe} from 'react-stripe-elements';
-import {Alert, Button, Col, Modal, Result, Row} from "antd";
+import {Alert, Button, Col, Result, Row} from "antd";
 import {Link, withRouter} from "react-router-dom";
 import BillingAPI from "../../../services/BillingAPI";
 import {connect} from "react-redux";
@@ -11,6 +11,9 @@ import {updateLoggedInUserProfile} from "../../../redux/actions/user";
 import Loading from "../../../components/Loading";
 import HelmetSeo, {defaultSeoContent} from "../../../components/HelmetSeo";
 import Invoice from "./Invoice";
+import ScholarshipsAPI from "../../../services/ScholarshipsAPI";
+import {ATILA_SCHOLARSHIP_FEE} from "../../../models/Constants";
+import {formatCurrency} from "../../../services/utils";
 
 export const PREMIUM_PRICE_BEFORE_TAX = 9;
 export const PREMIUM_PRICE_WITH_TAX = 10.17;
@@ -18,9 +21,7 @@ class PaymentSendForm extends React.Component {
 
     constructor(props) {
         super(props);
-        const { userProfile } = this.props;
         this.state = {
-            isLoggedInModalVisible: !userProfile,
             cardHolderName: "",
             addressCountry: "",
             isResponseLoading: false,
@@ -28,11 +29,48 @@ class PaymentSendForm extends React.Component {
             isResponseErrorMessage: null,
             isResponseLoadingFinishedText: null,
             isPaymentSuccess: false,
+            totalPaymentAmount: null,
+            // Leaving the following message in case it's relevant to an error I might encounter when funding scholarships
             // have to set it here, otherwise it may get set after user subscribes for an account
             // then instead of showing 'Payment successful' it showed 'You already have a premium account'
-            isPremiumOnLoad: userProfile && userProfile.is_atila_premium,
         }
     }
+
+    componentDidMount() {
+        const { userProfile } = this.props;
+        if (!userProfile || !userProfile.is_debug_mode) {
+            return
+        }
+
+        this.getScholarship();
+    }
+
+    getScholarship = () => {
+        const {
+            location : { search },
+        } = this.props;
+        const params = new URLSearchParams(search);
+
+        let scholarshipID = params.get('scholarship');
+        this.setState({isResponseLoading: "Retrieving Scholarship..."});
+
+        ScholarshipsAPI
+            .get(scholarshipID)
+            .then(res=> {
+                const {data : scholarship} = res;
+                // totalPaymentAmount = scholarship.funding_amount + (Atila 5% fee + 13% tax)
+                const totalPaymentAmount = Number.parseInt(scholarship.funding_amount)  +
+                    (ATILA_SCHOLARSHIP_FEE * 1.13 * Number.parseInt(scholarship.funding_amount));
+
+                this.setState({scholarship, totalPaymentAmount});
+            })
+            .catch(err=> {
+                console.log({err})
+            })
+            .finally(() => {
+                this.setState({isResponseLoading: null});
+            })
+    };
 
     handleSubmit = async (ev) => {
         ev.preventDefault();
@@ -96,24 +134,11 @@ class PaymentSendForm extends React.Component {
 
     };
 
-    handleOk = e => {
-        this.setState({
-            isLoggedInModalVisible: false,
-        });
-    };
-
-    handleCancel = e => {
-        this.setState({
-            isLoggedInModalVisible: false,
-        });
-    };
-
     render() {
 
-        const { userProfile } = this.props;
         const { cardHolderName, isResponseLoading, isResponseLoadingMessage,
             isPaymentSuccess, isResponseLoadingFinishedText,
-            isResponseErrorMessage, isLoggedInModalVisible, isPremiumOnLoad} = this.state;
+            isResponseErrorMessage, scholarship, totalPaymentAmount} = this.state;
 
         const isResponseErrorMessageWithContactLink = (<div>
             {isResponseErrorMessage}
@@ -121,80 +146,51 @@ class PaymentSendForm extends React.Component {
         </div>);
 
         const seoContent = {
-            title: 'Atila Student PaymentSend Checkout - $9/month',
-            description: 'Get a premium student membership to Atila starting at just $9/month',
+            title: 'Atila - Fund Scholarship',
+            description: 'Fund a scholarship on Atila',
             image: defaultSeoContent.image,
-            slug: '/premium'
+            slug: '/payment/send'
         };
 
-        const helmetSeo = (<HelmetSeo content={seoContent} />);
-        const redirectString = `?redirect=/premium`;
-        const loginToUsePremiumTitle = "You Must be Logged In";
-        const loginToUsePremium = (<div className="center-block">
-            <Link to={`/login${redirectString}`}>Login</Link>{' '} or {' '}
-            <Link to={`/register${redirectString}`}>Register</Link>
-            {' '} to continue with Atila Premium checkout
-        </div>);
+        let helmetSeo = (<HelmetSeo content={seoContent} />);
 
-        if(!userProfile) {
-            return (
-                <div className="container mt-5">
-                    <div className="card shadow p-3">
-                        <Modal
-                            visible={isLoggedInModalVisible}
-                            title={loginToUsePremiumTitle}
-                            onOk={this.handleOk}
-                            onCancel={this.handleCancel}
-                            footer={[
-                                <Button key="back" onClick={this.handleCancel}>
-                                    <Link to={`/login${redirectString}`}>Login</Link>
-                                </Button>,
-                                <Button key="submit" type="primary" onClick={this.handleOk}>
-                                    <Link to={`/register${redirectString}`}>Register</Link>
-                                </Button>,
-                            ]}
-                        >
-                            <Link to={`/login${redirectString}`}>Login</Link>{' '}
-                            or{' '}
-                            <Link to={`/register${redirectString}`}>Register</Link>{' '}
-                            to continue with Atila Premium checkout
-                        </Modal>
-                        <h1>{loginToUsePremiumTitle}</h1>
-                    {loginToUsePremium}
-                    </div>
-                </div>
-            )
-        }
-
-        if (isPremiumOnLoad) {
+        if (!scholarship) {
             return (
                 <React.Fragment>
                     {helmetSeo}
                     <div className="container mt-5" style={{ height: '80vh'}}>
                         <div className="card shadow p-3">
-                            <div className="text-center">
-                                <h1>
-                                    You already have a premium account
-                                </h1>
-
-                                <Link to={`/profile/${userProfile.username}/settings`}>
-                                    View Your Account Settings
-                                </Link>
-                            </div>
+                            {isResponseLoading &&
+                            <Loading
+                                title={isResponseLoading} />
+                            }
                         </div>
                     </div>
                 </React.Fragment>
             )
         }
+
+        seoContent.title = `Fund ${scholarship.name}`;
+        helmetSeo = (<HelmetSeo content={seoContent} />);
+
         return (
             <React.Fragment>
                 {helmetSeo}
                 <div className="container mt-5" style={{ height: '80vh'}}>
                     <div className="card shadow p-3">
-                        <h1>Student Premium Checkout</h1>
+                        <h1>Fund{' '}
+                            <Link to={`/scholarship/${scholarship.slug}`}>
+                                {scholarship.name}
+                            </Link>
+                        </h1>
+                        <h5 className="center-block">
+                            <Link to={`/scholarship/edit/${scholarship.slug}`}>
+                                Edit Scholarship
+                            </Link>
+                        </h5>
 
                         <Row gutter={16}>
-                            <Col xs={24} md={12}>
+                            <Col sm={24} md={12}>
                                 <div className="checkout-form-container">
                                     {isPaymentSuccess &&
                                     <Result
@@ -229,6 +225,10 @@ class PaymentSendForm extends React.Component {
                                         </Col>
                                         <Col span={24}>
                                             <CardElement style={{base: {fontSize: '18px'}}} />
+
+                                            <p className="my-3">
+                                                Test with: 4000001240000000
+                                            </p>
                                         </Col>
                                     </Row>
 
@@ -237,7 +237,7 @@ class PaymentSendForm extends React.Component {
                                             size="large"
                                             disabled={isResponseLoading}
                                             onClick={this.handleSubmit}>
-                                        Confirm order (${PREMIUM_PRICE_WITH_TAX}/month)
+                                        Confirm order ({formatCurrency(totalPaymentAmount)})
                                     </Button>
 
                                     {isResponseLoading &&
@@ -256,8 +256,8 @@ class PaymentSendForm extends React.Component {
 
                                 </form>}
                             </Col>
-                            <Col xs={24} md={12}>
-                                <Invoice />
+                            <Col sm={24} md={12}>
+                                <Invoice scholarship={scholarship} />
                             </Col>
                         </Row>
                     </div>

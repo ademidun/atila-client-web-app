@@ -34,6 +34,16 @@ class ScholarshipsAPI {
         return apiCompletionPromise;
     };
 
+    static get = (id = '') => {
+
+        const apiCompletionPromise = request({
+            method: 'get',
+            url: `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/`,
+        });
+
+        return apiCompletionPromise;
+    };
+
     static list = (queryString = '') => {
 
         const apiCompletionPromise = request({

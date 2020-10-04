@@ -15,6 +15,7 @@ export const MAX_ESSAY_PAGE_VIEWS = 3;
 export const MAX_SCHOLARSHIP_PAGE_VIEWS = 10;
 
 export const ATILA_SCHOLARSHIP_FEE = 0.05;
+export const ATILA_SCHOLARSHIP_FEE_TAX = 0.13;
 
 export const EBOOK_AUDIENCE_IMAGES = {
     '1': {
