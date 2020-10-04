@@ -40,7 +40,7 @@ class UserProfileSponsoredScholarships extends React.Component {
             return (<Loading title={`Loading Scholarships`} className='mt-3' />)
         }
         return (<React.Fragment>
-            <ApplicationsTable applications={sponsoredScholarships} />
+            <SponsoredScholarshipsTable sponsoredScholarships={sponsoredScholarships} />
         </React.Fragment>)
     }
 
@@ -48,7 +48,7 @@ class UserProfileSponsoredScholarships extends React.Component {
 }
 
 
-function ApplicationsTable({ applications }){
+function SponsoredScholarshipsTable({ sponsoredScholarships }){
 
     const columns = [
         {
@@ -78,7 +78,7 @@ function ApplicationsTable({ applications }){
         }
     ];
 
-    return (<Table columns={columns} dataSource={applications} rowKey="id" />)
+    return (<Table columns={columns} dataSource={sponsoredScholarships} rowKey="id" />)
 }
 
 
