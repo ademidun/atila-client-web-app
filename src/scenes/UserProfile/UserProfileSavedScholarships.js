@@ -102,7 +102,7 @@ function SavedScholarshipsTable({ scholarships, removeSavedScholarship }){
             ),
         },
         {
-            title: 'description',
+            title: 'Description',
             dataIndex: 'description',
             key: 'description',
             render: text => (`${text.substr(0, 140)}...`),
