@@ -13,7 +13,7 @@ class UserProfileSponsoredScholarships extends React.Component {
         super(props);
 
         this.state = {
-            sponsoredScholarships: null,
+            createdScholarships: null,
             isLoading: false,
         }
     }
@@ -22,11 +22,11 @@ class UserProfileSponsoredScholarships extends React.Component {
 
         const { userProfile: {user : userId} } = this.props;
         this.setState({isLoading: true});
-        UserProfileAPI.getUserContent(userId, 'sponsored_scholarships')
+        UserProfileAPI.getUserContent(userId, 'created_scholarships')
             .then(res => {
-                const sponsoredScholarships =  res.data.scholarships;
-                this.setState({sponsoredScholarships});
-                console.log("sponsored: ", sponsoredScholarships)
+                const createdScholarships =  res.data.created_scholarships;
+                this.setState({createdScholarships});
+                console.log("created: ", createdScholarships)
             })
             .finally(() => {
                 this.setState({isLoading: false});
@@ -35,48 +35,52 @@ class UserProfileSponsoredScholarships extends React.Component {
 
     render() {
 
-        const {  sponsoredScholarships, isLoading } = this.state;
+        const {  createdScholarships, isLoading } = this.state;
 
         if (isLoading) {
             return (<Loading title={`Loading Scholarships`} className='mt-3' />)
         }
         return (<React.Fragment>
-            <SponsoredScholarshipsTable sponsoredScholarships={sponsoredScholarships} />
+            <CreatedScholarshipsTable createdScholarships={createdScholarships}/>
         </React.Fragment>)
     }
 
 
 }
 
-function SponsoredScholarshipsTable({ sponsoredScholarships }){
+function CreatedScholarshipsTable({ createdScholarships }){
+
     const columns = [
         {
             title: 'Scholarship',
             dataIndex: 'name',
-            key: 'name',
-            render: (text, record) => (
-                <Link to={`/scholarship/${record.slug}`}>{text}</Link>
+            key: '1',
+            render: (text, scholarship) => (
+                <Link to={`/scholarship/${scholarship.slug}`}>
+                    {`${text.substr(0, 140)}...`}
+                </Link>
             ),
         },
         {
             title: 'Deadline',
-            key: 'deadline',
             dataIndex: 'deadline',
-            render: (deadline, scholarship) => (<ScholarshipDeadlineWithTags scholarship={scholarship} datePrefix="" />),
+            key: '2',
+            render: (deadline, scholarship) => (<ScholarshipDeadlineWithTags scholarship={scholarship}
+                                                                             datePrefix="" />),
         },
         {
             title: '',
-            key: '',
             dataIndex: '',
+            key: '3',
             render: () => (
                 <Link to={`/`} className="btn btn-outline-primary">
                     Manage
                 </Link>
-            ),
+            )
         }
     ];
 
-    return (<Table columns={columns} dataSource={sponsoredScholarships} rowKey="id" />)
+    return (<Table columns={columns} dataSource={createdScholarships} rowKey="id" />)
 }
 
 const mapDispatchToProps = {
