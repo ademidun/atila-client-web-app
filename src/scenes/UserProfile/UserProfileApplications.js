@@ -59,12 +59,12 @@ function ApplicationsTable({ applications }){
             ),
         },
         {
-            title: 'Scholarship Name',
+            title: 'Scholarship',
             dataIndex: ['scholarship', 'name'],
             key: 'description',
             render: (text, application) => (
                 <Link to={`/scholarship/${application.scholarship.slug}`}>
-                    {`${text.substr(0, 140)}...`}
+                    {text}
                 </Link>
             ),
         },

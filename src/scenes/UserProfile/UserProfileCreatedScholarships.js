@@ -7,7 +7,7 @@ import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import {connect} from "react-redux";
 import ScholarshipDeadlineWithTags from "../../components/ScholarshipDeadlineWithTags";
 
-class UserProfileSponsoredScholarships extends React.Component {
+class UserProfileCreatedScholarships extends React.Component {
 
     constructor(props) {
         super(props);
@@ -57,7 +57,7 @@ function CreatedScholarshipsTable({ createdScholarships }){
             key: '1',
             render: (text, scholarship) => (
                 <Link to={`/scholarship/${scholarship.slug}`}>
-                    {`${text.substr(0, 140)}...`}
+                    {text}
                 </Link>
             ),
         },
@@ -91,4 +91,4 @@ const mapStateToProps = state => {
     return { userProfile: state.data.user.loggedInUserProfile };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserProfileSponsoredScholarships);
+export default connect(mapStateToProps, mapDispatchToProps)(UserProfileCreatedScholarships);

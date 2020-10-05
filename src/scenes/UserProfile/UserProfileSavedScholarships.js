@@ -94,7 +94,7 @@ function SavedScholarshipsTable({ scholarships, removeSavedScholarship }){
 
     const columns = [
         {
-            title: 'Name',
+            title: 'Scholarship',
             dataIndex: 'name',
             key: 'name',
             render: (text, record) => (
