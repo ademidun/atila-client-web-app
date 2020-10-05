@@ -70,10 +70,10 @@ function CreatedScholarshipsTable({ createdScholarships }){
         },
         {
             title: '',
-            dataIndex: '',
+            dataIndex: 'id',
             key: '3',
-            render: () => (
-                <Link to={`/`} className="btn btn-outline-primary">
+            render: (id) => (
+                <Link to={`/scholarship/${id}/manage`} className="btn btn-outline-primary">
                     Manage
                 </Link>
             )
