@@ -91,7 +91,7 @@ class PaymentSendForm extends React.Component {
         this.setState({isResponseErrorMessage: null});
 
         const paymentData = {
-            scholarship: {funding_amount: totalPaymentAmount, name: scholarship.name}
+            scholarship: { funding_amount: totalPaymentAmount, name: scholarship.name, id: scholarship.id }
         };
 
         try{

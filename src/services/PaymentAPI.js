@@ -3,7 +3,7 @@ import request from "axios";
 
 class PaymentAPI {
 
-    static apiUrlPayment = `${Environment.apiUrlPayment}`;
+    static apiUrlPayment = `${Environment.apiUrl}/payment`;
 
     /**
      *
@@ -22,7 +22,7 @@ class PaymentAPI {
     static createAccount = (accountData) => {
 
         const apiCompletionPromise = request({
-            url: `${PaymentAPI.apiUrlPayment}/accounts/create`,
+            url: `${PaymentAPI.apiUrlPayment}/create-account/`,
             data: accountData,
             method: 'post',
         });
@@ -33,7 +33,7 @@ class PaymentAPI {
     static getClientSecret = (paymentData) => {
 
         const apiCompletionPromise = request({
-            url: `${PaymentAPI.apiUrlPayment}/payment/get-client-secret`,
+            url: `${PaymentAPI.apiUrlPayment}/get-client-secret/`,
             method: 'post',
             data: paymentData,
         });
