@@ -114,7 +114,7 @@ function SavedScholarshipsTable({ scholarships, removeSavedScholarship }){
             render: (deadline, scholarship) => (<ScholarshipDeadlineWithTags scholarship={scholarship} datePrefix="" />),
         },
         {
-            title: 'Remove',
+            title: '',
             key: 'action',
             render: (text, record) => (
                 <button className="btn btn-link my-3"
