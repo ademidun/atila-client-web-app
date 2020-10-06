@@ -119,17 +119,30 @@ class PaymentSendForm extends React.Component {
                 } else {
                     // The payment has been processed!
                     if (cardPaymentResult.paymentIntent.status === 'succeeded') {
-                        const isResponseLoadingFinishedText = (<div>
-                            Payment was successful. See your live scholarship at:
-                            <Link to={`/scholarship/${scholarship.slug}`} >{scholarship.name}</Link>
-                        </div>);
-                        this.setState({isResponseLoadingFinishedText, isPaymentSuccess: true});
-                        // Show a success message to your customer
-                        // There's a risk of the customer closing the window before callback
-                        // execution. Set up a webhook or plugin to listen for the
-                        // payment_intent.succeeded event that handles any business critical
-                        // post-payment actions.
-                        // TODO Update Scholarship.is_funded attribute and Scholarship.published
+
+                        ScholarshipsAPI
+                            .patch(scholarship.id, {stripe_payment_intent_id: cardPaymentResult.paymentIntent.id})
+                            .then(res => {
+                                console.log({res});
+                            })
+                            .catch(err => {
+                                console.log({err});
+                            })
+                            .finally(() => {
+                                console.log("Finally");
+                                this.setState({isLoading: 'Saving Progress'});
+                                const isResponseLoadingFinishedText = (<div>
+                                    Payment was successful. See your live scholarship at:
+                                    <Link to={`/scholarship/${scholarship.slug}`} >{scholarship.name}</Link>
+                                </div>);
+                                this.setState({isResponseLoadingFinishedText, isPaymentSuccess: true});
+                                // Show a success message to your customer
+                                // There's a risk of the customer closing the window before callback
+                                // execution. Set up a webhook or plugin to listen for the
+                                // payment_intent.succeeded event that handles any business critical
+                                // post-payment actions.
+                                // TODO Update Scholarship.is_funded attribute and Scholarship.published
+                            });
                     }
                 }
 

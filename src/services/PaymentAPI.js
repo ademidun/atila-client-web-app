@@ -41,6 +41,28 @@ class PaymentAPI {
         return apiCompletionPromise;
     };
 
+    /***
+     *  Expects details about the payment in the format:
+     {
+            "user_profile": {"id": 3},
+            "scholarship": {"id": 272},
+        }
+     * @param paymentData
+     * @returns {AxiosPromise}
+     */
+    static transferPayment = (paymentData) => {
+
+        const apiCompletionPromise = request({
+            url: `${PaymentAPI.apiUrlPayment}/transfer-payment/`,
+            method: 'post',
+            data: paymentData,
+        });
+
+        return apiCompletionPromise;
+    };
+
+
+
 }
 
 export default PaymentAPI;

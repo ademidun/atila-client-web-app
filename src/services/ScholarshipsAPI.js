@@ -75,6 +75,17 @@ class ScholarshipsAPI {
         return apiCompletionPromise;
     };
 
+    static patch = (id, data) => {
+
+        const apiCompletionPromise = request({
+            method: 'patch',
+            data,
+            url: `${this.scholarshipsApiUrl}/${id}/`,
+        });
+
+        return apiCompletionPromise;
+    };
+
     static create = (scholarship, locationData) => {
 
         const apiCompletionPromise = request({
