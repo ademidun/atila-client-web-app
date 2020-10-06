@@ -10,7 +10,7 @@ import {formatCurrency} from "../../services/utils";
 
 const { Step } = Steps;
 
-const ALL_PAYMENT_ACCEPTANCE_STEPS = ["link_bank_account", "request_payment"];
+const ALL_PAYMENT_ACCEPTANCE_STEPS = ["link_bank_account", "request_payment", "complete"];
 
 class PaymentAccept extends React.Component {
 
@@ -33,7 +33,7 @@ class PaymentAccept extends React.Component {
 
         if (!userProfile.stripe_connected_account_id) {
             // User has not linked their bank account yet so they need to do that first.
-            this.setState({currentPaymentAcceptanceStep: ALL_PAYMENT_ACCEPTANCE_STEPS[0]})
+            this.setState({currentPaymentAcceptanceStep: ALL_PAYMENT_ACCEPTANCE_STEPS[0]});
         } else {
             // User already has a Stripe Connected Account, so their bank account is already linked.
             // // Time to Request Payment
@@ -122,6 +122,27 @@ class PaymentAccept extends React.Component {
     };
 
     acceptPayment = () => {
+        this.setState({isLoading: "Accepting Payment"});
+
+        const { userProfile } = this.props;
+        const { scholarship } = this.state;
+
+        const transferData = {
+            user_profile: { id: userProfile.user },
+            scholarship: { id: scholarship.id },
+        };
+        PaymentAPI
+            .transferPayment(transferData)
+            .then(res => {
+                console.log({res});
+                this.setState({currentPaymentAcceptanceStep: ALL_PAYMENT_ACCEPTANCE_STEPS[2]});
+            })
+            .catch(err => {
+                console.log({err});
+            })
+            .finally(() => {
+                this.setState({isLoading: null});
+            });
 
     };
 
@@ -152,6 +173,7 @@ class PaymentAccept extends React.Component {
                             .findIndex(step => step === currentPaymentAcceptanceStep)}>
                         <Step title="Link Bank Account" />
                         <Step title="Accept Payment" />
+                        <Step title="Complete" />
                     </Steps>
                     <div>
                         <h1>Connect Your Bank Account</h1>
