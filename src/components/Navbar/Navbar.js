@@ -74,9 +74,9 @@ class Navbar extends React.Component {
                   style={mode === "inline" ?
                       { width: 'fit-content'}
                        : null}>
-                <Menu.Item key="schools">
-                    <Link to="/schools">
-                        Schools and Jobs Ebook{' '}
+                <Menu.Item key="start">
+                    <Link to="/start">
+                        Start a Scholarship{' '}
                         <Tag color="green">new</Tag>
                     </Link>
                 </Menu.Item>
