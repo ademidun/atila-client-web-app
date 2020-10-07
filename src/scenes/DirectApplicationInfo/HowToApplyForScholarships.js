@@ -1,5 +1,6 @@
 import React from "react";
 import HelmetSeo from "../../components/HelmetSeo";
+import {Link} from "react-router-dom";
 
 function HowToApplyForScholarships() {
 
@@ -19,6 +20,11 @@ function HowToApplyForScholarships() {
             <div className="container mt-5">
                 <div className="card shadow p-3">
                     <h1>How to Apply for Scholarships</h1>
+                    <h5 className="text-center">
+                        <Link to="/start">
+                            Interested in how to start a scholarship?
+                        </Link>
+                    </h5>
                 </div>
             </div>
         </React.Fragment>
