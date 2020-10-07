@@ -1,15 +1,26 @@
 import React from "react";
 import './Invoice.scss'
 import {connect} from "react-redux";
-import {UserProfilePropType} from "../../models/UserProfile";
+import {UserProfilePropType} from "../../../models/UserProfile";
 import moment from "moment";
-import {PREMIUM_PRICE_BEFORE_TAX, PREMIUM_PRICE_WITH_TAX} from "./PremiumCheckoutForm";
+import {ScholarshipPropType} from "../../../models/Scholarship";
+import {ATILA_SCHOLARSHIP_FEE, ATILA_SCHOLARSHIP_FEE_TAX} from "../../../models/Constants";
+import {formatCurrency} from "../../../services/utils";
 
 // source: https://github.com/sparksuite/simple-html-invoice-template
 const logoImageData = "https://firebasestorage.googleapis.com/v0/b/atila-7.appspot.com/o/public%2Fatila-logo-right-way-circle-transparent.png?alt=media&token=c7b77a1a-9563-41ef-90e9-57025a7dbd87";
-function Invoice({ userProfile }) {
+function Invoice({ userProfile, scholarship }) {
 
     const { first_name, last_name, email } = userProfile;
+    const { funding_amount } = scholarship;
+
+    const fundingAmount = Number.parseInt(funding_amount);
+    const atilaFee = funding_amount * ATILA_SCHOLARSHIP_FEE;
+    const atilaFeeTax = atilaFee * ATILA_SCHOLARSHIP_FEE_TAX;
+    const totalAmount = fundingAmount + atilaFee + atilaFeeTax;
+
+
+
     const todayString = moment(Date.now()).format('MMMM DD, YYYY');
     return (
         <div className="invoice-box px-3">
@@ -62,21 +73,31 @@ function Invoice({ userProfile }) {
 
                 <tr className="item">
                     <td>
-                        Atila Student Premium
+                        {scholarship.name}
                     </td>
 
                     <td>
-                        ${PREMIUM_PRICE_BEFORE_TAX}
+                        {formatCurrency(fundingAmount)}
                     </td>
                 </tr>
 
                 <tr className="item">
                     <td>
-                        HST (13%)
+                        Atila Fee (5%)
                     </td>
 
                     <td>
-                        $1.17
+                        {formatCurrency(atilaFee)}
+                    </td>
+                </tr>
+
+                <tr className="item">
+                    <td>
+                        Atila Fee HST (13%)
+                    </td>
+
+                    <td>
+                        {formatCurrency(atilaFeeTax)}
                     </td>
                 </tr>
 
@@ -85,7 +106,7 @@ function Invoice({ userProfile }) {
                         Total
                     </td>
                     <td>
-                        ${PREMIUM_PRICE_WITH_TAX}
+                        {formatCurrency(totalAmount)}
                     </td>
                 </tr>
                 </tbody>
@@ -98,6 +119,8 @@ Invoice.defaultProps = {
     userProfile: null
 };
 Invoice.propTypes = {
+    scholarship: ScholarshipPropType,
+    // redux
     userProfile: UserProfilePropType
 };
 

@@ -7,13 +7,16 @@ import {nestedFieldUpdate, prettifyKeys, slugify, transformLocation} from "../..
 import Loading from "../../components/Loading";
 import {MAJORS_LIST, SCHOOLS_LIST} from "../../models/ConstantsForm";
 import {scholarshipUserProfileSharedFormConfigs, toastNotify} from "../../models/Utils";
-import {defaultScholarship} from "../../models/Scholarship";
+import {DEFAULT_SCHOLARSHIP} from "../../models/Scholarship";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Link} from "react-router-dom";
-import './ScholarshipAddEdit.scss';
+import {Steps, Tag} from "antd";
+import ScholarshipQuestionBuilder, {ScholarshipUserProfileQuestionBuilder} from "./ScholarshipQuestionBuilder";
+import {ScholarshipAddEditReview} from "./ScholarshipAddEditReview";
+const { Step } = Steps;
 
-const scholarshipFormConfigsPage1 = [
+let scholarshipFormConfigsPage1 = [
     {
         keyName: 'name',
         placeholder: 'Scholarship Name',
@@ -30,6 +33,13 @@ const scholarshipFormConfigsPage1 = [
             Short Description: Who is eligible for this scholarship?
             What should they do to apply?
         </label>),
+    },
+    {
+        keyName: 'is_atila_direct_application',
+        placeholder: 'Allow applicants to directly apply for scholarship through Atila? ',
+        html: () =>(<Tag color="green">new</Tag>),
+        type: 'checkbox',
+        className: 'font-weight-bold',
     },
     {
         keyName: 'criteria_info',
@@ -60,6 +70,11 @@ const scholarshipFormConfigsPage1 = [
     {
         keyName: 'funding_amount',
         placeholder: 'Funding Amount 💵',
+        type: 'number',
+    },
+    {
+        keyName: 'number_available_scholarships',
+        placeholder: 'Number of Available Scholarships',
         type: 'number',
     },
     {
@@ -130,7 +145,7 @@ class ScholarshipAddEdit extends React.Component{
         super(props);
 
         this.state = {
-            scholarship: defaultScholarship,
+            scholarship: DEFAULT_SCHOLARSHIP,
             isAddScholarshipMode: false,
             scholarshipPostError: null,
             isLoadingScholarship: true,
@@ -224,7 +239,6 @@ class ScholarshipAddEdit extends React.Component{
     };
 
     updateForm = (event) => {
-
         let value = event.target.value;
 
         if (event.target.type==='checkbox'){
@@ -255,12 +269,10 @@ class ScholarshipAddEdit extends React.Component{
             }
 
             if(event.target.name==='name') {
-                scholarship.slug = slugify(event.target.value,{lower: true});
+                scholarship.slug = slugify(event.target.value);
             }
             this.setState({scholarship});
         }
-
-        console.log(event.target.name + " " + event.target.value)
 
     };
 
@@ -324,6 +336,40 @@ class ScholarshipAddEdit extends React.Component{
             isLoadingScholarship, pageNumber, locationData } = this.state;
         const { userProfile } = this.props;
 
+        const { is_atila_direct_application } = scholarship;
+
+
+        let scholarshipEditPages = [
+            {
+                title: 'Basic Info',
+            },
+            {
+                title: 'More Details',
+            },
+            {
+                title: 'Scholarship Specific Questions',
+            },
+            {
+                title: 'Review',
+            },
+        ];
+        scholarshipEditPages = scholarshipEditPages.slice(0, is_atila_direct_application ? scholarshipEditPages.length : 2);
+
+        // BETA MODE: Only show the Atila direct Applications stuff to is_debug_mode users
+        if (!userProfile || !userProfile.is_debug_mode) {
+            scholarshipFormConfigsPage1 = scholarshipFormConfigsPage1.filter((formConfig) => formConfig.keyName !== "is_atila_direct_application");
+
+            scholarshipEditPages = scholarshipEditPages.slice(0, 2);
+        } else {
+            scholarshipEditPages = scholarshipEditPages.slice(0, is_atila_direct_application ? scholarshipEditPages.length : 2);
+        }
+
+        const scholarshipSteps = (<Steps current={pageNumber-1} progressDot  onChange={(current) => this.changePage(current+1)}>
+            { scholarshipEditPages.map(item => (
+                <Step key={item.title} title={item.title} />
+            ))}
+        </Steps>);
+
         const title = isAddScholarshipMode ? 'Add Scholarship' : 'Edit Scholarship';
         return (
             <div className="ScholarshipAddEdit">
@@ -335,6 +381,8 @@ class ScholarshipAddEdit extends React.Component{
                     {isLoadingScholarship && <Loading  title="Loading Scholarships..."/>}
                     <div className="card shadow p-3">
                         <h1>{title}: {scholarship.name}</h1>
+                        <hr/>
+                        {scholarshipSteps}
                         {!userProfile &&
                         <h4>
                             <span role="img" aria-label="warning emoji">
@@ -391,14 +439,32 @@ class ScholarshipAddEdit extends React.Component{
                             />
 
                         </React.Fragment>}
+                        {pageNumber === 3 &&
+                        <React.Fragment>
+                            <h3>User Profile Questions</h3>
+                                <ScholarshipUserProfileQuestionBuilder scholarship={scholarship}
+                                                                       onUpdate={this.updateForm} />
+                                <hr/>
+                            <h3>Scholarship Specific Questions</h3>
+                                <ScholarshipQuestionBuilder scholarship={scholarship}
+                                                            onUpdate={this.updateForm} />
+                        </React.Fragment>}
+                        {pageNumber === 4 &&
+                            <ScholarshipAddEditReview scholarship={scholarship} />
+                        }
                         <div className="my-2" style={{clear: 'both'}}>
-                            {pageNumber !== 2 &&
+                            {pageNumber < scholarshipEditPages.length &&
                             <button className="btn btn-outline-primary float-right col-md-6"
                                     onClick={() => this.changePage(pageNumber+1)}>Next</button>}
-                            {pageNumber !== 1 &&
+                            {pageNumber > 1 &&
                             <button className="btn btn-outline-primary float-left col-md-6"
                                     onClick={() => this.changePage(pageNumber-1)}>Prev</button>}
                         </div>
+                        <hr/>
+
+                        {scholarshipSteps}
+
+                        <hr/>
 
                         <button type="submit"
                                 className="btn btn-primary col-12 mt-2"

@@ -146,18 +146,18 @@ class UserProfileEdit extends React.Component {
             <div className={className}>
                 {title}
                 {/*startingPageNumber is zero when user first registers*/}
-                {/*Don't show Premium when first onboarding user. */}
+                {/*Don't show PaymentSend when first onboarding user. */}
                 {/*{startingPageNumber !==0 &&*/}
                 {/*    <Row style={{textAlign: 'left'}}>*/}
                 {/*        <Col sm={24} md={12}>*/}
                 {/*            <span><strong> Account Type: </strong>*/}
-                {/*                Student {userProfile.is_atila_premium ? 'Premium' : 'Free'}</span>*/}
+                {/*                Student {userProfile.is_atila_premium ? 'PaymentSend' : 'Free'}</span>*/}
                 {/*            {!userProfile.is_atila_premium &&*/}
                 {/*            <Button style={{ marginTop: 16 }}*/}
                 {/*                    className="m-3"*/}
                 {/*                    type="primary">*/}
                 {/*                <Link to="/premium">*/}
-                {/*                    Go Premium*/}
+                {/*                    Go PaymentSend*/}
                 {/*                </Link>*/}
                 {/*            </Button>*/}
                 {/*            }*/}

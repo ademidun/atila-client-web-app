@@ -16,13 +16,16 @@ import LogRocket from "logrocket";
 import setupLogRocketReact from "logrocket-react";
 import Environment from "./services/Environment";
 
-// const Pricing = loadable(() => import("./scenes/AtilaPremium/Pricing"), {
-//   fallback: <Loading />,
-// });
-// const Premium = loadable(() => import("./scenes/AtilaPremium/Premium"), {
+const Payment = loadable(() => import("./scenes/Payment/Payment"), {
+  fallback: <Loading />,
+});
+// const Pricing = loadable(() => import("./scenes/Payment/Pricing"), {
 //   fallback: <Loading />,
 // });
 const Scholarship = loadable(() => import("./scenes/Scholarship/Scholarship"), {
+  fallback: <Loading />,
+});
+const Application = loadable(() => import("./scenes/Application/Application"), {
   fallback: <Loading />,
 });
 const Search = loadable(() => import("./scenes/Search/Search"), {
@@ -112,6 +115,10 @@ class App extends React.Component {
                 component={GoogleAnalyticsTracker(Scholarship)}
               />
               <Route
+                path='/application'
+                component={GoogleAnalyticsTracker(Application)}
+              />
+              <Route
                 path='/search'
                 component={GoogleAnalyticsTracker(Search)}
               />
@@ -120,11 +127,10 @@ class App extends React.Component {
               {/*  path='/pricing'*/}
               {/*  component={GoogleAnalyticsTracker(Pricing)}*/}
               {/*/>*/}
-              {/*<Route*/}
-              {/*  exact*/}
-              {/*  path='/premium'*/}
-              {/*  component={GoogleAnalyticsTracker(Premium)}*/}
-              {/*/>*/}
+              <Route
+                path='/payment'
+                component={GoogleAnalyticsTracker(Payment)}
+              />
               <Route
                 path='/verify'
                 component={GoogleAnalyticsTracker(VerifyAccount)}

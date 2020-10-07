@@ -34,6 +34,16 @@ class ScholarshipsAPI {
         return apiCompletionPromise;
     };
 
+    static get = (id = '') => {
+
+        const apiCompletionPromise = request({
+            method: 'get',
+            url: `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/`,
+        });
+
+        return apiCompletionPromise;
+    };
+
     static list = (queryString = '') => {
 
         const apiCompletionPromise = request({
@@ -60,6 +70,17 @@ class ScholarshipsAPI {
             method: 'put',
             data: {scholarship: ScholarshipsAPI.cleanScholarship(scholarship), locationData},
             url: `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/`,
+        });
+
+        return apiCompletionPromise;
+    };
+
+    static patch = (id, data) => {
+
+        const apiCompletionPromise = request({
+            method: 'patch',
+            data,
+            url: `${this.scholarshipsApiUrl}/${id}/`,
         });
 
         return apiCompletionPromise;

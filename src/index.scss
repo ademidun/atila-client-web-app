@@ -154,6 +154,12 @@ label {
   width: 100%;
 }
 
+.FormDynamicInput .ck.ck-editor__editable_inline {
+  overflow: auto;
+  padding: 0 var(--ck-spacing-standard);
+  border: 1px solid #40a9ff;
+}
+
 .input-error {
   box-shadow: 0 0 3px #CC0000;
   color: #CC0000;

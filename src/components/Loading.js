@@ -35,7 +35,10 @@ Loading.defaultProps = {
     width: 'auto',
 };
 Loading.propTypes = {
-    isLoading: PropTypes.bool,
+    isLoading: PropTypes.oneOfType([
+        PropTypes.bool,
+        PropTypes.string,
+    ]),
     title: PropTypes.string,
     className: PropTypes.string,
     width: PropTypes.oneOfType([
