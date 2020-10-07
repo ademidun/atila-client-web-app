@@ -1,9 +1,7 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
-import ScholarshipDeadlineWithTags from "../../components/ScholarshipDeadlineWithTags";
 import {Table} from "antd";
-import UserProfileAPI from "../../services/UserProfileAPI";
 
 class ScholarshipManage extends React.Component {
     constructor(props) {
@@ -51,7 +49,7 @@ function ApplicantsTable({ applicants }){
             dataIndex: 'id',
             key: '2',
             render: (text, application) => (
-                <Link to={`/application/${application.id}`}>View Application <br/>({text})</Link>
+                <Link to={`/application/${application.id}`}>View Application<br/>({text})</Link>
             ),
         },
     ];
