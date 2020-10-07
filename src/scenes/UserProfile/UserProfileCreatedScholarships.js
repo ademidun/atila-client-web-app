@@ -7,13 +7,13 @@ import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import {connect} from "react-redux";
 import ScholarshipDeadlineWithTags from "../../components/ScholarshipDeadlineWithTags";
 
-class UserProfileApplications extends React.Component {
+class UserProfileCreatedScholarships extends React.Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            applications: null,
+            createdScholarships: null,
             isLoading: false,
         }
     }
@@ -22,10 +22,11 @@ class UserProfileApplications extends React.Component {
 
         const { userProfile: {user : userId} } = this.props;
         this.setState({isLoading: true});
-        UserProfileAPI.getUserContent(userId, 'applications')
+        UserProfileAPI.getUserContent(userId, 'created_scholarships')
             .then(res => {
-                const applications =  res.data.applications;
-                this.setState({applications});
+                const createdScholarships =  res.data.created_scholarships;
+                this.setState({createdScholarships});
+                console.log("created: ", createdScholarships)
             })
             .finally(() => {
                 this.setState({isLoading: false});
@@ -34,50 +35,52 @@ class UserProfileApplications extends React.Component {
 
     render() {
 
-        const {  applications, isLoading } = this.state;
+        const {  createdScholarships, isLoading } = this.state;
 
         if (isLoading) {
-            return (<Loading title={`Loading Applications`} className='mt-3' />)
+            return (<Loading title={`Loading Scholarships`} className='mt-3' />)
         }
         return (<React.Fragment>
-            <ApplicationsTable applications={applications} />
+            <CreatedScholarshipsTable createdScholarships={createdScholarships}/>
         </React.Fragment>)
     }
 
 
 }
 
-function ApplicationsTable({ applications }){
+function CreatedScholarshipsTable({ createdScholarships }){
 
     const columns = [
         {
-            title: 'ID',
-            dataIndex: 'id',
-            key: 'applicationID',
-            render: (text, application) => (
-                <Link to={`/application/${application.id}`}>View Application <br/>({text})</Link>
-            ),
-        },
-        {
             title: 'Scholarship',
-            dataIndex: ['scholarship', 'name'],
-            key: 'description',
-            render: (text, application) => (
-                <Link to={`/scholarship/${application.scholarship.slug}`}>
+            dataIndex: 'name',
+            key: '1',
+            render: (text, scholarship) => (
+                <Link to={`/scholarship/${scholarship.slug}`}>
                     {text}
                 </Link>
             ),
         },
         {
             title: 'Deadline',
-            key: 'deadline',
             dataIndex: 'deadline',
-            render: (deadline, application) => (<ScholarshipDeadlineWithTags scholarship={application.scholarship}
+            key: '2',
+            render: (deadline, scholarship) => (<ScholarshipDeadlineWithTags scholarship={scholarship}
                                                                              datePrefix="" />),
+        },
+        {
+            title: '',
+            dataIndex: 'id',
+            key: '3',
+            render: (id) => (
+                <Link to={`/scholarship/${id}/manage`} className="btn btn-outline-primary">
+                    Manage
+                </Link>
+            )
         }
     ];
 
-    return (<Table columns={columns} dataSource={applications} rowKey="id" />)
+    return (<Table columns={columns} dataSource={createdScholarships} rowKey="id" />)
 }
 
 const mapDispatchToProps = {
@@ -88,4 +91,4 @@ const mapStateToProps = state => {
     return { userProfile: state.data.user.loggedInUserProfile };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserProfileApplications);
+export default connect(mapStateToProps, mapDispatchToProps)(UserProfileCreatedScholarships);
