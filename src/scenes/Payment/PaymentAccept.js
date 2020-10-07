@@ -1,16 +1,16 @@
 import React from 'react';
 import {connect} from "react-redux";
-import {Button, Col, Input, Row, Steps} from "antd";
+import {Button, Checkbox, Col, Input, Row, Steps} from "antd";
 import PaymentAPI from "../../services/PaymentAPI";
 import Loading from "../../components/Loading";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import ApplicationsAPI from "../../services/ApplicationsAPI";
-import {formatCurrency} from "../../services/utils";
+import {formatCurrency, prettifyKeys} from "../../services/utils";
 
 const { Step } = Steps;
 
-const ALL_PAYMENT_ACCEPTANCE_STEPS = ["link_bank_account", "request_payment", "complete"];
+const ALL_PAYMENT_ACCEPTANCE_STEPS = ["send_thank_you_email","link_bank_account", "accept_payment"];
 
 class PaymentAccept extends React.Component {
 
@@ -19,7 +19,6 @@ class PaymentAccept extends React.Component {
 
         this.state = {
             isLoading: null,
-            // Enum of type: "link_bank_account", "request_payment"
             currentPaymentAcceptanceStep: ALL_PAYMENT_ACCEPTANCE_STEPS[0],
             application: null,
             scholarship: null,
@@ -27,22 +26,7 @@ class PaymentAccept extends React.Component {
     }
 
     componentDidMount() {
-
-        const { userProfile } = this.props;
         this.getApplication();
-
-        if (!userProfile.stripe_connected_account_id) {
-            // User has not linked their bank account yet so they need to do that first.
-            this.setState({currentPaymentAcceptanceStep: ALL_PAYMENT_ACCEPTANCE_STEPS[0]});
-        } else {
-            // User already has a Stripe Connected Account, so their bank account is already linked.
-            // // Time to Request Payment
-            // 1. Get Application Details and Scholarship Funding Amount
-            // 2. Send a transfer request to move <scholarship.funding_amount from Atila's bank account to
-            // the student's account
-
-            this.setState({currentPaymentAcceptanceStep: ALL_PAYMENT_ACCEPTANCE_STEPS[1]})
-        }
     }
 
     getApplication = () => {
@@ -57,7 +41,9 @@ class PaymentAccept extends React.Component {
             .then(res=>{
                 const { data: application } = res;
                 const { scholarship } = application;
-                this.setState({application, scholarship});
+                this.setState({application, scholarship}, () => {
+                    this.updateCurrentPaymentAcceptanceStep();
+                });
             })
             .catch(err => {
                 console.log({err});
@@ -65,6 +51,47 @@ class PaymentAccept extends React.Component {
             .finally(() => {
                 this.setState({isLoading: null});
             })
+    };
+
+    setPaymentThankYouEmail = (event) => {
+
+        event.preventDefault();
+
+        let { application } = this.state;
+
+        application = {
+            ...application,
+            is_thank_you_email_sent: event.target.checked,
+        };
+
+        this.setState({application}, () => {
+            this.updateCurrentPaymentAcceptanceStep();
+        });
+
+    };
+
+    updateCurrentPaymentAcceptanceStep = () => {
+
+
+        const { userProfile } = this.props;
+        const { application } = this.state;
+        if (!application.is_thank_you_email_sent) {
+            // User has not sent a thank you email, so ask them to go and do that first.
+            this.setState({currentPaymentAcceptanceStep: ALL_PAYMENT_ACCEPTANCE_STEPS[0]});
+
+        }
+        else if (!userProfile.stripe_connected_account_id) {
+            // User has not linked their bank account yet so they need to do that first.
+            this.setState({currentPaymentAcceptanceStep: ALL_PAYMENT_ACCEPTANCE_STEPS[1]});
+        } else {
+            // User already has a Stripe Connected Account, so their bank account is already linked.
+            // // Time to Accept Payment
+            // 1. Get Application Details and Scholarship Funding Amount
+            // 2. Send a transfer request to move <scholarship.funding_amount from Atila's bank account to
+            // the student's account
+
+            this.setState({currentPaymentAcceptanceStep: ALL_PAYMENT_ACCEPTANCE_STEPS[2]})
+        }
     };
 
     linkBankAccount = (event=null) => {
@@ -171,12 +198,12 @@ class PaymentAccept extends React.Component {
                     <Steps type="navigation"
                         current={ALL_PAYMENT_ACCEPTANCE_STEPS
                             .findIndex(step => step === currentPaymentAcceptanceStep)}>
-                        <Step title="Link Bank Account" />
-                        <Step title="Accept Payment" />
-                        <Step title="Complete" />
+                        {ALL_PAYMENT_ACCEPTANCE_STEPS.map(paymentAcceptanceStep => (
+                            <Step key={paymentAcceptanceStep} title={prettifyKeys(paymentAcceptanceStep)} />
+                        ))}
                     </Steps>
                     <div>
-                        <h1>Connect Your Bank Account</h1>
+                        <h1>Accept Your Award for {scholarship.name}</h1>
                         <Row gutter={[{ xs: 8, sm: 16}, 16]}>
                             <Col span={24}>
                                 <Input value={userProfile.first_name} disabled={true} />
@@ -188,31 +215,41 @@ class PaymentAccept extends React.Component {
                                 <Input value={userProfile.email} disabled={true}/>
                             </Col>
                             <Col span={24}>
+                                <div className="center-block mt-3 text-center">
+                                    <Checkbox
+                                        checked={application.is_thank_you_email_sent}
+                                        onChange={this.setPaymentThankYouEmail}
+                                    >
+                                        Step 1: Have you sent a thank you email to the Scholarship Sponsor?
+                                    </Checkbox>
+                                </div>
                                     <Button onClick={this.linkBankAccount}
                                             className="center-block mt-3"
                                             type="primary"
-                                            disabled={isLoading || currentPaymentAcceptanceStep !== ALL_PAYMENT_ACCEPTANCE_STEPS[0]}>
-                                        Link Bank Account with Stripe (Step 1)
+                                            disabled={isLoading || currentPaymentAcceptanceStep !== ALL_PAYMENT_ACCEPTANCE_STEPS[1]}>
+                                        Step 2: Link Bank Account with Stripe
                                     </Button>
                                     <Button onClick={this.acceptPayment}
                                             className="center-block mt-3"
                                             type="primary"
-                                            disabled={isLoading || currentPaymentAcceptanceStep !== ALL_PAYMENT_ACCEPTANCE_STEPS[1]}>
-                                        Accept Payment for {scholarship.name}
+                                            disabled={isLoading || currentPaymentAcceptanceStep !== ALL_PAYMENT_ACCEPTANCE_STEPS[2]}>
+                                        Step 3: Accept Payment for {scholarship.name}{" "}
                                         (
                                         {formatCurrency(Number.parseInt(scholarship.funding_amount))}
-                                        ){' '}(Step 2)
+                                        ){' '}
                                     </Button>
 
-                                <p className="mt-3">
-                                    You will be redirected to{' '}
-                                    <a href="https://stripe.com/" target="_blank" rel="noopener noreferrer" >
-                                        Stripe</a>{' '}
-                                    to complete your payment setup.{' '}
-                                    <a href="https://stripe.com/" target="_blank" rel="noopener noreferrer" >
-                                        Click here to learn more about Stripe.
-                                    </a>
-                                </p>
+                                {currentPaymentAcceptanceStep === ALL_PAYMENT_ACCEPTANCE_STEPS[1] &&
+                                    <p className="mt-3">
+                                        You will be redirected to{' '}
+                                        <a href="https://stripe.com/" target="_blank" rel="noopener noreferrer" >
+                                            Stripe</a>{' '}
+                                        to complete your payment setup.{' '}
+                                        <a href="https://stripe.com/" target="_blank" rel="noopener noreferrer" >
+                                            Click here to learn more about Stripe.
+                                        </a>
+                                    </p>
+                                }
                             </Col>
 
                         </Row>
