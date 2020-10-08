@@ -8,7 +8,7 @@ function HowToApplyForScholarships() {
         ' about your life after high school: what are your options, ' +
         'how to learn what path is best for you and how can they achieve your goals.';
     const seoContent = {
-        title: 'How to Start a Scholarship',
+        title: 'How to Apply for Scholarships',
         description: presentationDescription,
         image: 'https://i.ytimg.com/vi/bpyEWzblFrU/maxresdefault.jpg',
         slug: '/high-school'
