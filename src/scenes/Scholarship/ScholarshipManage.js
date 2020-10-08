@@ -2,47 +2,59 @@ import React from 'react';
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 import {Table} from "antd";
+import ScholarshipsAPI from "../../services/ScholarshipsAPI";
+import Loading from "../../components/Loading";
 
 class ScholarshipManage extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            applicants: null,
+            applications: null,
             isLoading: false,
         }
     }
 
-    /*componentDidMount() {
-        const { userProfile: {user : userId} } = this.props;
+    componentDidMount() {
+        this.getScholarshipApplications()
+    }
+
+    getScholarshipApplications = () => {
+        const { match : { params : { scholarshipID }} } = this.props;
+
         this.setState({isLoading: true});
-        UserProfileAPI.getUserContent(userId, 'scholarship_applicants')
+        ScholarshipsAPI.getApplications(scholarshipID)
             .then(res => {
-                const applicants =  res.data.created_scholarships;
-                this.setState({applicants});
-                console.log("created: ", applicants)
+                const applications =  res.data.applications;
+                this.setState({applications});
+                console.log("created: ", applications)
             })
             .finally(() => {
                 this.setState({isLoading: false});
             });
-    }
-    */
+    };
 
     render() {
+        const {  applications, isLoading } = this.state;
+
+        if (isLoading) {
+            return (<Loading title={`Loading Applications`} className='mt-3' />)
+        }
+
         return (
-            <h1>Testing</h1>
+            <ApplicationsTable applications={applications} />
         )
     }
 }
 
-function ApplicantsTable({ applicants }){
+function ApplicationsTable({ applications }){
 
     const columns = [
         {
-            title: 'Name',
-            dataIndex: 'name',
+            title: 'id',
+            dataIndex: 'id',
             key: '1',
-            render: (name) => (<p>{name}</p>),
+            render: (id) => (<p>{id}</p>),
         },
         {
             title: 'View Application',
@@ -54,7 +66,7 @@ function ApplicantsTable({ applicants }){
         },
     ];
 
-    return (<Table columns={columns} dataSource={applicants} rowKey="id" />)
+    return (<Table columns={columns} dataSource={applications} rowKey="id" />)
 }
 
 
