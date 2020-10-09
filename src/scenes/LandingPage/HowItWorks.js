@@ -20,6 +20,36 @@ function HowItWorks({accountType}) {
 
 export default HowItWorks;
 
+const howItWorksStudent = [
+    {
+        title: "Create Scholarship",
+        body: <React.Fragment>
+            <Link to="register">Register</Link> for a free account in 15 seconds.<br/>
+
+            Tell us your school, program, ethnicity, gender, etc. to get matched
+            with the right scholarships for you.
+
+        </React.Fragment>,
+        image: createProfileGif
+    },
+    {
+        title: "Apply for Scholarships",
+        body: <React.Fragment>
+            Apply for multiple scholarships all from one site.
+            Autofill similar responses used in past scholarships to save time.
+        </React.Fragment>,
+        image: viewScholarshipsGif
+    },
+    {
+        title: "Get Funded",
+        body: <React.Fragment>
+            Scholarship funding is directly deposited to your bank account
+            within 24 hours of accepting award.
+            Only currently available for students with Canadian Bank Accounts.
+        </React.Fragment>,
+        image: viewScholarshipsGif
+    }
+ ]
 function HowItWorksStudent() {
 
     return (
@@ -33,62 +63,8 @@ function HowItWorksStudent() {
                 Get Funded.
             </h2>
             <div className="offset-lg-1">
-                <div className="row">
-                    <div className="card shadow m-3 p-5 col-lg-4 col-sm-12">
-                        <h3>1. Create your  Profile
-                            <span role="img" aria-label="female emoji">
-                            🙎🏾‍♀️
-                            </span>
-                        </h3>
-                        <p><Link to="register">Register</Link> for a free account in 15 seconds.<br/>
 
-                        Tell us your school, program, ethnicity, gender, etc. to get matched
-                            with the right scholarships for you.
-
-                        </p>
-                    </div>
-                    <div className="card shadow m-3 p-3 col-lg-7 col-sm-12">
-
-                        <img src={createProfileGif} id="create-profile-gif"
-                             alt="Create Your Profile" title="Create Your Profile"
-                             className="landing-page-gif landing-page-gif-mobile"/>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="card shadow m-3 p-5 col-lg-4 col-sm-12">
-                        <h3>
-                            3. Apply for Scholarships
-                        </h3>
-                        <p>
-                            Apply for multiple scholarships all from one site.
-                            Autofill similar responses used in past scholarships to save time.
-                        </p>
-                    </div>
-                    <div className="card shadow m-3 p-3 col-lg-7 col-sm-12">
-
-                        <img src={viewScholarshipsGif} id="view-scholarships-gif"
-                             alt="Find Your Scholarships" title="Find Your Scholarships"
-                             className="landing-page-gif landing-page-gif-mobile"/>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="card shadow m-3 p-5 col-lg-4 col-sm-12">
-                        <h3>
-                            3. Get Funded
-                        </h3>
-                        <p>Scholarship funding is directly deposited to your bank account
-                            within 24 hours of accepting award.<sup>*</sup></p>
-                        <small>
-                            <sup>*</sup>Only currently available for students with Canadian Bank Accounts.
-                        </small>
-                    </div>
-                    <div className="card shadow m-3 p-3 col-lg-7 col-sm-12">
-
-                        <img src={viewScholarshipsGif} id="view-scholarships-gif"
-                             alt="Find Your Scholarships" title="Find Your Scholarships"
-                             className="landing-page-gif landing-page-gif-mobile"/>
-                    </div>
-                </div>
+                <DescriptionsWithScreenshots items={howItWorksStudent} />
 
                 <h1 className="col-sm-12 text-center">
                     <Link to="/apply"> Learn More </Link>
@@ -100,7 +76,7 @@ function HowItWorksStudent() {
 
 function HowItWorksSponsor() {
 
-    const howItWorksItems = [
+    const howItWorksSponsorItems = [
         {
         title: "Create Scholarship",
         body: <React.Fragment>
@@ -143,36 +119,45 @@ function HowItWorksSponsor() {
                 Fund Scholarship.{' '}
                 Select Winner.
             </h2>
-            <div className="row">
-                {howItWorksItems.map( (item, index) => (
-                    <React.Fragment>
-                        <div className="card shadow m-3 p-3 col-lg-4 col-sm-12">
-                            <h3 className="m-3 text-muted strong">
-                                {index+1}. {item.title}
-                            </h3>
-                            <p className="m-3">
-                                {item.body}
-                            </p>
-                        </div>
-                        <div className="card shadow m-3 p-3 col-lg-7 col-sm-12">
-
-                            {/*Note: TO get the image to size responsively.
-                            I just had to put it inside a parent div and add 'col-12' class.*/}
-                            <img src={item.image}
-                                 alt={item.title}
-                                 title={item.title}
-                                 className="col-12"
-                            />
-                        </div>
-
-                    </React.Fragment>
-                ))}
+            <div>
+            <DescriptionsWithScreenshots items={howItWorksSponsorItems} />
             </div>
 
 
             <h1 className="col-sm-12 text-center">
                 <Link to="/start"> Learn more </Link>
             </h1>
+        </div>
+    )
+}
+
+function DescriptionsWithScreenshots({items})   {
+
+    return (
+        <div className="row">
+            {items.map( (item, index) => (
+                <React.Fragment>
+                    <div className="card shadow m-3 p-3 col-lg-4 col-sm-12">
+                        <h3 className="m-3 text-muted strong">
+                            {index+1}. {item.title}
+                        </h3>
+                        <p className="m-3">
+                            {item.body}
+                        </p>
+                    </div>
+                    <div className="card shadow m-3 p-3 col-lg-7 col-sm-12">
+
+                        {/*Note: TO get the image to size responsively.
+                            I just had to put it inside a parent div and add 'col-12' class.*/}
+                        <img src={item.image}
+                             alt={item.title}
+                             title={item.title}
+                             className="col-12"
+                        />
+                    </div>
+
+                </React.Fragment>
+            ))}
         </div>
     )
 }
