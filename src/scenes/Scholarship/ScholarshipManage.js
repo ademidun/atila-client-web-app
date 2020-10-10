@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 import {Table} from "antd";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
+import ApplicationsAPI from "../../services/ApplicationsAPI";
 import Loading from "../../components/Loading";
 
 class ScholarshipManage extends React.Component {
@@ -84,6 +85,19 @@ function ApplicationsTable({ applications }){
 const selectWinner = id => {
     console.log(id)
     console.log("Winner Selected")
+
+    const winners = {winners: [id]}
+
+    // Set application.is_winner to true
+    /*ApplicationsAPI
+        .selectWinners(winners)
+        .then(res=>{
+
+        })
+        .catch(err => {
+            console.log({err});
+        })
+     */
 };
 
 
