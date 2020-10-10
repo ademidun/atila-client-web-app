@@ -8,7 +8,7 @@ import ScholarshipManage from "./ScholarshipManage";
 function Scholarship({ match }) {
     return (
         <Switch>
-            <Route path={`${match.path}/:id/manage`} component={ScholarshipManage} />
+            <Route path={`${match.path}/:scholarshipID/manage`} component={ScholarshipManage} />
             <Route path={`${match.path}/add`} component={ScholarshipAddEdit} />
             <Route path={`${match.path}/s/:searchString`} component={ScholarshipsList} />
             <Route path={`${match.path}/edit/:slug`} component={ScholarshipAddEdit} />
