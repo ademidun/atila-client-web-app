@@ -128,7 +128,7 @@ class ApplicationDetail extends  React.Component{
                         </Link>)
                             : applicationID}
                     </h1>
-                    {application && scholarship &&
+                    {application.is_winner && scholarship &&
                     <div>
                         <h3 className="text-success">
                             Congratulations! You received the award of{' '}
@@ -139,7 +139,8 @@ class ApplicationDetail extends  React.Component{
                                 Accept Payment
                             </Link>
                         </Button>
-                    </div>}
+                    </div>
+                    }
                     <div>
                         {scholarshipUserProfileQuestionsFormConfig && scholarshipQuestionsFormConfig &&
                         <div>
