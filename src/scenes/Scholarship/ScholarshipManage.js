@@ -11,13 +11,30 @@ class ScholarshipManage extends React.Component {
         super(props);
 
         this.state = {
+            scholarship: null,
             applications: null,
-            isLoading: false,
+            isLoading: false
         }
     }
 
     componentDidMount() {
         this.getScholarshipApplications()
+        this.getScholarship()
+    }
+
+    getScholarship = () => {
+        const { match : { params : { scholarshipID }} } = this.props;
+
+        this.setState({isLoading: true});
+        ScholarshipsAPI.get(scholarshipID)
+            .then(res => {
+                const scholarship =  res.data;
+                this.setState({scholarship});
+                console.log("created: ", scholarship)
+            })
+            .finally(() => {
+                this.setState({isLoading: false});
+            });
     }
 
     getScholarshipApplications = () => {
@@ -36,7 +53,7 @@ class ScholarshipManage extends React.Component {
     };
 
     render() {
-        const {  applications, isLoading } = this.state;
+        const { applications, isLoading } = this.state;
 
         if (isLoading) {
             return (<Loading title={`Loading Applications`} className='mt-3' />)
