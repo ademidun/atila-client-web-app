@@ -42,7 +42,9 @@ class ScholarshipManage extends React.Component {
         }
 
         return (
-            <ApplicationsTable applications={applications} />
+            <div className="container mt-5">
+                <ApplicationsTable applications={applications} />
+            </div>
         )
     }
 }
@@ -64,10 +66,25 @@ function ApplicationsTable({ applications }){
                 <Link to={`/application/${application.id}`}>View Application<br/>({text})</Link>
             ),
         },
+        {
+            title: '',
+            dataIndex: 'id',
+            key: '3',
+            render: (application) => (
+                <button type={"button"} className={"btn btn-success"} onClick={() => selectWinner(application)}>
+                        Select Winner
+                </button>
+            ),
+        },
     ];
 
     return (<Table columns={columns} dataSource={applications} rowKey="id" />)
 }
+
+const selectWinner = application => {
+    console.log(application)
+    console.log("Winner Selected", application)
+};
 
 
 const mapStateToProps = state => {
