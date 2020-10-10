@@ -13,7 +13,8 @@ class ScholarshipManage extends React.Component {
         this.state = {
             scholarship: null,
             applications: null,
-            isLoading: false
+            isLoadingApplications: true,
+            isLoadingScholarship: true
         }
     }
 
@@ -25,7 +26,7 @@ class ScholarshipManage extends React.Component {
     getScholarship = () => {
         const { match : { params : { scholarshipID }} } = this.props;
 
-        this.setState({isLoading: true});
+        this.setState({isLoadingScholarship: true});
         ScholarshipsAPI.get(scholarshipID)
             .then(res => {
                 const scholarship =  res.data;
@@ -33,14 +34,14 @@ class ScholarshipManage extends React.Component {
                 console.log("created: ", scholarship)
             })
             .finally(() => {
-                this.setState({isLoading: false});
+                this.setState({isLoadingScholarship: false});
             });
     }
 
     getScholarshipApplications = () => {
         const { match : { params : { scholarshipID }} } = this.props;
 
-        this.setState({isLoading: true});
+        this.setState({isLoadingApplication: true});
         ScholarshipsAPI.getApplications(scholarshipID)
             .then(res => {
                 const applications =  res.data.applications;
@@ -48,19 +49,21 @@ class ScholarshipManage extends React.Component {
                 console.log("created: ", applications)
             })
             .finally(() => {
-                this.setState({isLoading: false});
+                this.setState({isLoadingApplication: false});
             });
     };
 
     render() {
-        const { applications, isLoading } = this.state;
+        const { scholarship, applications, isLoadingApplication, isLoadingScholarship } = this.state;
 
-        if (isLoading) {
+        if (isLoadingApplication || isLoadingScholarship) {
             return (<Loading title={`Loading Applications`} className='mt-3' />)
         }
 
         return (
             <div className="container mt-5">
+                <h2>You have {scholarship.number_available_scholarships} available scholarships.</h2>
+                <br />
                 <ApplicationsTable applications={applications} />
             </div>
         )
@@ -71,17 +74,17 @@ function ApplicationsTable({ applications }){
 
     const columns = [
         {
-            title: 'id',
+            title: 'ID',
             dataIndex: 'id',
             key: '1',
             render: (id) => (<p>{id}</p>),
         },
         {
-            title: 'View Application',
+            title: 'Application',
             dataIndex: 'id',
             key: '2',
             render: (id, application) => (
-                <Link to={`/application/${application.id}`}>View Application<br/>({id})</Link>
+                <Link to={`/application/${application.id}`}>View</Link>
             ),
         },
         {
