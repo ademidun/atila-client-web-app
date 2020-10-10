@@ -165,6 +165,7 @@ class PaymentAccept extends React.Component {
                 console.log({res});
                 this.setState({currentPaymentAcceptanceStep: ALL_PAYMENT_ACCEPTANCE_STEPS[2]});
                 this.updateScholarship()
+                this.updateApplication()
             })
             .catch(err => {
                 console.log({err});
@@ -181,6 +182,20 @@ class PaymentAccept extends React.Component {
 
         ScholarshipsAPI
             .patch(scholarship.id, {is_payment_accepted: true})
+            .then(res => {
+                console.log({res});
+            })
+            .catch(err => {
+                console.log({err});
+            })
+    }
+
+    updateApplication = () => {
+        // This function sets Application.accepted_payment to True
+        const { application } = this.state;
+
+        ApplicationsAPI
+            .patch(application.id, {accepted_payment: true})
             .then(res => {
                 console.log({res});
             })
