@@ -1,10 +1,11 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
-import {Table} from "antd";
+import {Table, Popconfirm} from "antd";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import ApplicationsAPI from "../../services/ApplicationsAPI";
 import Loading from "../../components/Loading";
+import render from "enzyme/src/render";
 
 class ScholarshipManage extends React.Component {
     constructor(props) {
@@ -92,15 +93,26 @@ function ApplicationsTable({ applications }){
             dataIndex: 'id',
             key: '3',
             render: (id) => (
-                <button type={"button"} className={"btn btn-success"} onClick={() => selectWinner(id)}>
-                        Select Winner
-                </button>
+                renderWinnerButton(id)
             ),
         },
     ];
 
     return (<Table columns={columns} dataSource={applications} rowKey="id" />)
 }
+
+const renderWinnerButton = id => {
+    const confirmText = "Are you sure you want to pick this winner? You will not be able to undo this action."
+
+    return (
+        <Popconfirm placement="topLeft" title={confirmText} onConfirm={() => selectWinner(id)} okText="Yes" cancelText="No">
+            <button type={"button"} className={"btn btn-success"}>
+                Select Winner
+            </button>
+        </Popconfirm>
+    )
+}
+
 
 const selectWinner = id => {
     console.log(id)
