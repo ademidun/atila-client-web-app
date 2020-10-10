@@ -62,16 +62,16 @@ function ApplicationsTable({ applications }){
             title: 'View Application',
             dataIndex: 'id',
             key: '2',
-            render: (text, application) => (
-                <Link to={`/application/${application.id}`}>View Application<br/>({text})</Link>
+            render: (id, application) => (
+                <Link to={`/application/${application.id}`}>View Application<br/>({id})</Link>
             ),
         },
         {
             title: '',
             dataIndex: 'id',
             key: '3',
-            render: (application) => (
-                <button type={"button"} className={"btn btn-success"} onClick={() => selectWinner(application)}>
+            render: (id) => (
+                <button type={"button"} className={"btn btn-success"} onClick={() => selectWinner(id)}>
                         Select Winner
                 </button>
             ),
@@ -81,9 +81,9 @@ function ApplicationsTable({ applications }){
     return (<Table columns={columns} dataSource={applications} rowKey="id" />)
 }
 
-const selectWinner = application => {
-    console.log(application)
-    console.log("Winner Selected", application)
+const selectWinner = id => {
+    console.log(id)
+    console.log("Winner Selected")
 };
 
 
