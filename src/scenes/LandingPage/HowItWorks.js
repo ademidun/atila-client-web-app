@@ -44,12 +44,18 @@ const howItWorksStudent = [
         title: "Get Funded",
         body: <React.Fragment>
             Scholarship funding is directly deposited to your bank account
-            within 24 hours of accepting award.
-            Only currently available for students with Canadian Bank Accounts.
+            within 24 hours of accepting award<sup>*</sup>.
+            <br/>
+            <small>
+                <sup>*</sup>
+                Only currently available for students with Canadian Bank Accounts.
+            </small>
+
         </React.Fragment>,
         image: viewScholarshipsGif
     }
- ]
+ ];
+
 function HowItWorksStudent() {
 
     return (
@@ -90,7 +96,7 @@ function HowItWorksSponsor() {
         },
         {
         title: "Fund Scholarship",
-        body: "Securely fund the scholarship with a credit card or debit card.",
+        body: "Fund the scholarship with a credit card or debit card.",
             image: scholarshipManagement,
         },
         {
@@ -101,9 +107,19 @@ function HowItWorksSponsor() {
         },
         {
             title: <React.Fragment>The Big Cheque Special! <Tag color="green">Bonus</Tag></React.Fragment>,
-        body: "For scholarships over $5,000 we mail a big cheque to the winner " +
-            "on behalf of the scholarship Sponsor for free.",
+        body: "For scholarships valued at over $5,000, we mail a big cheque to the winner " +
+            "on behalf of the scholarship sponsor for free.",
         image: "https://i.imgur.com/6p5wMBm.jpeg",
+        imageCaption: <React.Fragment>
+            Source: <a href="https://lasentinel.net/dulans-restaurants-help-dorsey-grad-attend-howard-university.html"
+                       target="_blank"
+                       rel="noopener noreferrer">
+            LA Sentinel
+        </a>
+            <br/>
+            <small>Note: This is just an example.
+                Atila has no affiliation with the scholarship shown above.</small>
+        </React.Fragment>
         },
     ];
 
@@ -154,6 +170,11 @@ function DescriptionsWithScreenshots({items})   {
                              title={item.title}
                              className="col-12"
                         />
+                        {item.imageCaption &&
+                        <p className="col-12 text-center text-muted">
+                            {item.imageCaption}
+                        </p>
+                        }
                     </div>
 
                 </React.Fragment>
