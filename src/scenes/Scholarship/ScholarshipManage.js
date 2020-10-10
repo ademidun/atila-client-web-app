@@ -75,13 +75,13 @@ function ApplicationsTable({ applications }){
 
     const columns = [
         {
-            title: 'Full Name',
+            title: <b>Full Name</b>,
             dataIndex: 'user_profile_responses',
             key: '1',
             render: (userReponses) => (<p>{userReponses[0].value} {userReponses[1].value}</p>),
         },
         {
-            title: 'Application',
+            title: <b>Application</b>,
             dataIndex: 'id',
             key: '2',
             render: (id, application) => (
