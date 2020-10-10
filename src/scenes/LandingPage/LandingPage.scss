@@ -102,6 +102,7 @@ $border-color: rgba(229, 231, 235, 100);
   color: $home-text-color;
 }
 .banner .img-wrapper {
+  z-index: -1;
   width: 46%;
   max-width: 482px;
   position: absolute;
