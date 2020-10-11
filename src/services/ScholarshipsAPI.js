@@ -135,7 +135,7 @@ class ScholarshipsAPI {
         const apiCompletionPromise = request({
             method: 'post',
             data: winners,
-            url: `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/select-winners/`,
+            url: `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/select-winner/`,
         });
 
         return apiCompletionPromise;

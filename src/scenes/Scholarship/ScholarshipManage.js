@@ -116,7 +116,7 @@ const selectWinner = (applicationID, scholarship) => {
     console.log(applicationID)
     console.log("Winner Selected")
 
-    const winners = {winners: [applicationID]}
+    const winners = {winners: applicationID}
 
     const scholarshipID = scholarship.id
 
