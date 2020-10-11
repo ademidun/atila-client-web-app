@@ -7,6 +7,7 @@ import UserProfileAPI from "../../services/UserProfileAPI";
 import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import ApplicationsAPI from "../../services/ApplicationsAPI";
 import {formatCurrency, prettifyKeys} from "../../services/utils";
+import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 
 const { Step } = Steps;
 
@@ -163,6 +164,8 @@ class PaymentAccept extends React.Component {
             .then(res => {
                 console.log({res});
                 this.setState({currentPaymentAcceptanceStep: ALL_PAYMENT_ACCEPTANCE_STEPS[2]});
+                this.updateScholarship()
+                this.updateApplication()
             })
             .catch(err => {
                 console.log({err});
@@ -172,6 +175,34 @@ class PaymentAccept extends React.Component {
             });
 
     };
+
+    updateScholarship = () => {
+        // This function sets Scholarship.is_payment_accepted to True
+        const { scholarship } = this.state;
+
+        ScholarshipsAPI
+            .patch(scholarship.id, {is_payment_accepted: true})
+            .then(res => {
+                console.log({res});
+            })
+            .catch(err => {
+                console.log({err});
+            })
+    }
+
+    updateApplication = () => {
+        // This function sets Application.accepted_payment to True
+        const { application } = this.state;
+
+        ApplicationsAPI
+            .patch(application.id, {accepted_payment: true})
+            .then(res => {
+                console.log({res});
+            })
+            .catch(err => {
+                console.log({err});
+            })
+    }
 
     render () {
 

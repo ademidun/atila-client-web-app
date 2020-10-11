@@ -121,7 +121,7 @@ class PaymentSendForm extends React.Component {
                     if (cardPaymentResult.paymentIntent.status === 'succeeded') {
 
                         ScholarshipsAPI
-                            .patch(scholarship.id, {stripe_payment_intent_id: cardPaymentResult.paymentIntent.id})
+                            .patch(scholarship.id, {stripe_payment_intent_id: cardPaymentResult.paymentIntent.id, is_funded: true})
                             .then(res => {
                                 console.log({res});
                             })

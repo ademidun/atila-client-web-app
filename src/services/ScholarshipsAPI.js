@@ -118,7 +118,28 @@ class ScholarshipsAPI {
         newScholarship.is_not_available = !!newScholarship.is_not_available;
 
         return newScholarship;
-    }
+    };
+
+    static getApplications = (id) => {
+
+        const apiCompletionPromise = request({
+            method: 'get',
+            url: `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/applications/`,
+        });
+
+        return apiCompletionPromise;
+    };
+
+    static selectWinners = (id, winners) => {
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: winners,
+            url: `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/select-winners/`,
+        });
+
+        return apiCompletionPromise;
+    };
 }
 
 export default ScholarshipsAPI;
