@@ -22,10 +22,14 @@ class ApplicationDetail extends  React.Component{
             isSavingApplication: false,
             scholarshipUserProfileQuestionsFormConfig: null,
             scholarshipQuestionsFormConfig: null,
+            viewMode: false
         }
     }
 
     componentDidMount() {
+        let viewMode = this.props.location.pathname.includes("view")
+        this.setState({viewMode})
+
         this.getApplication();
     }
 
@@ -147,7 +151,7 @@ class ApplicationDetail extends  React.Component{
 
         const { match : { params : { applicationID }} } = this.props;
         const { application, isLoadingApplication, scholarship, isSavingApplication,
-            scholarshipUserProfileQuestionsFormConfig, scholarshipQuestionsFormConfig } = this.state;
+            scholarshipUserProfileQuestionsFormConfig, scholarshipQuestionsFormConfig, viewMode } = this.state;
 
         const userProfileResponses = {};
         if (application.user_profile_responses) {
@@ -155,7 +159,6 @@ class ApplicationDetail extends  React.Component{
                 userProfileResponses[response.key] = response.value;
             });
         }
-
 
         return (
             <div className="container mt-5">
@@ -170,21 +173,47 @@ class ApplicationDetail extends  React.Component{
                     <div>
                         {scholarshipUserProfileQuestionsFormConfig && scholarshipQuestionsFormConfig &&
                         <div>
-                            <h2>Profile Questions</h2>
-                            <FormDynamic onUpdateForm={event => this.updateForm(event, 'user_profile_responses')}
-                                         model={userProfileResponses}
-                                         inputConfigs=
-                                             {scholarshipUserProfileQuestionsFormConfig}
-                            />
-                            <h2>Scholarship Questions</h2>
-                            <FormDynamic onUpdateForm={event => this.updateForm(event, 'scholarship_responses')}
-                                         model={application.scholarship_responses}
-                                         inputConfigs=
-                                             {scholarshipQuestionsFormConfig}
-                            />
-                            <Button onClick={this.saveApplication} type="primary">
+                            {viewMode &&
+                                <fieldset disabled={true}>
+                                    <h2>Profile Questions</h2>
+                                    <FormDynamic onUpdateForm={event => this.updateForm(event, 'user_profile_responses')}
+                                    model={userProfileResponses}
+                                    inputConfigs=
+                                    {scholarshipUserProfileQuestionsFormConfig}
+                                    />
+
+                                    <h2>Scholarship Questions</h2>
+                                    <FormDynamic onUpdateForm={event => this.updateForm(event, 'scholarship_responses')}
+                                    model={application.scholarship_responses}
+                                    inputConfigs=
+                                    {scholarshipQuestionsFormConfig}
+                                    />
+                                    <Button onClick={this.saveApplication} type="primary">
                                     Save
-                            </Button>
+                                    </Button>
+                                </fieldset>
+                            }
+
+                            {!viewMode &&
+                                <>
+                                <h2>Profile Questions</h2>
+                                <FormDynamic onUpdateForm={event => this.updateForm(event, 'user_profile_responses')}
+                                model={userProfileResponses}
+                                inputConfigs=
+                                {scholarshipUserProfileQuestionsFormConfig}
+                                />
+
+                                <h2>Scholarship Questions</h2>
+                                <FormDynamic onUpdateForm={event => this.updateForm(event, 'scholarship_responses')}
+                                model={application.scholarship_responses}
+                                inputConfigs=
+                                {scholarshipQuestionsFormConfig}
+                                />
+                                <Button onClick={this.saveApplication} type="primary">
+                                Save
+                                </Button>
+                                </>
+                            }
                         </div>
                         }
 
