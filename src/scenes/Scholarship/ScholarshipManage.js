@@ -53,19 +53,37 @@ class ScholarshipManage extends React.Component {
     };
 
     render() {
+        const { userProfile } = this.props;
+        console.log("user profile", userProfile)
         const { scholarship, applications, isLoadingApplication, isLoadingScholarship } = this.state;
 
         if (isLoadingApplication || isLoadingScholarship) {
             return (<Loading title={`Loading Applications`} className='mt-3' />)
         }
 
-        return (
-            <div className="container mt-5">
-                <h2>You have {scholarship.number_available_scholarships} available scholarships.</h2>
-                <br />
-                <ApplicationsTable applications={applications} scholarship={scholarship}/>
-            </div>
-        )
+        if (userProfile) {
+            if (userProfile.user === scholarship.owner) {
+                return (
+                    <div className="container mt-5">
+                        <h2>You have {scholarship.number_available_scholarships} available scholarships.</h2>
+                        <br/>
+                        <ApplicationsTable applications={applications} scholarship={scholarship}/>
+                    </div>
+                )
+            } else {
+                return (
+                    <div className="container mt-5">
+                        <h2>You are not authorized to view this data</h2>
+                    </div>
+                )
+            }
+        } else {
+            return (
+                <div className="container mt-5">
+                    <h2><Link to={`/login`}>Log In</Link> to manage scholarships</h2>
+                </div>
+            )
+        }
     }
 }
 
