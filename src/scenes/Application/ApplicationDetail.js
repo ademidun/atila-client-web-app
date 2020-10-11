@@ -186,10 +186,8 @@ class ApplicationDetail extends  React.Component{
                                     Save
                             </Button>
                         </div>
-
-
-
                         }
+
                     </div>
                     {isLoadingApplication && <Loading  title="Loading Application..."/>}
                     {isSavingApplication && <Loading  title="Saving Application..."/>}

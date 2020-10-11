@@ -101,7 +101,7 @@ function ApplicationsTable({ applications, scholarship }){
             dataIndex: 'id',
             key: '2',
             render: (id, application) => (
-                <Link to={`/application/${application.id}`}>View</Link>
+                <Link to={`/application/${application.id}/view`}>View</Link>
             ),
         },
         {
