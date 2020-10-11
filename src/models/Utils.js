@@ -16,7 +16,10 @@ import {
 export const InputConfigPropType = PropTypes.shape({
     type: PropTypes.string,
     keyName: PropTypes.string.isRequired,
-    placeholder: PropTypes.string,
+    placeholder: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.shape({}),
+    ]),
     html: PropTypes.func,
     isHidden: PropTypes.func,
     suggestions: PropTypes.array,

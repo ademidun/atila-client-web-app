@@ -62,8 +62,8 @@ let scholarshipFormConfigsPage1 = [
         keyName: 'is_atila_direct_application',
         placeholder:(
             <Popover content={atilaDirectApplicationsPopover} title="What is Atila Direct Applications?">
-                Allow applicants to directly apply for scholarship through Atila?{' '}
-                <Tag color="green">new</Tag>
+                Allow applicants to directly apply for scholarship through Atila?{' '}<small>Hover to learn more</small>
+                {' '}<Tag color="green">new</Tag>
             </Popover>
             ),
         type: 'checkbox',
@@ -541,7 +541,7 @@ class ScholarshipAddEdit extends React.Component{
                                 className="btn btn-primary col-12 mt-2"
                                 onClick={this.submitForm}>Save</button>
 
-                        {!scholarship.published &&
+                        {!scholarship.published && scholarship.is_atila_direct_application &&
                         <Button
                             type="primary"
                             className="col-12 mt-2"

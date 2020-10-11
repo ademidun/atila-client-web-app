@@ -10,7 +10,7 @@ import Loading from "../../../components/Loading";
 import HelmetSeo, {defaultSeoContent} from "../../../components/HelmetSeo";
 import Invoice from "./Invoice";
 import ScholarshipsAPI from "../../../services/ScholarshipsAPI";
-import {ATILA_SCHOLARSHIP_FEE} from "../../../models/Constants";
+import {ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT, ATILA_SCHOLARSHIP_FEE} from "../../../models/Constants";
 import {formatCurrency} from "../../../services/utils";
 import PaymentAPI from "../../../services/PaymentAPI";
 import {ScholarshipPropType} from "../../../models/Scholarship";
@@ -229,6 +229,21 @@ class PaymentSendForm extends React.Component {
         seoContent.title = `Fund ${scholarship.name}`;
         helmetSeo = (<HelmetSeo content={seoContent} />);
 
+        let canFundScholarship = scholarship.id && Number.parseInt(scholarship.funding_amount) >= ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT;
+        let canFundScholarshipMessage = `Confirm order (${formatCurrency(totalPaymentAmount)})`;
+
+        if (!canFundScholarship) {
+            if (!scholarship.id) {
+                canFundScholarshipMessage = "You must save scholarship before you can fund";
+            } else {
+                canFundScholarshipMessage = (<React.Fragment>
+                    Scholarship funding amount <br/>
+                    must be greater than or equal to
+                    ${ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT}
+                </React.Fragment>);
+            }
+        }
+
         return (
             <React.Fragment>
                 {helmetSeo}
@@ -283,9 +298,10 @@ class PaymentSendForm extends React.Component {
                                 <Button className="col-12 my-3"
                                         type="primary"
                                         size="large"
-                                        disabled={isResponseLoading}
+                                        style={{height: "auto"}}
+                                        disabled={isResponseLoading || !canFundScholarship}
                                         onClick={this.handleSubmit}>
-                                    Confirm order ({formatCurrency(totalPaymentAmount)})
+                                    {canFundScholarshipMessage}
                                 </Button>
 
                                 {isResponseLoading &&
