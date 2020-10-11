@@ -72,11 +72,13 @@ let scholarshipFormConfigsPage1 = [
         placeholder: 'Funding Amount 💵',
         type: 'number',
     },
+    /*
     {
         keyName: 'number_available_scholarships',
         placeholder: 'Number of Available Scholarships',
         type: 'number',
     },
+    */
     {
         keyName: 'deadline',
         type: 'datetime-local',

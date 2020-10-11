@@ -96,6 +96,7 @@ export let DEFAULT_SCHOLARSHIP = {
     deadline: '2022-12-31T23:59:00',
     open_date: '2022-12-31',
     funding_amount: '',
+    number_available_scholarships: 1,
     funding_type: ['Scholarship'],
     female_only: false,
     international_students_eligible: false,
