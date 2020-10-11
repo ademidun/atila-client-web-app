@@ -4,7 +4,7 @@ import ApplicationsAPI from "../../services/ApplicationsAPI";
 import Loading from "../../components/Loading";
 import {SCHOLARSHIP_QUESTIONS_TYPES_TO_FORM_TYPES} from "../../models/Scholarship";
 import {userProfileFormConfig} from "../../models/UserProfile";
-import {scholarshipUserProfileSharedFormConfigs} from "../../models/Utils";
+import {scholarshipUserProfileSharedFormConfigs, toastNotify} from "../../models/Utils";
 import FormDynamic from "../../components/Form/FormDynamic";
 import {Link} from "react-router-dom";
 import {Button} from "antd";
@@ -62,9 +62,20 @@ class ApplicationDetail extends  React.Component{
                 const { scholarship } = application;
                 this.setState({application, scholarship});
                 this.makeScholarshipQuestionsForm(scholarship)
+
+                const successMessage = (<p>
+                    <span role="img" aria-label="happy face emoji">🙂</span>
+                    Successfully saved {' '}
+                    <Link to={`/application/${application.id}`}>
+                        your application!
+                    </Link>
+                </p>);
+
+                toastNotify(successMessage, 'info', {position: 'bottom-right'});
             })
             .catch(err => {
                 console.log({err});
+                toastNotify(`🙁 An error occured, check your connection!`, 'error');
             })
             .finally(() => {
                 this.setState({isSavingApplication: false});
