@@ -5,7 +5,6 @@ import {Table, Popconfirm} from "antd";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import ApplicationsAPI from "../../services/ApplicationsAPI";
 import Loading from "../../components/Loading";
-import render from "enzyme/src/render";
 
 class ScholarshipManage extends React.Component {
     constructor(props) {
@@ -120,16 +119,15 @@ const selectWinner = id => {
 
     const winners = {winners: [id]}
 
-    // Set application.is_winner to true
-    /*ApplicationsAPI
+    //Set application.is_winner to true
+    ApplicationsAPI
         .selectWinners(winners)
         .then(res=>{
-
+            console.log({res})
         })
         .catch(err => {
             console.log({err});
         })
-     */
 };
 
 
