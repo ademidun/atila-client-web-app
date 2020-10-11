@@ -11,7 +11,7 @@ const defaultSpecificQuestion = {
     type: 'long_answer',
 };
 
-const questionTypesLabel = {
+export const questionTypesLabel = {
     "short_answer": "Short Answer",
     "medium_answer": "Medium Answer (Under 300 words)",
     "long_answer": "Long Answer (Over 300 words)",
