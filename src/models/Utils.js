@@ -65,7 +65,7 @@ export const scholarshipUserProfileSharedFormConfigs = [
     },
     {
         keyName: 'religion',
-        placeholder: 'Religion 🙏🏿',
+        placeholder: 'Religion 🙏🏿 (e.g. Christianity, Sikhism, Islam)',
         type: 'autocomplete',
         suggestions: RELIGIONS,
         className: 'col-md-6',
