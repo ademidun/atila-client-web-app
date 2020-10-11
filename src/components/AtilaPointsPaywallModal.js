@@ -64,52 +64,26 @@ class AtilaPointsPaywallModal extends React.Component {
     render() {
 
         const { userProfile } = this.props;
-        const { viewCount, viewCountType } = this.state;
+        const { viewCount } = this.state;
 
-        let guestOrUserProfileContent = null;
-
-        if (userProfile && userProfile.is_atila_premium) {
+        if (userProfile) {
             return null
         }
-        if (userProfile) {
-            guestOrUserProfileContent = (<span>
-                        <h3>You have viewed {viewCount} {viewCountType} this Month</h3>
-                        <h5>
-                            You're on a <Link to="/pricing">
-                            free account
-                        </Link> <br/> <br/>
-                            You only have{' '}
-                            {parseInt(userProfile.atila_points).toLocaleString()}
-                            {' '}
-                            <Popover content={ATILA_POINTS_EXPLAIN_POPOVER}
-                                     title="What is Atila Points?">
-                                <Link to="/blog/atila/what-is-atila#atila-points">
-                                    Atila Points <FontAwesomeIcon icon={faQuestionCircle} />
+        const guestOrUserProfileContent = (
+                        <span>
+                            <h3>
+                                You have viewed {viewCount} pages
+                            </h3>
+                            <br/>
+                            <h5>
+                                You have not{' '}
+                                <Link to="/register">
+                                    created an account
                                 </Link>
-                            </Popover>
+                            </h5>
+                        </span>);
 
-                        </h5>
-                        </span>)
-        } else {
-            guestOrUserProfileContent = (<span>
-                        <h3>You have viewed {viewCount} pages</h3>
-                        <h5>
-                            You have not <Link to="/register">
-                            created an account
-                        </Link> <br/> <br/>
-                            You have 0{' '}
-                            <Popover content={ATILA_POINTS_EXPLAIN_POPOVER}
-                                     title="What is Atila Points?">
-                                <Link to="/blog/atila/what-is-atila#atila-points">
-                                    Atila Points <FontAwesomeIcon icon={faQuestionCircle} />
-                                </Link>
-                            </Popover>
-
-                        </h5>
-                        </span>)
-        }
-        const premiumOrRegister = userProfile ? (<Link to="/pricing">Go Premium</Link>):
-            (<Link to="/register">Register for free</Link>);
+        const registerCTA = (<Link to="/register">Register for free</Link>);
         return (
             <div>
                 <Modal
@@ -127,7 +101,7 @@ class AtilaPointsPaywallModal extends React.Component {
                         <Button key="submit"
                                 type="primary"
                                 onClick={this.handleOk}>
-                            {premiumOrRegister}
+                            {registerCTA}
                         </Button>,
                     ]}
                 >
