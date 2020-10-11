@@ -26,7 +26,6 @@ class UserProfileCreatedScholarships extends React.Component {
             .then(res => {
                 const createdScholarships =  res.data.created_scholarships;
                 this.setState({createdScholarships});
-                console.log("created: ", createdScholarships)
             })
             .finally(() => {
                 this.setState({isLoading: false});
@@ -72,16 +71,27 @@ function CreatedScholarshipsTable({ createdScholarships }){
             title: '',
             dataIndex: 'id',
             key: '3',
-            render: (id) => (
-                <Link to={`/scholarship/${id}/manage`} className="btn btn-outline-primary">
-                    Manage
-                </Link>
+            render: (id, scholarship) => (
+                renderManageButton(id, scholarship)
             )
         }
     ];
 
     return (<Table columns={columns} dataSource={createdScholarships} rowKey="id" />)
 }
+
+const renderManageButton = (id, scholarship) => {
+    if (!scholarship.is_payment_accepted){
+        return (
+            <Link to={`/scholarship/${id}/manage`} className="btn btn-outline-primary">
+                Manage
+            </Link>
+        )
+    } else {
+        return ('')
+    }
+}
+
 
 const mapDispatchToProps = {
     updateLoggedInUserProfile

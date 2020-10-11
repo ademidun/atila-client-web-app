@@ -199,7 +199,6 @@ export function  transformLocation(placeResult) {
 }
 
 export function transformFilterDisplay(filter_type, inputUserProfile) {
-    console.log(filter_type)
     const mockUserProfile = {
         'city': [{id: 22, province: "Ontario", name: "Halton Hills", country: "Canada"}],
         'province':  [{id: 1, name: "Ontario", country: "Canada"}],

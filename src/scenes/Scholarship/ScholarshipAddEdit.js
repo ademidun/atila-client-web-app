@@ -11,10 +11,34 @@ import {DEFAULT_SCHOLARSHIP} from "../../models/Scholarship";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Link} from "react-router-dom";
-import {Steps, Tag} from "antd";
+import {Button, Popover, Steps, Tag} from "antd";
 import ScholarshipQuestionBuilder, {ScholarshipUserProfileQuestionBuilder} from "./ScholarshipQuestionBuilder";
-import {ScholarshipAddEditReview} from "./ScholarshipAddEditReview";
+import PaymentSend from "../Payment/PaymentSend/PaymentSend";
 const { Step } = Steps;
+
+const atilaDirectApplicationsPopover = (
+    <React.Fragment>
+        <p>
+            Atila Direct Applications provides the following features:
+            <ul>
+                <li>
+                    Handle the payment transfer from sponsor to scholarship recipient
+                </li>
+                <li>
+                    Promoting your scholarship to our network of students and student organizations.
+                </li>
+                <li>
+                    Automatically notify winners and non-winners.
+                </li>
+                <li>
+                    Simple interface for managing all applications.
+                </li>
+            </ul>
+            <Link to="/start">Learn More</Link>
+
+        </p>
+    </React.Fragment>
+);
 
 let scholarshipFormConfigsPage1 = [
     {
@@ -30,14 +54,17 @@ let scholarshipFormConfigsPage1 = [
         type: 'textarea',
         placeholder: 'Scholarship Description',
         html: () => (<label htmlFor="description">
-            Short Description: Who is eligible for this scholarship?
-            What should they do to apply?
+            Eligibility: Who is eligible for this scholarship?
         </label>),
     },
     {
         keyName: 'is_atila_direct_application',
-        placeholder: 'Allow applicants to directly apply for scholarship through Atila? ',
-        html: () =>(<Tag color="green">new</Tag>),
+        placeholder:(
+            <Popover content={atilaDirectApplicationsPopover} title="What is Atila Direct Applications?">
+                Allow applicants to directly apply for scholarship through Atila?{' '}<small>Hover to learn more</small>
+                {' '}<Tag color="green">new</Tag>
+            </Popover>
+            ),
         type: 'checkbox',
         className: 'font-weight-bold',
     },
@@ -46,7 +73,10 @@ let scholarshipFormConfigsPage1 = [
         type: 'html_editor',
         placeholder: 'Additional Information',
         html: () => (<label htmlFor="description">
-            Everything else you want people to know about the scholarship, put it here
+            Everything else you want people to know about the scholarship, put it here. <br/>
+            For example:
+            What inspired you to start this scholarship? What types of students would you like to fund.
+            What would you like to see from the applicants? etc.
             <span role="img" aria-label="pointing down emoji">
             👇🏿
             </span>
@@ -56,11 +86,13 @@ let scholarshipFormConfigsPage1 = [
         keyName: 'scholarship_url',
         placeholder: 'Scholarship Url',
         type: 'url',
+        isHidden: (scholarship) => (scholarship.is_atila_direct_application),
     },
     {
         keyName: 'form_url',
         placeholder: 'Application Form URL',
         type: 'url',
+        isHidden: (scholarship) => (scholarship.is_atila_direct_application),
     },
     {
         keyName: 'img_url',
@@ -72,11 +104,11 @@ let scholarshipFormConfigsPage1 = [
         placeholder: 'Funding Amount 💵',
         type: 'number',
     },
-    {
-        keyName: 'number_available_scholarships',
-        placeholder: 'Number of Available Scholarships',
-        type: 'number',
-    },
+    // {
+    //     keyName: 'number_available_scholarships',
+    //     placeholder: 'Number of Available Scholarships',
+    //     type: 'number',
+    // },
     {
         keyName: 'deadline',
         type: 'datetime-local',
@@ -84,33 +116,35 @@ let scholarshipFormConfigsPage1 = [
             Deadline <span role="img" aria-label="clock emoji">🕐</span>
         </label>),
     },
+    // {
+    //     keyName: 'metadata.not_open_yet',
+    //     placeholder: 'Scholarship not open yet?',
+    //     type: 'checkbox',
+    // },
+    // {
+    //     keyName: 'open_date',
+    //     type: 'date',
+    //     isHidden: (scholarship) => (scholarship.metadata && !scholarship.metadata.not_open_yet),
+    //     html: () =>(<label htmlFor="open_date">
+    //         When does the scholarship open? <span role="img" aria-label="calendar emoji">🗓</span>
+    //     </label>),
+    // },
+    // {
+    //     keyName: 'is_not_available',
+    //     placeholder: 'Is not available?',
+    //     type: 'checkbox',
+    // },
+];
+
+let additionalQuestions = [
     {
-        keyName: 'metadata.not_open_yet',
-        placeholder: 'Scholarship not open yet?',
-        type: 'checkbox',
-    },
-    {
-        keyName: 'open_date',
-        type: 'date',
-        isHidden: (scholarship) => (scholarship.metadata && !scholarship.metadata.not_open_yet),
-        html: () =>(<label htmlFor="open_date">
-            When does the scholarship open? <span role="img" aria-label="calendar emoji">🗓</span>
+        keyName: 'location',
+        placeholder: 'Enter city, province, country 🌏',
+        html: () =>(<label htmlFor="location">
+            Is the scholarship limited to students in certain locations?
+            <span role="img" aria-label="globe emoji">🌏</span>
         </label>),
-    },
-    {
-        keyName: 'female_only',
-        placeholder: 'Female Only? 🙍🏿',
-        type: 'checkbox',
-    },
-    {
-        keyName: 'is_not_available',
-        placeholder: 'Is not available?',
-        type: 'checkbox',
-    },
-    {
-        keyName: 'international_students_eligible',
-        placeholder: 'International Students Eligible? 🌏',
-        type: 'checkbox',
+        type: 'location',
     },
     {
         keyName: 'eligible_schools',
@@ -125,19 +159,25 @@ let scholarshipFormConfigsPage1 = [
         suggestions: MAJORS_LIST
     },
     {
+        keyName: 'female_only',
+        placeholder: 'Female Only? 🙍🏿',
+        type: 'checkbox',
+    },
+    {
+        keyName: 'international_students_eligible',
+        placeholder: 'International Students Eligible? 🌏',
+        type: 'checkbox',
+    },
+    {
         keyName: 'email_contact',
         placeholder: 'Email address for sending questions and submissions',
         type: 'email',
     },
-    {
-        keyName: 'location',
-        placeholder: 'Enter city, province, country 🌏',
-        html: () =>(<label htmlFor="location">
-            Is the scholarship limited to certain locations? <span role="img" aria-label="globe emoji">🌏</span>
-        </label>),
-        type: 'location',
-    },
 ];
+let scholarshipFormConfigsPage2 = scholarshipUserProfileSharedFormConfigs
+    .filter(question => !['eligible_schools', 'eligible_programs'].includes(question.keyName));
+
+scholarshipFormConfigsPage2 = [...additionalQuestions, ...scholarshipFormConfigsPage2];
 
 class ScholarshipAddEdit extends React.Component{
 
@@ -271,9 +311,31 @@ class ScholarshipAddEdit extends React.Component{
             if(event.target.name==='name') {
                 scholarship.slug = slugify(event.target.value);
             }
-            this.setState({scholarship});
+            this.updateScholarship(scholarship);
         }
 
+    };
+
+    updateScholarship = (scholarship) => {
+        this.setState({scholarship});
+    };
+
+    publishScholarship = (event) => {
+        event.preventDefault();
+        const { scholarship } = this.state;
+        this.setState({isLoadingScholarship: true});
+        ScholarshipsAPI
+            .patch(scholarship.id, {published: true})
+            .then(res => {
+                const { data: scholarship} = res;
+                this.updateScholarship(scholarship);
+            })
+            .catch(err => {
+                console.log({err});
+            })
+            .finally(() => {
+                this.setState({isLoadingScholarship: false});
+            })
     };
 
     submitForm = (event) => {
@@ -344,13 +406,13 @@ class ScholarshipAddEdit extends React.Component{
                 title: 'Basic Info',
             },
             {
-                title: 'More Details',
+                title: 'Eligibility',
             },
             {
-                title: 'Scholarship Specific Questions',
+                title: 'Specific Questions',
             },
             {
-                title: 'Review',
+                title: 'Funding',
             },
         ];
         scholarshipEditPages = scholarshipEditPages.slice(0, is_atila_direct_application ? scholarshipEditPages.length : 2);
@@ -381,6 +443,11 @@ class ScholarshipAddEdit extends React.Component{
                     {isLoadingScholarship && <Loading  title="Loading Scholarships..."/>}
                     <div className="card shadow p-3">
                         <h1>{title}: {scholarship.name}</h1>
+                        {scholarship.slug && !isAddScholarshipMode &&
+                        <Link to={`/scholarship/${scholarship.slug}`} className="text-center">
+                            View Scholarship
+                        </Link>
+                        }
                         <hr/>
                         {scholarshipSteps}
                         {!userProfile &&
@@ -390,57 +457,57 @@ class ScholarshipAddEdit extends React.Component{
                             </span> Warning, you must be logged in to add a scholarship
                         </h4>
                         }
-                        {scholarship.slug && !isAddScholarshipMode &&
-                        <Link to={`/scholarship/${scholarship.slug}`}>
-                            View Scholarship
-                        </Link>
-                        }
                         {pageNumber === 1 &&
-                        <React.Fragment>
+                        <div className="my-3">
                             <FormDynamic model={scholarship}
                                          inputConfigs={scholarshipFormConfigsPage1}
                                          onUpdateForm={this.updateForm}
                                          formError={scholarshipPostError}
                                          onSubmit={this.submitForm}/>
-                            <table className="table">
-                                <caption >Locations</caption>
-                                <thead>
-                                <tr>
-                                    {['city','province','country'].map(location =>
-                                        <th key={location}>{prettifyKeys(location)}</th>)
-                                    }
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {locationData.map((locationItem, index) => <tr key={index}>
-                                        {['city','province','country'].map(location =>
-                                            <td key={location}>{locationItem[location]}</td>
-                                        )}
-                                        <td>
-                                            <button className="btn btn-outline-primary"
-                                                    onClick={()=> this.removeLocationData(index)}>
-                                                <FontAwesomeIcon icon={faTrash} />
-                                            </button>
-                                        </td>
-                                    </tr>
-                                )}
-                                </tbody>
-                            </table>
-                        </React.Fragment>
+                        </div>
                         }
                         {pageNumber === 2 &&
-                        <React.Fragment>
+                        <div className="my-3">
                             <h6>Leave blank for each criteria that is open to any</h6>
+                            {locationData && locationData.length > 0 &&
+                            <div>
+                                <h3 >Locations</h3>
+                                <table className="table">
+                                    <thead>
+                                    <tr>
+                                        {['city','province','country'].map(location =>
+                                            <th key={location}>{prettifyKeys(location)}</th>)
+                                        }
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {locationData.map((locationItem, index) => <tr key={index}>
+                                            {['city','province','country'].map(location =>
+                                                <td key={location}>{locationItem[location]}</td>
+                                            )}
+                                            <td>
+                                                <button className="btn btn-outline-primary"
+                                                        onClick={()=> this.removeLocationData(index)}>
+                                                    <FontAwesomeIcon icon={faTrash} />
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    )}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            }
                             <FormDynamic model={scholarship}
-                                         inputConfigs={scholarshipUserProfileSharedFormConfigs}
+                                         inputConfigs={scholarshipFormConfigsPage2}
                                          onUpdateForm={this.updateForm}
                                          formError={scholarshipPostError}
                                          onSubmit={this.submitForm}
                             />
 
-                        </React.Fragment>}
+                        </div>}
                         {pageNumber === 3 &&
-                        <React.Fragment>
+                        <div className="mt-3 mb-5">
                             <h3>User Profile Questions</h3>
                                 <ScholarshipUserProfileQuestionBuilder scholarship={scholarship}
                                                                        onUpdate={this.updateForm} />
@@ -448,9 +515,11 @@ class ScholarshipAddEdit extends React.Component{
                             <h3>Scholarship Specific Questions</h3>
                                 <ScholarshipQuestionBuilder scholarship={scholarship}
                                                             onUpdate={this.updateForm} />
-                        </React.Fragment>}
+                        </div>}
                         {pageNumber === 4 &&
-                            <ScholarshipAddEditReview scholarship={scholarship} />
+                        <div className="my-3">
+                            <PaymentSend scholarship={scholarship} updateScholarship={this.updateScholarship} />
+                        </div>
                         }
                         <div className="my-2" style={{clear: 'both'}}>
                             {pageNumber < scholarshipEditPages.length &&
@@ -469,6 +538,23 @@ class ScholarshipAddEdit extends React.Component{
                         <button type="submit"
                                 className="btn btn-primary col-12 mt-2"
                                 onClick={this.submitForm}>Save</button>
+
+                        {!scholarship.published && scholarship.is_atila_direct_application &&
+                        <Button
+                            type="primary"
+                            className="col-12 mt-2"
+                            onClick={this.publishScholarship}
+                            disabled={!scholarship.is_funded}>
+                            Publish {!scholarship.is_funded ?
+                            <React.Fragment><br/>(You must fund scholarship before publishing)</React.Fragment>:
+                            ""}
+                        </Button>
+                        }
+                        {scholarship.published &&
+                        <p className="text-muted center-block">
+                            Published
+                        </p>
+                        }
                     </div>
                 </div>
             </div>

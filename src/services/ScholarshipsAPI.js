@@ -130,6 +130,16 @@ class ScholarshipsAPI {
         return apiCompletionPromise;
     };
 
+    static selectWinners = (id, winners) => {
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: winners,
+            url: `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/select-winners/`,
+        });
+
+        return apiCompletionPromise;
+    };
 }
 
 export default ScholarshipsAPI;

@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
-import {Table} from "antd";
+import {Table, Popconfirm} from "antd";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
 
@@ -10,64 +10,122 @@ class ScholarshipManage extends React.Component {
         super(props);
 
         this.state = {
+            scholarship: null,
             applications: null,
-            isLoading: false,
+            unsubmittedApplications: null,
+            isLoadingApplications: false,
         }
     }
 
     componentDidMount() {
-        this.getScholarshipApplications()
+        this.getScholarshipApplications();
     }
 
     getScholarshipApplications = () => {
         const { match : { params : { scholarshipID }} } = this.props;
 
-        this.setState({isLoading: true});
+        this.setState({isLoadingApplications: true});
         ScholarshipsAPI.getApplications(scholarshipID)
             .then(res => {
-                const applications =  res.data.applications;
-                this.setState({applications});
-                console.log("created: ", applications)
+                const {scholarship, applications, unsubmitted_applications: unsubmittedApplications} =  res.data;
+                this.setState({scholarship, applications, unsubmittedApplications});
             })
             .finally(() => {
-                this.setState({isLoading: false});
+                this.setState({isLoadingApplications: false});
             });
     };
 
     render() {
-        const {  applications, isLoading } = this.state;
+        const { isLoadingApplications, scholarship, applications, unsubmittedApplications } = this.state;
 
-        if (isLoading) {
+        if (isLoadingApplications) {
             return (<Loading title={`Loading Applications`} className='mt-3' />)
+        } else if (!scholarship || !applications) {
+            return (
+                <h1>
+                  Scholarship Not Found
+                </h1>
+            )
         }
 
+
+        const allApplications = [...applications, ...unsubmittedApplications];
+
         return (
-            <ApplicationsTable applications={applications} />
+            <div className="container mt-5">
+                <h2>
+                    Submitted applications: {applications.length} <br/>
+                    Un-submitted Applications (under draft): {unsubmittedApplications.length}
+                </h2>
+                <br />
+                <ApplicationsTable applications={allApplications} scholarship={scholarship}/>
+            </div>
         )
     }
 }
 
-function ApplicationsTable({ applications }){
+function ApplicationsTable({ applications, scholarship }){
 
     const columns = [
         {
-            title: 'id',
-            dataIndex: 'id',
+            title: <b>Full Name</b>,
+            dataIndex: 'user',
             key: '1',
-            render: (id) => (<p>{id}</p>),
+            render: (userProfile) => (userProfile && userProfile.first_name && `${userProfile.first_name} ${userProfile.last_name}`),
         },
         {
-            title: 'View Application',
+            title: <b>Application</b>,
             dataIndex: 'id',
             key: '2',
-            render: (text, application) => (
-                <Link to={`/application/${application.id}`}>View Application<br/>({text})</Link>
+            render: (id, application) => (
+                <React.Fragment>
+                    {application.is_submitted? <Link to={`/application/${application.id}`}>View</Link> : "Cannot view unsubmitted application"}
+                </React.Fragment>
+            ),
+        },
+        {
+            title: <b>Select Winner</b>,
+            dataIndex: 'id',
+            key: '3',
+            render: (applicationID, application) => (
+                <React.Fragment>
+                    {application.is_submitted? renderWinnerButton(applicationID, scholarship) : "Cannot select unsubmitted application"}
+                </React.Fragment>
             ),
         },
     ];
 
     return (<Table columns={columns} dataSource={applications} rowKey="id" />)
 }
+
+const renderWinnerButton = (applicationID, scholarship) => {
+    const confirmText = "Are you sure you want to pick this winner? You will not be able to undo this action.";
+
+    return (
+        <Popconfirm placement="topLeft" title={confirmText} onConfirm={() => selectWinner(applicationID, scholarship)} okText="Yes" cancelText="No">
+            <button type={"button"} className={"btn btn-success"}>
+                Select Winner
+            </button>
+        </Popconfirm>
+    )
+};
+
+
+const selectWinner = (applicationID, scholarship) => {
+
+    const winners = {winners: [applicationID]};
+
+    const scholarshipID = scholarship.id;
+
+    //Set application.is_winner to true
+    ScholarshipsAPI
+        .selectWinners(scholarshipID, winners)
+        .then(res=>{
+        })
+        .catch(err => {
+            console.log({err});
+        })
+};
 
 
 const mapStateToProps = state => {

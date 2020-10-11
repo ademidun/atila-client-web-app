@@ -1,12 +1,17 @@
 import React from "react";
+import PropTypes from "prop-types";
 import {Elements, StripeProvider} from "react-stripe-elements";
-import PremiumCheckoutForm from "./PaymentSendForm";
+import PaymentSendForm from "./PaymentSendForm";
 import Environment from "../../../services/Environment";
+import {ScholarshipPropType} from "../../../models/Scholarship";
 
 const { STRIPE_PUBLIC_KEY } = Environment;
 class PaymentSend extends React.Component {
 
     render() {
+
+        const { scholarship, updateScholarship } = this.props;
+
         return (
             // ...
             <StripeProvider
@@ -14,11 +19,16 @@ class PaymentSend extends React.Component {
             >
 
                 <Elements>
-                    <PremiumCheckoutForm />
+                    <PaymentSendForm scholarship={scholarship} updateScholarship={updateScholarship} />
                 </Elements>
             </StripeProvider>
         )
     }
 }
+
+PaymentSend.propTypes = {
+    updateScholarship: PropTypes.func,
+    scholarship: ScholarshipPropType,
+};
 
 export default PaymentSend;

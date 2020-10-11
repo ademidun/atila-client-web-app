@@ -84,12 +84,6 @@ class UserProfileViewTabs extends React.Component {
                         <UserProfileCreatedScholarships />
                     </Tab>
                     }
-                    {/*{isProfileEditable &&*/}
-
-                    {/*<Tab eventKey='settings' title='Settings'>*/}
-                    {/*    <UserProfileSettings />*/}
-                    {/*</Tab>*/}
-                    {/*}*/}
                     <Tab eventKey='blogs' title='Blogs'>
                         <TabItemContentList
                             contentList={blogs}
