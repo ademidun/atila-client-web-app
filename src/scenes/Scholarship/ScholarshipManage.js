@@ -31,7 +31,6 @@ class ScholarshipManage extends React.Component {
             .then(res => {
                 const scholarship =  res.data;
                 this.setState({scholarship});
-                console.log("created: ", scholarship)
             })
             .finally(() => {
                 this.setState({isLoadingScholarship: false});
@@ -47,7 +46,6 @@ class ScholarshipManage extends React.Component {
                 const applications =  res.data.applications;
                 const unsubmittedApplications =  res.data.unsubmitted_applications;
                 this.setState({applications, unsubmittedApplications});
-                console.log("created: ", applications)
             })
             .finally(() => {
                 this.setState({isLoadingApplication: false});
@@ -71,8 +69,6 @@ class ScholarshipManage extends React.Component {
 
         const allApplications = [...applications, ...unsubmittedApplications];
 
-        console.log({allApplications});
-
         return (
             <div className="container mt-5">
                 <h2>
@@ -87,7 +83,6 @@ class ScholarshipManage extends React.Component {
 }
 
 function ApplicationsTable({ applications, scholarship }){
-    console.log({ applications, scholarship });
 
     const columns = [
         {
@@ -135,8 +130,6 @@ const renderWinnerButton = (applicationID, scholarship) => {
 
 
 const selectWinner = (applicationID, scholarship) => {
-    console.log(applicationID)
-    console.log("Winner Selected")
 
     const winners = {winners: [applicationID]}
 
@@ -146,7 +139,6 @@ const selectWinner = (applicationID, scholarship) => {
     ScholarshipsAPI
         .selectWinners(scholarshipID, winners)
         .then(res=>{
-            console.log({res})
         })
         .catch(err => {
             console.log({err});

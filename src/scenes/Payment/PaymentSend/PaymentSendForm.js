@@ -49,10 +49,6 @@ class PaymentSendForm extends React.Component {
     handleSubmit = async (ev) => {
         ev.preventDefault();
         const { stripe, userProfile, elements, scholarship, updateScholarship } = this.props;
-        console.log({elements});
-        console.log({stripe});
-        console.log("stripe.elements", stripe.elements);
-        console.log("stripe.elements()", stripe.elements());
 
         const { first_name, last_name } = userProfile;
         const fullName = `${first_name} ${last_name}`;
@@ -68,12 +64,7 @@ class PaymentSendForm extends React.Component {
 
         try{
             const {data: clientSecretData} = await PaymentAPI.getClientSecret(paymentData);
-             console.log({clientSecretData});
             try {
-                console.log("this.cardElementRef", this.cardElementRef);
-                console.log({CardElement});
-                console.log({clientSecretData});
-                console.log(clientSecretData.client_secret);
                 const cardPaymentResult = await stripe.confirmCardPayment(clientSecretData.client_secret, {
                     payment_method: {
                         card: this.cardElementRef.current._element,
@@ -82,8 +73,6 @@ class PaymentSendForm extends React.Component {
                         }
                     }
                 });
-
-                console.log({cardPaymentResult});
 
                 if (cardPaymentResult.error) {
                     // Show error to your customer (e.g., insufficient funds)
@@ -95,7 +84,6 @@ class PaymentSendForm extends React.Component {
                         ScholarshipsAPI
                             .patch(scholarship.id, {stripe_payment_intent_id: cardPaymentResult.paymentIntent.id, is_funded: true})
                             .then(res => {
-                                console.log({res});
                                 const { data: scholarship } = res;
                                 updateScholarship(scholarship);
                             })
@@ -103,7 +91,6 @@ class PaymentSendForm extends React.Component {
                                 console.log({err});
                             })
                             .finally(() => {
-                                console.log("Finally");
                                 this.setState({isLoading: 'Saving Progress'});
                                 const isResponseLoadingFinishedText = (<div>
                                     Payment was successful. See your live scholarship at:

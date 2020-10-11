@@ -113,7 +113,6 @@ class ScholarshipDetail extends React.Component {
             .doesApplicationExist(userProfile.user, scholarship.id)
             .then(res => {
                 const { data: {application} } = res;
-                console.log({res});
                 this.setState({ currentUserScholarshipApplication: application })
             })
             .catch((err) => {
@@ -128,10 +127,8 @@ class ScholarshipDetail extends React.Component {
     getOrCreateApplication = () => {
         const { userProfile } = this.props;
         const { scholarship } = this.state;
-        console.log({userProfile, scholarship});
         ApplicationsAPI.getOrCreate(scholarship.id, userProfile.user)
             .then(res=>{
-                console.log({res});
 
                 const {data: { application }} = res;
 
