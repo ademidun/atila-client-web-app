@@ -13,50 +13,32 @@ class ScholarshipManage extends React.Component {
             scholarship: null,
             applications: null,
             unsubmittedApplications: null,
-            isLoadingApplications: true,
-            isLoadingScholarship: true
+            isLoadingApplications: false,
         }
     }
 
     componentDidMount() {
-        this.getScholarshipApplications()
-        this.getScholarship()
-    }
-
-    getScholarship = () => {
-        const { match : { params : { scholarshipID }} } = this.props;
-
-        this.setState({isLoadingScholarship: true});
-        ScholarshipsAPI.get(scholarshipID)
-            .then(res => {
-                const scholarship =  res.data;
-                this.setState({scholarship});
-            })
-            .finally(() => {
-                this.setState({isLoadingScholarship: false});
-            });
+        this.getScholarshipApplications();
     }
 
     getScholarshipApplications = () => {
         const { match : { params : { scholarshipID }} } = this.props;
 
-        this.setState({isLoadingApplication: true});
+        this.setState({isLoadingApplications: true});
         ScholarshipsAPI.getApplications(scholarshipID)
             .then(res => {
-                const applications =  res.data.applications;
-                const unsubmittedApplications =  res.data.unsubmitted_applications;
-                this.setState({applications, unsubmittedApplications});
+                const {scholarship, applications, unsubmitted_applications: unsubmittedApplications} =  res.data;
+                this.setState({scholarship, applications, unsubmittedApplications});
             })
             .finally(() => {
-                this.setState({isLoadingApplication: false});
+                this.setState({isLoadingApplications: false});
             });
     };
 
     render() {
-        const { scholarship, applications, isLoadingApplication,
-            isLoadingScholarship, unsubmittedApplications } = this.state;
+        const { isLoadingApplications, scholarship, applications, unsubmittedApplications } = this.state;
 
-        if (isLoadingApplication || isLoadingScholarship) {
+        if (isLoadingApplications) {
             return (<Loading title={`Loading Applications`} className='mt-3' />)
         } else if (!scholarship || !applications) {
             return (
@@ -117,7 +99,7 @@ function ApplicationsTable({ applications, scholarship }){
 }
 
 const renderWinnerButton = (applicationID, scholarship) => {
-    const confirmText = "Are you sure you want to pick this winner? You will not be able to undo this action."
+    const confirmText = "Are you sure you want to pick this winner? You will not be able to undo this action.";
 
     return (
         <Popconfirm placement="topLeft" title={confirmText} onConfirm={() => selectWinner(applicationID, scholarship)} okText="Yes" cancelText="No">
@@ -126,14 +108,14 @@ const renderWinnerButton = (applicationID, scholarship) => {
             </button>
         </Popconfirm>
     )
-}
+};
 
 
 const selectWinner = (applicationID, scholarship) => {
 
-    const winners = {winners: [applicationID]}
+    const winners = {winners: [applicationID]};
 
-    const scholarshipID = scholarship.id
+    const scholarshipID = scholarship.id;
 
     //Set application.is_winner to true
     ScholarshipsAPI

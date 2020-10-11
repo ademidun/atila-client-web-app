@@ -48,7 +48,7 @@ class PaymentSendForm extends React.Component {
 
     handleSubmit = async (ev) => {
         ev.preventDefault();
-        const { stripe, userProfile, elements, scholarship, updateScholarship } = this.props;
+        const { stripe, userProfile, scholarship, updateScholarship } = this.props;
 
         const { first_name, last_name } = userProfile;
         const fullName = `${first_name} ${last_name}`;
