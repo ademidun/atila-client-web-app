@@ -8,6 +8,7 @@ import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import ApplicationsAPI from "../../services/ApplicationsAPI";
 import {formatCurrency, prettifyKeys} from "../../services/utils";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
+import {Link} from "react-router-dom";
 
 const { Step } = Steps;
 
@@ -234,7 +235,10 @@ class PaymentAccept extends React.Component {
                         ))}
                     </Steps>
                     <div>
-                        <h1>Accept Your Award for {scholarship.name}</h1>
+                        <h1>Accept Your Award for
+                            <Link to={`/scholarship/${scholarship.slug}`}> {scholarship.name}</Link>
+                        </h1>
+
                         <Row gutter={[{ xs: 8, sm: 16}, 16]}>
                             <Col span={24}>
                                 <Input value={userProfile.first_name} disabled={true} />

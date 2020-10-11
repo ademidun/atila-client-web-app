@@ -119,7 +119,6 @@ class ApplicationDetail extends  React.Component{
         }
 
 
-
         return (
             <div className="container mt-5">
                 <div className="card shadow p-3">
