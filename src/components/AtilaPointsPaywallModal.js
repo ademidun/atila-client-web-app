@@ -1,24 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {Button, Modal, Popover} from 'antd';
+import {Button, Modal} from 'antd';
 import {connect} from "react-redux";
 import {Link, withRouter} from "react-router-dom";
-import { faQuestionCircle} from "@fortawesome/free-solid-svg-icons/faQuestionCircle";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
-
-
-export const ATILA_POINTS_EXPLAIN_POPOVER = (
-    <span>
-                <p>
-                Get points for adding content
-                    like scholarships, blog posts and essays.
-                You can use those points for special features like viewing essays,
-                    scholarships, easier applications and more.
-                </p>
-                <Link to="/blog/atila/what-is-atila#atila-points"> Learn More </Link>
-            </span>
-);
 
 class AtilaPointsPaywallModal extends React.Component {
     constructor(props) {

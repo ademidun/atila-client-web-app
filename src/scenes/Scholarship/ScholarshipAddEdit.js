@@ -13,7 +13,6 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Link} from "react-router-dom";
 import {Button, Popover, Steps, Tag} from "antd";
 import ScholarshipQuestionBuilder, {ScholarshipUserProfileQuestionBuilder} from "./ScholarshipQuestionBuilder";
-import {ScholarshipAddEditReview} from "./ScholarshipAddEditReview";
 import PaymentSend from "../Payment/PaymentSend/PaymentSend";
 const { Step } = Steps;
 
