@@ -116,6 +116,33 @@ class ApplicationDetail extends  React.Component{
 
     };
 
+    renderHeader = () => {
+        const { application, scholarship } = this.state
+        if (application.is_winner && scholarship && !application.accepted_payment) {
+            return (
+                <div>
+                    <h3 className="text-success">
+                        Congratulations! You received the award of{' '}
+                        {formatCurrency(Number.parseInt(scholarship.funding_amount))}
+                    </h3>
+                    <Button onClick={this.saveApplication} type="primary">
+                        <Link to={`/payment/accept/?application=${application.id}`}>
+                            Accept Payment
+                        </Link>
+                    </Button>
+                </div>
+            )
+        }
+
+        if (application.accepted_payment) {
+            return (
+                <h3 className={"text-success"}>
+                    You have already accepted your payment for this scholarship!
+                </h3>
+            )
+        }
+    }
+
     render() {
 
         const { match : { params : { applicationID }} } = this.props;
@@ -139,25 +166,7 @@ class ApplicationDetail extends  React.Component{
                         </Link>)
                             : applicationID}
                     </h1>
-                    {application.is_winner && scholarship && !application.accepted_payment &&
-                    <div>
-                        <h3 className="text-success">
-                            Congratulations! You received the award of{' '}
-                            {formatCurrency(Number.parseInt(scholarship.funding_amount))}
-                        </h3>
-                        <Button onClick={this.saveApplication} type="primary">
-                            <Link to={`/payment/accept/?application=${application.id}`}>
-                                Accept Payment
-                            </Link>
-                        </Button>
-                    </div>
-                    }
-                    {application.accepted_payment &&
-                        <h3 className={"text-success"}>
-                            You have already accepted your payment for this scholarship!
-                        </h3>
-                    }
-
+                    {this.renderHeader()}
                     <div>
                         {scholarshipUserProfileQuestionsFormConfig && scholarshipQuestionsFormConfig &&
                         <div>
