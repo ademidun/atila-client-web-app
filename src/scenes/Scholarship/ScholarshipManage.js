@@ -12,6 +12,7 @@ class ScholarshipManage extends React.Component {
         this.state = {
             scholarship: null,
             applications: null,
+            unsubmittedApplications: null,
             isLoadingApplications: true,
             isLoadingScholarship: true
         }
@@ -44,7 +45,8 @@ class ScholarshipManage extends React.Component {
         ScholarshipsAPI.getApplications(scholarshipID)
             .then(res => {
                 const applications =  res.data.applications;
-                this.setState({applications});
+                const unsubmittedApplications =  res.data.unsubmitted_applications;
+                this.setState({applications, unsubmittedApplications});
                 console.log("created: ", applications)
             })
             .finally(() => {
@@ -53,45 +55,65 @@ class ScholarshipManage extends React.Component {
     };
 
     render() {
-        const { scholarship, applications, isLoadingApplication, isLoadingScholarship } = this.state;
+        const { scholarship, applications, isLoadingApplication,
+            isLoadingScholarship, unsubmittedApplications } = this.state;
 
         if (isLoadingApplication || isLoadingScholarship) {
             return (<Loading title={`Loading Applications`} className='mt-3' />)
+        } else if (!scholarship || !applications) {
+            return (
+                <h1>
+                  Scholarship Not Found
+                </h1>
+            )
         }
+
+
+        const allApplications = [...applications, ...unsubmittedApplications];
+
+        console.log({allApplications});
 
         return (
             <div className="container mt-5">
-                <h2>You have {applications.length} applications</h2>
+                <h2>
+                    Submitted applications: {applications.length} <br/>
+                    Un-submitted Applications (under draft): {unsubmittedApplications.length}
+                </h2>
                 <br />
-                <ApplicationsTable applications={applications} scholarship={scholarship}/>
+                <ApplicationsTable applications={allApplications} scholarship={scholarship}/>
             </div>
         )
     }
 }
 
 function ApplicationsTable({ applications, scholarship }){
+    console.log({ applications, scholarship });
 
     const columns = [
         {
             title: <b>Full Name</b>,
-            dataIndex: 'user_profile_responses',
+            dataIndex: 'user',
             key: '1',
-            render: (userReponses) => (<p>{userReponses[0].value} {userReponses[1].value}</p>),
+            render: (userProfile) => (userProfile && userProfile.first_name && `${userProfile.first_name} ${userProfile.last_name}`),
         },
         {
             title: <b>Application</b>,
             dataIndex: 'id',
             key: '2',
             render: (id, application) => (
-                <Link to={`/application/${application.id}`}>View</Link>
+                <React.Fragment>
+                    {application.is_submitted? <Link to={`/application/${application.id}`}>View</Link> : "Cannot view unsubmitted application"}
+                </React.Fragment>
             ),
         },
         {
-            title: '',
+            title: <b>Select Winner</b>,
             dataIndex: 'id',
             key: '3',
-            render: (applicationID) => (
-                renderWinnerButton(applicationID, scholarship)
+            render: (applicationID, application) => (
+                <React.Fragment>
+                    {application.is_submitted? renderWinnerButton(applicationID, scholarship) : "Cannot select unsubmitted application"}
+                </React.Fragment>
             ),
         },
     ];
