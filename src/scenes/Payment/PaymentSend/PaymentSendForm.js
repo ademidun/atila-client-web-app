@@ -13,6 +13,8 @@ import ScholarshipsAPI from "../../../services/ScholarshipsAPI";
 import {ATILA_SCHOLARSHIP_FEE} from "../../../models/Constants";
 import {formatCurrency} from "../../../services/utils";
 import PaymentAPI from "../../../services/PaymentAPI";
+import {ScholarshipPropType} from "../../../models/Scholarship";
+import PropTypes from "prop-types";
 
 export const PREMIUM_PRICE_BEFORE_TAX = 9;
 export const PREMIUM_PRICE_WITH_TAX = 10.17;
@@ -20,6 +22,13 @@ class PaymentSendForm extends React.Component {
 
     constructor(props) {
         super(props);
+
+        const { scholarship } = props;
+
+        // totalPaymentAmount = scholarship.funding_amount + (Atila 9% fee + 13% tax)
+        const totalPaymentAmount = Number.parseInt(scholarship.funding_amount)  +
+            (ATILA_SCHOLARSHIP_FEE * 1.13 * Number.parseInt(scholarship.funding_amount));
+
         this.state = {
             cardHolderName: "",
             addressCountry: "",
@@ -27,56 +36,19 @@ class PaymentSendForm extends React.Component {
             isResponseLoadingMessage: "",
             isResponseErrorMessage: null,
             isResponseLoadingFinishedText: null,
-            isPaymentSuccess: false,
-            totalPaymentAmount: null,
+            isPaymentSuccess: scholarship.is_funded,
+            totalPaymentAmount,
             // Leaving the following message in case it's relevant to an error I might encounter when funding scholarships
             // have to set it here, otherwise it may get set after user subscribes for an account
             // then instead of showing 'Payment successful' it showed 'You already have a premium account'
-        }
+        };
 
         this.cardElementRef = React.createRef();
     }
 
-    componentDidMount() {
-        const { userProfile } = this.props;
-        if (!userProfile || !userProfile.is_debug_mode) {
-            return
-        }
-
-        this.getScholarship();
-    }
-
-    getScholarship = () => {
-        const {
-            location : { search },
-        } = this.props;
-        const params = new URLSearchParams(search);
-
-        let scholarshipID = params.get('scholarship');
-        this.setState({isResponseLoading: "Retrieving Scholarship..."});
-
-        ScholarshipsAPI
-            .get(scholarshipID)
-            .then(res=> {
-                const {data : scholarship} = res;
-                // totalPaymentAmount = scholarship.funding_amount + (Atila 5% fee + 13% tax)
-                const totalPaymentAmount = Number.parseInt(scholarship.funding_amount)  +
-                    (ATILA_SCHOLARSHIP_FEE * 1.13 * Number.parseInt(scholarship.funding_amount));
-
-                this.setState({scholarship, totalPaymentAmount});
-            })
-            .catch(err=> {
-                console.log({err})
-            })
-            .finally(() => {
-                this.setState({isResponseLoading: null});
-                // this.createStripeElements();
-            })
-    };
-
     handleSubmit = async (ev) => {
         ev.preventDefault();
-        const { stripe, userProfile, elements } = this.props;
+        const { stripe, userProfile, elements, scholarship, updateScholarship } = this.props;
         console.log({elements});
         console.log({stripe});
         console.log("stripe.elements", stripe.elements);
@@ -84,7 +56,7 @@ class PaymentSendForm extends React.Component {
 
         const { first_name, last_name } = userProfile;
         const fullName = `${first_name} ${last_name}`;
-        const { scholarship, totalPaymentAmount} = this.state;
+        const { totalPaymentAmount} = this.state;
 
         this.setState({isResponseLoading: true});
         this.setState({isResponseLoadingMessage: 'Processing Payment'});
@@ -124,6 +96,8 @@ class PaymentSendForm extends React.Component {
                             .patch(scholarship.id, {stripe_payment_intent_id: cardPaymentResult.paymentIntent.id, is_funded: true})
                             .then(res => {
                                 console.log({res});
+                                const { data: scholarship } = res;
+                                updateScholarship(scholarship);
                             })
                             .catch(err => {
                                 console.log({err});
@@ -211,10 +185,16 @@ class PaymentSendForm extends React.Component {
     };
 
     render() {
+        const { userProfile, scholarship } = this.props;
+        if (!userProfile || !userProfile.is_debug_mode) {
+            return (<h3>
+                You do not have permission to access this page yet.
+            </h3>)
+        }
 
         const { cardHolderName, isResponseLoading, isResponseLoadingMessage,
             isPaymentSuccess, isResponseLoadingFinishedText,
-            isResponseErrorMessage, scholarship, totalPaymentAmount} = this.state;
+            isResponseErrorMessage, totalPaymentAmount} = this.state;
 
         const isResponseErrorMessageWithContactLink = (<div>
             {isResponseErrorMessage}
@@ -252,95 +232,82 @@ class PaymentSendForm extends React.Component {
         return (
             <React.Fragment>
                 {helmetSeo}
-                <div className="container mt-5" style={{ height: '80vh'}}>
-                    <div className="card shadow p-3">
-                        <h1>Fund{' '}
-                            <Link to={`/scholarship/${scholarship.slug}`}>
-                                {scholarship.name}
-                            </Link>
-                        </h1>
-                        <h5 className="center-block">
-                            <Link to={`/scholarship/edit/${scholarship.slug}`}>
-                                Edit Scholarship
-                            </Link>
-                        </h5>
+                <div className="container">
 
-                        <Row gutter={16}>
-                            <Col sm={24} md={12}>
-                                <div className="checkout-form-container">
-                                    {isPaymentSuccess &&
-                                    <Result
-                                        status="success"
-                                        title="Payment Success 🙂"
-                                        subTitle={isResponseLoadingFinishedText}
-                                        extra={[
-                                            <p key="next-steps">Next Steps:</p>,
-                                            <Link to="/scholarship" key="scholarship">
-                                                View Scholarships
-                                            </Link>,
-                                            <Link to="/blog" key="blog">
-                                                View Blog Posts
-                                            </Link>,
-                                            <Link to="/essay" key="essay">
-                                                View Essays
-                                            </Link>,
-                                        ]}
-                                    />
-                                    }
-                                </div>
-                                {!isPaymentSuccess &&
-                                <form onSubmit={this.handleSubmit}>
-                                    <Row gutter={16}>
-                                        <Col span={24} className="mb-3">
-                                            <input placeholder="Cardholder Name"
-                                                   name="cardHolderName"
-                                                   className="form-control"
-                                                   value={cardHolderName}
-                                                   onChange={this.updateForm}
-                                            />
-                                        </Col>
-                                        <Col span={24}>
-                                            <div id="card-element">
+                    <Row gutter={16}>
+                        <Col sm={24} md={12}>
+                            <div className="checkout-form-container">
+                                {isPaymentSuccess &&
+                                <Result
+                                    status="success"
+                                    title="Your Scholarship has been funded 🙂"
+                                    subTitle={isResponseLoadingFinishedText}
+                                    extra={[
+                                        <p key="next-steps">
+                                            Next Steps:
+                                        </p>,
+                                        <Link to={`/scholarship/${scholarship.slug}`} key="view">
+                                            View Scholarship
+                                        </Link>,
+                                        <Link to={`/scholarship/${scholarship.id}/manage`} key="manage">
+                                            Manage Applications
+                                        </Link>,
+                                    ]}
+                                />
+                                }
+                            </div>
+                            {!isPaymentSuccess &&
+                            <form onSubmit={this.handleSubmit}>
+                                <Row gutter={16}>
+                                    <Col span={24} className="mb-3">
+                                        <input placeholder="Cardholder Name"
+                                               name="cardHolderName"
+                                               className="form-control"
+                                               value={cardHolderName}
+                                               onChange={this.updateForm}
+                                        />
+                                    </Col>
+                                    <Col span={24}>
+                                        <div id="card-element">
 
-                                            </div>
+                                        </div>
 
-                                            <CardElement style={{base: {fontSize: '18px'}}} ref={this.cardElementRef} />
+                                        <CardElement style={{base: {fontSize: '18px'}}} ref={this.cardElementRef} />
 
-                                            <p className="my-3">
-                                                Test with: 4000001240000000
-                                            </p>
-                                        </Col>
-                                    </Row>
+                                        <p className="my-3">
+                                            Test with: 4000001240000000
+                                        </p>
+                                    </Col>
+                                </Row>
 
-                                    <Button className="col-12 my-3"
-                                            type="primary"
-                                            size="large"
-                                            disabled={isResponseLoading}
-                                            onClick={this.handleSubmit}>
-                                        Confirm order ({formatCurrency(totalPaymentAmount)})
-                                    </Button>
+                                <Button className="col-12 my-3"
+                                        type="primary"
+                                        size="large"
+                                        disabled={isResponseLoading}
+                                        onClick={this.handleSubmit}>
+                                    Confirm order ({formatCurrency(totalPaymentAmount)})
+                                </Button>
 
-                                    {isResponseLoading &&
+                                {isResponseLoading &&
 
-                                    <Loading
-                                        isLoading={isResponseLoading}
-                                        title={isResponseLoadingMessage} />
-                                    }
+                                <Loading
+                                    isLoading={isResponseLoading}
+                                    title={isResponseLoadingMessage} />
+                                }
 
-                                    {isResponseErrorMessage &&
-                                    <Alert
-                                        type="error"
-                                        message={isResponseErrorMessageWithContactLink}
-                                    />
-                                    }
+                                {isResponseErrorMessage &&
+                                <Alert
+                                    type="error"
+                                    message={isResponseErrorMessageWithContactLink}
+                                />
+                                }
 
-                                </form>}
-                            </Col>
-                            <Col sm={24} md={12}>
-                                <Invoice scholarship={scholarship} />
-                            </Col>
-                        </Row>
-                    </div>
+                            </form>}
+                        </Col>
+                        <Col sm={24} md={12}>
+                            <Invoice scholarship={scholarship} />
+                        </Col>
+                    </Row>
                 </div>
             </React.Fragment>
         );
@@ -352,7 +319,9 @@ PaymentSendForm.defaultProps = {
 };
 
 PaymentSendForm.propTypes = {
-    userProfile: UserProfilePropType
+    userProfile: UserProfilePropType,
+    scholarship: ScholarshipPropType,
+    updateScholarship: PropTypes.func,
 };
 const mapDispatchToProps = {
     updateLoggedInUserProfile

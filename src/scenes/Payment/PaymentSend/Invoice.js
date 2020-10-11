@@ -83,7 +83,7 @@ function Invoice({ userProfile, scholarship }) {
 
                 <tr className="item">
                     <td>
-                        Atila Fee (5%)
+                        Atila Fee ({Number.parseInt(ATILA_SCHOLARSHIP_FEE * 100)}%)
                     </td>
 
                     <td>

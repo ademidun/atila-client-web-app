@@ -11,9 +11,10 @@ import {DEFAULT_SCHOLARSHIP} from "../../models/Scholarship";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Link} from "react-router-dom";
-import {Popover, Steps, Tag} from "antd";
+import {Button, Popover, Steps, Tag} from "antd";
 import ScholarshipQuestionBuilder, {ScholarshipUserProfileQuestionBuilder} from "./ScholarshipQuestionBuilder";
 import {ScholarshipAddEditReview} from "./ScholarshipAddEditReview";
+import PaymentSend from "../Payment/PaymentSend/PaymentSend";
 const { Step } = Steps;
 
 const atilaDirectApplicationsPopover = (
@@ -311,9 +312,32 @@ class ScholarshipAddEdit extends React.Component{
             if(event.target.name==='name') {
                 scholarship.slug = slugify(event.target.value);
             }
-            this.setState({scholarship});
+            this.updateScholarship(scholarship);
         }
 
+    };
+
+    updateScholarship = (scholarship) => {
+        this.setState({scholarship});
+    };
+
+    publishScholarship = (event) => {
+        event.preventDefault();
+        const { scholarship } = this.state;
+        this.setState({isLoadingScholarship: true});
+        ScholarshipsAPI
+            .patch(scholarship.id, {published: true})
+            .then(res => {
+                console.log({res});
+                const { data: scholarship} = res;
+                this.updateScholarship(scholarship);
+            })
+            .catch(err => {
+                console.log({err});
+            })
+            .finally(() => {
+                this.setState({isLoadingScholarship: false});
+            })
     };
 
     submitForm = (event) => {
@@ -387,10 +411,10 @@ class ScholarshipAddEdit extends React.Component{
                 title: 'Eligibility',
             },
             {
-                title: 'Scholarship Specific Questions',
+                title: 'Specific Questions',
             },
             {
-                title: 'Review',
+                title: 'Funding',
             },
         ];
         scholarshipEditPages = scholarshipEditPages.slice(0, is_atila_direct_application ? scholarshipEditPages.length : 2);
@@ -421,6 +445,11 @@ class ScholarshipAddEdit extends React.Component{
                     {isLoadingScholarship && <Loading  title="Loading Scholarships..."/>}
                     <div className="card shadow p-3">
                         <h1>{title}: {scholarship.name}</h1>
+                        {scholarship.slug && !isAddScholarshipMode &&
+                        <Link to={`/scholarship/${scholarship.slug}`} className="text-center">
+                            View Scholarship
+                        </Link>
+                        }
                         <hr/>
                         {scholarshipSteps}
                         {!userProfile &&
@@ -430,22 +459,17 @@ class ScholarshipAddEdit extends React.Component{
                             </span> Warning, you must be logged in to add a scholarship
                         </h4>
                         }
-                        {scholarship.slug && !isAddScholarshipMode &&
-                        <Link to={`/scholarship/${scholarship.slug}`}>
-                            View Scholarship
-                        </Link>
-                        }
                         {pageNumber === 1 &&
-                        <React.Fragment>
+                        <div className="my-3">
                             <FormDynamic model={scholarship}
                                          inputConfigs={scholarshipFormConfigsPage1}
                                          onUpdateForm={this.updateForm}
                                          formError={scholarshipPostError}
                                          onSubmit={this.submitForm}/>
-                        </React.Fragment>
+                        </div>
                         }
                         {pageNumber === 2 &&
-                        <React.Fragment>
+                        <div className="my-3">
                             <h6>Leave blank for each criteria that is open to any</h6>
                             {locationData && locationData.length > 0 &&
                             <div>
@@ -483,9 +507,9 @@ class ScholarshipAddEdit extends React.Component{
                                          onSubmit={this.submitForm}
                             />
 
-                        </React.Fragment>}
+                        </div>}
                         {pageNumber === 3 &&
-                        <React.Fragment>
+                        <div className="mt-3 mb-5">
                             <h3>User Profile Questions</h3>
                                 <ScholarshipUserProfileQuestionBuilder scholarship={scholarship}
                                                                        onUpdate={this.updateForm} />
@@ -493,9 +517,11 @@ class ScholarshipAddEdit extends React.Component{
                             <h3>Scholarship Specific Questions</h3>
                                 <ScholarshipQuestionBuilder scholarship={scholarship}
                                                             onUpdate={this.updateForm} />
-                        </React.Fragment>}
+                        </div>}
                         {pageNumber === 4 &&
-                            <ScholarshipAddEditReview scholarship={scholarship} />
+                        <div className="my-3">
+                            <PaymentSend scholarship={scholarship} updateScholarship={this.updateScholarship} />
+                        </div>
                         }
                         <div className="my-2" style={{clear: 'both'}}>
                             {pageNumber < scholarshipEditPages.length &&
@@ -514,6 +540,23 @@ class ScholarshipAddEdit extends React.Component{
                         <button type="submit"
                                 className="btn btn-primary col-12 mt-2"
                                 onClick={this.submitForm}>Save</button>
+
+                        {!scholarship.published &&
+                        <Button
+                            type="primary"
+                            className="col-12 mt-2"
+                            onClick={this.publishScholarship}
+                            disabled={!scholarship.is_funded}>
+                            Publish {!scholarship.is_funded ?
+                            <React.Fragment><br/>(You must fund scholarship before publishing)</React.Fragment>:
+                            ""}
+                        </Button>
+                        }
+                        {scholarship.published &&
+                        <p className="text-muted center-block">
+                            Published
+                        </p>
+                        }
                     </div>
                 </div>
             </div>

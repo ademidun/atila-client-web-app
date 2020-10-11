@@ -17,7 +17,7 @@ export function ScholarshipAddEditReview ({scholarship}){
     return (
         <div className="container mt-5">
             <div className="card shadow p-3">
-                <h1>Review Your Scholarship</h1>
+                <h1>Fund Scholarship</h1>
                 <p style={{fontSize: "1.5rem", lineHeight: "45px"}}>
                     Funding per Scholarship: {formatCurrency(Number.parseFloat(scholarship.funding_amount))}
                     <br/>
