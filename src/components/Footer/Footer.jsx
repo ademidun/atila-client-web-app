@@ -43,13 +43,13 @@ function Footer({location, history}) {
                 <div className="footer-center">
                   <div>
                     <Link to="/start">
-                      Start a Scholarship
+                      Start a Scholarship{' '}
                       <Tag color="green">new</Tag>
                     </Link>
                   </div>
                   <div>
                     <Link to="/apply">
-                      Apply for a Scholarship
+                      Apply for a Scholarship{' '}
                       <Tag color="green">new</Tag>
                     </Link>
                   </div>

@@ -28,11 +28,125 @@ function HowToApplyForScholarships() {
 
                     <ol>
                         <li>Create your profile to find scholarships you qualify for.<br /><br /></li>
-                        <li>Apply for a scholarship, save time by pre-filling similar responses you&rsquo;ve entered in the past.<br /><br /></li>
+                        <li>Find a scholarship you want and click Apply now. Save time by pre-filling similar responses you&rsquo;ve entered in the past.<br /><br /></li>
                         <li>If selected, write a thank you email to the sponsor<br /><br /></li>
                         <li>Connect your bank Account<br /><br /></li>
                         <li>Accept payment and have funds deposited in bank account within 24 hours</li>
                     </ol>
+                    <h2>Questions</h2>
+                    <p><strong>What Happens After I win?</strong></p>
+                    <p>After you win the award the following things happen:</p>
+                    <ol>
+                        <li>You will receive an email notifying you that you won the award. Make sure that Atila emails are not going to your junk inbox or spam. You may have to mark Atila emails as not spam (tk add link to how to do so in Gmail and hotmail).&nbsp;</li>
+                    </ol>
+                    <ol>
+                        <li>You write a thank you email to the scholarship sponsor<br /><br /></li>
+                        <li>You will be listed as the scholarship winner on the scholarship page and Atila will contact you asking if we can share your winning application and your name and photo. You will have the opportunity to edit your application slightly before sharing.<br /><br /></li>
+                        <li>If the scholarship awarded to you is valued at $5,000 or more, we will mail you a</li>
+                    </ol>
+                    <p><br /><br /></p>
+                    <p><strong>How do I receive my funding?</strong></p>
+                    <p>After you&rsquo;ve completed the tasks above, you can click on the link in the email which you were provided and it will take you to the payment acceptance page. You will then connect your bank account using <a href="https://stripe.com/">Stripe</a>, after connecting your bank account and accepting the payment, you should receive the funding typically within the next 24 hours.</p>
+                    <p><br /><br /></p>
+                    <p><strong>Does Atila Save my Banking Information? Is it Secure?</strong></p>
+                    <p>Atila does not save your banking information. All of the payment processing is handled using <a href="https://stripe.com/en-ca">Stripe</a>, a payment processing company that is used to handle payments for companies such as Shopify, Lyft, Doordash, Shopify and more.</p>
+                    <p><br /><br /></p>
+                    <p><strong>Can Students outside of Canada use Atila?</strong></p>
+                    <p>Students outside of Canada may use Atila to find scholarships, but they are not currently able to use the Atila Direct applications feature. This means they cannot apply for scholarships through Atila and receive the funding through the Atila Platform. We want to open up this feature to as many students as possible so if you&rsquo;re outside of Canada and want to use Atila, contact us and let us know what country you&rsquo;re in so we know what countries we should prioritize in launching next.</p>
+                    <h2>Pricing</h2>
+                    <p>Here is an example to understand the pricing structure for Atila:</p>
+                    <ol>
+                        <li>Rupam raised her child as a single mother and decided to start a $1,000 scholarship to support any student that comes from a single parent family.<br /><br /></li>
+                        <li>Rupam pays the following:</li>
+                        <ol>
+                            <li>Scholarship Amount + 9% Atila fee + (13% HST)</li>
+                        </ol>
+                    </ol>
+                    <ol>
+                        <li>Suppose Jasleen is the recipient of the award:&nbsp;</li>
+                        <ol>
+                            <li>Rupam (the sponsor) pays $1,101.70.</li>
+                            <li>Jasleen the (recipient) receives the full $1,000.&nbsp;</li>
+                            <li>Atila receives $90.00&nbsp;</li>
+                            <li>The Government of Canada receives $11.70</li>
+                        </ol>
+                    </ol>
+                    <p><br /><br /><br /></p>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <p>Name</p>
+                            </td>
+                            <td>
+                                <p>Amount</p>
+                            </td>
+                            <td>
+                                <p>Description</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>Scholarship Amount</p>
+                            </td>
+                            <td>
+                                <p>$1,000.00</p>
+                            </td>
+                            <td>
+                                <p>Sponsor picks the value ($100 min.)</p>
+                            </td>
+                        </tr>
+                        <tr>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>Atila Fee</p>
+                            </td>
+                            <td>
+                                <p>$90.00</p>
+                            </td>
+                            <td>
+                                <p>9%</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>Tax</p>
+                            </td>
+                            <td>
+                                <p>$11.70</p>
+                            </td>
+                            <td>
+                                <p>13% HST</p>
+                            </td>
+                        </tr>
+                        <tr>
+                        </tr>
+                        <tr>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>Sponsor Pays</p>
+                            </td>
+                            <td>
+                                <p>$1,101.70</p>
+                            </td>
+                        </tr>
+                        <tr>
+                        </tr>
+                        <tr>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>Student Receives</p>
+                            </td>
+                            <td>
+                                <p>$1,000.00</p>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
                 </div>
             </div>
         </React.Fragment>

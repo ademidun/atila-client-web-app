@@ -94,17 +94,18 @@ class LandingPage extends React.Component {
                         <hr/>
                         <HowItWorks accountType={"Student"}/>
                         <hr/>
-                        <HowItWorks accountType={"Sponsor"}/>
-                        <hr/>
-                        <MoreFeatures/>
                         <div className="p-5">
                             <Link to="/register" className="btn btn-primary center-block font-size-xl">
                                 Register for Free
                             </Link>
                         </div>
+                        <hr/>
+                        <HowItWorks accountType={"Sponsor"}/>
+                        <hr/>
+                        <MoreFeatures/>
+                        <hr/>
                         {scholarshipsContentDueSoon}
                         {scholarshipsContentRecentlyAdded}
-                        <hr/>
                     </React.Fragment>
                         }
                     {userProfile &&

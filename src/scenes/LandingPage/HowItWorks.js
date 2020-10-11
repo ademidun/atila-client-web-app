@@ -22,7 +22,7 @@ export default HowItWorks;
 
 const howItWorksStudent = [
     {
-        title: "Create Scholarship",
+        title: "Create Account",
         body: <React.Fragment>
             <Link to="register">Register</Link> for a free account in 15 seconds.<br/>
 
@@ -30,7 +30,7 @@ const howItWorksStudent = [
             with the right scholarships for you.
 
         </React.Fragment>,
-        image: createProfileGif
+        image: "https://imgur.com/QtsdXAf.jpg"
     },
     {
         title: "Apply for Scholarships",
@@ -38,18 +38,24 @@ const howItWorksStudent = [
             Apply for multiple scholarships all from one site.
             Autofill similar responses used in past scholarships to save time.
         </React.Fragment>,
-        image: viewScholarshipsGif
+        image: "https://imgur.com/GOvtecm.jpg"
     },
     {
         title: "Get Funded",
         body: <React.Fragment>
             Scholarship funding is directly deposited to your bank account
-            within 24 hours of accepting award.
+            within 24 hours of accepting award<sup>*</sup>.
+            <br/>
+            <small>
+                <sup>*</sup>
             Only currently available for students with Canadian Bank Accounts.
+            </small>
         </React.Fragment>,
         image: viewScholarshipsGif
     }
- ]
+ ];
+
+
 function HowItWorksStudent() {
 
     return (
@@ -86,24 +92,34 @@ function HowItWorksSponsor() {
             Who's eligible?{' '}
             Any short answer or essay questions?{' '} etc.
         </React.Fragment>,
-            image: scholarshipManagement,
+            image: "https://imgur.com/7jaf4nF.jpg",
         },
         {
         title: "Fund Scholarship",
-        body: "Securely fund the scholarship with a credit card or debit card.",
-            image: scholarshipManagement,
+        body: "Fund the scholarship with a credit card or debit card.",
+            image: "https://imgur.com/UV2nLPE.jpg",
         },
         {
         title: "Select Winner",
         body: "Review student applications and select winner. Funds directly transferred to winner's bank " +
             "account within 24 hours. All sponsors receive a thank you letter from winner.",
-        image: scholarshipManagement,
+        image: "https://imgur.com/0Xfx0zU.jpg",
         },
         {
             title: <React.Fragment>The Big Cheque Special! <Tag color="green">Bonus</Tag></React.Fragment>,
-        body: "For scholarships over $5,000 we mail a big cheque to the winner " +
-            "on behalf of the scholarship Sponsor for free.",
+        body: "For scholarships valued at over $5,000, we mail a big cheque to the winner " +
+            "on behalf of the scholarship sponsor for free.",
         image: "https://i.imgur.com/6p5wMBm.jpeg",
+        imageCaption: <React.Fragment>
+            Source: <a href="https://lasentinel.net/dulans-restaurants-help-dorsey-grad-attend-howard-university.html"
+                       target="_blank"
+                       rel="noopener noreferrer">
+            LA Sentinel
+        </a>
+            <br/>
+            <small>Note: This is just an example.
+                Atila has no affiliation with the scholarship shown above.</small>
+        </React.Fragment>
         },
     ];
 
@@ -154,6 +170,11 @@ function DescriptionsWithScreenshots({items})   {
                              title={item.title}
                              className="col-12"
                         />
+                        {item.imageCaption &&
+                        <p className="col-12 text-center text-muted">
+                            {item.imageCaption}
+                        </p>
+                        }
                     </div>
 
                 </React.Fragment>
