@@ -111,6 +111,9 @@ function Invoice({ userProfile, scholarship }) {
                 </tr>
                 </tbody>
             </table>
+            <div className="my-3 p-1">
+                <small>Currency: Canadian Dollar (CAD)</small>
+            </div>
         </div>
     )
 }
