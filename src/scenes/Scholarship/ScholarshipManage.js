@@ -3,7 +3,6 @@ import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 import {Table, Popconfirm} from "antd";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
-import ApplicationsAPI from "../../services/ApplicationsAPI";
 import Loading from "../../components/Loading";
 
 class ScholarshipManage extends React.Component {
@@ -64,13 +63,13 @@ class ScholarshipManage extends React.Component {
             <div className="container mt-5">
                 <h2>You have {scholarship.number_available_scholarships} available scholarships.</h2>
                 <br />
-                <ApplicationsTable applications={applications} />
+                <ApplicationsTable applications={applications} scholarship={scholarship}/>
             </div>
         )
     }
 }
 
-function ApplicationsTable({ applications }){
+function ApplicationsTable({ applications, scholarship }){
 
     const columns = [
         {
@@ -91,8 +90,8 @@ function ApplicationsTable({ applications }){
             title: '',
             dataIndex: 'id',
             key: '3',
-            render: (id) => (
-                renderWinnerButton(id)
+            render: (applicationID) => (
+                renderWinnerButton(applicationID, scholarship)
             ),
         },
     ];
@@ -100,11 +99,11 @@ function ApplicationsTable({ applications }){
     return (<Table columns={columns} dataSource={applications} rowKey="id" />)
 }
 
-const renderWinnerButton = id => {
+const renderWinnerButton = (applicationID, scholarship) => {
     const confirmText = "Are you sure you want to pick this winner? You will not be able to undo this action."
 
     return (
-        <Popconfirm placement="topLeft" title={confirmText} onConfirm={() => selectWinner(id)} okText="Yes" cancelText="No">
+        <Popconfirm placement="topLeft" title={confirmText} onConfirm={() => selectWinner(applicationID, scholarship)} okText="Yes" cancelText="No">
             <button type={"button"} className={"btn btn-success"}>
                 Select Winner
             </button>
@@ -113,15 +112,17 @@ const renderWinnerButton = id => {
 }
 
 
-const selectWinner = id => {
-    console.log(id)
+const selectWinner = (applicationID, scholarship) => {
+    console.log(applicationID)
     console.log("Winner Selected")
 
-    const winners = {winners: [id]}
+    const winners = {winners: [applicationID]}
+
+    const scholarshipID = scholarship.id
 
     //Set application.is_winner to true
-    ApplicationsAPI
-        .selectWinners(winners)
+    ScholarshipsAPI
+        .selectWinners(scholarshipID, winners)
         .then(res=>{
             console.log({res})
         })

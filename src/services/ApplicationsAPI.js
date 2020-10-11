@@ -44,21 +44,6 @@ class ApplicationsAPI {
 
         return apiCompletionPromise;
     };
-
-    static post = (route, data) => {
-
-        const apiCompletionPromise = request({
-            method: 'post',
-            data: data,
-            url: `${ApplicationsAPI.applicationsApiUrl}/${route}/`,
-        });
-
-        return apiCompletionPromise;
-    };
-
-    static selectWinners = (data) => {
-        this.post('select-winners', data)
-    };
 }
 
 export default ApplicationsAPI;
