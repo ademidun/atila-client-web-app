@@ -23,8 +23,10 @@ class ScholarshipDetail extends React.Component {
 
         this.state = {
             scholarship: null,
+            currentUserScholarshipApplication: null,
             scholarshipUserProfile: null,
             isLoadingScholarship: true,
+            isLoadingApplication: false,
             errorLoadingScholarship: false,
             prevSlug: null,
             pageViews: null
@@ -75,6 +77,8 @@ class ScholarshipDetail extends React.Component {
                     message.error(notAvailableText, 3);
                 }
 
+                this.findExistingApplication();
+
                 AnalyticsService
                     .savePageView(scholarship, userProfile)
                     .then(() => {
@@ -95,6 +99,30 @@ class ScholarshipDetail extends React.Component {
                 this.setState({ isLoadingScholarship: false });
                 this.setState({ prevSlug: slug });
             });
+    };
+
+    findExistingApplication = () => {
+        const { userProfile } = this.props;
+        const { scholarship } = this.state;
+
+        if(!userProfile) {
+            return;
+        }
+        this.setState({isLoadingApplication: true});
+        ApplicationsAPI
+            .doesApplicationExist(userProfile.user, scholarship.id)
+            .then(res => {
+                const { data: {application} } = res;
+                console.log({res});
+                this.setState({ currentUserScholarshipApplication: application })
+            })
+            .catch((err) => {
+                console.log({err});
+            })
+            .finally(() => {
+                this.setState({isLoadingApplication: false});
+            });
+
     };
 
     getOrCreateApplication = () => {
@@ -119,7 +147,7 @@ class ScholarshipDetail extends React.Component {
 
         const { isLoadingScholarship, scholarship,
             errorLoadingScholarship, scholarshipUserProfile,
-            pageViews} = this.state;
+            pageViews, currentUserScholarshipApplication, isLoadingApplication } = this.state;
         const { userProfile } = this.props;
 
         if (errorLoadingScholarship) {
@@ -143,6 +171,23 @@ class ScholarshipDetail extends React.Component {
 
         if (Number.parseInt(funding_amount) === 0) {
             fundingString = "varies";
+        }
+
+        let applyToScholarshipButton = (<Button type="primary" size="large"
+                                                className="mt-3" style={{fontSize: "20px"}}
+                                                onClick={this.getOrCreateApplication}
+                                                disabled={isLoadingApplication}>
+            {isLoadingApplication ? "Checking for existing Application..." : "Apply Now"}
+        </Button>);
+
+        if(currentUserScholarshipApplication) {
+            applyToScholarshipButton = (
+                <Button type="primary" size="large"
+                        className="mt-3" style={{fontSize: "20px"}} disabled={isLoadingApplication}>
+                <Link to={`/application/${currentUserScholarshipApplication.id}`}>
+                    Continue Application
+                </Link>
+            </Button>)
         }
 
         return (
@@ -184,11 +229,7 @@ class ScholarshipDetail extends React.Component {
                                 {/*// BETA MODE: Only allow is_debug_mode users to do Direct Applications*/}
                                 {userProfile && userProfile.is_debug_mode &&
                                 scholarship.is_atila_direct_application &&
-                                <Button type="primary" size="large"
-                                        className="mt-3" style={{fontSize: "20px"}}
-                                        onClick={this.getOrCreateApplication}>
-                                    Apply Now
-                                </Button>
+                                    applyToScholarshipButton
                                 }
                                 <br/><br/>
                                 {
