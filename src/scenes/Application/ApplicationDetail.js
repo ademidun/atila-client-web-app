@@ -119,6 +119,7 @@ class ApplicationDetail extends  React.Component{
         }
 
 
+
         return (
             <div className="container mt-5">
                 <div className="card shadow p-3">
@@ -141,6 +142,12 @@ class ApplicationDetail extends  React.Component{
                         </Button>
                     </div>
                     }
+                    {application.accepted_payment &&
+                        <h3 className={"text-success"}>
+                            You have already accepted your payment for this scholarship!
+                        </h3>
+                    }
+
                     <div>
                         {scholarshipUserProfileQuestionsFormConfig && scholarshipQuestionsFormConfig &&
                         <div>
