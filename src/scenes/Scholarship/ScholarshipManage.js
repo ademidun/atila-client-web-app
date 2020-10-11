@@ -61,6 +61,14 @@ class ScholarshipManage extends React.Component {
             return (<Loading title={`Loading Applications`} className='mt-3' />)
         }
 
+        if (!scholarship) {
+            return (
+                <div className="container mt-5">
+                    <h2>This scholarship does not exist</h2>
+                </div>
+            )
+        }
+
         if (userProfile) {
             if (userProfile.user === scholarship.owner) {
                 return (
