@@ -39,6 +39,7 @@ const howItWorksStudent = [
             Autofill similar responses used in past scholarships to save time.
         </React.Fragment>,
         image: "https://imgur.com/GOvtecm.jpg"
+
     },
     {
         title: "Get Funded",
@@ -51,7 +52,7 @@ const howItWorksStudent = [
             Only currently available for students with Canadian Bank Accounts.
             </small>
         </React.Fragment>,
-        image: viewScholarshipsGif
+        image: "https://imgur.com/C3V4TUh.jpg"
     }
  ];
 
