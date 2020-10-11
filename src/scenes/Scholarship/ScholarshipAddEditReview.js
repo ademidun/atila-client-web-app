@@ -2,6 +2,7 @@ import {ATILA_SCHOLARSHIP_FEE} from "../../models/Constants";
 import {formatCurrency} from "../../services/utils";
 import {Button} from "antd";
 import React from "react";
+import {Link} from "react-router-dom";
 
 
 export function ScholarshipAddEditReview ({scholarship}){
@@ -28,10 +29,18 @@ export function ScholarshipAddEditReview ({scholarship}){
                     <br/>
                     Total Amount: {formatCurrency(totalScholarshipPlusFees)}
                 </p>
+                {!scholarship.is_funded &&
                 <Button type="primary">
-                    Fund Scholarship
+                    <Link to={`/payment/send/?scholarship=${scholarship.id}`}>
+                        Fund Scholarship
+                    </Link>
                 </Button>
-
+                }
+                {scholarship.is_funded &&
+                <p style={{fontSize: "1.5rem", lineHeight: "45px", color: 'green'}}>
+                    Your scholarship has been funded!
+                </p>
+                }
             </div>
         </div>
     )

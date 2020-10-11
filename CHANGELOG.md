@@ -1,5 +1,11 @@
 # Changelog
 
+## October 4, 2020
+### Atila Direct Applications
+- Changing the business model of Atila to charging 5% on
+scholarships funded via the Atila Platform.
+
+
 ## May 10,2020
 ### Logic for Ebook Premium User 
 
@@ -34,7 +40,7 @@ Repeated below for convenience:
 > jest.mock('react-stripe-elements', () => {
 >     return {
 >         injectStripe: () => {
->             const PremiumCheckoutFormTest2 = require('./PremiumCheckoutForm').PremiumCheckoutFormTest;
+>             const PremiumCheckoutFormTest2 = require('./PaymentSendForm').PremiumCheckoutFormTest;
 >             return PremiumCheckoutFormTest2;
 >         },
 >         CardElement: () => {

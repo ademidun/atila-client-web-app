@@ -8,6 +8,7 @@ import {scholarshipUserProfileSharedFormConfigs} from "../../models/Utils";
 import FormDynamic from "../../components/Form/FormDynamic";
 import {Link} from "react-router-dom";
 import {Button} from "antd";
+import {formatCurrency} from "../../services/utils";
 
 class ApplicationDetail extends  React.Component{
 
@@ -127,6 +128,19 @@ class ApplicationDetail extends  React.Component{
                         </Link>)
                             : applicationID}
                     </h1>
+                    {application.is_winner && scholarship && !application.accepted_payment &&
+                    <div>
+                        <h3 className="text-success">
+                            Congratulations! You received the award of{' '}
+                            {formatCurrency(Number.parseInt(scholarship.funding_amount))}
+                        </h3>
+                        <Button onClick={this.saveApplication} type="primary">
+                            <Link to={`/payment/accept/?application=${application.id}`}>
+                                Accept Payment
+                            </Link>
+                        </Button>
+                    </div>
+                    }
                     <div>
                         {scholarshipUserProfileQuestionsFormConfig && scholarshipQuestionsFormConfig &&
                         <div>
@@ -146,6 +160,7 @@ class ApplicationDetail extends  React.Component{
                                     Save
                             </Button>
                         </div>
+
 
 
                         }

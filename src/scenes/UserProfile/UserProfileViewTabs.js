@@ -10,6 +10,7 @@ import UserProfileEdit from './UserProfileEdit';
 import UserProfileViewSavedScholarships from './UserProfileSavedScholarships';
 import {RESERVED_USERNAMES} from "../../models/Constants";
 import UserProfileApplications from "./UserProfileApplications";
+import UserProfileCreatedScholarships from "./UserProfileCreatedScholarships";
 
 class UserProfileViewTabs extends React.Component {
 
@@ -76,6 +77,11 @@ class UserProfileViewTabs extends React.Component {
                     {isProfileEditable &&
                     <Tab eventKey='scholarships' title='Saved Scholarships'>
                         <UserProfileViewSavedScholarships />
+                    </Tab>
+                    }
+                    {isProfileEditable &&
+                    <Tab eventKey='sponsored-scholarships' title='My Scholarships'>
+                        <UserProfileCreatedScholarships />
                     </Tab>
                     }
                     {/*{isProfileEditable &&*/}

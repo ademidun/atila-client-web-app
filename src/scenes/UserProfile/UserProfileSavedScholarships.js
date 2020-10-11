@@ -94,7 +94,7 @@ function SavedScholarshipsTable({ scholarships, removeSavedScholarship }){
 
     const columns = [
         {
-            title: 'Name',
+            title: 'Scholarship',
             dataIndex: 'name',
             key: 'name',
             render: (text, record) => (
@@ -102,7 +102,7 @@ function SavedScholarshipsTable({ scholarships, removeSavedScholarship }){
             ),
         },
         {
-            title: 'description',
+            title: 'Description',
             dataIndex: 'description',
             key: 'description',
             render: text => (`${text.substr(0, 140)}...`),
@@ -114,7 +114,7 @@ function SavedScholarshipsTable({ scholarships, removeSavedScholarship }){
             render: (deadline, scholarship) => (<ScholarshipDeadlineWithTags scholarship={scholarship} datePrefix="" />),
         },
         {
-            title: 'Remove',
+            title: '',
             key: 'action',
             render: (text, record) => (
                 <button className="btn btn-link my-3"
