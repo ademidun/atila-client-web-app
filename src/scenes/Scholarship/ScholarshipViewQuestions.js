@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
 import {Link} from "react-router-dom";
-import {questionTypesLabel} from "../Scholarship/ScholarshipQuestionBuilder"
+import {questionTypesLabel} from "./ScholarshipQuestionBuilder"
 
 class ScholarshipViewQuestions extends React.Component {
     constructor(props) {
