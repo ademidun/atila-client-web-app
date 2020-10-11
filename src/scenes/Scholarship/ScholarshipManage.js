@@ -12,78 +12,63 @@ class ScholarshipManage extends React.Component {
         this.state = {
             scholarship: null,
             applications: null,
-            isLoadingApplications: true,
-            isLoadingScholarship: true
+            unsubmittedApplications: null,
+            isLoadingApplications: false,
         }
     }
 
     componentDidMount() {
-        this.getScholarshipApplications()
-        this.getScholarship()
-    }
-
-    getScholarship = () => {
-        const { match : { params : { scholarshipID }} } = this.props;
-
-        this.setState({isLoadingScholarship: true});
-        ScholarshipsAPI.get(scholarshipID)
-            .then(res => {
-                const scholarship =  res.data;
-                this.setState({scholarship});
-                console.log("created: ", scholarship)
-            })
-            .finally(() => {
-                this.setState({isLoadingScholarship: false});
-            });
+        this.getScholarshipApplications();
     }
 
     getScholarshipApplications = () => {
         const { match : { params : { scholarshipID }} } = this.props;
 
-        this.setState({isLoadingApplication: true});
+        this.setState({isLoadingApplications: true});
         ScholarshipsAPI.getApplications(scholarshipID)
             .then(res => {
-                const applications =  res.data.applications;
-                this.setState({applications});
-                console.log("created: ", applications)
+                const {scholarship, applications, unsubmitted_applications: unsubmittedApplications} =  res.data;
+                this.setState({scholarship, applications, unsubmittedApplications});
             })
             .finally(() => {
-                this.setState({isLoadingApplication: false});
+                this.setState({isLoadingApplications: false});
             });
     };
 
     render() {
         const { userProfile } = this.props;
-        console.log("user profile", userProfile)
-        const { scholarship, applications, isLoadingApplication, isLoadingScholarship } = this.state;
+        const { scholarship, applications, isLoadingApplications, unsubmittedApplications } = this.state;
 
-        if (isLoadingApplication || isLoadingScholarship) {
+        if (isLoadingApplications) {
             return (<Loading title={`Loading Applications`} className='mt-3' />)
+        } else if (!scholarship || !applications) {
+            return (
+                <h1>
+                  Scholarship Not Found
+                </h1>
+            )
         }
 
-        if (userProfile) {
-            if (userProfile.user === scholarship.owner) {
-                return (
-                    <div className="container mt-5">
-                        <h2>You have {scholarship.number_available_scholarships} available scholarships.</h2>
-                        <br/>
-                        <ApplicationsTable applications={applications} scholarship={scholarship}/>
-                    </div>
-                )
-            } else {
-                return (
-                    <div className="container mt-5">
-                        <h2>You are not authorized to view this data</h2>
-                    </div>
-                )
-            }
-        } else {
+        if (!!userProfile) {
             return (
                 <div className="container mt-5">
                     <h2><Link to={`/login`}>Log In</Link> to manage scholarships</h2>
                 </div>
             )
         }
+
+        const allApplications = [...applications, ...unsubmittedApplications];
+
+        return (
+            <div className="container mt-5">
+                <h2>
+                    Submitted applications: {applications.length} <br/>
+                    Un-submitted Applications (under draft): {unsubmittedApplications.length}
+                </h2>
+                <br />
+                <ApplicationsTable applications={allApplications} scholarship={scholarship}/>
+            </div>
+        )
     }
 }
 
@@ -92,24 +77,28 @@ function ApplicationsTable({ applications, scholarship }){
     const columns = [
         {
             title: <b>Full Name</b>,
-            dataIndex: 'user_profile_responses',
+            dataIndex: 'user',
             key: '1',
-            render: (userReponses) => (<p>{userReponses[0].value} {userReponses[1].value}</p>),
+            render: (userProfile) => (userProfile && userProfile.first_name && `${userProfile.first_name} ${userProfile.last_name}`),
         },
         {
             title: <b>Application</b>,
             dataIndex: 'id',
             key: '2',
             render: (id, application) => (
-                <Link to={`/application/${application.id}/view`}>View</Link>
+                <React.Fragment>
+                    {application.is_submitted? <Link to={`/application/${application.id}`}>View</Link> : "Cannot view unsubmitted application"}
+                </React.Fragment>
             ),
         },
         {
-            title: '',
+            title: <b>Select Winner</b>,
             dataIndex: 'id',
             key: '3',
-            render: (applicationID) => (
-                renderWinnerButton(applicationID, scholarship)
+            render: (applicationID, application) => (
+                <React.Fragment>
+                    {application.is_submitted? renderWinnerButton(applicationID, scholarship) : "Cannot select unsubmitted application"}
+                </React.Fragment>
             ),
         },
     ];
@@ -118,7 +107,7 @@ function ApplicationsTable({ applications, scholarship }){
 }
 
 const renderWinnerButton = (applicationID, scholarship) => {
-    const confirmText = "Are you sure you want to pick this winner? You will not be able to undo this action."
+    const confirmText = "Are you sure you want to pick this winner? You will not be able to undo this action.";
 
     return (
         <Popconfirm placement="topLeft" title={confirmText} onConfirm={() => selectWinner(applicationID, scholarship)} okText="Yes" cancelText="No">
@@ -127,22 +116,18 @@ const renderWinnerButton = (applicationID, scholarship) => {
             </button>
         </Popconfirm>
     )
-}
+};
 
 
 const selectWinner = (applicationID, scholarship) => {
-    console.log(applicationID)
-    console.log("Winner Selected")
 
     const winners = {winners: applicationID}
-
-    const scholarshipID = scholarship.id
+    const scholarshipID = scholarship.id;
 
     //Set application.is_winner to true
     ScholarshipsAPI
         .selectWinners(scholarshipID, winners)
-        .then(res=>{
-            console.log({res})
+        .then(()=>{
         })
         .catch(err => {
             console.log({err});

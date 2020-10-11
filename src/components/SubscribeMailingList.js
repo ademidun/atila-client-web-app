@@ -58,7 +58,6 @@ class SubscribeMailingList extends  React.Component{
 
             UtilsAPI.sendEbookPreviewEmail(formDataPost)
                     .then(res=> {
-                        console.log({res});
                     })
                     .then(err=> {
                         console.log({err});

@@ -330,7 +330,6 @@ class ScholarshipAddEdit extends React.Component{
         ScholarshipsAPI
             .patch(scholarship.id, {published: true})
             .then(res => {
-                console.log({res});
                 const { data: scholarship} = res;
                 this.updateScholarship(scholarship);
             })
