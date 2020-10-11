@@ -165,3 +165,8 @@ label {
   color: #CC0000;
   border: solid 1px #CC0000;
 }
+
+.ant-btn > a, .ant-btn > a:hover {
+  color: currentColor !important;
+  line-height: inherit !important;
+}

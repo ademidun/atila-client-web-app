@@ -13,7 +13,6 @@ export function ScholarshipAddEditReview ({scholarship}){
 
     const totalScholarshipPlusFees = totalFundingAmount + atilaFee;
 
-    console.log(scholarship.funding_amount,{totalFundingAmount, atilaFee, totalScholarshipPlusFees} );
     return (
         <div className="container mt-5">
             <div className="card shadow p-3">

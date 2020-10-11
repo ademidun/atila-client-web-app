@@ -26,7 +26,6 @@ class UserProfileCreatedScholarships extends React.Component {
             .then(res => {
                 const createdScholarships =  res.data.created_scholarships;
                 this.setState({createdScholarships});
-                console.log("created: ", createdScholarships)
             })
             .finally(() => {
                 this.setState({isLoading: false});

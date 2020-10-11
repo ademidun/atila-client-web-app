@@ -34,6 +34,16 @@ class ApplicationsAPI {
         return apiCompletionPromise;
     };
 
+    static doesApplicationExist = (userID, scholarshipID) => {
+
+        const apiCompletionPromise = request({
+            method: 'get',
+            url: `${ApplicationsAPI.applicationsApiUrl}/does-application-exist/?user_profile=${userID}&scholarship=${scholarshipID}/`,
+        });
+
+        return apiCompletionPromise;
+    };
+
     static patch = (id, data) => {
 
         const apiCompletionPromise = request({
