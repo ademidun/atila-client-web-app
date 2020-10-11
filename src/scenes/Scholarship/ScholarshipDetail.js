@@ -52,6 +52,7 @@ class ScholarshipDetail extends React.Component {
 
     componentDidMount() {
         this.loadContent();
+
     }
     componentDidUpdate(prevProps, prevState) {
         const { scholarship, errorLoadingScholarship } = this.state;
@@ -172,7 +173,7 @@ class ScholarshipDetail extends React.Component {
                                         Visit Scholarship Website
                                     </a> <br/>
                                 </React.Fragment>}
-                                {form_url &&
+                                {form_url && !scholarship.is_atila_direct_application &&
                                 <React.Fragment>
                                     <a href={form_url} target="_blank" rel="noopener noreferrer">
                                         View Scholarship Application
@@ -184,11 +185,18 @@ class ScholarshipDetail extends React.Component {
                                 {/*// BETA MODE: Only allow is_debug_mode users to do Direct Applications*/}
                                 {userProfile && userProfile.is_debug_mode &&
                                 scholarship.is_atila_direct_application &&
-                                <Button type="primary" size="large"
-                                        className="mt-3" style={{fontSize: "20px"}}
-                                        onClick={this.getOrCreateApplication}>
-                                    Apply Now
-                                </Button>
+                                    <div>
+                                        <Link to={`/scholarship/${slug}/questions`} target={'_blank'}>
+                                            View Application Form
+                                        </Link>
+                                        <br />
+                                        <Button type="primary" size="large"
+                                                className="mt-3" style={{fontSize: "20px"}}
+                                                onClick={this.getOrCreateApplication}>
+                                            Apply Now
+                                        </Button>
+
+                                    </div>
                                 }
                                 <br/><br/>
                                 {

@@ -4,11 +4,13 @@ import {Route, Switch} from "react-router-dom";
 import ScholarshipDetail from "./ScholarshipDetail";
 import ScholarshipAddEdit from "./ScholarshipAddEdit";
 import ScholarshipManage from "./ScholarshipManage";
+import ScholarshipViewQuestions from "./ScholarshipViewQuestions";
 
 function Scholarship({ match }) {
     return (
         <Switch>
             <Route path={`${match.path}/:scholarshipID/manage`} component={ScholarshipManage} />
+            <Route path={`${match.path}/:slug/questions`} component={ScholarshipViewQuestions} />
             <Route path={`${match.path}/add`} component={ScholarshipAddEdit} />
             <Route path={`${match.path}/s/:searchString`} component={ScholarshipsList} />
             <Route path={`${match.path}/edit/:slug`} component={ScholarshipAddEdit} />
