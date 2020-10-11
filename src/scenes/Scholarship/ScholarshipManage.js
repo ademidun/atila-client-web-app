@@ -61,7 +61,7 @@ class ScholarshipManage extends React.Component {
 
         return (
             <div className="container mt-5">
-                <h2>You have {scholarship.number_available_scholarships} available scholarships.</h2>
+                <h2>You have {applications.length} applications</h2>
                 <br />
                 <ApplicationsTable applications={applications} scholarship={scholarship}/>
             </div>

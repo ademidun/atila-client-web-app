@@ -226,6 +226,14 @@ class ScholarshipDetail extends React.Component {
                                 <Link to={`/scholarship/edit/${slug}`}>
                                     Edit Scholarship
                                 </Link><br/>
+                                {scholarshipUserProfile && userProfile &&
+                                userProfile.user === scholarshipUserProfile.user &&
+                                    <React.Fragment>
+                                        <Link to={`/scholarship/${scholarship.id}/manage`}>
+                                            Manage Applications
+                                        </Link><br/>
+                                    </React.Fragment>
+                                }
                                 {/*// BETA MODE: Only allow is_debug_mode users to do Direct Applications*/}
                                 {userProfile && userProfile.is_debug_mode &&
                                 scholarship.is_atila_direct_application &&
