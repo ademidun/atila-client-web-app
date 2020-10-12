@@ -235,7 +235,35 @@ class ApplicationDetail extends  React.Component{
                     <div>
                         {scholarshipUserProfileQuestionsFormConfig && scholarshipQuestionsFormConfig &&
                         <div>
-                            {viewMode && !application.is_submitted &&
+                            {!viewMode && !application.is_submitted &&
+                            <>
+                                <h2>Profile Questions</h2>
+                                <FormDynamic onUpdateForm={event => this.updateForm(event, 'user_profile_responses')}
+                                             model={application.user_profile_responses}
+                                             inputConfigs=
+                                                 {scholarshipUserProfileQuestionsFormConfig}
+                                />
+
+                                <h2>Scholarship Questions</h2>
+                                <FormDynamic onUpdateForm={event => this.updateForm(event, 'scholarship_responses')}
+                                             model={application.scholarship_responses}
+                                             inputConfigs=
+                                                 {scholarshipQuestionsFormConfig}
+                                />
+                                <Button onClick={this.saveApplication} type="primary">
+                                    Save
+                                </Button>
+                                <Popconfirm placement="topRight" title={"Once you submit your application, you won't be able to edit it. Are you sure you want to submit?"}
+                                            onConfirm={this.submitApplication}
+                                            okText="Yes" cancelText="No">
+                                    <Button type={"primary"} className={"float-right"}>
+                                        Submit
+                                    </Button>
+                                </Popconfirm>
+                            </>
+                            }
+
+                            {(viewMode || application.is_submitted) &&
                                 <fieldset disabled={true}>
                                     <h2>Profile Questions</h2>
                                     <FormDynamic onUpdateForm={event => this.updateForm(event, 'user_profile_responses')}
@@ -251,34 +279,6 @@ class ApplicationDetail extends  React.Component{
                                     {scholarshipQuestionsFormConfig}
                                     />
                                 </fieldset>
-                            }
-
-                            {(!viewMode || application.is_submitted) &&
-                                <>
-                                <h2>Profile Questions</h2>
-                                <FormDynamic onUpdateForm={event => this.updateForm(event, 'user_profile_responses')}
-                                model={application.user_profile_responses}
-                                inputConfigs=
-                                {scholarshipUserProfileQuestionsFormConfig}
-                                />
-
-                                <h2>Scholarship Questions</h2>
-                                <FormDynamic onUpdateForm={event => this.updateForm(event, 'scholarship_responses')}
-                                    model={application.scholarship_responses}
-                                    inputConfigs=
-                                    {scholarshipQuestionsFormConfig}
-                                />
-                                <Button onClick={this.saveApplication} type="primary">
-                                    Save
-                                </Button>
-                                <Popconfirm placement="topRight" title={"Once you submit your application, you won't be able to edit it. Are you sure you want to submit?"}
-                                            onConfirm={this.submitApplication}
-                                            okText="Yes" cancelText="No">
-                                    <Button type={"primary"} className={"float-right"}>
-                                        Submit
-                                    </Button>
-                                </Popconfirm>
-                                </>
                             }
                         </div>
                         }
