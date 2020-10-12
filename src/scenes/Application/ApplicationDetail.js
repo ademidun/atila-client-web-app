@@ -15,7 +15,7 @@ import {scholarshipUserProfileSharedFormConfigs, toastNotify} from "../../models
 import FormDynamic from "../../components/Form/FormDynamic";
 import {Link} from "react-router-dom";
 import {Button, Popconfirm} from "antd";
-import {formatCurrency, extractContent, normalizeString} from "../../services/utils";
+import {formatCurrency, extractContent} from "../../services/utils";
 
 class ApplicationDetail extends  React.Component{
 
@@ -246,6 +246,7 @@ class ApplicationDetail extends  React.Component{
         console.log("application", application)
         console.log("scholarshipUserProfileQuestionsFormConfig", scholarshipUserProfileQuestionsFormConfig)
         console.log("scholarshipQuestionsFormConfig", scholarshipQuestionsFormConfig)
+        console.log("scholarship", scholarship)
 
         return (
             <div className="container mt-5">
@@ -419,7 +420,7 @@ function addQuestionDetailToApplicationResponses(application, scholarship) {
 function ResponseTransformer(props) {
     return (
         <div>
-            <p><b>{normalizeString(props.title)}:</b> {extractContent(props.data)}</p>
+            <p><b>{props.title}:</b> {extractContent(props.data)}</p>
         </div>
     )
 }
