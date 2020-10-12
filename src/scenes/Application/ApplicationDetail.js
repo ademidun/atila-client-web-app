@@ -14,7 +14,7 @@ import {userProfileFormConfig} from "../../models/UserProfile";
 import {scholarshipUserProfileSharedFormConfigs, toastNotify} from "../../models/Utils";
 import FormDynamic from "../../components/Form/FormDynamic";
 import {Link} from "react-router-dom";
-import {Button} from "antd";
+import {Button, Popconfirm} from "antd";
 import {formatCurrency} from "../../services/utils";
 
 class ApplicationDetail extends  React.Component{
@@ -27,6 +27,7 @@ class ApplicationDetail extends  React.Component{
             scholarship: null,
             isLoadingApplication: false,
             isSavingApplication: false,
+            isSubmittingApplication: false,
             scholarshipUserProfileQuestionsFormConfig: null,
             scholarshipQuestionsFormConfig: null,
             viewMode: false
@@ -97,6 +98,47 @@ class ApplicationDetail extends  React.Component{
             })
             .finally(() => {
                 this.setState({isSavingApplication: false});
+            })
+    };
+
+    submitApplication = () => {
+
+        this.setState({isSubmittingApplication: true});
+
+        const { application, scholarship } = this.state;
+
+        const {scholarship_responses, user_profile_responses } = addQuestionDetailToApplicationResponses(application, scholarship);
+
+        ApplicationsAPI
+            .patch(application.id, {scholarship_responses, user_profile_responses})
+            .then(res=>{
+                const { data: application } = res;
+                const { scholarship } = application;
+                /*
+                Don't set state in the application until we have transformed the application otherwise we will get
+                A similar error to this: https://stackoverflow.com/a/57328274/5405197
+                We need to make sure the forms have been converted to their proper html representation and not
+                dictionaries before we render them.
+                */
+                // this.setState({application, scholarship});
+                this.makeScholarshipQuestionsForm(application, scholarship);
+
+                const successMessage = (<p>
+                    <span role="img" aria-label="happy face emoji">🙂</span>
+                    Successfully saved {' '}
+                    <Link to={`/application/${application.id}`}>
+                        your application!
+                    </Link>
+                </p>);
+
+                toastNotify(successMessage, 'info', {position: 'bottom-right'});
+            })
+            .catch(err => {
+                console.log({err});
+                toastNotify(`🙁 An error occured, check your connection!`, 'error');
+            })
+            .finally(() => {
+                this.setState({isSubmittingApplication: false});
             })
     };
 
@@ -190,7 +232,7 @@ class ApplicationDetail extends  React.Component{
     render() {
 
         const { match : { params : { applicationID }} } = this.props;
-        const { application, isLoadingApplication, scholarship, isSavingApplication,
+        const { application, isLoadingApplication, scholarship, isSavingApplication, isSubmittingApplication,
             scholarshipUserProfileQuestionsFormConfig, scholarshipQuestionsFormConfig, viewMode } = this.state;
 
         return (
@@ -221,9 +263,6 @@ class ApplicationDetail extends  React.Component{
                                     inputConfigs=
                                     {scholarshipQuestionsFormConfig}
                                     />
-                                    <Button onClick={this.saveApplication} type="primary">
-                                    Save
-                                    </Button>
                                 </fieldset>
                             }
 
@@ -238,13 +277,22 @@ class ApplicationDetail extends  React.Component{
 
                                 <h2>Scholarship Questions</h2>
                                 <FormDynamic onUpdateForm={event => this.updateForm(event, 'scholarship_responses')}
-                                model={application.scholarship_responses}
-                                inputConfigs=
-                                {scholarshipQuestionsFormConfig}
+                                    model={application.scholarship_responses}
+                                    inputConfigs=
+                                    {scholarshipQuestionsFormConfig}
                                 />
                                 <Button onClick={this.saveApplication} type="primary">
-                                Save
+                                    Save
                                 </Button>
+                                    <br />
+                                    <br />
+                                <Popconfirm placement="topLeft" title={"Once you submit your application, you won't be able to edit it. Are you sure you want to submit?"}
+                                            onConfirm={this.submitApplication}
+                                            okText="Yes" cancelText="No">
+                                    <Button type={"primary"}>
+                                        Submit
+                                    </Button>
+                                </Popconfirm>
                                 </>
                             }
                         </div>
@@ -253,6 +301,7 @@ class ApplicationDetail extends  React.Component{
                     </div>
                     {isLoadingApplication && <Loading  title="Loading Application..."/>}
                     {isSavingApplication && <Loading  title="Saving Application..."/>}
+                    {isSubmittingApplication && <Loading  title="Submitting Application..."/>}
                 </div>
             </div>
         );
