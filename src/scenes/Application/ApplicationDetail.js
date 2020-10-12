@@ -15,7 +15,7 @@ import {scholarshipUserProfileSharedFormConfigs, toastNotify} from "../../models
 import FormDynamic from "../../components/Form/FormDynamic";
 import {Link} from "react-router-dom";
 import {Button, Popconfirm} from "antd";
-import {formatCurrency, extractContent} from "../../services/utils";
+import {formatCurrency, extractContent, normalizeString} from "../../services/utils";
 
 class ApplicationDetail extends  React.Component{
 
@@ -112,7 +112,7 @@ class ApplicationDetail extends  React.Component{
             .then(res=>{
                 // const resApplication = res.data
                 // this.setState({application: resApplication})
-                console.log("res", res.data)
+                console.log("resData", res.data)
                 const successMessage = (<p>
                     <span role="img" aria-label="happy face emoji">🙂</span>
                     Successfully submitted {' '}
@@ -243,7 +243,9 @@ class ApplicationDetail extends  React.Component{
         const { match : { params : { applicationID }} } = this.props;
         const { application, isLoadingApplication, scholarship, isSavingApplication, isSubmittingApplication,
             scholarshipUserProfileQuestionsFormConfig, scholarshipQuestionsFormConfig, viewMode } = this.state;
-        console.log(application)
+        console.log("application", application)
+        console.log("scholarshipUserProfileQuestionsFormConfig", scholarshipUserProfileQuestionsFormConfig)
+        console.log("scholarshipQuestionsFormConfig", scholarshipQuestionsFormConfig)
 
         return (
             <div className="container mt-5">
@@ -287,13 +289,13 @@ class ApplicationDetail extends  React.Component{
                             }
 
                             {(viewMode || application.is_submitted || application.is_payment_accepted) &&
-                                <fieldset disabled={true}>
+                                <>
                                     <h2>Profile Questions</h2>
                                     {this.viewForm(application.user_profile_responses)}
-
+                                    <br />
                                     <h2>Scholarship Questions</h2>
                                     {this.viewForm(application.scholarship_responses)}
-                                </fieldset>
+                                </>
                             }
                         </div>
                         }
@@ -417,7 +419,7 @@ function addQuestionDetailToApplicationResponses(application, scholarship) {
 function ResponseTransformer(props) {
     return (
         <div>
-            <p><b>{props.title}:</b> {extractContent(props.data)}</p>
+            <p><b>{normalizeString(props.title)}:</b> {extractContent(props.data)}</p>
         </div>
     )
 }

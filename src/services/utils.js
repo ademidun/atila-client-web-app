@@ -460,3 +460,14 @@ export function extractContent(s) {
     span.innerHTML = s;
     return span.textContent || span.innerText;
 }
+
+export function normalizeString(string) {
+    // This function normalizes a string
+    // "this-is-a-test" -> "This is a test"
+    // "this_is_a_test" -> "This is a test"
+
+    let newString = string[0].toUpperCase() + string.substring(1)
+    newString = newString.replace(/-/g, ' ');
+    newString = newString.replace(/_/g, ' ');
+    return newString
+}
