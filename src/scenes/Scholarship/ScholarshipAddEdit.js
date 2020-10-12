@@ -180,6 +180,7 @@ let scholarshipFormConfigsPage2 = scholarshipUserProfileSharedFormConfigs
 
 scholarshipFormConfigsPage2 = [...additionalQuestions, ...scholarshipFormConfigsPage2];
 
+let autoSaveTimeoutId;
 class ScholarshipAddEdit extends React.Component{
 
     constructor(props) {
@@ -193,6 +194,7 @@ class ScholarshipAddEdit extends React.Component{
             errorLoadingScholarship: false,
             pageNumber: 1,
             locationData: [],
+            isAutoSaving: false,
         };
     }
 
@@ -235,6 +237,7 @@ class ScholarshipAddEdit extends React.Component{
                 });
             })
             .catch(err => {
+                console.log({err});
                 this.setState({ errorLoadingScholarship: true });
             })
             .finally(() => {
@@ -294,11 +297,13 @@ class ScholarshipAddEdit extends React.Component{
 
             locationData.push(newLocation);
             this.setState({locationData});
+            return;
 
         }
-        else if (event.target.name.includes('.')) {
-            const scholarship = nestedFieldUpdate(this.state.scholarship, event.target.name, value);
-            this.setState({scholarship});
+        let { scholarship } = this.state;
+
+        if (event.target.name.includes('.')) {
+            scholarship = nestedFieldUpdate(scholarship, event.target.name, value);
         }
         else {
             const scholarship = this.state.scholarship;
@@ -312,13 +317,24 @@ class ScholarshipAddEdit extends React.Component{
             if(event.target.name==='name') {
                 scholarship.slug = slugify(event.target.value);
             }
-            this.updateScholarship(scholarship);
         }
+
+        this.updateScholarship(scholarship, true);
 
     };
 
-    updateScholarship = (scholarship) => {
-        this.setState({scholarship});
+    updateScholarship = (scholarship, isAutoSaving = false) => {
+        this.setState({scholarship}, () => {
+            if (isAutoSaving) {
+                if (autoSaveTimeoutId) {
+                    clearTimeout(autoSaveTimeoutId);
+                }
+                autoSaveTimeoutId = setTimeout(() => {
+                    // Runs 1 second (1000 ms) after the last change
+                    this.autoSaveScholarship(scholarship);
+                }, 1000);
+            }
+        })
     };
 
     publishScholarship = (event) => {
@@ -339,8 +355,20 @@ class ScholarshipAddEdit extends React.Component{
             })
     };
 
+    autoSaveScholarship = () => {
+
+        this.setState({isAutoSaving: true}, () => {
+            console.log('autoSaveScholarship');
+            console.log('this.state', this.state);
+            this.submitForm({});
+        })
+
+    };
+
     submitForm = (event) => {
-        event.preventDefault();
+        if(event && event.preventDefault) {
+            event.preventDefault();
+        }
         const scholarship = ScholarshipsAPI.cleanScholarship(this.state.scholarship);
         this.setState({scholarship});
 
@@ -396,10 +424,16 @@ class ScholarshipAddEdit extends React.Component{
     render() {
 
         const { scholarship, isAddScholarshipMode, scholarshipPostError,
-            isLoadingScholarship, pageNumber, locationData } = this.state;
+            isLoadingScholarship, pageNumber, locationData, isAutoSaving } = this.state;
         const { userProfile } = this.props;
 
         const { is_atila_direct_application } = scholarship;
+
+        let updatedAtDate;
+
+        if (scholarship) {
+            updatedAtDate = new Date(scholarship.updated_at);
+        }
 
 
         let scholarshipEditPages = [
@@ -536,10 +570,19 @@ class ScholarshipAddEdit extends React.Component{
 
                         <hr/>
 
-                        <button type="submit"
-                                className="btn btn-primary col-12 mt-2"
-                                onClick={this.submitForm}>Save</button>
-
+                        {isAutoSaving && updatedAtDate &&
+                        <p className="text-muted center-block">
+                            Last Auto-Saved at {updatedAtDate.toDateString()}{' '}
+                            {updatedAtDate.toLocaleTimeString()}
+                        </p>
+                        }
+                        {!isAutoSaving &&
+                            <button type="submit"
+                                    className="btn btn-primary col-12 mt-2"
+                                    onClick={this.submitForm}>
+                                Save
+                            </button>
+                        }
                         {!scholarship.published && scholarship.is_atila_direct_application &&
                         <Button
                             type="primary"
