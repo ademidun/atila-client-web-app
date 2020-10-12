@@ -105,27 +105,14 @@ class ApplicationDetail extends  React.Component{
 
         this.setState({isSubmittingApplication: true});
 
-        const { application, scholarship } = this.state;
-
-        const {scholarship_responses, user_profile_responses } = addQuestionDetailToApplicationResponses(application, scholarship);
+        const { application } = this.state;
 
         ApplicationsAPI
-            .patch(application.id, {scholarship_responses, user_profile_responses})
+            .patch(application.id, {is_submitted: true})
             .then(res=>{
-                const { data: application } = res;
-                const { scholarship } = application;
-                /*
-                Don't set state in the application until we have transformed the application otherwise we will get
-                A similar error to this: https://stackoverflow.com/a/57328274/5405197
-                We need to make sure the forms have been converted to their proper html representation and not
-                dictionaries before we render them.
-                */
-                // this.setState({application, scholarship});
-                this.makeScholarshipQuestionsForm(application, scholarship);
-
                 const successMessage = (<p>
                     <span role="img" aria-label="happy face emoji">🙂</span>
-                    Successfully saved {' '}
+                    Successfully submitted {' '}
                     <Link to={`/application/${application.id}`}>
                         your application!
                     </Link>
