@@ -195,6 +195,13 @@ class ScholarshipAddEdit extends React.Component{
             pageNumber: 1,
             locationData: [],
             isAutoSaving: false,
+            /**
+             * When CkEditor loads for the first time, it calls onChange inside the <CkEditor> component
+             * and fires onChange inside ScholarshipAddEdit.updateForm
+             * It's important we track the first time onChange is called for criteria_info and don't
+             * run auto-save on the initial load.
+             */
+            criteriaInfoInitialLoad: true,
         };
     }
 
@@ -291,16 +298,29 @@ class ScholarshipAddEdit extends React.Component{
         if (event.stopPropagation) {
             event.stopPropagation(); // https://github.com/facebook/react/issues/3446#issuecomment-82751540
         }
+
+        console.log({event});
+        console.log("event.target.name", event.target.name);
+        console.log("event.target.value", event.target.value);
+
         if (event.target.name==='location') {
             const { locationData } = this.state;
             const newLocation = transformLocation(event.target.value);
 
             locationData.push(newLocation);
             this.setState({locationData});
+
+            if (autoSaveTimeoutId) {
+                clearTimeout(autoSaveTimeoutId);
+            }
+            autoSaveTimeoutId = setTimeout(() => {
+                // Runs 1 second (1000 ms) after the last change
+                this.autoSaveScholarship();
+            }, 1000);
             return;
 
         }
-        let { scholarship } = this.state;
+        let { scholarship, criteriaInfoInitialLoad } = this.state;
 
         if (event.target.name.includes('.')) {
             scholarship = nestedFieldUpdate(scholarship, event.target.name, value);
@@ -319,11 +339,20 @@ class ScholarshipAddEdit extends React.Component{
             }
         }
 
-        this.updateScholarship(scholarship, true);
+        /**
+         * See declaration of criteriaInfoInitialLoad in ScholarshipAddEdit.constructor()
+         * to see why we need the following code snippet.
+         */
+        if(event.target.name === "criteria_info" && criteriaInfoInitialLoad) {
+            console.log({criteriaInfoInitialLoad});
+            this.setState({criteriaInfoInitialLoad: false})
+        } else {
+            this.updateScholarship(scholarship);
+        }
 
     };
 
-    updateScholarship = (scholarship, isAutoSaving = false) => {
+    updateScholarship = (scholarship, isAutoSaving = true) => {
         this.setState({scholarship}, () => {
             if (isAutoSaving) {
                 if (autoSaveTimeoutId) {
@@ -331,7 +360,7 @@ class ScholarshipAddEdit extends React.Component{
                 }
                 autoSaveTimeoutId = setTimeout(() => {
                     // Runs 1 second (1000 ms) after the last change
-                    this.autoSaveScholarship(scholarship);
+                    this.autoSaveScholarship();
                 }, 1000);
             }
         })
@@ -345,7 +374,7 @@ class ScholarshipAddEdit extends React.Component{
             .patch(scholarship.id, {published: true})
             .then(res => {
                 const { data: scholarship} = res;
-                this.updateScholarship(scholarship);
+                this.setState({scholarship});
             })
             .catch(err => {
                 console.log({err});
@@ -356,12 +385,16 @@ class ScholarshipAddEdit extends React.Component{
     };
 
     autoSaveScholarship = () => {
+        const { isAddScholarshipMode } = this.state;
 
-        this.setState({isAutoSaving: true}, () => {
-            console.log('autoSaveScholarship');
-            console.log('this.state', this.state);
-            this.submitForm({});
-        })
+        if (!isAddScholarshipMode) {
+            this.setState({isAutoSaving: true}, () => {
+                console.log('autoSaveScholarship');
+                console.log('this.state', this.state);
+                this.submitForm({});
+            })
+        }
+
 
     };
 
@@ -372,7 +405,7 @@ class ScholarshipAddEdit extends React.Component{
         const scholarship = ScholarshipsAPI.cleanScholarship(this.state.scholarship);
         this.setState({scholarship});
 
-        const { isAddScholarshipMode, locationData } = this.state;
+        const { isAddScholarshipMode, locationData, isAutoSaving } = this.state;
         const { userProfile } = this.props;
 
         if(!userProfile) {
@@ -390,16 +423,18 @@ class ScholarshipAddEdit extends React.Component{
             .then(res => {
                 this.setState({isAddScholarshipMode: false});
                 const savedScholarship = ScholarshipsAPI.cleanScholarship(res.data);
-                const successMessage = (<p>
-                    <span role="img" aria-label="happy face emoji">🙂</span>
-                    Successfully saved {' '}
-                    <Link to={`/scholarship/${savedScholarship.slug}`}>
-                        {savedScholarship.name}
-                    </Link>
-                </p>);
-
-                toastNotify(successMessage, 'info', {position: 'bottom-right'});
                 this.setState({ scholarship: savedScholarship });
+
+                if (!isAutoSaving) {
+                    const successMessage = (<p>
+                        <span role="img" aria-label="happy face emoji">🙂</span>
+                        Successfully saved {' '}
+                        <Link to={`/scholarship/${savedScholarship.slug}`}>
+                            {savedScholarship.name}
+                        </Link>
+                    </p>);
+                    toastNotify(successMessage, 'info', {position: 'bottom-right'});
+                }
             })
             .catch(err=> {
                 console.log({err});
@@ -433,6 +468,10 @@ class ScholarshipAddEdit extends React.Component{
 
         if (scholarship) {
             updatedAtDate = new Date(scholarship.updated_at);
+            updatedAtDate =  (<p className="text-muted center-block">
+                Last Auto-Saved: {updatedAtDate.toDateString()}{' '}
+                {updatedAtDate.toLocaleTimeString()}
+            </p>)
         }
 
 
@@ -483,6 +522,7 @@ class ScholarshipAddEdit extends React.Component{
                             View Scholarship
                         </Link>
                         }
+                        {!isAddScholarshipMode && updatedAtDate}
                         <hr/>
                         {scholarshipSteps}
                         {!userProfile &&
@@ -570,13 +610,8 @@ class ScholarshipAddEdit extends React.Component{
 
                         <hr/>
 
-                        {isAutoSaving && updatedAtDate &&
-                        <p className="text-muted center-block">
-                            Last Auto-Saved at {updatedAtDate.toDateString()}{' '}
-                            {updatedAtDate.toLocaleTimeString()}
-                        </p>
-                        }
-                        {!isAutoSaving &&
+                        {!isAddScholarshipMode && updatedAtDate }
+                        {isAddScholarshipMode &&
                             <button type="submit"
                                     className="btn btn-primary col-12 mt-2"
                                     onClick={this.submitForm}>
