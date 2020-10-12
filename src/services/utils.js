@@ -452,3 +452,11 @@ export function myJoin(value, separator) {
         return value.join(separator)
     }
 }
+
+export function extractContent(s) {
+    // This function gets returns the text of a html element
+    // Example: "<p>Hello World </p" -> "Hello World"
+    var span = document.createElement('span');
+    span.innerHTML = s;
+    return span.textContent || span.innerText;
+}

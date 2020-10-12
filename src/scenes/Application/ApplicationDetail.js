@@ -15,7 +15,7 @@ import {scholarshipUserProfileSharedFormConfigs, toastNotify} from "../../models
 import FormDynamic from "../../components/Form/FormDynamic";
 import {Link} from "react-router-dom";
 import {Button, Popconfirm} from "antd";
-import {formatCurrency} from "../../services/utils";
+import {formatCurrency, extractContent} from "../../services/utils";
 
 class ApplicationDetail extends  React.Component{
 
@@ -109,7 +109,10 @@ class ApplicationDetail extends  React.Component{
 
         ApplicationsAPI
             .patch(application.id, {is_submitted: true})
-            .then(()=>{
+            .then(res=>{
+                // const resApplication = res.data
+                // this.setState({application: resApplication})
+                console.log("res", res.data)
                 const successMessage = (<p>
                     <span role="img" aria-label="happy face emoji">🙂</span>
                     Successfully submitted {' '}
@@ -189,6 +192,26 @@ class ApplicationDetail extends  React.Component{
 
     };
 
+    viewForm = (responseDict) => {
+        /*
+        scholarship_responses:
+        favourite-sport: "<p>volleyball</p>"
+        why-do-you-deserve-this-scholarship: "<p>I like food</p>"
+
+        user_profile_responses:
+        email: "hadinawar+8@hotmail.com"
+        first_name: "Hadi"
+        last_name: "hakeem8
+         */
+
+        let responseList = []
+        for (var key in responseDict) {
+            responseList.push(<ResponseTransformer title={key} data={responseDict[key]}/>)
+        }
+
+        return responseList
+    }
+
     renderHeader = () => {
         const { application, scholarship } = this.state;
         if (application.is_winner && scholarship && !application.accepted_payment) {
@@ -217,10 +240,10 @@ class ApplicationDetail extends  React.Component{
     };
 
     render() {
-
         const { match : { params : { applicationID }} } = this.props;
         const { application, isLoadingApplication, scholarship, isSavingApplication, isSubmittingApplication,
             scholarshipUserProfileQuestionsFormConfig, scholarshipQuestionsFormConfig, viewMode } = this.state;
+        console.log(application)
 
         return (
             <div className="container mt-5">
@@ -266,18 +289,10 @@ class ApplicationDetail extends  React.Component{
                             {(viewMode || application.is_submitted || application.is_payment_accepted) &&
                                 <fieldset disabled={true}>
                                     <h2>Profile Questions</h2>
-                                    <FormDynamic onUpdateForm={event => this.updateForm(event, 'user_profile_responses')}
-                                    model={application.user_profile_responses}
-                                    inputConfigs=
-                                    {scholarshipUserProfileQuestionsFormConfig}
-                                    />
+                                    {this.viewForm(application.user_profile_responses)}
 
                                     <h2>Scholarship Questions</h2>
-                                    <FormDynamic onUpdateForm={event => this.updateForm(event, 'scholarship_responses')}
-                                    model={application.scholarship_responses}
-                                    inputConfigs=
-                                    {scholarshipQuestionsFormConfig}
-                                    />
+                                    {this.viewForm(application.scholarship_responses)}
                                 </fieldset>
                             }
                         </div>
@@ -397,6 +412,14 @@ function addQuestionDetailToApplicationResponses(application, scholarship) {
         user_profile_responses: userProfileResponses,
     };
 
+}
+
+function ResponseTransformer(props) {
+    return (
+        <div>
+            <p><b>{props.title}:</b> {extractContent(props.data)}</p>
+        </div>
+    )
 }
 
 const mapStateToProps = state => {
