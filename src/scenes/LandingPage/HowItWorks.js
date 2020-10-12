@@ -1,8 +1,5 @@
 import React from 'react';
 import {Link} from "react-router-dom";
-import createProfileGif from './assets/create-profile.gif';
-import viewScholarshipsGif from './assets/view-scholarships.gif';
-import scholarshipManagement from "./assets/scholarshipManagement.png";
 import {Tag} from "antd";
 
 function HowItWorks({accountType}) {
