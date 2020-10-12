@@ -17,27 +17,25 @@ import PaymentSend from "../Payment/PaymentSend/PaymentSend";
 const { Step } = Steps;
 
 const atilaDirectApplicationsPopover = (
-    <React.Fragment>
-        <p>
-            Atila Direct Applications provides the following features:
-            <ul>
-                <li>
-                    Handle the payment transfer from sponsor to scholarship recipient
-                </li>
-                <li>
-                    Promoting your scholarship to our network of students and student organizations.
-                </li>
-                <li>
-                    Automatically notify winners and non-winners.
-                </li>
-                <li>
-                    Simple interface for managing all applications.
-                </li>
-            </ul>
-            <Link to="/start">Learn More</Link>
+    <div>
+        Atila Direct Applications provides the following features:
+        <ul>
+            <li>
+                Handle the payment transfer from sponsor to scholarship recipient
+            </li>
+            <li>
+                Promoting your scholarship to our network of students and student organizations.
+            </li>
+            <li>
+                Automatically notify winners and non-winners.
+            </li>
+            <li>
+                Simple interface for managing all applications.
+            </li>
+        </ul>
+        <Link to="/start">Learn More</Link>
 
-        </p>
-    </React.Fragment>
+    </div>
 );
 
 let scholarshipFormConfigsPage1 = [
