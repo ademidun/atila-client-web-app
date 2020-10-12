@@ -7,7 +7,6 @@ import aaronImage from "./assets/aaron.jpg";
 import hadiImage from "./assets/hadi.jpg";
 import { Col, Row } from "antd";
 import HelmetSeo from "../HelmetSeo";
-const yasithImage = 'https://i.imgur.com/XDSsPD7.jpg';
 
 const teamMembers = [
   {
@@ -49,18 +48,6 @@ const teamMembers = [
     link_url: "https://www.linkedin.com/in/hadi-al-hakeem-24182819a/",
     link2_type: "Website",
     link2_url: "https://hadihakeem.com/",
-  },
-  {
-    first_name: "Yasith",
-    last_name: "Ellewela",
-    position: "Software",
-    username: "Yasith",
-    img_url: yasithImage,
-    description_1: "Yasith is currently studying Mechatronics Engineering at the University of Waterloo.",
-    link_type: "LinkedIn",
-    link_url: "https://www.linkedin.com/in/yasith-ellewela-573b781b5/",
-    link2_type: "Website",
-    link2_url: "https://yasithellewela.github.io/",
   },
 ];
 
