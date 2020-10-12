@@ -109,7 +109,7 @@ class ApplicationDetail extends  React.Component{
 
         ApplicationsAPI
             .patch(application.id, {is_submitted: true})
-            .then(res=>{
+            .then(()=>{
                 const successMessage = (<p>
                     <span role="img" aria-label="happy face emoji">🙂</span>
                     Successfully submitted {' '}
@@ -263,7 +263,7 @@ class ApplicationDetail extends  React.Component{
                             </>
                             }
 
-                            {(viewMode || application.is_submitted) &&
+                            {(viewMode || application.is_submitted || application.is_payment_accepted) &&
                                 <fieldset disabled={true}>
                                     <h2>Profile Questions</h2>
                                     <FormDynamic onUpdateForm={event => this.updateForm(event, 'user_profile_responses')}
