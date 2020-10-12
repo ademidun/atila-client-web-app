@@ -104,11 +104,13 @@ let scholarshipFormConfigsPage1 = [
         placeholder: 'Funding Amount 💵',
         type: 'number',
     },
+
     // {
     //     keyName: 'number_available_scholarships',
     //     placeholder: 'Number of Available Scholarships',
     //     type: 'number',
     // },
+
     {
         keyName: 'deadline',
         type: 'datetime-local',
@@ -116,6 +118,7 @@ let scholarshipFormConfigsPage1 = [
             Deadline <span role="img" aria-label="clock emoji">🕐</span>
         </label>),
     },
+
     // {
     //     keyName: 'metadata.not_open_yet',
     //     placeholder: 'Scholarship not open yet?',

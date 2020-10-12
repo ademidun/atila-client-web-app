@@ -5,6 +5,13 @@ let nextMonth = new Date();
 nextMonth.setDate(nextMonth.getDate() + 30);
 nextMonth = nextMonth.toISOString();
 
+let defaultDeadline = new Date();
+let defaultTime = "T23:59:00"
+defaultDeadline.setDate(defaultDeadline.getDate() + 61);
+defaultDeadline = defaultDeadline.toISOString();
+defaultDeadline = defaultDeadline.split('T')[0] + defaultTime
+
+
 export const MILTON_LOCATION_OBJECT = {
     name: 'Milton',
     province: 'Ontario',
@@ -93,9 +100,10 @@ export let DEFAULT_SCHOLARSHIP = {
     specific_questions: [],
     user_profile_questions: scholarshipUserProfileQuestionOptions.slice(0,3).map(question => ({key: question})),
     form_url: '',
-    deadline: '2022-12-31T23:59:00',
+    deadline: defaultDeadline,
     open_date: '2022-12-31',
     funding_amount: '',
+    number_available_scholarships: 1,
     funding_type: ['Scholarship'],
     female_only: false,
     international_students_eligible: false,

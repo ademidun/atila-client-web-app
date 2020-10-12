@@ -4,7 +4,7 @@ import ApplicationsAPI from "../../services/ApplicationsAPI";
 import Loading from "../../components/Loading";
 import {SCHOLARSHIP_QUESTIONS_TYPES_TO_FORM_TYPES} from "../../models/Scholarship";
 import {userProfileFormConfig} from "../../models/UserProfile";
-import {scholarshipUserProfileSharedFormConfigs} from "../../models/Utils";
+import {scholarshipUserProfileSharedFormConfigs, toastNotify} from "../../models/Utils";
 import FormDynamic from "../../components/Form/FormDynamic";
 import {Link} from "react-router-dom";
 import {Button} from "antd";
@@ -22,10 +22,14 @@ class ApplicationDetail extends  React.Component{
             isSavingApplication: false,
             scholarshipUserProfileQuestionsFormConfig: null,
             scholarshipQuestionsFormConfig: null,
+            viewMode: false
         }
     }
 
     componentDidMount() {
+        let viewMode = this.props.location.pathname.includes("view")
+        this.setState({viewMode})
+
         this.getApplication();
     }
 
@@ -62,9 +66,20 @@ class ApplicationDetail extends  React.Component{
                 const { scholarship } = application;
                 this.setState({application, scholarship});
                 this.makeScholarshipQuestionsForm(scholarship)
+
+                const successMessage = (<p>
+                    <span role="img" aria-label="happy face emoji">🙂</span>
+                    Successfully saved {' '}
+                    <Link to={`/application/${application.id}`}>
+                        your application!
+                    </Link>
+                </p>);
+
+                toastNotify(successMessage, 'info', {position: 'bottom-right'});
             })
             .catch(err => {
                 console.log({err});
+                toastNotify(`🙁 An error occured, check your connection!`, 'error');
             })
             .finally(() => {
                 this.setState({isSavingApplication: false});
@@ -105,11 +120,38 @@ class ApplicationDetail extends  React.Component{
 
     };
 
+    renderHeader = () => {
+        const { application, scholarship } = this.state
+        if (application.is_winner && scholarship && !application.accepted_payment) {
+            return (
+                <div>
+                    <h3 className="text-success">
+                        Congratulations! You received the award of{' '}
+                        {formatCurrency(Number.parseInt(scholarship.funding_amount))}
+                    </h3>
+                    <Button onClick={this.saveApplication} type="primary">
+                        <Link to={`/payment/accept/?application=${application.id}`}>
+                            Accept Payment
+                        </Link>
+                    </Button>
+                </div>
+            )
+        }
+
+        if (application.accepted_payment) {
+            return (
+                <h3 className={"text-success"}>
+                    You have already accepted your payment for this scholarship!
+                </h3>
+            )
+        }
+    }
+
     render() {
 
         const { match : { params : { applicationID }} } = this.props;
         const { application, isLoadingApplication, scholarship, isSavingApplication,
-            scholarshipUserProfileQuestionsFormConfig, scholarshipQuestionsFormConfig } = this.state;
+            scholarshipUserProfileQuestionsFormConfig, scholarshipQuestionsFormConfig, viewMode } = this.state;
 
         const userProfileResponses = {};
         if (application.user_profile_responses) {
@@ -117,7 +159,6 @@ class ApplicationDetail extends  React.Component{
                 userProfileResponses[response.key] = response.value;
             });
         }
-
 
         return (
             <div className="container mt-5">
@@ -128,42 +169,54 @@ class ApplicationDetail extends  React.Component{
                         </Link>)
                             : applicationID}
                     </h1>
-                    {application.is_winner && scholarship && !application.accepted_payment &&
-                    <div>
-                        <h3 className="text-success">
-                            Congratulations! You received the award of{' '}
-                            {formatCurrency(Number.parseInt(scholarship.funding_amount))}
-                        </h3>
-                        <Button onClick={this.saveApplication} type="primary">
-                            <Link to={`/payment/accept/?application=${application.id}`}>
-                                Accept Payment
-                            </Link>
-                        </Button>
-                    </div>
-                    }
+                    {this.renderHeader()}
                     <div>
                         {scholarshipUserProfileQuestionsFormConfig && scholarshipQuestionsFormConfig &&
                         <div>
-                            <h2>Profile Questions</h2>
-                            <FormDynamic onUpdateForm={event => this.updateForm(event, 'user_profile_responses')}
-                                         model={userProfileResponses}
-                                         inputConfigs=
-                                             {scholarshipUserProfileQuestionsFormConfig}
-                            />
-                            <h2>Scholarship Questions</h2>
-                            <FormDynamic onUpdateForm={event => this.updateForm(event, 'scholarship_responses')}
-                                         model={application.scholarship_responses}
-                                         inputConfigs=
-                                             {scholarshipQuestionsFormConfig}
-                            />
-                            <Button onClick={this.saveApplication} type="primary">
+                            {viewMode &&
+                                <fieldset disabled={true}>
+                                    <h2>Profile Questions</h2>
+                                    <FormDynamic onUpdateForm={event => this.updateForm(event, 'user_profile_responses')}
+                                    model={userProfileResponses}
+                                    inputConfigs=
+                                    {scholarshipUserProfileQuestionsFormConfig}
+                                    />
+
+                                    <h2>Scholarship Questions</h2>
+                                    <FormDynamic onUpdateForm={event => this.updateForm(event, 'scholarship_responses')}
+                                    model={application.scholarship_responses}
+                                    inputConfigs=
+                                    {scholarshipQuestionsFormConfig}
+                                    />
+                                    <Button onClick={this.saveApplication} type="primary">
                                     Save
-                            </Button>
+                                    </Button>
+                                </fieldset>
+                            }
+
+                            {!viewMode &&
+                                <>
+                                <h2>Profile Questions</h2>
+                                <FormDynamic onUpdateForm={event => this.updateForm(event, 'user_profile_responses')}
+                                model={userProfileResponses}
+                                inputConfigs=
+                                {scholarshipUserProfileQuestionsFormConfig}
+                                />
+
+                                <h2>Scholarship Questions</h2>
+                                <FormDynamic onUpdateForm={event => this.updateForm(event, 'scholarship_responses')}
+                                model={application.scholarship_responses}
+                                inputConfigs=
+                                {scholarshipQuestionsFormConfig}
+                                />
+                                <Button onClick={this.saveApplication} type="primary">
+                                Save
+                                </Button>
+                                </>
+                            }
                         </div>
-
-
-
                         }
+
                     </div>
                     {isLoadingApplication && <Loading  title="Loading Application..."/>}
                     {isSavingApplication && <Loading  title="Saving Application..."/>}

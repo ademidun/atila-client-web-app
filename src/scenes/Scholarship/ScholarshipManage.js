@@ -36,7 +36,8 @@ class ScholarshipManage extends React.Component {
     };
 
     render() {
-        const { isLoadingApplications, scholarship, applications, unsubmittedApplications } = this.state;
+        const { userProfile } = this.props;
+        const { scholarship, applications, isLoadingApplications, unsubmittedApplications } = this.state;
 
         if (isLoadingApplications) {
             return (<Loading title={`Loading Applications`} className='mt-3' />)
@@ -48,6 +49,13 @@ class ScholarshipManage extends React.Component {
             )
         }
 
+        if (!!userProfile) {
+            return (
+                <div className="container mt-5">
+                    <h2><Link to={`/login`}>Log In</Link> to manage scholarships</h2>
+                </div>
+            )
+        }
 
         const allApplications = [...applications, ...unsubmittedApplications];
 
@@ -113,14 +121,13 @@ const renderWinnerButton = (applicationID, scholarship) => {
 
 const selectWinner = (applicationID, scholarship) => {
 
-    const winners = {winners: [applicationID]};
-
+    const winners = {winners: applicationID}
     const scholarshipID = scholarship.id;
 
     //Set application.is_winner to true
     ScholarshipsAPI
         .selectWinners(scholarshipID, winners)
-        .then(res=>{
+        .then(()=>{
         })
         .catch(err => {
             console.log({err});

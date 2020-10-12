@@ -5,17 +5,18 @@ import {ScholarshipPropType, scholarshipUserProfileQuestionOptions} from "../../
 import {getRandomString, prettifyKeys, slugify} from "../../services/utils";
 import {MinusCircleOutlined, PlusOutlined} from "@ant-design/icons";
 
+export const questionTypesLabel = {
+    "short_answer": "Short Answer",
+    "medium_answer": "Medium Answer (Under 300 words)",
+    "long_answer": "Long Answer (Over 300 words)",
+};
+
 const defaultSpecificQuestion = {
     key: 'why-do-you-deserve-this-scholarship',
     question: "Why do you deserve this scholarship?",
     type: 'long_answer',
 };
 
-const questionTypesLabel = {
-    "short_answer": "Short Answer",
-    "medium_answer": "Medium Answer (Under 300 words)",
-    "long_answer": "Long Answer (Over 300 words)",
-};
 
 const questionTypes = ['short_answer', 'medium_answer', 'long_answer'];
 
