@@ -271,12 +271,10 @@ class ApplicationDetail extends  React.Component{
                                 <Button onClick={this.saveApplication} type="primary">
                                     Save
                                 </Button>
-                                    <br />
-                                    <br />
-                                <Popconfirm placement="topLeft" title={"Once you submit your application, you won't be able to edit it. Are you sure you want to submit?"}
+                                <Popconfirm placement="topRight" title={"Once you submit your application, you won't be able to edit it. Are you sure you want to submit?"}
                                             onConfirm={this.submitApplication}
                                             okText="Yes" cancelText="No">
-                                    <Button type={"primary"}>
+                                    <Button type={"primary"} className={"float-right"}>
                                         Submit
                                     </Button>
                                 </Popconfirm>
