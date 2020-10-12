@@ -1,3 +1,10 @@
+/**
+ * ApplicationDetail takes Application.scholarship_responses and Application.user_profile_responses.
+ * Which are in the format.
+ * {question_key: {question: "", key: "", response: ""}},
+ * Modifies in the internal React State as  {question_key: "response"}, but before PATCHING it to the backend,
+ * it must convert it back to the expected format: {question_key: {question: "", key: "", response: ""}}
+ */
 import React from "react";
 import {connect} from "react-redux";
 import ApplicationsAPI from "../../services/ApplicationsAPI";
@@ -42,7 +49,7 @@ class ApplicationDetail extends  React.Component{
                 const { data: application } = res;
                 const { scholarship } = application;
                 this.setState({application, scholarship});
-                this.makeScholarshipQuestionsForm(scholarship)
+                this.makeScholarshipQuestionsForm(application, scholarship)
             })
             .catch(err => {
                 console.log({err});
@@ -54,18 +61,25 @@ class ApplicationDetail extends  React.Component{
 
     saveApplication = () => {
 
-        const { application } = this.state;
-
-        const {scholarship_responses, user_profile_responses, id } = application;
         this.setState({isSavingApplication: true});
 
+        const { application, scholarship } = this.state;
+
+        const {scholarship_responses, user_profile_responses } = addQuestionDetailToApplicationResponses(application, scholarship);
+
         ApplicationsAPI
-            .patch(id, {scholarship_responses, user_profile_responses})
+            .patch(application.id, {scholarship_responses, user_profile_responses})
             .then(res=>{
                 const { data: application } = res;
                 const { scholarship } = application;
-                this.setState({application, scholarship});
-                this.makeScholarshipQuestionsForm(scholarship)
+                /*
+                Don't set state in the application until we have transformed the application otherwise we will get
+                A similar error to this: https://stackoverflow.com/a/57328274/5405197
+                We need to make sure the forms have been converted to their proper html representation and not
+                dictionaries before we render them.
+                */
+                // this.setState({application, scholarship});
+                this.makeScholarshipQuestionsForm(application, scholarship);
 
                 const successMessage = (<p>
                     <span role="img" aria-label="happy face emoji">🙂</span>
@@ -86,15 +100,41 @@ class ApplicationDetail extends  React.Component{
             })
     };
 
-
-    makeScholarshipQuestionsForm = (scholarship) => {
+    /**
+     * Update the Application object to have it's dictionary contain the form values needed for the forms on this page.
+     * @param scholarship
+     * @param application
+     */
+    makeScholarshipQuestionsForm = (application, scholarship) => {
 
         const { specific_questions, user_profile_questions } = scholarship;
 
         const scholarshipQuestionsFormConfig = transformScholarshipQuestionsToApplicationForm(specific_questions);
         const scholarshipUserProfileQuestionsFormConfig = transformProfileQuestionsToApplicationForm(user_profile_questions);
 
-        this.setState({scholarshipQuestionsFormConfig, scholarshipUserProfileQuestionsFormConfig});
+        const {
+            scholarship_responses,
+            user_profile_responses,
+        } = application;
+
+        let scholarshipResponses = {};
+        let userProfileResponses = {};
+
+        Object.keys(scholarship_responses).forEach(responseKey => {
+            scholarshipResponses[responseKey] = scholarship_responses[responseKey] ? scholarship_responses[responseKey].response : "";
+        });
+        Object.keys(user_profile_responses).forEach(responseKey => {
+            userProfileResponses[responseKey] = user_profile_responses[responseKey] ? user_profile_responses[responseKey].response : "";
+        });
+
+        const updatedApplication = {
+            ...application,
+            scholarship_responses: scholarshipResponses,
+            user_profile_responses: userProfileResponses,
+        };
+
+        this.setState({scholarshipQuestionsFormConfig, scholarshipUserProfileQuestionsFormConfig, application: updatedApplication});
+
     };
 
     updateForm = (event, applicationResponseType) => {
@@ -109,10 +149,10 @@ class ApplicationDetail extends  React.Component{
 
         this.setState(prevState => ({
             application: {
-                ...prevState.application,           // copy all other key-value pairs of food object
-                [applicationResponseType]: {                     // specific object of food object
-                    ...prevState.application[applicationResponseType],   // copy all pizza key-value pairs
-                    [name]: value // update value of specific key
+                ...prevState.application,
+                [applicationResponseType]: {
+                    ...prevState.application[applicationResponseType],
+                    [name]: value
                 }
 
             }
@@ -121,7 +161,7 @@ class ApplicationDetail extends  React.Component{
     };
 
     renderHeader = () => {
-        const { application, scholarship } = this.state
+        const { application, scholarship } = this.state;
         if (application.is_winner && scholarship && !application.accepted_payment) {
             return (
                 <div>
@@ -145,20 +185,13 @@ class ApplicationDetail extends  React.Component{
                 </h3>
             )
         }
-    }
+    };
 
     render() {
 
         const { match : { params : { applicationID }} } = this.props;
         const { application, isLoadingApplication, scholarship, isSavingApplication,
             scholarshipUserProfileQuestionsFormConfig, scholarshipQuestionsFormConfig, viewMode } = this.state;
-
-        const userProfileResponses = {};
-        if (application.user_profile_responses) {
-            application.user_profile_responses.forEach(response => {
-                userProfileResponses[response.key] = response.value;
-            });
-        }
 
         return (
             <div className="container mt-5">
@@ -177,7 +210,7 @@ class ApplicationDetail extends  React.Component{
                                 <fieldset disabled={true}>
                                     <h2>Profile Questions</h2>
                                     <FormDynamic onUpdateForm={event => this.updateForm(event, 'user_profile_responses')}
-                                    model={userProfileResponses}
+                                    model={application.user_profile_responses}
                                     inputConfigs=
                                     {scholarshipUserProfileQuestionsFormConfig}
                                     />
@@ -198,7 +231,7 @@ class ApplicationDetail extends  React.Component{
                                 <>
                                 <h2>Profile Questions</h2>
                                 <FormDynamic onUpdateForm={event => this.updateForm(event, 'user_profile_responses')}
-                                model={userProfileResponses}
+                                model={application.user_profile_responses}
                                 inputConfigs=
                                 {scholarshipUserProfileQuestionsFormConfig}
                                 />
@@ -274,6 +307,62 @@ function transformProfileQuestionsToApplicationForm(scholarshipProfileQuestions)
     });
 
     return formQuestions
+}
+
+/**
+ * For an application that has application.scholarship_responses
+ * in the form {"why-do-you-deserve-this-scholarship": "I am awesome."},
+ * for each response, add info about the question:
+ * {
+  "key": "why-do-you-deserve-this-scholarship",
+  "question": "Why do you deserve this scholarship?",
+  "type": "long_answer"
+  "response": "I am awesome."
+}
+ * @param application
+ * @param scholarship
+ * @returns {*}
+ */
+function addQuestionDetailToApplicationResponses(application, scholarship) {
+
+
+    const scholarshipResponses = {};
+    const userProfileResponses = {};
+    Object.keys(application.scholarship_responses).forEach( responseKey => {
+        const question = scholarship.specific_questions.find(question => {
+            return question.key === responseKey
+        });
+        if (question) {
+            scholarshipResponses[responseKey] = {
+                ...question,
+                "response": application.scholarship_responses[responseKey]
+            }
+        }
+    });
+
+    console.log('application.user_profile_responses', application.user_profile_responses);
+    console.log('scholarship.user_profile_questions', scholarship.user_profile_questions);
+    console.log('scholarship.user_profile_questions.find(question => { return question === "first_name" });',
+        scholarship.user_profile_questions.find(question => { return question.key === "first_name" }));
+
+    Object.keys(application.user_profile_responses).forEach( responseKey => {
+        const question = scholarship.user_profile_questions.find(question => {
+            return question.key === responseKey
+        });
+        console.log({question, responseKey});
+        if (question) {
+            userProfileResponses[responseKey] = {
+                ...question,
+                response: application.user_profile_responses[responseKey]
+            }
+        }
+    });
+
+    return {
+        scholarship_responses: scholarshipResponses,
+        user_profile_responses: userProfileResponses,
+    };
+
 }
 
 const mapStateToProps = state => {
