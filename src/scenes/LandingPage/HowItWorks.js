@@ -27,7 +27,7 @@ const howItWorksStudent = [
             with the right scholarships for you.
 
         </React.Fragment>,
-        image: "https://imgur.com/QtsdXAf.jpg"
+        image: "https://imgur.com/QSmRBwv.jpg"
     },
     {
         title: "Apply for Scholarships",
@@ -35,7 +35,7 @@ const howItWorksStudent = [
             Apply for multiple scholarships all from one site.
             Autofill similar responses used in past scholarships to save time.
         </React.Fragment>,
-        image: "https://imgur.com/GOvtecm.jpg"
+        image: "https://imgur.com/cMm2mae.jpg"
 
     },
     {
@@ -90,12 +90,12 @@ function HowItWorksSponsor() {
             Who's eligible?{' '}
             Any short answer or essay questions?{' '} etc.
         </React.Fragment>,
-            image: "https://imgur.com/7jaf4nF.jpg",
+            image: "https://imgur.com/Bqo8XfQ.jpg"
         },
         {
         title: "Fund Scholarship",
         body: "Fund the scholarship with a credit card or debit card.",
-            image: "https://imgur.com/UV2nLPE.jpg",
+            image: "https://imgur.com/vbPm81H.jpg",
         },
         {
         title: "Select Winner",
