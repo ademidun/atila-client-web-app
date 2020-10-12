@@ -235,7 +235,7 @@ class ApplicationDetail extends  React.Component{
                     <div>
                         {scholarshipUserProfileQuestionsFormConfig && scholarshipQuestionsFormConfig &&
                         <div>
-                            {viewMode &&
+                            {viewMode && !application.is_submitted &&
                                 <fieldset disabled={true}>
                                     <h2>Profile Questions</h2>
                                     <FormDynamic onUpdateForm={event => this.updateForm(event, 'user_profile_responses')}
@@ -253,7 +253,7 @@ class ApplicationDetail extends  React.Component{
                                 </fieldset>
                             }
 
-                            {!viewMode &&
+                            {(!viewMode || application.is_submitted) &&
                                 <>
                                 <h2>Profile Questions</h2>
                                 <FormDynamic onUpdateForm={event => this.updateForm(event, 'user_profile_responses')}
