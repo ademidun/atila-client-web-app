@@ -50,7 +50,7 @@ class PaymentSendForm extends React.Component {
         ev.preventDefault();
         const { stripe, userProfile, scholarship, updateScholarship } = this.props;
 
-        const { first_name, last_name } = userProfile;
+        const { first_name, last_name, email } = userProfile;
         const fullName = `${first_name} ${last_name}`;
         const { totalPaymentAmount} = this.state;
 
@@ -69,14 +69,16 @@ class PaymentSendForm extends React.Component {
                     payment_method: {
                         card: this.cardElementRef.current._element,
                         billing_details: {
-                            name: fullName
-                        }
-                    }
+                            name: fullName,
+                            email: email,
+                        },
+                    },
                 });
 
                 if (cardPaymentResult.error) {
                     // Show error to your customer (e.g., insufficient funds)
                     console.log(cardPaymentResult.error.message);
+                    this.setState({isResponseErrorMessage: cardPaymentResult.error.message});
                 } else {
                     // The payment has been processed!
                     if (cardPaymentResult.paymentIntent.status === 'succeeded') {
@@ -94,7 +96,8 @@ class PaymentSendForm extends React.Component {
                                 this.setState({isLoading: 'Saving Progress'});
                                 const isResponseLoadingFinishedText = (<div>
                                     Payment was successful. See your live scholarship at:
-                                    <Link to={`/scholarship/${scholarship.slug}`} >{scholarship.name}</Link>
+                                    <Link to={`/scholarship/${scholarship.slug}`} >{scholarship.name}</Link> <br/>
+                                    Check your email inbox for your receipt.
                                 </div>);
                                 this.setState({isResponseLoadingFinishedText, isPaymentSuccess: true});
                                 // Show a success message to your customer
