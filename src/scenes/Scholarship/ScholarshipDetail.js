@@ -93,8 +93,20 @@ class ScholarshipDetail extends React.Component {
                         this.setState({ scholarshipUserProfile: res.data });
                     })
             })
-            .catch(() => {
-                this.setState({ errorLoadingScholarship: true });
+            .catch((err) => {
+                let errorMessage = (<div className="text-center">
+                    <h1>Error Getting Scholarship.</h1>
+                    <h3>
+                        Please try again later
+                    </h3>
+                </div>);
+                if(err.response && err.response.status === 404) {
+                    errorMessage = (<div className="text-center">
+                        <h1>Scholarship Not Found</h1>
+                    </div>);
+                }
+                this.setState({ errorLoadingScholarship: errorMessage });
+
             })
             .finally(() => {
                 this.setState({ isLoadingScholarship: false });
@@ -149,12 +161,7 @@ class ScholarshipDetail extends React.Component {
         const { userProfile } = this.props;
 
         if (errorLoadingScholarship) {
-            return (<div className="text-center">
-                <h1>Error Getting Scholarship.</h1>
-                <h3>
-                    Please try again later
-                </h3>
-            </div>);
+            return errorLoadingScholarship;
         }
 
         if (!scholarship) {
@@ -208,8 +215,7 @@ class ScholarshipDetail extends React.Component {
 
                         <div className="row">
                             <div className="col-md-8">
-                                <br />
-                                {scholarship_url &&
+                                {scholarship_url && !scholarship.is_atila_direct_application &&
                                 <React.Fragment>
                                     <a href={scholarship_url} target="_blank" rel="noopener noreferrer">
                                         Visit Scholarship Website
@@ -221,15 +227,18 @@ class ScholarshipDetail extends React.Component {
                                         View Scholarship Application
                                     </a> <br/>
                                 </React.Fragment>}
-                                <Link to={`/scholarship/edit/${slug}`}>
-                                    Edit Scholarship
-                                </Link><br/>
                                 {scholarshipUserProfile && userProfile &&
                                 userProfile.user === scholarshipUserProfile.user &&
                                     <React.Fragment>
+
+                                        <Link to={`/scholarship/edit/${slug}`}>
+                                            Edit Scholarship
+                                        </Link><br/>
+                                        {scholarship.is_atila_direct_application &&
                                         <Link to={`/scholarship/${scholarship.id}/manage`}>
                                             Manage Applications
-                                        </Link><br/>
+                                        </Link>
+                                        }
                                     </React.Fragment>
                                 }
                                 {/*// BETA MODE: Only allow is_debug_mode users to do Direct Applications*/}
