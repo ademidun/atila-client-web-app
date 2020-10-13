@@ -49,7 +49,7 @@ const howItWorksStudent = [
             Only currently available for students with Canadian Bank Accounts.
             </small>
         </React.Fragment>,
-        image: "https://imgur.com/C3V4TUh.jpg"
+        image: "https://imgur.com/1HufdyP.jpg"
     }
  ];
 
@@ -101,7 +101,7 @@ function HowItWorksSponsor() {
         title: "Select Winner",
         body: "Review student applications and select winner. Funds directly transferred to winner's bank " +
             "account within 24 hours. All sponsors receive a thank you letter from winner.",
-        image: "https://imgur.com/0Xfx0zU.jpg",
+        image: "https://imgur.com/dWPh5UR.jpg",
         },
         {
             title: <React.Fragment>The Big Cheque Special! <Tag color="green">Bonus</Tag></React.Fragment>,
