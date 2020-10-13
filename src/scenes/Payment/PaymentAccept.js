@@ -196,6 +196,9 @@ class PaymentAccept extends React.Component {
         ApplicationsAPI
             .patch(application.id, {accepted_payment: true})
             .then(res => {
+                const { data: application } = res;
+                const { scholarship } = application;
+                this.setState({application, scholarship});
             })
             .catch(err => {
                 console.log({err});
@@ -264,7 +267,7 @@ class PaymentAccept extends React.Component {
                                     <Button onClick={this.acceptPayment}
                                             className="center-block mt-3"
                                             type="primary"
-                                            disabled={isLoading || currentPaymentAcceptanceStep !== ALL_PAYMENT_ACCEPTANCE_STEPS[2]}>
+                                            disabled={application.accepted_payment ||isLoading || currentPaymentAcceptanceStep !== ALL_PAYMENT_ACCEPTANCE_STEPS[2]}>
                                         Step 3: Accept Payment for {scholarship.name}{" "}
                                         (
                                         {formatCurrency(Number.parseInt(scholarship.funding_amount))}
