@@ -194,7 +194,6 @@ class ScholarshipAddEdit extends React.Component{
             errorLoadingScholarship: false,
             pageNumber: 1,
             locationData: [],
-            isAutoSaving: false,
             /**
              * When CkEditor loads for the first time, it calls onChange inside the <CkEditor> component
              * and fires onChange inside ScholarshipAddEdit.updateForm
@@ -388,11 +387,9 @@ class ScholarshipAddEdit extends React.Component{
         const { isAddScholarshipMode } = this.state;
 
         if (!isAddScholarshipMode) {
-            this.setState({isAutoSaving: true}, () => {
-                console.log('autoSaveScholarship');
-                console.log('this.state', this.state);
-                this.submitForm({});
-            })
+            console.log('autoSaveScholarship');
+            console.log('this.state', this.state);
+            this.submitForm({});
         }
 
 
@@ -405,7 +402,7 @@ class ScholarshipAddEdit extends React.Component{
         const scholarship = ScholarshipsAPI.cleanScholarship(this.state.scholarship);
         this.setState({scholarship});
 
-        const { isAddScholarshipMode, locationData, isAutoSaving } = this.state;
+        const { isAddScholarshipMode, locationData } = this.state;
         const { userProfile } = this.props;
 
         if(!userProfile) {
@@ -425,7 +422,7 @@ class ScholarshipAddEdit extends React.Component{
                 const savedScholarship = ScholarshipsAPI.cleanScholarship(res.data);
                 this.setState({ scholarship: savedScholarship });
 
-                if (!isAutoSaving) {
+                if (isAddScholarshipMode) {
                     const successMessage = (<p>
                         <span role="img" aria-label="happy face emoji">🙂</span>
                         Successfully saved {' '}
@@ -459,7 +456,7 @@ class ScholarshipAddEdit extends React.Component{
     render() {
 
         const { scholarship, isAddScholarshipMode, scholarshipPostError,
-            isLoadingScholarship, pageNumber, locationData, isAutoSaving } = this.state;
+            isLoadingScholarship, pageNumber, locationData } = this.state;
         const { userProfile } = this.props;
 
         const { is_atila_direct_application } = scholarship;
