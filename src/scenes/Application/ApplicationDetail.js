@@ -217,7 +217,15 @@ class ApplicationDetail extends  React.Component{
 
     renderHeader = () => {
         const { application, scholarship } = this.state;
-        if (application.is_winner && scholarship && !application.accepted_payment) {
+        if (application.accepted_payment) {
+            return (
+                <h3 className={"text-success"}>
+                    You have already accepted your payment for this scholarship!
+                </h3>
+            )
+        }
+
+        if (application.is_winner && scholarship) {
             return (
                 <div>
                     <h3 className="text-success">
@@ -233,10 +241,10 @@ class ApplicationDetail extends  React.Component{
             )
         }
 
-        if (application.accepted_payment) {
+        if (application.is_submitted) {
             return (
-                <h3 className={"text-success"}>
-                    You have already accepted your payment for this scholarship!
+                <h3 className="text-success">
+                    Your application has been submitted. Good luck!
                 </h3>
             )
         }
