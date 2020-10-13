@@ -82,13 +82,11 @@ class ApplicationDetail extends  React.Component{
                 // this.setState({application, scholarship});
                 this.makeScholarshipQuestionsForm(application, scholarship);
 
-                const successMessage = (<p>
-                    <span role="img" aria-label="happy face emoji">🙂</span>
-                    Successfully saved {' '}
-                    <Link to={`/application/${application.id}`}>
-                        your application!
-                    </Link>
-                </p>);
+                const successMessage = (
+                    <p>
+                    <span role="img" aria-label="happy face emoji">🙂 </span>
+                    Successfully saved your application!
+                    </p>);
 
                 toastNotify(successMessage, 'info', {position: 'bottom-right'});
             })
@@ -116,13 +114,11 @@ class ApplicationDetail extends  React.Component{
                 // TEMPORARY SOLUTION
                 this.setState({viewMode: true})
                 console.log("resData", res)
-                const successMessage = (<p>
-                    <span role="img" aria-label="happy face emoji">🙂</span>
-                    Successfully submitted {' '}
-                    <Link to={`/application/${application.id}`}>
-                        your application!
-                    </Link>
-                </p>);
+                const successMessage = (
+                    <p>
+                    <span role="img" aria-label="happy face emoji">🙂 </span>
+                    Successfully submitted your application!
+                    </p>);
 
                 toastNotify(successMessage, 'info', {position: 'bottom-right'});
             })
