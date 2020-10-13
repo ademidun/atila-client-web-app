@@ -110,6 +110,7 @@ class ApplicationDetail extends  React.Component{
         ApplicationsAPI
             .patch(application.id, {is_submitted: true})
             .then(res=>{
+                // State needs to be updated, but the response application is not the same as state application
                 // const resApplication = res.data
                 // this.setState({application: resApplication})
                 console.log("resData", res.data)
