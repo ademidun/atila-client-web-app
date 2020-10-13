@@ -6,7 +6,7 @@ import './LoginRegister.scss';
 import {setLoggedInUserProfile} from "../redux/actions/user";
 import {connect} from "react-redux";
 import TermsConditions from "./TermsConditions";
-import { Modal} from "antd";
+import { Modal, Radio } from "antd";
 import {Link} from "react-router-dom";
 import {forbiddenCharacters, hasForbiddenCharacters} from "../models/Utils";
 
@@ -268,6 +268,12 @@ class Register extends React.Component {
                                    required
                             />
                             <PasswordShowHide password={password} updateForm={this.updateForm} />
+
+                            <Radio.Group defaultValue="a" buttonStyle="solid">
+                                <Radio.Button value="a">Find Scholarships</Radio.Button>
+                                <Radio.Button value="b">Add Scholarships</Radio.Button>
+                            </Radio.Group>
+
                             <div className="col-12 mb-3">
                                 <Modal
                                     title="Terms and Conditions"
