@@ -52,7 +52,7 @@ let scholarshipFormConfigsPage1 = [
         type: 'textarea',
         placeholder: 'Scholarship Description',
         html: () => (<label htmlFor="description">
-            Eligibility: Who is eligible for this scholarship?
+            Description (Eligibility): Who is eligible for this scholarship?
         </label>),
     },
     {
