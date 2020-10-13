@@ -1,6 +1,7 @@
 import React from "react";
 import HelmetSeo from "../../components/HelmetSeo";
 import {Link} from "react-router-dom";
+import {PricingExample} from "../Payment/Pricing";
 
 function HowToStartAScholarship() {
 
@@ -50,6 +51,7 @@ function HowToStartAScholarship() {
                     </ol>
                     <p><img src="https://i.imgur.com/6p5wMBm.jpeg" className="center-block"
                             alt="Big Cheque Scholarship" width="500" /></p>
+                    <PricingExample/>
                 </div>
             </div>
         </React.Fragment>

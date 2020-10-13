@@ -62,9 +62,230 @@ function Pricing() {
 
                     </div>
                 </div>
+
+                <div className="container-mt-1">
+                    <div className="card shadow p-3">
+                        <PricingExample />
+
+                    </div>
+                </div>
             </div>
         </React.Fragment>
     );
 }
 
 export default Pricing;
+
+export function PricingExample() {
+
+
+    return (
+        <div className="p-5">
+            <h3>Pricing Example</h3>
+            <div>
+                <p>
+                    Here is an example to understand the pricing structure for Atila:
+                </p>
+                <ol>
+                    <li>
+                        Rupam raised her child as a single mother and decided to start a $1,000 scholarship to support any student that comes from a single parent family.
+                        <br />
+                        <br />
+                    </li>
+                    <li>
+                        Rupam pays the following:
+                    </li>
+                    <ol>
+                        <li>
+                            Scholarship Amount + 9% Atila fee + (13% HST)
+                        </li>
+                    </ol>
+                </ol>
+                <ol>
+                    <li>
+                        Suppose Jasleen is the recipient of the award:&nbsp;
+                    </li>
+                    <ol>
+                        <li>
+                            Rupam (the sponsor) pays $1,101.70.
+                        </li>
+                        <li>
+                            Jasleen the (recipient) receives the full $1,000.&nbsp;
+                        </li>
+                        <li>
+                            Atila receives $90.00&nbsp;
+                        </li>
+                        <li>
+                            The Government of Canada receives $11.70
+                        </li>
+                    </ol>
+                </ol>
+                <p>
+                    <br />
+                    <br />
+                    <br />
+                </p>
+                <table className="table">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <p>
+                                Name
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                Amount
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                Description
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>
+                                Scholarship Amount
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                $1,000.00
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                Sponsor picks the value ($100 min.)
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>
+                                -
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                -
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                -
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>
+                                Atila Fee
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                $90.00
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                9%
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>
+                                Tax
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                $11.70
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                13% HST
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>
+                                -
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                -
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                -
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>
+                                Sponsor Pays
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                $1,101.70
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                Total
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>
+                                -
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                -
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                -
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>
+                                Student Receives
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                $1,000.00
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                Student receives full Scholarship Amount
+                            </p>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    )
+
+}
