@@ -93,8 +93,20 @@ class ScholarshipDetail extends React.Component {
                         this.setState({ scholarshipUserProfile: res.data });
                     })
             })
-            .catch(() => {
-                this.setState({ errorLoadingScholarship: true });
+            .catch((err) => {
+                let errorMessage = (<div className="text-center">
+                    <h1>Error Getting Scholarship.</h1>
+                    <h3>
+                        Please try again later
+                    </h3>
+                </div>);
+                if(err.response && err.response.status === 404) {
+                    errorMessage = (<div className="text-center">
+                        <h1>Scholarship Not Found</h1>
+                    </div>);
+                }
+                this.setState({ errorLoadingScholarship: errorMessage });
+
             })
             .finally(() => {
                 this.setState({ isLoadingScholarship: false });
@@ -149,12 +161,7 @@ class ScholarshipDetail extends React.Component {
         const { userProfile } = this.props;
 
         if (errorLoadingScholarship) {
-            return (<div className="text-center">
-                <h1>Error Getting Scholarship.</h1>
-                <h3>
-                    Please try again later
-                </h3>
-            </div>);
+            return errorLoadingScholarship;
         }
 
         if (!scholarship) {
