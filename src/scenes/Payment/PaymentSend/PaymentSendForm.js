@@ -7,7 +7,6 @@ import {connect} from "react-redux";
 import {UserProfilePropType} from "../../../models/UserProfile";
 import {updateLoggedInUserProfile} from "../../../redux/actions/user";
 import Loading from "../../../components/Loading";
-import HelmetSeo, {defaultSeoContent} from "../../../components/HelmetSeo";
 import Invoice from "./Invoice";
 import ScholarshipsAPI from "../../../services/ScholarshipsAPI";
 import {ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT, ATILA_SCHOLARSHIP_FEE} from "../../../models/Constants";
@@ -35,7 +34,6 @@ class PaymentSendForm extends React.Component {
             isResponseLoading: false,
             isResponseLoadingMessage: "",
             isResponseErrorMessage: null,
-            isResponseLoadingFinishedText: null,
             isPaymentSuccess: scholarship.is_funded,
             totalPaymentAmount,
             // Leaving the following message in case it's relevant to an error I might encounter when funding scholarships
@@ -94,18 +92,7 @@ class PaymentSendForm extends React.Component {
                             })
                             .finally(() => {
                                 this.setState({isLoading: 'Saving Progress'});
-                                const isResponseLoadingFinishedText = (<div>
-                                    Payment was successful. See your live scholarship at:
-                                    <Link to={`/scholarship/${scholarship.slug}`} >{scholarship.name}</Link> <br/>
-                                    Check your email inbox for your receipt.
-                                </div>);
-                                this.setState({isResponseLoadingFinishedText, isPaymentSuccess: true});
-                                // Show a success message to your customer
-                                // There's a risk of the customer closing the window before callback
-                                // execution. Set up a webhook or plugin to listen for the
-                                // payment_intent.succeeded event that handles any business critical
-                                // post-payment actions.
-                                // TODO Update Scholarship.is_funded attribute and Scholarship.published
+                                this.setState({isPaymentSuccess: true});
                             });
                     }
                 }
@@ -123,51 +110,6 @@ class PaymentSendForm extends React.Component {
         }
 
         this.setState({isResponseLoading: false});
-
-        /*
-
-            const createTokenResult = await stripe.createToken({name: cardHolderName});
-            if (createTokenResult.token) {
-
-                try {
-                    const { data : { data : { customerId } }} = await BillingAPI
-                        .chargePayment(createTokenResult.token.id, fullName, email, metadata);
-
-                    this.setState({isResponseLoadingMessage: 'Payment Successful! 🙂 Saving UserProfile'});
-
-                    try {
-                        const {data : updateUserProfileResponse} = await UserProfileAPI
-                            .patch({is_atila_premium: true, stripe_customer_id: customerId}, user);
-                        updateLoggedInUserProfile(updateUserProfileResponse);
-
-                    } catch (patchUserProfileError) {
-                        BillingAPI
-                            .sendBillingError(patchUserProfileError, {email, name: fullName});
-                    }
-                    const isResponseLoadingFinishedText = (<div>
-                        Payment was successful Check out <Link to="/scholarship" >scholarships</Link>, <Link to="/blog" >blog</Link> and {' '}
-                        <Link to="/essay" >essays</Link>
-                    </div>);
-                    this.setState({isResponseLoadingFinishedText, isPaymentSuccess: true});
-
-                } catch (chargePaymentError) {
-                    BillingAPI
-                        .sendBillingError(chargePaymentError, {email, name: fullName});
-                    const { response } = chargePaymentError;
-                    if (response && response.data && response.data.error) {
-                        this.setState({isResponseErrorMessage: response.data.error.message});
-                    } else {
-                        this.setState({isResponseErrorMessage: chargePaymentError.message || JSON.stringify(chargePaymentError)});
-                    }
-                }
-
-            } else if (createTokenResult.error) {
-                console.log(createTokenResult.error);
-                this.setState({isResponseErrorMessage: createTokenResult.error.message || createTokenResult.error});
-            }
-            this.setState({isResponseLoading: false});
-
-        */
     };
 
     updateForm = (event) => {
@@ -185,7 +127,7 @@ class PaymentSendForm extends React.Component {
         }
 
         const { cardHolderName, isResponseLoading, isResponseLoadingMessage,
-            isPaymentSuccess, isResponseLoadingFinishedText,
+            isPaymentSuccess,
             isResponseErrorMessage, totalPaymentAmount} = this.state;
 
         const isResponseErrorMessageWithContactLink = (<div>
@@ -193,19 +135,9 @@ class PaymentSendForm extends React.Component {
             <br /> <Link to="/contact"> Contact us</Link> if problem continues
         </div>);
 
-        const seoContent = {
-            title: 'Atila - Fund Scholarship',
-            description: 'Fund a scholarship on Atila',
-            image: defaultSeoContent.image,
-            slug: '/payment/send'
-        };
-
-        let helmetSeo = (<HelmetSeo content={seoContent} />);
-
         if (!scholarship) {
             return (
                 <React.Fragment>
-                    {helmetSeo}
                     <div className="container mt-5" style={{ height: '80vh'}}>
                         <div className="card shadow p-3">
                             {isResponseLoading &&
@@ -217,9 +149,6 @@ class PaymentSendForm extends React.Component {
                 </React.Fragment>
             )
         }
-
-        seoContent.title = `Fund ${scholarship.name}`;
-        helmetSeo = (<HelmetSeo content={seoContent} />);
 
         let canFundScholarship = scholarship.id && Number.parseInt(scholarship.funding_amount) >= ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT;
         let canFundScholarshipMessage = `Confirm order (${formatCurrency(totalPaymentAmount)})`;
@@ -236,9 +165,14 @@ class PaymentSendForm extends React.Component {
             }
         }
 
+        const isPaymentSuccessText = (<div>
+            Payment was successful. See your live scholarship at: <br/>
+            <Link to={`/scholarship/${scholarship.slug}`} >{scholarship.name}</Link> <br/>
+            Check your email inbox for your receipt.
+        </div>);
+
         return (
             <React.Fragment>
-                {helmetSeo}
                 <div className="container">
 
                     <Row gutter={16}>
@@ -248,7 +182,7 @@ class PaymentSendForm extends React.Component {
                                 <Result
                                     status="success"
                                     title="Your Scholarship has been funded 🙂"
-                                    subTitle={isResponseLoadingFinishedText}
+                                    subTitle={isPaymentSuccessText}
                                     extra={[
                                         <p key="next-steps">
                                             Next Steps:
