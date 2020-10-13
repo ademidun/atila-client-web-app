@@ -11,7 +11,7 @@ import HelmetSeo, {defaultSeoContent} from "../../../components/HelmetSeo";
 import Invoice from "./Invoice";
 import ScholarshipsAPI from "../../../services/ScholarshipsAPI";
 import {ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT, ATILA_SCHOLARSHIP_FEE} from "../../../models/Constants";
-import {formatCurrency} from "../../../services/utils";
+import {formatCurrency, getErrorMessage} from "../../../services/utils";
 import PaymentAPI from "../../../services/PaymentAPI";
 import {ScholarshipPropType} from "../../../models/Scholarship";
 import PropTypes from "prop-types";
@@ -78,7 +78,7 @@ class PaymentSendForm extends React.Component {
                 if (cardPaymentResult.error) {
                     // Show error to your customer (e.g., insufficient funds)
                     console.log(cardPaymentResult.error.message);
-                    this.setState({isResponseErrorMessage: cardPaymentResult.error.message});
+                    this.setState({isResponseErrorMessage: getErrorMessage(cardPaymentResult)});
                 } else {
                     // The payment has been processed!
                     if (cardPaymentResult.paymentIntent.status === 'succeeded') {
@@ -112,12 +112,14 @@ class PaymentSendForm extends React.Component {
 
             } catch (confirmCardPaymentError) {
                 console.log({confirmCardPaymentError});
-                this.setState({isResponseErrorMessage: JSON.stringify(confirmCardPaymentError)});
+                console.log("getErrorMessage(confirmCardPaymentError)", getErrorMessage(confirmCardPaymentError));
+                this.setState({ isResponseErrorMessage: getErrorMessage(confirmCardPaymentError) });
             }
 
         } catch (getClientSecretError) {
             console.log({getClientSecretError});
-            this.setState({isResponseErrorMessage: JSON.stringify(getClientSecretError)});
+            console.log("getErrorMessage(getClientSecretError)", getErrorMessage(getClientSecretError));
+            this.setState({isResponseErrorMessage: getErrorMessage(getClientSecretError)});
         }
 
         this.setState({isResponseLoading: false});

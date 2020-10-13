@@ -282,7 +282,14 @@ export function scrollToElement(elementSelector) {
     $('html, body').animate({scrollTop: $(elementSelector).offset().top}, 1000);
 }
 
-export function transformErrorMessage(error) {
+/**
+ * The error attribute we want may be nested under a set of attributes that may or may not exist.
+ * So we need to dynamically check for the existence of the deeply nested attribute.
+ * "All 200 responses are alike, each 400 response is an error in it's own way."
+ * @param error
+ * @returns {string|{response}|*}
+ */
+export function getErrorMessage(error) {
 
     if(error.response && error.response.data ) {
         if(error.response.data.error && error.response.data.error.message) {
@@ -293,7 +300,7 @@ export function transformErrorMessage(error) {
             return JSON.stringify(error.response.data)
         }
     }
-    return error.message
+    return error.message ? error.message : error;
 }
 
 export function getPageViewLimit(pageViews, pathname) {
