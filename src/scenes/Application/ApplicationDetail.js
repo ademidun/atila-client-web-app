@@ -110,10 +110,12 @@ class ApplicationDetail extends  React.Component{
         ApplicationsAPI
             .patch(application.id, {is_submitted: true})
             .then(res=>{
-                // State needs to be updated, but the response application is not the same as state application
-                // const resApplication = res.data
-                // this.setState({application: resApplication})
-                console.log("resData", res.data)
+                // State needs to be updated with new application from response ideally
+                // const application = res.data
+                // this.setState({application})
+                // TEMPORARY SOLUTION
+                this.setState({viewMode: true})
+                console.log("resData", res)
                 const successMessage = (<p>
                     <span role="img" aria-label="happy face emoji">🙂</span>
                     Successfully submitted {' '}
