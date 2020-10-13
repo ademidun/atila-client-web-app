@@ -269,11 +269,6 @@ class Register extends React.Component {
                             />
                             <PasswordShowHide password={password} updateForm={this.updateForm} />
 
-                            <Radio.Group defaultValue="a" buttonStyle="solid">
-                                <Radio.Button value="a">Find Scholarships</Radio.Button>
-                                <Radio.Button value="b">Add Scholarships</Radio.Button>
-                            </Radio.Group>
-
                             <div className="col-12 mb-3">
                                 <Modal
                                     title="Terms and Conditions"
