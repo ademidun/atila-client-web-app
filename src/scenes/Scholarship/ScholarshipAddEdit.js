@@ -243,8 +243,18 @@ class ScholarshipAddEdit extends React.Component{
                 });
             })
             .catch(err => {
-                console.log({err});
-                this.setState({ errorLoadingScholarship: true });
+                let errorMessage = (<div className="text-center">
+                    <h1>Error Getting Scholarship.</h1>
+                    <h3>
+                        Please try again later
+                    </h3>
+                </div>);
+                if(err.response && err.response.status === 404) {
+                    errorMessage = (<div className="text-center">
+                        <h1>Scholarship Not Found</h1>
+                    </div>);
+                }
+                this.setState({ errorLoadingScholarship: errorMessage });
             })
             .finally(() => {
                 this.setState({ isLoadingScholarship: false });
@@ -456,8 +466,12 @@ class ScholarshipAddEdit extends React.Component{
     render() {
 
         const { scholarship, isAddScholarshipMode, scholarshipPostError,
-            isLoadingScholarship, pageNumber, locationData } = this.state;
+            isLoadingScholarship, pageNumber, locationData, errorLoadingScholarship } = this.state;
         const { userProfile } = this.props;
+
+        if (errorLoadingScholarship) {
+            return errorLoadingScholarship;
+        }
 
         const { is_atila_direct_application } = scholarship;
 
