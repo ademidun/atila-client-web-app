@@ -255,9 +255,6 @@ class ApplicationDetail extends  React.Component{
         const { application, isLoadingApplication, scholarship, isSavingApplication, isSubmittingApplication,
             scholarshipUserProfileQuestionsFormConfig, scholarshipQuestionsFormConfig, viewMode } = this.state;
         console.log("application", application)
-        console.log("scholarshipUserProfileQuestionsFormConfig", scholarshipUserProfileQuestionsFormConfig)
-        console.log("scholarshipQuestionsFormConfig", scholarshipQuestionsFormConfig)
-        console.log("scholarship", scholarship)
 
         return (
             <div className="container mt-5">
