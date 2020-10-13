@@ -9,7 +9,7 @@ let defaultDeadline = new Date();
 let defaultTime = "T23:59:00"
 defaultDeadline.setDate(defaultDeadline.getDate() + 61);
 defaultDeadline = defaultDeadline.toISOString();
-defaultDeadline = defaultDeadline.split('T')[0] + defaultTime
+defaultDeadline = defaultDeadline.split('T')[0] + defaultTime;
 
 
 export const MILTON_LOCATION_OBJECT = {
@@ -104,12 +104,10 @@ export let DEFAULT_SCHOLARSHIP = {
     open_date: '2022-12-31',
     funding_amount: '',
     number_available_scholarships: 1,
-    funding_type: ['Scholarship'],
     female_only: false,
     international_students_eligible: false,
     id: null,
     metadata: {},
-    no_essay_required: false,
     eligible_schools: [],
     is_atila_direct_application: false,
     eligible_programs: [],
