@@ -215,8 +215,7 @@ class ScholarshipDetail extends React.Component {
 
                         <div className="row">
                             <div className="col-md-8">
-                                <br />
-                                {scholarship_url &&
+                                {scholarship_url && !scholarship.is_atila_direct_application &&
                                 <React.Fragment>
                                     <a href={scholarship_url} target="_blank" rel="noopener noreferrer">
                                         Visit Scholarship Website
@@ -228,15 +227,18 @@ class ScholarshipDetail extends React.Component {
                                         View Scholarship Application
                                     </a> <br/>
                                 </React.Fragment>}
-                                <Link to={`/scholarship/edit/${slug}`}>
-                                    Edit Scholarship
-                                </Link><br/>
                                 {scholarshipUserProfile && userProfile &&
                                 userProfile.user === scholarshipUserProfile.user &&
                                     <React.Fragment>
+
+                                        <Link to={`/scholarship/edit/${slug}`}>
+                                            Edit Scholarship
+                                        </Link><br/>
+                                        {scholarship.is_atila_direct_application &&
                                         <Link to={`/scholarship/${scholarship.id}/manage`}>
                                             Manage Applications
-                                        </Link><br/>
+                                        </Link>
+                                        }
                                     </React.Fragment>
                                 }
                                 {/*// BETA MODE: Only allow is_debug_mode users to do Direct Applications*/}
