@@ -18,7 +18,11 @@ class ScholarshipManage extends React.Component {
     }
 
     componentDidMount() {
-        this.getScholarshipApplications();
+        const { userProfile } = this.props;
+
+        if (userProfile) {
+            this.getScholarshipApplications();
+        }
     }
 
     getScholarshipApplications = () => {
@@ -36,18 +40,27 @@ class ScholarshipManage extends React.Component {
     };
 
     render() {
-        const { isLoadingApplications, scholarship, applications, unsubmittedApplications } = this.state;
+        const { userProfile } = this.props;
+        const { scholarship, applications, isLoadingApplications, unsubmittedApplications } = this.state;
 
-        if (isLoadingApplications) {
+        if (!userProfile) {
+            return (
+                <div className="container mt-5">
+                    <h2><Link to={`/login`}>Log In</Link> to manage scholarships</h2>
+                </div>
+            )
+        }
+
+        else if (isLoadingApplications) {
             return (<Loading title={`Loading Applications`} className='mt-3' />)
-        } else if (!scholarship || !applications) {
+        }
+        else if (!scholarship) {
             return (
                 <h1>
                   Scholarship Not Found
                 </h1>
             )
         }
-
 
         const allApplications = [...applications, ...unsubmittedApplications];
 
@@ -57,6 +70,9 @@ class ScholarshipManage extends React.Component {
                     Submitted applications: {applications.length} <br/>
                     Un-submitted Applications (under draft): {unsubmittedApplications.length}
                 </h2>
+                <Link to={`/scholarship/edit/${scholarship.slug}`} className="text-center">
+                    Edit Scholarship
+                </Link>
                 <br />
                 <ApplicationsTable applications={allApplications} scholarship={scholarship}/>
             </div>
@@ -79,7 +95,7 @@ function ApplicationsTable({ applications, scholarship }){
             key: '2',
             render: (id, application) => (
                 <React.Fragment>
-                    {application.is_submitted? <Link to={`/application/${application.id}`}>View</Link> : "Cannot view unsubmitted application"}
+                    {application.is_submitted? <Link to={`/application/${application.id}/view`}>View</Link> : "Cannot view unsubmitted application"}
                 </React.Fragment>
             ),
         },
@@ -113,14 +129,13 @@ const renderWinnerButton = (applicationID, scholarship) => {
 
 const selectWinner = (applicationID, scholarship) => {
 
-    const winners = {winners: [applicationID]};
-
+    const winners = {winners: applicationID}
     const scholarshipID = scholarship.id;
 
     //Set application.is_winner to true
     ScholarshipsAPI
         .selectWinners(scholarshipID, winners)
-        .then(res=>{
+        .then(()=>{
         })
         .catch(err => {
             console.log({err});

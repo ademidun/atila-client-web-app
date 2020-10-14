@@ -17,27 +17,25 @@ import PaymentSend from "../Payment/PaymentSend/PaymentSend";
 const { Step } = Steps;
 
 const atilaDirectApplicationsPopover = (
-    <React.Fragment>
-        <p>
-            Atila Direct Applications provides the following features:
-            <ul>
-                <li>
-                    Handle the payment transfer from sponsor to scholarship recipient
-                </li>
-                <li>
-                    Promoting your scholarship to our network of students and student organizations.
-                </li>
-                <li>
-                    Automatically notify winners and non-winners.
-                </li>
-                <li>
-                    Simple interface for managing all applications.
-                </li>
-            </ul>
-            <Link to="/start">Learn More</Link>
+    <div>
+        Atila Direct Applications provides the following features:
+        <ul>
+            <li>
+                Handle the payment transfer from sponsor to scholarship recipient
+            </li>
+            <li>
+                Promoting your scholarship to our network of students and student organizations.
+            </li>
+            <li>
+                Automatically notify winners and non-winners.
+            </li>
+            <li>
+                Simple interface for managing all applications.
+            </li>
+        </ul>
+        <Link to="/start">Learn More</Link>
 
-        </p>
-    </React.Fragment>
+    </div>
 );
 
 let scholarshipFormConfigsPage1 = [
@@ -54,7 +52,7 @@ let scholarshipFormConfigsPage1 = [
         type: 'textarea',
         placeholder: 'Scholarship Description',
         html: () => (<label htmlFor="description">
-            Eligibility: Who is eligible for this scholarship?
+            Description (Eligibility): Who is eligible for this scholarship?
         </label>),
     },
     {
@@ -104,11 +102,13 @@ let scholarshipFormConfigsPage1 = [
         placeholder: 'Funding Amount 💵',
         type: 'number',
     },
+
     // {
     //     keyName: 'number_available_scholarships',
     //     placeholder: 'Number of Available Scholarships',
     //     type: 'number',
     // },
+
     {
         keyName: 'deadline',
         type: 'datetime-local',
@@ -116,6 +116,7 @@ let scholarshipFormConfigsPage1 = [
             Deadline <span role="img" aria-label="clock emoji">🕐</span>
         </label>),
     },
+
     // {
     //     keyName: 'metadata.not_open_yet',
     //     placeholder: 'Scholarship not open yet?',
@@ -179,6 +180,7 @@ let scholarshipFormConfigsPage2 = scholarshipUserProfileSharedFormConfigs
 
 scholarshipFormConfigsPage2 = [...additionalQuestions, ...scholarshipFormConfigsPage2];
 
+let autoSaveTimeoutId;
 class ScholarshipAddEdit extends React.Component{
 
     constructor(props) {
@@ -192,6 +194,13 @@ class ScholarshipAddEdit extends React.Component{
             errorLoadingScholarship: false,
             pageNumber: 1,
             locationData: [],
+            /**
+             * When CkEditor loads for the first time, it calls onChange inside the <CkEditor> component
+             * and fires onChange inside ScholarshipAddEdit.updateForm
+             * It's important we track the first time onChange is called for criteria_info and don't
+             * run auto-save on the initial load.
+             */
+            criteriaInfoInitialLoad: true,
         };
     }
 
@@ -234,7 +243,18 @@ class ScholarshipAddEdit extends React.Component{
                 });
             })
             .catch(err => {
-                this.setState({ errorLoadingScholarship: true });
+                let errorMessage = (<div className="text-center">
+                    <h1>Error Getting Scholarship.</h1>
+                    <h3>
+                        Please try again later
+                    </h3>
+                </div>);
+                if(err.response && err.response.status === 404) {
+                    errorMessage = (<div className="text-center">
+                        <h1>Scholarship Not Found</h1>
+                    </div>);
+                }
+                this.setState({ errorLoadingScholarship: errorMessage });
             })
             .finally(() => {
                 this.setState({ isLoadingScholarship: false });
@@ -287,6 +307,11 @@ class ScholarshipAddEdit extends React.Component{
         if (event.stopPropagation) {
             event.stopPropagation(); // https://github.com/facebook/react/issues/3446#issuecomment-82751540
         }
+
+        console.log({event});
+        console.log("event.target.name", event.target.name);
+        console.log("event.target.value", event.target.value);
+
         if (event.target.name==='location') {
             const { locationData } = this.state;
             const newLocation = transformLocation(event.target.value);
@@ -294,10 +319,20 @@ class ScholarshipAddEdit extends React.Component{
             locationData.push(newLocation);
             this.setState({locationData});
 
+            if (autoSaveTimeoutId) {
+                clearTimeout(autoSaveTimeoutId);
+            }
+            autoSaveTimeoutId = setTimeout(() => {
+                // Runs 1 second (1000 ms) after the last change
+                this.autoSaveScholarship();
+            }, 1000);
+            return;
+
         }
-        else if (event.target.name.includes('.')) {
-            const scholarship = nestedFieldUpdate(this.state.scholarship, event.target.name, value);
-            this.setState({scholarship});
+        let { scholarship, criteriaInfoInitialLoad } = this.state;
+
+        if (event.target.name.includes('.')) {
+            scholarship = nestedFieldUpdate(scholarship, event.target.name, value);
         }
         else {
             const scholarship = this.state.scholarship;
@@ -311,13 +346,33 @@ class ScholarshipAddEdit extends React.Component{
             if(event.target.name==='name') {
                 scholarship.slug = slugify(event.target.value);
             }
+        }
+
+        /**
+         * See declaration of criteriaInfoInitialLoad in ScholarshipAddEdit.constructor()
+         * to see why we need the following code snippet.
+         */
+        if(event.target.name === "criteria_info" && criteriaInfoInitialLoad) {
+            console.log({criteriaInfoInitialLoad});
+            this.setState({criteriaInfoInitialLoad: false})
+        } else {
             this.updateScholarship(scholarship);
         }
 
     };
 
-    updateScholarship = (scholarship) => {
-        this.setState({scholarship});
+    updateScholarship = (scholarship, isAutoSaving = true) => {
+        this.setState({scholarship}, () => {
+            if (isAutoSaving) {
+                if (autoSaveTimeoutId) {
+                    clearTimeout(autoSaveTimeoutId);
+                }
+                autoSaveTimeoutId = setTimeout(() => {
+                    // Runs 1 second (1000 ms) after the last change
+                    this.autoSaveScholarship();
+                }, 1000);
+            }
+        })
     };
 
     publishScholarship = (event) => {
@@ -328,7 +383,7 @@ class ScholarshipAddEdit extends React.Component{
             .patch(scholarship.id, {published: true})
             .then(res => {
                 const { data: scholarship} = res;
-                this.updateScholarship(scholarship);
+                this.setState({scholarship});
             })
             .catch(err => {
                 console.log({err});
@@ -338,8 +393,22 @@ class ScholarshipAddEdit extends React.Component{
             })
     };
 
+    autoSaveScholarship = () => {
+        const { isAddScholarshipMode } = this.state;
+
+        if (!isAddScholarshipMode) {
+            console.log('autoSaveScholarship');
+            console.log('this.state', this.state);
+            this.submitForm({});
+        }
+
+
+    };
+
     submitForm = (event) => {
-        event.preventDefault();
+        if(event && event.preventDefault) {
+            event.preventDefault();
+        }
         const scholarship = ScholarshipsAPI.cleanScholarship(this.state.scholarship);
         this.setState({scholarship});
 
@@ -361,16 +430,18 @@ class ScholarshipAddEdit extends React.Component{
             .then(res => {
                 this.setState({isAddScholarshipMode: false});
                 const savedScholarship = ScholarshipsAPI.cleanScholarship(res.data);
-                const successMessage = (<p>
-                    <span role="img" aria-label="happy face emoji">🙂</span>
-                    Successfully saved {' '}
-                    <Link to={`/scholarship/${savedScholarship.slug}`}>
-                        {savedScholarship.name}
-                    </Link>
-                </p>);
-
-                toastNotify(successMessage, 'info', {position: 'bottom-right'});
                 this.setState({ scholarship: savedScholarship });
+
+                if (isAddScholarshipMode) {
+                    const successMessage = (<p>
+                        <span role="img" aria-label="happy face emoji">🙂</span>
+                        Successfully saved {' '}
+                        <Link to={`/scholarship/${savedScholarship.slug}`}>
+                            {savedScholarship.name}
+                        </Link>
+                    </p>);
+                    toastNotify(successMessage, 'info', {position: 'bottom-right'});
+                }
             })
             .catch(err=> {
                 console.log({err});
@@ -395,10 +466,24 @@ class ScholarshipAddEdit extends React.Component{
     render() {
 
         const { scholarship, isAddScholarshipMode, scholarshipPostError,
-            isLoadingScholarship, pageNumber, locationData } = this.state;
+            isLoadingScholarship, pageNumber, locationData, errorLoadingScholarship } = this.state;
         const { userProfile } = this.props;
 
+        if (errorLoadingScholarship) {
+            return errorLoadingScholarship;
+        }
+
         const { is_atila_direct_application } = scholarship;
+
+        let updatedAtDate;
+
+        if (scholarship) {
+            updatedAtDate = new Date(scholarship.updated_at);
+            updatedAtDate =  (<p className="text-muted center-block">
+                Last Auto-Saved: {updatedAtDate.toDateString()}{' '}
+                {updatedAtDate.toLocaleTimeString()}
+            </p>)
+        }
 
 
         let scholarshipEditPages = [
@@ -448,6 +533,7 @@ class ScholarshipAddEdit extends React.Component{
                             View Scholarship
                         </Link>
                         }
+                        {!isAddScholarshipMode && updatedAtDate}
                         <hr/>
                         {scholarshipSteps}
                         {!userProfile &&
@@ -535,10 +621,14 @@ class ScholarshipAddEdit extends React.Component{
 
                         <hr/>
 
-                        <button type="submit"
-                                className="btn btn-primary col-12 mt-2"
-                                onClick={this.submitForm}>Save</button>
-
+                        {!isAddScholarshipMode && updatedAtDate }
+                        {isAddScholarshipMode &&
+                            <button type="submit"
+                                    className="btn btn-primary col-12 mt-2"
+                                    onClick={this.submitForm}>
+                                Save
+                            </button>
+                        }
                         {!scholarship.published && scholarship.is_atila_direct_application &&
                         <Button
                             type="primary"
