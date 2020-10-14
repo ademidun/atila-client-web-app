@@ -245,7 +245,7 @@ class ScholarshipDetail extends React.Component {
                                 {userProfile && userProfile.is_debug_mode &&
                                 scholarship.is_atila_direct_application &&
                                     <div>
-                                        <Link to={`/scholarship/${slug}/questions`} target={'_blank'}>
+                                        <Link to={`/scholarship/${slug}/questions`}>
                                             View Application Form
                                         </Link>
                                         <br />

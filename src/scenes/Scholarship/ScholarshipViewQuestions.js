@@ -1,9 +1,12 @@
 import React from 'react'
-import {connect} from "react-redux";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
-import {Link} from "react-router-dom";
-import {questionTypesLabel} from "./ScholarshipQuestionBuilder"
+import {Link, withRouter} from "react-router-dom";
+import {
+    transformProfileQuestionsToApplicationForm,
+    transformScholarshipQuestionsToApplicationForm
+} from "../Application/ApplicationDetail";
+import FormDynamic from "../../components/Form/FormDynamic";
 
 class ScholarshipViewQuestions extends React.Component {
     constructor(props) {
@@ -33,39 +36,36 @@ class ScholarshipViewQuestions extends React.Component {
     }
 
     render () {
-        const { isLoadingScholarship, scholarship } = this.state
+        const { isLoadingScholarship, scholarship } = this.state;
 
         if (isLoadingScholarship) {
             return (<Loading title={`Loading Form`} className='mt-3' />)
         }
 
-        const scholarshipQuestions = scholarship.specific_questions.map(questionDict =>
-            <QuestionTransformer questions={questionDict} />
-        )
+
+        const userProfileQuestionsFormConfig = transformProfileQuestionsToApplicationForm(scholarship.user_profile_questions);
+        const scholarshipQuestionsFormConfig = transformScholarshipQuestionsToApplicationForm(scholarship.specific_questions);
 
         return (
             <div className="container mt-5">
-                <h1>Application form for <Link to={`/scholarship/${scholarship.slug}`}>{scholarship.name}</Link></h1>
+                <h1>Questions for <Link to={`/scholarship/${scholarship.slug}`}>{scholarship.name}</Link></h1>
+                <h5 className="text-center text-muted">Note: None of your responses here are saved.
+
+                    Visit the <Link to={`/scholarship/${scholarship.slug}`}>scholarship page</Link> and click Apply Now to apply</h5>
                 <br />
-                {scholarshipQuestions}
+                <h3> User Profile Questions </h3>
+                <FormDynamic onUpdateForm={() => {}}
+                             model={{}}
+                             inputConfigs={userProfileQuestionsFormConfig} />
+                <br />
+                <h3>Scholarship Questions </h3>
+                <FormDynamic onUpdateForm={() => {}}
+                             model={{}}
+                             inputConfigs={scholarshipQuestionsFormConfig}
+                />
             </div>
         )
     }
 }
 
-function QuestionTransformer(props) {
-    return (
-        <div>
-            <h3>Question: {props.questions.question}</h3>
-            <h4>Type: {questionTypesLabel[props.questions.type]}</h4>
-            <br />
-        </div>
-    )
-}
-
-
-const mapStateToProps = state => {
-    return { userProfile: state.data.user.loggedInUserProfile };
-};
-
-export default connect(mapStateToProps)(ScholarshipViewQuestions);
+export default withRouter(ScholarshipViewQuestions);
