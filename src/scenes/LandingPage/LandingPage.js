@@ -93,6 +93,7 @@ class LandingPage extends React.Component {
                         <Banner/>
                         <hr/>
                         <HowItWorks accountType={"Student"}/>
+                        {scholarshipsContentRecentlyAdded}
                         <hr/>
                         <div className="p-5">
                             <Link to="/register" className="btn btn-primary center-block font-size-xl">
@@ -105,14 +106,13 @@ class LandingPage extends React.Component {
                         <MoreFeatures/>
                         <hr/>
                         {scholarshipsContentDueSoon}
-                        {scholarshipsContentRecentlyAdded}
                     </React.Fragment>
                         }
                     {userProfile &&
                     <React.Fragment>
                         <BannerLoggedIn/>
-                        {scholarshipsContentDueSoon}
                         {scholarshipsContentRecentlyAdded}
+                        {scholarshipsContentDueSoon}
                         <hr />
                     </React.Fragment>
                     }
