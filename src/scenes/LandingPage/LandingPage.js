@@ -111,6 +111,7 @@ class LandingPage extends React.Component {
                     {userProfile &&
                     <React.Fragment>
                         <BannerLoggedIn/>
+                        {scholarshipsContentDueSoon}
                         {scholarshipsContentRecentlyAdded}
                         <hr />
                     </React.Fragment>
