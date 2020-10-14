@@ -42,8 +42,14 @@ function Footer({location, history}) {
               <Col md={6} sm={12} xs={24}>
                 <div className="footer-center">
                   <div>
-                    <Link to="/schools">
-                      Schools and Jobs Ebook
+                    <Link to="/start">
+                      Start a Scholarship{' '}
+                      <Tag color="green">new</Tag>
+                    </Link>
+                  </div>
+                  <div>
+                    <Link to="/apply">
+                      Apply for a Scholarship{' '}
                       <Tag color="green">new</Tag>
                     </Link>
                   </div>
@@ -76,6 +82,11 @@ function Footer({location, history}) {
               </Col>
               <Col md={6} sm={12} xs={24}>
                 <div className="footer-center">
+                  <div>
+                    <Link to="/schools">
+                      Schools and Jobs Ebook
+                    </Link>
+                  </div>
                   <div>
                     <Link to="/contact">
                       Contact

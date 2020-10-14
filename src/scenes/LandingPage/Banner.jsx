@@ -9,7 +9,6 @@ import {Link, withRouter} from "react-router-dom";
 import AutoComplete from "../../components/AutoComplete";
 import {MASTER_LIST_EVERYTHING_UNDERSCORE} from "../../models/ConstantsForm";
 import {slugify} from "../../services/utils";
-import moneyFaceEmoji from './assets/moneyFaceEmoji.png';
 
 const loop = {
   duration: 3000,
@@ -85,11 +84,9 @@ class Banner extends React.Component {
               Atila
             </h1>
             <h2 key="h2">
-              Get more money for school.<br/>
-              Easily find and apply to scholarships. <br/>
-              <img src={moneyFaceEmoji}
-                   style={{height: '55px'}}
-                   alt="money face emoji"/>
+
+              The easiest way for students to get scholarships
+              and sponsors to start scholarships.<br/>
             </h2>
             <form className="col-sm-12"
                   onSubmit={this.onSubmit}

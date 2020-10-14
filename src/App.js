@@ -28,6 +28,12 @@ const Scholarship = loadable(() => import("./scenes/Scholarship/Scholarship"), {
 const Application = loadable(() => import("./scenes/Application/Application"), {
   fallback: <Loading />,
 });
+const HowToStartAScholarship = loadable(() => import("./scenes/DirectApplicationInfo/HowToStartAScholarship"), {
+  fallback: <Loading />,
+});
+const HowToApplyForScholarships = loadable(() => import("./scenes/DirectApplicationInfo/HowToApplyForScholarships"), {
+  fallback: <Loading />,
+});
 const Search = loadable(() => import("./scenes/Search/Search"), {
   fallback: <Loading />,
 });
@@ -117,6 +123,14 @@ class App extends React.Component {
               <Route
                 path='/application'
                 component={GoogleAnalyticsTracker(Application)}
+              />
+              <Route
+                path='/start'
+                component={GoogleAnalyticsTracker(HowToStartAScholarship)}
+              />
+              <Route
+                path='/apply'
+                component={GoogleAnalyticsTracker(HowToApplyForScholarships)}
               />
               <Route
                 path='/search'

@@ -11,12 +11,12 @@ function LandingPageContent({ title, description, contentList, contentType }) {
         return null;
     }
     let contentListDisplay = contentList.map( content => (<ContentCard className="max-width-md-30 m-2"
-                                                                         key={content.title}
+                                                                         key={content.slug}
                                                                          content={content}/>));
 
     if (contentType === 'scholarship') {
         contentListDisplay = contentList.map( content => (<ScholarshipCard className="max-width-md-30 m-2"
-                                                                           key={content.name}
+                                                                           key={content.slug}
                                                                            scholarship={content}
                                                                            isOneColumn={true}/>));
     }
