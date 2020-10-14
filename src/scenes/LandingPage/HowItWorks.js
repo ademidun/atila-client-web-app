@@ -35,7 +35,7 @@ const howItWorksStudent = [
             Apply for multiple scholarships all from one site.
             Autofill similar responses used in past scholarships to save time.
         </React.Fragment>,
-        image: "https://imgur.com/cMm2mae.jpg"
+        image: "https://imgur.com/a49KkBZ.jpg"
 
     },
     {
@@ -95,13 +95,13 @@ function HowItWorksSponsor() {
         {
         title: "Fund Scholarship",
         body: "Fund the scholarship with a credit card or debit card.",
-            image: "https://imgur.com/vbPm81H.jpg",
+            image: "https://imgur.com/qekOq3D.jpg",
         },
         {
         title: "Select Winner",
         body: "Review student applications and select winner. Funds directly transferred to winner's bank " +
             "account within 24 hours. All sponsors receive a thank you letter from winner.",
-        image: "https://imgur.com/dWPh5UR.jpg",
+        image: "https://imgur.com/HDecTqt.jpg",
         },
         {
             title: <React.Fragment>The Big Cheque Special! <Tag color="green">Bonus</Tag></React.Fragment>,
