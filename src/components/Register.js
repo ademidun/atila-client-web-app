@@ -6,7 +6,7 @@ import './LoginRegister.scss';
 import {setLoggedInUserProfile} from "../redux/actions/user";
 import {connect} from "react-redux";
 import TermsConditions from "./TermsConditions";
-import { Modal, Radio } from "antd";
+import { Modal } from "antd";
 import {Link} from "react-router-dom";
 import {forbiddenCharacters, hasForbiddenCharacters} from "../models/Utils";
 
