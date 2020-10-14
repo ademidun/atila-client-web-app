@@ -180,10 +180,20 @@ class ScholarshipDetail extends React.Component {
 
         let applyToScholarshipButton = (<Button type="primary" size="large"
                                                 className="mt-3" style={{fontSize: "20px"}}
+                                                onClick={()=>{}}>
+            <Link to={`/login?redirect=scholarship/${scholarship.slug}`}>
+                Login to Apply for Scholarship
+            </Link>
+        </Button>);
+
+        if (userProfile) {
+            applyToScholarshipButton = (<Button type="primary" size="large"
+                                                className="mt-3" style={{fontSize: "20px"}}
                                                 onClick={this.getOrCreateApplication}
                                                 disabled={isLoadingApplication}>
-            {isLoadingApplication ? "Checking for existing Application..." : "Apply Now"}
-        </Button>);
+                {isLoadingApplication ? "Checking for existing Application..." : "Apply Now"}
+            </Button>);
+        }
 
         if(currentUserScholarshipApplication) {
             applyToScholarshipButton = (
@@ -241,7 +251,7 @@ class ScholarshipDetail extends React.Component {
                                         }
                                     </React.Fragment>
                                 }
-                                {scholarship.is_atila_direct_application && userProfile &&
+                                {scholarship.is_atila_direct_application &&
                                     <div>
                                         <Link to={`/scholarship/${slug}/questions`}>
                                             View Application Form
