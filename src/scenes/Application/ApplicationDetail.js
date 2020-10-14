@@ -331,7 +331,7 @@ class ApplicationDetail extends  React.Component{
     }
  * @param questions
  */
-function transformScholarshipQuestionsToApplicationForm(questions) {
+export function transformScholarshipQuestionsToApplicationForm(questions) {
 
     return questions.map(question => (
         {
@@ -348,7 +348,7 @@ function transformScholarshipQuestionsToApplicationForm(questions) {
  * @param scholarshipProfileQuestions
  * @returns {*}
  */
-function transformProfileQuestionsToApplicationForm(scholarshipProfileQuestions) {
+export function transformProfileQuestionsToApplicationForm(scholarshipProfileQuestions) {
 
     const formQuestions = [];
     const allProfileQuestions = [...userProfileFormConfig, ...scholarshipUserProfileSharedFormConfigs];
