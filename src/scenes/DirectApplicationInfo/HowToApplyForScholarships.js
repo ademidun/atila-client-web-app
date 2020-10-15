@@ -31,7 +31,7 @@ function HowToApplyForScholarships() {
                         <li>Find a scholarship you want and click Apply now. Save time by pre-filling similar responses you&rsquo;ve entered in the past.<br /><br /></li>
                         <li>If selected, write a thank you email to the sponsor<br /><br /></li>
                         <li>Connect your bank Account<br /><br /></li>
-                        <li>Accept payment and have funds deposited in bank account within 24 hours</li>
+                        <li>Accept payment and have funds deposited in bank account within 7 days</li>
                     </ol>
                     <h2>Questions</h2>
                     <p><strong>What Happens After I win?</strong></p>
@@ -42,11 +42,11 @@ function HowToApplyForScholarships() {
                     <ol>
                         <li>You write a thank you email to the scholarship sponsor<br /><br /></li>
                         <li>You will be listed as the scholarship winner on the scholarship page and Atila will contact you asking if we can share your winning application and your name and photo. You will have the opportunity to edit your application slightly before sharing.<br /><br /></li>
-                        <li>If the scholarship awarded to you is valued at $5,000 or more, we will mail you a</li>
+                        <li>If the scholarship awarded to you is valued at $5,000 or more, we will mail you a giant cheque.</li>
                     </ol>
                     <p><br /><br /></p>
                     <p><strong>How do I receive my funding?</strong></p>
-                    <p>After you&rsquo;ve completed the tasks above, you can click on the link in the email which you were provided and it will take you to the payment acceptance page. You will then connect your bank account using <a href="https://stripe.com/">Stripe</a>, after connecting your bank account and accepting the payment, you should receive the funding typically within the next 24 hours.</p>
+                    <p>After you&rsquo;ve completed the tasks above, you can click on the link in the email which you were provided and it will take you to the payment acceptance page. You will then connect your bank account using <a href="https://stripe.com/">Stripe</a>, after connecting your bank account and accepting the payment, you should receive the funding typically within the next 7 days.</p>
                     <p><br /><br /></p>
                     <p><strong>Does Atila Save my Banking Information? Is it Secure?</strong></p>
                     <p>Atila does not save your banking information. All of the payment processing is handled using <a href="https://stripe.com/en-ca">Stripe</a>, a payment processing company that is used to handle payments for companies such as Shopify, Lyft, Doordash, Shopify and more.</p>
