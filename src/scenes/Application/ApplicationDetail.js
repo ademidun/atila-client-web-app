@@ -42,6 +42,17 @@ class ApplicationDetail extends  React.Component{
     }
 
     getApplication = () => {
+        const { userProfile } = this.props;
+
+        if (userProfile) {
+            this.getApplicationRemotely();
+        } else {
+            this.getApplicationLocally();
+        }
+    };
+
+    getApplicationRemotely = () => {
+
         const { match : { params : { applicationID }} } = this.props;
 
         this.setState({isLoadingApplication: true});
@@ -58,6 +69,21 @@ class ApplicationDetail extends  React.Component{
             .finally(() => {
                 this.setState({isLoadingApplication: false});
             })
+
+    };
+
+
+    getApplicationLocally = () => {
+
+        const { match : { params : { scholarshipID }} } = this.props;
+
+        const application = ApplicationsAPI.getOrCreateLocally({id: scholarshipID});
+
+        // TODO load scholarship from remote database
+        const { scholarship } = application;
+        this.setState({application, scholarship});
+        this.makeScholarshipQuestionsForm(application, scholarship);
+
     };
 
     saveApplication = () => {
@@ -99,8 +125,20 @@ class ApplicationDetail extends  React.Component{
             })
     };
 
+    // TODO Implement the following two functions
+
+    saveApplicationRemotely = () => {
+
+    };
+
+    saveApplicationLocally = () => {
+
+    };
+
     submitApplication = () => {
         this.setState({isSubmittingApplication: true});
+        // TODO when this function is called, if user is not logged in. Show the Registration component
+        //  and return
 
         const { application, scholarship } = this.state;
         const { scholarship_responses, user_profile_responses } = addQuestionDetailToApplicationResponses(application, scholarship);

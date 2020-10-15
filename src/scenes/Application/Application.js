@@ -5,6 +5,7 @@ import ApplicationDetail from "./ApplicationDetail";
 function Application({ match }) {
     return (
         <Switch>
+            <Route path={`${match.path}/local/scholarship_:scholarshipID`} component={ApplicationDetail} />
             <Route path={`${match.path}/:applicationID`} component={ApplicationDetail} />
         </Switch>
     );
