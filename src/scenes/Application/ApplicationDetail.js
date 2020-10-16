@@ -106,7 +106,7 @@ class ApplicationDetail extends  React.Component{
         const { scholarship_responses, user_profile_responses } = addQuestionDetailToApplicationResponses(application, scholarship);
 
         ApplicationsAPI
-            .patch(application.id, {scholarship_responses, user_profile_responses, is_submitted: true})
+            .submit(application.id, {scholarship_responses, user_profile_responses})
             .then(res=>{
                 // State needs to be updated with new application from response ideally
                 // const application = res.data
