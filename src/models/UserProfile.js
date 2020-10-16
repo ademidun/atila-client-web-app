@@ -129,11 +129,9 @@ export function addToMyScholarshipHelper(userProfile, scholarship) {
 
     if (!userProfile.saved_scholarships) {
         userProfile.saved_scholarships = [];
-        userProfile.saved_scholarships_metadata = {};
     }
 
     userProfile.saved_scholarships.push(scholarship.id);
-    userProfile.saved_scholarships_metadata[scholarship.id] = {notes: ''};
 
     return userProfile;
 }

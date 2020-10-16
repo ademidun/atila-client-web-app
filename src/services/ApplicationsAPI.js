@@ -95,6 +95,17 @@ class ApplicationsAPI {
         return apiCompletionPromise;
     };
 
+    static submit = (id, data) => {
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: data,
+            url: `${this.applicationsApiUrl}/${id}/submit/`
+        });
+
+        return apiCompletionPromise
+    };
+
     static saveApplicationLocally = (application) => {
 
 
