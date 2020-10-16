@@ -16,11 +16,16 @@ import FormDynamic from "../../components/Form/FormDynamic";
 import {Link} from "react-router-dom";
 import {Button, Popconfirm} from "antd";
 import {formatCurrency, extractContent} from "../../services/utils";
+import Register from "../../components/Register";
+import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
+import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 
 class ApplicationDetail extends  React.Component{
 
     constructor(props) {
         super(props);
+
+        const { location : { pathname } } = this.props;
 
         this.state = {
             application: {},
@@ -30,7 +35,11 @@ class ApplicationDetail extends  React.Component{
             isSubmittingApplication: false,
             scholarshipUserProfileQuestionsFormConfig: null,
             scholarshipQuestionsFormConfig: null,
-            viewMode: false
+            viewMode: false,
+            isUsingLocalApplication: pathname.includes("/local/"),
+            promptRegisterBeforeSubmitting: false,
+            userProfileForRegistration: null,
+            registrationSuccessMessage: null
         }
     }
 
@@ -42,6 +51,18 @@ class ApplicationDetail extends  React.Component{
     }
 
     getApplication = () => {
+        const { userProfile } = this.props;
+        const { isUsingLocalApplication } = this.state;
+
+        if (userProfile) {
+            this.getApplicationRemotely();
+        } else if (isUsingLocalApplication) {
+            this.getApplicationLocally();
+        }
+    };
+
+    getApplicationRemotely = () => {
+
         const { match : { params : { applicationID }} } = this.props;
 
         this.setState({isLoadingApplication: true});
@@ -58,37 +79,62 @@ class ApplicationDetail extends  React.Component{
             .finally(() => {
                 this.setState({isLoadingApplication: false});
             })
+
+    };
+
+    getApplicationLocally = () => {
+
+        const { match : { params : { scholarshipID }} } = this.props;
+        this.setState({isLoadingApplication: true});
+        ScholarshipsAPI
+            .get(scholarshipID)
+            .then(res => {
+                console.log({res});
+                const {data: scholarship} = res;
+                const application = ApplicationsAPI.getOrCreateLocally({id: scholarshipID});
+                // TODO load scholarship from remote database
+                this.setState({application, scholarship});
+                this.makeScholarshipQuestionsForm(application, scholarship);
+            })
+            .catch((err) => {
+                console.log({err});
+            })
+            .finally(() => {
+                this.setState({isLoadingApplication: false});
+            });
+
+
+
+
     };
 
     saveApplication = () => {
 
-        this.setState({isSavingApplication: true});
+        const { userProfile } = this.props;
 
         const { application, scholarship } = this.state;
 
         const {scholarship_responses, user_profile_responses } = addQuestionDetailToApplicationResponses(application, scholarship);
 
+        if (userProfile) {
+            this.saveApplicationRemotely( {scholarship_responses, user_profile_responses }, application.id);
+        } else {
+            this.saveApplicationLocally({scholarship_responses, user_profile_responses, scholarship }, scholarship);
+        }
+    };
+
+    saveApplicationRemotely = (applicationData, applicationID) => {
+
+
+        this.setState({isSavingApplication: true});
+
         ApplicationsAPI
-            .patch(application.id, {scholarship_responses, user_profile_responses})
+            .patch(applicationID, applicationData)
             .then(res=>{
                 const { data: application } = res;
                 const { scholarship } = application;
-                /*
-                Don't set state in the application until we have transformed the application otherwise we will get
-                A similar error to this: https://stackoverflow.com/a/57328274/5405197
-                We need to make sure the forms have been converted to their proper html representation and not
-                dictionaries before we render them.
-                */
-                // this.setState({application, scholarship});
-                this.makeScholarshipQuestionsForm(application, scholarship);
 
-                const successMessage = (
-                    <p>
-                    <span role="img" aria-label="happy face emoji">🙂 </span>
-                    Successfully saved your application!
-                    </p>);
-
-                toastNotify(successMessage, 'info', {position: 'bottom-right'});
+                this.afterSaveApplication(application, scholarship);
             })
             .catch(err => {
                 console.log({err});
@@ -99,8 +145,84 @@ class ApplicationDetail extends  React.Component{
             })
     };
 
+    saveApplicationLocally = (application, scholarship) => {
+
+        application.date_modified = new Date();
+        ApplicationsAPI.saveApplicationLocally(application);
+        this.afterSaveApplication(application, scholarship);
+    };
+
+    /**
+     * The format of the application state used for the forms is different from what we send to the database
+     * so we must convert the state after each time we send the database to the backend.
+     * Don't set state in the application until we have transformed the application otherwise we will get
+     * A similar error to this: https://stackoverflow.com/a/57328274/5405197
+     * We need to make sure the forms have been converted to their proper html representation and not
+     * dictionaries before we render them.
+     */
+
+    afterSaveApplication = (application, scholarship) => {
+
+        // this.setState({application, scholarship});
+        this.makeScholarshipQuestionsForm(application, scholarship);
+
+        const successMessage = (
+            <p>
+                <span role="img" aria-label="happy face emoji">🙂 </span>
+                Successfully saved your application!
+            </p>);
+
+        toastNotify(successMessage, 'info', {position: 'bottom-right'});
+    }
+
     submitApplication = () => {
+        const { userProfile } = this.props;
+        if (userProfile) {
+            this.submitApplicationRemotely();
+        } else {
+            this.setState({promptRegisterBeforeSubmitting: true})
+        }
+    };
+
+    createApplicationAfterRegistration = (userProfile) => {
+        const { application, scholarship } = this.state;
+        const { scholarship_responses, user_profile_responses } = addQuestionDetailToApplicationResponses(application, scholarship);
+
+        this.setState({isLoadingApplication: true});
+        ApplicationsAPI
+            .getOrCreate({scholarship_responses, user_profile_responses, scholarship: scholarship.id, user: userProfile.user})
+            .then(res=>{
+                // State needs to be updated with new application from response ideally
+                // const application = res.data
+                // this.setState({application})
+                // TEMPORARY SOLUTION
+                console.log({res});
+                const { data: { application } } = res;
+                const successMessage = (
+                    <h5 className="text-center text-muted">
+                        <span role="img" aria-label="happy face emoji">🙂 </span>
+                        Successfully saved your application! <br/>
+                        {/*TODO temporarily open in new tab until we can get the props to update when applicationID or scholarship ID in url changes*/}
+                        <Link to={`/application/${application.id}`} target="_blank">View your Application</Link>before submitting
+                    </h5>);
+
+                toastNotify(successMessage, 'info', {position: 'bottom-right'});
+
+                this.setState({registrationSuccessMessage: successMessage, promptRegisterBeforeSubmitting: false});
+            })
+            .catch(err => {
+                console.log({err});
+                toastNotify(`🙁 An error occurred`, 'error');
+            })
+            .finally(() => {
+                this.setState({isLoadingApplication: false});
+            })
+    };
+
+    submitApplicationRemotely = () => {
         this.setState({isSubmittingApplication: true});
+        // TODO when this function is called, if user is not logged in. Show the Registration component
+        //  and return
 
         const { application, scholarship } = this.state;
         const { scholarship_responses, user_profile_responses } = addQuestionDetailToApplicationResponses(application, scholarship);
@@ -113,7 +235,6 @@ class ApplicationDetail extends  React.Component{
                 // this.setState({application})
                 // TEMPORARY SOLUTION
                 this.setState({viewMode: true})
-                console.log("resData", res)
                 const successMessage = (
                     <p>
                     <span role="img" aria-label="happy face emoji">🙂 </span>
@@ -124,7 +245,7 @@ class ApplicationDetail extends  React.Component{
             })
             .catch(err => {
                 console.log({err});
-                toastNotify(`🙁 An error occured, check your connection!`, 'error');
+                toastNotify(`🙁 An error occurred`, 'error');
             })
             .finally(() => {
                 this.setState({isSubmittingApplication: false});
@@ -209,7 +330,7 @@ class ApplicationDetail extends  React.Component{
         }
 
         return responseList
-    }
+    };
 
     renderHeader = () => {
         const { application, scholarship } = this.state;
@@ -249,51 +370,103 @@ class ApplicationDetail extends  React.Component{
     render() {
         const { match : { params : { applicationID }} } = this.props;
         const { application, isLoadingApplication, scholarship, isSavingApplication, isSubmittingApplication,
-            scholarshipUserProfileQuestionsFormConfig, scholarshipQuestionsFormConfig, viewMode } = this.state;
-        console.log("application", application)
+            scholarshipUserProfileQuestionsFormConfig, scholarshipQuestionsFormConfig,
+            viewMode, isUsingLocalApplication, promptRegisterBeforeSubmitting, registrationSuccessMessage } = this.state;
+
+
+        let dateModified;
+        if (application.date_modified) {
+            dateModified = new Date(application.date_modified);
+            dateModified =  (<p className="text-muted center-block">
+                Last saved {isUsingLocalApplication? " locally ": null}: {dateModified.toDateString()}{' '}
+                {dateModified.toLocaleTimeString()}
+            </p>)
+        }
+        let seoContent = {
+            ...defaultSeoContent,
+            title: `Scholarship Application${scholarship? ` for ${scholarship.name}`:""}`
+        };
+
+        if (!isLoadingApplication && !scholarship) {
+            return (
+                <div className="container mt-5">
+                    <HelmetSeo content={seoContent}/>
+                    <div className="card shadow p-3">
+                        <h1>Application not found</h1>
+                        <h5 className="center-block text-muted">
+                            Try <Link to={`/login?redirect=application/${applicationID}`}>
+                            logging in</Link> to view this page if your application is here.
+                        </h5>
+
+                    </div>
+                </div>
+            )
+        }
+
 
         return (
-            <div className="container mt-5">
-                <div className="card shadow p-3">
-                    <h1>
-                        Application for {scholarship ? (<Link to={`/scholarship/${scholarship.slug}`}>
+            <>
+                <HelmetSeo content={seoContent}/>
+                <div className="container mt-5">
+                    <div className="card shadow p-3">
+                        {scholarship &&
+                        <h1>
+                            Application for <Link to={`/scholarship/${scholarship.slug}`}>
                             {scholarship.name}
-                        </Link>)
-                            : applicationID}
-                    </h1>
-                    {this.renderHeader()}
-                    <div>
-                        {scholarshipUserProfileQuestionsFormConfig && scholarshipQuestionsFormConfig &&
+                        </Link>
+                        </h1>
+                        }
+                        {this.renderHeader()}
                         <div>
-                            {!viewMode && !application.is_submitted &&
-                            <>
-                                <h2>Profile Questions</h2>
-                                <FormDynamic onUpdateForm={event => this.updateForm(event, 'user_profile_responses')}
-                                             model={application.user_profile_responses}
-                                             inputConfigs=
-                                                 {scholarshipUserProfileQuestionsFormConfig}
-                                />
+                            {scholarshipUserProfileQuestionsFormConfig && scholarshipQuestionsFormConfig &&
+                            <div>
+                                {!viewMode && !application.is_submitted &&
+                                <>
+                                    <h2>Profile Questions</h2>
+                                    <FormDynamic onUpdateForm={event => this.updateForm(event, 'user_profile_responses')}
+                                                 model={application.user_profile_responses}
+                                                 inputConfigs=
+                                                     {scholarshipUserProfileQuestionsFormConfig}
+                                    />
 
-                                <h2>Scholarship Questions</h2>
-                                <FormDynamic onUpdateForm={event => this.updateForm(event, 'scholarship_responses')}
-                                             model={application.scholarship_responses}
-                                             inputConfigs=
-                                                 {scholarshipQuestionsFormConfig}
-                                />
-                                <Button onClick={this.saveApplication} type="primary">
-                                    Save
-                                </Button>
-                                <Popconfirm placement="topRight" title={"Once you submit your application, you won't be able to edit it. Are you sure you want to submit?"}
-                                            onConfirm={this.submitApplication}
-                                            okText="Yes" cancelText="No">
-                                    <Button type={"primary"} className={"float-right"}>
-                                        Submit
+                                    <h2>Scholarship Questions</h2>
+                                    <FormDynamic onUpdateForm={event => this.updateForm(event, 'scholarship_responses')}
+                                                 model={application.scholarship_responses}
+                                                 inputConfigs=
+                                                     {scholarshipQuestionsFormConfig}
+                                    />
+                                    <Button onClick={this.saveApplication} type="primary">
+                                        Save
                                     </Button>
-                                </Popconfirm>
-                            </>
-                            }
+                                    {dateModified}
+                                    <Popconfirm placement="topRight" title={"Once you submit your application, you won't be able to edit it. Are you sure you want to submit?"}
+                                                onConfirm={this.submitApplication}
+                                                okText="Yes" cancelText="No">
+                                        <Button type={"primary"} className={"float-right"}>
+                                            Submit...
+                                        </Button>
+                                    </Popconfirm>
+                                </>
+                                }
+                                {promptRegisterBeforeSubmitting &&
+                                <>
+                                    <h3>Create a username and password to access your application later</h3>
+                                    {/*
+                                        One subtle thing to notice here is that user_profile_responses can either be in the format of:
+                                        {key: value, key: value} or in the format of {key:{key: "", response: "", type: "", question:""}}
+                                        So this code operates under the assumption that application.user_profile_responses is using the first format of simple key:value,
+                                        This assumption holds because this form renders when promptRegisterBeforeSubmitting is True so application.user_profile_responses has
+                                        not been transformed into the nested dictionary at this point.
+                                    */}
+                                    <Register location={this.props.location}
+                                              userProfile={application.user_profile_responses}
+                                              disableRedirect={true}
+                                              onRegistrationFinished={this.createApplicationAfterRegistration} />
+                                </>
+                                }
+                                {registrationSuccessMessage}
 
-                            {(viewMode || application.is_submitted || application.is_payment_accepted) &&
+                                {(viewMode || application.is_submitted || application.is_payment_accepted) &&
                                 <>
                                     <h2>Profile Questions</h2>
                                     {this.viewForm(application.user_profile_responses)}
@@ -301,16 +474,17 @@ class ApplicationDetail extends  React.Component{
                                     <h2>Scholarship Questions</h2>
                                     {this.viewForm(application.scholarship_responses)}
                                 </>
+                                }
+                            </div>
                             }
-                        </div>
-                        }
 
+                        </div>
+                        {isLoadingApplication && <Loading  title="Loading Application..."/>}
+                        {isSavingApplication && <Loading  title="Saving Application..."/>}
+                        {isSubmittingApplication && <Loading  title="Submitting Application..."/>}
                     </div>
-                    {isLoadingApplication && <Loading  title="Loading Application..."/>}
-                    {isSavingApplication && <Loading  title="Saving Application..."/>}
-                    {isSubmittingApplication && <Loading  title="Submitting Application..."/>}
                 </div>
-            </div>
+            </>
         );
     }
 }
@@ -396,17 +570,11 @@ function addQuestionDetailToApplicationResponses(application, scholarship) {
         }
     });
 
-    console.log('application.user_profile_responses', application.user_profile_responses);
-    console.log('scholarship.user_profile_questions', scholarship.user_profile_questions);
-    console.log('scholarship.user_profile_questions.find(question => { return question === "first_name" });',
-        scholarship.user_profile_questions.find(question => { return question.key === "first_name" }));
-
     Object.keys(application.user_profile_responses).forEach( responseKey => {
         const question = scholarship.user_profile_questions.find(question => {
             return question.key === responseKey
         });
-        console.log({question, responseKey});
-        if (question) {
+                if (question) {
             userProfileResponses[responseKey] = {
                 ...question,
                 response: application.user_profile_responses[responseKey]

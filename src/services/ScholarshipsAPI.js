@@ -35,6 +35,10 @@ class ScholarshipsAPI {
     };
 
     static get = (id = '') => {
+        /**
+         * Get Scholarship using the scholarship's ID
+         * @type {AxiosPromise}
+         */
 
         const apiCompletionPromise = request({
             method: 'get',

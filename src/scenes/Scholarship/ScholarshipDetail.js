@@ -114,13 +114,25 @@ class ScholarshipDetail extends React.Component {
             });
     };
 
+    /**
+     * If user is logged in, check the database for an existing application. If not logged in, check local storage
+     * for an application.
+    */
+
     findExistingApplication = () => {
         const { userProfile } = this.props;
         const { scholarship } = this.state;
 
-        if(!userProfile) {
-            return;
+        if(userProfile) {
+            this.findExistingApplicationRemotely(scholarship, userProfile);
+        } else {
+            this.findExistingApplicationLocally(scholarship);
         }
+
+    };
+
+    findExistingApplicationRemotely = (scholarship, userProfile) => {
+
         this.setState({isLoadingApplication: true});
         ApplicationsAPI
             .doesApplicationExist(userProfile.user, scholarship.id)
@@ -134,13 +146,30 @@ class ScholarshipDetail extends React.Component {
             .finally(() => {
                 this.setState({isLoadingApplication: false});
             });
-
     };
+
+    findExistingApplicationLocally = (scholarship) => {
+        const localApplicationID = `local_application_scholarship_id_${scholarship.id}`;
+        if (localStorage.getItem(localApplicationID)) {
+            this.setState({ currentUserScholarshipApplication: {id: `local/scholarship_${scholarship.id}`} })
+        }
+    }
 
     getOrCreateApplication = () => {
         const { userProfile } = this.props;
+
+        if (userProfile) {
+            this.getOrCreateApplicationRemotely();
+        } else {
+            this.getOrCreateApplicationLocally();
+        }
+    };
+
+
+    getOrCreateApplicationRemotely = () => {
+        const { userProfile } = this.props;
         const { scholarship } = this.state;
-        ApplicationsAPI.getOrCreate(scholarship.id, userProfile.user)
+        ApplicationsAPI.getOrCreate({scholarship: scholarship.id, user: userProfile.user})
             .then(res=>{
 
                 const {data: { application }} = res;
@@ -152,6 +181,17 @@ class ScholarshipDetail extends React.Component {
             })
 
     };
+
+
+    getOrCreateApplicationLocally = () => {
+        const { scholarship } = this.state;
+
+        ApplicationsAPI.getOrCreateLocally(scholarship);
+
+        this.props.history.push(`/application/local/scholarship_${scholarship.id}`);
+
+    };
+
 
     render() {
 
@@ -180,20 +220,10 @@ class ScholarshipDetail extends React.Component {
 
         let applyToScholarshipButton = (<Button type="primary" size="large"
                                                 className="mt-3" style={{fontSize: "20px"}}
-                                                onClick={()=>{}}>
-            <Link to={`/login?redirect=scholarship/${scholarship.slug}`}>
-                Login to Apply for Scholarship
-            </Link>
-        </Button>);
-
-        if (userProfile) {
-            applyToScholarshipButton = (<Button type="primary" size="large"
-                                                className="mt-3" style={{fontSize: "20px"}}
                                                 onClick={this.getOrCreateApplication}
                                                 disabled={isLoadingApplication}>
-                {isLoadingApplication ? "Checking for existing Application..." : "Apply Now"}
-            </Button>);
-        }
+            {isLoadingApplication ? "Checking for existing Application..." : "Apply Now"}
+        </Button>);
 
         if(currentUserScholarshipApplication) {
             applyToScholarshipButton = (
