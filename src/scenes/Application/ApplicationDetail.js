@@ -22,6 +22,8 @@ class ApplicationDetail extends  React.Component{
     constructor(props) {
         super(props);
 
+        const { location : { pathname } } = this.props;
+
         this.state = {
             application: {},
             scholarship: null,
@@ -30,7 +32,8 @@ class ApplicationDetail extends  React.Component{
             isSubmittingApplication: false,
             scholarshipUserProfileQuestionsFormConfig: null,
             scholarshipQuestionsFormConfig: null,
-            viewMode: false
+            viewMode: false,
+            isUsingLocalApplication: pathname.includes("/local/"),
         }
     }
 
@@ -43,10 +46,11 @@ class ApplicationDetail extends  React.Component{
 
     getApplication = () => {
         const { userProfile } = this.props;
+        const { isUsingLocalApplication } = this.state;
 
         if (userProfile) {
             this.getApplicationRemotely();
-        } else {
+        } else if (isUsingLocalApplication) {
             this.getApplicationLocally();
         }
     };
@@ -72,7 +76,6 @@ class ApplicationDetail extends  React.Component{
 
     };
 
-
     getApplicationLocally = () => {
 
         const { match : { params : { scholarshipID }} } = this.props;
@@ -88,33 +91,31 @@ class ApplicationDetail extends  React.Component{
 
     saveApplication = () => {
 
-        this.setState({isSavingApplication: true});
+        const { userProfile } = this.props;
 
         const { application, scholarship } = this.state;
 
         const {scholarship_responses, user_profile_responses } = addQuestionDetailToApplicationResponses(application, scholarship);
 
+        if (userProfile) {
+            this.saveApplicationRemotely( {scholarship_responses, user_profile_responses }, application.id);
+        } else {
+            this.saveApplicationLocally({scholarship_responses, user_profile_responses, scholarship }, scholarship);
+        }
+    };
+
+    saveApplicationRemotely = (applicationData, applicationID) => {
+
+
+        this.setState({isSavingApplication: true});
+
         ApplicationsAPI
-            .patch(application.id, {scholarship_responses, user_profile_responses})
+            .patch(applicationID, applicationData)
             .then(res=>{
                 const { data: application } = res;
                 const { scholarship } = application;
-                /*
-                Don't set state in the application until we have transformed the application otherwise we will get
-                A similar error to this: https://stackoverflow.com/a/57328274/5405197
-                We need to make sure the forms have been converted to their proper html representation and not
-                dictionaries before we render them.
-                */
-                // this.setState({application, scholarship});
-                this.makeScholarshipQuestionsForm(application, scholarship);
 
-                const successMessage = (
-                    <p>
-                    <span role="img" aria-label="happy face emoji">🙂 </span>
-                    Successfully saved your application!
-                    </p>);
-
-                toastNotify(successMessage, 'info', {position: 'bottom-right'});
+                this.afterSaveApplication(application, scholarship);
             })
             .catch(err => {
                 console.log({err});
@@ -125,15 +126,35 @@ class ApplicationDetail extends  React.Component{
             })
     };
 
-    // TODO Implement the following two functions
+    saveApplicationLocally = (application, scholarship) => {
 
-    saveApplicationRemotely = () => {
-
+        application.date_modified = new Date();
+        ApplicationsAPI.saveApplicationLocally(application);
+        this.afterSaveApplication(application, scholarship);
     };
 
-    saveApplicationLocally = () => {
+    /**
+     * The format of the application state used for the forms is different from what we send to the database
+     * so we must convert the state after each time we send the database to the backend.
+     * Don't set state in the application until we have transformed the application otherwise we will get
+     * A similar error to this: https://stackoverflow.com/a/57328274/5405197
+     * We need to make sure the forms have been converted to their proper html representation and not
+     * dictionaries before we render them.
+     */
 
-    };
+    afterSaveApplication = (application, scholarship) =>{
+
+        // this.setState({application, scholarship});
+        this.makeScholarshipQuestionsForm(application, scholarship);
+
+        const successMessage = (
+            <p>
+                <span role="img" aria-label="happy face emoji">🙂 </span>
+                Successfully saved your application!
+            </p>);
+
+        toastNotify(successMessage, 'info', {position: 'bottom-right'});
+    }
 
     submitApplication = () => {
         this.setState({isSubmittingApplication: true});
@@ -151,7 +172,6 @@ class ApplicationDetail extends  React.Component{
                 // this.setState({application})
                 // TEMPORARY SOLUTION
                 this.setState({viewMode: true})
-                console.log("resData", res)
                 const successMessage = (
                     <p>
                     <span role="img" aria-label="happy face emoji">🙂 </span>
@@ -288,17 +308,42 @@ class ApplicationDetail extends  React.Component{
         const { match : { params : { applicationID }} } = this.props;
         const { application, isLoadingApplication, scholarship, isSavingApplication, isSubmittingApplication,
             scholarshipUserProfileQuestionsFormConfig, scholarshipQuestionsFormConfig, viewMode } = this.state;
-        console.log("application", application)
+
+
+        let dateModified;
+        if (application.date_modified) {
+            dateModified = new Date(application.date_modified);
+            dateModified =  (<p className="text-muted center-block">
+                Last Saved: {dateModified.toDateString()}{' '}
+                {dateModified.toLocaleTimeString()}
+            </p>)
+        }
+
+        if (!isLoadingApplication && !scholarship) {
+            return (
+                <div className="container mt-5">
+                    <div className="card shadow p-3">
+                        <h1>Application not found</h1>
+                        <h5 className="center-block text-muted">
+                            Try <Link to={`/login?redirect=application/${applicationID}`}>
+                            logging in</Link> to view this page if your application is here.
+                        </h5>
+
+                    </div>
+                </div>
+            )
+        }
 
         return (
             <div className="container mt-5">
                 <div className="card shadow p-3">
-                    <h1>
-                        Application for {scholarship ? (<Link to={`/scholarship/${scholarship.slug}`}>
-                            {scholarship.name}
-                        </Link>)
-                            : applicationID}
+                    {scholarship &&
+                        <h1>
+                        Application for (<Link to={`/scholarship/${scholarship.slug}`}>
+                        {scholarship.name}
+                    </Link>
                     </h1>
+                    }
                     {this.renderHeader()}
                     <div>
                         {scholarshipUserProfileQuestionsFormConfig && scholarshipQuestionsFormConfig &&
@@ -321,6 +366,7 @@ class ApplicationDetail extends  React.Component{
                                 <Button onClick={this.saveApplication} type="primary">
                                     Save
                                 </Button>
+                                {dateModified}
                                 <Popconfirm placement="topRight" title={"Once you submit your application, you won't be able to edit it. Are you sure you want to submit?"}
                                             onConfirm={this.submitApplication}
                                             okText="Yes" cancelText="No">
@@ -434,17 +480,11 @@ function addQuestionDetailToApplicationResponses(application, scholarship) {
         }
     });
 
-    console.log('application.user_profile_responses', application.user_profile_responses);
-    console.log('scholarship.user_profile_questions', scholarship.user_profile_questions);
-    console.log('scholarship.user_profile_questions.find(question => { return question === "first_name" });',
-        scholarship.user_profile_questions.find(question => { return question.key === "first_name" }));
-
     Object.keys(application.user_profile_responses).forEach( responseKey => {
         const question = scholarship.user_profile_questions.find(question => {
             return question.key === responseKey
         });
-        console.log({question, responseKey});
-        if (question) {
+                if (question) {
             userProfileResponses[responseKey] = {
                 ...question,
                 response: application.user_profile_responses[responseKey]
