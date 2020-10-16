@@ -443,7 +443,7 @@ class ApplicationDetail extends  React.Component{
                                                 onConfirm={this.submitApplication}
                                                 okText="Yes" cancelText="No">
                                         <Button type={"primary"} className={"float-right"}>
-                                            Submit
+                                            Submit...
                                         </Button>
                                     </Popconfirm>
                                 </>
