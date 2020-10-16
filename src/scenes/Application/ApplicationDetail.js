@@ -15,7 +15,7 @@ import {scholarshipUserProfileSharedFormConfigs, toastNotify} from "../../models
 import FormDynamic from "../../components/Form/FormDynamic";
 import {Link} from "react-router-dom";
 import {Button, Popconfirm} from "antd";
-import {formatCurrency, extractContent, getErrorMessage} from "../../services/utils";
+import {formatCurrency, extractContent} from "../../services/utils";
 import Register from "../../components/Register";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 
