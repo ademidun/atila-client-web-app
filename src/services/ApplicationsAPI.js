@@ -5,6 +5,18 @@ class ApplicationsAPI {
 
     static applicationsApiUrl = `${Environment.apiUrl}/application/applications`;
 
+
+    static post = (data) => {
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data,
+            url: `${this.applicationsApiUrl}/`,
+        });
+
+        return apiCompletionPromise;
+    };
+
     static getOrCreate = (scholarship, user) => {
         /***
          * Takes a scholarship ID and user ID as input. Returns a dict in the form:

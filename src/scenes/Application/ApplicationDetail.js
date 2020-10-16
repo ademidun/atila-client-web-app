@@ -15,7 +15,9 @@ import {scholarshipUserProfileSharedFormConfigs, toastNotify} from "../../models
 import FormDynamic from "../../components/Form/FormDynamic";
 import {Link} from "react-router-dom";
 import {Button, Popconfirm} from "antd";
-import {formatCurrency, extractContent} from "../../services/utils";
+import {formatCurrency, extractContent, getErrorMessage} from "../../services/utils";
+import Register from "../../components/Register";
+import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 
 class ApplicationDetail extends  React.Component{
 
@@ -34,6 +36,8 @@ class ApplicationDetail extends  React.Component{
             scholarshipQuestionsFormConfig: null,
             viewMode: false,
             isUsingLocalApplication: pathname.includes("/local/"),
+            promptRegisterBeforeSubmitting: false,
+            userProfileForRegistration: null,
         }
     }
 
@@ -142,7 +146,7 @@ class ApplicationDetail extends  React.Component{
      * dictionaries before we render them.
      */
 
-    afterSaveApplication = (application, scholarship) =>{
+    afterSaveApplication = (application, scholarship) => {
 
         // this.setState({application, scholarship});
         this.makeScholarshipQuestionsForm(application, scholarship);
@@ -157,6 +161,50 @@ class ApplicationDetail extends  React.Component{
     }
 
     submitApplication = () => {
+        const { userProfile } = this.props;
+        if (userProfile) {
+            this.submitApplicationRemotely();
+        } else {
+            this.setState({promptRegisterBeforeSubmitting: true})
+        }
+    };
+
+    createApplicationAfterRegistration = (userProfile) => {
+        const { application, scholarship } = this.state;
+        const { scholarship_responses, user_profile_responses } = addQuestionDetailToApplicationResponses(application, scholarship);
+
+        console.log({userProfile, scholarship_responses, user_profile_responses});
+        this.setState({isLoadingApplication: true});
+        ApplicationsAPI
+            .post({scholarship_responses, user_profile_responses, scholarship_id: scholarship.id, user_id: userProfile.user})
+            .then(res=>{
+                // State needs to be updated with new application from response ideally
+                // const application = res.data
+                // this.setState({application})
+                // TEMPORARY SOLUTION
+                console.log({res});
+                const { data: application } = res;
+                this.setState({viewMode: true});
+                const successMessage = (
+                    <p>
+                        <span role="img" aria-label="happy face emoji">🙂 </span>
+                        Successfully saved your application! <br/>
+                        You can
+                        <Link to={`/application/${application.id}`}>View Application</Link> before submitting
+                    </p>);
+
+                toastNotify(successMessage, 'info', {position: 'bottom-right'});
+            })
+            .catch(err => {
+                console.log({err});
+                toastNotify(`🙁 An error occurred`, 'error');
+            })
+            .finally(() => {
+                this.setState({isLoadingApplication: false});
+            })
+    };
+
+    submitApplicationRemotely = () => {
         this.setState({isSubmittingApplication: true});
         // TODO when this function is called, if user is not logged in. Show the Registration component
         //  and return
@@ -182,7 +230,7 @@ class ApplicationDetail extends  React.Component{
             })
             .catch(err => {
                 console.log({err});
-                toastNotify(`🙁 An error occured, check your connection!`, 'error');
+                toastNotify(`🙁 An error occurred`, 'error');
             })
             .finally(() => {
                 this.setState({isSubmittingApplication: false});
@@ -267,7 +315,7 @@ class ApplicationDetail extends  React.Component{
         }
 
         return responseList
-    }
+    };
 
     renderHeader = () => {
         const { application, scholarship } = this.state;
@@ -308,7 +356,7 @@ class ApplicationDetail extends  React.Component{
         const { match : { params : { applicationID }} } = this.props;
         const { application, isLoadingApplication, scholarship, isSavingApplication, isSubmittingApplication,
             scholarshipUserProfileQuestionsFormConfig, scholarshipQuestionsFormConfig,
-            viewMode, isUsingLocalApplication } = this.state;
+            viewMode, isUsingLocalApplication, promptRegisterBeforeSubmitting } = this.state;
 
 
         let dateModified;
@@ -319,10 +367,15 @@ class ApplicationDetail extends  React.Component{
                 {dateModified.toLocaleTimeString()}
             </p>)
         }
+        let seoContent = {
+            ...defaultSeoContent,
+            title: `Scholarship Application${scholarship? ` for ${scholarship.name}`:""}`
+        };
 
         if (!isLoadingApplication && !scholarship) {
             return (
                 <div className="container mt-5">
+                    <HelmetSeo content={seoContent}/>
                     <div className="card shadow p-3">
                         <h1>Application not found</h1>
                         <h5 className="center-block text-muted">
@@ -335,50 +388,69 @@ class ApplicationDetail extends  React.Component{
             )
         }
 
+
         return (
-            <div className="container mt-5">
-                <div className="card shadow p-3">
-                    {scholarship &&
+            <>
+                <HelmetSeo content={seoContent}/>
+                <div className="container mt-5">
+                    <div className="card shadow p-3">
+                        {scholarship &&
                         <h1>
-                        Application for (<Link to={`/scholarship/${scholarship.slug}`}>
-                        {scholarship.name}
-                    </Link>
-                    </h1>
-                    }
-                    {this.renderHeader()}
-                    <div>
-                        {scholarshipUserProfileQuestionsFormConfig && scholarshipQuestionsFormConfig &&
+                            Application for (<Link to={`/scholarship/${scholarship.slug}`}>
+                            {scholarship.name}
+                        </Link>
+                        </h1>
+                        }
+                        {this.renderHeader()}
                         <div>
-                            {!viewMode && !application.is_submitted &&
-                            <>
-                                <h2>Profile Questions</h2>
-                                <FormDynamic onUpdateForm={event => this.updateForm(event, 'user_profile_responses')}
-                                             model={application.user_profile_responses}
-                                             inputConfigs=
-                                                 {scholarshipUserProfileQuestionsFormConfig}
-                                />
+                            {scholarshipUserProfileQuestionsFormConfig && scholarshipQuestionsFormConfig &&
+                            <div>
+                                {!viewMode && !application.is_submitted &&
+                                <>
+                                    <h2>Profile Questions</h2>
+                                    <FormDynamic onUpdateForm={event => this.updateForm(event, 'user_profile_responses')}
+                                                 model={application.user_profile_responses}
+                                                 inputConfigs=
+                                                     {scholarshipUserProfileQuestionsFormConfig}
+                                    />
 
-                                <h2>Scholarship Questions</h2>
-                                <FormDynamic onUpdateForm={event => this.updateForm(event, 'scholarship_responses')}
-                                             model={application.scholarship_responses}
-                                             inputConfigs=
-                                                 {scholarshipQuestionsFormConfig}
-                                />
-                                <Button onClick={this.saveApplication} type="primary">
-                                    Save
-                                </Button>
-                                {dateModified}
-                                <Popconfirm placement="topRight" title={"Once you submit your application, you won't be able to edit it. Are you sure you want to submit?"}
-                                            onConfirm={this.submitApplication}
-                                            okText="Yes" cancelText="No">
-                                    <Button type={"primary"} className={"float-right"}>
-                                        Submit
+                                    <h2>Scholarship Questions</h2>
+                                    <FormDynamic onUpdateForm={event => this.updateForm(event, 'scholarship_responses')}
+                                                 model={application.scholarship_responses}
+                                                 inputConfigs=
+                                                     {scholarshipQuestionsFormConfig}
+                                    />
+                                    <Button onClick={this.saveApplication} type="primary">
+                                        Save
                                     </Button>
-                                </Popconfirm>
-                            </>
-                            }
+                                    {dateModified}
+                                    <Popconfirm placement="topRight" title={"Once you submit your application, you won't be able to edit it. Are you sure you want to submit?"}
+                                                onConfirm={this.submitApplication}
+                                                okText="Yes" cancelText="No">
+                                        <Button type={"primary"} className={"float-right"}>
+                                            Submit
+                                        </Button>
+                                    </Popconfirm>
+                                </>
+                                }
+                                {promptRegisterBeforeSubmitting &&
+                                <>
+                                    <h3>Create a username and password to access your application later</h3>
+                                    {/*
+                                        One subtle thing to notice here is that user_profile_responses can either be in the format of:
+                                        {key: value, key: value} or in the format of {key:{key: "", response: "", type: "", question:""}}
+                                        So this code operates under the assumption that application.user_profile_responses is using the first format of simple key:value,
+                                        This assumption holds because this form renders when promptRegisterBeforeSubmitting is True so application.user_profile_responses has
+                                        not been transformed into the nested dictionary at this point.
+                                    */}
+                                    <Register location={this.props.location}
+                                              userProfile={application.user_profile_responses}
+                                              disableRedirect={true}
+                                              onRegistrationFinished={this.createApplicationAfterRegistration} />
+                                </>
+                                }
 
-                            {(viewMode || application.is_submitted || application.is_payment_accepted) &&
+                                {(viewMode || application.is_submitted || application.is_payment_accepted) &&
                                 <>
                                     <h2>Profile Questions</h2>
                                     {this.viewForm(application.user_profile_responses)}
@@ -386,16 +458,17 @@ class ApplicationDetail extends  React.Component{
                                     <h2>Scholarship Questions</h2>
                                     {this.viewForm(application.scholarship_responses)}
                                 </>
+                                }
+                            </div>
                             }
-                        </div>
-                        }
 
+                        </div>
+                        {isLoadingApplication && <Loading  title="Loading Application..."/>}
+                        {isSavingApplication && <Loading  title="Saving Application..."/>}
+                        {isSubmittingApplication && <Loading  title="Submitting Application..."/>}
                     </div>
-                    {isLoadingApplication && <Loading  title="Loading Application..."/>}
-                    {isSavingApplication && <Loading  title="Saving Application..."/>}
-                    {isSubmittingApplication && <Loading  title="Submitting Application..."/>}
                 </div>
-            </div>
+            </>
         );
     }
 }
