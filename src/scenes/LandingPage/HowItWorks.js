@@ -42,7 +42,7 @@ const howItWorksStudent = [
         title: "Get Funded",
         body: <React.Fragment>
             Scholarship funding is directly deposited to your bank account
-            within 24 hours of accepting award<sup>*</sup>.
+            within 7 days of accepting award<sup>*</sup>.
             <br/>
             <small>
                 <sup>*</sup>
