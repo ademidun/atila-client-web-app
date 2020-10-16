@@ -307,14 +307,15 @@ class ApplicationDetail extends  React.Component{
     render() {
         const { match : { params : { applicationID }} } = this.props;
         const { application, isLoadingApplication, scholarship, isSavingApplication, isSubmittingApplication,
-            scholarshipUserProfileQuestionsFormConfig, scholarshipQuestionsFormConfig, viewMode } = this.state;
+            scholarshipUserProfileQuestionsFormConfig, scholarshipQuestionsFormConfig,
+            viewMode, isUsingLocalApplication } = this.state;
 
 
         let dateModified;
         if (application.date_modified) {
             dateModified = new Date(application.date_modified);
             dateModified =  (<p className="text-muted center-block">
-                Last Saved: {dateModified.toDateString()}{' '}
+                Last saved {isUsingLocalApplication? " locally ": null}: {dateModified.toDateString()}{' '}
                 {dateModified.toLocaleTimeString()}
             </p>)
         }
