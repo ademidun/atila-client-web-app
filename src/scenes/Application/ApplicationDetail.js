@@ -18,6 +18,7 @@ import {Button, Popconfirm} from "antd";
 import {formatCurrency, extractContent} from "../../services/utils";
 import Register from "../../components/Register";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
+import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 
 class ApplicationDetail extends  React.Component{
 
@@ -38,6 +39,7 @@ class ApplicationDetail extends  React.Component{
             isUsingLocalApplication: pathname.includes("/local/"),
             promptRegisterBeforeSubmitting: false,
             userProfileForRegistration: null,
+            registrationSuccessMessage: null
         }
     }
 
@@ -83,13 +85,26 @@ class ApplicationDetail extends  React.Component{
     getApplicationLocally = () => {
 
         const { match : { params : { scholarshipID }} } = this.props;
+        this.setState({isLoadingApplication: true});
+        ScholarshipsAPI
+            .get(scholarshipID)
+            .then(res => {
+                console.log({res});
+                const {data: scholarship} = res;
+                const application = ApplicationsAPI.getOrCreateLocally({id: scholarshipID});
+                // TODO load scholarship from remote database
+                this.setState({application, scholarship});
+                this.makeScholarshipQuestionsForm(application, scholarship);
+            })
+            .catch((err) => {
+                console.log({err});
+            })
+            .finally(() => {
+                this.setState({isLoadingApplication: false});
+            });
 
-        const application = ApplicationsAPI.getOrCreateLocally({id: scholarshipID});
 
-        // TODO load scholarship from remote database
-        const { scholarship } = application;
-        this.setState({application, scholarship});
-        this.makeScholarshipQuestionsForm(application, scholarship);
+
 
     };
 
@@ -173,27 +188,26 @@ class ApplicationDetail extends  React.Component{
         const { application, scholarship } = this.state;
         const { scholarship_responses, user_profile_responses } = addQuestionDetailToApplicationResponses(application, scholarship);
 
-        console.log({userProfile, scholarship_responses, user_profile_responses});
         this.setState({isLoadingApplication: true});
         ApplicationsAPI
-            .post({scholarship_responses, user_profile_responses, scholarship_id: scholarship.id, user_id: userProfile.user})
+            .getOrCreate({scholarship_responses, user_profile_responses, scholarship: scholarship.id, user: userProfile.user})
             .then(res=>{
                 // State needs to be updated with new application from response ideally
                 // const application = res.data
                 // this.setState({application})
                 // TEMPORARY SOLUTION
                 console.log({res});
-                const { data: application } = res;
-                this.setState({viewMode: true});
+                const { data: { application } } = res;
                 const successMessage = (
-                    <p>
+                    <h5 className="text-center text-muted">
                         <span role="img" aria-label="happy face emoji">🙂 </span>
                         Successfully saved your application! <br/>
-                        You can
-                        <Link to={`/application/${application.id}`}>View Application</Link> before submitting
-                    </p>);
+                        <Link to={`/application/${application.id}`}>View your Application</Link>before submitting
+                    </h5>);
 
                 toastNotify(successMessage, 'info', {position: 'bottom-right'});
+
+                this.setState({registrationSuccessMessage: successMessage, promptRegisterBeforeSubmitting: false});
             })
             .catch(err => {
                 console.log({err});
@@ -356,7 +370,7 @@ class ApplicationDetail extends  React.Component{
         const { match : { params : { applicationID }} } = this.props;
         const { application, isLoadingApplication, scholarship, isSavingApplication, isSubmittingApplication,
             scholarshipUserProfileQuestionsFormConfig, scholarshipQuestionsFormConfig,
-            viewMode, isUsingLocalApplication, promptRegisterBeforeSubmitting } = this.state;
+            viewMode, isUsingLocalApplication, promptRegisterBeforeSubmitting, registrationSuccessMessage } = this.state;
 
 
         let dateModified;
@@ -396,7 +410,7 @@ class ApplicationDetail extends  React.Component{
                     <div className="card shadow p-3">
                         {scholarship &&
                         <h1>
-                            Application for (<Link to={`/scholarship/${scholarship.slug}`}>
+                            Application for <Link to={`/scholarship/${scholarship.slug}`}>
                             {scholarship.name}
                         </Link>
                         </h1>
@@ -449,6 +463,7 @@ class ApplicationDetail extends  React.Component{
                                               onRegistrationFinished={this.createApplicationAfterRegistration} />
                                 </>
                                 }
+                                {registrationSuccessMessage}
 
                                 {(viewMode || application.is_submitted || application.is_payment_accepted) &&
                                 <>

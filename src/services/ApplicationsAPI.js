@@ -5,21 +5,9 @@ class ApplicationsAPI {
 
     static applicationsApiUrl = `${Environment.apiUrl}/application/applications`;
 
-
-    static post = (data) => {
-
-        const apiCompletionPromise = request({
-            method: 'post',
-            data,
-            url: `${this.applicationsApiUrl}/`,
-        });
-
-        return apiCompletionPromise;
-    };
-
-    static getOrCreate = (scholarship, user) => {
+    static getOrCreate = (data) => {
         /***
-         * Takes a scholarship ID and user ID as input. Returns a dict in the form:
+         * Takes a scholarship ID, user ID and other application details as input. Returns a dict in the form:
          * {
          *     "application": {},
          *     "created": boolean,
@@ -29,7 +17,7 @@ class ApplicationsAPI {
 
         const apiCompletionPromise = request({
             method: 'post',
-            data: {scholarship, user},
+            data,
             url: `${ApplicationsAPI.applicationsApiUrl}/get-or-create/`,
         });
 
@@ -60,6 +48,7 @@ class ApplicationsAPI {
         }
 
         applicationData = JSON.parse(applicationData);
+        applicationData.scholarship = scholarship;
 
         return applicationData;
     };

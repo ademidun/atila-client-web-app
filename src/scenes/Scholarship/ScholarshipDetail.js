@@ -169,7 +169,7 @@ class ScholarshipDetail extends React.Component {
     getOrCreateApplicationRemotely = () => {
         const { userProfile } = this.props;
         const { scholarship } = this.state;
-        ApplicationsAPI.getOrCreate(scholarship.id, userProfile.user)
+        ApplicationsAPI.getOrCreate({scholarship: scholarship.id, user: userProfile.user})
             .then(res=>{
 
                 const {data: { application }} = res;
