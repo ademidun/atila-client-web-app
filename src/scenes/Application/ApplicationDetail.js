@@ -202,7 +202,8 @@ class ApplicationDetail extends  React.Component{
                     <h5 className="text-center text-muted">
                         <span role="img" aria-label="happy face emoji">🙂 </span>
                         Successfully saved your application! <br/>
-                        <Link to={`/application/${application.id}`}>View your Application</Link>before submitting
+                        {/*TODO temporarily open in new tab until we can get the props to update when applicationID or scholarship ID in url changes*/}
+                        <Link to={`/application/${application.id}`} target="_blank">View your Application</Link>before submitting
                     </h5>);
 
                 toastNotify(successMessage, 'info', {position: 'bottom-right'});
