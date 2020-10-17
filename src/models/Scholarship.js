@@ -89,6 +89,7 @@ export const SCHOLARSHIP_QUESTIONS_TYPES_TO_FORM_TYPES = {
     "short_answer": "text",
     "medium_answer": "textarea",
     "long_answer": "html_editor",
+    "checkbox": "checkbox",
 };
 
 export let DEFAULT_SCHOLARSHIP = {
