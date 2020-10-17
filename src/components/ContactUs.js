@@ -95,12 +95,14 @@ class ContactUs extends  React.Component{
         else {
             pageContent = (<React.Fragment>
                 <h3>Contact Us</h3>
-                <p>Or send us an email at {' '}
+                <p>You can also chat with us by clicking the chat icon
+                    in the bottom right of your screen
+
+                    or send us an email at {' '}
                     <a href="mailto:info@atila.ca" target="_blank" rel="noopener noreferrer">
                         info@atila.ca
-                    </a>
+                    </a>.
                 </p>
-                <h6>We will get back to you within 24 hours</h6>
                 <form className="row p-3 form-group" onSubmit={this.submitContact}>
                     <input placeholder="Full Name"
                            className="col-12 mb-3 form-control"
