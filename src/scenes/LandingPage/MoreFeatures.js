@@ -6,7 +6,6 @@ import emailDigest1 from './assets/digest-email-screenshot-1.png';
 import emailDigest2 from './assets/digest-email-screenshot-2.png';
 import emailScholarshipDue from './assets/scholarship-due-email.png';
 import './MoreFeatures.scss';
-import scholarshipManagement from "./assets/scholarshipManagement.png";
 function MoreFeatures({title}) {
 
     return (
@@ -49,7 +48,7 @@ function MoreFeatures({title}) {
                     </div>
                     <div className="card shadow m-3 p-3 col-lg-7 col-sm-12">
 
-                        <img src={scholarshipManagement} id="view-scholarships-gif"
+                        <img src="https://imgur.com/MLdIWiG.jpg" id="view-scholarships-gif"
                              alt="Find Your Scholarships" title="Find Your Scholarships"
                              className="landing-page-gif landing-page-gif-mobile" />
                     </div>
