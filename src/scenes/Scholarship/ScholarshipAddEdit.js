@@ -308,9 +308,6 @@ class ScholarshipAddEdit extends React.Component{
             event.stopPropagation(); // https://github.com/facebook/react/issues/3446#issuecomment-82751540
         }
 
-        console.log({event});
-        console.log("event.target.name", event.target.name);
-        console.log("event.target.value", event.target.value);
 
         if (event.target.name==='location') {
             const { locationData } = this.state;
@@ -353,7 +350,6 @@ class ScholarshipAddEdit extends React.Component{
          * to see why we need the following code snippet.
          */
         if(event.target.name === "criteria_info" && criteriaInfoInitialLoad) {
-            console.log({criteriaInfoInitialLoad});
             this.setState({criteriaInfoInitialLoad: false})
         } else {
             this.updateScholarship(scholarship);
@@ -397,8 +393,6 @@ class ScholarshipAddEdit extends React.Component{
         const { isAddScholarshipMode } = this.state;
 
         if (!isAddScholarshipMode) {
-            console.log('autoSaveScholarship');
-            console.log('this.state', this.state);
             this.submitForm({});
         }
 
