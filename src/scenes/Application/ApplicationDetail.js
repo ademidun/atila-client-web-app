@@ -372,7 +372,7 @@ class ApplicationDetail extends  React.Component{
             return (
                 <>
                 <h5 className="text-muted">
-                    Your application was submitted at
+                    Your application was submitted on
                     {' '}
                     {dateSubmitted.toDateString()}{' '}
                     {dateSubmitted.toLocaleTimeString()}
