@@ -120,7 +120,7 @@ const renderWinnerButton = (applicationID, scholarship) => {
     return (
         <Popconfirm placement="topLeft" title={confirmText} onConfirm={() => selectWinner(applicationID, scholarship)} okText="Yes" cancelText="No">
             <button type={"button"} className={"btn btn-success"}>
-                Select Winner
+                Select Winner...
             </button>
         </Popconfirm>
     )

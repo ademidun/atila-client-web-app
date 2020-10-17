@@ -66,6 +66,9 @@ function HowItWorksStudent() {
                 <Link to="/scholarship">Apply for Scholarships.</Link>{' '}
                 Get Funded.
             </h2>
+            <h5 className="col-sm-12 text-center text-muted">
+                Atila is 100% free for students
+            </h5>
             <div className="offset-lg-1">
 
                 <DescriptionsWithScreenshots items={howItWorksStudent} />

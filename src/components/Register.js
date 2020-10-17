@@ -78,12 +78,13 @@ class Register extends React.Component {
         }
         this.state = {
             userProfile: {
-                firstName: '',
-                lastName: '',
+                first_name: '',
+                last_name: '',
                 username: '',
                 email: '',
                 password: '',
                 agreeTermsConditions: false,
+                ...props.userProfile,
             },
             nextLocation,
             isResponseError: null,
@@ -148,7 +149,7 @@ class Register extends React.Component {
 
     submitForm = (event) => {
         event.preventDefault();
-        const { setLoggedInUserProfile } = this.props;
+        const { setLoggedInUserProfile, disableRedirect, onRegistrationFinished } = this.props;
         const { userProfile, nextLocation } = this.state;
         const { email, username, password } = userProfile;
 
@@ -156,8 +157,8 @@ class Register extends React.Component {
         this.setState({ isResponseError: null});
 
         const userProfileSendData = {
-            first_name: userProfile.firstName,
-            last_name: userProfile.lastName,
+            first_name: userProfile.first_name,
+            last_name: userProfile.last_name,
             email, username,
         };
 
@@ -175,10 +176,18 @@ class Register extends React.Component {
             })
             .then(res => {
 
-                this.setState({ responseOkMessage: 'Registration successful 🙂! Redirecting...'});
-                UserProfileAPI.authenticateRequests(res.data.token, res.data.id);
-                setLoggedInUserProfile(res.data.user_profile);
-                this.props.history.push(nextLocation);
+                const { data: { token, user_profile, id }} = res;
+                UserProfileAPI.authenticateRequests(token, id);
+                setLoggedInUserProfile(user_profile);
+                let responseOkMessage = "Registration successful 🙂!";
+                if(!disableRedirect) {
+                    responseOkMessage += " Redirecting..."
+                }
+                this.setState({ responseOkMessage });
+                if(!disableRedirect) {
+                    this.props.history.push(nextLocation);
+                }
+                onRegistrationFinished(user_profile)
             })
             .catch(err => {
                 if (err.response && err.response.data) {
@@ -210,7 +219,7 @@ class Register extends React.Component {
 
         const { userProfile, isResponseError, responseOkMessage,
             loadingResponse, isTermsConditionsModalVisible, formErrors } = this.state;
-        const { firstName, lastName, username, email, password, agreeTermsConditions } = userProfile;
+        const { first_name, last_name, username, email, password, agreeTermsConditions } = userProfile;
 
         let formErrorsContent = Object.keys(formErrors).map((errorType) => (
             <div key={errorType}>
@@ -225,16 +234,15 @@ class Register extends React.Component {
                         <form className="row p-3 form-group" onSubmit={this.submitForm}>
                             <input placeholder="First name"
                                    className="col-12 mb-3 form-control"
-                                   name="firstName"
-                                   value={firstName}
+                                   name="first_name"
+                                   value={first_name}
                                    onChange={this.updateForm}
                                    required
                             />
                             <input placeholder="Last Name"
-                                   name="lastName"
-                                   type="lastName"
+                                   name="last_name"
                                    className="col-12 mb-3 form-control"
-                                   value={lastName}
+                                   value={last_name}
                                    onChange={this.updateForm}
                                    required
                             />
@@ -325,8 +333,17 @@ const mapDispatchToProps = {
     setLoggedInUserProfile
 };
 
+Register.defaultProps = {
+    disableRedirect: false,
+    userProfile: {},
+    onRegistrationFinished: () => {},
+};
+
 Register.propTypes = {
     setLoggedInUserProfile: PropTypes.func.isRequired,
+    onRegistrationFinished: PropTypes.func,
+    disableRedirect: PropTypes.bool,
+    userProfile:PropTypes.shape({}),
 };
 
 export default connect(null, mapDispatchToProps)(Register);

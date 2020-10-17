@@ -114,13 +114,25 @@ class ScholarshipDetail extends React.Component {
             });
     };
 
+    /**
+     * If user is logged in, check the database for an existing application. If not logged in, check local storage
+     * for an application.
+    */
+
     findExistingApplication = () => {
         const { userProfile } = this.props;
         const { scholarship } = this.state;
 
-        if(!userProfile) {
-            return;
+        if(userProfile) {
+            this.findExistingApplicationRemotely(scholarship, userProfile);
+        } else {
+            this.findExistingApplicationLocally(scholarship);
         }
+
+    };
+
+    findExistingApplicationRemotely = (scholarship, userProfile) => {
+
         this.setState({isLoadingApplication: true});
         ApplicationsAPI
             .doesApplicationExist(userProfile.user, scholarship.id)
@@ -134,13 +146,30 @@ class ScholarshipDetail extends React.Component {
             .finally(() => {
                 this.setState({isLoadingApplication: false});
             });
-
     };
+
+    findExistingApplicationLocally = (scholarship) => {
+        const localApplicationID = `local_application_scholarship_id_${scholarship.id}`;
+        if (localStorage.getItem(localApplicationID)) {
+            this.setState({ currentUserScholarshipApplication: {id: `local/scholarship_${scholarship.id}`} })
+        }
+    }
 
     getOrCreateApplication = () => {
         const { userProfile } = this.props;
+
+        if (userProfile) {
+            this.getOrCreateApplicationRemotely();
+        } else {
+            this.getOrCreateApplicationLocally();
+        }
+    };
+
+
+    getOrCreateApplicationRemotely = () => {
+        const { userProfile } = this.props;
         const { scholarship } = this.state;
-        ApplicationsAPI.getOrCreate(scholarship.id, userProfile.user)
+        ApplicationsAPI.getOrCreate({scholarship: scholarship.id, user: userProfile.user})
             .then(res=>{
 
                 const {data: { application }} = res;
@@ -152,6 +181,17 @@ class ScholarshipDetail extends React.Component {
             })
 
     };
+
+
+    getOrCreateApplicationLocally = () => {
+        const { scholarship } = this.state;
+
+        ApplicationsAPI.getOrCreateLocally(scholarship);
+
+        this.props.history.push(`/application/local/scholarship_${scholarship.id}`);
+
+    };
+
 
     render() {
 
@@ -241,9 +281,7 @@ class ScholarshipDetail extends React.Component {
                                         }
                                     </React.Fragment>
                                 }
-                                {/*// BETA MODE: Only allow is_debug_mode users to do Direct Applications*/}
-                                {userProfile && userProfile.is_debug_mode &&
-                                scholarship.is_atila_direct_application &&
+                                {scholarship.is_atila_direct_application &&
                                     <div>
                                         <Link to={`/scholarship/${slug}/questions`}>
                                             View Application Form
