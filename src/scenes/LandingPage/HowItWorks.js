@@ -153,7 +153,7 @@ function DescriptionsWithScreenshots({items})   {
     return (
         <div className="row">
             {items.map( (item, index) => (
-                <React.Fragment>
+                <React.Fragment key={item.title}>
                     <div className="card shadow m-3 p-3 col-lg-4 col-sm-12">
                         <h3 className="m-3 text-muted strong">
                             {index+1}. {item.title}

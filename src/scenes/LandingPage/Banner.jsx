@@ -86,7 +86,7 @@ class Banner extends React.Component {
             <h2 key="h2">
 
               The easiest way for students to get scholarships
-              and sponsors to start scholarships.<br/>
+              and anyone to start scholarships.<br/>
             </h2>
             <form className="col-sm-12"
                   onSubmit={this.onSubmit}

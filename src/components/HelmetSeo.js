@@ -4,8 +4,8 @@ import React from "react";
 import $ from 'jquery';
 
 export const defaultSeoContent = {
-    title: 'Atila - The easiest way for students to get scholarships and sponsors to start scholarships.',
-    description: 'The easiest way for students to get scholarships and sponsors to start scholarships.',
+    title: 'Atila - The easiest way for students to get scholarships and anyone to start scholarships.',
+    description: 'The easiest way for students to get scholarships and anyone to start scholarships.',
     image: 'https://i.imgur.com/JstbnPy.png',
     slug: ''
 };
