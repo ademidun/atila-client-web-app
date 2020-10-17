@@ -15,7 +15,7 @@ import {scholarshipUserProfileSharedFormConfigs, toastNotify} from "../../models
 import FormDynamic from "../../components/Form/FormDynamic";
 import {Link} from "react-router-dom";
 import {Button, Popconfirm} from "antd";
-import {formatCurrency, extractContent} from "../../services/utils";
+import {formatCurrency, prettifyKeys} from "../../services/utils";
 import Register from "../../components/Register";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
@@ -310,24 +310,33 @@ class ApplicationDetail extends  React.Component{
 
     };
 
-    viewForm = (responseDict) => {
-        /*
-        scholarship_responses:
-        favourite-sport: "<p>volleyball</p>"
-        why-do-you-deserve-this-scholarship: "<p>I like food</p>"
+    /**
+     * questions is a list in one of two formats:
+     * [{key: "", question: ""}]
+     * [{key: ""}]
+     *
+     * scholarship_responses:
+     * favourite-sport: "<p>volleyball</p>"
+     * why-do-you-deserve-this-scholarship: "<p>I like food</p>"
 
-        user_profile_responses:
-        email: "hadinawar+8@hotmail.com"
-        first_name: "Hadi"
-        last_name: "hakeem8
-         */
+     * user_profile_responses:
+     * email: "hadinawar+8@hotmail.com"
+     * first_name: "Hadi"
+     * last_name: "hakeem8
+     */
+    viewForm = (questions, responseDict) => {
 
-        let responseList = []
-        for (var key in responseDict) {
-            responseList.push(<ResponseTransformer title={key} data={responseDict[key]}/>)
-        }
+        return questions.map((question) => (
+            <div key={question.key}>
+                <div className="white-space-pre-wrap">
+                    <b>{question.question||prettifyKeys(question.key)}:</b><br/>
 
-        return responseList
+                    {question.type === "long_answer" ?
+                        <div className="my-1" dangerouslySetInnerHTML={{__html: responseDict[question.key]}} />
+                        : responseDict[question.key]}
+                </div>
+            </div>
+        ));
     };
 
     renderHeader = () => {
@@ -356,11 +365,19 @@ class ApplicationDetail extends  React.Component{
             )
         }
 
+        let dateSubmitted;
         if (application.is_submitted) {
+
+            dateSubmitted = new Date(application.date_submitted);
             return (
-                <h3 className="text-success">
-                    Your application has been submitted. Good luck!
-                </h3>
+                <h5 className="text-muted">
+                    Your application was submitted at
+                    {' '}
+                    {dateSubmitted.toDateString()}{' '}
+                    {dateSubmitted.toLocaleTimeString()}
+                    {' '}
+                    Good luck!
+                </h5>
             )
         }
     };
@@ -467,10 +484,10 @@ class ApplicationDetail extends  React.Component{
                                 {(viewMode || application.is_submitted || application.is_payment_accepted) &&
                                 <>
                                     <h2>Profile Questions</h2>
-                                    {this.viewForm(application.user_profile_responses)}
+                                    {this.viewForm(scholarship.user_profile_questions, application.user_profile_responses)}
                                     <br />
                                     <h2>Scholarship Questions</h2>
-                                    {this.viewForm(application.scholarship_responses)}
+                                    {this.viewForm(scholarship.specific_questions, application.scholarship_responses)}
                                 </>
                                 }
                             </div>
@@ -587,13 +604,6 @@ function addQuestionDetailToApplicationResponses(application, scholarship) {
 
 }
 
-function ResponseTransformer(props) {
-    return (
-        <div>
-            <p><b>{props.title}:</b> {extractContent(props.data)}</p>
-        </div>
-    )
-}
 
 const mapStateToProps = state => {
     return { userProfile: state.data.user.loggedInUserProfile };
