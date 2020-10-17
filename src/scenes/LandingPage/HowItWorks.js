@@ -95,7 +95,7 @@ function HowItWorksSponsor() {
         {
         title: "Fund Scholarship",
         body: "Fund the scholarship with a credit card or debit card.",
-            image: "https://imgur.com/qekOq3D.jpg",
+            image: "https://imgur.com/NJJt8Vr.jpg",
         },
         {
         title: "Select Winner",
