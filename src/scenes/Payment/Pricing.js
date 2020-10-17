@@ -157,24 +157,25 @@ export function PricingExample() {
                         </td>
                         <td>
                             <p>
-                                Sponsor picks the value ($100 min.)
+                                {/*TODO change to use variable ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT*/}
+                                Sponsor picks the value ($50 minimum)
                             </p>
                         </td>
                     </tr>
                     <tr>
                         <td>
                             <p>
-                                -
+                              {' '}
                             </p>
                         </td>
                         <td>
                             <p>
-                                -
+                              {' '}
                             </p>
                         </td>
                         <td>
                             <p>
-                                -
+                              {' '}
                             </p>
                         </td>
                     </tr>
@@ -198,7 +199,7 @@ export function PricingExample() {
                     <tr>
                         <td>
                             <p>
-                                Tax
+                                Atila Fee Tax
                             </p>
                         </td>
                         <td>
@@ -215,17 +216,17 @@ export function PricingExample() {
                     <tr>
                         <td>
                             <p>
-                                -
+                              {' '}
                             </p>
                         </td>
                         <td>
                             <p>
-                                -
+                              {' '}
                             </p>
                         </td>
                         <td>
                             <p>
-                                -
+                              {' '}
                             </p>
                         </td>
                     </tr>
@@ -251,17 +252,17 @@ export function PricingExample() {
                     <tr>
                         <td>
                             <p>
-                                -
+                              {' '}
                             </p>
                         </td>
                         <td>
                             <p>
-                                -
+                              {' '}
                             </p>
                         </td>
                         <td>
                             <p>
-                                -
+                              {' '}
                             </p>
                         </td>
                     </tr>
