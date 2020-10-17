@@ -370,14 +370,23 @@ class ApplicationDetail extends  React.Component{
 
             dateSubmitted = new Date(application.date_submitted);
             return (
+                <>
                 <h5 className="text-muted">
                     Your application was submitted at
                     {' '}
                     {dateSubmitted.toDateString()}{' '}
                     {dateSubmitted.toLocaleTimeString()}
                     {' '}
-                    Good luck!
+                    Good luck! <br/>
                 </h5>
+                <p>
+                    Make sure you received your submission confirmation in your email (check your spam as well).
+                    If you didn't, this means you might also miss the email to accept your award payment if you win.
+
+                    <br/> Contact us using the chat in the bottom right if you need help.
+                </p>
+
+                </>
             )
         }
     };
