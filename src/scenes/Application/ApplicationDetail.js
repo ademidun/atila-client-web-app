@@ -89,7 +89,6 @@ class ApplicationDetail extends  React.Component{
         ScholarshipsAPI
             .get(scholarshipID)
             .then(res => {
-                console.log({res});
                 const {data: scholarship} = res;
                 const application = ApplicationsAPI.getOrCreateLocally({id: scholarshipID});
                 // TODO load scholarship from remote database
@@ -196,7 +195,6 @@ class ApplicationDetail extends  React.Component{
                 // const application = res.data
                 // this.setState({application})
                 // TEMPORARY SOLUTION
-                console.log({res});
                 const { data: { application } } = res;
                 const successMessage = (
                     <h5 className="text-center text-muted">

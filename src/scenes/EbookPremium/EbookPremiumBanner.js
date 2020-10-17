@@ -64,7 +64,6 @@ class EbookPremiumBanner extends Component {
 
     UtilsAPI.authenticateEbookUser(email, licenseKey)
         .then( res => {
-          console.log({res});
           localStorage.setItem("ebookUserEmail", email);
           this.setState({ isLoadingResponse: false });
           updateEbookUserProfile({email, licenseKey});
