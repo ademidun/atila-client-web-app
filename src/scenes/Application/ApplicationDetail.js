@@ -289,12 +289,16 @@ class ApplicationDetail extends  React.Component{
 
     updateForm = (event, applicationResponseType) => {
         if (event.stopPropagation) {
-            event.stopPropagation();
+            event.stopPropagation(); // https://github.com/facebook/react/issues/3446#issuecomment-82751540
         }
 
         let { application } = this.state;
         const name = event.target.name;
-        const value = event.target.value;
+        let value = event.target.value;
+
+        if (event.target.type==='checkbox'){
+            value = event.target.checked
+        }
         application[applicationResponseType][name] = value;
 
         this.setState(prevState => ({
@@ -333,7 +337,7 @@ class ApplicationDetail extends  React.Component{
 
                     {question.type === "long_answer" ?
                         <div className="my-1" dangerouslySetInnerHTML={{__html: responseDict[question.key]}} />
-                        : responseDict[question.key]}
+                        : question.type === "checkbox" ? responseDict[question.key] ? "Yes" : "No" : responseDict[question.key]}
                 </div>
             </div>
         ));

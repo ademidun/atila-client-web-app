@@ -9,6 +9,7 @@ export const questionTypesLabel = {
     "short_answer": "Short Answer",
     "medium_answer": "Medium Answer (Under 300 words)",
     "long_answer": "Long Answer (Over 300 words)",
+    "checkbox": "Checkbox",
 };
 
 const defaultSpecificQuestion = {
@@ -18,7 +19,7 @@ const defaultSpecificQuestion = {
 };
 
 
-const questionTypes = ['short_answer', 'medium_answer', 'long_answer'];
+const questionTypes = Object.keys(questionTypesLabel);
 
 export default class ScholarshipQuestionBuilder extends React.Component {
     constructor(props) {
