@@ -136,6 +136,9 @@ function HowItWorksSponsor() {
                 Fund Scholarship.{' '}
                 Select Winner.
             </h2>
+            <h5 className="col-sm-12 text-center text-muted">
+                Coming Soon
+            </h5>
             <div>
             <DescriptionsWithScreenshots items={howItWorksSponsorItems} />
             </div>
