@@ -20,6 +20,7 @@ import Register from "../../components/Register";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 
+let autoSaveTimeoutId;
 class ApplicationDetail extends  React.Component{
 
     constructor(props) {
@@ -161,18 +162,9 @@ class ApplicationDetail extends  React.Component{
      */
 
     afterSaveApplication = (application, scholarship) => {
-
         // this.setState({application, scholarship});
         this.makeScholarshipQuestionsForm(application, scholarship);
-
-        const successMessage = (
-            <p>
-                <span role="img" aria-label="happy face emoji">🙂 </span>
-                Successfully saved your application!
-            </p>);
-
-        toastNotify(successMessage, 'info', {position: 'bottom-right'});
-    }
+    };
 
     submitApplication = () => {
         const { userProfile } = this.props;
@@ -201,7 +193,8 @@ class ApplicationDetail extends  React.Component{
                         <span role="img" aria-label="happy face emoji">🙂 </span>
                         Successfully saved your application! <br/>
                         {/*TODO temporarily open in new tab until we can get the props to update when applicationID or scholarship ID in url changes*/}
-                        <Link to={`/application/${application.id}`} target="_blank">View your Application</Link>before submitting
+                        <Link to={`/application/${application.id}`} target="_blank">View your Application</Link>{' '}
+                        before submitting
                     </h5>);
 
                 toastNotify(successMessage, 'info', {position: 'bottom-right'});
@@ -310,7 +303,16 @@ class ApplicationDetail extends  React.Component{
                 }
 
             }
-        }))
+        }), () => {
+
+            if (autoSaveTimeoutId) {
+                clearTimeout(autoSaveTimeoutId);
+            }
+            autoSaveTimeoutId = setTimeout(() => {
+                // Runs 1 second (1000 ms) after the last change
+                this.saveApplication();
+            }, 1000);
+        })
 
     };
 
@@ -360,7 +362,7 @@ class ApplicationDetail extends  React.Component{
                         Congratulations! You received the award of{' '}
                         {formatCurrency(Number.parseInt(scholarship.funding_amount))}
                     </h3>
-                    <Button onClick={this.saveApplication} type="primary">
+                    <Button onClick={()=> {}} type="primary">
                         <Link to={`/payment/accept/?application=${application.id}`}>
                             Accept Payment
                         </Link>
@@ -406,7 +408,7 @@ class ApplicationDetail extends  React.Component{
         if (application.date_modified) {
             dateModified = new Date(application.date_modified);
             dateModified =  (<p className="text-muted center-block">
-                Last saved {isUsingLocalApplication? " locally ": null}: {dateModified.toDateString()}{' '}
+                Last Auto-Saved {isUsingLocalApplication? " locally ": null}: {dateModified.toDateString()}{' '}
                 {dateModified.toLocaleTimeString()}
             </p>)
         }
@@ -463,22 +465,24 @@ class ApplicationDetail extends  React.Component{
                                                  inputConfigs=
                                                      {scholarshipQuestionsFormConfig}
                                     />
-                                    <Button onClick={this.saveApplication} type="primary">
-                                        Save
-                                    </Button>
                                     {dateModified}
-                                    <Popconfirm placement="topRight" title={"Once you submit your application, you won't be able to edit it. Are you sure you want to submit?"}
-                                                onConfirm={this.submitApplication}
-                                                okText="Yes" cancelText="No">
-                                        <Button type={"primary"} className={"float-right"}>
-                                            Submit...
-                                        </Button>
-                                    </Popconfirm>
+                                    {!registrationSuccessMessage && !promptRegisterBeforeSubmitting &&
+                                        <Popconfirm placement="topRight" title={"Once you submit your application, you won't be able to edit it. Are you sure you want to submit?"}
+                                                    onConfirm={this.submitApplication}
+                                                    okText="Yes" cancelText="No">
+                                            <Button type={"primary"}
+                                                    className={"float-right"}>
+                                                Submit...
+                                            </Button>
+                                        </Popconfirm>
+
+                                    }
                                 </>
                                 }
                                 {promptRegisterBeforeSubmitting &&
                                 <>
-                                    <h3>Create a username and password to access your application later</h3>
+                                    <h3>Create a username and password to access your application later
+                                    and review your application once more before submitting</h3>
                                     {/*
                                         One subtle thing to notice here is that user_profile_responses can either be in the format of:
                                         {key: value, key: value} or in the format of {key:{key: "", response: "", type: "", question:""}}
