@@ -411,6 +411,10 @@ class ApplicationDetail extends  React.Component{
                 Last Auto-Saved {isUsingLocalApplication? " locally ": null}: {dateModified.toDateString()}{' '}
                 {dateModified.toLocaleTimeString()}
             </p>)
+        } else {
+            dateModified =  (<p className="text-muted center-block">
+                Start typing and your application will automatically save
+            </p>)
         }
         let seoContent = {
             ...defaultSeoContent,
