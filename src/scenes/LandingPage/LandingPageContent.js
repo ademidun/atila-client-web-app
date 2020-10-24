@@ -5,7 +5,7 @@ import {Link} from "react-router-dom";
 import ContentCard from "../../components/ContentCard";
 import ScholarshipCard from "../Scholarship/ScholarshipCard";
 
-function LandingPageContent({ title, description, contentList, contentType }) {
+function LandingPageContent({ title, description, contentList, contentType, link }) {
 
     if (!contentList) {
         return null;
@@ -23,7 +23,7 @@ function LandingPageContent({ title, description, contentList, contentType }) {
     return (
         <div className="p-5">
             <h1 className="col-sm-12 text-center">
-                {contentType === 'scholarship' && <Link to={`/scholarship`}> {title} </Link>}
+                {contentType === 'scholarship' && <Link to={`/${link || contentType }`}> {title} </Link>}
                 {contentType !== 'scholarship' && <Link to={`/${title.toLowerCase()}`}> {title} </Link>}
             </h1>
             {
@@ -45,6 +45,7 @@ LandingPageContent.defaultProps = {
 };
 LandingPageContent.propTypes = {
     title: PropTypes.string.isRequired,
+    link: PropTypes.string,
     description: PropTypes.string,
     contentType: PropTypes.string,
     contentList: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
