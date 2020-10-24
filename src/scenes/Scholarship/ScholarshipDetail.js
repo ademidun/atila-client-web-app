@@ -14,7 +14,8 @@ import AtilaPointsPaywallModal from "../../components/AtilaPointsPaywallModal";
 import ScholarshipExtraCriteria from "./ScholarshipExtraCriteria";
 import ScholarshipDeadlineWithTags from "../../components/ScholarshipDeadlineWithTags";
 import {Alert, Button, message} from 'antd';
-
+import verifiedBadge from '../../components/assets/verified.png';
+import {AtilaDirectApplicationsPopover} from "../../models/Scholarship";
 
 class ScholarshipDetail extends React.Component {
 
@@ -245,7 +246,21 @@ class ScholarshipDetail extends React.Component {
                 <div className="content-detail container mt-5">
                     <div className="row">
                         <div className="col-12">
-                            <h1>{name}</h1>
+                            <h1>
+                                {name}{' '}
+                                {scholarship.is_atila_direct_application &&
+                                <AtilaDirectApplicationsPopover
+                                    title="This is a verified Atila Direct Applications Scholarship"
+                                    children={<img
+                                        alt="user profile"
+                                        style={{ width:'25px' }}
+                                        className="rounded-circle"
+                                        src={verifiedBadge} />} />}
+                            </h1>
+                            <div style={{fontSize: "14px", fontWeight: "normal"}} className="text-center mb-3">
+                                (Hint: Hover or click the blue check to learn why this scholarship has one.)
+                            </div>
+
                             <img
                                 style={{ maxHeight: '300px', width: 'auto'}}
                                 src={img_url}

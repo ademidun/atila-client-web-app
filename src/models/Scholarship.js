@@ -128,27 +128,29 @@ export let DEFAULT_SCHOLARSHIP = {
 
 const atilaDirectApplicationsPopoverContent = (
     <div>
-        Atila Direct Applications provides the following features:
+        These types of scholarships allows sponsors to start and fund scholarships
+
+        and allow students to apply and get paid for scholarships all through the Atila platform:
         <ul>
             <li>
-                Handle the payment transfer from sponsor to scholarship recipient
+                Funds deposited to student's bank account within 7 days
             </li>
             <li>
-                Promoting your scholarship to our network of students and student organizations.
+                Scholarships are promoted to Atila's network of students and student organizations.
             </li>
             <li>
                 Automatically notify winners and non-winners.
             </li>
             <li>
-                Simple interface for managing all applications.
+                Simple interface for managing all your applications.
             </li>
         </ul>
         <Link to="/start">Learn More</Link>
     </div>
 );
 
-export const AtilaDirectApplicationsPopover = ({children}) => (
-    <Popover content={atilaDirectApplicationsPopoverContent} title="What is Atila Direct Applications?">
+export const AtilaDirectApplicationsPopover = ({children, title="What is Atila Direct Applications?"}) => (
+    <Popover overlayStyle={{maxWidth: "500px"}} content={atilaDirectApplicationsPopoverContent} title={title}>
         {children}
     </Popover>
 
