@@ -1,5 +1,8 @@
 import PropTypes from "prop-types";
 import {UserProfileTest1} from "./UserProfile";
+import {Link} from "react-router-dom";
+import React from "react";
+import {Popover, Tag} from "antd";
 
 let nextMonth = new Date();
 nextMonth.setDate(nextMonth.getDate() + 30);
@@ -122,3 +125,31 @@ export let DEFAULT_SCHOLARSHIP = {
     disability: [],
     language: [],
 };
+
+const atilaDirectApplicationsPopoverContent = (
+    <div>
+        Atila Direct Applications provides the following features:
+        <ul>
+            <li>
+                Handle the payment transfer from sponsor to scholarship recipient
+            </li>
+            <li>
+                Promoting your scholarship to our network of students and student organizations.
+            </li>
+            <li>
+                Automatically notify winners and non-winners.
+            </li>
+            <li>
+                Simple interface for managing all applications.
+            </li>
+        </ul>
+        <Link to="/start">Learn More</Link>
+    </div>
+);
+
+export const AtilaDirectApplicationsPopover = ({children}) => (
+    <Popover content={atilaDirectApplicationsPopoverContent} title="What is Atila Direct Applications?">
+        {children}
+    </Popover>
+
+);

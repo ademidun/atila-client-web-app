@@ -7,7 +7,11 @@ import {nestedFieldUpdate, prettifyKeys, slugify, transformLocation} from "../..
 import Loading from "../../components/Loading";
 import {MAJORS_LIST, SCHOOLS_LIST} from "../../models/ConstantsForm";
 import {scholarshipUserProfileSharedFormConfigs, toastNotify} from "../../models/Utils";
-import {DEFAULT_SCHOLARSHIP} from "../../models/Scholarship";
+import {
+    AtilaDirectApplicationsPopover,
+    atilaDirectApplicationsPopover,
+    DEFAULT_SCHOLARSHIP
+} from "../../models/Scholarship";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Link} from "react-router-dom";
@@ -16,27 +20,6 @@ import ScholarshipQuestionBuilder, {ScholarshipUserProfileQuestionBuilder} from 
 import PaymentSend from "../Payment/PaymentSend/PaymentSend";
 const { Step } = Steps;
 
-const atilaDirectApplicationsPopover = (
-    <div>
-        Atila Direct Applications provides the following features:
-        <ul>
-            <li>
-                Handle the payment transfer from sponsor to scholarship recipient
-            </li>
-            <li>
-                Promoting your scholarship to our network of students and student organizations.
-            </li>
-            <li>
-                Automatically notify winners and non-winners.
-            </li>
-            <li>
-                Simple interface for managing all applications.
-            </li>
-        </ul>
-        <Link to="/start">Learn More</Link>
-
-    </div>
-);
 
 let scholarshipFormConfigsPage1 = [
     {
@@ -58,10 +41,11 @@ let scholarshipFormConfigsPage1 = [
     {
         keyName: 'is_atila_direct_application',
         placeholder:(
-            <Popover content={atilaDirectApplicationsPopover} title="What is Atila Direct Applications?">
+            <AtilaDirectApplicationsPopover children={<div>
                 Allow applicants to directly apply for scholarship through Atila?{' '}<small>Hover to learn more</small>
                 {' '}<Tag color="green">new</Tag>
-            </Popover>
+                </div>
+                } />
             ),
         type: 'checkbox',
         className: 'font-weight-bold',
