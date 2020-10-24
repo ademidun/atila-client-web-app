@@ -2,14 +2,14 @@ import PropTypes from "prop-types";
 import {UserProfileTest1} from "./UserProfile";
 import {Link} from "react-router-dom";
 import React from "react";
-import {Popover, Tag} from "antd";
+import {Popover} from "antd";
 
 let nextMonth = new Date();
 nextMonth.setDate(nextMonth.getDate() + 30);
 nextMonth = nextMonth.toISOString();
 
 let defaultDeadline = new Date();
-let defaultTime = "T23:59:00"
+let defaultTime = "T23:59:00";
 defaultDeadline.setDate(defaultDeadline.getDate() + 61);
 defaultDeadline = defaultDeadline.toISOString();
 defaultDeadline = defaultDeadline.split('T')[0] + defaultTime;

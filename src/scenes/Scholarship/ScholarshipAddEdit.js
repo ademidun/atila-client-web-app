@@ -9,13 +9,12 @@ import {MAJORS_LIST, SCHOOLS_LIST} from "../../models/ConstantsForm";
 import {scholarshipUserProfileSharedFormConfigs, toastNotify} from "../../models/Utils";
 import {
     AtilaDirectApplicationsPopover,
-    atilaDirectApplicationsPopover,
     DEFAULT_SCHOLARSHIP
 } from "../../models/Scholarship";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Link} from "react-router-dom";
-import {Button, Popover, Steps, Tag} from "antd";
+import {Button, Steps, Tag} from "antd";
 import ScholarshipQuestionBuilder, {ScholarshipUserProfileQuestionBuilder} from "./ScholarshipQuestionBuilder";
 import PaymentSend from "../Payment/PaymentSend/PaymentSend";
 const { Step } = Steps;
