@@ -258,7 +258,7 @@ class ScholarshipDetail extends React.Component {
                                         src={verifiedBadge} />} />}
                             </h1>
                             <div style={{fontSize: "14px", fontWeight: "normal"}} className="text-center mb-3">
-                                (Hint: Hover or click the blue check to learn why this scholarship has one.)
+                                (Hint: Hover over or click the blue check to learn why this scholarship has a blue check.)
                             </div>
 
                             <img
