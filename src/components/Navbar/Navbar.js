@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from "prop-types";
-import {Row, Col, Menu, Tag,} from 'antd';
+import {Row, Col, Menu, Tag, Button,} from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import {Link, withRouter} from "react-router-dom";
 import {initializeLoggedInUserProfile, setLoggedInUserProfile} from "../../redux/actions/user";
@@ -106,11 +106,11 @@ class Navbar extends React.Component {
                 }
                 {!userProfile && !isLoadingLoggedInUserProfile &&
                 <Menu.Item key="register" className="disable-ant-menu-item-active">
-                    <Link to={`/register`}
-                          style={{color:'white', "marginBottom": "5px", "maxWidth": "100px"}}
-                          className="btn btn-primary">
-                        Sign Up
-                    </Link>
+                    <Button type="primary" size="large">
+                        <Link to={`/register?redirect=${pathname}${search}`}>
+                            Sign Up
+                        </Link>
+                    </Button>
                 </Menu.Item>
                 }
                 {
