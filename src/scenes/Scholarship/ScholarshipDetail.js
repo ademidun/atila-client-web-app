@@ -268,93 +268,92 @@ class ScholarshipDetail extends React.Component {
                                 alt={name} />
                         </div>
 
-                        <div className="row">
-                            <div className="col-md-8">
-                                {scholarship_url && !scholarship.is_atila_direct_application &&
-                                <React.Fragment>
-                                    <a href={scholarship_url} target="_blank" rel="noopener noreferrer">
-                                        Visit Scholarship Website
-                                    </a> <br/>
-                                </React.Fragment>}
-                                {form_url && !scholarship.is_atila_direct_application &&
-                                <React.Fragment>
-                                    <a href={form_url} target="_blank" rel="noopener noreferrer">
-                                        View Scholarship Application
-                                    </a> <br/>
-                                </React.Fragment>}
-                                {scholarshipUserProfile && userProfile &&
-                                userProfile.user === scholarshipUserProfile.user &&
-                                    <React.Fragment>
 
-                                        <Link to={`/scholarship/edit/${slug}`}>
-                                            Edit Scholarship
-                                        </Link><br/>
-                                        {scholarship.is_atila_direct_application &&
-                                        <Link to={`/scholarship/${scholarship.id}/manage`}>
-                                            Manage Applications
-                                        </Link>
-                                        }
-                                    </React.Fragment>
-                                }
+                        <div className="col-md-8">
+                            {scholarship_url && !scholarship.is_atila_direct_application &&
+                            <React.Fragment>
+                                <a href={scholarship_url} target="_blank" rel="noopener noreferrer">
+                                    Visit Scholarship Website
+                                </a> <br/>
+                            </React.Fragment>}
+                            {form_url && !scholarship.is_atila_direct_application &&
+                            <React.Fragment>
+                                <a href={form_url} target="_blank" rel="noopener noreferrer">
+                                    View Scholarship Application
+                                </a> <br/>
+                            </React.Fragment>}
+                            {scholarshipUserProfile && userProfile &&
+                            userProfile.user === scholarshipUserProfile.user &&
+                            <React.Fragment>
+
+                                <Link to={`/scholarship/edit/${slug}`}>
+                                    Edit Scholarship
+                                </Link><br/>
                                 {scholarship.is_atila_direct_application &&
-                                    <div>
-                                        <Link to={`/scholarship/${slug}/questions`}>
-                                            View Application Form
-                                        </Link>
-                                        <br />
-                                        {applyToScholarshipButton}
-                                    </div>
+                                <Link to={`/scholarship/${scholarship.id}/manage`}>
+                                    Manage Applications
+                                </Link>
                                 }
-
-                                <br/><br/>
-                                {
-                                    scholarshipUserProfile &&
-                                    <React.Fragment>
-                                        Added by:
-                                        <div className="bg-light mb-3 p-1" style={{ width: '250px' }}>
-                                            <Link to={`/profile/${scholarshipUserProfile.username}`} >
-                                                <img
-                                                    alt="user profile"
-                                                    style={{ height: '50px', maxWidth: 'auto' }}
-                                                    className="rounded-circle py-1 pr-1"
-                                                    src={scholarshipUserProfile.profile_pic_url} />
-                                                {scholarshipUserProfile.first_name} {scholarshipUserProfile.last_name}
-                                            </Link>
-                                        </div>
-                                    </React.Fragment>
-                                }
-                                <p className="font-weight-bold">
-                                    <ScholarshipDeadlineWithTags scholarship={scholarship} />
-                                    <br/>
-                                    Amount: {fundingString}
-                                </p>
-                                {is_not_available &&
-                                <Alert
-                                    type="error"
-                                    message="This scholarship is no longer being offered."
-                                    className="mb-3"
-                                    style={{maxWidth: '300px'}}
-                                />
-                                }
-                                <ScholarshipShareSaveButtons scholarship={scholarship} />
-                                <hr />
-                                <div className="my-3">
-                                    <h3>Description</h3>
-                                    <p>
-                                        {description}
-                                    </p>
-                                    <ScholarshipExtraCriteria scholarship={scholarship} />
-                                </div>
-
-                                {/*todo find a way to secure against XSS: https://stackoverflow.com/a/19277723*/}
-                                <hr />
-                                <div dangerouslySetInnerHTML={{__html: criteria_info}} />
+                            </React.Fragment>
+                            }
+                            {scholarship.is_atila_direct_application &&
+                            <div>
+                                <Link to={`/scholarship/${slug}/questions`}>
+                                    View Application Form
+                                </Link>
+                                <br />
+                                {applyToScholarshipButton}
                             </div>
-                            <RelatedItems
-                                className="col-md-4"
-                                id={id}
-                                itemType={'scholarship'} />
+                            }
+
+                            <br/><br/>
+                            {
+                                scholarshipUserProfile &&
+                                <React.Fragment>
+                                    Added by:
+                                    <div className="bg-light mb-3 p-1" style={{ width: '250px' }}>
+                                        <Link to={`/profile/${scholarshipUserProfile.username}`} >
+                                            <img
+                                                alt="user profile"
+                                                style={{ height: '50px', maxWidth: 'auto' }}
+                                                className="rounded-circle py-1 pr-1"
+                                                src={scholarshipUserProfile.profile_pic_url} />
+                                            {scholarshipUserProfile.first_name} {scholarshipUserProfile.last_name}
+                                        </Link>
+                                    </div>
+                                </React.Fragment>
+                            }
+                            <p className="font-weight-bold">
+                                <ScholarshipDeadlineWithTags scholarship={scholarship} />
+                                <br/>
+                                Amount: {fundingString}
+                            </p>
+                            {is_not_available &&
+                            <Alert
+                                type="error"
+                                message="This scholarship is no longer being offered."
+                                className="mb-3"
+                                style={{maxWidth: '300px'}}
+                            />
+                            }
+                            <ScholarshipShareSaveButtons scholarship={scholarship} />
+                            <hr />
+                            <div className="my-3">
+                                <h3>Description</h3>
+                                <p>
+                                    {description}
+                                </p>
+                                <ScholarshipExtraCriteria scholarship={scholarship} />
+                            </div>
+
+                            {/*todo find a way to secure against XSS: https://stackoverflow.com/a/19277723*/}
+                            <hr />
+                            <div dangerouslySetInnerHTML={{__html: criteria_info}} />
                         </div>
+                        <RelatedItems
+                            className="col-md-4"
+                            id={id}
+                            itemType={'scholarship'} />
                     </div>
                 </div>
             </React.Fragment>

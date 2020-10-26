@@ -120,12 +120,6 @@ label {
   color: #6c757d !important;
 }
 
-.content-detail {
-  img {
-    max-width: 100%;
-  }
-}
-
 .Toastify__toast-body a {
   color: #b3d7ff;
   text-decoration: underline;
@@ -138,6 +132,7 @@ label {
 }
 
 .content-detail {
+  word-break: break-word;
   h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     top: 0.5rem;
     margin-bottom: 0.5rem;
@@ -147,6 +142,9 @@ label {
   p, a {
     line-height: 2.5rem;
     font-size: 20px;
+  }
+  img {
+    max-width: 100%;
   }
 }
 
