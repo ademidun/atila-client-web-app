@@ -399,9 +399,11 @@ class ScholarshipsList extends React.Component {
 
                             <Button type="link"
                                     onClick={this.toggleViewAllScholarships}
-                                    style={{fontSize: '1.5rem'}}>
-                                View {searchPayload.previewMode === 'universalSearch' ? 'scholarships for my profile' :
-                                'all Scholarships' }
+                                    style={{fontSize: '1.5rem', height: "auto"}}>
+                                <div style={{whiteSpace: "break-spaces"}}>
+                                    View {searchPayload.previewMode === 'universalSearch' ? 'scholarships for my profile' :
+                                    'all Scholarships' }
+                                </div>
                             </Button>
                         </h3>
 
