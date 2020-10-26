@@ -155,3 +155,6 @@ export const AtilaDirectApplicationsPopover = ({children, title="What is Atila D
     </Popover>
 
 );
+
+export const SCHOLARSHIP_NETWORK_CAPTION = "A few examples of the organizations we notify when scholarships relevant to their students are launched.";
+export const BIG_CHEQUE_DISCLAIMER = "Note: This is just an example. Atila has no affiliation with the scholarship shown above.";

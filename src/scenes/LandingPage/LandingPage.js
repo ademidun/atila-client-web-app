@@ -3,7 +3,7 @@ import Banner from './Banner';
 import './LandingPage.scss';
 import './Reponsive.scss';
 import HowItWorks from "./HowItWorks";
-import MoreFeatures from "./MoreFeatures";
+// import MoreFeatures from "./MoreFeatures";
 import LandingPageContent from "./LandingPageContent";
 import SubscribeMailingList from "../../components/SubscribeMailingList";
 import {Link} from "react-router-dom";
@@ -116,8 +116,8 @@ class LandingPage extends React.Component {
                         </div>
                         <hr/>
                         <HowItWorks accountType={"Sponsor"}/>
-                        <hr/>
-                        <MoreFeatures/>
+                        {/*<hr/>*/}
+                        {/*<MoreFeatures/>*/}
                         <hr/>
                         {scholarshipsContentRecentlyAdded}
                         {scholarshipsContentDueSoon}

@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 import {Tag} from "antd";
+import {BIG_CHEQUE_DISCLAIMER, SCHOLARSHIP_NETWORK_CAPTION} from "../../models/Scholarship";
 
 function HowItWorks({accountType}) {
 
@@ -46,7 +47,7 @@ const howItWorksStudent = [
             <br/>
             <small>
                 <sup>*</sup>
-            Only currently available for students with Canadian Bank Accounts.
+            Only currently available for students with Canadian or American Bank Accounts.
             </small>
         </React.Fragment>,
         image: "https://imgur.com/1HufdyP.jpg"
@@ -98,7 +99,13 @@ function HowItWorksSponsor() {
         {
         title: "Fund Scholarship",
         body: "Fund the scholarship with a credit card or debit card.",
-            image: "https://imgur.com/NJJt8Vr.jpg",
+            image: "https://i.imgur.com/kgpSskJ.png",
+        },
+        {
+        title: "Promote Scholarship",
+        body: "Atila will help you promote your scholarship to our network of over 100 schools and student organizations.",
+        image: "https://i.imgur.com/a3u6UV9.png",
+        imageCaption: SCHOLARSHIP_NETWORK_CAPTION,
         },
         {
         title: "Select Winner",
@@ -118,8 +125,7 @@ function HowItWorksSponsor() {
             LA Sentinel
         </a>
             <br/>
-            <small>Note: This is just an example.
-                Atila has no affiliation with the scholarship shown above.</small>
+            <small>{BIG_CHEQUE_DISCLAIMER}</small>
         </React.Fragment>
         },
     ];
