@@ -172,3 +172,13 @@ label {
 .white-space-pre-wrap {
   white-space: pre-wrap;
 }
+
+.border-light {
+  border: 1px solid #dee2e6 !important
+}
+
+@media only screen and (max-width: $small-device-width) {
+  .border-sm-light {
+    border: 1px solid #dee2e6 !important
+  }
+}
