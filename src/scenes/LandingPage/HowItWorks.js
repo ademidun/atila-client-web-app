@@ -1,7 +1,6 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 import {Tag} from "antd";
-import {BIG_CHEQUE_DISCLAIMER, SCHOLARSHIP_NETWORK_CAPTION} from "../../models/Scholarship";
 
 function HowItWorks({accountType}) {
 
@@ -55,7 +54,7 @@ const howItWorksStudent = [
  ];
 
 
-function HowItWorksStudent() {
+export function HowItWorksStudent() {
 
     return (
         <div className="container">
@@ -82,7 +81,7 @@ function HowItWorksStudent() {
     )
 }
 
-function HowItWorksSponsor() {
+export function HowItWorksSponsor({hideLearnMore = false}) {
 
     const howItWorksSponsorItems = [
         {
@@ -105,7 +104,7 @@ function HowItWorksSponsor() {
         title: "Promote Scholarship",
         body: "Atila will help you promote your scholarship to our network of over 100 schools and student organizations.",
         image: "https://i.imgur.com/a3u6UV9.png",
-        imageCaption: SCHOLARSHIP_NETWORK_CAPTION,
+        imageCaption: "A few examples of the organizations we notify when scholarships relevant to their students are launched.",
         },
         {
         title: "Select Winner",
@@ -125,7 +124,7 @@ function HowItWorksSponsor() {
             LA Sentinel
         </a>
             <br/>
-            <small>{BIG_CHEQUE_DISCLAIMER}</small>
+            <small>Note: This is just an example. Atila has no affiliation with the scholarship shown above.</small>
         </React.Fragment>
         },
     ];
@@ -142,17 +141,15 @@ function HowItWorksSponsor() {
                 Fund Scholarship.{' '}
                 Select Winner.
             </h2>
-            <h5 className="col-sm-12 text-center text-muted">
-                Coming Soon
-            </h5>
             <div>
             <DescriptionsWithScreenshots items={howItWorksSponsorItems} />
             </div>
 
-
+            {!hideLearnMore &&
             <h1 className="col-sm-12 text-center">
                 <Link to="/start"> Learn more </Link>
             </h1>
+            }
         </div>
     )
 }
