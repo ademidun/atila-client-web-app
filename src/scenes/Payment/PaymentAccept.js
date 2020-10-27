@@ -210,6 +210,16 @@ class PaymentAccept extends React.Component {
         const { userProfile } = this.props;
         const { isLoading, currentPaymentAcceptanceStep, application, scholarship } = this.state;
 
+        if (!userProfile) {
+            return (
+                <div className="container mt-5">
+                    <div className="card shadow p-3">
+                        <h1>You must be logged in to accept scholarship awards</h1>
+                    </div>
+                </div>
+            )
+        }
+
         if (!application) {
             return (
                 <div className="container mt-5">
