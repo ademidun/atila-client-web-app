@@ -93,6 +93,9 @@ class Navbar extends React.Component {
                 <Menu.Item key="high-school">
                     <Link to="/high-school">High School</Link>
                 </Menu.Item>
+                <Menu.Item key="about">
+                    <Link to="/about">About</Link>
+                </Menu.Item>
                 {!userProfile && !isLoadingLoggedInUserProfile &&
                 <Menu.Item key="login">
                     <Link to={`/login?redirect=${pathname}${search}`}
