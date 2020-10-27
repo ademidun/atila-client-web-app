@@ -135,7 +135,7 @@ const atilaDirectApplicationsPopoverContent = (
         and allow students to apply and get paid for scholarships all through the Atila platform:
         <ul>
             <li>
-                Funds deposited to student's bank account within 7 days
+                Funds deposited to student's bank account within 24 hours
             </li>
             <li>
                 Scholarships are promoted to Atila's network of students and student organizations.

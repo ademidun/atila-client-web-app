@@ -31,12 +31,11 @@ function HowToApplyForScholarships() {
                         <li>Find a scholarship you want and click Apply now. Save time by pre-filling similar responses you&rsquo;ve entered in the past.<br /><br /></li>
                         <li>If selected, write a thank you email to the sponsor<br /><br /></li>
                         <li>Connect your bank Account<br /><br /></li>
-                        <li>Accept payment and have funds deposited to your bank account within 2-7 days<sup>*</sup>.
+                        <li>Accept payment and have funds deposited to your bank account within 24 hours<sup>*</sup>.
                             <br/>
                             <small>
                                 <sup>*</sup>
                                 Only currently available for students with Canadian or American Bank Accounts. <br/>
-                                Typically 2 days for American accounts and 7 days for Canadian accounts.
                             </small></li>
                     </ol>
                     <h2>Questions</h2>
@@ -52,13 +51,16 @@ function HowToApplyForScholarships() {
                     </ol>
                     <p><br /><br /></p>
                     <p><strong>How do I receive my funding?</strong></p>
-                    <p>After you&rsquo;ve completed the tasks above, you can click on the link in the email which you were provided and it will take you to the payment acceptance page. You will then connect your bank account using <a href="https://stripe.com/">Stripe</a>, after connecting your bank account and accepting the payment, you should receive the funding typically within the next 2-7 days.</p>
+                    <p>After you&rsquo;ve completed the tasks above, you can click on the link in the email which you were provided and it will take you to the payment acceptance page. You will then connect your bank account using <a href="https://stripe.com/">Stripe</a>, after connecting your bank account and accepting the payment, you should receive the funding typically within the next 24 hours.</p>
                     <p><br /><br /></p>
                     <p><strong>Does Atila Save my Banking Information? Is it Secure?</strong></p>
                     <p>Atila does not save your banking information. All of the payment processing is handled using <a href="https://stripe.com/en-ca">Stripe</a>, a payment processing company that is used to handle payments for companies such as Shopify, Lyft, Doordash, Shopify and more.</p>
                     <p><br /><br /></p>
-                    <p><strong>Can Students outside of Canada use Atila?</strong></p>
-                    <p>Students outside of Canada may use Atila to find scholarships, but they are not currently able to use the Atila Direct applications feature. This means they cannot apply for scholarships through Atila and receive the funding through the Atila Platform. We want to open up this feature to as many students as possible so if you&rsquo;re outside of Canada and want to use Atila, contact us and let us know what country you&rsquo;re in so we know what countries we should prioritize in launching next.</p>
+                    <p><strong>Can Students outside of Canada and the USA use Atila?</strong></p>
+                    <p>Students outside of Canada and the USA may use Atila to find scholarships, but they are not currently able to use the Atila Direct applications feature.
+                        This means they cannot apply for scholarships through Atila and receive the funding through the Atila Platform.
+                        We want to open up this feature to as many students as possible so if you&rsquo;re outside of Canada and want to use Atila,
+                        contact us (you can use the chat in the bottom right) and let us know what country you&rsquo;re in so we know what countries we should prioritize in launching next.</p>
                 </div>
             </div>
         </React.Fragment>
