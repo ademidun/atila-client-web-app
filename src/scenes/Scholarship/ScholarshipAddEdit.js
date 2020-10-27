@@ -170,7 +170,7 @@ class ScholarshipAddEdit extends React.Component{
         super(props);
 
         this.state = {
-            scholarship: DEFAULT_SCHOLARSHIP,
+            scholarship: Object.assign({}, DEFAULT_SCHOLARSHIP),
             isAddScholarshipMode: false,
             scholarshipPostError: null,
             isLoadingScholarship: true,
