@@ -71,9 +71,7 @@ class Navbar extends React.Component {
 
         const menuItems = (mode="inline") => (
             <Menu id="nav" key="nav" mode={mode}
-                  style={mode === "inline" ?
-                      { width: 'fit-content'}
-                       : null}>
+                  style={{float: "none"}}>
                 <Menu.Item key="start">
                     <Link to="/start">
                         Start a Scholarship{' '}
