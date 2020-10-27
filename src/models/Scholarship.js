@@ -107,6 +107,7 @@ export let DEFAULT_SCHOLARSHIP = {
     deadline: defaultDeadline,
     open_date: '2022-12-31',
     funding_amount: '',
+    stripe_payment_intent_id: '',
     number_available_scholarships: 1,
     female_only: false,
     international_students_eligible: false,
