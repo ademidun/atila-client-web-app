@@ -5,9 +5,7 @@ import {HowItWorksSponsor} from "../LandingPage/HowItWorks";
 
 function HowToStartAScholarship() {
 
-    const presentationDescription = 'This is a presentation for high school students' +
-        ' about your life after high school: what are your options, ' +
-        'how to learn what path is best for you and how can they achieve your goals.';
+    const presentationDescription = 'Easily start a scholarship with Atila. Enter scholarship details. Fund your scholarship. Pick a winner.';
     const seoContent = {
         title: 'How to Start a Scholarship',
         description: presentationDescription,

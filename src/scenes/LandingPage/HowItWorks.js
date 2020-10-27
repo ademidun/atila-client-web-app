@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from "react-router-dom";
-import {Tag} from "antd";
+import {Button, Tag} from "antd";
 
 function HowItWorks({accountType}) {
 
@@ -149,6 +149,13 @@ export function HowItWorksSponsor({hideLearnMore = false}) {
             <h1 className="col-sm-12 text-center">
                 <Link to="/start"> Learn more </Link>
             </h1>
+            }
+            {hideLearnMore &&
+            <Button type="primary" className="font-size-larger col-12 my-3" style={{fontSize: "25px"}}>
+                <Link to="/register?type=sponsor">
+                    Get Started
+                </Link>
+            </Button>
             }
         </div>
     )

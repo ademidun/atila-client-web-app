@@ -78,6 +78,7 @@ class Register extends React.Component {
         const params = new URLSearchParams(search);
 
         let nextLocation = params.get('redirect') || '/scholarship';
+        let accountType = params.get('type') || accountTypes[0].value;
 
         if (nextLocation==='/') {
             nextLocation = '/scholarship';
@@ -89,7 +90,7 @@ class Register extends React.Component {
                 username: '',
                 email: '',
                 password: '',
-                account_type: accountTypes[0].value,
+                account_type: accountType,
                 agreeTermsConditions: false,
                 ...props.userProfile,
             },
@@ -139,12 +140,6 @@ class Register extends React.Component {
             value = event.target.checked
         }
         userProfile[event.target.name] = value;
-
-        console.log({userProfile});
-        console.log("event.target.type", event.target.type);
-        console.log("event.target.name", event.target.name);
-        console.log("event.target.value", event.target.value);
-
 
         this.setState({ userProfile });
     };
