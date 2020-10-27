@@ -236,6 +236,11 @@ class ScholarshipDetail extends React.Component {
             </Button>)
         }
 
+        if(scholarshipUserProfile && userProfile &&
+            userProfile.user === scholarshipUserProfile.user) {
+            applyToScholarshipButton = null;
+        }
+
         return (
             <React.Fragment>
                 <HelmetSeo content={genericItemTransform(scholarship)} />
