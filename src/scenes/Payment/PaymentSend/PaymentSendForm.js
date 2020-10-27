@@ -215,9 +215,9 @@ class PaymentSendForm extends React.Component {
 
                                         <CardElement style={{base: {fontSize: '18px'}}} ref={this.cardElementRef} />
 
-                                        <p className="my-3">
-                                            Test with: 4000001240000000
-                                        </p>
+                                        {/*<p className="my-3">*/}
+                                        {/*    Test with: 4000001240000000*/}
+                                        {/*</p>*/}
                                     </Col>
                                 </Row>
 
