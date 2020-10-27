@@ -16,7 +16,13 @@ function LandingPageContent({ title, description, contentList, contentType, link
                                                                          content={content}/>));
 
     if (contentType === 'scholarship') {
-        contentListDisplay = contentList.map( content => (<ScholarshipCard className="max-width-md-30 m-2"
+        let className =  "max-width-md-30";
+        if (link && link.includes("/direct")) {
+            // todo TEMP For direct applications show 4 scholarships so users can see the 4 scholarships we just funded.
+            className = "max-width-md-23"
+        }
+
+        contentListDisplay = contentList.map( content => (<ScholarshipCard className={`${className} m-2`}
                                                                            key={content.slug}
                                                                            scholarship={content}
                                                                            isOneColumn={true}/>));

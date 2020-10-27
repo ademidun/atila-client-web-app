@@ -48,7 +48,8 @@ class LandingPage extends React.Component {
             let [scholarshipsDirectApplicationResponse, scholarshipsDueSoonResponse, scholarshipsRecentlyAddedResponse] =
                 await Promise.all(scholarshipPromises);
 
-            const scholarshipsDirectApplication = scholarshipsDirectApplicationResponse.data.results.slice(0,3);
+            // TODO temp show 4 direct application scholarships
+            const scholarshipsDirectApplication = scholarshipsDirectApplicationResponse.data.results.slice(0,4);
             const scholarshipsDueSoon = scholarshipsDueSoonResponse.data.results.slice(0,3);
             const scholarshipsRecentlyAdded = scholarshipsRecentlyAddedResponse.data.results.slice(0,3);
             this.setState({ scholarshipsDirectApplication, scholarshipsDueSoon, scholarshipsRecentlyAdded });
