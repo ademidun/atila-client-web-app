@@ -12,7 +12,7 @@ import {Link} from "react-router-dom";
 
 const { Step } = Steps;
 
-const ALL_PAYMENT_ACCEPTANCE_STEPS = ["send_thank_you_email","link_bank_account", "accept_payment"];
+const ALL_PAYMENT_ACCEPTANCE_STEPS = ["verify_email","verify_phone_number", "send_thank_you_email", "accept_payment"];
 
 class PaymentAccept extends React.Component {
 
