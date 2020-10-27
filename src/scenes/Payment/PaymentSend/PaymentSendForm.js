@@ -12,7 +12,7 @@ import ScholarshipsAPI from "../../../services/ScholarshipsAPI";
 import {ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT, ATILA_SCHOLARSHIP_FEE} from "../../../models/Constants";
 import {formatCurrency, getErrorMessage} from "../../../services/utils";
 import PaymentAPI from "../../../services/PaymentAPI";
-import {ScholarshipPropType} from "../../../models/Scholarship";
+import {ScholarshipDisableEditMessage, ScholarshipPropType} from "../../../models/Scholarship";
 import PropTypes from "prop-types";
 
 export const PREMIUM_PRICE_BEFORE_TAX = 9;
@@ -75,8 +75,12 @@ class PaymentSendForm extends React.Component {
 
                 if (cardPaymentResult.error) {
                     // Show error to your customer (e.g., insufficient funds)
-                    console.log(cardPaymentResult.error.message);
-                    this.setState({isResponseErrorMessage: getErrorMessage(cardPaymentResult)});
+                    let isResponseErrorMessage = cardPaymentResult.error.message;
+                    if (cardPaymentResult.error.message.includes("postal code is incomplete")) {
+                        isResponseErrorMessage += "\nHint: If you can't see the field to enter your postal code," +
+                            " try selecting your expiry date."
+                    }
+                    this.setState({isResponseErrorMessage});
                 } else {
                     // The payment has been processed!
                     if (cardPaymentResult.paymentIntent.status === 'succeeded') {
@@ -89,6 +93,8 @@ class PaymentSendForm extends React.Component {
                             })
                             .catch(err => {
                                 console.log({err});
+
+                                this.setState({isResponseErrorMessage: getErrorMessage(err)});
                             })
                             .finally(() => {
                                 this.setState({isLoading: 'Saving Progress'});
@@ -120,9 +126,9 @@ class PaymentSendForm extends React.Component {
 
     render() {
         const { userProfile, scholarship } = this.props;
-        if (!userProfile || !userProfile.is_debug_mode) {
+        if (!userProfile) {
             return (<h3>
-                You do not have permission to access this page yet.
+                You do not have permission to access this page.
             </h3>)
         }
 
@@ -130,7 +136,7 @@ class PaymentSendForm extends React.Component {
             isPaymentSuccess,
             isResponseErrorMessage, totalPaymentAmount} = this.state;
 
-        const isResponseErrorMessageWithContactLink = (<div>
+        const isResponseErrorMessageWithContactLink = (<div style={{whiteSpace: "pre-line"}}>
             {isResponseErrorMessage}
             <br /> <Link to="/contact"> Contact us</Link> if problem continues
         </div>);
@@ -215,9 +221,9 @@ class PaymentSendForm extends React.Component {
 
                                         <CardElement style={{base: {fontSize: '18px'}}} ref={this.cardElementRef} />
 
-                                        <p className="my-3">
-                                            Test with: 4000001240000000
-                                        </p>
+                                        {/*<p className="my-3">*/}
+                                        {/*    Test with: 4000001240000000*/}
+                                        {/*</p>*/}
                                     </Col>
                                 </Row>
 
@@ -241,8 +247,11 @@ class PaymentSendForm extends React.Component {
                                 <Alert
                                     type="error"
                                     message={isResponseErrorMessageWithContactLink}
+                                    className="mb-3"
                                 />
                                 }
+
+                                <ScholarshipDisableEditMessage />
 
                             </form>}
                         </Col>

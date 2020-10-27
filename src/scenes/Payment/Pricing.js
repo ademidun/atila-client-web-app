@@ -80,7 +80,7 @@ export function PricingExample() {
 
 
     return (
-        <div className="p-5">
+        <div className="p-lg-3">
             <h3>Pricing Example</h3>
             <div>
                 <p>
@@ -88,7 +88,7 @@ export function PricingExample() {
                 </p>
                 <ol>
                     <li>
-                        Rupam raised her child as a single mother and decided to start a $1,000 scholarship to support any student that comes from a single parent family.
+                        Rupam starts a $1,000 scholarship to support any student that comes from a single parent family.
                         <br />
                         <br />
                     </li>
@@ -100,8 +100,6 @@ export function PricingExample() {
                             Scholarship Amount + 9% Atila fee + (13% HST)
                         </li>
                     </ol>
-                </ol>
-                <ol>
                     <li>
                         Suppose Jasleen is the recipient of the award:&nbsp;
                     </li>
@@ -125,7 +123,7 @@ export function PricingExample() {
                     <br />
                     <br />
                 </p>
-                <table className="table">
+                <table className="table table-responsive border-sm-light">
                     <tbody>
                     <tr>
                         <td>

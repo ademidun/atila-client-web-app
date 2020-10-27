@@ -1,18 +1,20 @@
 import React from 'react';
 import {connect} from "react-redux";
-import {Button, Checkbox, Col, Input, Row, Steps} from "antd";
+import {Button, Col, Input, Row, Steps} from "antd";
 import PaymentAPI from "../../services/PaymentAPI";
 import Loading from "../../components/Loading";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import ApplicationsAPI from "../../services/ApplicationsAPI";
-import {formatCurrency, prettifyKeys} from "../../services/utils";
+import { prettifyKeys} from "../../services/utils";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import {Link} from "react-router-dom";
+import InlineEditor from "@ckeditor/ckeditor5-build-inline";
+import CKEditor from "@ckeditor/ckeditor5-react";
 
 const { Step } = Steps;
 
-const ALL_PAYMENT_ACCEPTANCE_STEPS = ["send_thank_you_email","link_bank_account", "accept_payment"];
+const ALL_PAYMENT_ACCEPTANCE_STEPS = ["verify_email","verify_phone_number", "send_thank_you_email", "accept_payment"];
 
 class PaymentAccept extends React.Component {
 
@@ -210,6 +212,16 @@ class PaymentAccept extends React.Component {
         const { userProfile } = this.props;
         const { isLoading, currentPaymentAcceptanceStep, application, scholarship } = this.state;
 
+        if (!userProfile) {
+            return (
+                <div className="container mt-5">
+                    <div className="card shadow p-3">
+                        <h1>You must be logged in to accept scholarship awards</h1>
+                    </div>
+                </div>
+            )
+        }
+
         if (!application) {
             return (
                 <div className="container mt-5">
@@ -250,41 +262,62 @@ class PaymentAccept extends React.Component {
                                 <Input value={userProfile.email} disabled={true}/>
                             </Col>
                             <Col span={24}>
-                                <div className="center-block mt-3 text-center">
-                                    <Checkbox
-                                        checked={application.is_thank_you_email_sent}
-                                        onChange={this.setPaymentThankYouEmail}
-                                    >
-                                        Step 1: Have you sent a thank you email to the Scholarship Sponsor?
-                                    </Checkbox>
-                                </div>
-                                    <Button onClick={this.linkBankAccount}
-                                            className="center-block mt-3"
-                                            type="primary"
-                                            disabled={isLoading || currentPaymentAcceptanceStep !== ALL_PAYMENT_ACCEPTANCE_STEPS[1]}>
-                                        Step 2: Link Bank Account with Stripe
-                                    </Button>
-                                    <Button onClick={this.acceptPayment}
-                                            className="center-block mt-3"
-                                            type="primary"
-                                            disabled={application.accepted_payment ||isLoading || currentPaymentAcceptanceStep !== ALL_PAYMENT_ACCEPTANCE_STEPS[2]}>
-                                        Step 3: Accept Payment for {scholarship.name}{" "}
-                                        (
-                                        {formatCurrency(Number.parseInt(scholarship.funding_amount))}
-                                        ){' '}
-                                    </Button>
+                                <Input value={application.accept_payment_email_verification_code} placeholder="Email Verification Code" />
+                            </Col>
+                            <Col span={24}>
+                                <Button onClick={()=>{}}
+                                        className="center-block mt-3"
+                                        type="primary"
+                                        disabled={isLoading || currentPaymentAcceptanceStep !== ALL_PAYMENT_ACCEPTANCE_STEPS[0]}>
+                                    Verify Email
+                                </Button>
+                            </Col>
+                            <br/>
+                            <Col span={24}>
+                                <Input value={application.accept_payment_phone_number} placeholder="Phone Number" />
+                            </Col>
+                            <Col span={24}>
+                                <Button onClick={()=>{}}
+                                        className="center-block mt-3"
+                                        type="primary"
+                                        disabled={isLoading || currentPaymentAcceptanceStep !== ALL_PAYMENT_ACCEPTANCE_STEPS[1]}>
+                                    Text me Verification Code
+                                </Button>
+                            </Col>
+                            <Col span={24}>
+                                <Input value={application.accept_payment_email_verification_code}  placeholder="Phone Number Verification Code"/>
+                            </Col>
+                            <Col span={24}>
+                                <Button onClick={()=>{}}
+                                        className="center-block mt-3"
+                                        type="primary"
+                                        disabled={isLoading || currentPaymentAcceptanceStep !== ALL_PAYMENT_ACCEPTANCE_STEPS[1]}>
+                                    Verify Phone Number
+                                </Button>
+                            </Col>
+                            <br/>
+                            <Col span={24}>
+                                <CKEditor
+                                    editor={ InlineEditor }
+                                    data={"Thank You Letter"}
+                                />
+                            </Col>
+                            <Col span={24}>
+                                <Button onClick={()=>{}}
+                                        className="center-block mt-3"
+                                        type="primary"
+                                        disabled={isLoading || currentPaymentAcceptanceStep !== ALL_PAYMENT_ACCEPTANCE_STEPS[2]}>
+                                    Send Thank You Email
+                                </Button>
+                            </Col>
 
-                                {currentPaymentAcceptanceStep === ALL_PAYMENT_ACCEPTANCE_STEPS[1] &&
-                                    <p className="mt-3">
-                                        You will be redirected to{' '}
-                                        <a href="https://stripe.com/" target="_blank" rel="noopener noreferrer" >
-                                            Stripe</a>{' '}
-                                        to complete your payment setup.{' '}
-                                        <a href="https://stripe.com/" target="_blank" rel="noopener noreferrer" >
-                                            Click here to learn more about Stripe.
-                                        </a>
-                                    </p>
-                                }
+                            <Col span={24}>
+                                <Button onClick={()=>{}}
+                                        className="center-block mt-3"
+                                        type="primary"
+                                        disabled={isLoading || currentPaymentAcceptanceStep !== ALL_PAYMENT_ACCEPTANCE_STEPS[3]}>
+                                    Accept Payment
+                                </Button>
                             </Col>
 
                         </Row>

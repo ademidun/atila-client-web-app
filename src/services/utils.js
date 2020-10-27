@@ -291,16 +291,20 @@ export function scrollToElement(elementSelector) {
  */
 export function getErrorMessage(error) {
 
+    let formattedMessage = "";
     if(error.response && error.response.data ) {
         if(error.response.data.error && error.response.data.error.message) {
-            return error.response.data.error.message
+            formattedMessage = error.response.data.error.message
         } else if (error.response.data.error) {
-            return JSON.stringify(error.response.data.error)
+            formattedMessage = error.response.data.error
         } else if(error.response.data) {
-            return JSON.stringify(error.response.data)
+            formattedMessage = error.response.data
         }
+    } else {
+        formattedMessage = error.message ? error.message : error;
     }
-    return error.message ? error.message : error;
+    
+    return JSON.stringify(formattedMessage);
 }
 
 export function getPageViewLimit(pageViews, pathname) {

@@ -5,3 +5,10 @@
   color: #666;
   z-index: 9999;
 }
+
+label.ant-radio-button-wrapper.ant-radio-button-wrapper-checked {
+  color: white !important;
+}
+label.ant-radio-button-wrapper {
+  color: black !important;
+}

@@ -3,7 +3,7 @@ import Banner from './Banner';
 import './LandingPage.scss';
 import './Reponsive.scss';
 import HowItWorks from "./HowItWorks";
-import MoreFeatures from "./MoreFeatures";
+// import MoreFeatures from "./MoreFeatures";
 import LandingPageContent from "./LandingPageContent";
 import SubscribeMailingList from "../../components/SubscribeMailingList";
 import {Link} from "react-router-dom";
@@ -19,6 +19,7 @@ class LandingPage extends React.Component {
         super(props);
 
         this.state = {
+            scholarshipsDirectApplication: null,
             scholarshipsDueSoon: null,
             scholarshipsRecentlyAdded: null,
         }
@@ -38,17 +39,20 @@ class LandingPage extends React.Component {
         this.setState({ scholarshipsDueSoonIsLoading: true });
 
         const scholarshipPromises = [
+            ScholarshipsAPI.list('direct-application'),
             ScholarshipsAPI.list('due-soon'),
             ScholarshipsAPI.list('?ordering=date_time_created'),
         ];
 
         try {
-            let [scholarshipsDueSoonResponse, scholarshipsRecentlyAddedResponse] =
+            let [scholarshipsDirectApplicationResponse, scholarshipsDueSoonResponse, scholarshipsRecentlyAddedResponse] =
                 await Promise.all(scholarshipPromises);
 
+            // TODO temp show 4 direct application scholarships
+            const scholarshipsDirectApplication = scholarshipsDirectApplicationResponse.data.results.slice(0,4);
             const scholarshipsDueSoon = scholarshipsDueSoonResponse.data.results.slice(0,3);
             const scholarshipsRecentlyAdded = scholarshipsRecentlyAddedResponse.data.results.slice(0,3);
-            this.setState({ scholarshipsDueSoon, scholarshipsRecentlyAdded });
+            this.setState({ scholarshipsDirectApplication, scholarshipsDueSoon, scholarshipsRecentlyAdded });
             this.setState({ scholarshipsDueSoonIsLoading: false });
 
         }
@@ -61,9 +65,20 @@ class LandingPage extends React.Component {
     render() {
 
         const { userProfile } = this.props;
-        const { scholarshipsDueSoon, scholarshipsDueSoonIsLoading,
+        const { scholarshipsDirectApplication, scholarshipsDueSoon, scholarshipsDueSoonIsLoading,
             scholarshipsRecentlyAdded } = this.state;
 
+        const scholarshipsContentDirectApplication = (<React.Fragment>
+            {scholarshipsDueSoonIsLoading &&
+            <Loading title="Loading Scholarships ..." />
+            }
+            {scholarshipsDirectApplication &&
+            <LandingPageContent title={`Direct Application Scholarships`}
+                                link="scholarship/direct"
+                                contentList={scholarshipsDirectApplication}
+                                contentType="scholarship" />
+            }
+        </React.Fragment>);
         const scholarshipsContentDueSoon = (<React.Fragment>
             {scholarshipsDueSoonIsLoading &&
             <Loading title="Loading Scholarships ..." />
@@ -93,7 +108,7 @@ class LandingPage extends React.Component {
                         <Banner/>
                         <hr/>
                         <HowItWorks accountType={"Student"}/>
-                        {scholarshipsContentRecentlyAdded}
+                        {scholarshipsContentDirectApplication}
                         <hr/>
                         <div className="p-5">
                             <Link to="/register" className="btn btn-primary center-block font-size-xl">
@@ -102,15 +117,17 @@ class LandingPage extends React.Component {
                         </div>
                         <hr/>
                         <HowItWorks accountType={"Sponsor"}/>
+                        {/*<hr/>*/}
+                        {/*<MoreFeatures/>*/}
                         <hr/>
-                        <MoreFeatures/>
-                        <hr/>
+                        {scholarshipsContentRecentlyAdded}
                         {scholarshipsContentDueSoon}
                     </React.Fragment>
                         }
                     {userProfile &&
                     <React.Fragment>
                         <BannerLoggedIn/>
+                        {scholarshipsContentDirectApplication}
                         {scholarshipsContentRecentlyAdded}
                         {scholarshipsContentDueSoon}
                         <hr />

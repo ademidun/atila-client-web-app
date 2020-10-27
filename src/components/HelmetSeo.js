@@ -6,7 +6,7 @@ import $ from 'jquery';
 export const defaultSeoContent = {
     title: 'Atila - The easiest way for students to get scholarships and anyone to start scholarships.',
     description: 'The easiest way for students to get scholarships and anyone to start scholarships.',
-    image: 'https://i.imgur.com/JstbnPy.png',
+    image: 'https://i.imgur.com/nib7LyD.png',
     slug: ''
 };
 

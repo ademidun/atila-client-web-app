@@ -127,6 +127,12 @@ class Banner extends React.Component {
                     Find Scholarships
                   </Link>
                 </Button>
+                <Button type="primary"
+                        className="center-block mb-3">
+                  <Link to="/start">
+                    Start a Scholarship
+                  </Link>
+                </Button>
               </div>
             </form>
           </QueueAnim>

@@ -73,6 +73,12 @@ a:hover {
   .max-width-md-30 {
     max-width: 30%;
   }
+  .max-width-md-23 {
+    max-width: 23%;
+    h1 {
+      font-size: 34px;
+    }
+  }
 }
 
 .font-size-xl {
@@ -120,12 +126,6 @@ label {
   color: #6c757d !important;
 }
 
-.content-detail {
-  img {
-    max-width: 100%;
-  }
-}
-
 .Toastify__toast-body a {
   color: #b3d7ff;
   text-decoration: underline;
@@ -138,6 +138,7 @@ label {
 }
 
 .content-detail {
+  word-break: break-word;
   h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     top: 0.5rem;
     margin-bottom: 0.5rem;
@@ -148,13 +149,16 @@ label {
     line-height: 2.5rem;
     font-size: 20px;
   }
+  img {
+    max-width: 100%;
+  }
 }
 
 .ck-editor__editable {
   width: 100%;
 }
 
-.FormDynamicInput .ck.ck-editor__editable_inline {
+.FormDynamicInput .ck.ck-editor__editable_inline, .ck.ck-editor__editable_inline {
   overflow: auto;
   padding: 0 var(--ck-spacing-standard);
   border: 1px solid #40a9ff;
@@ -171,6 +175,31 @@ label {
   line-height: inherit !important;
 }
 
+.ant-btn {
+  height: auto;
+  white-space: pre-line;
+}
+
 .white-space-pre-wrap {
   white-space: pre-wrap;
+}
+
+.border-light {
+  border: 1px solid #dee2e6 !important
+}
+
+@media only screen and (max-width: $small-device-width) {
+  .border-sm-light {
+    border: 1px solid #dee2e6 !important
+  }
+}
+
+.font-size-larger {
+  font-size: larger;
+}
+
+.btn-success {
+  background: #52c41a;
+  border: #52c41a;
+  color: white;
 }

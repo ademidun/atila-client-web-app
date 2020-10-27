@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from "react-router-dom";
-import {Tag} from "antd";
+import {Button, Tag} from "antd";
 
 function HowItWorks({accountType}) {
 
@@ -42,11 +42,11 @@ const howItWorksStudent = [
         title: "Get Funded",
         body: <React.Fragment>
             Scholarship funding is directly deposited to your bank account
-            within 7 days of accepting award<sup>*</sup>.
+            within 24 hours of accepting award<sup>*</sup>.
             <br/>
             <small>
                 <sup>*</sup>
-            Only currently available for students with Canadian Bank Accounts.
+            Only currently available for students with Canadian or American Bank Accounts.
             </small>
         </React.Fragment>,
         image: "https://imgur.com/1HufdyP.jpg"
@@ -54,7 +54,7 @@ const howItWorksStudent = [
  ];
 
 
-function HowItWorksStudent() {
+export function HowItWorksStudent() {
 
     return (
         <div className="container">
@@ -81,7 +81,7 @@ function HowItWorksStudent() {
     )
 }
 
-function HowItWorksSponsor() {
+export function HowItWorksSponsor({hideLearnMore = false}) {
 
     const howItWorksSponsorItems = [
         {
@@ -98,7 +98,13 @@ function HowItWorksSponsor() {
         {
         title: "Fund Scholarship",
         body: "Fund the scholarship with a credit card or debit card.",
-            image: "https://imgur.com/NJJt8Vr.jpg",
+            image: "https://i.imgur.com/kgpSskJ.png",
+        },
+        {
+        title: "Promote Scholarship",
+        body: "Atila will help you promote your scholarship to our network of over 100 schools and student organizations.",
+        image: "https://i.imgur.com/a3u6UV9.png",
+        imageCaption: "A few examples of the organizations we notify when scholarships relevant to their students are launched.",
         },
         {
         title: "Select Winner",
@@ -118,8 +124,7 @@ function HowItWorksSponsor() {
             LA Sentinel
         </a>
             <br/>
-            <small>Note: This is just an example.
-                Atila has no affiliation with the scholarship shown above.</small>
+            <small>Note: This is just an example. Atila has no affiliation with the scholarship shown above.</small>
         </React.Fragment>
         },
     ];
@@ -136,17 +141,29 @@ function HowItWorksSponsor() {
                 Fund Scholarship.{' '}
                 Select Winner.
             </h2>
-            <h5 className="col-sm-12 text-center text-muted">
-                Coming Soon
+            {hideLearnMore &&
+            <h5 className="text-center">
+                <Link to="/apply">
+                    Are you a student interested in how to apply for scholarships?
+                </Link>
             </h5>
+            }
             <div>
             <DescriptionsWithScreenshots items={howItWorksSponsorItems} />
             </div>
 
-
+            {!hideLearnMore &&
             <h1 className="col-sm-12 text-center">
                 <Link to="/start"> Learn more </Link>
             </h1>
+            }
+            {hideLearnMore &&
+            <Button type="primary" className="font-size-larger col-12 my-3" style={{fontSize: "25px"}}>
+                <Link to="/register?type=sponsor">
+                    Get Started
+                </Link>
+            </Button>
+            }
         </div>
     )
 }

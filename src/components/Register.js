@@ -9,6 +9,7 @@ import TermsConditions from "./TermsConditions";
 import { Modal } from "antd";
 import {Link} from "react-router-dom";
 import {forbiddenCharacters, hasForbiddenCharacters} from "../models/Utils";
+import { Radio } from 'antd';
 
 export class PasswordShowHide extends React.Component {
 
@@ -61,6 +62,11 @@ PasswordShowHide.propTypes = {
     placeholder: PropTypes.string,
 };
 
+const accountTypes = [
+    { label: 'Find Scholarships', value: 'student' },
+    { label: 'Start a Scholarship', value: 'sponsor' },
+];
+
 class Register extends React.Component {
 
     constructor(props){
@@ -72,6 +78,7 @@ class Register extends React.Component {
         const params = new URLSearchParams(search);
 
         let nextLocation = params.get('redirect') || '/scholarship';
+        let accountType = params.get('type') || accountTypes[0].value;
 
         if (nextLocation==='/') {
             nextLocation = '/scholarship';
@@ -83,6 +90,7 @@ class Register extends React.Component {
                 username: '',
                 email: '',
                 password: '',
+                account_type: accountType,
                 agreeTermsConditions: false,
                 ...props.userProfile,
             },
@@ -133,8 +141,6 @@ class Register extends React.Component {
         }
         userProfile[event.target.name] = value;
 
-
-
         this.setState({ userProfile });
     };
 
@@ -150,8 +156,9 @@ class Register extends React.Component {
     submitForm = (event) => {
         event.preventDefault();
         const { setLoggedInUserProfile, disableRedirect, onRegistrationFinished } = this.props;
-        const { userProfile, nextLocation } = this.state;
-        const { email, username, password } = userProfile;
+        const { userProfile } = this.state;
+        let { nextLocation } = this.state;
+        const { email, username, password, account_type } = userProfile;
 
         this.setState({ loadingResponse: true});
         this.setState({ isResponseError: null});
@@ -159,8 +166,13 @@ class Register extends React.Component {
         const userProfileSendData = {
             first_name: userProfile.first_name,
             last_name: userProfile.last_name,
-            email, username,
+            email, username, account_type,
         };
+
+        // If this is a sponsor account type, redirect to the add a scholarship page
+        if (account_type === accountTypes[1].value && nextLocation === '/scholarship') {
+            nextLocation = "/scholarship/add"
+        }
 
         let contactMessage = (<React.Fragment>
             Error logging in.{' '}
@@ -219,7 +231,7 @@ class Register extends React.Component {
 
         const { userProfile, isResponseError, responseOkMessage,
             loadingResponse, isTermsConditionsModalVisible, formErrors } = this.state;
-        const { first_name, last_name, username, email, password, agreeTermsConditions } = userProfile;
+        const { first_name, last_name, username, email, password, agreeTermsConditions, account_type } = userProfile;
 
         let formErrorsContent = Object.keys(formErrors).map((errorType) => (
             <div key={errorType}>
@@ -276,6 +288,22 @@ class Register extends React.Component {
                                    required
                             />
                             <PasswordShowHide password={password} updateForm={this.updateForm} />
+
+                            <div className="col-12">
+                            <label>
+                                I want to
+                            </label>
+                            </div>
+                            <div className="col-12 mb-3">
+                                <Radio.Group
+                                    options={accountTypes}
+                                    onChange={this.updateForm}
+                                    name="account_type"
+                                    value={account_type}
+                                    optionType="button"
+                                    buttonStyle="solid"
+                                />
+                            </div>
 
                             <div className="col-12 mb-3">
                                 <Modal

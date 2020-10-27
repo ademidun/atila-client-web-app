@@ -136,7 +136,7 @@ export default class ScholarshipQuestionBuilder extends React.Component {
         return (
             <div>
                     {specificQuestions.map((specificQuestion, index) => (
-                        <React.Fragment>
+                        <div key={index}>
                             <Row className="mb-3" gutter={[{ xs: 8, sm: 16}, 16]}>
                                     <Col sm={24} md={24} lg={16}>
                                         <Input value={specificQuestion.question}
@@ -166,7 +166,7 @@ export default class ScholarshipQuestionBuilder extends React.Component {
                                     </Col>
                             </Row>
                             <hr/>
-                        </React.Fragment>
+                        </div>
                     ))}
 
                 <Button

@@ -1,12 +1,15 @@
 import PropTypes from "prop-types";
 import {UserProfileTest1} from "./UserProfile";
+import {Link} from "react-router-dom";
+import React from "react";
+import {Alert, Popover} from "antd";
 
 let nextMonth = new Date();
 nextMonth.setDate(nextMonth.getDate() + 30);
 nextMonth = nextMonth.toISOString();
 
 let defaultDeadline = new Date();
-let defaultTime = "T23:59:00"
+let defaultTime = "T23:59:00";
 defaultDeadline.setDate(defaultDeadline.getDate() + 61);
 defaultDeadline = defaultDeadline.toISOString();
 defaultDeadline = defaultDeadline.split('T')[0] + defaultTime;
@@ -104,6 +107,7 @@ export let DEFAULT_SCHOLARSHIP = {
     deadline: defaultDeadline,
     open_date: '2022-12-31',
     funding_amount: '',
+    stripe_payment_intent_id: '',
     number_available_scholarships: 1,
     female_only: false,
     international_students_eligible: false,
@@ -111,6 +115,7 @@ export let DEFAULT_SCHOLARSHIP = {
     metadata: {},
     eligible_schools: [],
     is_atila_direct_application: false,
+    is_editable: true,
     eligible_programs: [],
     email_contact: '',
     activities: [],
@@ -122,3 +127,41 @@ export let DEFAULT_SCHOLARSHIP = {
     disability: [],
     language: [],
 };
+
+const atilaDirectApplicationsPopoverContent = (
+    <div>
+        These types of scholarships allows sponsors to start and fund scholarships
+
+        and allow students to apply and get paid for scholarships all through the Atila platform:
+        <ul>
+            <li>
+                Funds deposited to student's bank account within 24 hours
+            </li>
+            <li>
+                Scholarships are promoted to Atila's network of students and student organizations.
+            </li>
+            <li>
+                Automatically notify winners and non-winners.
+            </li>
+            <li>
+                Simple interface for managing all your applications.
+            </li>
+        </ul>
+        <Link to="/start">Learn More</Link>
+    </div>
+);
+
+export const AtilaDirectApplicationsPopover = ({children, title="What is Atila Direct Applications?"}) => (
+    <Popover overlayStyle={{maxWidth: "500px"}} content={atilaDirectApplicationsPopoverContent} title={title}>
+        {children}
+    </Popover>
+
+);
+
+export const ScholarshipDisableEditMessage = () => (
+    <Alert
+        type="info"
+        message={"Once scholarship is funded and published: deadline, fuding amount, eligibility, and specific questions cannot be changed directly. " +
+        "\nIf you want to change any of those fields, please contact us (you can use the chat box in the bottom right)."}
+    />
+);
