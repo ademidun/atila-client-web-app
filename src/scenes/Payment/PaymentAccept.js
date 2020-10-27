@@ -1,12 +1,12 @@
 import React from 'react';
 import {connect} from "react-redux";
-import {Button, Checkbox, Col, Input, Row, Steps} from "antd";
+import {Button, Col, Input, Row, Steps} from "antd";
 import PaymentAPI from "../../services/PaymentAPI";
 import Loading from "../../components/Loading";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import ApplicationsAPI from "../../services/ApplicationsAPI";
-import {formatCurrency, prettifyKeys} from "../../services/utils";
+import { prettifyKeys} from "../../services/utils";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import {Link} from "react-router-dom";
 import InlineEditor from "@ckeditor/ckeditor5-build-inline";
