@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
-import {Table, Popconfirm} from "antd";
+import {Table, Popconfirm, Button, Tag} from "antd";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
 
@@ -39,6 +39,22 @@ class ScholarshipManage extends React.Component {
             });
     };
 
+    selectWinner = (applicationID, scholarship) => {
+
+        const winners = {winners: applicationID};
+        const scholarshipID = scholarship.id;
+
+        ScholarshipsAPI
+            .selectWinners(scholarshipID, winners)
+            .then((res)=>{
+                const {scholarship, applications, unsubmitted_applications: unsubmittedApplications} =  res.data;
+                this.setState({scholarship, applications, unsubmittedApplications});
+            })
+            .catch(err => {
+                console.log({err});
+            })
+    };
+
     render() {
         const { userProfile } = this.props;
         const { scholarship, applications, isLoadingApplications, unsubmittedApplications } = this.state;
@@ -74,13 +90,13 @@ class ScholarshipManage extends React.Component {
                     Edit Scholarship
                 </Link>
                 <br />
-                <ApplicationsTable applications={allApplications} scholarship={scholarship}/>
+                <ApplicationsTable applications={allApplications} scholarship={scholarship} selectWinner={this.selectWinner}/>
             </div>
         )
     }
 }
 
-function ApplicationsTable({ applications, scholarship }){
+function ApplicationsTable({ applications, scholarship, selectWinner }){
 
     const columns = [
         {
@@ -95,6 +111,7 @@ function ApplicationsTable({ applications, scholarship }){
             key: '2',
             render: (id, application) => (
                 <React.Fragment>
+                    {application.is_winner && <><Tag color="green">Winner</Tag>{' '}</>}
                     {application.is_submitted? <Link to={`/application/${application.id}/view`}>View</Link> : "Cannot view unsubmitted application"}
                 </React.Fragment>
             ),
@@ -105,7 +122,7 @@ function ApplicationsTable({ applications, scholarship }){
             key: '3',
             render: (applicationID, application) => (
                 <React.Fragment>
-                    {application.is_submitted? renderWinnerButton(applicationID, scholarship) : "Cannot select unsubmitted application"}
+                    {application.is_submitted? renderWinnerButton(applicationID, scholarship, selectWinner) : "Cannot select unsubmitted application"}
                 </React.Fragment>
             ),
         },
@@ -114,34 +131,34 @@ function ApplicationsTable({ applications, scholarship }){
     return (<Table columns={columns} dataSource={applications} rowKey="id" />)
 }
 
-const renderWinnerButton = (applicationID, scholarship) => {
+const todayDate = new Date().toISOString();
+const renderWinnerButton = (applicationID, scholarship, selectWinner) => {
     const confirmText = "Are you sure you want to pick this winner? You will not be able to undo this action.";
+
+    if (scholarship.is_winner_selected) {
+        return (
+            <p>
+                Winner has been selected
+            </p>
+        )
+    }
+
+    if (todayDate < scholarship.deadline) {
+        return (
+            <p>
+                You can pick a winner after the deadline has passed
+            </p>
+        )
+    }
 
     return (
         <Popconfirm placement="topLeft" title={confirmText} onConfirm={() => selectWinner(applicationID, scholarship)} okText="Yes" cancelText="No">
-            <button type={"button"} className={"btn btn-success"}>
+            <Button className="btn-success">
                 Select Winner...
-            </button>
+            </Button>
         </Popconfirm>
     )
 };
-
-
-const selectWinner = (applicationID, scholarship) => {
-
-    const winners = {winners: applicationID}
-    const scholarshipID = scholarship.id;
-
-    //Set application.is_winner to true
-    ScholarshipsAPI
-        .selectWinners(scholarshipID, winners)
-        .then(()=>{
-        })
-        .catch(err => {
-            console.log({err});
-        })
-};
-
 
 const mapStateToProps = state => {
     return { userProfile: state.data.user.loggedInUserProfile };
