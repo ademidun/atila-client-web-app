@@ -60,7 +60,7 @@ function Footer({location, history}) {
                     </Link>
                   </div>
                   <div>
-                    <Link to="/blog/atila/what-is-atila">
+                    <Link to="/about">
                       About
                     </Link>
                   </div>
