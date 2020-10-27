@@ -169,6 +169,11 @@ label {
   line-height: inherit !important;
 }
 
+.ant-btn {
+  height: auto;
+  white-space: pre-line;
+}
+
 .white-space-pre-wrap {
   white-space: pre-wrap;
 }
@@ -181,4 +186,8 @@ label {
   .border-sm-light {
     border: 1px solid #dee2e6 !important
   }
+}
+
+.font-size-larger {
+  font-size: larger;
 }

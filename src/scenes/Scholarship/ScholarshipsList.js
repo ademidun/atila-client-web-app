@@ -313,17 +313,25 @@ class ScholarshipsList extends React.Component {
 
             </React.Fragment>);
         } else if (!userProfile) {
-            loadMoreScholarshipsOrRegisterCTA = (<React.Fragment>
+            loadMoreScholarshipsOrRegisterCTA = (<div className="font-size-xl">
                 {
                     scholarships && scholarships.length < totalScholarshipsCount
                     &&
-                    <Link to="/register" className="btn btn-primary center-block font-size-xl">
-                            Register for Free to see all
-                            {totalScholarshipsCount > 3 ? ` ${totalScholarshipsCount} ` : null}
-                            Scholarships
-                    </Link>
+                        <Button type="primary" className="font-size-larger col-12 mt-1" style={{fontSize: "25px"}}>
+                            <Link to="/register">
+                                    Register for Free to see all
+                                    {totalScholarshipsCount > 3 ? ` ${totalScholarshipsCount} ` : null}
+                                    Scholarships
+                            </Link>
+                        </Button>
                 }
-            </React.Fragment>);
+
+                <Button type="primary" className="font-size-larger col-12 my-3" style={{fontSize: "25px"}}>
+                    <Link to="/start">
+                        Start a Scholarship
+                    </Link>
+                </Button>
+            </div>);
         }
 
         if (userProfile && !isCompleteProfile) {

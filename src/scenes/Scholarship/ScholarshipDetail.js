@@ -354,6 +354,21 @@ class ScholarshipDetail extends React.Component {
                             className="col-md-4"
                             id={id}
                             itemType={'scholarship'} />
+
+                        {!userProfile  &&
+                        <React.Fragment>
+                            <Button type="primary" className="font-size-larger col-12 mt-1" style={{fontSize: "25px"}}>
+                                <Link to="/register">
+                                    Register for Free to see more Scholarships
+                                </Link>
+                            </Button>
+                            <Button type="primary" className="font-size-larger col-12 my-3" style={{fontSize: "25px"}}>
+                                <Link to="/start">
+                                    Start a Scholarship
+                                </Link>
+                            </Button>
+                        </React.Fragment>
+                        }
                     </div>
                 </div>
             </React.Fragment>
