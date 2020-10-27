@@ -116,6 +116,8 @@ export let DEFAULT_SCHOLARSHIP = {
     eligible_schools: [],
     is_atila_direct_application: false,
     is_editable: true,
+    published: false,
+    is_funded: false,
     eligible_programs: [],
     email_contact: '',
     activities: [],
