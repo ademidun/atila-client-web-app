@@ -72,7 +72,7 @@ class LandingPage extends React.Component {
             <Loading title="Loading Scholarships ..." />
             }
             {scholarshipsDirectApplication &&
-            <LandingPageContent title={`Direct Applications Scholarships`}
+            <LandingPageContent title={`Direct Application Scholarships`}
                                 link="scholarship/direct"
                                 contentList={scholarshipsDirectApplication}
                                 contentType="scholarship" />

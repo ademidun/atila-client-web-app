@@ -4,6 +4,8 @@ import {Link} from "react-router-dom";
 
 import ContentCard from "../../components/ContentCard";
 import ScholarshipCard from "../Scholarship/ScholarshipCard";
+import {AtilaDirectApplicationsPopover} from "../../models/Scholarship";
+import verifiedBadge from "../../components/assets/verified.png";
 
 function LandingPageContent({ title, description, contentList, contentType, link }) {
 
@@ -26,6 +28,11 @@ function LandingPageContent({ title, description, contentList, contentType, link
                 {contentType === 'scholarship' && <Link to={`/${link || contentType }`}> {title} </Link>}
                 {contentType !== 'scholarship' && <Link to={`/${title.toLowerCase()}`}> {title} </Link>}
             </h1>
+            <AtilaDirectApplicationsPopover
+                title="This is a verified Atila Direct Application Scholarship"
+                children={<div style={{fontSize: "14px", fontWeight: "normal"}} className="text-center mb-3">
+                    (Hint: Hover or click here to learn why these scholarships have blue checks.)
+                </div>} />
             {
             description &&
             <h2 className="col-sm-12 text-center">

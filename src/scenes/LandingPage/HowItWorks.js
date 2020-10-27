@@ -141,6 +141,13 @@ export function HowItWorksSponsor({hideLearnMore = false}) {
                 Fund Scholarship.{' '}
                 Select Winner.
             </h2>
+            {hideLearnMore &&
+            <h5 className="text-center">
+                <Link to="/apply">
+                    Are you a student interested in how to apply for scholarships?
+                </Link>
+            </h5>
+            }
             <div>
             <DescriptionsWithScreenshots items={howItWorksSponsorItems} />
             </div>

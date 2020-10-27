@@ -84,7 +84,7 @@ class ScholarshipCard extends React.Component {
                                         {name}{' '}
                                         {scholarship.is_atila_direct_application &&
                                         <AtilaDirectApplicationsPopover
-                                            title="This is a verified Atila Direct Applications Scholarship"
+                                            title="This is a verified Atila Direct Application Scholarship"
                                             children={<img
                                                 alt="user profile"
                                                 style={{ width:'25px' }}

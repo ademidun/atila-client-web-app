@@ -103,7 +103,11 @@ class ScholarshipsList extends React.Component {
 
         const {
             userProfile,
+            location: { pathname },
+            location,
         } = this.props;
+
+        console.log({location});
 
         const { scholarships, totalScholarshipsCount, scholarshipsScoreBreakdown } = this.state;
         let { searchPayload } = this.state;
@@ -112,6 +116,10 @@ class ScholarshipsList extends React.Component {
             ...searchPayload,
             previewMode: searchPayload.view_as_user ? null : searchPayload.previewMode,
         };
+
+        if (pathname.includes("/scholarship/direct")) {
+            searchPayload.direct_applications_only = true
+        }
 
         if (totalScholarshipsCount && scholarships
             && scholarships.length >= totalScholarshipsCount) {
