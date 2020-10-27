@@ -479,7 +479,7 @@ class ScholarshipAddEdit extends React.Component{
         ];
         scholarshipEditPages = scholarshipEditPages.slice(0, is_atila_direct_application ? scholarshipEditPages.length : 2);
 
-        const scholarshipSteps = (<Steps current={pageNumber-1} progressDot  onChange={(current) => this.changePage(current+1)}>
+        const scholarshipSteps = (<Steps current={pageNumber-1} onChange={(current) => this.changePage(current+1)}>
             { scholarshipEditPages.map(item => (
                 <Step key={item.title} title={item.title} />
             ))}
