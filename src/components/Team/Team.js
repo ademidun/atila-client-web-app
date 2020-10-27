@@ -7,6 +7,7 @@ import aaronImage from "./assets/aaron.jpg";
 import hadiImage from "./assets/hadi.jpg";
 import { Col, Row } from "antd";
 import HelmetSeo from "../HelmetSeo";
+import About from "../About";
 
 const teamMembers = [
   {
@@ -135,7 +136,7 @@ const Team = ({ showArray = null, showLinkedin = true, showSeo = true }) => {
   };
 
   let teamCards = teamMembers.map((member) => (
-    <Col xs={24} sm={12} md={8} lg={6} xl={4.8} key={member.first_name}>
+    <Col xs={24} sm={12} md={8} xl={4.8} key={member.first_name}>
       <TeamMemberCard teamMember={member} showLinkedin={showLinkedin} />
     </Col>
   ));
@@ -202,6 +203,7 @@ const Team = ({ showArray = null, showLinkedin = true, showSeo = true }) => {
             Or message us on any of our social media platforms, found at the bottom of this page.
           </Col>
         </Row>
+        <About hideTeam={true} />
       </div>
     </React.Fragment>
   );
