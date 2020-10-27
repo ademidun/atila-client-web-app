@@ -5,7 +5,6 @@ import {Link} from "react-router-dom";
 import ContentCard from "../../components/ContentCard";
 import ScholarshipCard from "../Scholarship/ScholarshipCard";
 import {AtilaDirectApplicationsPopover} from "../../models/Scholarship";
-import verifiedBadge from "../../components/assets/verified.png";
 
 function LandingPageContent({ title, description, contentList, contentType, link }) {
 
