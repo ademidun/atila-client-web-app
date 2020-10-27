@@ -12,7 +12,7 @@ import ScholarshipsAPI from "../../../services/ScholarshipsAPI";
 import {ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT, ATILA_SCHOLARSHIP_FEE} from "../../../models/Constants";
 import {formatCurrency, getErrorMessage} from "../../../services/utils";
 import PaymentAPI from "../../../services/PaymentAPI";
-import {ScholarshipPropType} from "../../../models/Scholarship";
+import {ScholarshipDisableEditMessage, ScholarshipPropType} from "../../../models/Scholarship";
 import PropTypes from "prop-types";
 
 export const PREMIUM_PRICE_BEFORE_TAX = 9;
@@ -247,8 +247,11 @@ class PaymentSendForm extends React.Component {
                                 <Alert
                                     type="error"
                                     message={isResponseErrorMessageWithContactLink}
+                                    className="mb-3"
                                 />
                                 }
+
+                                <ScholarshipDisableEditMessage />
 
                             </form>}
                         </Col>

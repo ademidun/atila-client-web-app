@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import {UserProfileTest1} from "./UserProfile";
 import {Link} from "react-router-dom";
 import React from "react";
-import {Popover} from "antd";
+import {Alert, Popover} from "antd";
 
 let nextMonth = new Date();
 nextMonth.setDate(nextMonth.getDate() + 30);
@@ -114,6 +114,7 @@ export let DEFAULT_SCHOLARSHIP = {
     metadata: {},
     eligible_schools: [],
     is_atila_direct_application: false,
+    is_editable: true,
     eligible_programs: [],
     email_contact: '',
     activities: [],
@@ -154,4 +155,12 @@ export const AtilaDirectApplicationsPopover = ({children, title="What is Atila D
         {children}
     </Popover>
 
+);
+
+export const ScholarshipDisableEditMessage = () => (
+    <Alert
+        type="info"
+        message={"Once scholarship is funded and published: deadline, fuding amount, eligibility, and specific questions cannot be changed directly. " +
+        "\nIf you want to change any of those fields, please contact us (you can use the chat box in the bottom right)."}
+    />
 );

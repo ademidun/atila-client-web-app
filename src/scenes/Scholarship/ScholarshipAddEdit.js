@@ -1,5 +1,6 @@
 import React from 'react';
 import {Helmet} from "react-helmet";
+import $ from 'jquery';
 import FormDynamic from "../../components/Form/FormDynamic";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import {connect} from "react-redux";
@@ -9,7 +10,7 @@ import {MAJORS_LIST, SCHOOLS_LIST} from "../../models/ConstantsForm";
 import {scholarshipUserProfileSharedFormConfigs, toastNotify} from "../../models/Utils";
 import {
     AtilaDirectApplicationsPopover,
-    DEFAULT_SCHOLARSHIP
+    DEFAULT_SCHOLARSHIP, ScholarshipDisableEditMessage
 } from "../../models/Scholarship";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -188,7 +189,16 @@ class ScholarshipAddEdit extends React.Component{
     }
 
     changePage = (pageNumber) => {
-        this.setState({pageNumber})
+        const { scholarship } = this.state;
+        this.setState({pageNumber}, () => {
+            /**
+             * Call this.disableScholarshipInputs() on each page change because we are using jquery to disable
+             * certain inputs and those inputs may not yet be rendered until a new page is shown.
+             */
+            if (!scholarship.is_editable) {
+                this.disableScholarshipInputs();
+            }
+        })
     };
 
     componentDidMount() {
@@ -221,6 +231,9 @@ class ScholarshipAddEdit extends React.Component{
         ScholarshipsAPI.getSlug(slug)
             .then(res => {
                 const scholarship = ScholarshipsAPI.cleanScholarship(res.data);
+                if (!scholarship.is_editable) {
+                    this.disableScholarshipInputs();
+                }
                 this.setState({ scholarship }, () => {
                     this.initializeLocations();
                 });
@@ -279,6 +292,30 @@ class ScholarshipAddEdit extends React.Component{
         });
 
 
+    };
+
+    /**
+     * If the scholarship is a direct application and has been published, scholarship.is_editable should be false.
+     * Therefore deadline, eligibility and specific questions should be disabled.
+     * @param scholarship
+     */
+    disableScholarshipInputs = (scholarship) => {
+        /**
+         * Disable inputs after a brief timeout to ensure that elements have loaded before jquery adds the disabled prop.
+         */
+        setTimeout(() => {
+
+            $("[name='is_atila_direct_application']").prop("disabled", true);
+            $("[name='deadline']").prop("disabled", true);
+            $("[name='funding_amount']").prop("disabled", true);
+            $(".scholarship-eligibility-questions :input").prop("disabled", true);
+            $(".scholarship-specific-questions :input").prop("disabled", true);
+            // This last ones is just to make sure that the remaining elements (i.e. remove scholarhsip button
+            // and remove locations) are also disabled.
+            $(".scholarship-specific-questions").css("pointer-events","none");
+            $(".scholarship-eligibility-questions").css("pointer-events","none");
+
+        }, 100);
     };
 
     updateForm = (event) => {
@@ -407,6 +444,9 @@ class ScholarshipAddEdit extends React.Component{
             .then(res => {
                 this.setState({isAddScholarshipMode: false});
                 const savedScholarship = ScholarshipsAPI.cleanScholarship(res.data);
+                if (!savedScholarship.is_editable) {
+                    this.disableScholarshipInputs();
+                }
                 this.setState({ scholarship: savedScholarship });
 
                 if (isAddScholarshipMode) {
@@ -486,11 +526,12 @@ class ScholarshipAddEdit extends React.Component{
         </Steps>);
 
         const title = isAddScholarshipMode ? 'Add Scholarship' : 'Edit Scholarship';
+        const helmetTitle = `${title}${scholarship? ": " + scholarship.name : ""}`;
         return (
             <div className="ScholarshipAddEdit">
                 <Helmet>
                     <meta charSet="utf-8" />
-                    <title>{title} - Atila</title>
+                    <title>{helmetTitle} - Atila</title>
                 </Helmet>
                 <div className="container mt-5">
                     {isLoadingScholarship && <Loading  title="Loading Scholarships..."/>}
@@ -502,6 +543,7 @@ class ScholarshipAddEdit extends React.Component{
                         </Link>
                         }
                         {!isAddScholarshipMode && updatedAtDate}
+                        {!scholarship.is_editable && <ScholarshipDisableEditMessage />}
                         <hr/>
                         {scholarshipSteps}
                         {!userProfile &&
@@ -521,47 +563,47 @@ class ScholarshipAddEdit extends React.Component{
                         </div>
                         }
                         {pageNumber === 2 &&
-                        <div className="my-3">
+                        <div className="my-3 scholarship-eligibility-questions">
                             <h6>Leave blank for each criteria that is open to any</h6>
-                            {locationData && locationData.length > 0 &&
-                            <div>
-                                <h3 >Locations</h3>
-                                <table className="table">
-                                    <thead>
-                                    <tr>
-                                        {['city','province','country'].map(location =>
-                                            <th key={location}>{prettifyKeys(location)}</th>)
-                                        }
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {locationData.map((locationItem, index) => <tr key={index}>
+                                {locationData && locationData.length > 0 &&
+                                <div>
+                                    <h3 >Locations</h3>
+                                    <table className="table">
+                                        <thead>
+                                        <tr>
                                             {['city','province','country'].map(location =>
-                                                <td key={location}>{locationItem[location]}</td>
-                                            )}
-                                            <td>
-                                                <button className="btn btn-outline-primary"
-                                                        onClick={()=> this.removeLocationData(index)}>
-                                                    <FontAwesomeIcon icon={faTrash} />
-                                                </button>
-                                            </td>
+                                                <th key={location}>{prettifyKeys(location)}</th>)
+                                            }
                                         </tr>
-                                    )}
-                                    </tbody>
-                                </table>
-                            </div>
+                                        </thead>
+                                        <tbody>
+                                        {locationData.map((locationItem, index) => <tr key={index}>
+                                                {['city','province','country'].map(location =>
+                                                    <td key={location}>{locationItem[location]}</td>
+                                                )}
+                                                <td>
+                                                    <button className="btn btn-outline-primary"
+                                                            onClick={()=> this.removeLocationData(index)}>
+                                                        <FontAwesomeIcon icon={faTrash} />
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        )}
+                                        </tbody>
+                                    </table>
+                                </div>
 
-                            }
-                            <FormDynamic model={scholarship}
-                                         inputConfigs={scholarshipFormConfigsPage2}
-                                         onUpdateForm={this.updateForm}
-                                         formError={scholarshipPostError}
-                                         onSubmit={this.submitForm}
-                            />
+                                }
+                                <FormDynamic model={scholarship}
+                                             inputConfigs={scholarshipFormConfigsPage2}
+                                             onUpdateForm={this.updateForm}
+                                             formError={scholarshipPostError}
+                                             onSubmit={this.submitForm}
+                                />
 
                         </div>}
                         {pageNumber === 3 &&
-                        <div className="mt-3 mb-5">
+                        <div className="mt-3 mb-5 scholarship-specific-questions">
                             <h3>User Profile Questions</h3>
                                 <ScholarshipUserProfileQuestionBuilder scholarship={scholarship}
                                                                        onUpdate={this.updateForm} />
