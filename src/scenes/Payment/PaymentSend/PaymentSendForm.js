@@ -75,8 +75,7 @@ class PaymentSendForm extends React.Component {
 
                 if (cardPaymentResult.error) {
                     // Show error to your customer (e.g., insufficient funds)
-                    console.log(cardPaymentResult.error.message);
-                    this.setState({isResponseErrorMessage: getErrorMessage(cardPaymentResult)});
+                    this.setState({isResponseErrorMessage: cardPaymentResult.error.message});
                 } else {
                     // The payment has been processed!
                     if (cardPaymentResult.paymentIntent.status === 'succeeded') {
@@ -89,6 +88,8 @@ class PaymentSendForm extends React.Component {
                             })
                             .catch(err => {
                                 console.log({err});
+
+                                this.setState({isResponseErrorMessage: getErrorMessage(err)});
                             })
                             .finally(() => {
                                 this.setState({isLoading: 'Saving Progress'});
