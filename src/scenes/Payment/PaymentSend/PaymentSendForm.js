@@ -120,9 +120,9 @@ class PaymentSendForm extends React.Component {
 
     render() {
         const { userProfile, scholarship } = this.props;
-        if (!userProfile || !userProfile.is_debug_mode) {
+        if (!userProfile) {
             return (<h3>
-                You do not have permission to access this page yet.
+                You do not have permission to access this page.
             </h3>)
         }
 
