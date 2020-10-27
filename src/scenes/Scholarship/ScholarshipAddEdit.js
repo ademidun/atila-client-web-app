@@ -96,8 +96,9 @@ let scholarshipFormConfigsPage1 = [
     {
         keyName: 'deadline',
         type: 'datetime-local',
-        html: () =>(<label htmlFor="deadline">
+        html: (scholarship) =>(<label htmlFor="deadline">
             Deadline <span role="img" aria-label="clock emoji">🕐</span>
+            {scholarship.deadline && <small>We recommend picking a deadline within the next two months</small>}
         </label>),
     },
 
