@@ -8,10 +8,10 @@ import ImageGallery from "react-image-gallery";
 
 const aboutContent = [
     {
-        title: "Founded to solve a problem",
+        title: "Inspired by a Problem",
         body: <React.Fragment>
 
-            Atila was founded in 2018 in his second-last year Western University when he realized that his program
+            Atila was founded in 2018 by Tomiwa Ademidun in his second-last year at Western University when he realized that his program
             was the most expensive undergrad program in Canada and he would be graduating with about $65,000 in student loans.
 
         </React.Fragment>,
@@ -19,7 +19,7 @@ const aboutContent = [
         imageCaption: "Picture of Tomiwa's student loans",
     },
     {
-        title: "Solving the Problem for all students",
+        title: "Solving the Problem for all Students",
         body: <React.Fragment>
             <div className="text-muted ml-3">
                 "As the child of immigrants from a middle-class family,
