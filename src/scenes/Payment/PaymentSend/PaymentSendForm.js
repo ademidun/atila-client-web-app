@@ -75,7 +75,12 @@ class PaymentSendForm extends React.Component {
 
                 if (cardPaymentResult.error) {
                     // Show error to your customer (e.g., insufficient funds)
-                    this.setState({isResponseErrorMessage: cardPaymentResult.error.message});
+                    let isResponseErrorMessage = cardPaymentResult.error.message;
+                    if (cardPaymentResult.error.message.includes("postal code is incomplete")) {
+                        isResponseErrorMessage += "\nHint: If you can't see the field to enter your postal code," +
+                            " try selecting your expiry date."
+                    }
+                    this.setState({isResponseErrorMessage});
                 } else {
                     // The payment has been processed!
                     if (cardPaymentResult.paymentIntent.status === 'succeeded') {
@@ -131,7 +136,7 @@ class PaymentSendForm extends React.Component {
             isPaymentSuccess,
             isResponseErrorMessage, totalPaymentAmount} = this.state;
 
-        const isResponseErrorMessageWithContactLink = (<div>
+        const isResponseErrorMessageWithContactLink = (<div style={{whiteSpace: "pre-line"}}>
             {isResponseErrorMessage}
             <br /> <Link to="/contact"> Contact us</Link> if problem continues
         </div>);
