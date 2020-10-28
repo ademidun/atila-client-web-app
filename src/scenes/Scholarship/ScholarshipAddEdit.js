@@ -79,7 +79,7 @@ let scholarshipFormConfigsPage1 = [
     {
         keyName: 'img_url',
         placeholder: 'Scholarship Image URL',
-        type: 'url',
+        type: 'image',
     },
     {
         keyName: 'funding_amount',

@@ -1,5 +1,10 @@
 # Changelog
 
+## Added Firebase Storage to Site 
+- Followed similar path used in https://github.com/ademidun/homes-like-this-web-app/blob/6c3e4c4fdf2fd1615e33c6e3830c2fc860f5e7b1/src/scenes/HomeSearch/HomeSearch.js#L217
+
+
+
 ## October 4, 2020
 ### Atila Direct Applications
 - Changing the business model of Atila to charging 5% on

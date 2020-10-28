@@ -8,6 +8,7 @@ import LocationSearchInput from "../LocationSearchInput/LocationSearchInput";
 import CKEditor from "@ckeditor/ckeditor5-react";
 import InlineEditor from "@ckeditor/ckeditor5-build-inline";
 import "./FormDynamicInput.scss";
+import FileInput from "./FileInput";
 
 const editorChange = ( event, editor, name, updateForm ) => {
     const newEvent = {
@@ -158,6 +159,31 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
                     />
                 </div>
             );
+            break;
+        case 'file':
+        case 'image':
+            inputForm = (<div className="col-12 my-3">
+                {placeholder && <label htmlFor={keyName}>
+                    {placeholder}
+                </label>}
+                <FileInput title={placeholder} keyName={keyName} onChangeHandler={onUpdateForm} />
+                {type === "image" && <img src={modelValue} alt={placeholder} width="250" className="card center-block my-3"/> }
+
+                <div className="floating mb-3">
+                    <input placeholder={placeholder}
+                           className="col-12 form-control floating__input"
+                           name={keyName}
+                           value={modelValue}
+                           onChange={onUpdateForm}
+                           type="url"
+                    />
+                    <label htmlFor="input__username" className="floating__label" data-content={placeholder}>
+                            <span className="hidden--visually">
+                              {placeholder}
+                            </span>
+                    </label>
+                </div>
+            </div>);
             break;
         default:
             inputForm = (
