@@ -236,6 +236,11 @@ class ScholarshipDetail extends React.Component {
             </Button>)
         }
 
+        if(scholarshipUserProfile && userProfile &&
+            userProfile.user === scholarshipUserProfile.user) {
+            applyToScholarshipButton = null;
+        }
+
         return (
             <React.Fragment>
                 <HelmetSeo content={genericItemTransform(scholarship)} />
@@ -257,7 +262,7 @@ class ScholarshipDetail extends React.Component {
                                         className="rounded-circle"
                                         src={verifiedBadge} />} />}
                             </h1>
-                            <div style={{fontSize: "25px", fontWeight: "normal"}} className="text-center mb-3">
+                            <div style={{fontSize: "15px", fontWeight: "normal"}} className="text-center mb-3">
                                 (Hint: Hover over or click the blue check to learn why this scholarship has a blue check.)
                             </div>
 
