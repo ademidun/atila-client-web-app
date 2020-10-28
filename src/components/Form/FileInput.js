@@ -103,5 +103,6 @@ export default FileInput;
 FileInput.propTypes = {
     keyName: PropTypes.string,
     title: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
     onChangeHandler: PropTypes.func.isRequired,
 };
