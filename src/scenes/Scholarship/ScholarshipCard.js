@@ -79,19 +79,19 @@ class ScholarshipCard extends React.Component {
                         </div>
                         <div className={isOneColumn ? null: "col-md-8"}>
                             <div className="card-body" style={{maxHeight: '500px', overflow: 'auto'}}>
+                                <h1 className="card-title text-left">
                                 <Link to={`/scholarship/${slug}`}>
-                                    <h1 className="card-title text-left">
-                                        {name}{' '}
-                                        {scholarship.is_atila_direct_application &&
-                                        <AtilaDirectApplicationsPopover
-                                            title="This is a verified Atila Direct Application Scholarship"
-                                            children={<img
-                                                alt="user profile"
-                                                style={{ width:'25px' }}
-                                                className="rounded-circle"
-                                                src={verifiedBadge} />} />}
-                                    </h1>
-                                </Link>
+                                        {name}
+                                </Link>{' '}
+                                    {scholarship.is_atila_direct_application &&
+                                    <AtilaDirectApplicationsPopover
+                                        title="This is a verified Atila Direct Application Scholarship"
+                                        children={<img
+                                            alt="user profile"
+                                            style={{ width:'25px' }}
+                                            className="rounded-circle"
+                                            src={verifiedBadge} />} />}
+                                </h1>
                                 <p className="card-text">
                                     <ScholarshipDeadlineWithTags scholarship={scholarship} />
                                     <br/>
