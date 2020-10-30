@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 import {Button, Tag} from "antd";
+import LandingPageLiveDemo from "./LandingPageLiveDemo";
 
 function HowItWorks({accountType}) {
 
@@ -151,9 +152,21 @@ export function HowItWorksSponsor({hideLearnMore = false}) {
                 </Link>
             </h5>
             }
+            {/*Hide Learn More is true on the /start page. Which is when we want to show the demo first
+            Otherwise, when used elsewhere, we want to show the demo after the screenshots*/}
+            {hideLearnMore &&
+            <LandingPageLiveDemo />
+            }
             <div>
             <DescriptionsWithScreenshots items={howItWorksSponsorItems} />
             </div>
+
+            {/*Hide Learn More is true on the /start page. Which is when we want to show the demo first
+            Otherwise, when used elsewhere, we want to show the demo after the screenshots*/}
+            {!hideLearnMore &&
+                <LandingPageLiveDemo />
+            }
+
 
             {!hideLearnMore &&
             <h1 className="col-sm-12 text-center">
@@ -167,6 +180,7 @@ export function HowItWorksSponsor({hideLearnMore = false}) {
                 </Link>
             </Button>
             }
+
         </div>
     )
 }
