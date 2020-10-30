@@ -97,7 +97,10 @@ export function HowItWorksSponsor({hideLearnMore = false}) {
         },
         {
         title: "Fund Scholarship",
-        body: "Fund the scholarship with a credit card or debit card.",
+            body: <p>Fund the scholarship with a credit card or debit card.
+                <br/><br/>
+        The minimum funding amount for a scholarship is just $50.
+        </p>,
             image: "https://i.imgur.com/kgpSskJ.png",
         },
         {

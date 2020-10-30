@@ -81,7 +81,7 @@ export function PricingExample() {
 
     return (
         <div className="p-lg-3">
-            <h3>Pricing Example</h3>
+            <h3><Link to="/pricing">Pricing</Link> Example</h3>
             <div>
                 <p>
                     Here is an example to understand the pricing structure for Atila:
