@@ -24,6 +24,7 @@ class PaymentAccept extends React.Component {
         this.state = {
             isLoading: null,
             currentPaymentAcceptanceStep: ALL_PAYMENT_ACCEPTANCE_STEPS[0],
+            currentPaymentAcceptanceStepIndex: 0,
             application: null,
             scholarship: null,
         }
@@ -178,6 +179,26 @@ class PaymentAccept extends React.Component {
 
     };
 
+    nextStep = () => {
+        const { currentPaymentAcceptanceStepIndex, currentPaymentAcceptanceStep } = this.state;
+
+        this.setState({
+            isLoading: `Loading ${prettifyKeys(currentPaymentAcceptanceStep)} step`,
+        });
+
+        setTimeout(() => {
+
+            this.setState({
+                currentPaymentAcceptanceStepIndex: currentPaymentAcceptanceStepIndex + 1,
+                currentPaymentAcceptanceStep: ALL_PAYMENT_ACCEPTANCE_STEPS[currentPaymentAcceptanceStepIndex + 1],
+                isLoading: false
+            })
+
+        }, 1000);
+
+
+    };
+
     updateScholarship = () => {
         // This function sets Scholarship.is_payment_accepted to True
         const { scholarship } = this.state;
@@ -265,7 +286,7 @@ class PaymentAccept extends React.Component {
                                 <Input value={application.accept_payment_email_verification_code} placeholder="Email Verification Code" />
                             </Col>
                             <Col span={24}>
-                                <Button onClick={()=>{}}
+                                <Button onClick={()=>{this.nextStep()}}
                                         className="center-block mt-3"
                                         type="primary"
                                         disabled={isLoading || currentPaymentAcceptanceStep !== ALL_PAYMENT_ACCEPTANCE_STEPS[0]}>
@@ -277,7 +298,7 @@ class PaymentAccept extends React.Component {
                                 <Input value={application.accept_payment_phone_number} placeholder="Phone Number" />
                             </Col>
                             <Col span={24}>
-                                <Button onClick={()=>{}}
+                                <Button onClick={()=>{this.nextStep()}}
                                         className="center-block mt-3"
                                         type="primary"
                                         disabled={isLoading || currentPaymentAcceptanceStep !== ALL_PAYMENT_ACCEPTANCE_STEPS[1]}>
@@ -288,7 +309,7 @@ class PaymentAccept extends React.Component {
                                 <Input value={application.accept_payment_email_verification_code}  placeholder="Phone Number Verification Code"/>
                             </Col>
                             <Col span={24}>
-                                <Button onClick={()=>{}}
+                                <Button onClick={()=>{this.nextStep()}}
                                         className="center-block mt-3"
                                         type="primary"
                                         disabled={isLoading || currentPaymentAcceptanceStep !== ALL_PAYMENT_ACCEPTANCE_STEPS[1]}>
@@ -303,22 +324,25 @@ class PaymentAccept extends React.Component {
                                 />
                             </Col>
                             <Col span={24}>
-                                <Button onClick={()=>{}}
+                                <Button onClick={()=>{this.nextStep()}}
                                         className="center-block mt-3"
                                         type="primary"
                                         disabled={isLoading || currentPaymentAcceptanceStep !== ALL_PAYMENT_ACCEPTANCE_STEPS[2]}>
                                     Send Thank You Email
                                 </Button>
                             </Col>
+                            <div className="center-block">
+                                {isLoading &&
+                                <Loading title={isLoading} />
+                                }
 
-                            <Col span={24}>
-                                <Button onClick={()=>{}}
-                                        className="center-block mt-3"
-                                        type="primary"
-                                        disabled={isLoading || currentPaymentAcceptanceStep !== ALL_PAYMENT_ACCEPTANCE_STEPS[3]}>
-                                    Accept Payment
-                                </Button>
-                            </Col>
+                                {currentPaymentAcceptanceStep === ALL_PAYMENT_ACCEPTANCE_STEPS[3] &&
+                                <p className="text-success">
+                                    Success! You've completed the payment acceptance step and your money will be
+                                    sent to you within 24 hours.
+                                </p>
+                                }
+                            </div>
 
                         </Row>
                     </div>

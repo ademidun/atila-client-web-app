@@ -1,6 +1,7 @@
 import React from "react";
 import HelmetSeo from "../../components/HelmetSeo";
 import {Link} from "react-router-dom";
+import LandingPageLiveDemo from "../LandingPage/LandingPageLiveDemo";
 
 function HowToApplyForScholarships() {
 
@@ -25,6 +26,8 @@ function HowToApplyForScholarships() {
                             Interested in how to start a scholarship?
                         </Link>
                     </h5>
+
+                    <LandingPageLiveDemo youtubeVideoId="xC4e7J2sxuI" title="How to Start a Scholarship on Atila" />
 
                     <ol>
                         <li>Create your profile to find scholarships you qualify for.<br /><br /></li>

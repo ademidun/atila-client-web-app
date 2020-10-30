@@ -74,6 +74,9 @@ export function HowItWorksStudent() {
 
                 <DescriptionsWithScreenshots items={howItWorksStudent} />
 
+
+                <LandingPageLiveDemo youtubeVideoId="xC4e7J2sxuI" title="How to Start a Scholarship on Atila" />
+
                 <h1 className="col-sm-12 text-center">
                     <Link to="/apply"> Learn More </Link>
                 </h1>
