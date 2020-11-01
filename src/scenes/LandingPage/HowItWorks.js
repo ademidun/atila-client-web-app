@@ -110,7 +110,7 @@ export function HowItWorksSponsor({hideLearnMore = false}) {
         {
         title: "Promote Scholarship",
         body: "Atila will help you promote your scholarship to our network of over 100 schools and student organizations.",
-        image: "https://i.imgur.com/a3u6UV9.png",
+        image: "https://i.imgur.com/0ZOKqSz.png",
         imageCaption: "A few examples of the organizations we notify when scholarships relevant to their students are launched.",
         },
         {
