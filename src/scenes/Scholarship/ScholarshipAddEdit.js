@@ -397,7 +397,7 @@ class ScholarshipAddEdit extends React.Component{
         const { scholarship } = this.state;
         this.setState({isLoadingScholarship: true});
         ScholarshipsAPI
-            .patch(scholarship.id, {published: true})
+            .publishScholarship(scholarship.id, {})
             .then(res => {
                 const { data: scholarship} = res;
                 this.setState({scholarship});
