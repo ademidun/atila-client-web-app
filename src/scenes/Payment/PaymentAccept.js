@@ -228,6 +228,10 @@ class PaymentAccept extends React.Component {
             })
     }
 
+    sendVerificationEmail = () => {
+
+    }
+
     render () {
 
         const { userProfile } = this.props;
@@ -283,7 +287,9 @@ class PaymentAccept extends React.Component {
                                 <Input value={userProfile.email} disabled={true}/>
                             </Col>
                             <Col span={24}>
-                                <Input value={application.accept_payment_email_verification_code} placeholder="Email Verification Code" />
+                                <Input value={application.accept_payment_email_verification_code}
+                                       placeholder="Email Verification Code"
+                                        onClick={this.sendVerificationEmail}/>
                             </Col>
                             <Col span={24}>
                                 <Button onClick={()=>{this.nextStep()}}
