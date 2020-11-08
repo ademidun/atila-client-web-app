@@ -11,6 +11,7 @@ import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import {Link} from "react-router-dom";
 import InlineEditor from "@ckeditor/ckeditor5-build-inline";
 import CKEditor from "@ckeditor/ckeditor5-react";
+import {toastNotify} from "../../models/Utils";
 
 const { Step } = Steps;
 
@@ -229,7 +230,25 @@ class PaymentAccept extends React.Component {
     }
 
     sendVerificationEmail = () => {
+        const { application } = this.state
+        const applicationID = application.id
 
+        this.setState({isLoading: "Sending Verification Email..."});
+        ApplicationsAPI
+            .sendVerificationEmail(applicationID, {})
+            .then(res=>{
+                const { data: application } = res;
+                const { scholarship } = application;
+
+                // this.afterSaveApplication(application, scholarship);
+            })
+            .catch(err => {
+                console.log({err});
+                toastNotify(`🙁 An error occured, check your connection!`, 'error');
+            })
+            .finally(() => {
+                this.setState({isLoading: null});
+            })
     }
 
     render () {
