@@ -289,7 +289,7 @@ class PaymentAccept extends React.Component {
                             <Col span={24}>
                                 <Input value={application.accept_payment_email_verification_code}
                                        placeholder="Email Verification Code"
-                                        onClick={this.sendVerificationEmail}/>
+                                        onClick={()=>{this.sendVerificationEmail()}}/>
                             </Col>
                             <Col span={24}>
                                 <Button onClick={()=>{this.nextStep()}}
