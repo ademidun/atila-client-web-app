@@ -328,7 +328,12 @@ class PaymentAccept extends React.Component {
 
     acceptPaymentStep = () => {
         return (
-            <div>Accept Payment Step Template</div>
+            <div>
+                <p className="text-success">
+                    Success! You've completed the payment acceptance step and your money will be
+                    sent to you within 24 hours.
+                </p>
+            </div>
         )
     }
 
