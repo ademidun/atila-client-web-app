@@ -210,6 +210,10 @@ class PaymentAccept extends React.Component {
     }
 
     verifyEmail = () => {
+        // This function verifies the email code typed in
+
+        const { application } = this.state
+        const applicationID = application.id
 
     }
 
