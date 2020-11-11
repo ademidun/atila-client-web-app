@@ -641,15 +641,9 @@ class ScholarshipAddEdit extends React.Component{
                             </button>
                         }
                         {!scholarship.published && scholarship.is_atila_direct_application &&
-                        <Button
-                            type="primary"
-                            className="col-12 mt-2"
-                            onClick={this.publishScholarship}
-                            disabled={!scholarship.is_funded}>
-                            Publish {!scholarship.is_funded ?
-                            <React.Fragment><br/>(You must fund scholarship before publishing)</React.Fragment>:
-                            ""}
-                        </Button>
+                        <p className="text-muted center-block">
+                            Funding your scholarship will make it public and go live!
+                        </p>
                         }
                         {scholarship.published &&
                         <p className="text-muted center-block">
