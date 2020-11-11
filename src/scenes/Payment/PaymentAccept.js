@@ -260,7 +260,7 @@ class PaymentAccept extends React.Component {
                     <Input value={userProfile.email} disabled={true}/>
                 </Col>
                 <Col span={24}>
-                    <Input placeholder="Email Verification Code" />
+                    <Input id="code" placeholder="Email Verification Code" />
                 </Col>
                 <Col span={24}>
                     <Button onClick={()=>{this.resendVerificationEmail()}}
@@ -270,7 +270,9 @@ class PaymentAccept extends React.Component {
                     >
                         Resend Email Verification Code
                     </Button>
-                    <Button onClick={()=>{this.verifyEmailCode("123456")}}
+                    {/*There might be a cleaner method to reference the input value than
+                    document.getElementById('code').value.*/}
+                    <Button onClick={()=>{this.verifyEmailCode(document.getElementById('code').value)}}
                             className="center-block mt-3"
                             type="primary"
                             disabled={isLoading}
