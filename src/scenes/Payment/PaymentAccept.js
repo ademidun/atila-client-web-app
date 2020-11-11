@@ -185,7 +185,7 @@ class PaymentAccept extends React.Component {
             })
     }
 
-    sendVerificationEmail = () => {
+    resendVerificationEmail = () => {
         // This function sends a verification email to the application email.
 
         const { application } = this.state
@@ -193,7 +193,7 @@ class PaymentAccept extends React.Component {
 
         this.setState({isLoading: "Sending Verification Email..."});
         ApplicationsAPI
-            .sendVerificationEmail(applicationID, {})
+            .resendVerificationEmail(applicationID, {})
             .then(res=>{
                 const { application } = res.data;
                 const { scholarship } = res.data;
@@ -246,7 +246,7 @@ class PaymentAccept extends React.Component {
 
     verifyEmailStep = () => {
         const { userProfile } = this.props
-        const { application, isLoading } = this.state
+        const { isLoading } = this.state
 
         return (
             <Row gutter={[{ xs: 8, sm: 16}, 16]}>
@@ -263,12 +263,12 @@ class PaymentAccept extends React.Component {
                     <Input placeholder="Email Verification Code" />
                 </Col>
                 <Col span={24}>
-                    <Button onClick={()=>{this.sendVerificationEmail()}}
+                    <Button onClick={()=>{this.resendVerificationEmail()}}
                             className="center-block mt-3"
                             type="primary"
                             disabled={isLoading}
                     >
-                        Send Email Verification Code
+                        Resend Email Verification Code
                     </Button>
                     <Button onClick={()=>{this.verifyEmailCode("123456")}}
                             className="center-block mt-3"
