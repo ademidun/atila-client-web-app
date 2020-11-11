@@ -104,7 +104,6 @@ class ScholarshipsList extends React.Component {
         const {
             userProfile,
             location: { pathname },
-            location,
         } = this.props;
 
         const { scholarships, totalScholarshipsCount, scholarshipsScoreBreakdown } = this.state;
