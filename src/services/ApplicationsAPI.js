@@ -119,6 +119,17 @@ class ApplicationsAPI {
 
         return apiCompletionPromise
     };
+
+    static verifyEmail = (id, data) => {
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: data,
+            url: `${this.applicationsApiUrl}/${id}/verify-email/`
+        });
+
+        return apiCompletionPromise
+    };
 }
 
 export default ApplicationsAPI;
