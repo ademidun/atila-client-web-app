@@ -50,7 +50,9 @@ class PaymentSendForm extends React.Component {
         ScholarshipsAPI
             .publishScholarship(scholarship.id, data)
             .then(res => {
-                const { data: scholarship} = res;
+                const { scholarship } = res.data;
+                console.log(" NEW  SCHOLARSHIP ")
+                console.log(scholarship)
                 updateScholarship(scholarship)
             })
             .catch(err => {
@@ -65,7 +67,7 @@ class PaymentSendForm extends React.Component {
 
     handleSubmit = async (ev) => {
         ev.preventDefault();
-        const { stripe, userProfile, scholarship, updateScholarship } = this.props;
+        const { stripe, userProfile, scholarship } = this.props;
 
         const { first_name, last_name, email } = userProfile;
         const fullName = `${first_name} ${last_name}`;

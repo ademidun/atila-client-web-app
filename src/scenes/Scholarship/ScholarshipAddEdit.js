@@ -15,7 +15,7 @@ import {
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Link} from "react-router-dom";
-import {Button, Steps, Tag} from "antd";
+import {Steps, Tag} from "antd";
 import ScholarshipQuestionBuilder, {ScholarshipUserProfileQuestionBuilder} from "./ScholarshipQuestionBuilder";
 import PaymentSend from "../Payment/PaymentSend/PaymentSend";
 const { Step } = Steps;
