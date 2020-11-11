@@ -15,7 +15,7 @@ import {toastNotify} from "../../models/Utils";
 
 const { Step } = Steps;
 
-const ALL_PAYMENT_ACCEPTANCE_STEPS = ["verify_email","verify_phone_number", "send_thank_you_email", "accept_payment"];
+const ALL_PAYMENT_ACCEPTANCE_STEPS = ["verify_email", "security_question", "proof_of_enrolment", "thank_you_email","accept_payment"];
 
 class PaymentAccept extends React.Component {
 
@@ -251,6 +251,87 @@ class PaymentAccept extends React.Component {
             })
     }
 
+    verifyEmailStep = () => {
+        const { userProfile } = this.props
+        const { application, isLoading } = this.state
+
+        return (
+            <Row gutter={[{ xs: 8, sm: 16}, 16]}>
+                <Col span={24}>
+                    <Input value={userProfile.first_name} disabled={true} />
+                </Col>
+                <Col span={24}>
+                    <Input value={userProfile.last_name} disabled={true} />
+                </Col>
+                <Col span={24}>
+                    <Input value={userProfile.email} disabled={true}/>
+                </Col>
+                <Col span={24}>
+                    <Input value={application.accept_payment_email_verification_code}
+                           placeholder="Email Verification Code"
+                    />
+                </Col>
+                <Col span={24}>
+                    <Button onClick={()=>{this.nextStep()}}
+                            className="center-block mt-3"
+                            type="primary"
+                            disabled={isLoading}
+                    >
+                        Send Email Verification Code
+                    </Button>
+                    <Button onClick={()=>{this.nextStep()}}
+                            className="center-block mt-3"
+                            type="primary"
+                            disabled={isLoading}
+                    >
+                        Verify Email
+                    </Button>
+                </Col>
+            </Row>
+        )
+    }
+
+    securityQuestionStep = () => {
+        return (
+            <div>Security Question Step Template</div>
+        )
+    }
+
+    proofOfEnrolmentStep = () => {
+        return (
+            <div>Proof of Enrolment Step Template</div>
+        )
+    }
+
+    thankYouEmailStep = () => {
+        const { isLoading } = this.state
+
+        return (
+            <Row gutter={[{ xs: 8, sm: 16}, 16]}>
+                <Col span={24}>
+                    <CKEditor
+                        editor={ InlineEditor }
+                        data={"Thank You Letter"}
+                    />
+                </Col>
+                <Col span={24}>
+                    <Button onClick={()=>{this.nextStep()}}
+                            className="center-block mt-3"
+                            type="primary"
+                            disabled={isLoading}>
+                        Send Thank You Email
+                    </Button>
+                </Col>
+            </Row>
+        )
+    }
+
+    acceptPaymentStep = () => {
+        return (
+            <div>Accept Payment Step Template</div>
+        )
+    }
+
     render () {
 
         const { userProfile } = this.props;
@@ -295,77 +376,12 @@ class PaymentAccept extends React.Component {
                             <Link to={`/scholarship/${scholarship.slug}`}> {scholarship.name}</Link>
                         </h1>
 
-                        <Row gutter={[{ xs: 8, sm: 16}, 16]}>
-                            <Col span={24}>
-                                <Input value={userProfile.first_name} disabled={true} />
-                            </Col>
-                            <Col span={24}>
-                                <Input value={userProfile.last_name} disabled={true} />
-                            </Col>
-                            <Col span={24}>
-                                <Input value={userProfile.email} disabled={true}/>
-                            </Col>
-                            <Col span={24}>
-                                <Input value={application.accept_payment_email_verification_code}
-                                       placeholder="Email Verification Code"
-                                />
-                            </Col>
-                            <Col span={24}>
-                                <Button onClick={()=>{this.nextStep()}}
-                                        className="center-block mt-3"
-                                        type="primary"
-                                        disabled={isLoading || currentPaymentAcceptanceStep !== ALL_PAYMENT_ACCEPTANCE_STEPS[0]}>
-                                    Send Email Verification Code
-                                </Button>
-                                <Button onClick={()=>{this.nextStep()}}
-                                        className="center-block mt-3"
-                                        type="primary"
-                                        disabled={isLoading || currentPaymentAcceptanceStep !== ALL_PAYMENT_ACCEPTANCE_STEPS[0]}>
-                                    Verify Email
-                                </Button>
-                            </Col>
-                            <br/>
-                            <Col span={24}>
-                                <Input value={application.accept_payment_phone_number} placeholder="Phone Number" />
-                            </Col>
-                            <Col span={24}>
-                                <Button onClick={()=>{this.nextStep()}}
-                                        className="center-block mt-3"
-                                        type="primary"
-                                        disabled={isLoading || currentPaymentAcceptanceStep !== ALL_PAYMENT_ACCEPTANCE_STEPS[1]}>
-                                    Text me Verification Code
-                                </Button>
-                            </Col>
+                        {(application.current_payment_acceptance_step_index === 0) && this.verifyEmailStep()}
+                        {(application.current_payment_acceptance_step_index === 1) && this.securityQuestionStep()}
+                        {(application.current_payment_acceptance_step_index === 2) && this.proofOfEnrolmentStep()}
+                        {(application.current_payment_acceptance_step_index === 3) && this.thankYouEmailStep()}
+                        {(application.current_payment_acceptance_step_index === 4) && this.acceptPaymentStep()}
 
-                            <br/>
-                            <Col span={24}>
-                                <CKEditor
-                                    editor={ InlineEditor }
-                                    data={"Thank You Letter"}
-                                />
-                            </Col>
-                            <Col span={24}>
-                                <Button onClick={()=>{this.nextStep()}}
-                                        className="center-block mt-3"
-                                        type="primary"
-                                        disabled={isLoading || currentPaymentAcceptanceStep !== ALL_PAYMENT_ACCEPTANCE_STEPS[2]}>
-                                    Send Thank You Email
-                                </Button>
-                            </Col>
-                            <div className="center-block">
-                                {isLoading &&
-                                <Loading title={isLoading} />
-                                }
-
-                                {currentPaymentAcceptanceStep === ALL_PAYMENT_ACCEPTANCE_STEPS[3] &&
-                                <p className="text-success">
-                                    Success! You've completed the payment acceptance step and your money will be
-                                    sent to you within 24 hours.
-                                </p>
-                                }
-                            </div>
-
-                        </Row>
                     </div>
                 </div>
             </div>
