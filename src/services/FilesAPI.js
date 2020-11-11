@@ -10,7 +10,6 @@ export class FilesAPI {
 
     static uploadFile = (fileData) => {
 
-        console.log({event: fileData});
         const { file } = fileData;
         const storage = firebase.storage();
         const storageRef = storage.ref();

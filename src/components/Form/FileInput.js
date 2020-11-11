@@ -23,7 +23,6 @@ class FileInput extends React.Component{
 
         uploadTask.on(FilesAPI.FIREBASE_STATE_CHANGED,  (snapshot) => {
             const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-            console.log({progress});
 
             this.setState({ imageUploadProgress: progress });
         }, (error) => {
@@ -32,7 +31,6 @@ class FileInput extends React.Component{
         },  () => {
             uploadRef.getDownloadURL().then(userFileUrl => {
                 message.success(`${file.name} file uploaded successfully.`);
-                console.log({userFileUrl});
 
                 // The onChange Handler expects events in the format event.target.name and event.target.value
                 const onUploadEvent = {
