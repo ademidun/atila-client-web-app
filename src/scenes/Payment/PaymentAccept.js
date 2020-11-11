@@ -240,7 +240,7 @@ class PaymentAccept extends React.Component {
                 const { data: application } = res;
                 const { scholarship } = application;
 
-                // this.afterSaveApplication(application, scholarship);
+                this.afterSaveApplication(application, scholarship);
             })
             .catch(err => {
                 console.log({err});
@@ -308,9 +308,15 @@ class PaymentAccept extends React.Component {
                             <Col span={24}>
                                 <Input value={application.accept_payment_email_verification_code}
                                        placeholder="Email Verification Code"
-                                        onClick={()=>{this.sendVerificationEmail()}}/>
+                                />
                             </Col>
                             <Col span={24}>
+                                <Button onClick={()=>{this.nextStep()}}
+                                        className="center-block mt-3"
+                                        type="primary"
+                                        disabled={isLoading || currentPaymentAcceptanceStep !== ALL_PAYMENT_ACCEPTANCE_STEPS[0]}>
+                                    Send Email Verification Code
+                                </Button>
                                 <Button onClick={()=>{this.nextStep()}}
                                         className="center-block mt-3"
                                         type="primary"
@@ -330,17 +336,7 @@ class PaymentAccept extends React.Component {
                                     Text me Verification Code
                                 </Button>
                             </Col>
-                            <Col span={24}>
-                                <Input value={application.accept_payment_email_verification_code}  placeholder="Phone Number Verification Code"/>
-                            </Col>
-                            <Col span={24}>
-                                <Button onClick={()=>{this.nextStep()}}
-                                        className="center-block mt-3"
-                                        type="primary"
-                                        disabled={isLoading || currentPaymentAcceptanceStep !== ALL_PAYMENT_ACCEPTANCE_STEPS[1]}>
-                                    Verify Phone Number
-                                </Button>
-                            </Col>
+
                             <br/>
                             <Col span={24}>
                                 <CKEditor
