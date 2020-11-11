@@ -178,7 +178,7 @@ class PaymentAccept extends React.Component {
 
     };
 
-    nextStep = () => {
+    incrementStep = () => {
         const { application } = this.state;
 
         let new_index = application.current_payment_acceptance_step_index + 1
@@ -272,14 +272,14 @@ class PaymentAccept extends React.Component {
                     />
                 </Col>
                 <Col span={24}>
-                    <Button onClick={()=>{this.nextStep()}}
+                    <Button onClick={()=>{this.incrementStep()}}
                             className="center-block mt-3"
                             type="primary"
                             disabled={isLoading}
                     >
                         Send Email Verification Code
                     </Button>
-                    <Button onClick={()=>{this.nextStep()}}
+                    <Button onClick={()=>{this.incrementStep()}}
                             className="center-block mt-3"
                             type="primary"
                             disabled={isLoading}
@@ -315,7 +315,7 @@ class PaymentAccept extends React.Component {
                     />
                 </Col>
                 <Col span={24}>
-                    <Button onClick={()=>{this.nextStep()}}
+                    <Button onClick={()=>{this.incrementStep()}}
                             className="center-block mt-3"
                             type="primary"
                             disabled={isLoading}>
