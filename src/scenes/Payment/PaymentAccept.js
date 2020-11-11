@@ -47,9 +47,7 @@ class PaymentAccept extends React.Component {
             .then(res=>{
                 const { data: application } = res;
                 const { scholarship } = application;
-                this.setState({application, scholarship}, () => {
-                    this.updateCurrentPaymentAcceptanceStep();
-                });
+                this.setState({application, scholarship})
             })
             .catch(err => {
                 console.log({err});
@@ -181,22 +179,24 @@ class PaymentAccept extends React.Component {
     };
 
     nextStep = () => {
-        const { currentPaymentAcceptanceStepIndex, currentPaymentAcceptanceStep } = this.state;
+        const { application } = this.state;
 
-        this.setState({
-            isLoading: `Loading ${prettifyKeys(currentPaymentAcceptanceStep)} step`,
-        });
+        let new_index = application.current_payment_acceptance_step_index + 1
 
-        setTimeout(() => {
-
-            this.setState({
-                currentPaymentAcceptanceStepIndex: currentPaymentAcceptanceStepIndex + 1,
-                currentPaymentAcceptanceStep: ALL_PAYMENT_ACCEPTANCE_STEPS[currentPaymentAcceptanceStepIndex + 1],
-                isLoading: false
+        this.setState({isLoading: "Loading Next Step"});
+        ApplicationsAPI
+            .patch(application.id, {current_payment_acceptance_step_index: new_index})
+            .then(res => {
+                const { data: application } = res;
+                const { scholarship } = application;
+                this.setState({application, scholarship});
             })
-
-        }, 1000);
-
+            .catch(err => {
+                console.log({err});
+            })
+            .finally(() => {
+                this.setState({isLoading: null});
+            })
 
     };
 
@@ -373,7 +373,7 @@ class PaymentAccept extends React.Component {
                     }
                     <Steps type="navigation"
                         current={ALL_PAYMENT_ACCEPTANCE_STEPS
-                            .findIndex(step => step === currentPaymentAcceptanceStep)}>
+                            .findIndex(step => step === ALL_PAYMENT_ACCEPTANCE_STEPS[application.current_payment_acceptance_step_index])}>
                         {ALL_PAYMENT_ACCEPTANCE_STEPS.map(paymentAcceptanceStep => (
                             <Step key={paymentAcceptanceStep} title={prettifyKeys(paymentAcceptanceStep)} />
                         ))}
