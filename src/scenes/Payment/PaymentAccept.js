@@ -199,6 +199,8 @@ class PaymentAccept extends React.Component {
                 const { scholarship } = res.data;
 
                 this.setState({application, scholarship});
+
+                toastNotify('😃 Email was successfully sent! Check your inbox and spam for a verification code.')
             })
             .catch(err => {
                 console.log({err});
@@ -215,6 +217,31 @@ class PaymentAccept extends React.Component {
         const { application } = this.state
         const applicationID = application.id
 
+        this.setState({isLoading: "Verifying Code..."});
+        ApplicationsAPI
+            .verifyEmail(applicationID, {verification_code: 111111})
+            .then(res=> {
+                const {application} = res.data;
+                const {scholarship} = res.data;
+                const {result} = res.data
+
+                this.setState({application, scholarship});
+
+                if (result === "success"){
+                    toastNotify('😃 Email Verification Successful')
+                    this.incrementStep()
+                }
+                else {
+                    toastNotify(`🙁 That wasn't the code we're looking for. Try again or resend verification code!`, 'error');
+                }
+            })
+            .catch(err => {
+                    console.log({err});
+                    toastNotify(`🙁 An error occured, check your connection!`, 'error');
+            })
+            .finally(() => {
+                this.setState({isLoading: null});
+            })
     }
 
     verifyEmailStep = () => {
