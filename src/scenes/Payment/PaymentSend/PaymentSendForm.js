@@ -47,13 +47,11 @@ class PaymentSendForm extends React.Component {
 
     publishScholarship = (data) => {
         const { scholarship, updateScholarship } = this.props;
-
+        this.setState({isResponseLoading: true});
         ScholarshipsAPI
             .publishScholarship(scholarship.id, data)
             .then(res => {
                 const { scholarship } = res.data;
-                console.log(" NEW  SCHOLARSHIP ")
-                console.log(scholarship)
                 updateScholarship(scholarship)
             })
             .catch(err => {
@@ -61,7 +59,7 @@ class PaymentSendForm extends React.Component {
                 console.log({err});
             })
             .finally(() => {
-                this.setState({isResponseLoadingMessage: 'Publishing Scholarship'});
+                this.setState({isResponseLoading: false});
                 this.setState({isPaymentSuccess: true});
             })
     };
