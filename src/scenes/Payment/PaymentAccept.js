@@ -230,6 +230,8 @@ class PaymentAccept extends React.Component {
     }
 
     sendVerificationEmail = () => {
+        // This function sends a verification email to the application email.
+
         const { application } = this.state
         const applicationID = application.id
 
@@ -237,10 +239,10 @@ class PaymentAccept extends React.Component {
         ApplicationsAPI
             .sendVerificationEmail(applicationID, {})
             .then(res=>{
-                const { data: application } = res;
-                const { scholarship } = application;
+                const { application } = res.data;
+                const { scholarship } = res.data;
 
-                this.afterSaveApplication(application, scholarship);
+                this.setState({application, scholarship});
             })
             .catch(err => {
                 console.log({err});
@@ -249,6 +251,10 @@ class PaymentAccept extends React.Component {
             .finally(() => {
                 this.setState({isLoading: null});
             })
+    }
+
+    verifyEmail = () => {
+
     }
 
     verifyEmailStep = () => {
@@ -272,14 +278,14 @@ class PaymentAccept extends React.Component {
                     />
                 </Col>
                 <Col span={24}>
-                    <Button onClick={()=>{this.incrementStep()}}
+                    <Button onClick={()=>{this.sendVerificationEmail()}}
                             className="center-block mt-3"
                             type="primary"
                             disabled={isLoading}
                     >
                         Send Email Verification Code
                     </Button>
-                    <Button onClick={()=>{this.incrementStep()}}
+                    <Button onClick={()=>{this.verifyEmail()}}
                             className="center-block mt-3"
                             type="primary"
                             disabled={isLoading}
