@@ -211,7 +211,7 @@ class PaymentAccept extends React.Component {
             })
     }
 
-    verifyEmail = () => {
+    verifyEmailCode = () => {
         // This function verifies the email code typed in
 
         const { application } = this.state
@@ -219,7 +219,7 @@ class PaymentAccept extends React.Component {
 
         this.setState({isLoading: "Verifying Code..."});
         ApplicationsAPI
-            .verifyEmail(applicationID, {verification_code: 111111})
+            .verifyEmailCode(applicationID, {verification_code: 111111})
             .then(res=> {
                 const {application} = res.data;
                 const {scholarship} = res.data;
@@ -272,7 +272,7 @@ class PaymentAccept extends React.Component {
                     >
                         Send Email Verification Code
                     </Button>
-                    <Button onClick={()=>{this.verifyEmail()}}
+                    <Button onClick={()=>{this.verifyEmailCode()}}
                             className="center-block mt-3"
                             type="primary"
                             disabled={isLoading}

@@ -120,12 +120,12 @@ class ApplicationsAPI {
         return apiCompletionPromise
     };
 
-    static verifyEmail = (id, data) => {
+    static verifyEmailCode = (id, data) => {
 
         const apiCompletionPromise = request({
             method: 'post',
             data: data,
-            url: `${this.applicationsApiUrl}/${id}/verify-email/`
+            url: `${this.applicationsApiUrl}/${id}/verify-email-code/`
         });
 
         return apiCompletionPromise
