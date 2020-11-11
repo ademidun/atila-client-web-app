@@ -14,6 +14,7 @@ import {formatCurrency, getErrorMessage} from "../../../services/utils";
 import PaymentAPI from "../../../services/PaymentAPI";
 import {ScholarshipDisableEditMessage, ScholarshipPropType, ScholarshipFundingWillPublishMessage} from "../../../models/Scholarship";
 import PropTypes from "prop-types";
+import Environment from "../../../services/Environment";
 
 export const PREMIUM_PRICE_BEFORE_TAX = 9;
 export const PREMIUM_PRICE_WITH_TAX = 10.17;
@@ -227,9 +228,11 @@ class PaymentSendForm extends React.Component {
 
                                         <CardElement style={{base: {fontSize: '18px'}}} ref={this.cardElementRef} />
 
-                                        {/*<p className="my-3">*/}
-                                        {/*    Test with: 4000001240000000*/}
-                                        {/*</p>*/}
+                                        {["dev", "staging"].includes(Environment.name) &&
+                                            <p className="my-3">
+                                                Test with: 4000001240000000
+                                            </p>
+                                        }
                                     </Col>
                                 </Row>
 
