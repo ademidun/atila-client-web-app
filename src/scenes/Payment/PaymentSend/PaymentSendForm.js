@@ -44,13 +44,32 @@ class PaymentSendForm extends React.Component {
         this.cardElementRef = React.createRef();
     }
 
+    publishScholarship = (data) => {
+        const { scholarship, updateScholarship } = this.props;
+
+        ScholarshipsAPI
+            .publishScholarship(scholarship.id, data)
+            .then(res => {
+                const { data: scholarship} = res;
+                updateScholarship(scholarship)
+            })
+            .catch(err => {
+                this.setState({isResponseErrorMessage: getErrorMessage(err)});
+                console.log({err});
+            })
+            .finally(() => {
+                this.setState({isResponseLoadingMessage: 'Publishing Scholarship'});
+                this.setState({isPaymentSuccess: true});
+            })
+    };
+
     handleSubmit = async (ev) => {
         ev.preventDefault();
         const { stripe, userProfile, scholarship, updateScholarship } = this.props;
 
         const { first_name, last_name, email } = userProfile;
         const fullName = `${first_name} ${last_name}`;
-        const { totalPaymentAmount} = this.state;
+        const { totalPaymentAmount } = this.state;
 
         this.setState({isResponseLoading: true});
         this.setState({isResponseLoadingMessage: 'Processing Payment'});
@@ -84,22 +103,7 @@ class PaymentSendForm extends React.Component {
                 } else {
                     // The payment has been processed!
                     if (cardPaymentResult.paymentIntent.status === 'succeeded') {
-
-                        ScholarshipsAPI
-                            .patch(scholarship.id, {stripe_payment_intent_id: cardPaymentResult.paymentIntent.id, is_funded: true})
-                            .then(res => {
-                                const { data: scholarship } = res;
-                                updateScholarship(scholarship);
-                            })
-                            .catch(err => {
-                                console.log({err});
-
-                                this.setState({isResponseErrorMessage: getErrorMessage(err)});
-                            })
-                            .finally(() => {
-                                this.setState({isLoading: 'Saving Progress'});
-                                this.setState({isPaymentSuccess: true});
-                            });
+                        this.publishScholarship({stripe_payment_intent_id: cardPaymentResult.paymentIntent.id})
                     }
                 }
 
