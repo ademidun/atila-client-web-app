@@ -60,7 +60,6 @@ class PaymentSendForm extends React.Component {
             })
             .finally(() => {
                 this.setState({isResponseLoading: false});
-                this.setState({isPaymentSuccess: true});
             })
     };
 
@@ -104,6 +103,7 @@ class PaymentSendForm extends React.Component {
                 } else {
                     // The payment has been processed!
                     if (cardPaymentResult.paymentIntent.status === 'succeeded') {
+                        this.setState({isPaymentSuccess: true});
                         this.publishScholarship({stripe_payment_intent_id: cardPaymentResult.paymentIntent.id})
                     }
                 }
@@ -261,6 +261,7 @@ class PaymentSendForm extends React.Component {
                                 <ScholarshipFundingWillPublishMessage />
                                 <br />
                                 <ScholarshipDisableEditMessage />
+                                <br />
 
                             </form>}
                         </Col>
