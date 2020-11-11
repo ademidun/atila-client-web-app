@@ -392,24 +392,6 @@ class ScholarshipAddEdit extends React.Component{
         })
     };
 
-    publishScholarship = (event) => {
-        event.preventDefault();
-        const { scholarship } = this.state;
-        this.setState({isLoadingScholarship: true});
-        ScholarshipsAPI
-            .publishScholarship(scholarship.id, {})
-            .then(res => {
-                const { data: scholarship} = res;
-                this.setState({scholarship});
-            })
-            .catch(err => {
-                console.log({err});
-            })
-            .finally(() => {
-                this.setState({isLoadingScholarship: false});
-            })
-    };
-
     autoSaveScholarship = () => {
         const { isAddScholarshipMode } = this.state;
 
