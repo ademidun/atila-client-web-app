@@ -24,8 +24,6 @@ class PaymentAccept extends React.Component {
 
         this.state = {
             isLoading: null,
-            currentPaymentAcceptanceStep: ALL_PAYMENT_ACCEPTANCE_STEPS[0],
-            currentPaymentAcceptanceStepIndex: 0,
             application: null,
             scholarship: null,
         }
@@ -124,7 +122,6 @@ class PaymentAccept extends React.Component {
         PaymentAPI
             .transferPayment(transferData)
             .then(res => {
-                this.setState({currentPaymentAcceptanceStep: ALL_PAYMENT_ACCEPTANCE_STEPS[2]});
                 this.updateScholarship()
                 this.updateApplication()
             })
