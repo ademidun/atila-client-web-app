@@ -167,3 +167,10 @@ export const ScholarshipDisableEditMessage = () => (
         "\nIf you want to change any of those fields, please contact us (you can use the chat box in the bottom right)."}
     />
 );
+
+export const ScholarshipFundingWillPublishMessage = () => (
+    <Alert
+        type="success"
+        message={"Funding your scholarship will publish it and make it live!"}
+    />
+);

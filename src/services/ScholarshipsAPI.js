@@ -144,6 +144,17 @@ class ScholarshipsAPI {
 
         return apiCompletionPromise;
     };
+
+    static publishScholarship = (id, data) => {
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: data,
+            url: `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/publish-scholarship/`,
+        });
+
+        return apiCompletionPromise;
+    };
 }
 
 export default ScholarshipsAPI;

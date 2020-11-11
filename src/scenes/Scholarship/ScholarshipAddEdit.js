@@ -15,7 +15,7 @@ import {
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Link} from "react-router-dom";
-import {Button, Steps, Tag} from "antd";
+import {Steps, Tag} from "antd";
 import ScholarshipQuestionBuilder, {ScholarshipUserProfileQuestionBuilder} from "./ScholarshipQuestionBuilder";
 import PaymentSend from "../Payment/PaymentSend/PaymentSend";
 const { Step } = Steps;
@@ -392,24 +392,6 @@ class ScholarshipAddEdit extends React.Component{
         })
     };
 
-    publishScholarship = (event) => {
-        event.preventDefault();
-        const { scholarship } = this.state;
-        this.setState({isLoadingScholarship: true});
-        ScholarshipsAPI
-            .patch(scholarship.id, {published: true})
-            .then(res => {
-                const { data: scholarship} = res;
-                this.setState({scholarship});
-            })
-            .catch(err => {
-                console.log({err});
-            })
-            .finally(() => {
-                this.setState({isLoadingScholarship: false});
-            })
-    };
-
     autoSaveScholarship = () => {
         const { isAddScholarshipMode } = this.state;
 
@@ -641,15 +623,9 @@ class ScholarshipAddEdit extends React.Component{
                             </button>
                         }
                         {!scholarship.published && scholarship.is_atila_direct_application &&
-                        <Button
-                            type="primary"
-                            className="col-12 mt-2"
-                            onClick={this.publishScholarship}
-                            disabled={!scholarship.is_funded}>
-                            Publish {!scholarship.is_funded ?
-                            <React.Fragment><br/>(You must fund scholarship before publishing)</React.Fragment>:
-                            ""}
-                        </Button>
+                        <p className="text-muted center-block">
+                            Funding your scholarship will make it public and go live!
+                        </p>
                         }
                         {scholarship.published &&
                         <p className="text-muted center-block">
