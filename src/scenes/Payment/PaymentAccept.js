@@ -57,47 +57,6 @@ class PaymentAccept extends React.Component {
             })
     };
 
-    setPaymentThankYouEmail = (event) => {
-
-        event.preventDefault();
-
-        let { application } = this.state;
-
-        application = {
-            ...application,
-            is_thank_you_email_sent: event.target.checked,
-        };
-
-        this.setState({application}, () => {
-            this.updateCurrentPaymentAcceptanceStep();
-        });
-
-    };
-
-    updateCurrentPaymentAcceptanceStep = () => {
-
-
-        const { userProfile } = this.props;
-        const { application } = this.state;
-        if (!application.is_thank_you_email_sent) {
-            // User has not sent a thank you email, so ask them to go and do that first.
-            this.setState({currentPaymentAcceptanceStep: ALL_PAYMENT_ACCEPTANCE_STEPS[0]});
-
-        }
-        else if (!userProfile.stripe_connected_account_id) {
-            // User has not linked their bank account yet so they need to do that first.
-            this.setState({currentPaymentAcceptanceStep: ALL_PAYMENT_ACCEPTANCE_STEPS[1]});
-        } else {
-            // User already has a Stripe Connected Account, so their bank account is already linked.
-            // // Time to Accept Payment
-            // 1. Get Application Details and Scholarship Funding Amount
-            // 2. Send a transfer request to move <scholarship.funding_amount from Atila's bank account to
-            // the student's account
-
-            this.setState({currentPaymentAcceptanceStep: ALL_PAYMENT_ACCEPTANCE_STEPS[2]})
-        }
-    };
-
     linkBankAccount = (event=null) => {
 
         if(event) {
@@ -348,7 +307,7 @@ class PaymentAccept extends React.Component {
     render () {
 
         const { userProfile } = this.props;
-        const { isLoading, currentPaymentAcceptanceStep, application, scholarship } = this.state;
+        const { isLoading, application, scholarship } = this.state;
 
         if (!userProfile) {
             return (
