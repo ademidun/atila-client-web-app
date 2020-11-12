@@ -26,6 +26,7 @@ class PaymentAccept extends React.Component {
             isLoading: null,
             application: null,
             scholarship: null,
+            currentPaymentAcceptanceStepIndex: 0
         }
     }
 
