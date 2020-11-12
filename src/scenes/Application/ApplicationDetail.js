@@ -139,7 +139,7 @@ class ApplicationDetail extends  React.Component{
             })
             .catch(err => {
                 console.log({err});
-                toastNotify(`🙁 An error occured, check your connection!`, 'error');
+                toastNotify(`An error occurred. Please message us using the chat button in the bottom right.`, 'error');
             })
             .finally(() => {
                 this.setState({isSavingApplication: false});
