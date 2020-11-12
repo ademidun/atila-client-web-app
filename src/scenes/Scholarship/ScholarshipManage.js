@@ -1,9 +1,10 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
-import {Table, Popconfirm, Button, Tag} from "antd";
+import {Table, Popconfirm, Button, Tag, Alert} from "antd";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
+import {WINNER_SELECTED_MESSAGE} from "../../models/Scholarship";
 
 class ScholarshipManage extends React.Component {
     constructor(props) {
@@ -14,6 +15,7 @@ class ScholarshipManage extends React.Component {
             applications: null,
             unsubmittedApplications: null,
             isLoadingApplications: false,
+            responseMessage: null,
         }
     }
 
@@ -33,6 +35,9 @@ class ScholarshipManage extends React.Component {
             .then(res => {
                 const {scholarship, applications, unsubmitted_applications: unsubmittedApplications} =  res.data;
                 this.setState({scholarship, applications, unsubmittedApplications});
+                if (scholarship.is_winner_selected) {
+                    this.setState({responseMessage: WINNER_SELECTED_MESSAGE});
+                }
             })
             .finally(() => {
                 this.setState({isLoadingApplications: false});
@@ -49,15 +54,18 @@ class ScholarshipManage extends React.Component {
             .then((res)=>{
                 const {scholarship, applications, unsubmitted_applications: unsubmittedApplications} =  res.data;
                 this.setState({scholarship, applications, unsubmittedApplications});
+                this.setState({responseMessage: WINNER_SELECTED_MESSAGE});
             })
             .catch(err => {
                 console.log({err});
+                this.setState({responseMessage: "There was an error selecting a winner.\n\n Please message us using the chat icon in the bottom right of your screen."});
             })
     };
 
     render() {
         const { userProfile } = this.props;
-        const { scholarship, applications, isLoadingApplications, unsubmittedApplications } = this.state;
+        const { scholarship, applications, isLoadingApplications,
+            unsubmittedApplications, responseMessage } = this.state;
 
         if (!userProfile) {
             return (
@@ -83,13 +91,20 @@ class ScholarshipManage extends React.Component {
         return (
             <div className="container mt-5">
                 <h2>
-                    Submitted applications: {applications.length} <br/>
-                    Un-submitted Applications (under draft): {unsubmittedApplications.length}
+                    Submitted Applications: {applications.length} <br/>
+                    Un-Submitted Applications (Under Draft): {unsubmittedApplications.length}
                 </h2>
                 <Link to={`/scholarship/edit/${scholarship.slug}`} className="text-center">
                     Edit Scholarship
                 </Link>
                 <br />
+                {responseMessage &&
+                <Alert
+                    message={responseMessage}
+                    className="mb-3"
+                    style={{maxWidth: '300px', whiteSpace: "pre-line"}}
+                />
+                }
                 <ApplicationsTable applications={allApplications} scholarship={scholarship} selectWinner={this.selectWinner}/>
             </div>
         )
