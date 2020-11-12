@@ -47,6 +47,7 @@ class PaymentAccept extends React.Component {
                 const { data: application } = res;
                 const { scholarship } = application;
                 this.setState({application, scholarship})
+                this.getCurrentStep()
             })
             .catch(err => {
                 console.log({err});
