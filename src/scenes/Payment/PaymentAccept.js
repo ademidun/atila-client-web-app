@@ -385,6 +385,10 @@ class PaymentAccept extends React.Component {
         return (
             <Row gutter={[{ xs: 8, sm: 16}, 16]}>
                 <Col span={24}>
+                    <p>
+                        Here is a <a href="https://docs.google.com/document/d/1-h9RWUv18P2Pq4WG3Y1hhvCSvw6L6b1acv83XrcAyKQ/edit"
+                                     target="_blank" rel="noopener noreferrer">Sample Thank You Letter.</a>
+                    </p>
                     <CKEditor
                         editor={ InlineEditor }
                         data={"Thank You Letter"}
