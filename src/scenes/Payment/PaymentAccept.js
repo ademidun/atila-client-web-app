@@ -320,6 +320,8 @@ class PaymentAccept extends React.Component {
     }
 
     proofOfEnrolmentStep = () => {
+        // Add submit proof of enrolment form
+        // Send UserProfileAPI.patch request with the proof of enrolment img url (make helper function)
         return (
             <Row gutter={[{ xs: 8, sm: 16}, 16]}>
                 <Col span={24}>
