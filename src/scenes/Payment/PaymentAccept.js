@@ -25,8 +25,7 @@ class PaymentAccept extends React.Component {
         this.state = {
             isLoading: null,
             application: null,
-            scholarship: null,
-            currentPaymentAcceptanceStepIndex: 0
+            scholarship: null
         }
     }
 
@@ -47,7 +46,6 @@ class PaymentAccept extends React.Component {
                 const { data: application } = res;
                 const { scholarship } = application;
                 this.setState({application, scholarship})
-                this.getCurrentStep()
             })
             .catch(err => {
                 console.log({err});
@@ -141,20 +139,20 @@ class PaymentAccept extends React.Component {
         const { userProfile } = this.props
 
         if (application.is_thank_you_letter_sent){
-            this.setState({currentPaymentAcceptanceStepIndex: 4})
+            return 4
         }
-        else if (userProfile.enrollment_proof){
-            this.setState({currentPaymentAcceptanceStepIndex: 3})
+        if (userProfile.enrollment_proof){
+            return 3
         }
-        else if (application.is_security_question_answered){
-            this.setState({currentPaymentAcceptanceStepIndex: 2})
+        if (application.is_security_question_answered){
+            return 2
         }
-        else if (application.is_email_verified){
-            this.setState({currentPaymentAcceptanceStepIndex: 1})
+        if (application.is_email_verified){
+            return 1
         }
-        else {
-            this.setState({currentPaymentAcceptanceStepIndex: 0})
-        }
+
+        // If all the above is false, you're at the first step
+        return 0
     }
 
     updateScholarship = () => {
@@ -176,6 +174,22 @@ class PaymentAccept extends React.Component {
 
         ApplicationsAPI
             .patch(application.id, {accepted_payment: true})
+            .then(res => {
+                const { data: application } = res;
+                const { scholarship } = application;
+                this.setState({application, scholarship});
+            })
+            .catch(err => {
+                console.log({err});
+            })
+    }
+
+    goBack = () => {
+        // This is a function for testing, you can ignore it
+        const { application } = this.state
+
+        ApplicationsAPI
+            .patch(application.id, {is_email_verified: false})
             .then(res => {
                 const { data: application } = res;
                 const { scholarship } = application;
@@ -234,8 +248,6 @@ class PaymentAccept extends React.Component {
                 else {
                     toastNotify(`🙁 That wasn't the code we're looking for. Try again or resend verification code!`, 'error');
                 }
-
-                this.getCurrentStep()
             })
             .catch(err => {
                     console.log({err});
@@ -287,14 +299,39 @@ class PaymentAccept extends React.Component {
     }
 
     securityQuestionStep = () => {
+        const { isLoading } = this.state
+
         return (
-            <div>Security Question Step Template</div>
+            <Row gutter={[{ xs: 8, sm: 16}, 16]}>
+                <Col span={24}>
+                    <div>Security Question Step Template</div>
+                    <br />
+                    <div>
+                        GO BACK <br />
+                        <Button onClick={()=>{this.goBack()}}
+                                className="center-block mt-3"
+                                type="primary"
+                                disabled={isLoading}
+                        >
+                            Go Back
+                        </Button>
+                    </div>
+                </Col>
+            </Row>
+
         )
     }
 
     proofOfEnrolmentStep = () => {
         return (
-            <div>Proof of Enrolment Step Template</div>
+            <Row gutter={[{ xs: 8, sm: 16}, 16]}>
+                <Col span={24}>
+                    Proof of Enrolment Stuff here
+                </Col>
+                <Col span={24}>
+                    Template
+                </Col>
+            </Row>
         )
     }
 
@@ -337,7 +374,7 @@ class PaymentAccept extends React.Component {
     render () {
 
         const { userProfile } = this.props;
-        const { isLoading, application, scholarship, currentPaymentAcceptanceStepIndex } = this.state;
+        const { isLoading, application, scholarship } = this.state;
 
         if (!userProfile) {
             return (
@@ -361,6 +398,7 @@ class PaymentAccept extends React.Component {
             )
         }
 
+        let currentPaymentAcceptanceStepIndex = this.getCurrentStep()
         return (
             <div className="container mt-5">
                 <div className="card shadow p-3">
