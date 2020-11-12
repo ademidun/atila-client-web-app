@@ -232,7 +232,6 @@ class PaymentAccept extends React.Component {
         const { application } = this.state
         const applicationID = application.id
 
-        this.setState({isLoading: "Verifying Code..."});
         ApplicationsAPI
             .verifyEmailCode(applicationID, {verification_code: code})
             .then(res=> {
@@ -253,9 +252,7 @@ class PaymentAccept extends React.Component {
                     console.log({err});
                     toastNotify(`🙁 An error occured, check your connection!`, 'error');
             })
-            .finally(() => {
-                this.setState({isLoading: null});
-            })
+            .finally(() => {})
     }
 
     verifyEmailStep = () => {
