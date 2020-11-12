@@ -416,7 +416,7 @@ class PaymentAccept extends React.Component {
                             <Link to={`/scholarship/${scholarship.slug}`}> {scholarship.name}</Link>
                         </h1>
 
-                        {(currentPaymentAcceptanceStepIndex=== 0) && this.verifyEmailStep()}
+                        {(currentPaymentAcceptanceStepIndex === 0) && this.verifyEmailStep()}
                         {(currentPaymentAcceptanceStepIndex === 1) && this.securityQuestionStep()}
                         {(currentPaymentAcceptanceStepIndex === 2) && this.proofOfEnrolmentStep()}
                         {(currentPaymentAcceptanceStepIndex === 3) && this.thankYouEmailStep()}
