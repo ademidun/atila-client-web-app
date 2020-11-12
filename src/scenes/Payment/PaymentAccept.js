@@ -135,27 +135,26 @@ class PaymentAccept extends React.Component {
 
     };
 
-    incrementStep = () => {
+    getCurrentStep = () => {
         const { application } = this.state;
+        const { userProfile } = this.props
 
-        let new_index = application.current_payment_acceptance_step_index + 1
-
-        this.setState({isLoading: "Loading Next Step"});
-        ApplicationsAPI
-            .patch(application.id, {current_payment_acceptance_step_index: new_index})
-            .then(res => {
-                const { data: application } = res;
-                const { scholarship } = application;
-                this.setState({application, scholarship});
-            })
-            .catch(err => {
-                console.log({err});
-            })
-            .finally(() => {
-                this.setState({isLoading: null});
-            })
-
-    };
+        if (application.is_thank_you_letter_sent){
+            this.setState({currentPaymentAcceptanceStepIndex: 4})
+        }
+        else if (userProfile.enrollment_proof){
+            this.setState({currentPaymentAcceptanceStepIndex: 3})
+        }
+        else if (application.is_security_question_answered){
+            this.setState({currentPaymentAcceptanceStepIndex: 2})
+        }
+        else if (application.is_email_verified){
+            this.setState({currentPaymentAcceptanceStepIndex: 1})
+        }
+        else {
+            this.setState({currentPaymentAcceptanceStepIndex: 0})
+        }
+    }
 
     updateScholarship = () => {
         // This function sets Scholarship.is_payment_accepted to True
@@ -230,11 +229,12 @@ class PaymentAccept extends React.Component {
 
                 if (result === "success"){
                     toastNotify('😃 Email Verification Successful')
-                    this.incrementStep()
                 }
                 else {
                     toastNotify(`🙁 That wasn't the code we're looking for. Try again or resend verification code!`, 'error');
                 }
+
+                this.getCurrentStep()
             })
             .catch(err => {
                     console.log({err});
@@ -309,7 +309,7 @@ class PaymentAccept extends React.Component {
                     />
                 </Col>
                 <Col span={24}>
-                    <Button onClick={()=>{this.incrementStep()}}
+                    <Button onClick={()=>{}}
                             className="center-block mt-3"
                             type="primary"
                             disabled={isLoading}>
@@ -336,7 +336,7 @@ class PaymentAccept extends React.Component {
     render () {
 
         const { userProfile } = this.props;
-        const { isLoading, application, scholarship } = this.state;
+        const { isLoading, application, scholarship, currentPaymentAcceptanceStepIndex } = this.state;
 
         if (!userProfile) {
             return (
@@ -359,6 +359,7 @@ class PaymentAccept extends React.Component {
                 </div>
             )
         }
+
         return (
             <div className="container mt-5">
                 <div className="card shadow p-3">
@@ -367,7 +368,7 @@ class PaymentAccept extends React.Component {
                     }
                     <Steps type="navigation"
                         current={ALL_PAYMENT_ACCEPTANCE_STEPS
-                            .findIndex(step => step === ALL_PAYMENT_ACCEPTANCE_STEPS[application.current_payment_acceptance_step_index])}>
+                            .findIndex(step => step === ALL_PAYMENT_ACCEPTANCE_STEPS[currentPaymentAcceptanceStepIndex])}>
                         {ALL_PAYMENT_ACCEPTANCE_STEPS.map(paymentAcceptanceStep => (
                             <Step key={paymentAcceptanceStep} title={prettifyKeys(paymentAcceptanceStep)} />
                         ))}
@@ -377,11 +378,11 @@ class PaymentAccept extends React.Component {
                             <Link to={`/scholarship/${scholarship.slug}`}> {scholarship.name}</Link>
                         </h1>
 
-                        {(application.current_payment_acceptance_step_index === 0) && this.verifyEmailStep()}
-                        {(application.current_payment_acceptance_step_index === 1) && this.securityQuestionStep()}
-                        {(application.current_payment_acceptance_step_index === 2) && this.proofOfEnrolmentStep()}
-                        {(application.current_payment_acceptance_step_index === 3) && this.thankYouEmailStep()}
-                        {(application.current_payment_acceptance_step_index === 4) && this.acceptPaymentStep()}
+                        {(currentPaymentAcceptanceStepIndex=== 0) && this.verifyEmailStep()}
+                        {(currentPaymentAcceptanceStepIndex === 1) && this.securityQuestionStep()}
+                        {(currentPaymentAcceptanceStepIndex === 2) && this.proofOfEnrolmentStep()}
+                        {(currentPaymentAcceptanceStepIndex === 3) && this.thankYouEmailStep()}
+                        {(currentPaymentAcceptanceStepIndex === 4) && this.acceptPaymentStep()}
 
                     </div>
                 </div>
