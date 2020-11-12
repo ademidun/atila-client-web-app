@@ -12,10 +12,11 @@ import {Link} from "react-router-dom";
 import InlineEditor from "@ckeditor/ckeditor5-build-inline";
 import CKEditor from "@ckeditor/ckeditor5-react";
 import {toastNotify} from "../../models/Utils";
+import FileInput from "../../components/Form/FileInput";
 
 const { Step } = Steps;
 
-const ALL_PAYMENT_ACCEPTANCE_STEPS = ["verify_email", "security_question", "proof_of_enrolment", "thank_you_email","accept_payment"];
+const ALL_PAYMENT_ACCEPTANCE_STEPS = ["verify_email", "proof_of_enrolment", "security_question", "thank_you_email","accept_payment"];
 
 class PaymentAccept extends React.Component {
 
@@ -182,7 +183,25 @@ class PaymentAccept extends React.Component {
             .catch(err => {
                 console.log({err});
             })
-    }
+    };
+
+    updateUserProfile = (userProfileUpdateData) => {
+        const { userProfile } = this.props;
+
+        this.setState({isLoading: true});
+        UserProfileAPI.patch(
+            userProfileUpdateData, userProfile.user)
+            .then(res => {
+                console.log('res.data', res.data);
+                updateLoggedInUserProfile(res.data);
+            })
+            .catch(err=> {
+                console.log({err});
+            })
+            .finally(() => {
+                this.setState({isLoading: false});
+            });
+    };
 
     goBack = () => {
         // This is a function for testing, you can ignore it
@@ -317,19 +336,45 @@ class PaymentAccept extends React.Component {
             </Row>
 
         )
-    }
+    };
+
+    onEnrollmentUpload = (event) => {
+
+        const userProfileUpdateData = {
+            [event.target.name]: event.target.value
+        };
+
+        console.log({userProfileUpdateData});
+
+        this.updateUserProfile(userProfileUpdateData);
+    };
 
     proofOfEnrolmentStep = () => {
-        // Add submit proof of enrolment form
-        // Send UserProfileAPI.patch request with the proof of enrolment img url (make helper function)
+        const title  = "Upload Proof of Enrollment";
+        const { userProfile } = this.props;
+
         return (
             <Row gutter={[{ xs: 8, sm: 16}, 16]}>
                 <Col span={24}>
-                    Proof of Enrolment Stuff here
+                    <h3 className="text-center">
+                        {title}
+                    </h3>
                 </Col>
                 <Col span={24}>
-                    Template
+                    <FileInput
+                        title={title}
+                        keyName="enrollment_proof"
+                        onChangeHandler={this.onEnrollmentUpload}
+                        type="image,pdf"
+                        filePath={`user-profile-files/${userProfile.user}`}
+                        uploadHint="Enrollment proof must be a PDF (preferred) or an image."/>
                 </Col>
+                {userProfile.enrollment_proof &&
+                <Col span={24}>
+                    <a href={userProfile.enrollment_proof}  target="_blank" rel="noopener noreferrer">
+                        View your Enrollment Proof
+                    </a>
+                </Col>}
             </Row>
         )
     }

@@ -17,9 +17,9 @@ class FileInput extends React.Component{
     // https://github.com/react-component/upload#customrequest
     handleFileUpload = ({file}) => {
 
-        const {keyName, onChangeHandler} = this.props;
+        const {keyName, onChangeHandler, filePath} = this.props;
 
-        const { uploadTask, uploadRef} = FilesAPI.uploadFile({file});
+        const { uploadTask, uploadRef} = FilesAPI.uploadFile({file}, filePath);
 
         uploadTask.on(FilesAPI.FIREBASE_STATE_CHANGED,  (snapshot) => {
             const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
@@ -47,7 +47,7 @@ class FileInput extends React.Component{
     };
 
     render() {
-        const { title, type } = this.props;
+        const { title, type, uploadHint } = this.props;
         const { imageUploadProgress } = this.state;
 
         const draggerProps = {
@@ -70,6 +70,8 @@ class FileInput extends React.Component{
 
         if (type === "image") {
             draggerProps.accept = "image/*"
+        } else if (type === "image,pdf") {
+            draggerProps.accept = "image/*,application/pdf"
         }
         return (
             <div>
@@ -78,9 +80,12 @@ class FileInput extends React.Component{
                         <InboxOutlined />
                     </p>
                     <p className="ant-upload-text">Click or drag a file to this area to upload {title}</p>
+                    {uploadHint &&
                     <p className="ant-upload-hint">
-                        You can also paste the {type} url in the text box below
+                        {uploadHint}
                     </p>
+
+                    }
                 </Dragger>
                 {imageUploadProgress &&
                 <div className="progress-div mt-4">
@@ -100,6 +105,8 @@ export default FileInput;
 
 FileInput.propTypes = {
     keyName: PropTypes.string,
+    filePath: PropTypes.string,
+    uploadHint: PropTypes.string,
     title: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     onChangeHandler: PropTypes.func.isRequired,
