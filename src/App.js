@@ -13,6 +13,7 @@ import Navbar from "./components/Navbar/Navbar";
 import GoogleAnalyticsTracker from "./services/GoogleAnalyticsTracker";
 import ScrollToTop from "./components/ScrollToTop";
 import LogRocket from "logrocket";
+import LogrocketFuzzySanitizer from 'logrocket-fuzzy-search-sanitizer';
 import setupLogRocketReact from "logrocket-react";
 import Environment from "./services/Environment";
 
@@ -81,15 +82,26 @@ const EbookPremium = loadable(() => import("./scenes/EbookPremium/EbookPremium")
   fallback: <Loading />,
 });
 
+const privateFieldNames = [
+  'password',
+  'security_question_answer',
+];
+
+const { requestSanitizer, responseSanitizer } = LogrocketFuzzySanitizer.setup(privateFieldNames);
 class App extends React.Component {
   constructor(props) {
     super(props);
 
-    if ((process.env.NODE_ENV !== "test" || Environment.name !== "dev") &&
+    if (process.env.NODE_ENV !== "test" &&
         !navigator.userAgent.includes('https://github.com/prerender/prerender')) {
       // TODO: mock LogRocket.init and setupLogRocketReact and all uses of LogRocket in Navbar.js and Register.js
       const logRocketAppId = `guufgl/atila-${Environment.name}`;
-      LogRocket.init(logRocketAppId);
+      LogRocket.init(logRocketAppId, {
+        network: {
+          requestSanitizer,
+          responseSanitizer
+        }
+      });
 
       setupLogRocketReact(LogRocket);
     }

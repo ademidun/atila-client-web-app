@@ -120,11 +120,11 @@ export const userProfileFormConfig = [
 ];
 
 export const USER_PROFILE_SECURITY_QUESTIONS = [
+    "What is your favorite food?",
     "What Is your favorite book?",
     "What is the name of the road you grew up on?",
     "What is your mother’s maiden name?",
     "What was the name of your first/current/favorite pet?",
-    "What is your favorite food?",
     "Where is your favorite place to vacation?"
 ];
 
