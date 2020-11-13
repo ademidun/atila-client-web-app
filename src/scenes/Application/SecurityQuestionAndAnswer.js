@@ -39,7 +39,6 @@ class SecurityQuestionAndAnswer extends  React.Component{
         UserProfileAPI.setSecurityQuestionAndAnswer(
             userProfileUpdateData, userProfile.user)
             .then(res => {
-                console.log('res.data', res.data);
                 updateLoggedInUserProfile(res.data.user_profile);
             })
             .catch(err=> {
