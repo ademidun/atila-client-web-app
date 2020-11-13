@@ -400,7 +400,7 @@ class ApplicationDetail extends  React.Component{
     };
 
     render() {
-        const { match : { params : { applicationID }}, userProfile } = this.props;
+        const { match : { params : { applicationID }} } = this.props;
         const { application, isLoadingApplication, scholarship, isSavingApplication, isSubmittingApplication,
             scholarshipUserProfileQuestionsFormConfig, scholarshipQuestionsFormConfig,
             viewMode, isUsingLocalApplication, promptRegisterBeforeSubmitting, registrationSuccessMessage } = this.state;
