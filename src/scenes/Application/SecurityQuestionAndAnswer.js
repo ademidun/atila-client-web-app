@@ -5,6 +5,7 @@ import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import { Row, Col, Select, Button } from 'antd';
 import {USER_PROFILE_SECURITY_QUESTIONS} from "../../models/UserProfile";
 import UserProfileAPI from "../../services/UserProfileAPI";
+import {PasswordShowHide} from "../../components/Register";
 
 const { Option } = Select;
 
@@ -25,7 +26,7 @@ class SecurityQuestionAndAnswer extends  React.Component{
 
         event.preventDefault();
 
-        const { userProfile } = this.props;
+        const { userProfile,updateLoggedInUserProfile } = this.props;
         const { securityQuestion, securityQuestionAnswer } = this.state;
 
         this.setState({isLoading: true});
@@ -73,7 +74,7 @@ class SecurityQuestionAndAnswer extends  React.Component{
                 </h6>
 
                 {userProfile.security_question_is_answered &&
-                <h6 className="text-info">
+                <h6 className="text-center text-info">
                     Security question has already been answered. Message us if you would like to change your answer.
                 </h6>
                 }
@@ -92,18 +93,17 @@ class SecurityQuestionAndAnswer extends  React.Component{
                         <p className="text-muted">
                             Your security answer
                         </p>
-                        <input className="form-control"
-                               placeholder={userProfile.security_question_is_answered ? "-------" : "Security Answer"}
-                               name="security_question_answer"
-                               value={securityQuestionAnswer}
-                               onChange={this.onUpdateAnswer} disabled={userProfile.security_question_is_answered}
-                        />
+                        <PasswordShowHide password={securityQuestionAnswer}
+                                          updateForm={this.onUpdateAnswer}
+                                          disabled={userProfile.security_question_is_answered}
+                                          placeholder={userProfile.security_question_is_answered ? "-------" : "Security Answer"}/>
                     </Col>
                 </Row>
 
 
                 <Button type="primary"
-                        onClick={this.saveSecurityQuestionAndAnswer}>
+                        onClick={this.saveSecurityQuestionAndAnswer}
+                        disabled={userProfile.security_question_is_answered}>
                     Save Security Question and Answer
                 </Button>
 
