@@ -19,7 +19,7 @@ import {formatCurrency, prettifyKeys} from "../../services/utils";
 import Register from "../../components/Register";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
-import SecurityQuestionAndAnswer from "./SecurityQuestionAndAnswer";
+// import SecurityQuestionAndAnswer from "./SecurityQuestionAndAnswer";
 
 let autoSaveTimeoutId;
 class ApplicationDetail extends  React.Component{
@@ -484,10 +484,11 @@ class ApplicationDetail extends  React.Component{
                                     }
                                 </>
                                 }
-                                {application && userProfile && application.user &&
-                                    application.user.user === userProfile.user  &&
-                                    <SecurityQuestionAndAnswer />
-                                }
+                                {/*TODO add this back when we get the invalid token error fixed*/}
+                                {/*{application && userProfile && application.user &&*/}
+                                {/*    application.user.user === userProfile.user  &&*/}
+                                {/*    <SecurityQuestionAndAnswer />*/}
+                                {/*}*/}
                                 {promptRegisterBeforeSubmitting &&
                                 <>
                                     <h3>Create a username and password to access your application later
