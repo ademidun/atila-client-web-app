@@ -34,14 +34,13 @@ class SecurityQuestionAndAnswer extends  React.Component{
         const userProfileUpdateData = {
             security_question: securityQuestion,
             security_question_answer: securityQuestionAnswer,
-            security_question_is_answered: true,
         };
 
-        UserProfileAPI.patch(
+        UserProfileAPI.setSecurityQuestionAndAnswer(
             userProfileUpdateData, userProfile.user)
             .then(res => {
                 console.log('res.data', res.data);
-                updateLoggedInUserProfile(res.data);
+                updateLoggedInUserProfile(res.data.user_profile);
             })
             .catch(err=> {
                 console.log({err});
