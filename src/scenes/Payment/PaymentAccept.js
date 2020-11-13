@@ -11,10 +11,12 @@ import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import {Link} from "react-router-dom";
 import InlineEditor from "@ckeditor/ckeditor5-build-inline";
 import CKEditor from "@ckeditor/ckeditor5-react";
+import {toastNotify} from "../../models/Utils";
+import FileInput from "../../components/Form/FileInput";
 
 const { Step } = Steps;
 
-const ALL_PAYMENT_ACCEPTANCE_STEPS = ["verify_email","verify_phone_number", "send_thank_you_email", "accept_payment"];
+const ALL_PAYMENT_ACCEPTANCE_STEPS = ["verify_email", "proof_of_enrolment", "security_question", "thank_you_email","accept_payment"];
 
 class PaymentAccept extends React.Component {
 
@@ -23,10 +25,8 @@ class PaymentAccept extends React.Component {
 
         this.state = {
             isLoading: null,
-            currentPaymentAcceptanceStep: ALL_PAYMENT_ACCEPTANCE_STEPS[0],
-            currentPaymentAcceptanceStepIndex: 0,
             application: null,
-            scholarship: null,
+            scholarship: null
         }
     }
 
@@ -46,9 +46,7 @@ class PaymentAccept extends React.Component {
             .then(res=>{
                 const { data: application } = res;
                 const { scholarship } = application;
-                this.setState({application, scholarship}, () => {
-                    this.updateCurrentPaymentAcceptanceStep();
-                });
+                this.setState({application, scholarship})
             })
             .catch(err => {
                 console.log({err});
@@ -56,47 +54,6 @@ class PaymentAccept extends React.Component {
             .finally(() => {
                 this.setState({isLoading: null});
             })
-    };
-
-    setPaymentThankYouEmail = (event) => {
-
-        event.preventDefault();
-
-        let { application } = this.state;
-
-        application = {
-            ...application,
-            is_thank_you_email_sent: event.target.checked,
-        };
-
-        this.setState({application}, () => {
-            this.updateCurrentPaymentAcceptanceStep();
-        });
-
-    };
-
-    updateCurrentPaymentAcceptanceStep = () => {
-
-
-        const { userProfile } = this.props;
-        const { application } = this.state;
-        if (!application.is_thank_you_email_sent) {
-            // User has not sent a thank you email, so ask them to go and do that first.
-            this.setState({currentPaymentAcceptanceStep: ALL_PAYMENT_ACCEPTANCE_STEPS[0]});
-
-        }
-        else if (!userProfile.stripe_connected_account_id) {
-            // User has not linked their bank account yet so they need to do that first.
-            this.setState({currentPaymentAcceptanceStep: ALL_PAYMENT_ACCEPTANCE_STEPS[1]});
-        } else {
-            // User already has a Stripe Connected Account, so their bank account is already linked.
-            // // Time to Accept Payment
-            // 1. Get Application Details and Scholarship Funding Amount
-            // 2. Send a transfer request to move <scholarship.funding_amount from Atila's bank account to
-            // the student's account
-
-            this.setState({currentPaymentAcceptanceStep: ALL_PAYMENT_ACCEPTANCE_STEPS[2]})
-        }
     };
 
     linkBankAccount = (event=null) => {
@@ -166,7 +123,6 @@ class PaymentAccept extends React.Component {
         PaymentAPI
             .transferPayment(transferData)
             .then(res => {
-                this.setState({currentPaymentAcceptanceStep: ALL_PAYMENT_ACCEPTANCE_STEPS[2]});
                 this.updateScholarship()
                 this.updateApplication()
             })
@@ -179,25 +135,26 @@ class PaymentAccept extends React.Component {
 
     };
 
-    nextStep = () => {
-        const { currentPaymentAcceptanceStepIndex, currentPaymentAcceptanceStep } = this.state;
+    getCurrentStep = () => {
+        const { application } = this.state;
+        const { userProfile } = this.props
 
-        this.setState({
-            isLoading: `Loading ${prettifyKeys(currentPaymentAcceptanceStep)} step`,
-        });
+        if (application.is_thank_you_letter_sent){
+            return 4
+        }
+        if (userProfile.enrollment_proof){
+            return 3
+        }
+        if (application.is_security_question_answered){
+            return 2
+        }
+        if (application.is_email_verified){
+            return 1
+        }
 
-        setTimeout(() => {
-
-            this.setState({
-                currentPaymentAcceptanceStepIndex: currentPaymentAcceptanceStepIndex + 1,
-                currentPaymentAcceptanceStep: ALL_PAYMENT_ACCEPTANCE_STEPS[currentPaymentAcceptanceStepIndex + 1],
-                isLoading: false
-            })
-
-        }, 1000);
-
-
-    };
+        // If all the above is false, you're at the first step
+        return 0
+    }
 
     updateScholarship = () => {
         // This function sets Scholarship.is_payment_accepted to True
@@ -226,12 +183,246 @@ class PaymentAccept extends React.Component {
             .catch(err => {
                 console.log({err});
             })
+    };
+
+    updateUserProfile = (userProfileUpdateData) => {
+        const { userProfile } = this.props;
+
+        this.setState({isLoading: true});
+        UserProfileAPI.patch(
+            userProfileUpdateData, userProfile.user)
+            .then(res => {
+                console.log('res.data', res.data);
+                updateLoggedInUserProfile(res.data);
+            })
+            .catch(err=> {
+                console.log({err});
+            })
+            .finally(() => {
+                this.setState({isLoading: false});
+            });
+    };
+
+    goBack = () => {
+        // This is a function for testing, you can ignore it
+        const { application } = this.state
+
+        ApplicationsAPI
+            .patch(application.id, {is_email_verified: false})
+            .then(res => {
+                const { data: application } = res;
+                const { scholarship } = application;
+                this.setState({application, scholarship});
+            })
+            .catch(err => {
+                console.log({err});
+            })
+    }
+
+    resendVerificationEmail = () => {
+        // This function sends a verification email to the application email.
+
+        const { application } = this.state
+        const applicationID = application.id
+
+        this.setState({isLoading: "Sending Verification Email..."});
+        ApplicationsAPI
+            .resendVerificationEmail(applicationID, {})
+            .then(res=>{
+                const { application } = res.data;
+                const { scholarship } = res.data;
+
+                this.setState({application, scholarship});
+
+                toastNotify('😃 Email was successfully sent! Check your inbox and spam for a verification code.')
+            })
+            .catch(err => {
+                console.log({err});
+                toastNotify(`An error occurred. Please message us using the chat button in the bottom right.`, 'error');
+            })
+            .finally(() => {
+                this.setState({isLoading: null});
+            })
+    }
+
+    verifyEmailCode = (code) => {
+        // This function verifies the email code typed in
+
+        const { application } = this.state
+        const applicationID = application.id
+
+        ApplicationsAPI
+            .verifyEmailCode(applicationID, {verification_code: code})
+            .then(res=> {
+                const {application} = res.data;
+                const {scholarship} = res.data;
+                const {result} = res.data;
+
+                this.setState({application, scholarship});
+
+                if (result === "success"){
+                    toastNotify('😃 Email Verification Successful')
+                }
+                else {
+                    toastNotify(`🙁 That wasn't the code we're looking for. Try again or resend verification code`, 'error');
+                }
+            })
+            .catch(err => {
+                    console.log({err});
+                    toastNotify(`An error occurred. Please message us using the chat button in the bottom right.`, 'error');
+            })
+            .finally(() => {})
+    }
+
+    verifyEmailStep = () => {
+        const { userProfile } = this.props
+        const { isLoading } = this.state
+
+        return (
+            <Row gutter={[{ xs: 8, sm: 16}, 16]}>
+                <Col span={24}>
+                    <Input value={userProfile.first_name} disabled={true} />
+                </Col>
+                <Col span={24}>
+                    <Input value={userProfile.last_name} disabled={true} />
+                </Col>
+                <Col span={24}>
+                    <Input value={userProfile.email} disabled={true}/>
+                </Col>
+                <Col span={24}>
+                    <Input id="code" placeholder="Email Verification Code" />
+                </Col>
+                <Col span={24}>
+                    <Button onClick={()=>{this.resendVerificationEmail()}}
+                            className="center-block mt-3"
+                            type="primary"
+                            disabled={isLoading}
+                    >
+                        Resend Email Verification Code
+                    </Button>
+                    {/*There might be a cleaner method to reference the input value than
+                    document.getElementById('code').value.*/}
+                    <Button onClick={()=>{this.verifyEmailCode(document.getElementById('code').value)}}
+                            className="center-block mt-3"
+                            type="primary"
+                            disabled={isLoading}
+                    >
+                        Verify Email
+                    </Button>
+                </Col>
+            </Row>
+        )
+    }
+
+    securityQuestionStep = () => {
+        const { isLoading } = this.state
+
+        return (
+            <Row gutter={[{ xs: 8, sm: 16}, 16]}>
+                <Col span={24}>
+                    <div>Security Question Step Template</div>
+                    <br />
+                    <div>
+                        GO BACK <br />
+                        <Button onClick={()=>{this.goBack()}}
+                                className="center-block mt-3"
+                                type="primary"
+                                disabled={isLoading}
+                        >
+                            Go Back
+                        </Button>
+                    </div>
+                </Col>
+            </Row>
+
+        )
+    };
+
+    onEnrollmentUpload = (event) => {
+
+        const userProfileUpdateData = {
+            [event.target.name]: event.target.value
+        };
+
+        console.log({userProfileUpdateData});
+
+        this.updateUserProfile(userProfileUpdateData);
+    };
+
+    proofOfEnrolmentStep = () => {
+        const title  = "Upload Proof of Enrollment";
+        const { userProfile } = this.props;
+
+        return (
+            <Row gutter={[{ xs: 8, sm: 16}, 16]}>
+                <Col span={24}>
+                    <h3 className="text-center">
+                        {title}
+                    </h3>
+                </Col>
+                <Col span={24}>
+                    <FileInput
+                        title={title}
+                        keyName="enrollment_proof"
+                        onChangeHandler={this.onEnrollmentUpload}
+                        type="image,pdf"
+                        filePath={`user-profile-files/${userProfile.user}`}
+                        uploadHint="Enrollment proof must be a PDF (preferred) or an image."/>
+                </Col>
+                {userProfile.enrollment_proof &&
+                <Col span={24}>
+                    <a href={userProfile.enrollment_proof}  target="_blank" rel="noopener noreferrer">
+                        View your Enrollment Proof
+                    </a>
+                </Col>}
+            </Row>
+        )
+    }
+
+    thankYouEmailStep = () => {
+        const { isLoading } = this.state
+
+        return (
+            <Row gutter={[{ xs: 8, sm: 16}, 16]}>
+                <Col span={24}>
+                    <p>
+                        Here is a <a href="https://docs.google.com/document/d/1-h9RWUv18P2Pq4WG3Y1hhvCSvw6L6b1acv83XrcAyKQ/edit"
+                                     target="_blank" rel="noopener noreferrer">Sample Thank You Letter.</a>
+                    </p>
+                    <CKEditor
+                        editor={ InlineEditor }
+                        data={"Thank You Letter"}
+                    />
+                </Col>
+                <Col span={24}>
+                    <Button onClick={()=>{}}
+                            className="center-block mt-3"
+                            type="primary"
+                            disabled={isLoading}>
+                        Send Thank You Email
+                    </Button>
+                </Col>
+            </Row>
+        )
+    }
+
+    acceptPaymentStep = () => {
+        return (
+            <Row gutter={[{ xs: 8, sm: 16}, 16]}>
+                <div className="center-block">
+                    <p className="text-success">
+                        Success! You've completed the payment acceptance step and your money will be
+                        sent to you within 24 hours.
+                    </p>
+                </div>
+            </Row>
+        )
     }
 
     render () {
 
         const { userProfile } = this.props;
-        const { isLoading, currentPaymentAcceptanceStep, application, scholarship } = this.state;
+        const { isLoading, application, scholarship } = this.state;
 
         if (!userProfile) {
             return (
@@ -254,6 +445,8 @@ class PaymentAccept extends React.Component {
                 </div>
             )
         }
+
+        let currentPaymentAcceptanceStepIndex = this.getCurrentStep()
         return (
             <div className="container mt-5">
                 <div className="card shadow p-3">
@@ -262,7 +455,7 @@ class PaymentAccept extends React.Component {
                     }
                     <Steps type="navigation"
                         current={ALL_PAYMENT_ACCEPTANCE_STEPS
-                            .findIndex(step => step === currentPaymentAcceptanceStep)}>
+                            .findIndex(step => step === ALL_PAYMENT_ACCEPTANCE_STEPS[currentPaymentAcceptanceStepIndex])}>
                         {ALL_PAYMENT_ACCEPTANCE_STEPS.map(paymentAcceptanceStep => (
                             <Step key={paymentAcceptanceStep} title={prettifyKeys(paymentAcceptanceStep)} />
                         ))}
@@ -272,79 +465,12 @@ class PaymentAccept extends React.Component {
                             <Link to={`/scholarship/${scholarship.slug}`}> {scholarship.name}</Link>
                         </h1>
 
-                        <Row gutter={[{ xs: 8, sm: 16}, 16]}>
-                            <Col span={24}>
-                                <Input value={userProfile.first_name} disabled={true} />
-                            </Col>
-                            <Col span={24}>
-                                <Input value={userProfile.last_name} disabled={true} />
-                            </Col>
-                            <Col span={24}>
-                                <Input value={userProfile.email} disabled={true}/>
-                            </Col>
-                            <Col span={24}>
-                                <Input value={application.accept_payment_email_verification_code} placeholder="Email Verification Code" />
-                            </Col>
-                            <Col span={24}>
-                                <Button onClick={()=>{this.nextStep()}}
-                                        className="center-block mt-3"
-                                        type="primary"
-                                        disabled={isLoading || currentPaymentAcceptanceStep !== ALL_PAYMENT_ACCEPTANCE_STEPS[0]}>
-                                    Verify Email
-                                </Button>
-                            </Col>
-                            <br/>
-                            <Col span={24}>
-                                <Input value={application.accept_payment_phone_number} placeholder="Phone Number" />
-                            </Col>
-                            <Col span={24}>
-                                <Button onClick={()=>{this.nextStep()}}
-                                        className="center-block mt-3"
-                                        type="primary"
-                                        disabled={isLoading || currentPaymentAcceptanceStep !== ALL_PAYMENT_ACCEPTANCE_STEPS[1]}>
-                                    Text me Verification Code
-                                </Button>
-                            </Col>
-                            <Col span={24}>
-                                <Input value={application.accept_payment_email_verification_code}  placeholder="Phone Number Verification Code"/>
-                            </Col>
-                            <Col span={24}>
-                                <Button onClick={()=>{this.nextStep()}}
-                                        className="center-block mt-3"
-                                        type="primary"
-                                        disabled={isLoading || currentPaymentAcceptanceStep !== ALL_PAYMENT_ACCEPTANCE_STEPS[1]}>
-                                    Verify Phone Number
-                                </Button>
-                            </Col>
-                            <br/>
-                            <Col span={24}>
-                                <CKEditor
-                                    editor={ InlineEditor }
-                                    data={"Thank You Letter"}
-                                />
-                            </Col>
-                            <Col span={24}>
-                                <Button onClick={()=>{this.nextStep()}}
-                                        className="center-block mt-3"
-                                        type="primary"
-                                        disabled={isLoading || currentPaymentAcceptanceStep !== ALL_PAYMENT_ACCEPTANCE_STEPS[2]}>
-                                    Send Thank You Email
-                                </Button>
-                            </Col>
-                            <div className="center-block">
-                                {isLoading &&
-                                <Loading title={isLoading} />
-                                }
+                        {(currentPaymentAcceptanceStepIndex === 0) && this.verifyEmailStep()}
+                        {(currentPaymentAcceptanceStepIndex === 1) && this.securityQuestionStep()}
+                        {(currentPaymentAcceptanceStepIndex === 2) && this.proofOfEnrolmentStep()}
+                        {(currentPaymentAcceptanceStepIndex === 3) && this.thankYouEmailStep()}
+                        {(currentPaymentAcceptanceStepIndex === 4) && this.acceptPaymentStep()}
 
-                                {currentPaymentAcceptanceStep === ALL_PAYMENT_ACCEPTANCE_STEPS[3] &&
-                                <p className="text-success">
-                                    Success! You've completed the payment acceptance step and your money will be
-                                    sent to you within 24 hours.
-                                </p>
-                                }
-                            </div>
-
-                        </Row>
                     </div>
                 </div>
             </div>

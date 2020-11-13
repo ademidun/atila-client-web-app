@@ -166,7 +166,9 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
                 {placeholder && <label htmlFor={keyName}>
                     {placeholder}
                 </label>}
-                <FileInput title={placeholder} keyName={keyName} onChangeHandler={onUpdateForm} type={type} />
+                <FileInput title={placeholder} keyName={keyName}
+                           onChangeHandler={onUpdateForm}
+                           type={type} uploadHint={`You can also paste the ${type} url in the text box below`} />
                 {type === "image" && <img src={modelValue} alt={placeholder} width="250" className="card center-block my-3"/> }
 
                 <div className="floating mb-3">

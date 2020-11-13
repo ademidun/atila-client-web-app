@@ -118,6 +118,7 @@ export let DEFAULT_SCHOLARSHIP = {
     is_editable: true,
     published: false,
     is_funded: false,
+    is_winner_selected: false,
     eligible_programs: [],
     email_contact: '',
     activities: [],
@@ -152,6 +153,10 @@ const atilaDirectApplicationsPopoverContent = (
         <Link to="/start">Learn More</Link>
     </div>
 );
+
+export const WINNER_SELECTED_MESSAGE = "Winner successfully selected.\n\n" +
+    " You should receive a thank you letter from the winner in the next 7 days.\n\n" +
+    "Atila will send the money to the winner once they've verified their account, provided proof of enrollment and written a thank you letter.";
 
 export const AtilaDirectApplicationsPopover = ({children, title="What is Atila Direct Applications?"}) => (
     <Popover overlayStyle={{maxWidth: "500px"}} content={atilaDirectApplicationsPopoverContent} title={title}>
