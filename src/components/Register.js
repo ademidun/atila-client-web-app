@@ -30,7 +30,7 @@ export class PasswordShowHide extends React.Component {
 
     render (){
 
-        const { password, updateForm , placeholder} = this.props;
+        const { password, updateForm , placeholder, disabled} = this.props;
         const { showPassword } = this.state;
 
         return (
@@ -42,24 +42,29 @@ export class PasswordShowHide extends React.Component {
                        autoComplete="new-password"
                        type={showPassword? 'text': 'password'}
                        onChange={updateForm}
+                       disabled={disabled}
                 />
+                {!disabled &&
                 <span
                     onClick={this.togglePassword}
                     className="text-muted font-size-xm cursor-pointer pl-2">
-                                    {showPassword ? 'hide ' : 'show '} password
+                                    {showPassword ? 'Hide ' : 'Show '} {placeholder}
                                 </span>
+                }
             </div>)
     }
 }
 
 PasswordShowHide.defaultProps = {
-    placeholder: 'Password'
+    placeholder: 'Password',
+    disabled: false,
 };
 
 PasswordShowHide.propTypes = {
     updateForm: PropTypes.func.isRequired,
     password: PropTypes.string.isRequired,
     placeholder: PropTypes.string,
+    disabled: PropTypes.bool,
 };
 
 const accountTypes = [

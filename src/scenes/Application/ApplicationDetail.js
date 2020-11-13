@@ -19,6 +19,7 @@ import {formatCurrency, prettifyKeys} from "../../services/utils";
 import Register from "../../components/Register";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
+import SecurityQuestionAndAnswer from "./SecurityQuestionAndAnswer";
 
 let autoSaveTimeoutId;
 class ApplicationDetail extends  React.Component{
@@ -399,11 +400,10 @@ class ApplicationDetail extends  React.Component{
     };
 
     render() {
-        const { match : { params : { applicationID }} } = this.props;
+        const { match : { params : { applicationID }}, userProfile } = this.props;
         const { application, isLoadingApplication, scholarship, isSavingApplication, isSubmittingApplication,
             scholarshipUserProfileQuestionsFormConfig, scholarshipQuestionsFormConfig,
             viewMode, isUsingLocalApplication, promptRegisterBeforeSubmitting, registrationSuccessMessage } = this.state;
-
 
         let dateModified;
         if (application.date_modified) {
@@ -483,6 +483,10 @@ class ApplicationDetail extends  React.Component{
 
                                     }
                                 </>
+                                }
+                                {application && userProfile && application.user &&
+                                    application.user.user === userProfile.user  &&
+                                    <SecurityQuestionAndAnswer />
                                 }
                                 {promptRegisterBeforeSubmitting &&
                                 <>

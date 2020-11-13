@@ -61,6 +61,22 @@ class UserProfileAPI {
         return apiCompletionPromise;
     };
 
+    /**
+     *
+     * @param securityQuestionAndAnswer: {security_question: "", security_question_answer: ""}
+     * @param userId
+     * @returns {AxiosPromise}
+     */
+    static setSecurityQuestionAndAnswer = (securityQuestionAndAnswer, userId) => {
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: securityQuestionAndAnswer,
+            url: `${this.userProfileEndPoint}/${userId}/set-security-question-and-answer/`,
+        });
+        return apiCompletionPromise;
+    };
+
     static createUser = async (registrationData) => {
 
         const registrationDataPost = registrationData;

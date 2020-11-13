@@ -9,7 +9,6 @@ import './Navbar.scss'
 import UserProfileAPI from "../../services/UserProfileAPI";
 import Loading from "../../components/Loading";
 import LogRocket from 'logrocket';
-import Environment from "../../services/Environment";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBars} from "@fortawesome/free-solid-svg-icons";
 
@@ -45,7 +44,7 @@ class Navbar extends React.Component {
         const { userProfile, isLoadingLoggedInUserProfile } = this.props;
         const { location: { pathname, search } } = this.props;
 
-        if(userProfile && Environment.name !== 'dev') {
+        if(userProfile) {
             LogRocket.identify(userProfile.user, {
                 name: `${userProfile.first_name} ${userProfile.last_name}`,
                 email: `${userProfile.email}`,
