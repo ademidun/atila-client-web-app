@@ -1,6 +1,7 @@
 import React from 'react';
-import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import {Link} from "react-router-dom";
+import moment from "moment";
+import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import {formatCurrency, genericItemTransform, guestPageViewsIncrement} from "../../services/utils";
 import Loading from "../../components/Loading";
 import RelatedItems from "../../components/RelatedItems";
@@ -138,8 +139,10 @@ class ScholarshipDetail extends React.Component {
         ApplicationsAPI
             .doesApplicationExist(userProfile.user, scholarship.id)
             .then(res => {
-                const { data: {application} } = res;
-                this.setState({ currentUserScholarshipApplication: application })
+                const { data: { exists, application } } = res;
+                if (exists) {
+                    this.setState({ currentUserScholarshipApplication: application });
+                }
             })
             .catch((err) => {
                 console.log({err});
@@ -212,12 +215,15 @@ class ScholarshipDetail extends React.Component {
                     title={'Loading Scholarships..'} />)
         }
         const { id, name, description, funding_amount,
-            slug, img_url, criteria_info, scholarship_url, form_url, is_not_available } = scholarship;
+            slug, img_url, criteria_info, scholarship_url, form_url, is_not_available, deadline } = scholarship;
         let fundingString = formatCurrency(Number.parseInt(funding_amount), true);
 
         if (Number.parseInt(funding_amount) === 0) {
             fundingString = "varies";
         }
+
+        let scholarshipDateMoment = moment(deadline);
+        const isScholarshipDeadlinePassed = scholarshipDateMoment.diff(moment(), 'days') < 0;
 
         let applyToScholarshipButton = (<Button type="primary" size="large"
                                                 className="mt-3" style={{fontSize: "20px"}}
@@ -231,7 +237,7 @@ class ScholarshipDetail extends React.Component {
                 <Button type="primary" size="large"
                         className="mt-3" style={{fontSize: "20px"}} disabled={isLoadingApplication}>
                 <Link to={`/application/${currentUserScholarshipApplication.id}`}>
-                    Continue Application
+                    {currentUserScholarshipApplication.is_submitted || isScholarshipDeadlinePassed ? "View Application" : "Continue Application"}
                 </Link>
             </Button>)
         }

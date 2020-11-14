@@ -7,6 +7,7 @@
  */
 import React from "react";
 import {connect} from "react-redux";
+import moment from "moment";
 import ApplicationsAPI from "../../services/ApplicationsAPI";
 import Loading from "../../components/Loading";
 import {SCHOLARSHIP_QUESTIONS_TYPES_TO_FORM_TYPES} from "../../models/Scholarship";
@@ -15,7 +16,7 @@ import {scholarshipUserProfileSharedFormConfigs, toastNotify} from "../../models
 import FormDynamic from "../../components/Form/FormDynamic";
 import {Link} from "react-router-dom";
 import {Button, Popconfirm} from "antd";
-import {formatCurrency, prettifyKeys} from "../../services/utils";
+import {formatCurrency, getErrorMessage, prettifyKeys} from "../../services/utils";
 import Register from "../../components/Register";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
@@ -238,7 +239,7 @@ class ApplicationDetail extends  React.Component{
             })
             .catch(err => {
                 console.log({err});
-                toastNotify(`🙁 An error occurred`, 'error');
+                toastNotify(`🙁 An error occurred ${getErrorMessage(err)}`, 'error');
             })
             .finally(() => {
                 this.setState({isSubmittingApplication: false});
@@ -408,12 +409,12 @@ class ApplicationDetail extends  React.Component{
         let dateModified;
         if (application.date_modified) {
             dateModified = new Date(application.date_modified);
-            dateModified =  (<p className="text-muted center-block">
+            dateModified =  (<p className="text-muted float-left">
                 Last Auto-Saved {isUsingLocalApplication? " locally ": null}: {dateModified.toDateString()}{' '}
                 {dateModified.toLocaleTimeString()}
             </p>)
         } else {
-            dateModified =  (<p className="text-muted center-block">
+            dateModified =  (<p className="text-muted float-left">
                 Start typing and your application will automatically save
             </p>)
         }
@@ -421,6 +422,17 @@ class ApplicationDetail extends  React.Component{
             ...defaultSeoContent,
             title: `Scholarship Application${scholarship? ` for ${scholarship.name}`:""}`
         };
+
+        if (isLoadingApplication) {
+            return (
+                <div className="container mt-5">
+                    <HelmetSeo content={seoContent}/>
+                    <div className="card shadow p-3">
+                        <Loading  title="Loading Application..."/>
+                    </div>
+                </div>
+            );
+        }
 
         if (!isLoadingApplication && !scholarship) {
             return (
@@ -437,6 +449,31 @@ class ApplicationDetail extends  React.Component{
                 </div>
             )
         }
+
+        const { deadline} = scholarship;
+
+        let scholarshipDateMoment = moment(deadline);
+        const isScholarshipDeadlinePassed = scholarshipDateMoment.diff(moment(), 'days') < 0;
+        let scholarshipDateString = scholarshipDateMoment.format('dddd, MMMM DD, YYYY');
+
+        let submitContent = (
+            <Popconfirm placement="topRight" title={"Once you submit your application, you won't be able to edit it." +
+            " Are you sure you want to submit?"}
+                        onConfirm={this.submitApplication}
+                        okText="Yes" cancelText="No">
+                <Button type={"primary"}
+                        className={"float-right"}>
+                    Submit...
+                </Button>
+            </Popconfirm>
+        );
+
+        if (isScholarshipDeadlinePassed) {
+            submitContent = (<p className="text-muted float-right">
+                Scholarship deadline has passed. Scholarship was due on {scholarshipDateString}
+            </p>)
+        }
+
 
 
         return (
@@ -472,15 +509,7 @@ class ApplicationDetail extends  React.Component{
                                     />
                                     {dateModified}
                                     {!registrationSuccessMessage && !promptRegisterBeforeSubmitting &&
-                                        <Popconfirm placement="topRight" title={"Once you submit your application, you won't be able to edit it. Are you sure you want to submit?"}
-                                                    onConfirm={this.submitApplication}
-                                                    okText="Yes" cancelText="No">
-                                            <Button type={"primary"}
-                                                    className={"float-right"}>
-                                                Submit...
-                                            </Button>
-                                        </Popconfirm>
-
+                                        submitContent
                                     }
                                 </>
                                 }
