@@ -132,6 +132,39 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
             ),
         },
         {
+            title: <b>Average Score</b>,
+            dataIndex: 'average_user_score',
+            key: 'average_user_score',
+        },
+        {
+            title: <b>All Scores</b>,
+            dataIndex: 'user_scores',
+            key: '2',
+            render: (id, application) => (
+                <React.Fragment>
+                    {application.user_scores && Object.keys(application.user_scores).length > 0 &&
+
+                    <table className="table">
+                        <tr>
+                            <th>User ID</th>
+                            <th>Score</th>
+                        </tr>
+                        {Object.keys(application.user_scores).map(scorerId => {
+                            console.log({scorerId});
+                            return (
+                                <tr key={scorerId}>
+                                    <td>{application.user_scores[scorerId].user_id} </td>
+                                    <td>{application.user_scores[scorerId].score}</td>
+                                </tr>
+                            )
+                        })}
+                    </table>
+
+                    }
+                </React.Fragment>
+            ),
+        },
+        {
             title: <b>Select Winner</b>,
             dataIndex: 'id',
             key: '3',
