@@ -137,8 +137,12 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
             title: <b>Average Score</b>,
             dataIndex: 'average_user_score',
             key: 'average_user_score',
-            sorter: (a, b) => a.average_user_score - b.average_user_score,
-            sortDirections: ['ascend' , 'descend'],
+            sorter: (a, b) => {
+                const aScore = a.average_user_score || 0;
+                const bScore = b.average_user_score || 0;
+                return aScore - bScore;
+            },
+            sortDirections: ['descend', 'ascend'],
         },
         {
             title: <b>All Scores</b>,
