@@ -149,19 +149,22 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
                     {application.user_scores && Object.keys(application.user_scores).length > 0 &&
 
                     <table className="table">
+                        <thead>
                         <tr>
                             <th>User ID</th>
                             <th>Score</th>
                         </tr>
-                        {Object.keys(application.user_scores).map(scorerId => {
-                            console.log({scorerId});
-                            return (
-                                <tr key={scorerId}>
-                                    <td>{application.user_scores[scorerId].user_id} </td>
-                                    <td>{application.user_scores[scorerId].score}</td>
-                                </tr>
-                            )
-                        })}
+                        </thead>
+                        <tbody>
+                            {Object.keys(application.user_scores).map(scorerId => {
+                                return (
+                                    <tr key={scorerId}>
+                                        <td>{application.user_scores[scorerId].user_id} </td>
+                                        <td>{application.user_scores[scorerId].score}</td>
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
                     </table>
 
                     }
