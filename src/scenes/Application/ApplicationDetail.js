@@ -179,7 +179,6 @@ class ApplicationDetail extends  React.Component{
         const { userProfile } = this.props;
         const { application } = this.state;
 
-        console.log({userProfile, application});
         const applicationScore = event.target.value;
 
         const scorerId = userProfile.user;
