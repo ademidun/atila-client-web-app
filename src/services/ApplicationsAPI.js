@@ -130,6 +130,17 @@ class ApplicationsAPI {
 
         return apiCompletionPromise
     };
+
+    static scoreApplication = (applicationId, scorerUserId, score) => {
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: {user_id: scorerUserId, score},
+            url: `${this.applicationsApiUrl}/${applicationId}/score-application/`
+        });
+
+        return apiCompletionPromise
+    };
 }
 
 export default ApplicationsAPI;
