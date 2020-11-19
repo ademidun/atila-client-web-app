@@ -67,7 +67,7 @@ class ApplicationDetail extends  React.Component{
 
     getApplicationRemotely = () => {
 
-        const { match : { params : { applicationID }} } = this.props;
+        const { match : { params : { applicationID }}, userProfile } = this.props;
 
         this.setState({isLoadingApplication: true});
         ApplicationsAPI.get(applicationID)
@@ -75,6 +75,11 @@ class ApplicationDetail extends  React.Component{
                 const { data: application } = res;
                 const { scholarship } = application;
                 this.setState({application, scholarship});
+                if (application.user_scores) {
+                    const applicationScore = application.user_scores[userProfile.user] ?
+                        application.user_scores[userProfile.user]["score"] : 0;
+                    this.setState({applicationScore});
+                }
                 this.makeScholarshipQuestionsForm(application, scholarship)
             })
             .catch(err => {
@@ -475,7 +480,7 @@ class ApplicationDetail extends  React.Component{
 
         let applicationScoreContent = null;
 
-        if (application.user && userProfile && application.user.user === userProfile.user) {
+        if (application.user && userProfile && application.user.user !== userProfile.user) {
             applicationScoreContent = (<div>
                 <input className="form-control col-12"
                        type="number" step={0.01} min={0} max={10}
