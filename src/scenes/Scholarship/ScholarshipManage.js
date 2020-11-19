@@ -119,6 +119,8 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
             dataIndex: 'user',
             key: '1',
             render: (userProfile) => (userProfile && userProfile.first_name && `${userProfile.first_name} ${userProfile.last_name}`),
+            sorter: (a, b) => `${a.user.first_name} ${a.user.last_name}`.localeCompare(`${b.user.first_name} ${b.user.last_name}`),
+            sortDirections: ['ascend' , 'descend'],
         },
         {
             title: <b>Application</b>,
