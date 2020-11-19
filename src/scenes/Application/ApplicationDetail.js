@@ -16,7 +16,7 @@ import {scholarshipUserProfileSharedFormConfigs, toastNotify} from "../../models
 import FormDynamic from "../../components/Form/FormDynamic";
 import {Link} from "react-router-dom";
 import {Button, Popconfirm} from "antd";
-import {formatCurrency, getErrorMessage, prettifyKeys} from "../../services/utils";
+import {formatCurrency, getErrorMessage, handleError, prettifyKeys} from "../../services/utils";
 import Register from "../../components/Register";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
@@ -32,6 +32,7 @@ class ApplicationDetail extends  React.Component{
 
         this.state = {
             application: {},
+            applicationScore: 0,
             scholarship: null,
             isLoadingApplication: false,
             isSavingApplication: false,
@@ -66,7 +67,7 @@ class ApplicationDetail extends  React.Component{
 
     getApplicationRemotely = () => {
 
-        const { match : { params : { applicationID }} } = this.props;
+        const { match : { params : { applicationID }}, userProfile } = this.props;
 
         this.setState({isLoadingApplication: true});
         ApplicationsAPI.get(applicationID)
@@ -74,6 +75,11 @@ class ApplicationDetail extends  React.Component{
                 const { data: application } = res;
                 const { scholarship } = application;
                 this.setState({application, scholarship});
+                if (application.user_scores) {
+                    const applicationScore = application.user_scores[userProfile.user] ?
+                        application.user_scores[userProfile.user]["score"] : 0;
+                    this.setState({applicationScore});
+                }
                 this.makeScholarshipQuestionsForm(application, scholarship)
             })
             .catch(err => {
@@ -167,6 +173,26 @@ class ApplicationDetail extends  React.Component{
     afterSaveApplication = (application, scholarship) => {
         // this.setState({application, scholarship});
         this.makeScholarshipQuestionsForm(application, scholarship);
+    };
+
+    updateApplicationScore = (event) => {
+        const { userProfile } = this.props;
+        const { application } = this.state;
+
+        const applicationScore = event.target.value;
+
+        const scorerId = userProfile.user;
+        this.setState({applicationScore}, () => {
+
+            ApplicationsAPI.scoreApplication(application.id, scorerId, applicationScore)
+                .then(res => {
+                    console.log({res})
+                })
+                .catch(err=>{
+                    console.log({err});
+                    toastNotify(handleError(err))
+                })
+        })
     };
 
     submitApplication = () => {
@@ -401,10 +427,11 @@ class ApplicationDetail extends  React.Component{
     };
 
     render() {
-        const { match : { params : { applicationID }} } = this.props;
+        const { match : { params : { applicationID }}, userProfile } = this.props;
         const { application, isLoadingApplication, scholarship, isSavingApplication, isSubmittingApplication,
             scholarshipUserProfileQuestionsFormConfig, scholarshipQuestionsFormConfig,
-            viewMode, isUsingLocalApplication, promptRegisterBeforeSubmitting, registrationSuccessMessage } = this.state;
+            viewMode, isUsingLocalApplication, promptRegisterBeforeSubmitting, registrationSuccessMessage,
+            applicationScore } = this.state;
 
         let dateModified;
         if (application.date_modified) {
@@ -449,6 +476,19 @@ class ApplicationDetail extends  React.Component{
                 </div>
             )
         }
+
+        let applicationScoreContent = null;
+
+        if (application.user && userProfile && application.user.user !== userProfile.user) {
+            applicationScoreContent = (<div>
+                <input className="form-control col-12"
+                       type="number" step={0.01} min={0} max={10}
+                       onChange={this.updateApplicationScore}
+                       value={applicationScore}/>
+                <p>Your score is automatically saved</p>
+            </div>);
+        }
+
 
         const { deadline} = scholarship;
 
@@ -539,6 +579,8 @@ class ApplicationDetail extends  React.Component{
 
                                 {(viewMode || application.is_submitted || application.is_payment_accepted) &&
                                 <>
+
+                                    {applicationScoreContent}
                                     <h2>Profile Questions</h2>
                                     {this.viewForm(scholarship.user_profile_questions, application.user_profile_responses)}
                                     <br />

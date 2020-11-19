@@ -119,6 +119,8 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
             dataIndex: 'user',
             key: '1',
             render: (userProfile) => (userProfile && userProfile.first_name && `${userProfile.first_name} ${userProfile.last_name}`),
+            sorter: (a, b) => `${a.user.first_name} ${a.user.last_name}`.localeCompare(`${b.user.first_name} ${b.user.last_name}`),
+            sortDirections: ['ascend' , 'descend'],
         },
         {
             title: <b>Application</b>,
@@ -128,6 +130,48 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
                 <React.Fragment>
                     {application.is_winner && <><Tag color="green">Winner</Tag>{' '}</>}
                     {application.is_submitted? <Link to={`/application/${application.id}/view`}>View</Link> : "Cannot view unsubmitted application"}
+                </React.Fragment>
+            ),
+        },
+        {
+            title: <b>Average Score</b>,
+            dataIndex: 'average_user_score',
+            key: 'average_user_score',
+            sorter: (a, b) => {
+                const aScore = a.average_user_score || 0;
+                const bScore = b.average_user_score || 0;
+                return aScore - bScore;
+            },
+            sortDirections: ['descend', 'ascend'],
+        },
+        {
+            title: <b>All Scores</b>,
+            dataIndex: 'user_scores',
+            key: '2',
+            render: (id, application) => (
+                <React.Fragment>
+                    {application.user_scores && Object.keys(application.user_scores).length > 0 &&
+
+                    <table className="table">
+                        <thead>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Score</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {Object.keys(application.user_scores).map(scorerId => {
+                                return (
+                                    <tr key={scorerId}>
+                                        <td>{application.user_scores[scorerId].user_id} </td>
+                                        <td>{application.user_scores[scorerId].score}</td>
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
+                    </table>
+
+                    }
                 </React.Fragment>
             ),
         },
