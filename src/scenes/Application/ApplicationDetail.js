@@ -122,11 +122,11 @@ class ApplicationDetail extends  React.Component{
 
         const { application, scholarship } = this.state;
 
-        const {scholarship_responses, user_profile_responses } = addQuestionDetailToApplicationResponses(application, scholarship);
+        const { scholarship_responses, user_profile_responses } = addQuestionDetailToApplicationResponses(application, scholarship);
 
         if (userProfile) {
-            const accept_payment_email = userProfile.email
-            this.saveApplicationRemotely( {scholarship_responses, user_profile_responses, accept_payment_email}, application.id);
+            const verification_email = user_profile_responses.email.response
+            this.saveApplicationRemotely( {scholarship_responses, user_profile_responses, verification_email}, application.id);
         } else {
             this.saveApplicationLocally({scholarship_responses, user_profile_responses, scholarship }, scholarship);
         }

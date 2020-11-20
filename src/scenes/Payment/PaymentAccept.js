@@ -188,7 +188,7 @@ class PaymentAccept extends React.Component {
     updateUserProfile = (userProfileUpdateData) => {
         const { userProfile } = this.props;
 
-        this.setState({isLoading: true});
+        this.setState({isLoading: true}); // isLoading isn't true/false remember to switch that in new pr.
         UserProfileAPI.patch(
             userProfileUpdateData, userProfile.user)
             .then(res => {
