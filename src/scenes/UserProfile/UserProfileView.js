@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from "antd";
 import Loading from "../../components/Loading";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import UserProfileViewTabs from "./UserProfileViewTabs";
@@ -6,6 +7,8 @@ import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import {RESERVED_USERNAMES} from "../../models/Constants";
+import FileInput from "../../components/Form/FileInput";
+import {updateLoggedInUserProfile} from "../../redux/actions/user";
 
 class UserProfileView extends React.Component {
 
@@ -15,6 +18,7 @@ class UserProfileView extends React.Component {
         this.state = {
             userProfile: null,
             errorGettingUserProfile: null,
+            showProfilePictureUpload: false,
         }
     }
 
@@ -69,8 +73,33 @@ class UserProfileView extends React.Component {
             })
     };
 
+    toggleShowProfilePictureUpload = (event) => {
+        const { showProfilePictureUpload } = this.state;
+
+        this.setState({showProfilePictureUpload: !showProfilePictureUpload});
+
+        console.log({event})
+    };
+
+
+    onChangeProfilePicture = (event) => {
+        console.log({event});
+        const { loggedInUserProfile, updateLoggedInUserProfile } = this.props;
+
+        UserProfileAPI.patch(
+            {
+                profile_pic_url: event.target.value,
+            }, loggedInUserProfile.user)
+            .then(res => {
+                updateLoggedInUserProfile(res.data);
+            })
+            .catch(err=> {
+                console.log({err});
+            });
+    };
+
     render () {
-        const { errorGettingUserProfile, userProfile } = this.state;
+        const { errorGettingUserProfile, userProfile, showProfilePictureUpload } = this.state;
         const { loggedInUserProfile } = this.props;
         if (errorGettingUserProfile) {
             const seoContent = {
@@ -114,8 +143,31 @@ class UserProfileView extends React.Component {
                          <img
                             alt="user profile"
                             style={{ height: '250px', width: 'auto' }}
-                            className="rounded-circle"
-                            src={userProfileView.profile_pic_url} />
+                            className="rounded-circle cursor-pointer"
+                            src={userProfileView.profile_pic_url}
+                            onClick={this.toggleShowProfilePictureUpload}
+                         />
+
+                            {isProfileEditable &&
+                            <div>
+                                <Button onClick={this.toggleShowProfilePictureUpload}
+                                        type="link">
+                                    {showProfilePictureUpload ? 'Hide ': null}Edit Profile Picture
+                                </Button>
+                                {showProfilePictureUpload &&
+                                    <>
+                                <FileInput title={"Profile Picture"}
+                                           type={"image"}
+                                           keyName={"profile_pic_url"}
+                                           onChangeHandler={this.onChangeProfilePicture} />
+                                           <p className="text-muted">
+                                               Changes are auto-saved
+                                           </p>
+                                   </>
+
+                                }
+                            </div>
+                            }
                         </div>
                         <div className="col-md-8 col-sm-12">
                                 <h1>{ userProfileView.first_name }</h1>
@@ -137,7 +189,11 @@ class UserProfileView extends React.Component {
         );
     }
 }
+const mapDispatchToProps = {
+    updateLoggedInUserProfile
+};
+
 const mapStateToProps = state => {
     return { loggedInUserProfile: state.data.user.loggedInUserProfile };
 };
-export default connect(mapStateToProps)(UserProfileView);
+export default connect(mapStateToProps, mapDispatchToProps)(UserProfileView);
