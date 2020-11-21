@@ -65,6 +65,11 @@ function Footer({location, history}) {
                     </Link>
                   </div>
                   <div>
+                    <Link to="/testimonials">
+                      Testimonials
+                    </Link>
+                  </div>
+                  <div>
                     <Link to="/team">
                       Team
                     </Link>
