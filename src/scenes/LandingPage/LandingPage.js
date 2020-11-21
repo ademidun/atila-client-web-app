@@ -12,6 +12,7 @@ import {connect} from "react-redux";
 import BannerLoggedIn from "./BannerLoggedIn";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
+import Testimonials from "../../components/Testimonials";
 
 class LandingPage extends React.Component {
 
@@ -108,6 +109,8 @@ class LandingPage extends React.Component {
                         <Banner/>
                         <hr/>
                         <HowItWorks accountType={"Student"}/>
+                        <hr/>
+                        <Testimonials showSeo={false} />
                         {scholarshipsContentDirectApplication}
                         <hr/>
                         <div className="p-5">
