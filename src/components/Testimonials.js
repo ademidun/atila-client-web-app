@@ -24,7 +24,13 @@ let testimonials = [
   {
     first_name: "Emily",
     position: "Goergetown District High School",
-    description: "I think the site is straight forward clean and very organized I love the flow of it.",
+    description: "I think the site is straight forward clean and very organized. I love the flow of it.",
+  },
+  {
+    first_name: "Student Services Teacher",
+    position: "Toronto District School Board",
+    img_url: "https://i.imgur.com/CnqL9km.png",
+    description: "A great resource for students, I have posted this on my Student Services google class.",
   },
   {
     first_name: "Hannah",
@@ -32,12 +38,6 @@ let testimonials = [
     position: "Student, J Clarke Richardson",
     description: "It's a good website that provides scholarships, sometimes it can be hard to find stuff." +
         " You could make the visuals easier to follow.",
-  },
-  {
-    first_name: "Student Services",
-    position: "Toronto District School Board",
-    img_url: "https://i.imgur.com/CnqL9km.png",
-    description: "A great resource for students, I have posted this on my Student Services google class.",
   },
   {
     first_name: "Samantha",
@@ -109,8 +109,8 @@ const Testimonials = ({ showSeo = true, filterArray=null }) => {
   const seoContent = {
     title: "Atila Testimonials - What our users say about us",
     description: `"A great resource for students". Read what people say about Atila`,
-    image: "https://i.imgur.com/ZjHECiw.png",
-    slug: "/team",
+    image: "https://i.imgur.com/dsNLJ3X.png",
+    slug: "/testimonials",
   };
 
   if (filterArray !== null) {
