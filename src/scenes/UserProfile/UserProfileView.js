@@ -106,7 +106,7 @@ class UserProfileView extends React.Component {
 
         return (
 
-            <div className="text-center container mt-3">
+            <div className="container mt-3">
                 <HelmetSeo content={seoContent} />
                 <div className="card shadow p-3">
                     <div className="row">

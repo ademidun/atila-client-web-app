@@ -10,6 +10,7 @@ import {
 import UserProfileAPI from "../../services/UserProfileAPI";
 import {userProfileFormConfig, userProfileFormOnboarding} from "../../models/UserProfile";
 import {transformLocation} from "../../services/utils";
+import SecurityQuestionAndAnswer from "../Application/SecurityQuestionAndAnswer";
 
 const userProfileSharedFormConfigs = scholarshipUserProfileSharedFormConfigs
     .map(config => {
@@ -171,11 +172,15 @@ class UserProfileEdit extends React.Component {
                                  {userProfileFormOnboarding}
                 />}
                 {pageNumber === 1 &&
+                    <>
                 <FormDynamic onUpdateForm={this.updateForm}
                              model={userProfile}
                              inputConfigs=
                                  {userProfileFormConfig}
-                />}
+                />
+                <SecurityQuestionAndAnswer setAnswer={true} verifyAnswer={true} />
+                </>
+                }
                 {pageNumber === 2 &&
                 <FormDynamic onUpdateForm={this.updateForm}
                              model={userProfile}
