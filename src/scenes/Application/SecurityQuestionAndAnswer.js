@@ -19,6 +19,10 @@ class SecurityQuestionAndAnswer extends  React.Component{
         this.state = {
             securityQuestion: userProfile.security_question || USER_PROFILE_SECURITY_QUESTIONS[0],
             securityQuestionAnswer: "",
+            securityQuestionAnswerAttempt: "",
+            securityQuestionAnswerIsVerified: false,
+            verificationSucceeded: null,
+            verificationFailed: null,
         }
     }
 
@@ -49,9 +53,41 @@ class SecurityQuestionAndAnswer extends  React.Component{
             });
     };
 
+    verifySecurityQuestionAndAnswer = (event) => {
+
+        event.preventDefault();
+
+        const { userProfile } = this.props;
+        const { securityQuestionAnswerAttempt } = this.state;
+
+        this.setState({isLoading: true});
+        this.setState({verificationSucceeded: null, verificationFailed: null});
+
+        const userProfileUpdateData = {
+            security_question_answer_attempt: securityQuestionAnswerAttempt,
+        };
+
+        UserProfileAPI.verifySecurityAnswer(
+            userProfileUpdateData, userProfile.user)
+            .then(res => {
+                console.log({res});
+                this.setState({verificationSucceeded: true});
+            })
+            .catch(err=> {
+                console.log({err});
+                this.setState({verificationFailed: true});
+            })
+            .finally(() => {
+                this.setState({isLoading: false});
+            });
+    };
+
     onUpdateAnswer = (event) => {
         this.setState({securityQuestionAnswer: event.target.value});
+    };
 
+    onUpdateAnswerAttempt = (event) => {
+        this.setState({securityQuestionAnswerAttempt: event.target.value});
     };
 
     onQuestionChange = (selectedQuestion) => {
@@ -60,8 +96,9 @@ class SecurityQuestionAndAnswer extends  React.Component{
 
     render() {
 
-        const { securityQuestion, securityQuestionAnswer } = this.state;
-        const {userProfile} = this.props;
+        const { securityQuestion, securityQuestionAnswer, securityQuestionAnswerAttempt,
+            verificationSucceeded, verificationFailed} = this.state;
+        const {userProfile, verifyAnswer, setAnswer} = this.props;
 
         return (
             <div className="mt-5">
@@ -87,23 +124,57 @@ class SecurityQuestionAndAnswer extends  React.Component{
                             ))}
                         </Select>
                     </Col>
+
+                    {setAnswer &&
                     <Col span={24} className="my-3">
                         <p className="text-muted">
-                            Your security answer
+                            Your security answer. <br/>
+                            <small>
+                                Make sure to review your answer and save it somewhere secure. <br/>
+                                Once you've set it, you won't be able to see or change it again.
+                            </small>
                         </p>
                         <PasswordShowHide password={securityQuestionAnswer}
                                           updateForm={this.onUpdateAnswer}
                                           disabled={userProfile.security_question_is_answered}
                                           placeholder={userProfile.security_question_is_answered ? "-------" : "Security Answer"}/>
+
+                        <Button type="primary"
+                                onClick={this.saveSecurityQuestionAndAnswer}
+                                disabled={userProfile.security_question_is_answered}>
+                            Save Security Question and Answer
+                        </Button>
                     </Col>
+                    }
+                    {verifyAnswer &&
+                        <Col span={24} className="my-3">
+                        <p className="text-muted">
+                            Verify Your security answer. <br/>
+                        </p>
+                        <PasswordShowHide password={securityQuestionAnswerAttempt}
+                                          updateForm={this.onUpdateAnswerAttempt}
+                                          placeholder={"Security Answer"}/>
+
+                            <Button type="primary"
+                                    onClick={this.verifySecurityQuestionAndAnswer}>
+                                Verify Security Question and Answer
+                            </Button>
+                            {verificationSucceeded &&
+                                <p className="text-success">
+                                    Succesfully verified your answer
+                                </p>
+                            }
+                            {verificationFailed &&
+                                <p className="text-danger">
+                                    Incorrect verification answer.
+                                    Please contact us with chat in bottom right if you need help.
+                                </p>
+                            }
+                        </Col>
+                    }
                 </Row>
 
 
-                <Button type="primary"
-                        onClick={this.saveSecurityQuestionAndAnswer}
-                        disabled={userProfile.security_question_is_answered}>
-                    Save Security Question and Answer
-                </Button>
 
             </div>
         );
@@ -116,8 +187,14 @@ const mapDispatchToProps = {
 const mapStateToProps = state => {
     return { userProfile: state.data.user.loggedInUserProfile };
 };
+SecurityQuestionAndAnswer.defaultProps = {
+    setAnswer: true,
+    verifyAnswer: false,
+};
 
 SecurityQuestionAndAnswer.propTypes = {
+    setAnswer: PropTypes.bool,
+    verifyAnswer: PropTypes.bool,
     // redux
     userProfile: PropTypes.shape({}).isRequired,
     updateLoggedInUserProfile: PropTypes.func.isRequired,
