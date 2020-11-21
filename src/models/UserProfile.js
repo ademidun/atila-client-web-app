@@ -6,6 +6,7 @@ export const UserProfileTest1 = {
     first_name: 'Charles',
     last_name: 'Barkley',
     major: 'Basketball',
+    enrollment_proof: null,
     id: 1,
     user: 1,
     is_atila_admin: false,

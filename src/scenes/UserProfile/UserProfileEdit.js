@@ -11,7 +11,11 @@ import UserProfileAPI from "../../services/UserProfileAPI";
 import {userProfileFormConfig, userProfileFormOnboarding} from "../../models/UserProfile";
 import {transformLocation} from "../../services/utils";
 import SecurityQuestionAndAnswer from "../Application/SecurityQuestionAndAnswer";
+import FileInput from "../../components/Form/FileInput";
+import { message } from 'antd';
 
+
+let autoSaveTimeoutId;
 const userProfileSharedFormConfigs = scholarshipUserProfileSharedFormConfigs
     .map(config => {
         config.className = null;
@@ -68,6 +72,14 @@ class UserProfileEdit extends React.Component {
         }
 
         updateLoggedInUserProfile(newUserProfile);
+
+        if (autoSaveTimeoutId) {
+            clearTimeout(autoSaveTimeoutId);
+        }
+        autoSaveTimeoutId = setTimeout(() => {
+            // Runs 1 second (1000 ms) after the last change
+            this.submitForm({});
+        }, 1000);
     };
 
     changePage = (pageNumber) => {
@@ -76,7 +88,10 @@ class UserProfileEdit extends React.Component {
 
     submitForm = (event) => {
 
-        event.preventDefault();
+        if (event.preventDefault) {
+            event.preventDefault();
+        }
+
         const { userProfile, afterSubmitSuccess } = this.props;
         const { formErrors} = this.state;
 
@@ -108,7 +123,7 @@ class UserProfileEdit extends React.Component {
         UserProfileAPI
             .update({userProfile, locationData }, userProfile.user)
             .then(res=>{
-                toastNotify('😃 User Profile successfully saved!');
+                message.success('😃 User Profile successfully saved!');
                 afterSubmitSuccess();
             })
             .catch(err=> {
@@ -165,6 +180,9 @@ class UserProfileEdit extends React.Component {
                 {/*        </Col>*/}
                 {/*    </Row>*/}
                 {/*}*/}
+                <p className="text-muted">
+                    User Profile Changes are Automatically Saved
+                </p>
                 {pageNumber === 0 &&
                 <FormDynamic onUpdateForm={this.updateForm}
                              model={userProfile}
@@ -178,7 +196,22 @@ class UserProfileEdit extends React.Component {
                              inputConfigs=
                                  {userProfileFormConfig}
                 />
-                <SecurityQuestionAndAnswer setAnswer={true} verifyAnswer={true} />
+
+                <FileInput
+                    title={"Proof of Enrollment"}
+                    keyName="enrollment_proof"
+                    className="my-3"
+                    onChangeHandler={this.updateForm}
+                    type="image,pdf"
+                    filePath={`user-profile-files/${userProfile.user}`}
+                    uploadHint="Enrollment proof must be a PDF (preferred) or an image."/>
+                        {userProfile.enrollment_proof &&
+                            <div className="my-2">
+                                <a href={userProfile.enrollment_proof} target="_blank"  rel="noopener noreferrer">
+                                    View Proof of Enrollment
+                                </a>
+                            </div>
+                        }
                 </>
                 }
                 {pageNumber === 2 &&
@@ -187,21 +220,28 @@ class UserProfileEdit extends React.Component {
                              inputConfigs=
                                  {userProfileSharedFormConfigs}
                 />}
-                <div className="my-2" style={{clear: 'both'}}>
-                    {pageNumber !== 2 &&
-                    <button className="btn btn-outline-primary float-right col-md-6"
-                            onClick={() => this.changePage(pageNumber+1)}>Next</button>}
-                    {pageNumber > 1 &&
-                    <button className="btn btn-outline-primary float-left col-md-6"
-                            onClick={() => this.changePage(pageNumber-1)}>Prev</button>}
+                <div>
+                    <div className="my-2" style={{height: "20px"}}>
+                        {pageNumber !== 2 &&
+                        <button className="btn btn-outline-primary float-right col-md-6"
+                                onClick={() => this.changePage(pageNumber+1)}>Next</button>}
+                        {pageNumber > 1 &&
+                        <button className="btn btn-outline-primary float-left col-md-6"
+                                onClick={() => this.changePage(pageNumber-1)}>Prev</button>}
+                        {
+                            Object.keys(formErrors).length > 0 &&
+                            formErrorsContent
+                        }
+                    </div>
+                    <br/>
+                    <div className="text-muted my-2">
+                        User Profile Changes are Automatically Saved
+                    </div>
+                    <br/>
+
                 </div>
-                {
-                    Object.keys(formErrors).length > 0 &&
-                    formErrorsContent
-                }
-                <button type="submit"
-                        className="btn btn-primary col-12 mt-2"
-                        onClick={this.submitForm}>{submitButtonText}</button>
+                <hr/>
+                <SecurityQuestionAndAnswer setAnswer={true} verifyAnswer={true} />
             </div>
         );
     }
