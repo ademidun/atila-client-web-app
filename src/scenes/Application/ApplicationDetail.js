@@ -20,6 +20,7 @@ import {formatCurrency, getErrorMessage, handleError, prettifyKeys} from "../../
 import Register from "../../components/Register";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
+import SecurityQuestionAndAnswer from "./SecurityQuestionAndAnswer";
 // import SecurityQuestionAndAnswer from "./SecurityQuestionAndAnswer";
 
 let autoSaveTimeoutId;
@@ -122,11 +123,11 @@ class ApplicationDetail extends  React.Component{
 
         const { application, scholarship } = this.state;
 
-        const {scholarship_responses, user_profile_responses } = addQuestionDetailToApplicationResponses(application, scholarship);
+        const { scholarship_responses, user_profile_responses } = addQuestionDetailToApplicationResponses(application, scholarship);
 
         if (userProfile) {
-            const accept_payment_email = userProfile.email
-            this.saveApplicationRemotely( {scholarship_responses, user_profile_responses, accept_payment_email}, application.id);
+            const verification_email = user_profile_responses.email.response
+            this.saveApplicationRemotely( {scholarship_responses, user_profile_responses, verification_email}, application.id);
         } else {
             this.saveApplicationLocally({scholarship_responses, user_profile_responses, scholarship }, scholarship);
         }
@@ -553,11 +554,11 @@ class ApplicationDetail extends  React.Component{
                                     }
                                 </>
                                 }
-                                {/*TODO add this back when we get the invalid token error fixed*/}
-                                {/*{application && userProfile && application.user &&*/}
-                                {/*    application.user.user === userProfile.user  &&*/}
-                                {/*    <SecurityQuestionAndAnswer />*/}
-                                {/*}*/}
+                                TODO add this back when we get the invalid token error fixed
+                                {application && userProfile && application.user &&
+                                    application.user.user === userProfile.user  &&
+                                    <SecurityQuestionAndAnswer />
+                                }
                                 {promptRegisterBeforeSubmitting &&
                                 <>
                                     <h3>Create a username and password to access your application later

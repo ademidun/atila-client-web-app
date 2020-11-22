@@ -16,7 +16,7 @@ import FileInput from "../../components/Form/FileInput";
 
 const { Step } = Steps;
 
-const ALL_PAYMENT_ACCEPTANCE_STEPS = ["verify_email", "proof_of_enrolment", "security_question", "thank_you_email","accept_payment"];
+const ALL_PAYMENT_ACCEPTANCE_STEPS = ["verify_email",  "security_question", "proof_of_enrolment", "thank_you_email", "accept_payment"];
 
 class PaymentAccept extends React.Component {
 
@@ -24,7 +24,7 @@ class PaymentAccept extends React.Component {
         super(props);
 
         this.state = {
-            isLoading: null,
+            loading: null,
             application: null,
             scholarship: null
         }
@@ -41,7 +41,7 @@ class PaymentAccept extends React.Component {
         const params = new URLSearchParams(search);
 
         let applicationID = params.get('application');
-        this.setState({isLoading: "Retrieving Application..."});
+        this.setState({loading: "Retrieving Application..."});
         ApplicationsAPI.get(applicationID)
             .then(res=>{
                 const { data: application } = res;
@@ -52,7 +52,7 @@ class PaymentAccept extends React.Component {
                 console.log({err});
             })
             .finally(() => {
-                this.setState({isLoading: null});
+                this.setState({loading: null});
             })
     };
 
@@ -67,7 +67,7 @@ class PaymentAccept extends React.Component {
 
         const { first_name, last_name, email } = userProfile;
 
-        this.setState({isLoading: "Connecting Bank Account"});
+        this.setState({loading: "Connecting Bank Account"});
 
         const accountData = {
             user_profile: { first_name, last_name, email },
@@ -83,7 +83,7 @@ class PaymentAccept extends React.Component {
             })
             .catch(err => {
                 console.log({err});
-                this.setState({isLoading: null});
+                this.setState({loading: null});
             })
             .finally(() => {
             });
@@ -95,7 +95,7 @@ class PaymentAccept extends React.Component {
         const { userProfile, updateLoggedInUserProfile } = this.props;
 
         const {user} = userProfile;
-        this.setState({isLoading: "Saving User Profile"});
+        this.setState({loading: "Saving User Profile"});
         UserProfileAPI
             .patch({stripe_connected_account_id: account_id}, user)
             .then(res => {
@@ -106,12 +106,12 @@ class PaymentAccept extends React.Component {
                 console.log({err})
             })
             .finally(() => {
-                this.setState({isLoading: null});
+                this.setState({loading: null});
             });
     };
 
     acceptPayment = () => {
-        this.setState({isLoading: "Accepting Payment"});
+        this.setState({loading: "Accepting Payment"});
 
         const { userProfile } = this.props;
         const { scholarship } = this.state;
@@ -130,7 +130,7 @@ class PaymentAccept extends React.Component {
                 console.log({err});
             })
             .finally(() => {
-                this.setState({isLoading: null});
+                this.setState({loading: null});
             });
 
     };
@@ -188,7 +188,7 @@ class PaymentAccept extends React.Component {
     updateUserProfile = (userProfileUpdateData) => {
         const { userProfile } = this.props;
 
-        this.setState({isLoading: true});
+        this.setState({loading: "Updating User Profile..."}); // loading isn't true/false remember to switch that in new pr.
         UserProfileAPI.patch(
             userProfileUpdateData, userProfile.user)
             .then(res => {
@@ -199,7 +199,7 @@ class PaymentAccept extends React.Component {
                 console.log({err});
             })
             .finally(() => {
-                this.setState({isLoading: false});
+                this.setState({loading: null});
             });
     };
 
@@ -225,7 +225,7 @@ class PaymentAccept extends React.Component {
         const { application } = this.state
         const applicationID = application.id
 
-        this.setState({isLoading: "Sending Verification Email..."});
+        this.setState({loading: "Sending Verification Email..."});
         ApplicationsAPI
             .resendVerificationEmail(applicationID, {})
             .then(res=>{
@@ -241,7 +241,7 @@ class PaymentAccept extends React.Component {
                 toastNotify(`An error occurred. Please message us using the chat button in the bottom right.`, 'error');
             })
             .finally(() => {
-                this.setState({isLoading: null});
+                this.setState({loading: null});
             })
     }
 
@@ -276,7 +276,7 @@ class PaymentAccept extends React.Component {
 
     verifyEmailStep = () => {
         const { userProfile } = this.props
-        const { isLoading } = this.state
+        const { loading } = this.state
 
         return (
             <Row gutter={[{ xs: 8, sm: 16}, 16]}>
@@ -296,7 +296,7 @@ class PaymentAccept extends React.Component {
                     <Button onClick={()=>{this.resendVerificationEmail()}}
                             className="center-block mt-3"
                             type="primary"
-                            disabled={isLoading}
+                            disabled={loading}
                     >
                         Resend Email Verification Code
                     </Button>
@@ -305,7 +305,7 @@ class PaymentAccept extends React.Component {
                     <Button onClick={()=>{this.verifyEmailCode(document.getElementById('code').value)}}
                             className="center-block mt-3"
                             type="primary"
-                            disabled={isLoading}
+                            disabled={loading}
                     >
                         Verify Email
                     </Button>
@@ -315,7 +315,7 @@ class PaymentAccept extends React.Component {
     }
 
     securityQuestionStep = () => {
-        const { isLoading } = this.state
+        const { loading } = this.state
 
         return (
             <Row gutter={[{ xs: 8, sm: 16}, 16]}>
@@ -327,7 +327,7 @@ class PaymentAccept extends React.Component {
                         <Button onClick={()=>{this.goBack()}}
                                 className="center-block mt-3"
                                 type="primary"
-                                disabled={isLoading}
+                                disabled={loading}
                         >
                             Go Back
                         </Button>
@@ -380,7 +380,7 @@ class PaymentAccept extends React.Component {
     }
 
     thankYouEmailStep = () => {
-        const { isLoading } = this.state
+        const { loading } = this.state
 
         return (
             <Row gutter={[{ xs: 8, sm: 16}, 16]}>
@@ -398,7 +398,7 @@ class PaymentAccept extends React.Component {
                     <Button onClick={()=>{}}
                             className="center-block mt-3"
                             type="primary"
-                            disabled={isLoading}>
+                            disabled={loading}>
                         Send Thank You Email
                     </Button>
                 </Col>
@@ -422,7 +422,7 @@ class PaymentAccept extends React.Component {
     render () {
 
         const { userProfile } = this.props;
-        const { isLoading, application, scholarship } = this.state;
+        const { loading, application, scholarship } = this.state;
 
         if (!userProfile) {
             return (
@@ -438,8 +438,8 @@ class PaymentAccept extends React.Component {
             return (
                 <div className="container mt-5">
                     <div className="card shadow p-3">
-                        {isLoading &&
-                        <Loading title={isLoading} />
+                        {loading &&
+                        <Loading title={loading} />
                         }
                     </div>
                 </div>
@@ -450,8 +450,8 @@ class PaymentAccept extends React.Component {
         return (
             <div className="container mt-5">
                 <div className="card shadow p-3">
-                    {isLoading &&
-                    <Loading title={isLoading} />
+                    {loading &&
+                    <Loading title={loading} />
                     }
                     <Steps type="navigation"
                         current={ALL_PAYMENT_ACCEPTANCE_STEPS
