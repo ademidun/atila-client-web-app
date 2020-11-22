@@ -240,6 +240,8 @@ class ScholarshipDetail extends React.Component {
                     {currentUserScholarshipApplication.is_submitted || isScholarshipDeadlinePassed ? "View Application" : "Continue Application"}
                 </Link>
             </Button>)
+        } else if (isScholarshipDeadlinePassed) {
+            applyToScholarshipButton = null;
         }
 
         if(scholarshipUserProfile && userProfile &&
