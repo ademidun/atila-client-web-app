@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from "antd";
 import PropTypes from 'prop-types';
 import {connect} from "react-redux";
 import {updateLoggedInUserProfile} from "../../redux/actions/user";
@@ -35,6 +36,8 @@ class UserProfileEdit extends React.Component {
     }
 
     updateForm = (event) => {
+        const { pageNumber } = this.state;
+
         if (event.stopPropagation) {
             event.stopPropagation();
         }
@@ -71,19 +74,25 @@ class UserProfileEdit extends React.Component {
             };
         }
 
+        // When pageNumber is zero, that means we are in onboarding mode and thus don't use auto saving.
         updateLoggedInUserProfile(newUserProfile);
+        if (pageNumber !== 0) {
 
-        if (autoSaveTimeoutId) {
-            clearTimeout(autoSaveTimeoutId);
+            if (autoSaveTimeoutId) {
+                clearTimeout(autoSaveTimeoutId);
+            }
+            autoSaveTimeoutId = setTimeout(() => {
+                // Runs 1 second (1000 ms) after the last change
+                this.submitForm({});
+            }, 1000);
         }
-        autoSaveTimeoutId = setTimeout(() => {
-            // Runs 1 second (1000 ms) after the last change
-            this.submitForm({});
-        }, 1000);
     };
 
     changePage = (pageNumber) => {
-        this.setState({pageNumber})
+        this.setState({pageNumber}, () => {
+            // Save each time a page is navigated.
+            this.submitForm({});
+        })
     };
 
     submitForm = (event) => {
@@ -180,9 +189,11 @@ class UserProfileEdit extends React.Component {
                 {/*        </Col>*/}
                 {/*    </Row>*/}
                 {/*}*/}
+                {pageNumber !== 0 &&
                 <p className="text-muted">
                     User Profile Changes are Automatically Saved
                 </p>
+                }
                 {pageNumber === 0 &&
                 <FormDynamic onUpdateForm={this.updateForm}
                              model={userProfile}
@@ -234,9 +245,16 @@ class UserProfileEdit extends React.Component {
                         }
                     </div>
                     <br/>
-                    <div className="text-muted my-2">
-                        User Profile Changes are Automatically Saved
-                    </div>
+                        {pageNumber !== 0 &&
+                        <div className="text-muted my-2">
+                            User Profile Changes are Automatically Saved
+                        </div>
+                        }
+                        {pageNumber === 0 &&
+                        <Button type="submit"
+                                className="btn btn-primary col-12 mt-2"
+                                onClick={this.submitForm}>{submitButtonText}</Button>
+                        }
                     <br/>
 
                 </div>
