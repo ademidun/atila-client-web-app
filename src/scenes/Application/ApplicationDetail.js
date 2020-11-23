@@ -554,7 +554,6 @@ class ApplicationDetail extends  React.Component{
                                     }
                                 </>
                                 }
-                                TODO add this back when we get the invalid token error fixed
                                 {application && userProfile && application.user &&
                                     application.user.user === userProfile.user  &&
                                     <SecurityQuestionAndAnswer />
