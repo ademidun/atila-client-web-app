@@ -27,9 +27,9 @@ let testimonials = [
     description: "I think the site is straight forward clean and very organized. I love the flow of it.",
   },
   {
-    first_name: "Student Services Teacher",
-    position: "Toronto District School Board",
-    img_url: "https://i.imgur.com/CnqL9km.png",
+    first_name: "Chris Bis",
+    position: "Student Services Teacher, Toronto District School Board",
+    img_url: "https://i.imgur.com/XzOTTkV.png",
     description: "A great resource for students, I have posted this on my Student Services google class.",
   },
   {
