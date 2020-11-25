@@ -16,7 +16,7 @@ import FileInput from "../../components/Form/FileInput";
 
 const { Step } = Steps;
 
-const ALL_PAYMENT_ACCEPTANCE_STEPS = ["verify_email",  "security_question", "proof_of_enrolment", "thank_you_email", "accept_payment"];
+const ALL_PAYMENT_ACCEPTANCE_STEPS = ["verify_email", "proof_of_enrolment", "thank_you_email", "accept_payment"];
 
 class PaymentAccept extends React.Component {
 
@@ -142,7 +142,7 @@ class PaymentAccept extends React.Component {
         if (application.is_thank_you_letter_sent){
             return 4
         }
-        if (userProfile.enrollment_proof){
+        if (userProfile.enrollment_proof && application.is_security_question_answered){
             return 3
         }
         if (application.is_security_question_answered){
@@ -466,10 +466,10 @@ class PaymentAccept extends React.Component {
                         </h1>
 
                         {(currentPaymentAcceptanceStepIndex === 0) && this.verifyEmailStep()}
-                        {(currentPaymentAcceptanceStepIndex === 1) && this.securityQuestionStep()}
-                        {(currentPaymentAcceptanceStepIndex === 2) && this.proofOfEnrolmentStep()}
-                        {(currentPaymentAcceptanceStepIndex === 3) && this.thankYouEmailStep()}
-                        {(currentPaymentAcceptanceStepIndex === 4) && this.acceptPaymentStep()}
+                        {/*{(currentPaymentAcceptanceStepIndex === 1) && this.securityQuestionStep()}*/}
+                        {(currentPaymentAcceptanceStepIndex === 1) && this.proofOfEnrolmentStep()}
+                        {(currentPaymentAcceptanceStepIndex === 2) && this.thankYouEmailStep()}
+                        {(currentPaymentAcceptanceStepIndex === 3) && this.acceptPaymentStep()}
 
                     </div>
                 </div>
