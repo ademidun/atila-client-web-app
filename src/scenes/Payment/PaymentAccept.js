@@ -460,9 +460,33 @@ class PaymentAccept extends React.Component {
                 const { data: application } = res;
                 const { scholarship } = application;
                 this.setState({application, scholarship});
+                toastNotify('😃 Thank you letter draft saved!')
             })
             .catch(err => {
                 console.log({err});
+            })
+    }
+
+    sendThankYouLetter = (draft) => {
+        this.setState({loading: "Sending thank you email..."})
+        const { application } = this.state
+        this.saveThankYouLetter(draft)
+
+        ApplicationsAPI
+            .sendThankYouLetter(application.id, {})
+            .then(res => {
+                const {application} = res.data;
+                const {scholarship} = res.data;
+                this.setState({application, scholarship});
+
+                toastNotify(`😃 Thank you letter sent successfully!`, 'success');
+            })
+            .catch(err => {
+                console.log({err})
+                toastNotify(`An error occurred. Please message us using the chat button in the bottom right.`, 'error');
+            })
+            .finally(() =>{
+                this.setState({loading: null})
             })
     }
 
@@ -490,7 +514,7 @@ class PaymentAccept extends React.Component {
                     </Button>
                 </Col>
                 <Col span={24}>
-                    <Button onClick={()=>{}}
+                    <Button onClick={()=>{this.sendThankYouLetter("Test")}}
                             className="center-block mt-3"
                             type="primary"
                             disabled={loading}>
