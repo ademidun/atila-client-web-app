@@ -137,7 +137,11 @@ class PaymentAccept extends React.Component {
 
     getCurrentStep = () => {
         /*
-
+        It's worth explaining how the page updates after each step without a refresh.
+        1) A network request is made (patch, post, etc).
+        2) On the .then(), you setState with the new updated application object that's returned from the request
+        3) The setState causes a re-render. In the render method, this function is called which deduces the current step.
+        4) The new step renders :)
         */
 
         const { application } = this.state;
