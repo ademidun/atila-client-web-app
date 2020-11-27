@@ -492,6 +492,7 @@ class PaymentAccept extends React.Component {
 
     thankYouEmailStep = () => {
         const { loading, application } = this.state;
+        const confirmText = "Are you sure you want to send the email? This action cannot be undone."
 
         return (
             <Row gutter={[{ xs: 8, sm: 16}, 16]}>
@@ -514,12 +515,14 @@ class PaymentAccept extends React.Component {
                     </Button>
                 </Col>
                 <Col span={24}>
-                    <Button onClick={()=>{this.sendThankYouLetter("Test")}}
-                            className="center-block mt-3"
-                            type="primary"
-                            disabled={loading}>
-                        Send Thank You Email...
-                    </Button>
+                    <Popconfirm placement="top" title={confirmText} onConfirm={()=>{this.sendThankYouLetter("Test")}}
+                                okText="Yes" cancelText="No">
+                        <Button className="center-block mt-3"
+                                type="primary"
+                        >
+                            Send Thank You Email...
+                        </Button>
+                    </Popconfirm>
                 </Col>
 
                 <Col span={24}>
