@@ -136,6 +136,10 @@ class PaymentAccept extends React.Component {
     };
 
     getCurrentStep = () => {
+        /*
+
+        */
+
         const { application } = this.state;
         const { userProfile } = this.props
 
@@ -407,7 +411,22 @@ class PaymentAccept extends React.Component {
     }
 
     onAcceptPayment = (email) => {
+        // This function sends a post request to the accept-payment backend endpoint containing the accept_payment_email
 
+        const { application } = this.state
+
+        ApplicationsAPI
+            .acceptPayment(application.id, {"accept_payment_email": email})
+            .then(res=> {
+                const {application} = res.data;
+                const {scholarship} = res.data;
+                this.setState({application, scholarship});
+            })
+            .catch(err => {
+                console.log({err});
+                toastNotify(`An error occurred. Please message us using the chat button in the bottom right.`, 'error');
+            })
+            .finally(() => {})
     }
 
     acceptPaymentStep = () => {
