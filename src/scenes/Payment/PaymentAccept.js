@@ -452,7 +452,7 @@ class PaymentAccept extends React.Component {
     };
 
     thankYouEmailStep = () => {
-        const { loading } = this.state;
+        const { loading, application } = this.state;
 
         return (
             <Row gutter={[{ xs: 8, sm: 16}, 16]}>
@@ -463,7 +463,7 @@ class PaymentAccept extends React.Component {
                     </p>
                     <CKEditor
                         editor={ InlineEditor }
-                        data={"Thank You Letter"}
+                        data={application.thank_you_letter}
                     />
                 </Col>
                 <Col span={24}>
