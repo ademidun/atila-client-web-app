@@ -13,6 +13,7 @@ import InlineEditor from "@ckeditor/ckeditor5-build-inline";
 import CKEditor from "@ckeditor/ckeditor5-react";
 import {toastNotify} from "../../models/Utils";
 import FileInput from "../../components/Form/FileInput";
+import {User} from "firebase";
 
 const { Step } = Steps;
 
@@ -322,16 +323,61 @@ class PaymentAccept extends React.Component {
         )
     }
 
+    verifySecurityQuestionAnswer = (attempt) => {
+        const { userProfile } = this.props
+
+        const userProfileAttempt = {
+            security_question_answer_attempt: attempt,
+        };
+
+        this.setState({loading: "Verifying Answer..."})
+        UserProfileAPI
+            .verifySecurityAnswer(userProfileAttempt, userProfile.user)
+            .then(res => {
+                toastNotify(`😃 Security Answer Verification Successful`, 'success');
+                console.log({res});
+            })
+            .catch(err => {
+                toastNotify(`That wasn't the answer we were looking for. Try againPlease message us using the chat button in the bottom right.`, 'error');
+                console.log({err});
+
+            })
+            .finally(() => {
+                this.setState({loading: null})
+            })
+    }
+
     securityQuestionStep = () => {
         const { loading } = this.state
+        const { userProfile } = this.props
+
+        const title  = "Verify Security Question and Answer";
 
         return (
             <Row gutter={[{ xs: 8, sm: 16}, 16]}>
                 <Col span={24}>
-                    <div>Security Question Step Template</div>
-                    <br />
+                    <h3 className="text-center">
+                        {title}
+                    </h3>
+                </Col>
+                <Col span={24}>
+                    <h3>Security Question: {userProfile.security_question}</h3>
+                </Col>
+                <Col span={24}>
+                    <b>Response</b> <Input id="security-question-response" placeholder="Security Question Reponse" />
+                </Col>
+                <Col span={24}>
+                    <Button onClick={()=>{}}
+                            className="center-block mt-3"
+                            type="primary"
+                            disabled={loading}
+                    >
+                        Verify Security Question Answer
+                    </Button>
+                </Col>
+
+                <Col span={24}>
                     <div>
-                        GO BACK <br />
                         <Button onClick={()=>{this.goBack()}}
                                 className="center-block mt-3"
                                 type="primary"
