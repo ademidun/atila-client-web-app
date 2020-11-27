@@ -515,7 +515,7 @@ class PaymentAccept extends React.Component {
                     </Button>
                 </Col>
                 <Col span={24}>
-                    <Popconfirm placement="top" title={confirmText} onConfirm={()=>{this.sendThankYouLetter("Test")}}
+                    <Popconfirm placement="bottom" title={confirmText} onConfirm={()=>{this.sendThankYouLetter("Test")}}
                                 okText="Yes" cancelText="No">
                         <Button className="center-block mt-3"
                                 type="primary"
@@ -591,7 +591,7 @@ class PaymentAccept extends React.Component {
                 </Col>
 
                 <div className="center-block">
-                    <Popconfirm placement="topLeft" title={confirmText} onConfirm={() =>
+                    <Popconfirm placement="bottom" title={confirmText} onConfirm={() =>
                                 {this.onAcceptPayment(document.getElementById('accept-payment-email'.value))}}
                                 okText="Yes" cancelText="No">
                         <Button className="btn-success">
