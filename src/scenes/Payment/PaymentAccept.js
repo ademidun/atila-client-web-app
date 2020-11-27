@@ -443,7 +443,9 @@ class PaymentAccept extends React.Component {
 
                 {/*<Col span={24}>*/}
                     <div className="center-block">
-                        <Popconfirm placement="topLeft" title={confirmText} onConfirm={() => {}} okText="Yes" cancelText="No">
+                        <Popconfirm placement="topLeft" title={confirmText} onConfirm={() =>
+                                    {this.onAcceptPayment(document.getElementById('accept-payment-email'.value))}}
+                                    okText="Yes" cancelText="No">
                             <Button className="btn-success">
                                 Accept Payment...
                             </Button>
