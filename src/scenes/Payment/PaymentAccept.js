@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from "react-redux";
-import {Button, Col, Input, Row, Steps} from "antd";
+import {Button, Col, Input, Popconfirm, Row, Steps} from "antd";
 import PaymentAPI from "../../services/PaymentAPI";
 import Loading from "../../components/Loading";
 import UserProfileAPI from "../../services/UserProfileAPI";
@@ -142,7 +142,7 @@ class PaymentAccept extends React.Component {
         if (application.is_thank_you_letter_sent){
             return 4
         }
-        if (userProfile.enrollment_proof && application.is_security_question_answered){
+        if (userProfile.enrollment_proof){
             return 3
         }
         if (application.is_security_question_answered){
@@ -406,17 +406,53 @@ class PaymentAccept extends React.Component {
         )
     }
 
+    onAcceptPayment = (email) => {
+
+    }
+
     acceptPaymentStep = () => {
+        const { application } = this.state
+        const confirmText = "Are you sure this is the correct email to receive the scholarship funding?"
+
+        if (application.is_payment_accepted){
+            return (
+                <Row gutter={[{ xs: 8, sm: 16}, 16]}>
+                    <Col span={24}>
+                        <div className="center-block">
+                            <p className="text-success">
+                                Success! You've completed the payment acceptance step and your money will be
+                                sent to {application.accept_payment_email} within 24 hours. Message us using the chat
+                                icon in the bottom right if you have any questions!
+                            </p>
+                        </div>
+                    </Col>
+                </Row>
+            )
+        }
         return (
             <Row gutter={[{ xs: 8, sm: 16}, 16]}>
-                <div className="center-block">
-                    <p className="text-success">
-                        Success! You've completed the payment acceptance step and your money will be
-                        sent to you within 24 hours.
-                    </p>
-                </div>
+                <Col span={24}>
+                    <h6>
+                        Set destination email to receive payment.
+                    </h6>
+                </Col>
+
+                <Col span={24}>
+                    <Input id="accept-payment-email" placeholder="Destination Email" />
+                </Col>
+
+                {/*<Col span={24}>*/}
+                    <div className="center-block">
+                        <Popconfirm placement="topLeft" title={confirmText} onConfirm={() => {}} okText="Yes" cancelText="No">
+                            <Button className="btn-success">
+                                Accept Payment...
+                            </Button>
+                        </Popconfirm>
+                    </div>
+                {/*</Col>*/}
             </Row>
         )
+
     }
 
     render () {
