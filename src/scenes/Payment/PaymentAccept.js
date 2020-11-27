@@ -323,6 +323,21 @@ class PaymentAccept extends React.Component {
         )
     }
 
+    updateApplicationIsSecurityQuestionAnswered = () => {
+        const { application } = this.state
+
+        ApplicationsAPI
+            .patch(application.id, {is_security_question_answered: true})
+            .then(res => {
+                const { data: application } = res;
+                const { scholarship } = application;
+                this.setState({application, scholarship});
+            })
+            .catch(err => {
+                console.log({err});
+            })
+    }
+
     verifySecurityQuestionAnswer = (attempt) => {
         const { userProfile } = this.props
 
@@ -335,10 +350,10 @@ class PaymentAccept extends React.Component {
             .verifySecurityAnswer(userProfileAttempt, userProfile.user)
             .then(res => {
                 toastNotify(`😃 Security Answer Verification Successful`, 'success');
-                console.log({res});
+                this.updateApplicationIsSecurityQuestionAnswered()
             })
             .catch(err => {
-                toastNotify(`That wasn't the answer we were looking for. Try againPlease message us using the chat button in the bottom right.`, 'error');
+                toastNotify(`Incorrect Attempt. Try again or message us using the chat button in the bottom right if this persists.`, 'error');
                 console.log({err});
 
             })
@@ -367,7 +382,8 @@ class PaymentAccept extends React.Component {
                     <b>Response</b> <Input id="security-question-response" placeholder="Security Question Reponse" />
                 </Col>
                 <Col span={24}>
-                    <Button onClick={()=>{}}
+                    <Button onClick={()=>
+                    {this.verifySecurityQuestionAnswer(document.getElementById('security-question-response').value)}}
                             className="center-block mt-3"
                             type="primary"
                             disabled={loading}
