@@ -219,7 +219,7 @@ class PaymentAccept extends React.Component {
         const { application } = this.state;
 
         ApplicationsAPI
-            .patch(application.id, {is_email_verified: false})
+            .patch(application.id, {is_email_verified: false, is_security_question_answered: false})
             .then(res => {
                 const { data: application } = res;
                 const { scholarship } = application;
@@ -451,6 +451,21 @@ class PaymentAccept extends React.Component {
         )
     };
 
+    saveThankYouLetter = (draft) => {
+        const { application } = this.state;
+
+        ApplicationsAPI
+            .patch(application.id, {thank_you_letter: draft})
+            .then(res => {
+                const { data: application } = res;
+                const { scholarship } = application;
+                this.setState({application, scholarship});
+            })
+            .catch(err => {
+                console.log({err});
+            })
+    }
+
     thankYouEmailStep = () => {
         const { loading, application } = this.state;
 
@@ -467,12 +482,32 @@ class PaymentAccept extends React.Component {
                     />
                 </Col>
                 <Col span={24}>
+                    <Button onClick={()=>{this.saveThankYouLetter("Test")}}
+                            className="mt-3"
+                            type="primary"
+                            disabled={loading}>
+                        Save
+                    </Button>
+                </Col>
+                <Col span={24}>
                     <Button onClick={()=>{}}
                             className="center-block mt-3"
                             type="primary"
                             disabled={loading}>
-                        Send Thank You Email
+                        Send Thank You Email...
                     </Button>
+                </Col>
+
+                <Col span={24}>
+                    <div>
+                        <Button onClick={()=>{this.goBack()}}
+                                className="center-block mt-3"
+                                type="primary"
+                                disabled={loading}
+                        >
+                            Go Back
+                        </Button>
+                    </div>
                 </Col>
             </Row>
         )
@@ -528,17 +563,15 @@ class PaymentAccept extends React.Component {
                     <Input id="accept-payment-email" placeholder="Destination Email" />
                 </Col>
 
-                {/*<Col span={24}>*/}
-                    <div className="center-block">
-                        <Popconfirm placement="topLeft" title={confirmText} onConfirm={() =>
-                                    {this.onAcceptPayment(document.getElementById('accept-payment-email'.value))}}
-                                    okText="Yes" cancelText="No">
-                            <Button className="btn-success">
-                                Accept Payment...
-                            </Button>
-                        </Popconfirm>
-                    </div>
-                {/*</Col>*/}
+                <div className="center-block">
+                    <Popconfirm placement="topLeft" title={confirmText} onConfirm={() =>
+                                {this.onAcceptPayment(document.getElementById('accept-payment-email'.value))}}
+                                okText="Yes" cancelText="No">
+                        <Button className="btn-success">
+                            Accept Payment...
+                        </Button>
+                    </Popconfirm>
+                </div>
             </Row>
         )
 
