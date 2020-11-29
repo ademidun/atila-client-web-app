@@ -134,6 +134,16 @@ class ScholarshipsAPI {
         return apiCompletionPromise;
     };
 
+    static getFinalists = (id) => {
+
+        const apiCompletionPromise = request({
+            method: 'get',
+            url: `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/finalists/`,
+        });
+
+        return apiCompletionPromise;
+    };
+
     static selectWinners = (id, winners) => {
 
         const apiCompletionPromise = request({

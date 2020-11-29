@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from "react-router-dom";
 import moment from "moment";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
-import {formatCurrency, genericItemTransform, guestPageViewsIncrement} from "../../services/utils";
+import {formatCurrency, genericItemTransform, guestPageViewsIncrement, scrollToElement} from "../../services/utils";
 import Loading from "../../components/Loading";
 import RelatedItems from "../../components/RelatedItems";
 import {connect} from "react-redux";
@@ -17,6 +17,7 @@ import ScholarshipDeadlineWithTags from "../../components/ScholarshipDeadlineWit
 import {Alert, Button, message} from 'antd';
 import verifiedBadge from '../../components/assets/verified.png';
 import {AtilaDirectApplicationsPopover} from "../../models/Scholarship";
+import ScholarshipFinalists from "./ScholarshipFinalists";
 
 class ScholarshipDetail extends React.Component {
 
@@ -67,11 +68,15 @@ class ScholarshipDetail extends React.Component {
 
     loadContent = () => {
 
-        const { match : { params : { slug }}, userProfile } = this.props;
+        const { match : { params : { slug }}, userProfile, location } = this.props;
         ScholarshipsAPI.getSlug(slug)
             .then(res => {
                 const scholarship = res.data;
-                this.setState({ scholarship });
+                this.setState({ scholarship }, () => {
+                    if (location && location.hash) {
+                        scrollToElement(location.hash);
+                    }
+                });
 
                 const { is_not_available  } = scholarship;
 
@@ -358,6 +363,11 @@ class ScholarshipDetail extends React.Component {
                                 </p>
                                 <ScholarshipExtraCriteria scholarship={scholarship} />
                             </div>
+                            {isScholarshipDeadlinePassed &&
+                                <div className="my-3" id="finalists">
+                                    <ScholarshipFinalists itemType={"essay"} id={scholarship.id} title="Finalists" />
+                                </div>
+                            }
 
                             {/*todo find a way to secure against XSS: https://stackoverflow.com/a/19277723*/}
                             <hr />
