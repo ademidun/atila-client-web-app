@@ -141,6 +141,28 @@ class ApplicationsAPI {
 
         return apiCompletionPromise
     };
+
+    static acceptPayment = (id, data) => {
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: data,
+            url: `${this.applicationsApiUrl}/${id}/accept-payment/`
+        });
+
+        return apiCompletionPromise
+    };
+
+    static sendThankYouLetter = (id, data) => {
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: data,
+            url: `${this.applicationsApiUrl}/${id}/send-thank-you-letter/`
+        });
+
+        return apiCompletionPromise
+    };
 }
 
 export default ApplicationsAPI;
