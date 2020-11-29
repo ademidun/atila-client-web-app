@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import ContentCard from "../../components/ContentCard";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
+import {genericItemTransform} from "../../services/utils";
 
 class ScholarshipFinalists extends React.Component {
 
@@ -26,8 +27,8 @@ class ScholarshipFinalists extends React.Component {
         scholarshipFinalistsPromise
             .then(res => {
                 let scholarshipFinalists = [];
-                if (res.data.results) {
-                    scholarshipFinalists = res.data.results.slice(0,3);
+                if (res.data.applications) {
+                    scholarshipFinalists = res.data.applications.slice(0,3);
                 }
                 this.setState({ scholarshipFinalists });
             });
@@ -59,11 +60,10 @@ class ScholarshipFinalists extends React.Component {
             <div className={`${className}`}>
                 <h3 className="text-center">{title}</h3>
                 {scholarshipFinalists.map(item => {
-                    if (["blog", "essay"].includes(item.type)) {
-                        item.slug = `/${item.type}/${item.slug}`;
-                    }
+                    item.essay_source_url="";
+                    // set this so getItemType() in genericItemTransform() returns an essay
                     return (<ContentCard key={item.slug}
-                                         content={item}
+                                         content={genericItemTransform(item)}
                                          className="mb-3" />)
                 })}
             </div>
