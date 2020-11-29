@@ -26,7 +26,9 @@ class PaymentAccept extends React.Component {
         this.state = {
             loading: null,
             application: null,
-            scholarship: null
+            scholarship: null,
+            thankYouLetterMessage: "" // This state variable is only applicable for sendThankYouEmail step.
+            // Another method is to have sendThankYouEmail in it's own component, and put that state in there.
         }
     }
 
@@ -46,7 +48,9 @@ class PaymentAccept extends React.Component {
             .then(res=>{
                 const { data: application } = res;
                 const { scholarship } = application;
-                this.setState({application, scholarship})
+                this.setState({application, scholarship});
+                const { thank_you_letter } = application;
+                this.setState({thankYouLetterMessage: thank_you_letter});
             })
             .catch(err => {
                 console.log({err});
@@ -451,26 +455,28 @@ class PaymentAccept extends React.Component {
         )
     };
 
-    saveThankYouLetter = (draft) => {
-        const { application } = this.state;
+    saveThankYouLetter = (notify=true) => {
+        const { application, thankYouLetterMessage } = this.state;
 
         ApplicationsAPI
-            .patch(application.id, {thank_you_letter: draft})
+            .patch(application.id, {thank_you_letter: thankYouLetterMessage})
             .then(res => {
                 const { data: application } = res;
                 const { scholarship } = application;
                 this.setState({application, scholarship});
-                toastNotify('😃 Thank you letter draft saved!')
+                if (notify){
+                    toastNotify('😃 Thank you letter draft saved!');
+                }
             })
             .catch(err => {
                 console.log({err});
             })
     }
 
-    sendThankYouLetter = (draft) => {
+    sendThankYouLetter = () => {
         this.setState({loading: "Sending thank you email..."})
         const { application } = this.state
-        this.saveThankYouLetter(draft)
+        this.saveThankYouLetter(false)
 
         ApplicationsAPI
             .sendThankYouLetter(application.id, {})
@@ -490,6 +496,11 @@ class PaymentAccept extends React.Component {
             })
     }
 
+    editorChange = ( event, editor ) => {
+        const data = editor.getData();
+        this.setState({thankYouLetterMessage: data});
+    };
+
     thankYouEmailStep = () => {
         const { loading, application } = this.state;
         const confirmText = "Are you sure you want to send the email? This action cannot be undone."
@@ -504,10 +515,11 @@ class PaymentAccept extends React.Component {
                     <CKEditor
                         editor={ InlineEditor }
                         data={application.thank_you_letter}
+                        onChange={ this.editorChange }
                     />
                 </Col>
                 <Col span={24}>
-                    <Button onClick={()=>{this.saveThankYouLetter("Test")}}
+                    <Button onClick={()=>{this.saveThankYouLetter()}}
                             className="mt-3"
                             type="primary"
                             disabled={loading}>
@@ -515,7 +527,7 @@ class PaymentAccept extends React.Component {
                     </Button>
                 </Col>
                 <Col span={24}>
-                    <Popconfirm placement="bottom" title={confirmText} onConfirm={()=>{this.sendThankYouLetter("Test")}}
+                    <Popconfirm placement="bottom" title={confirmText} onConfirm={()=>{this.sendThankYouLetter()}}
                                 okText="Yes" cancelText="No">
                         <Button className="center-block mt-3"
                                 type="primary"
