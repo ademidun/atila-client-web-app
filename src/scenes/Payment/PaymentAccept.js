@@ -123,7 +123,7 @@ class PaymentAccept extends React.Component {
         PaymentAPI
             .transferPayment(transferData)
             .then(res => {
-                this.updateScholarship()
+                this.updateScholarship();
                 this.updateApplication()
             })
             .catch(err => {
@@ -137,7 +137,7 @@ class PaymentAccept extends React.Component {
 
     getCurrentStep = () => {
         const { application } = this.state;
-        const { userProfile } = this.props
+        const { userProfile } = this.props;
 
         if (application.is_thank_you_letter_sent){
             return 4
@@ -154,7 +154,7 @@ class PaymentAccept extends React.Component {
 
         // If all the above is false, you're at the first step
         return 0
-    }
+    };
 
     updateScholarship = () => {
         // This function sets Scholarship.is_payment_accepted to True
@@ -167,7 +167,7 @@ class PaymentAccept extends React.Component {
             .catch(err => {
                 console.log({err});
             })
-    }
+    };
 
     updateApplication = () => {
         // This function sets Application.accepted_payment to True
@@ -205,7 +205,7 @@ class PaymentAccept extends React.Component {
 
     goBack = () => {
         // This is a function for testing, you can ignore it
-        const { application } = this.state
+        const { application } = this.state;
 
         ApplicationsAPI
             .patch(application.id, {is_email_verified: false})
@@ -217,13 +217,13 @@ class PaymentAccept extends React.Component {
             .catch(err => {
                 console.log({err});
             })
-    }
+    };
 
     resendVerificationEmail = () => {
         // This function sends a verification email to the application email.
 
-        const { application } = this.state
-        const applicationID = application.id
+        const { application } = this.state;
+        const applicationID = application.id;
 
         this.setState({loading: "Sending Verification Email..."});
         ApplicationsAPI
@@ -243,13 +243,13 @@ class PaymentAccept extends React.Component {
             .finally(() => {
                 this.setState({loading: null});
             })
-    }
+    };
 
     verifyEmailCode = (code) => {
         // This function verifies the email code typed in
 
-        const { application } = this.state
-        const applicationID = application.id
+        const { application } = this.state;
+        const applicationID = application.id;
 
         ApplicationsAPI
             .verifyEmailCode(applicationID, {verification_code: code})
@@ -272,11 +272,11 @@ class PaymentAccept extends React.Component {
                     toastNotify(`An error occurred. Please message us using the chat button in the bottom right.`, 'error');
             })
             .finally(() => {})
-    }
+    };
 
     verifyEmailStep = () => {
-        const { userProfile } = this.props
-        const { loading } = this.state
+        const { userProfile } = this.props;
+        const { loading } = this.state;
 
         return (
             <Row gutter={[{ xs: 8, sm: 16}, 16]}>
@@ -312,10 +312,10 @@ class PaymentAccept extends React.Component {
                 </Col>
             </Row>
         )
-    }
+    };
 
     securityQuestionStep = () => {
-        const { loading } = this.state
+        const { loading } = this.state;
 
         return (
             <Row gutter={[{ xs: 8, sm: 16}, 16]}>
@@ -377,10 +377,10 @@ class PaymentAccept extends React.Component {
                 </Col>}
             </Row>
         )
-    }
+    };
 
     thankYouEmailStep = () => {
-        const { loading } = this.state
+        const { loading } = this.state;
 
         return (
             <Row gutter={[{ xs: 8, sm: 16}, 16]}>
@@ -404,7 +404,7 @@ class PaymentAccept extends React.Component {
                 </Col>
             </Row>
         )
-    }
+    };
 
     acceptPaymentStep = () => {
         return (
@@ -417,7 +417,7 @@ class PaymentAccept extends React.Component {
                 </div>
             </Row>
         )
-    }
+    };
 
     render () {
 
@@ -446,7 +446,7 @@ class PaymentAccept extends React.Component {
             )
         }
 
-        let currentPaymentAcceptanceStepIndex = this.getCurrentStep()
+        let currentPaymentAcceptanceStepIndex = this.getCurrentStep();
         return (
             <div className="container mt-5">
                 <div className="card shadow p-3">
