@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import {Row, Col} from "antd";
 import ContentCard from "../../components/ContentCard";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
@@ -59,13 +59,19 @@ class ScholarshipFinalists extends React.Component {
         return (
             <div className={`${className}`}>
                 <h3 className="text-center">{title}</h3>
-                {scholarshipFinalists.map(item => {
-                    item.essay_source_url="";
-                    // set this so getItemType() in genericItemTransform() returns an essay
-                    return (<ContentCard key={item.slug}
-                                         content={genericItemTransform(item)}
-                                         className="mb-3" />)
-                })}
+                <Row>
+                    {scholarshipFinalists.map(item => {
+                        // set this so getItemType() in genericItemTransform() returns an essay
+                        item.essay_source_url="";
+                        return (
+                            <Col xs={24} md={12} lg={8}>
+                                <ContentCard key={item.slug}
+                                             content={genericItemTransform(item)}
+                                             className="mb-3" />
+                            </Col>)
+                    })}
+
+                </Row>
             </div>
         );
     }
