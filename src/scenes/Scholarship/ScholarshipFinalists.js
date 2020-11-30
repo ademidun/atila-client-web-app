@@ -59,14 +59,17 @@ class ScholarshipFinalists extends React.Component {
         return (
             <div className={`${className}`}>
                 <h3 className="text-center">{title}</h3>
-                <Row>
+                <Row gutter={[{ xs: 8, sm: 16}, 16]}>
                     {scholarshipFinalists.map(item => {
                         // set this so getItemType() in genericItemTransform() returns an essay
                         item.essay_source_url="";
                         return (
-                            <Col xs={24} md={12} lg={8}>
+                            // Use zoom:0.8 as a temporary workaround so that that ScholarshipFinalists doesn't
+                            // take up too much space.
+                            <Col xs={24} md={12} lg={8} style={{zoom:0.9}}>
                                 <ContentCard key={item.slug}
                                              content={genericItemTransform(item)}
+                                             customStyle={{"min-height": "800px"}}
                                              className="mb-3" />
                             </Col>)
                     })}
