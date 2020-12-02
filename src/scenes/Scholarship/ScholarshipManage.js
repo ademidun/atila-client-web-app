@@ -97,6 +97,10 @@ class ScholarshipManage extends React.Component {
                 <Link to={`/scholarship/edit/${scholarship.slug}`} className="text-center">
                     Edit Scholarship
                 </Link>
+                <br/>
+                <Link to={`/scholarship/${scholarship.slug}`} className="text-center">
+                    View Scholarship
+                </Link>
                 <br />
                 {responseMessage &&
                 <Alert
