@@ -455,7 +455,7 @@ class PaymentAccept extends React.Component {
         )
     };
 
-    saveThankYouLetter = (notify=true) => {
+    saveThankYouLetter = () => {
         const { application, thankYouLetterMessage } = this.state;
 
         ApplicationsAPI
@@ -464,22 +464,19 @@ class PaymentAccept extends React.Component {
                 const { data: application } = res;
                 const { scholarship } = application;
                 this.setState({application, scholarship});
-                if (notify){
-                    toastNotify('😃 Thank you letter draft saved!');
-                }
+                toastNotify('😃 Thank you letter draft saved!');
             })
             .catch(err => {
                 console.log({err});
             })
     }
 
-    sendThankYouLetter = () => {
+    sendThankYouLetter = (letter) => {
         this.setState({loading: "Sending thank you email..."})
         const { application } = this.state
-        this.saveThankYouLetter(false)
 
         ApplicationsAPI
-            .sendThankYouLetter(application.id, {})
+            .sendThankYouLetter(application.id, {thank_you_letter: letter})
             .then(res => {
                 const {application} = res.data;
                 const {scholarship} = res.data;
@@ -502,7 +499,7 @@ class PaymentAccept extends React.Component {
     };
 
     thankYouEmailStep = () => {
-        const { loading, application } = this.state;
+        const { loading, application, thankYouLetterMessage } = this.state;
         const confirmText = "Are you sure you want to send the email? This action cannot be undone."
 
         return (
@@ -527,7 +524,7 @@ class PaymentAccept extends React.Component {
                     </Button>
                 </Col>
                 <Col span={24}>
-                    <Popconfirm placement="bottom" title={confirmText} onConfirm={()=>{this.sendThankYouLetter()}}
+                    <Popconfirm placement="bottom" title={confirmText} onConfirm={()=>{this.sendThankYouLetter(thankYouLetterMessage)}}
                                 okText="Yes" cancelText="No">
                         <Button className="center-block mt-3"
                                 type="primary"
