@@ -218,7 +218,7 @@ class PaymentAccept extends React.Component {
             });
     };
 
-    goBack = () => {
+    /*goBack = () => {
         // This is a function for testing, you can ignore it
         const { application } = this.state;
 
@@ -232,7 +232,7 @@ class PaymentAccept extends React.Component {
             .catch(err => {
                 console.log({err});
             })
-    };
+    };*/
 
     resendVerificationEmail = () => {
         // This function sends a verification email to the application email.
@@ -411,13 +411,13 @@ class PaymentAccept extends React.Component {
 
                 <Col span={24}>
                     <div>
-                        <Button onClick={()=>{this.goBack()}}
-                                className="center-block mt-3"
-                                type="primary"
-                                disabled={loading}
-                        >
-                            Go Back
-                        </Button>
+                        {/*<Button onClick={()=>{this.goBack()}}*/}
+                        {/*        className="center-block mt-3"*/}
+                        {/*        type="primary"*/}
+                        {/*        disabled={loading}*/}
+                        {/*>*/}
+                        {/*    Go Back*/}
+                        {/*</Button>*/}
                     </div>
                 </Col>
             </Row>
@@ -547,13 +547,13 @@ class PaymentAccept extends React.Component {
 
                 <Col span={24}>
                     <div>
-                        <Button onClick={()=>{this.goBack()}}
-                                className="center-block mt-3"
-                                type="primary"
-                                disabled={loading}
-                        >
-                            Go Back
-                        </Button>
+                        {/*<Button onClick={()=>{this.goBack()}}*/}
+                        {/*        className="center-block mt-3"*/}
+                        {/*        type="primary"*/}
+                        {/*        disabled={loading}*/}
+                        {/*>*/}
+                        {/*    Go Back*/}
+                        {/*</Button>*/}
                     </div>
                 </Col>
             </Row>
