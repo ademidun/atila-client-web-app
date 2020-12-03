@@ -279,7 +279,8 @@ class PaymentAccept extends React.Component {
                     toastNotify('😃 Email Verification Successful')
                 }
                 else {
-                    toastNotify(`🙁 That wasn't the code we're looking for. Try again or resend verification code`, 'error');
+                    toastNotify(`Incorrect code. Try again or 
+                    request a resend of your email verification code.`, 'error');
                 }
             })
             .catch(err => {
