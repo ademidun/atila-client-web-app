@@ -384,6 +384,16 @@ class PaymentAccept extends React.Component {
                 </Col>
                 <Col span={24}>
                     <h3>Security Question: {userProfile.security_question}</h3>
+                    {!userProfile.security_question &&
+                        <p className="text-muted">
+                            You're missing a security question and answer.<br/>
+
+                            You may <Link to="/profile/edit#security">add one in your profile.</Link><br/>
+
+                            We recommend setting a security question BEFORE submitting your application
+                            for better security.
+                        </p>
+                    }
                 </Col>
                 <Col span={24}>
                     <b>Response</b> <Input id="security-question-response" placeholder="Security Question Reponse" />
