@@ -1,13 +1,11 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {Button, Col, Input, Popconfirm, Row, Steps} from "antd";
-import PaymentAPI from "../../services/PaymentAPI";
 import Loading from "../../components/Loading";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import ApplicationsAPI from "../../services/ApplicationsAPI";
 import { prettifyKeys} from "../../services/utils";
-import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import {Link} from "react-router-dom";
 import InlineEditor from "@ckeditor/ckeditor5-build-inline";
 import CKEditor from "@ckeditor/ckeditor5-react";
@@ -61,85 +59,6 @@ class PaymentAccept extends React.Component {
             })
     };
 
-    linkBankAccount = (event=null) => {
-
-        if(event) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
-
-        const { userProfile } = this.props;
-
-        const { first_name, last_name, email } = userProfile;
-
-        this.setState({loading: "Connecting Bank Account"});
-
-        const accountData = {
-            user_profile: { first_name, last_name, email },
-            return_url: window.location.href,
-            refresh_url: window.location.href,
-        };
-        PaymentAPI
-            .createAccount(accountData)
-            .then(res => {
-
-                const { data: { redirect_url, account_id } } = res;
-                this.saveUserConnectedAccountId(account_id, redirect_url);
-            })
-            .catch(err => {
-                console.log({err});
-                this.setState({loading: null});
-            })
-            .finally(() => {
-            });
-
-
-    };
-
-    saveUserConnectedAccountId = (account_id, redirect_url) => {
-        const { userProfile, updateLoggedInUserProfile } = this.props;
-
-        const {user} = userProfile;
-        this.setState({loading: "Saving User Profile"});
-        UserProfileAPI
-            .patch({stripe_connected_account_id: account_id}, user)
-            .then(res => {
-                updateLoggedInUserProfile(res.data);
-                window.location.href = redirect_url;
-            })
-            .catch(err => {
-                console.log({err})
-            })
-            .finally(() => {
-                this.setState({loading: null});
-            });
-    };
-
-    acceptPayment = () => {
-        this.setState({loading: "Accepting Payment"});
-
-        const { userProfile } = this.props;
-        const { scholarship } = this.state;
-
-        const transferData = {
-            user_profile: { id: userProfile.user },
-            scholarship: { id: scholarship.id },
-        };
-        PaymentAPI
-            .transferPayment(transferData)
-            .then(res => {
-                this.updateScholarship();
-                this.updateApplication()
-            })
-            .catch(err => {
-                console.log({err});
-            })
-            .finally(() => {
-                this.setState({loading: null});
-            });
-
-    };
-
     /**
      * It's worth explaining how the page updates after each step without a refresh.
      * 1) A network request is made (patch, post, etc).
@@ -170,35 +89,6 @@ class PaymentAccept extends React.Component {
 
         // If all the above is false, you're at the first step
         return 0
-    };
-
-    updateScholarship = () => {
-        // This function sets Scholarship.is_payment_accepted to True
-        const { scholarship } = this.state;
-
-        ScholarshipsAPI
-            .patch(scholarship.id, {is_payment_accepted: true})
-            .then(res => {
-            })
-            .catch(err => {
-                console.log({err});
-            })
-    };
-
-    updateApplication = () => {
-        // This function sets Application.accepted_payment to True
-        const { application } = this.state;
-
-        ApplicationsAPI
-            .patch(application.id, {accepted_payment: true})
-            .then(res => {
-                const { data: application } = res;
-                const { scholarship } = application;
-                this.setState({application, scholarship});
-            })
-            .catch(err => {
-                console.log({err});
-            })
     };
 
     updateUserProfile = (userProfileUpdateData) => {
