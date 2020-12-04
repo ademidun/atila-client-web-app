@@ -67,7 +67,25 @@ class ScholarshipManage extends React.Component {
         this.setState({isModalVisible: true});
     };
 
-    emailApplicants = (num) => {
+    emailApplicants = () => {
+        const { scholarship } = this.state;
+        const scholarshipID = scholarship.id
+        const title = document.getElementById('email-title').value
+        const body = document.getElementById('email-body').value
+        const postData = {'title': title, 'body': body}
+
+        ScholarshipsAPI
+            .emailApplicants(scholarshipID, postData)
+            .then(res=> {
+                const {scholarship, applications, unsubmitted_applications: unsubmittedApplications} =  res.data;
+                this.setState({scholarship, applications, unsubmittedApplications});
+                this.setState({responseMessage: "All applicants have been emailed!"})
+            })
+            .catch(err=>{
+                console.log({err});
+                this.setState({responseMessage: "There was an error emailing the applicants.\n\n Please message us using the chat icon in the bottom right of your screen."});
+            })
+
         this.setState({isModalVisible: false});
     };
 
@@ -122,13 +140,13 @@ class ScholarshipManage extends React.Component {
                     Email Applicants
                 </Button>
                 <Modal
-                    title={<Input placeholder={"Email title..."}/>}
+                    title={<Input id='email-title' placeholder={"Email title..."}/>}
                     visible={isModalVisible}
                     onOk={()=>{this.emailApplicants(5)}}
                     onCancel={this.handleCancel}
                     okText={"Send Emails"}
                 >
-                    <TextArea rows={4} placeholder={"Email body..."}/>
+                    <TextArea id='email-body' rows={4} placeholder={"Email body..."}/>
                 </Modal>
 
                 <br />
