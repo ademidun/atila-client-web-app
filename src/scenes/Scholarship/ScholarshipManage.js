@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
-import {Table, Popconfirm, Button, Tag, Alert, Modal, Input} from "antd";
+import {Table, Popconfirm, Button, Tag, Alert, Modal, Input, Radio} from "antd";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
 import {WINNER_SELECTED_MESSAGE} from "../../models/Scholarship";
@@ -16,7 +16,8 @@ class ScholarshipManage extends React.Component {
             unsubmittedApplications: null,
             isLoadingApplications: false,
             responseMessage: null,
-            isModalVisible: false
+            isModalVisible: false,
+            applicationType: 'all'
         }
     }
 
@@ -68,11 +69,11 @@ class ScholarshipManage extends React.Component {
     };
 
     emailApplicants = () => {
-        const { scholarship } = this.state;
+        const { scholarship, applicationType } = this.state;
         const scholarshipID = scholarship.id
         const subject = document.getElementById('email-subject').value
         const body = document.getElementById('email-body').value
-        const postData = {'subject': subject, 'body': body}
+        const postData = {'subject': subject, 'body': body, 'type': applicationType}
 
         ScholarshipsAPI
             .emailApplicants(scholarshipID, postData)
@@ -89,14 +90,18 @@ class ScholarshipManage extends React.Component {
         this.setState({isModalVisible: false});
     };
 
-    handleCancel = () => {
+    handleModalCancel = () => {
         this.setState({isModalVisible: false});
+    };
+
+    onRadioClick = e => {
+        this.setState({applicationType: e.target.value,});
     };
 
     render() {
         const { userProfile } = this.props;
         const { scholarship, applications, isLoadingApplications,
-            unsubmittedApplications, responseMessage, isModalVisible } = this.state;
+            unsubmittedApplications, responseMessage, isModalVisible, applicationType } = this.state;
         const { TextArea } = Input
 
         if (!userProfile) {
@@ -119,6 +124,16 @@ class ScholarshipManage extends React.Component {
         }
 
         const allApplications = [...applications, ...unsubmittedApplications];
+        const radioStyle = {
+            display: 'block',
+            height: '30px',
+            lineHeight: '30px',
+        };
+        const applicationOptions = [
+            { label: 'All Applications', value: 'all', style: radioStyle  },
+            { label: 'Submitted Applications', value: 'submitted', style: radioStyle },
+            { label: 'Unsubmitted Applications', value: 'unsubmitted', style: radioStyle },
+        ]
 
         return (
             <div className="container mt-5">
@@ -142,11 +157,22 @@ class ScholarshipManage extends React.Component {
                 <Modal
                     title={<Input id='email-subject' placeholder={"Email subject..."}/>}
                     visible={isModalVisible}
-                    onOk={this.emailApplicants}
-                    onCancel={this.handleCancel}
+                    onOk={()=>{this.emailApplicants()}}
+                    onCancel={()=>{this.handleModalCancel()}}
                     okText={"Send Emails"}
                 >
                     <TextArea id='email-body' rows={4} placeholder={"Email body..."}/>
+                    <br />
+                    <br />
+                    <b>Which applications would you like to send this email to?</b>
+                    <br />
+                    <Radio.Group
+                        options={applicationOptions}
+                        onChange={this.onRadioClick}
+                        value={applicationType}
+                        optionType="button"
+                        buttonStyle="solid"
+                    />
                 </Modal>
 
                 <br />
