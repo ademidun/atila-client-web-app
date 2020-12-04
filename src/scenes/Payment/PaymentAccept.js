@@ -1,22 +1,24 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {Button, Col, Input, Popconfirm, Row, Steps} from "antd";
-import PaymentAPI from "../../services/PaymentAPI";
 import Loading from "../../components/Loading";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import ApplicationsAPI from "../../services/ApplicationsAPI";
 import { prettifyKeys} from "../../services/utils";
-import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import {Link} from "react-router-dom";
 import InlineEditor from "@ckeditor/ckeditor5-build-inline";
 import CKEditor from "@ckeditor/ckeditor5-react";
 import {toastNotify} from "../../models/Utils";
 import FileInput from "../../components/Form/FileInput";
+import moment from "moment";
+
+import "../../index.scss";
 
 const { Step } = Steps;
 
 const ALL_PAYMENT_ACCEPTANCE_STEPS = ["verify_email", "security_question", "proof_of_enrolment", "thank_you_email", "accept_payment"];
+let autoSaveTimeoutId;
 
 class PaymentAccept extends React.Component {
 
@@ -60,85 +62,6 @@ class PaymentAccept extends React.Component {
             })
     };
 
-    linkBankAccount = (event=null) => {
-
-        if(event) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
-
-        const { userProfile } = this.props;
-
-        const { first_name, last_name, email } = userProfile;
-
-        this.setState({loading: "Connecting Bank Account"});
-
-        const accountData = {
-            user_profile: { first_name, last_name, email },
-            return_url: window.location.href,
-            refresh_url: window.location.href,
-        };
-        PaymentAPI
-            .createAccount(accountData)
-            .then(res => {
-
-                const { data: { redirect_url, account_id } } = res;
-                this.saveUserConnectedAccountId(account_id, redirect_url);
-            })
-            .catch(err => {
-                console.log({err});
-                this.setState({loading: null});
-            })
-            .finally(() => {
-            });
-
-
-    };
-
-    saveUserConnectedAccountId = (account_id, redirect_url) => {
-        const { userProfile, updateLoggedInUserProfile } = this.props;
-
-        const {user} = userProfile;
-        this.setState({loading: "Saving User Profile"});
-        UserProfileAPI
-            .patch({stripe_connected_account_id: account_id}, user)
-            .then(res => {
-                updateLoggedInUserProfile(res.data);
-                window.location.href = redirect_url;
-            })
-            .catch(err => {
-                console.log({err})
-            })
-            .finally(() => {
-                this.setState({loading: null});
-            });
-    };
-
-    acceptPayment = () => {
-        this.setState({loading: "Accepting Payment"});
-
-        const { userProfile } = this.props;
-        const { scholarship } = this.state;
-
-        const transferData = {
-            user_profile: { id: userProfile.user },
-            scholarship: { id: scholarship.id },
-        };
-        PaymentAPI
-            .transferPayment(transferData)
-            .then(res => {
-                this.updateScholarship();
-                this.updateApplication()
-            })
-            .catch(err => {
-                console.log({err});
-            })
-            .finally(() => {
-                this.setState({loading: null});
-            });
-
-    };
-
     /**
      * It's worth explaining how the page updates after each step without a refresh.
      * 1) A network request is made (patch, post, etc).
@@ -171,37 +94,8 @@ class PaymentAccept extends React.Component {
         return 0
     };
 
-    updateScholarship = () => {
-        // This function sets Scholarship.is_payment_accepted to True
-        const { scholarship } = this.state;
-
-        ScholarshipsAPI
-            .patch(scholarship.id, {is_payment_accepted: true})
-            .then(res => {
-            })
-            .catch(err => {
-                console.log({err});
-            })
-    };
-
-    updateApplication = () => {
-        // This function sets Application.accepted_payment to True
-        const { application } = this.state;
-
-        ApplicationsAPI
-            .patch(application.id, {accepted_payment: true})
-            .then(res => {
-                const { data: application } = res;
-                const { scholarship } = application;
-                this.setState({application, scholarship});
-            })
-            .catch(err => {
-                console.log({err});
-            })
-    };
-
     updateUserProfile = (userProfileUpdateData) => {
-        const { userProfile } = this.props;
+        const { userProfile, updateLoggedInUserProfile } = this.props;
 
         this.setState({loading: "Updating User Profile..."}); // loading isn't true/false remember to switch that in new pr.
         UserProfileAPI.patch(
@@ -218,7 +112,7 @@ class PaymentAccept extends React.Component {
             });
     };
 
-    goBack = () => {
+    /*goBack = () => {
         // This is a function for testing, you can ignore it
         const { application } = this.state;
 
@@ -232,7 +126,7 @@ class PaymentAccept extends React.Component {
             .catch(err => {
                 console.log({err});
             })
-    };
+    };*/
 
     resendVerificationEmail = () => {
         // This function sends a verification email to the application email.
@@ -279,7 +173,8 @@ class PaymentAccept extends React.Component {
                     toastNotify('😃 Email Verification Successful')
                 }
                 else {
-                    toastNotify(`🙁 That wasn't the code we're looking for. Try again or resend verification code`, 'error');
+                    toastNotify(`Incorrect code. Try again or 
+                    request a resend of your email verification code.`, 'error');
                 }
             })
             .catch(err => {
@@ -291,7 +186,7 @@ class PaymentAccept extends React.Component {
 
     verifyEmailStep = () => {
         const { userProfile } = this.props;
-        const { loading } = this.state;
+        const { application, loading } = this.state;
 
         return (
             <Row gutter={[{ xs: 8, sm: 16}, 16]}>
@@ -302,7 +197,7 @@ class PaymentAccept extends React.Component {
                     <Input value={userProfile.last_name} disabled={true} />
                 </Col>
                 <Col span={24}>
-                    <Input value={userProfile.email} disabled={true}/>
+                    <Input value={application.verification_email} disabled={true}/>
                 </Col>
                 <Col span={24}>
                     <Input id="code" placeholder="Email Verification Code" />
@@ -383,6 +278,16 @@ class PaymentAccept extends React.Component {
                 </Col>
                 <Col span={24}>
                     <h3>Security Question: {userProfile.security_question}</h3>
+                    {!userProfile.security_question &&
+                        <p className="text-muted">
+                            You're missing a security question and answer.<br/>
+
+                            You may <Link to="/profile/edit#security">add one in your profile.</Link><br/>
+
+                            We recommend setting a security question BEFORE submitting your application
+                            for better security.
+                        </p>
+                    }
                 </Col>
                 <Col span={24}>
                     <b>Response</b> <Input id="security-question-response" placeholder="Security Question Reponse" />
@@ -400,13 +305,13 @@ class PaymentAccept extends React.Component {
 
                 <Col span={24}>
                     <div>
-                        <Button onClick={()=>{this.goBack()}}
-                                className="center-block mt-3"
-                                type="primary"
-                                disabled={loading}
-                        >
-                            Go Back
-                        </Button>
+                        {/*<Button onClick={()=>{this.goBack()}}*/}
+                        {/*        className="center-block mt-3"*/}
+                        {/*        type="primary"*/}
+                        {/*        disabled={loading}*/}
+                        {/*>*/}
+                        {/*    Go Back*/}
+                        {/*</Button>*/}
                     </div>
                 </Col>
             </Row>
@@ -446,11 +351,17 @@ class PaymentAccept extends React.Component {
                         uploadHint="Enrollment proof must be a PDF (preferred) or an image."/>
                 </Col>
                 {userProfile.enrollment_proof &&
-                <Col span={24}>
-                    <a href={userProfile.enrollment_proof}  target="_blank" rel="noopener noreferrer">
-                        View your Enrollment Proof
-                    </a>
-                </Col>}
+                    <>
+                        <Col span={24}>
+                            <a href={userProfile.enrollment_proof}  target="_blank" rel="noopener noreferrer">
+                                View your Enrollment Proof
+                            </a>
+                        </Col>
+                        <Col span={24}>
+                            If you're not automatically redirected to the next step, try refreshing the page.
+                        </Col>
+                    </>
+                }
             </Row>
         )
     };
@@ -464,7 +375,6 @@ class PaymentAccept extends React.Component {
                 const { data: application } = res;
                 const { scholarship } = application;
                 this.setState({application, scholarship});
-                toastNotify('😃 Thank you letter draft saved!');
             })
             .catch(err => {
                 console.log({err});
@@ -491,23 +401,46 @@ class PaymentAccept extends React.Component {
             .finally(() =>{
                 this.setState({loading: null})
             })
-    }
+    };
 
     editorChange = ( event, editor ) => {
         const data = editor.getData();
-        this.setState({thankYouLetterMessage: data});
+        this.setState({thankYouLetterMessage: data}, () => {
+            if (autoSaveTimeoutId) {
+                clearTimeout(autoSaveTimeoutId);
+            }
+            autoSaveTimeoutId = setTimeout(() => {
+                // Runs 1 second (1000 ms) after the last change
+                this.saveThankYouLetter();
+            }, 1000);
+        });
     };
 
     thankYouEmailStep = () => {
-        const { loading, application, thankYouLetterMessage } = this.state;
-        const confirmText = "Are you sure you want to send the email? This action cannot be undone."
+        const { application, thankYouLetterMessage, loading } = this.state;
+        const confirmText = "Are you sure you want to send the letter? This action cannot be undone.";
+
+        let dateModified;
+        if (application.date_modified) {
+            dateModified = new Date(application.date_modified);
+            dateModified = moment(dateModified).format("dddd, MMMM Do YYYY, h:mm:ss a");
+            dateModified =  (<p className="text-muted float-left">
+                Last Auto-Saved: {dateModified}
+            </p>)
+        } else {
+            dateModified =  (<p className="text-muted float-left">
+                Start typing and your thank you letter will automatically save
+            </p>)
+        }
 
         return (
             <Row gutter={[{ xs: 8, sm: 16}, 16]}>
                 <Col span={24}>
                     <p>
                         Here is a <a href="https://docs.google.com/document/d/1-h9RWUv18P2Pq4WG3Y1hhvCSvw6L6b1acv83XrcAyKQ/edit"
-                                     target="_blank" rel="noopener noreferrer">Sample Thank You Letter.</a>
+                                     target="_blank" rel="noopener noreferrer">Sample Thank You Letter.</a> <br/>
+
+                         Start typing your thank you letter below:
                     </p>
                     <CKEditor
                         editor={ InlineEditor }
@@ -516,46 +449,71 @@ class PaymentAccept extends React.Component {
                     />
                 </Col>
                 <Col span={24}>
-                    <Button onClick={()=>{this.saveThankYouLetter()}}
-                            className="mt-3"
-                            type="primary"
-                            disabled={loading}>
-                        Save
-                    </Button>
+                    {dateModified}
                 </Col>
                 <Col span={24}>
-                    <Popconfirm placement="bottom" title={confirmText} onConfirm={()=>{this.sendThankYouLetter(thankYouLetterMessage)}}
-                                okText="Yes" cancelText="No">
-                        <Button className="center-block mt-3"
-                                type="primary"
-                        >
-                            Send Thank You Email...
-                        </Button>
-                    </Popconfirm>
+                    {loading &&
+                    <Loading title={loading} />
+                    }
+                    {application.is_thank_you_letter_sent &&
+                        <p className="text-success">
+                            Your thank you letter has been received and if you completed all the steps successfully,
+                            you should receive your award within 24 hours.
+                        </p>
+                    }
+                    {!application.is_thank_you_letter_sent &&
+                        <Popconfirm placement="top"
+                            // placement="top" was chosen because thank you letter is already
+                            // at the bottom of the screen.
+                            // If "bottom" was used the confirm dialog was less visible.
+                                    title={confirmText}
+                                    onConfirm={()=>{this.sendThankYouLetter(thankYouLetterMessage)}}
+                                    okText="Yes" cancelText="No">
+                            <Button className="center-block mt-3"
+                                    type="primary"
+                                    disabled={loading}
+                            >
+                                Send Thank You Letter...
+                            </Button>
+                        </Popconfirm>
+                    }
                 </Col>
 
                 <Col span={24}>
                     <div>
-                        <Button onClick={()=>{this.goBack()}}
-                                className="center-block mt-3"
-                                type="primary"
-                                disabled={loading}
-                        >
-                            Go Back
-                        </Button>
+                        {/*<Button onClick={()=>{this.goBack()}}*/}
+                        {/*        className="center-block mt-3"*/}
+                        {/*        type="primary"*/}
+                        {/*        disabled={loading}*/}
+                        {/*>*/}
+                        {/*    Go Back*/}
+                        {/*</Button>*/}
                     </div>
                 </Col>
             </Row>
         )
     };
 
-    onAcceptPayment = (email) => {
-        // This function sends a post request to the accept-payment backend endpoint containing the accept_payment_email
+    onAcceptEmailChange = (event) => {
+        let value = event.target.value;
 
         const { application } = this.state;
 
+        this.setState({application: {
+                                ...application,    // keep all other key-value pairs
+                                accept_payment_email: value
+        }});
+    };
+
+    onAcceptPayment = () => {
+        // This function sends a post request to the accept-payment backend endpoint containing the accept_payment_email
+
+        const { application } = this.state;
+        const { accept_payment_email } = application;
+        this.setState({loading: "Accepting payment email..."});
+
         ApplicationsAPI
-            .acceptPayment(application.id, {"accept_payment_email": email})
+            .acceptPayment(application.id, {accept_payment_email})
             .then(res=> {
                 const {application} = res.data;
                 const {scholarship} = res.data;
@@ -565,49 +523,78 @@ class PaymentAccept extends React.Component {
                 console.log({err});
                 toastNotify(`An error occurred. Please message us using the chat button in the bottom right.`, 'error');
             })
-            .finally(() => {})
+            .finally(() => {
+                this.setState({loading: null})
+            })
     };
 
     acceptPaymentStep = () => {
-        const { application } = this.state;
+        const { application, loading, scholarship } = this.state;
         const confirmText = "Are you sure this is the correct email to receive the scholarship funding?";
 
-        if (application.is_payment_accepted){
-            return (
-                <Row gutter={[{ xs: 8, sm: 16}, 16]}>
+        return (
+            <Row gutter={[{ xs: 8, sm: 16}, 16]}>
+                <Loading isLoading={loading} title={loading} />
+                {application.is_payment_accepted &&
                     <Col span={24}>
-                        <div className="center-block">
-                            <p className="text-success">
-                                Success! You've completed the payment acceptance step and your money will be
+                        <div className="center-block p-3">
+                            <p className="text-muted">
+                                Success! You've completed the payment acceptance step and your scholarship award will be
                                 sent to {application.accept_payment_email} within 24 hours. Message us using the chat
-                                icon in the bottom right if you have any questions!
+                                icon in the bottom right or email info@atila.ca if you have any questions!
                             </p>
                         </div>
                     </Col>
-                </Row>
-            )
-        }
-        return (
-            <Row gutter={[{ xs: 8, sm: 16}, 16]}>
-                <Col span={24}>
-                    <h6>
-                        Set destination email to receive payment.
-                    </h6>
-                </Col>
+                }
+                {!application.is_payment_accepted &&
+                <>
+                    <Col span={24}>
+                        <h6>
+                            Set destination email to receive payment via Interac e-transfer.
+                        </h6>
+                    </Col>
 
-                <Col span={24}>
-                    <Input id="accept-payment-email" placeholder="Destination Email" />
-                </Col>
+                    <Col span={24}>
+                        <Input id="accept_payment_email"
+                               placeholder="Destination Email"
+                               value={application.accept_payment_email}
+                               onChange={this.onAcceptEmailChange} />
+                    </Col>
 
-                <div className="center-block">
-                    <Popconfirm placement="bottom" title={confirmText} onConfirm={() =>
-                                {this.onAcceptPayment(document.getElementById('accept-payment-email'.value))}}
-                                okText="Yes" cancelText="No">
-                        <Button className="btn-success">
-                            Accept Payment...
-                        </Button>
-                    </Popconfirm>
-                </div>
+                    <div className="center-block">
+                        <Popconfirm placement="bottom" title={confirmText} onConfirm={() =>
+                        {this.onAcceptPayment()}}
+                                    okText="Yes" cancelText="No">
+                            <Button className="btn-success" disabled={loading}>
+                                Accept Payment...
+                            </Button>
+                        </Popconfirm>
+                    </div>
+
+                </>
+                }
+                <Col span={24}>
+                    <p>As a scholarship winner on Atila:</p>
+                    <ol>
+                        <li>Your application and thank you letter may be shared on your profile. <br /><br />
+                            Your application was amazing, which is why you were selected as a winner.
+                            By sharing your application you can mention on your resume or LinkedIn
+                            that you were a winner of the {scholarship.name} award and link to your application.
+                            This could help you with future jobs, schools and other activities you apply to.
+                            <br /><br />
+                            You would also help other students by showing them what a good application
+                            and thank you letter looks like.<br /><br />
+                            If you would rather not share or want to edit before sharing your application,
+                            your thank you letter or both, that&rsquo;s completely fine as well.
+                            Just email us, <a href="mailto:info@atila.ca">info@atila.ca</a> to let us know.<br /><br />
+                        </li>
+                        <li>We recommend you <Link to="/profile/edit">add a profile picture to your profile.</Link>
+                            <br /><br />
+                            A picture of yourself humanizes your account and makes it easier for other people
+                            with a similar background and story to yours to connect with you,
+                            this can also create more future opportunities for you.</li>
+                    </ol>
+                </Col>
             </Row>
         )
 
@@ -672,7 +659,7 @@ class PaymentAccept extends React.Component {
     }
 }
 const mapDispatchToProps = {
-    updateLoggedInUserProfile
+    updateLoggedInUserProfile,
 };
 const mapStateToProps = state => {
     return { userProfile: state.data.user.loggedInUserProfile };

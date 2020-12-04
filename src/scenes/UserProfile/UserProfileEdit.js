@@ -1,7 +1,8 @@
 import React from 'react';
-import { Button } from "antd";
 import PropTypes from 'prop-types';
 import {connect} from "react-redux";
+import { withRouter } from "react-router-dom";
+import { Button } from "antd";
 import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import FormDynamic from "../../components/Form/FormDynamic";
 import {
@@ -10,7 +11,7 @@ import {
 } from "../../models/Utils";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import {userProfileFormConfig, userProfileFormOnboarding} from "../../models/UserProfile";
-import {transformLocation} from "../../services/utils";
+import {scrollToElement, transformLocation} from "../../services/utils";
 import SecurityQuestionAndAnswer from "../Application/SecurityQuestionAndAnswer";
 import FileInput from "../../components/Form/FileInput";
 import { message } from 'antd';
@@ -32,6 +33,15 @@ class UserProfileEdit extends React.Component {
             pageNumber: props.startingPageNumber,
             locationData: {},
             formErrors: {},
+        }
+
+    }
+
+    componentDidMount() {
+        const { location } = this.props;
+
+        if (location && location.hash) {
+            scrollToElement(location.hash);
         }
     }
 
@@ -259,7 +269,10 @@ class UserProfileEdit extends React.Component {
 
                 </div>
                 <hr/>
-                <SecurityQuestionAndAnswer setAnswer={true} verifyAnswer={true} />
+                <div id="security">
+                    <SecurityQuestionAndAnswer setAnswer={true} verifyAnswer={true} />
+                </div>
+
             </div>
         );
     }
@@ -291,4 +304,4 @@ UserProfileEdit.propTypes = {
     submitButtonText: PropTypes.string
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserProfileEdit);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(UserProfileEdit));
