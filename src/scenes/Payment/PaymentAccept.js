@@ -518,7 +518,7 @@ class PaymentAccept extends React.Component {
     };
 
     thankYouEmailStep = () => {
-        const { application, thankYouLetterMessage } = this.state;
+        const { application, thankYouLetterMessage, loading } = this.state;
         const confirmText = "Are you sure you want to send the letter? This action cannot be undone.";
 
         let dateModified;
@@ -551,19 +551,31 @@ class PaymentAccept extends React.Component {
                     {dateModified}
                 </Col>
                 <Col span={24}>
-                    <Popconfirm placement="top"
-                                // placement="top" was chosen because thank you letter is already
-                                // at the bottom of the screen.
-                                // If "bottom" was used the confirm dialog was less visible.
-                                title={confirmText}
-                                onConfirm={()=>{this.sendThankYouLetter(thankYouLetterMessage)}}
-                                okText="Yes" cancelText="No">
-                        <Button className="center-block mt-3"
-                                type="primary"
-                        >
-                            Send Thank You Letter...
-                        </Button>
-                    </Popconfirm>
+                    {loading &&
+                    <Loading title={loading} />
+                    }
+                    {application.is_thank_you_letter_sent &&
+                        <p className="text-success">
+                            Your thank you letter has been received and if you completed all the steps successfully,
+                            you should receive your award within 24 hours.
+                        </p>
+                    }
+                    {!application.is_thank_you_letter_sent &&
+                        <Popconfirm placement="top"
+                            // placement="top" was chosen because thank you letter is already
+                            // at the bottom of the screen.
+                            // If "bottom" was used the confirm dialog was less visible.
+                                    title={confirmText}
+                                    onConfirm={()=>{this.sendThankYouLetter(thankYouLetterMessage)}}
+                                    okText="Yes" cancelText="No">
+                            <Button className="center-block mt-3"
+                                    type="primary"
+                                    disabled={loading}
+                            >
+                                Send Thank You Letter...
+                            </Button>
+                        </Popconfirm>
+                    }
                 </Col>
 
                 <Col span={24}>
