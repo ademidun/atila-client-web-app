@@ -70,9 +70,9 @@ class ScholarshipManage extends React.Component {
     emailApplicants = () => {
         const { scholarship } = this.state;
         const scholarshipID = scholarship.id
-        const title = document.getElementById('email-title').value
+        const subject = document.getElementById('email-subject').value
         const body = document.getElementById('email-body').value
-        const postData = {'title': title, 'body': body}
+        const postData = {'subject': subject, 'body': body}
 
         ScholarshipsAPI
             .emailApplicants(scholarshipID, postData)
@@ -140,9 +140,9 @@ class ScholarshipManage extends React.Component {
                     Email Applicants
                 </Button>
                 <Modal
-                    title={<Input id='email-title' placeholder={"Email title..."}/>}
+                    title={<Input id='email-subject' placeholder={"Email subject..."}/>}
                     visible={isModalVisible}
-                    onOk={()=>{this.emailApplicants(5)}}
+                    onOk={this.emailApplicants}
                     onCancel={this.handleCancel}
                     okText={"Send Emails"}
                 >
