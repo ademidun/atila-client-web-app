@@ -12,6 +12,9 @@ import CKEditor from "@ckeditor/ckeditor5-react";
 import {toastNotify} from "../../models/Utils";
 import FileInput from "../../components/Form/FileInput";
 import moment from "moment";
+
+import "../../index.scss";
+
 const { Step } = Steps;
 
 const ALL_PAYMENT_ACCEPTANCE_STEPS = ["verify_email", "security_question", "proof_of_enrolment", "thank_you_email", "accept_payment"];
@@ -435,7 +438,9 @@ class PaymentAccept extends React.Component {
                 <Col span={24}>
                     <p>
                         Here is a <a href="https://docs.google.com/document/d/1-h9RWUv18P2Pq4WG3Y1hhvCSvw6L6b1acv83XrcAyKQ/edit"
-                                     target="_blank" rel="noopener noreferrer">Sample Thank You Letter.</a>
+                                     target="_blank" rel="noopener noreferrer">Sample Thank You Letter.</a> <br/>
+
+                         Start typing your thank you letter below:
                     </p>
                     <CKEditor
                         editor={ InlineEditor }
