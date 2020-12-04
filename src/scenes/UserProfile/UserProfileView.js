@@ -159,6 +159,7 @@ class UserProfileView extends React.Component {
                                 <FileInput title={"Profile Picture"}
                                            type={"image"}
                                            keyName={"profile_pic_url"}
+                                           filePath={`user-profile-pictures/${userProfile.user}`}
                                            onChangeHandler={this.onChangeProfilePicture} />
                                            <p className="text-muted">
                                                Changes are auto-saved
@@ -170,7 +171,7 @@ class UserProfileView extends React.Component {
                             }
                         </div>
                         <div className="col-md-8 col-sm-12">
-                                <h1>{ userProfileView.first_name }</h1>
+                                <h1>{ userProfileView.first_name }{' '}{ userProfileView.last_name }</h1>
                             {userProfileView.public_metadata && userProfileView.public_metadata.profile_link_url &&
                             <a href={userProfileView.public_metadata.profile_link_url}
                                target="_blank"

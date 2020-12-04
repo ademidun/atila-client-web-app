@@ -13,10 +13,11 @@ import InlineEditor from "@ckeditor/ckeditor5-build-inline";
 import CKEditor from "@ckeditor/ckeditor5-react";
 import {toastNotify} from "../../models/Utils";
 import FileInput from "../../components/Form/FileInput";
-
+import moment from "moment";
 const { Step } = Steps;
 
 const ALL_PAYMENT_ACCEPTANCE_STEPS = ["verify_email", "security_question", "proof_of_enrolment", "thank_you_email", "accept_payment"];
+let autoSaveTimeoutId;
 
 class PaymentAccept extends React.Component {
 
@@ -475,7 +476,6 @@ class PaymentAccept extends React.Component {
                 const { data: application } = res;
                 const { scholarship } = application;
                 this.setState({application, scholarship});
-                toastNotify('😃 Thank you letter draft saved!');
             })
             .catch(err => {
                 console.log({err});
@@ -502,16 +502,37 @@ class PaymentAccept extends React.Component {
             .finally(() =>{
                 this.setState({loading: null})
             })
-    }
+    };
 
     editorChange = ( event, editor ) => {
         const data = editor.getData();
-        this.setState({thankYouLetterMessage: data});
+        this.setState({thankYouLetterMessage: data}, () => {
+            if (autoSaveTimeoutId) {
+                clearTimeout(autoSaveTimeoutId);
+            }
+            autoSaveTimeoutId = setTimeout(() => {
+                // Runs 1 second (1000 ms) after the last change
+                this.saveThankYouLetter();
+            }, 1000);
+        });
     };
 
     thankYouEmailStep = () => {
-        const { loading, application, thankYouLetterMessage } = this.state;
-        const confirmText = "Are you sure you want to send the email? This action cannot be undone."
+        const { application, thankYouLetterMessage } = this.state;
+        const confirmText = "Are you sure you want to send the letter? This action cannot be undone.";
+
+        let dateModified;
+        if (application.date_modified) {
+            dateModified = new Date(application.date_modified);
+            dateModified = moment(dateModified).format("dddd, MMMM Do YYYY, h:mm:ss a");
+            dateModified =  (<p className="text-muted float-left">
+                Last Auto-Saved: {dateModified}
+            </p>)
+        } else {
+            dateModified =  (<p className="text-muted float-left">
+                Start typing and your thank you letter will automatically save
+            </p>)
+        }
 
         return (
             <Row gutter={[{ xs: 8, sm: 16}, 16]}>
@@ -527,20 +548,20 @@ class PaymentAccept extends React.Component {
                     />
                 </Col>
                 <Col span={24}>
-                    <Button onClick={()=>{this.saveThankYouLetter()}}
-                            className="mt-3"
-                            type="primary"
-                            disabled={loading}>
-                        Save
-                    </Button>
+                    {dateModified}
                 </Col>
                 <Col span={24}>
-                    <Popconfirm placement="bottom" title={confirmText} onConfirm={()=>{this.sendThankYouLetter(thankYouLetterMessage)}}
+                    <Popconfirm placement="top"
+                                // placement="top" was chosen because thank you letter is already
+                                // at the bottom of the screen.
+                                // If "bottom" was used the confirm dialog was less visible.
+                                title={confirmText}
+                                onConfirm={()=>{this.sendThankYouLetter(thankYouLetterMessage)}}
                                 okText="Yes" cancelText="No">
                         <Button className="center-block mt-3"
                                 type="primary"
                         >
-                            Send Thank You Email...
+                            Send Thank You Letter...
                         </Button>
                     </Popconfirm>
                 </Col>
