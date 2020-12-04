@@ -128,6 +128,7 @@ class ScholarshipManage extends React.Component {
             { label: 'All', value: 'all' },
             { label: 'Submitted', value: 'submitted' },
             { label: 'Unsubmitted', value: 'unsubmitted' },
+            { label: 'Finalists Only', value: 'finalists' }
         ]
 
         return (
