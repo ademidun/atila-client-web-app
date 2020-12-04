@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
-import {Table, Popconfirm, Button, Tag, Alert} from "antd";
+import {Table, Popconfirm, Button, Tag, Alert, Modal} from "antd";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
 import {WINNER_SELECTED_MESSAGE} from "../../models/Scholarship";
@@ -16,6 +16,7 @@ class ScholarshipManage extends React.Component {
             unsubmittedApplications: null,
             isLoadingApplications: false,
             responseMessage: null,
+            isModalVisible: false
         }
     }
 
@@ -62,10 +63,22 @@ class ScholarshipManage extends React.Component {
             })
     };
 
+    showModal = () => {
+        this.setState({isModalVisible: true});
+    };
+
+    handleOk = () => {
+        this.setState({isModalVisible: false});
+    };
+
+    handleCancel = () => {
+        this.setState({isModalVisible: false});
+    };
+
     render() {
         const { userProfile } = this.props;
         const { scholarship, applications, isLoadingApplications,
-            unsubmittedApplications, responseMessage } = this.state;
+            unsubmittedApplications, responseMessage, isModalVisible } = this.state;
 
         if (!userProfile) {
             return (
@@ -101,6 +114,24 @@ class ScholarshipManage extends React.Component {
                 <Link to={`/scholarship/${scholarship.slug}`} className="text-center">
                     View Scholarship
                 </Link>
+                <br />
+                <br />
+
+                <Button type="primary" size={"large"} onClick={this.showModal}>
+                    Message Applicants
+                </Button>
+                <Modal
+                    title="Basic Modal"
+                    visible={isModalVisible}
+                    onOk={this.handleOk}
+                    onCancel={this.handleCancel}
+                >
+                    <p>Some contents...</p>
+                    <p>Some contents...</p>
+                    <p>Some contents...</p>
+                </Modal>
+
+                <br />
                 <br />
                 {responseMessage &&
                 <Alert
