@@ -17,7 +17,7 @@ class ScholarshipManage extends React.Component {
             isLoadingApplications: false,
             responseMessage: null,
             isModalVisible: false,
-            applicationType: 'all'
+            applicationTypeToEmail: 'all' // This is only for the modal to email applicants
         }
     }
 
@@ -69,11 +69,11 @@ class ScholarshipManage extends React.Component {
     };
 
     emailApplicants = () => {
-        const { scholarship, applicationType } = this.state;
+        const { scholarship, applicationTypeToEmail } = this.state;
         const scholarshipID = scholarship.id
         const subject = document.getElementById('email-subject').value
         const body = document.getElementById('email-body').value
-        const postData = {'subject': subject, 'body': body, 'type': applicationType}
+        const postData = {'subject': subject, 'body': body, 'type': applicationTypeToEmail}
 
         ScholarshipsAPI
             .emailApplicants(scholarshipID, postData)
@@ -95,13 +95,13 @@ class ScholarshipManage extends React.Component {
     };
 
     onRadioClick = e => {
-        this.setState({applicationType: e.target.value,});
+        this.setState({applicationTypeToEmail: e.target.value,});
     };
 
     render() {
         const { userProfile } = this.props;
         const { scholarship, applications, isLoadingApplications,
-            unsubmittedApplications, responseMessage, isModalVisible, applicationType } = this.state;
+            unsubmittedApplications, responseMessage, isModalVisible, applicationTypeToEmail } = this.state;
         const { TextArea } = Input
 
         if (!userProfile) {
@@ -124,15 +124,10 @@ class ScholarshipManage extends React.Component {
         }
 
         const allApplications = [...applications, ...unsubmittedApplications];
-        const radioStyle = {
-            display: 'block',
-            height: '30px',
-            lineHeight: '30px',
-        };
         const applicationOptions = [
-            { label: 'All Applications', value: 'all', style: radioStyle  },
-            { label: 'Submitted Applications', value: 'submitted', style: radioStyle },
-            { label: 'Unsubmitted Applications', value: 'unsubmitted', style: radioStyle },
+            { label: 'All', value: 'all' },
+            { label: 'Submitted', value: 'submitted' },
+            { label: 'Unsubmitted', value: 'unsubmitted' },
         ]
 
         return (
@@ -161,7 +156,7 @@ class ScholarshipManage extends React.Component {
                     onCancel={()=>{this.handleModalCancel()}}
                     okText={"Send Emails"}
                 >
-                    <TextArea id='email-body' rows={4} placeholder={"Email body..."}/>
+                    <TextArea id='email-body' rows={6} placeholder={"Email body..."}/>
                     <br />
                     <br />
                     <b>Which applications would you like to send this email to?</b>
@@ -169,7 +164,7 @@ class ScholarshipManage extends React.Component {
                     <Radio.Group
                         options={applicationOptions}
                         onChange={this.onRadioClick}
-                        value={applicationType}
+                        value={applicationTypeToEmail}
                         optionType="button"
                         buttonStyle="solid"
                     />
