@@ -92,7 +92,7 @@ class PaymentAccept extends React.Component {
     };
 
     updateUserProfile = (userProfileUpdateData) => {
-        const { userProfile } = this.props;
+        const { userProfile, updateLoggedInUserProfile } = this.props;
 
         this.setState({loading: "Updating User Profile..."}); // loading isn't true/false remember to switch that in new pr.
         UserProfileAPI.patch(
@@ -348,11 +348,17 @@ class PaymentAccept extends React.Component {
                         uploadHint="Enrollment proof must be a PDF (preferred) or an image."/>
                 </Col>
                 {userProfile.enrollment_proof &&
-                <Col span={24}>
-                    <a href={userProfile.enrollment_proof}  target="_blank" rel="noopener noreferrer">
-                        View your Enrollment Proof
-                    </a>
-                </Col>}
+                    <>
+                        <Col span={24}>
+                            <a href={userProfile.enrollment_proof}  target="_blank" rel="noopener noreferrer">
+                                View your Enrollment Proof
+                            </a>
+                        </Col>
+                        <Col span={24}>
+                            If you're not automatically redirected to the next step, try refreshing the page.
+                        </Col>
+                    </>
+                }
             </Row>
         )
     };
@@ -648,7 +654,7 @@ class PaymentAccept extends React.Component {
     }
 }
 const mapDispatchToProps = {
-    updateLoggedInUserProfile
+    updateLoggedInUserProfile,
 };
 const mapStateToProps = state => {
     return { userProfile: state.data.user.loggedInUserProfile };
