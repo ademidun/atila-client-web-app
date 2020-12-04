@@ -518,24 +518,22 @@ class PaymentAccept extends React.Component {
     };
 
     acceptPaymentStep = () => {
-        const { application, loading } = this.state;
+        const { application, loading, scholarship } = this.state;
         const confirmText = "Are you sure this is the correct email to receive the scholarship funding?";
 
         return (
             <Row gutter={[{ xs: 8, sm: 16}, 16]}>
                 <Loading isLoading={loading} title={loading} />
                 {application.is_payment_accepted &&
-                    <Row gutter={[{ xs: 8, sm: 16}, 16]}>
-                        <Col span={24}>
-                            <div className="center-block p-3">
-                                <p className="text-muted">
-                                    Success! You've completed the payment acceptance step and your scholarship award will be
-                                    sent to {application.accept_payment_email} within 24 hours. Message us using the chat
-                                    icon in the bottom right or email info@atila.ca if you have any questions!
-                                </p>
-                            </div>
-                        </Col>
-                    </Row>
+                    <Col span={24}>
+                        <div className="center-block p-3">
+                            <p className="text-muted">
+                                Success! You've completed the payment acceptance step and your scholarship award will be
+                                sent to {application.accept_payment_email} within 24 hours. Message us using the chat
+                                icon in the bottom right or email info@atila.ca if you have any questions!
+                            </p>
+                        </div>
+                    </Col>
                 }
                 {!application.is_payment_accepted &&
                 <>
@@ -564,6 +562,28 @@ class PaymentAccept extends React.Component {
 
                 </>
                 }
+                <Col span={24}>
+                    <p>As a scholarship winner on Atila:</p>
+                    <ol>
+                        <li>Your application and thank you letter may be shared on your profile. <br /><br />
+                            Your application was amazing, which is why you were selected as a winner.
+                            By sharing your application you can mention on your resume or LinkedIn
+                            that you were a winner of the {scholarship.name} award and link to your application.
+                            This could help you with future jobs, schools and other activities you apply to.
+                            <br /><br />
+                            You would also help other students by showing them what a good application
+                            and thank you letter looks like.<br /><br />
+                            If you would rather not share or want to edit before sharing your application,
+                            your thank you letter or both, that&rsquo;s completely fine as well.
+                            Just email us, <a href="mailto:info@atila.ca">info@atila.ca</a> to let us know.<br /><br />
+                        </li>
+                        <li>We recommend you <Link to="/profile/edit">add a profile picture to your profile.</Link>
+                            <br /><br />
+                            A picture of yourself humanizes your account and makes it easier for other people
+                            with a similar background and story to yours to connect with you,
+                            this can also create more future opportunities for you.</li>
+                    </ol>
+                </Col>
             </Row>
         )
 
