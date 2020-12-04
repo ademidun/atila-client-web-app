@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
-import {Table, Popconfirm, Button, Tag, Alert, Modal} from "antd";
+import {Table, Popconfirm, Button, Tag, Alert, Modal, Input} from "antd";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
 import {WINNER_SELECTED_MESSAGE} from "../../models/Scholarship";
@@ -67,7 +67,7 @@ class ScholarshipManage extends React.Component {
         this.setState({isModalVisible: true});
     };
 
-    handleOk = () => {
+    emailApplicants = (num) => {
         this.setState({isModalVisible: false});
     };
 
@@ -79,6 +79,7 @@ class ScholarshipManage extends React.Component {
         const { userProfile } = this.props;
         const { scholarship, applications, isLoadingApplications,
             unsubmittedApplications, responseMessage, isModalVisible } = this.state;
+        const { TextArea } = Input
 
         if (!userProfile) {
             return (
@@ -118,17 +119,16 @@ class ScholarshipManage extends React.Component {
                 <br />
 
                 <Button type="primary" size={"large"} onClick={this.showModal}>
-                    Message Applicants
+                    Email Applicants
                 </Button>
                 <Modal
-                    title="Basic Modal"
+                    title={<Input placeholder={"Email title..."}/>}
                     visible={isModalVisible}
-                    onOk={this.handleOk}
+                    onOk={()=>{this.emailApplicants(5)}}
                     onCancel={this.handleCancel}
+                    okText={"Send Emails"}
                 >
-                    <p>Some contents...</p>
-                    <p>Some contents...</p>
-                    <p>Some contents...</p>
+                    <TextArea rows={4} placeholder={"Email body..."}/>
                 </Modal>
 
                 <br />

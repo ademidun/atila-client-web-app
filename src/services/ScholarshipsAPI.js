@@ -165,6 +165,17 @@ class ScholarshipsAPI {
 
         return apiCompletionPromise;
     };
+
+    static emailApplicants = (id, data) => {
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: data,
+            url: `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/email-applicants/`,
+        });
+
+        return apiCompletionPromise;
+    };
 }
 
 export default ScholarshipsAPI;
