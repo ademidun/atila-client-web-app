@@ -183,7 +183,7 @@ class PaymentAccept extends React.Component {
 
     verifyEmailStep = () => {
         const { userProfile } = this.props;
-        const { loading } = this.state;
+        const { application, loading } = this.state;
 
         return (
             <Row gutter={[{ xs: 8, sm: 16}, 16]}>
@@ -194,7 +194,7 @@ class PaymentAccept extends React.Component {
                     <Input value={userProfile.last_name} disabled={true} />
                 </Col>
                 <Col span={24}>
-                    <Input value={userProfile.email} disabled={true}/>
+                    <Input value={application.verification_email} disabled={true}/>
                 </Col>
                 <Col span={24}>
                     <Input id="code" placeholder="Email Verification Code" />
@@ -483,13 +483,26 @@ class PaymentAccept extends React.Component {
         )
     };
 
-    onAcceptPayment = (email) => {
-        // This function sends a post request to the accept-payment backend endpoint containing the accept_payment_email
+    onAcceptEmailChange = (event) => {
+        let value = event.target.value;
 
         const { application } = this.state;
 
+        this.setState({application: {
+                                ...application,    // keep all other key-value pairs
+                                accept_payment_email: value
+        }});
+    };
+
+    onAcceptPayment = () => {
+        // This function sends a post request to the accept-payment backend endpoint containing the accept_payment_email
+
+        const { application } = this.state;
+        const { accept_payment_email } = application;
+        this.setState({loading: "Accepting payment email..."});
+
         ApplicationsAPI
-            .acceptPayment(application.id, {"accept_payment_email": email})
+            .acceptPayment(application.id, {accept_payment_email})
             .then(res=> {
                 const {application} = res.data;
                 const {scholarship} = res.data;
@@ -499,49 +512,58 @@ class PaymentAccept extends React.Component {
                 console.log({err});
                 toastNotify(`An error occurred. Please message us using the chat button in the bottom right.`, 'error');
             })
-            .finally(() => {})
+            .finally(() => {
+                this.setState({loading: null})
+            })
     };
 
     acceptPaymentStep = () => {
-        const { application } = this.state;
+        const { application, loading } = this.state;
         const confirmText = "Are you sure this is the correct email to receive the scholarship funding?";
 
-        if (application.is_payment_accepted){
-            return (
-                <Row gutter={[{ xs: 8, sm: 16}, 16]}>
-                    <Col span={24}>
-                        <div className="center-block">
-                            <p className="text-success">
-                                Success! You've completed the payment acceptance step and your money will be
-                                sent to {application.accept_payment_email} within 24 hours. Message us using the chat
-                                icon in the bottom right if you have any questions!
-                            </p>
-                        </div>
-                    </Col>
-                </Row>
-            )
-        }
         return (
             <Row gutter={[{ xs: 8, sm: 16}, 16]}>
-                <Col span={24}>
-                    <h6>
-                        Set destination email to receive payment.
-                    </h6>
-                </Col>
+                <Loading isLoading={loading} title={loading} />
+                {application.is_payment_accepted &&
+                    <Row gutter={[{ xs: 8, sm: 16}, 16]}>
+                        <Col span={24}>
+                            <div className="center-block p-3">
+                                <p className="text-muted">
+                                    Success! You've completed the payment acceptance step and your scholarship award will be
+                                    sent to {application.accept_payment_email} within 24 hours. Message us using the chat
+                                    icon in the bottom right or email info@atila.ca if you have any questions!
+                                </p>
+                            </div>
+                        </Col>
+                    </Row>
+                }
+                {!application.is_payment_accepted &&
+                <>
+                    <Col span={24}>
+                        <h6>
+                            Set destination email to receive payment via Interac e-transfer.
+                        </h6>
+                    </Col>
 
-                <Col span={24}>
-                    <Input id="accept-payment-email" placeholder="Destination Email" />
-                </Col>
+                    <Col span={24}>
+                        <Input id="accept_payment_email"
+                               placeholder="Destination Email"
+                               value={application.accept_payment_email}
+                               onChange={this.onAcceptEmailChange} />
+                    </Col>
 
-                <div className="center-block">
-                    <Popconfirm placement="bottom" title={confirmText} onConfirm={() =>
-                                {this.onAcceptPayment(document.getElementById('accept-payment-email'.value))}}
-                                okText="Yes" cancelText="No">
-                        <Button className="btn-success">
-                            Accept Payment...
-                        </Button>
-                    </Popconfirm>
-                </div>
+                    <div className="center-block">
+                        <Popconfirm placement="bottom" title={confirmText} onConfirm={() =>
+                        {this.onAcceptPayment()}}
+                                    okText="Yes" cancelText="No">
+                            <Button className="btn-success" disabled={loading}>
+                                Accept Payment...
+                            </Button>
+                        </Popconfirm>
+                    </div>
+
+                </>
+                }
             </Row>
         )
 
