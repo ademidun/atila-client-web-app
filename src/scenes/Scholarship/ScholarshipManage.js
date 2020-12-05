@@ -98,6 +98,10 @@ class ScholarshipManage extends React.Component {
         this.setState({applicationTypeToEmail: e.target.value,});
     };
 
+    unSubmitApplications = () => {
+
+    }
+
     render() {
         const { userProfile } = this.props;
         const { scholarship, applications, isLoadingApplications,
@@ -174,7 +178,11 @@ class ScholarshipManage extends React.Component {
                 <br />
                 <br />
 
-                <Popconfirm placement="right" title={confirmText} onConfirm={() => {}} okText="Yes" cancelText="No">
+                <Popconfirm placement="right"
+                            title={confirmText}
+                            onConfirm={() => this.unSubmitApplications()}
+                            okText="Yes"
+                            cancelText="No">
                     <Button type="primary" size={"large"} danger>
                         Unsubmit all Applications
                     </Button>
