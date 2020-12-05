@@ -145,9 +145,9 @@ TestimonialCard.propTypes = {
  */
 const Testimonials = ({ showSeo = true, filterArray=null }) => {
   const seoContent = {
-    title: "Atila Testimonials - What our users say about us",
+    title: "Atila Testimonials - What people say about Atila",
     description: `"A great resource for students". Read what people say about Atila`,
-    image: "https://i.imgur.com/dsNLJ3X.png",
+    image: "https://i.imgur.com/r8rRh6R.png",
     slug: "/testimonials",
   };
 
