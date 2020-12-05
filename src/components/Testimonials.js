@@ -147,7 +147,7 @@ const Testimonials = ({ showSeo = true, filterArray=null }) => {
   const seoContent = {
     title: "Atila Testimonials - What people say about Atila",
     description: `"A great resource for students". Read what people say about Atila`,
-    image: "https://i.imgur.com/r8rRh6R.png",
+    image: "https://i.imgur.com/hOWDsYg.png",
     slug: "/testimonials",
   };
 
