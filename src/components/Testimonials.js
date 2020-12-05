@@ -7,6 +7,39 @@ import {Link} from "react-router-dom";
 
 let testimonials = [
   {
+    first_name: "Jasleen",
+    last_name: "Bahia",
+    position: "Loran Scholar, Western University",
+    description: "The interactive features of the website and organized layout make the website " +
+        "easy to navigate and fun to explore! I especially enjoy the blogs tab on the page because " +
+        "it's so cool to see  the recent and creative projects that the Atila team" +
+        " has been working on! ",
+    profile_pic_url: "https://i.imgur.com/UqI8Uss.png",
+  },
+  {
+    first_name: "Natalie",
+    last_name: "Ngo",
+    position: "Co-Founder, Step Up Youth Organization",
+    description: "I've found Atila to be an extremely valuable and easy-to-use tool for both high school" +
+        " and university students. It's a fantastic one-stop shop to not only search for scholarships, " +
+        "but also provide guidance on how to excel in applications!",
+    profile_pic_url: "https://i.imgur.com/fdEg6jq.jpg",
+  },
+  {
+    first_name: "Grace",
+    last_name: "Tse",
+    position: "Student, Western University. (Previous Atila Intern)",
+    description: "To simply put it, the culture at Atila is fun, flexible, and caring. When I was first onboarded, I felt welcomed and at home right away. I must admit though, at the beginning of the Zoom call, I felt intimidated since I was the youngest member, however, instead of being looked down upon, each member saw me as an equal and never questioned my capabilities. ",
+    profile_pic_url: "https://i.imgur.com/Z0uHDTV.jpg",
+  },
+  {
+    first_name: "Chris",
+    last_name: "Bis",
+    position: "Student Services Teacher, Toronto District School Board",
+    img_url: "https://i.imgur.com/XzOTTkV.png",
+    description: "A great resource for students, I have posted this on my Student Services google class.",
+  },
+  {
     first_name: "Sarim",
     last_name: "Zia",
     position: "Garth Webb Secondary School",
@@ -27,23 +60,17 @@ let testimonials = [
     description: "I think the site is straight forward clean and very organized. I love the flow of it.",
   },
   {
-    first_name: "Chris Bis",
-    position: "Student Services Teacher, Toronto District School Board",
-    img_url: "https://i.imgur.com/XzOTTkV.png",
-    description: "A great resource for students, I have posted this on my Student Services google class.",
-  },
-  {
     first_name: "Hannah",
     last_name: "Balkissoon",
     position: "Student, J Clarke Richardson",
     description: "It's a good website that provides scholarships, sometimes it can be hard to find stuff." +
         " You could make the visuals easier to follow.",
   },
-  {
-    first_name: "Samantha",
-    position: "High School Student",
-    description: "The site was clean and organized, really easy to operate. The language used also made for a non-intimidating experience.",
-  },
+  // {
+  //   first_name: "Samantha",
+  //   position: "High School Student",
+  //   description: "The site was clean and organized, really easy to operate. The language used also made for a non-intimidating experience.",
+  // },
   // {
   //   first_name: "Hadi",
   //   last_name: "Al Hakeem",
@@ -63,18 +90,29 @@ function TestimonialCard({ testimonial }) {
   return (
     <div
       className='bg-white rounded shadow mb-3 p-3'
-      style={{ height: "350px" }}
+      style={{ height: "575px" }}
     >
-      <h5 className='mb-0'>
+      <h5 className="text-center">
         <strong>
           {testimonial.first_name} {testimonial.last_name}
         </strong>
       </h5>
+      {testimonial.profile_pic_url &&
+
+
+      <img
+          className='center-block-2 my-2'
+          src={testimonial.profile_pic_url}
+          alt={`${testimonial.first_name} Atila Testimonial`}
+          style={{ width: "250px", height: "250px", borderRadius: "50%"}}
+
+      />
+      }
       <span className="small text-uppercase text-muted">
         {testimonial.position}
       </span>
 
-      <p className="col-12 text-muted">
+      <p className="col-12 text-muted border-left mt-2">
         {testimonial.description}
       </p>
       {testimonial.img_url &&
@@ -118,7 +156,7 @@ const Testimonials = ({ showSeo = true, filterArray=null }) => {
   }
 
   let teamCards = testimonials.map((testimonial) => (
-    <Col xs={24} sm={12} key={testimonial.first_name}>
+    <Col xs={24} md={12} key={testimonial.first_name}>
       <TestimonialCard testimonial={testimonial} />
     </Col>
   ));
@@ -142,6 +180,13 @@ const Testimonials = ({ showSeo = true, filterArray=null }) => {
         <Row gutter={16}>
           {teamCards}
         </Row>
+        {!showSeo &&
+            <h3 className="text-center">
+              <Link to={"/testimonials"}>
+                Read More
+              </Link>
+            </h3>
+        }
       </div>
     </React.Fragment>
   );
