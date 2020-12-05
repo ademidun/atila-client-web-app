@@ -176,6 +176,17 @@ class ScholarshipsAPI {
 
         return apiCompletionPromise;
     };
+
+    static unSubmitApplications = (id, data) => {
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: data,
+            url: `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/unsubmit-applications/`,
+        });
+
+        return apiCompletionPromise;
+    };
 }
 
 export default ScholarshipsAPI;
