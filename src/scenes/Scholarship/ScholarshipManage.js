@@ -102,7 +102,8 @@ class ScholarshipManage extends React.Component {
         const { userProfile } = this.props;
         const { scholarship, applications, isLoadingApplications,
             unsubmittedApplications, responseMessage, isModalVisible, applicationTypeToEmail } = this.state;
-        const { TextArea } = Input
+        const { TextArea } = Input;
+        const confirmText = "Test Popconfirm";
 
         if (!userProfile) {
             return (
@@ -155,7 +156,7 @@ class ScholarshipManage extends React.Component {
                     visible={isModalVisible}
                     onOk={()=>{this.emailApplicants()}}
                     onCancel={()=>{this.handleModalCancel()}}
-                    okText={"Send Emails"}
+                    okText={"Email Applicants"}
                 >
                     <TextArea id='email-body' rows={6} placeholder={"Email body..."}/>
                     <br />
@@ -170,6 +171,14 @@ class ScholarshipManage extends React.Component {
                         buttonStyle="solid"
                     />
                 </Modal>
+                <br />
+                <br />
+
+                <Popconfirm placement="right" title={confirmText} onConfirm={() => {}} okText="Yes" cancelText="No">
+                    <Button type="primary" size={"large"} danger>
+                        Unsubmit all Applications
+                    </Button>
+                </Popconfirm>
 
                 <br />
                 <br />
