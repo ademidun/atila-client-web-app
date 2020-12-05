@@ -70,17 +70,17 @@ class ScholarshipManage extends React.Component {
 
     emailApplicants = () => {
         const { scholarship, applicationTypeToEmail } = this.state;
-        const scholarshipID = scholarship.id
-        const subject = document.getElementById('email-subject').value
-        const body = document.getElementById('email-body').value
-        const postData = {'subject': subject, 'body': body, 'type': applicationTypeToEmail}
+        const scholarshipID = scholarship.id;
+        const subject = document.getElementById('email-subject').value;
+        const body = document.getElementById('email-body').value;
+        const postData = {'subject': subject, 'body': body, 'type': applicationTypeToEmail};
 
         ScholarshipsAPI
             .emailApplicants(scholarshipID, postData)
             .then(res=> {
                 const {scholarship, applications, unsubmitted_applications: unsubmittedApplications} =  res.data;
                 this.setState({scholarship, applications, unsubmittedApplications});
-                this.setState({responseMessage: "All applicants have been emailed!"})
+                this.setState({responseMessage: "All applicants have been emailed!"});
             })
             .catch(err=>{
                 console.log({err});
@@ -99,7 +99,19 @@ class ScholarshipManage extends React.Component {
     };
 
     unSubmitApplications = () => {
-
+        const { scholarship } = this.state;
+        const scholarshipID = scholarship.id;
+        ScholarshipsAPI
+            .unSubmitApplications(scholarshipID, {})
+            .then(res=> {
+                const {scholarship, applications, unsubmitted_applications: unsubmittedApplications} =  res.data;
+                this.setState({scholarship, applications, unsubmittedApplications});
+                this.setState({responseMessage: "All applications have been unsubmitted."})
+            })
+            .catch(err=>{
+                console.log({err});
+                this.setState({responseMessage: "There was an error unsubmitting the applications.\n\n Please message us using the chat icon in the bottom right of your screen."});
+            })
     }
 
     render() {
