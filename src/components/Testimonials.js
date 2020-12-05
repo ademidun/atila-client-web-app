@@ -9,12 +9,12 @@ let testimonials = [
   {
     first_name: "Jasleen",
     last_name: "Bahia",
-    position: "Loran Scholar, Western University",
+    position: "Loran Scholar",
     description: "The interactive features of the website and organized layout make the website " +
         "easy to navigate and fun to explore! I especially enjoy the blogs tab on the page because " +
         "it's so cool to see  the recent and creative projects that the Atila team" +
         " has been working on! ",
-    profile_pic_url: "https://i.imgur.com/UqI8Uss.png",
+    profile_pic_url: "https://i.imgur.com/xYh30Xz.jpg",
   },
   {
     first_name: "Natalie",
@@ -147,7 +147,7 @@ const Testimonials = ({ showSeo = true, filterArray=null }) => {
   const seoContent = {
     title: "Atila Testimonials - What people say about Atila",
     description: `"A great resource for students". Read what people say about Atila`,
-    image: "https://i.imgur.com/r8rRh6R.png",
+    image: "https://i.imgur.com/hOWDsYg.png",
     slug: "/testimonials",
   };
 
