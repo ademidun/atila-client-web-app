@@ -190,18 +190,22 @@ class ScholarshipManage extends React.Component {
                 <br />
                 <br />
 
-                <Popconfirm placement="right"
-                            title={confirmText}
-                            onConfirm={() => this.unSubmitApplications()}
-                            okText="Yes"
-                            cancelText="No">
-                    <Button type="primary" size={"large"} danger>
-                        Unsubmit all Applications
-                    </Button>
-                </Popconfirm>
+                {userProfile.is_atila_admin &&
+                <>
+                    <Popconfirm placement="right"
+                                title={confirmText}
+                                onConfirm={() => this.unSubmitApplications()}
+                                okText="Yes"
+                                cancelText="No">
+                        <Button type="primary" size={"large"} danger>
+                            Unsubmit all Applications
+                        </Button>
+                    </Popconfirm>
+                    <br />
+                    <br />
+                </>
+                }
 
-                <br />
-                <br />
                 {responseMessage &&
                 <Alert
                     message={responseMessage}
