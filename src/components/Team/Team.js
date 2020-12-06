@@ -50,6 +50,45 @@ const teamMembers = [
     link2_type: "Website",
     link2_url: "https://hadihakeem.com/",
   },
+  {
+    first_name: "Eric",
+    last_name: "Wang",
+    position: "Marketing",
+    username: "ericwang451",
+    img_url: "https://media-exp1.licdn.com/dms/image/C5603AQEzj6xm38cJaw/profile-displayphoto-shrink_400_400/0/1604418350192?e=1613001600&v=beta&t=2aK2W8g48JT4k-fy-oensFZVKyOsAjGfEUT73IFBa9Y",
+    description_1:
+        "Eric is currently studying Computer Science at Western University.",
+    link_type: "LinkedIn",
+    link_url: "https://www.linkedin.com/in/eric-wang-1b0b70193/",
+    link2_type: "Website",
+    link2_url: "https://ericwang451.github.io/",
+  },
+  {
+    first_name: "Linda",
+    last_name: "Zhang",
+    position: "Marketing",
+    username: "",
+    img_url: "https://media-exp1.licdn.com/dms/image/C4E03AQFYTWrwzzaY1Q/profile-displayphoto-shrink_400_400/0?e=1613001600&v=beta&t=1d3_MRs0NoxHTXfr4ig1LjdYRdaHzeREA1DIosnef6g",
+    description_1:
+        "Linda is currently studying Business Management and Organizational Studies at Western University.",
+    link_type: "LinkedIn",
+    link_url: "https://www.linkedin.com/in/linda-zhang-21a2b9179/",
+    link2_type: "Website",
+    link2_url: "",
+  },
+  {
+    first_name: "Reesa",
+    last_name: "Dayani",
+    position: "Marketing",
+    username: "",
+    img_url: "https://media-exp1.licdn.com/dms/image/C4D03AQED8UjIhTLDIg/profile-displayphoto-shrink_400_400/0?e=1613001600&v=beta&t=dZDQ1msLeb0o2Sqzxstm8GXfsOTx5T3oPDhkq92XVBk",
+    description_1:
+        "Reesa is currently studying Computer Science at Western University.",
+    link_type: "LinkedIn",
+    link_url: "https://www.linkedin.com/in/reesa-dayani-ab7697172/",
+    link2_type: "Website",
+    link2_url: "",
+  },
 ];
 
 function TeamMemberCard({ teamMember, showLinkedin = true }) {
