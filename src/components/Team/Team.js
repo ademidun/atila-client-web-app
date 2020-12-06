@@ -170,7 +170,7 @@ const Team = ({ showArray = null, showLinkedin = true, showSeo = true }) => {
   const seoContent = {
     title: "Atila Team - The people that make Atila awesome",
     description: "Atila's team, the people that make Atila awesome.",
-    image: "https://i.imgur.com/ekfz2sj.png",
+    image: "https://i.imgur.com/aQ6JSXN.png",
     slug: "/team",
   };
 
