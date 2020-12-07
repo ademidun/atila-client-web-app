@@ -379,11 +379,11 @@ class PaymentAccept extends React.Component {
             .catch(err => {
                 console.log({err});
             })
-    }
+    };
 
     sendThankYouLetter = (letter) => {
-        this.setState({loading: "Sending thank you email..."})
-        const { application } = this.state
+        this.setState({loading: "Sending thank you email..."});
+        const { application } = this.state;
 
         ApplicationsAPI
             .sendThankYouLetter(application.id, {thank_you_letter: letter})
@@ -395,7 +395,7 @@ class PaymentAccept extends React.Component {
                 toastNotify(`😃 Thank you letter sent successfully!`, 'success');
             })
             .catch(err => {
-                console.log({err})
+                console.log({err});
                 toastNotify(`An error occurred. Please message us using the chat button in the bottom right.`, 'error');
             })
             .finally(() =>{

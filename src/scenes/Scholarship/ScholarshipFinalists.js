@@ -28,7 +28,7 @@ class ScholarshipFinalists extends React.Component {
             .then(res => {
                 let scholarshipFinalists = [];
                 if (res.data.applications) {
-                    scholarshipFinalists = res.data.applications.slice(0,3);
+                    scholarshipFinalists = res.data.applications;
                 }
                 this.setState({ scholarshipFinalists });
             });
