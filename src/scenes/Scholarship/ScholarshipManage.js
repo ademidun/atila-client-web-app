@@ -85,7 +85,7 @@ class ScholarshipManage extends React.Component {
             .catch(err=>{
                 console.log({err});
                 this.setState({responseMessage: "There was an error emailing the applicants.\n\n Please message us using the chat icon in the bottom right of your screen."});
-            })
+            });
 
         this.setState({isModalVisible: false});
     };
@@ -112,7 +112,7 @@ class ScholarshipManage extends React.Component {
                 console.log({err});
                 this.setState({responseMessage: "There was an error unsubmitting the applications.\n\n Please message us using the chat icon in the bottom right of your screen."});
             })
-    }
+    };
 
     render() {
         const { userProfile } = this.props;
@@ -145,8 +145,9 @@ class ScholarshipManage extends React.Component {
             { label: 'All', value: 'all' },
             { label: 'Submitted', value: 'submitted' },
             { label: 'Unsubmitted', value: 'unsubmitted' },
+            { label: 'Exclude Winners', value: 'exclude_winners' },
             { label: 'Finalists Only', value: 'finalists' }
-        ]
+        ];
 
         return (
             <div className="container mt-5">
@@ -198,7 +199,7 @@ class ScholarshipManage extends React.Component {
                                 okText="Yes"
                                 cancelText="No">
                         <Button type="primary" size={"large"} danger>
-                            Unsubmit all Applications
+                            Un-Submit all Applications
                         </Button>
                     </Popconfirm>
                     <br />
