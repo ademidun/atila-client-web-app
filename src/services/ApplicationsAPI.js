@@ -63,6 +63,16 @@ class ApplicationsAPI {
         return apiCompletionPromise;
     };
 
+    static getSlug = (slug) => {
+
+        const apiCompletionPromise = request({
+            method: 'get',
+            url: `${ApplicationsAPI.applicationsApiUrl}/slug/${slug}/`,
+        });
+
+        return apiCompletionPromise;
+    };
+
     static doesApplicationExist = (userID, scholarshipID) => {
 
         const apiCompletionPromise = request({

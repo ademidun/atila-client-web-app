@@ -24,6 +24,7 @@ class ContentAddEdit extends React.Component {
                 essay_source_url: '',
                 header_image_url: '',
                 published: false,
+                ...props.content
             },
             showPreview: false,
             contentPostError: null,
