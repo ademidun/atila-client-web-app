@@ -96,8 +96,6 @@ class ContentAddEdit extends React.Component {
         const content = this.state.content;
         content.body = data;
 
-        console.log({data, content});
-
         this.setState({content});
     };
 
@@ -105,13 +103,13 @@ class ContentAddEdit extends React.Component {
         if(event){
             event.preventDefault();
         }
-        const { ContentAPI, userProfile, contentType, match : { params : { slug, username }} } = this.props;
+        const { ContentAPI, userProfile, contentType } = this.props;
+        const { content, isAddContentMode } = this.state;
 
         if(!userProfile) {
             toastNotify(`⚠️ Warning, you must be logged in to add ${contentType}s`);
             return;
         }
-        const { content, isAddContentMode } = this.state;
 
         let postResponsePromise = null;
         if (isAddContentMode) {
@@ -128,13 +126,33 @@ class ContentAddEdit extends React.Component {
         postResponsePromise
             .then(res=> {
                 this.setState({isAddContentMode: false});
-                this.setState({content: res.data});
-                const successMessage = (<p>
+                const updatedContent = res.data;
+                this.setState({content: updatedContent});
+                let { match : { params : { slug, username }} } = this.props;
+
+                if (updatedContent.user) {
+                    username = updatedContent.user.username;
+                }
+                if (updatedContent.slug) {
+                    slug = updatedContent.slug;
+                }
+
+                // When viewing an application, we will use the same url structure as essays
+                let contentTypeForSlug = contentType.toLowerCase();
+                if (contentTypeForSlug === "application") {
+                    contentTypeForSlug = "essay"
+                }
+                const successMessage = (
+                    <>
+                    <p>
                     <span role="img" aria-label="happy face emoji">🙂</span>
                     Successfully saved {' '}
-                    <Link to={`/${contentType.toLowerCase()}/${username}/${slug}`}>
+                    <Link to={`/${contentTypeForSlug}/${username}/${slug}`}>
                         {content.title}
-                </Link></p>);
+                </Link></p>
+                        {!updatedContent.published && <small>Must be published to view</small>}
+                    </>
+                        );
                 toastNotify(successMessage, 'info', {position: 'bottom-right'});
             })
             .catch(err=> {
