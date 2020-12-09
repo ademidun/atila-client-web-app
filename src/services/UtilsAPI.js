@@ -28,6 +28,7 @@ class UtilsAPI {
                 ContentClass.setState({contentGetError: { err }});
             })
             .finally(() => {
+                ContentClass.setState({isLoading: false});
             });
     };
 

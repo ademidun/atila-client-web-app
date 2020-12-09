@@ -9,6 +9,7 @@ import {connect} from "react-redux";
 import {slugify} from "../../services/utils";
 import UtilsAPI from "../../services/UtilsAPI";
 import {toastNotify} from "../../models/Utils";
+import Loading from "../Loading";
 
 class ContentAddEdit extends React.Component {
 
@@ -24,13 +25,17 @@ class ContentAddEdit extends React.Component {
                 essay_source_url: '',
                 header_image_url: '',
                 published: false,
-                ...props.content
             },
             showPreview: false,
             contentPostError: null,
             contentGetError: null,
             isAddContentMode: false,
-            showContentAddOptions: false
+            showContentAddOptions: false,
+            // CKEditor doesn't get updated when the state changes,
+            // so we hve to set isLoading to true by default.
+            // this way the CkEditor only gets rendered when the data has been loaded
+            // (when content.body has been loaded).
+            isLoading: true,
         }
     }
 
@@ -41,7 +46,7 @@ class ContentAddEdit extends React.Component {
         const { userProfile, match : { path }} = this.props;
 
         if ( path===`/${contentType.toLowerCase()}/add` ) {
-            this.setState({isAddContentMode: true});
+            this.setState({isAddContentMode: true, isLoading: false});
             const content = this.state.content;
 
             if(userProfile) {
@@ -57,7 +62,11 @@ class ContentAddEdit extends React.Component {
     }
 
     loadContent = () => {
-        UtilsAPI.loadContent(this);
+        if (this.props.content) {
+            this.setState({content: this.props.content, isLoading: false});
+        } else {
+            UtilsAPI.loadContent(this);
+        }
     };
 
     updateForm = (event) => {
@@ -84,6 +93,8 @@ class ContentAddEdit extends React.Component {
         const data = editor.getData();
         const content = this.state.content;
         content.body = data;
+
+        console.log({data, content});
 
         this.setState({content});
     };
@@ -131,7 +142,7 @@ class ContentAddEdit extends React.Component {
     render() {
 
         const { contentType, match : { params : { slug, username }}  } = this.props;
-        const { isAddContentMode, contentPostError, showContentAddOptions} = this.state;
+        const { isAddContentMode, contentPostError, showContentAddOptions, isLoading} = this.state;
 
         const elementTitle = isAddContentMode ? `Add ${contentType}` : `Edit ${contentType}`;
 
@@ -139,7 +150,11 @@ class ContentAddEdit extends React.Component {
             title, description, published, header_image_url, body, essay_source_url
         } } = this.state;
 
-        const defaultBody = '<p>Write your story here...</p>';
+        if (!isAddContentMode && isLoading) {
+            return (<div>
+                <Loading isLoading={isLoading}/>
+            </div>);
+        }
 
         return (
             <div className="mt-3">
@@ -203,11 +218,8 @@ class ContentAddEdit extends React.Component {
                     }
                     <CKEditor
                         editor={ InlineEditor }
-                        data={body || defaultBody}
-                        onInit={ this.editorInit }
+                        data={body}
                         onChange={ this.editorChange }
-                        onBlur={ this.editorBlur }
-                        onFocus={ this.editorFocus }
                     />
                     {contentPostError &&
                     <pre className="text-danger" style={{ whiteSpace: 'pre-wrap' }}>
