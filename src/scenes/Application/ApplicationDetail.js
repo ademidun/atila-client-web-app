@@ -424,12 +424,17 @@ class ApplicationDetail extends  React.Component{
                     {' '}
                     Good luck! <br/>
                 </h5>
-                <p>
-                    Make sure you received your submission confirmation in your email (check your spam as well).
-                    If you didn't, this means you might also miss the email to accept your award payment if you win.
-
-                    <br/> Contact us using the chat in the bottom right if you need help.
-                </p>
+                <div>
+                    <strong>
+                        <ol>
+                            <li>Important: Make sure you received your submission confirmation in your email.</li>
+                            <li>If it's in your spam, mark it as not spam.</li>
+                            <li>If you don't complete those steps, you might also miss the email to accept your award payment if you win.</li>
+                            <li>If you if you don't accept your award before the acceptance deadline, it might be given to someone else.</li>
+                        </ol>
+                    </strong>
+                    Contact us using the chat in the bottom right if you need help.
+                </div>
 
                 </>
             )
