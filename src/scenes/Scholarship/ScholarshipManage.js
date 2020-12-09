@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
-import {Table, Popconfirm, Button, Tag, Alert} from "antd";
+import {Table, Popconfirm, Button, Tag, Alert, Modal, Input, Radio} from "antd";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
 import {WINNER_SELECTED_MESSAGE} from "../../models/Scholarship";
@@ -16,6 +16,8 @@ class ScholarshipManage extends React.Component {
             unsubmittedApplications: null,
             isLoadingApplications: false,
             responseMessage: null,
+            isModalVisible: false,
+            applicationTypeToEmail: 'all' // This is only for the modal to email applicants
         }
     }
 
@@ -62,10 +64,62 @@ class ScholarshipManage extends React.Component {
             })
     };
 
+    showModal = () => {
+        this.setState({isModalVisible: true});
+    };
+
+    emailApplicants = () => {
+        const { scholarship, applicationTypeToEmail } = this.state;
+        const scholarshipID = scholarship.id;
+        const subject = document.getElementById('email-subject').value;
+        const body = document.getElementById('email-body').value;
+        const postData = {'subject': subject, 'body': body, 'type': applicationTypeToEmail};
+
+        ScholarshipsAPI
+            .emailApplicants(scholarshipID, postData)
+            .then(res=> {
+                const {scholarship, applications, unsubmitted_applications: unsubmittedApplications} =  res.data;
+                this.setState({scholarship, applications, unsubmittedApplications});
+                this.setState({responseMessage: "All applicants have been emailed!"});
+            })
+            .catch(err=>{
+                console.log({err});
+                this.setState({responseMessage: "There was an error emailing the applicants.\n\n Please message us using the chat icon in the bottom right of your screen."});
+            });
+
+        this.setState({isModalVisible: false});
+    };
+
+    handleModalCancel = () => {
+        this.setState({isModalVisible: false});
+    };
+
+    onRadioClick = e => {
+        this.setState({applicationTypeToEmail: e.target.value,});
+    };
+
+    unSubmitApplications = () => {
+        const { scholarship } = this.state;
+        const scholarshipID = scholarship.id;
+        ScholarshipsAPI
+            .unSubmitApplications(scholarshipID, {})
+            .then(res=> {
+                const {scholarship, applications, unsubmitted_applications: unsubmittedApplications} =  res.data;
+                this.setState({scholarship, applications, unsubmittedApplications});
+                this.setState({responseMessage: "All applications have been unsubmitted."})
+            })
+            .catch(err=>{
+                console.log({err});
+                this.setState({responseMessage: "There was an error unsubmitting the applications.\n\n Please message us using the chat icon in the bottom right of your screen."});
+            })
+    };
+
     render() {
         const { userProfile } = this.props;
         const { scholarship, applications, isLoadingApplications,
-            unsubmittedApplications, responseMessage } = this.state;
+            unsubmittedApplications, responseMessage, isModalVisible, applicationTypeToEmail } = this.state;
+        const { TextArea } = Input;
+        const confirmText = "Are you sure you want to unsubmit all submitted applications? This action cannot be undone.";
 
         if (!userProfile) {
             return (
@@ -87,6 +141,13 @@ class ScholarshipManage extends React.Component {
         }
 
         const allApplications = [...applications, ...unsubmittedApplications];
+        const applicationOptions = [
+            { label: 'All', value: 'all' },
+            { label: 'Submitted', value: 'submitted' },
+            { label: 'Unsubmitted', value: 'unsubmitted' },
+            { label: 'Exclude Winners', value: 'exclude_winners' },
+            { label: 'Finalists Only', value: 'finalists' }
+        ];
 
         return (
             <div className="container mt-5">
@@ -102,6 +163,50 @@ class ScholarshipManage extends React.Component {
                     View Scholarship
                 </Link>
                 <br />
+                <br />
+
+                <Button type="primary" size={"large"} onClick={this.showModal}>
+                    Email Applicants
+                </Button>
+                <Modal
+                    title={<Input id='email-subject' placeholder={"Email subject..."}/>}
+                    visible={isModalVisible}
+                    onOk={()=>{this.emailApplicants()}}
+                    onCancel={()=>{this.handleModalCancel()}}
+                    okText={"Email Applicants"}
+                >
+                    <TextArea id='email-body' rows={6} placeholder={"Email body..."}/>
+                    <br />
+                    <br />
+                    <b>Which applications would you like to send this email to?</b>
+                    <br />
+                    <Radio.Group
+                        options={applicationOptions}
+                        onChange={this.onRadioClick}
+                        value={applicationTypeToEmail}
+                        optionType="button"
+                        buttonStyle="solid"
+                    />
+                </Modal>
+                <br />
+                <br />
+
+                {userProfile.is_atila_admin &&
+                <>
+                    <Popconfirm placement="right"
+                                title={confirmText}
+                                onConfirm={() => this.unSubmitApplications()}
+                                okText="Yes"
+                                cancelText="No">
+                        <Button type="primary" size={"large"} danger>
+                            Un-Submit all Applications
+                        </Button>
+                    </Popconfirm>
+                    <br />
+                    <br />
+                </>
+                }
+
                 {responseMessage &&
                 <Alert
                     message={responseMessage}
