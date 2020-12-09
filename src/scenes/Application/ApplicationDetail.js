@@ -563,10 +563,12 @@ class ApplicationDetail extends  React.Component{
                                     }
                                 </>
                                 }
-                                <div id="publish" className="row col-12 my-3">
-                                    <h2>Publish your Application as an Essay</h2>
-                                    <ApplicationEssayAddEdit application={application} />
-                                </div>
+                                {application.is_submitted &&
+                                    <div id="publish" className="row col-12 my-3">
+                                        <h2>Publish your Application as an Essay</h2>
+                                        <ApplicationEssayAddEdit application={application} />
+                                    </div>
+                                }
                                 {application && userProfile && application.user &&
                                     application.user.user === userProfile.user  &&
                                     <div id="security">

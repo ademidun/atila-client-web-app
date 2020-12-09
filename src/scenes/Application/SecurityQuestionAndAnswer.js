@@ -103,7 +103,7 @@ class SecurityQuestionAndAnswer extends  React.Component{
         return (
             <div className="mt-5">
 
-                <h2>Add Security Question and Answer</h2>
+                <h2 className="row col-12 text-center">Add Security Question and Answer</h2>
                 <h6 className="text-center">
                     You will need to answer this question to verify your account when accepting an award.
                 </h6>
