@@ -14,7 +14,7 @@ import {toastNotify} from "../../models/Utils";
 import FormDynamic from "../../components/Form/FormDynamic";
 import {Link} from "react-router-dom";
 import {Button, Popconfirm} from "antd";
-import {formatCurrency, getErrorMessage, handleError, prettifyKeys} from "../../services/utils";
+import {formatCurrency, getErrorMessage, handleError, prettifyKeys, scrollToElement} from "../../services/utils";
 import Register from "../../components/Register";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
@@ -72,7 +72,7 @@ class ApplicationDetail extends  React.Component{
 
     getApplicationRemotely = () => {
 
-        const { match : { params : { applicationID }}, userProfile } = this.props;
+        const { match : { params : { applicationID }}, location, userProfile } = this.props;
 
         this.setState({isLoadingApplication: true});
         ApplicationsAPI.get(applicationID)
@@ -83,7 +83,12 @@ class ApplicationDetail extends  React.Component{
                 if (application.user_scores) {
                     const applicationScore = application.user_scores[userProfile.user] ?
                         application.user_scores[userProfile.user]["score"] : 0;
-                    this.setState({applicationScore});
+                    this.setState({applicationScore}, () => {
+                        if (location && location.hash) {
+                            scrollToElement(location.hash);
+                        }
+                    });
+
                 }
                 this.makeScholarshipQuestionsForm(application, scholarship)
             })
