@@ -34,8 +34,8 @@ class ContentCard extends React.Component {
         let descriptionText = description;
 
         if (description && !hideImage) {
-            descriptionText = showPreview ? description : `${description.substring(0,100)}`;
-            if (!showPreview && description.length > 100) {
+            descriptionText = showPreview ? description.substring(0,240) : `${description.substring(0,100)}`;
+            if (description.length > descriptionText) {
                 descriptionText +='...'
             }
         }

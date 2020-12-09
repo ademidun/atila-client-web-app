@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Row, Col} from "antd";
+import {Link} from "react-router-dom";
+import {Row, Col, Tag} from "antd";
 import ContentCard from "../../components/ContentCard";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
@@ -12,7 +13,8 @@ class ScholarshipFinalists extends React.Component {
         super(props);
 
         this.state = {
-            scholarshipFinalists: [],
+            scholarshipFinalistEssays: [],
+            scholarshipFinalistUserProfiles: [],
             isLoadingScholarshipFinalists: false,
             errorLoadingScholarshipFinalists: false,
         }
@@ -26,11 +28,10 @@ class ScholarshipFinalists extends React.Component {
             .getFinalists(`${id}`);
         scholarshipFinalistsPromise
             .then(res => {
-                let scholarshipFinalists = [];
-                if (res.data.applications) {
-                    scholarshipFinalists = res.data.applications.slice(0,3);
-                }
-                this.setState({ scholarshipFinalists });
+                this.setState({
+                        scholarshipFinalistEssays: res.data.finalist_essays,
+                        scholarshipFinalistUserProfiles: res.data.finalist_user_profiles,
+                });
             });
 
         scholarshipFinalistsPromise
@@ -44,7 +45,7 @@ class ScholarshipFinalists extends React.Component {
 
     render () {
 
-        const { scholarshipFinalists, isLoadingScholarshipFinalists  } = this.state;
+        const { scholarshipFinalistEssays, scholarshipFinalistUserProfiles, isLoadingScholarshipFinalists  } = this.state;
         const { className, title  } = this.props;
 
         if (isLoadingScholarshipFinalists) {
@@ -60,16 +61,38 @@ class ScholarshipFinalists extends React.Component {
             <div className={`${className}`}>
                 <h3 className="text-center">{title}</h3>
                 <Row gutter={[{ xs: 8, sm: 16}, 16]}>
-                    {scholarshipFinalists.map(item => {
+                    {scholarshipFinalistUserProfiles.map(user => {
+                        return (
+                            // Use zoom:0.8 as a temporary workaround so that that ScholarshipFinalists doesn't
+                            // take up too much space.
+                            <Col xs={24} md={12} lg={8} style={{zoom:0.9}} key={user.username}>
+                                <div className="bg-light mb-3 p-1 rounded-pill">
+                                    <Link to={`/profile/${user.username}`} >
+                                        <img
+                                            alt="user profile"
+                                            style={{ height: '50px', maxWidth: 'auto' }}
+                                            className="rounded-circle py-1 pr-1"
+                                            src={user.profile_pic_url} />
+                                        {user.first_name} {user.last_name}
+                                    </Link>
+                                    {user.is_winner && <Tag color="green">Winner</Tag>}
+                                </div>
+                            </Col>)
+                    })}
+
+                </Row>
+                <h3 className="text-center">{title}' Essays</h3>
+                <Row gutter={[{ xs: 8, sm: 16}, 16]}>
+                    {scholarshipFinalistEssays.map(item => {
                         // set this so getItemType() in genericItemTransform() returns an essay
                         item.essay_source_url="";
                         return (
                             // Use zoom:0.8 as a temporary workaround so that that ScholarshipFinalists doesn't
                             // take up too much space.
-                            <Col xs={24} md={12} lg={8} style={{zoom:0.9}}>
+                            <Col xs={24} md={12} lg={8} style={{zoom:0.9}} key={item.slug}>
                                 <ContentCard key={item.slug}
                                              content={genericItemTransform(item)}
-                                             customStyle={{"min-height": "800px"}}
+                                             customStyle={{height: "850px"}}
                                              className="mb-3" />
                             </Col>)
                     })}
