@@ -11,21 +11,23 @@ import UtilsAPI from "../../services/UtilsAPI";
 import {toastNotify} from "../../models/Utils";
 import Loading from "../Loading";
 
+const defaultContent = {
+    title: '',
+    slug: '',
+    description: '',
+    body: '',
+    essay_source_url: '',
+    header_image_url: '',
+    published: false,
+};
+
 class ContentAddEdit extends React.Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            content: {
-                title: '',
-                slug: '',
-                description: '',
-                body: '',
-                essay_source_url: '',
-                header_image_url: '',
-                published: false,
-            },
+            content: defaultContent,
             showPreview: false,
             contentPostError: null,
             contentGetError: null,
@@ -117,7 +119,11 @@ class ContentAddEdit extends React.Component {
         }
         else {
             content.user = content.user.id;
-            postResponsePromise = ContentAPI.update(content.id, content);
+            const contentToPatch = {};
+            Object.keys(defaultContent).forEach(defaultContentKey => {
+                contentToPatch[defaultContentKey] = content[defaultContentKey]
+            });
+            postResponsePromise = ContentAPI.patch(content.id, contentToPatch);
         }
         postResponsePromise
             .then(res=> {
@@ -187,8 +193,18 @@ class ContentAddEdit extends React.Component {
                         style={{ fontSize: 'small' }}>
                         Unpublished
                     </p>}
+                    {published &&
+                    <p  className="badge badge-primary mx-1"
+                        style={{ fontSize: 'small' }}>
+                        Published
+                    </p>}
                     {showContentAddOptions &&
                     <div className="col-12">
+                        {/*
+                            If there is already a description, we will include a <p> element
+                            that allows the user to see the application.
+                        */}
+                        {description && <p className="text-muted">Description</p>}
                     <textarea placeholder="Description"
                               className="col-12 mb-3 form-control"
                               name="description"
