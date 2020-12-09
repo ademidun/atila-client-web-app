@@ -63,6 +63,16 @@ class ApplicationsAPI {
         return apiCompletionPromise;
     };
 
+    static getSlug = (slug) => {
+
+        const apiCompletionPromise = request({
+            method: 'get',
+            url: `${ApplicationsAPI.applicationsApiUrl}/slug/${slug}/`,
+        });
+
+        return apiCompletionPromise;
+    };
+
     static doesApplicationExist = (userID, scholarshipID) => {
 
         const apiCompletionPromise = request({
@@ -73,15 +83,20 @@ class ApplicationsAPI {
         return apiCompletionPromise;
     };
 
-    static patch = (id, data) => {
+
+    static update = (id, application, method="put") => {
 
         const apiCompletionPromise = request({
-            method: 'patch',
-            data,
+            method,
+            data: application,
             url: `${this.applicationsApiUrl}/${id}/`,
         });
 
         return apiCompletionPromise;
+    };
+
+    static patch = (id, application) => {
+        return ApplicationsAPI.update(id, application, "patch")
     };
 
     static submit = (id, data) => {

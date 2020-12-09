@@ -10,17 +10,21 @@ import {connect} from "react-redux";
 import moment from "moment";
 import ApplicationsAPI from "../../services/ApplicationsAPI";
 import Loading from "../../components/Loading";
-import {SCHOLARSHIP_QUESTIONS_TYPES_TO_FORM_TYPES} from "../../models/Scholarship";
-import {userProfileFormConfig} from "../../models/UserProfile";
-import {scholarshipUserProfileSharedFormConfigs, toastNotify} from "../../models/Utils";
+import {toastNotify} from "../../models/Utils";
 import FormDynamic from "../../components/Form/FormDynamic";
 import {Link} from "react-router-dom";
 import {Button, Popconfirm} from "antd";
-import {formatCurrency, getErrorMessage, handleError, prettifyKeys} from "../../services/utils";
+import {formatCurrency, getErrorMessage, handleError, prettifyKeys, scrollToElement} from "../../services/utils";
 import Register from "../../components/Register";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import SecurityQuestionAndAnswer from "./SecurityQuestionAndAnswer";
+import {
+    addQuestionDetailToApplicationResponses,
+    transformProfileQuestionsToApplicationForm,
+    transformScholarshipQuestionsToApplicationForm
+} from "./ApplicationUtils";
+import ApplicationEssayAddEdit from "./ApplicationEssayAddEdit";
 // import SecurityQuestionAndAnswer from "./SecurityQuestionAndAnswer";
 
 let autoSaveTimeoutId;
@@ -68,7 +72,7 @@ class ApplicationDetail extends  React.Component{
 
     getApplicationRemotely = () => {
 
-        const { match : { params : { applicationID }}, userProfile } = this.props;
+        const { match : { params : { applicationID }}, location, userProfile } = this.props;
 
         this.setState({isLoadingApplication: true});
         ApplicationsAPI.get(applicationID)
@@ -79,7 +83,12 @@ class ApplicationDetail extends  React.Component{
                 if (application.user_scores) {
                     const applicationScore = application.user_scores[userProfile.user] ?
                         application.user_scores[userProfile.user]["score"] : 0;
-                    this.setState({applicationScore});
+                    this.setState({applicationScore}, () => {
+                        if (location && location.hash) {
+                            scrollToElement(location.hash);
+                        }
+                    });
+
                 }
                 this.makeScholarshipQuestionsForm(application, scholarship)
             })
@@ -415,12 +424,17 @@ class ApplicationDetail extends  React.Component{
                     {' '}
                     Good luck! <br/>
                 </h5>
-                <p>
-                    Make sure you received your submission confirmation in your email (check your spam as well).
-                    If you didn't, this means you might also miss the email to accept your award payment if you win.
-
-                    <br/> Contact us using the chat in the bottom right if you need help.
-                </p>
+                <div>
+                    <strong>
+                        <ol>
+                            <li>Important: Make sure you received your submission confirmation in your email.</li>
+                            <li>If it's in your spam, mark it as not spam.</li>
+                            <li>If you don't complete those steps, you might also miss the email to accept your award payment if you win.</li>
+                            <li>If you if you don't accept your award before the acceptance deadline, it might be given to someone else.</li>
+                        </ol>
+                    </strong>
+                    Contact us using the chat in the bottom right if you need help.
+                </div>
 
                 </>
             )
@@ -554,9 +568,17 @@ class ApplicationDetail extends  React.Component{
                                     }
                                 </>
                                 }
+                                {application.is_submitted &&
+                                    <div id="publish" className="row col-12 my-3">
+                                        <h2>Publish your Application as an Essay</h2>
+                                        <ApplicationEssayAddEdit application={application} />
+                                    </div>
+                                }
                                 {application && userProfile && application.user &&
                                     application.user.user === userProfile.user  &&
-                                    <SecurityQuestionAndAnswer />
+                                    <div id="security">
+                                        <SecurityQuestionAndAnswer />
+                                    </div>
                                 }
                                 {promptRegisterBeforeSubmitting &&
                                 <>
@@ -600,106 +622,6 @@ class ApplicationDetail extends  React.Component{
             </>
         );
     }
-}
-
-/**
- * Transform array of questions of the form:
- * {
-  "key": "why-do-you-deserve-this-scholarship",
-  "question": "Why do you deserve this scholarship?",
-  "type": "long_answer"
-} into format:
-
- {
-        keyName: "why-do-you-deserve-this-scholarship",
-        placeholder: "Why do you deserve this scholarship?",
-        label: "Why do you deserve this scholarship?"
-        type: 'html_editor'
-    }
- * @param questions
- */
-export function transformScholarshipQuestionsToApplicationForm(questions) {
-
-    return questions.map(question => (
-        {
-            keyName: question.key,
-            placeholder: question.question,
-            label: question.question,
-            type: SCHOLARSHIP_QUESTIONS_TYPES_TO_FORM_TYPES[question.type],
-        }
-    ));
-}
-
-/***
- * Takes an array of questions in the following format and return all the elements that match the UserProfile questions.
- * @param scholarshipProfileQuestions
- * @returns {*}
- */
-export function transformProfileQuestionsToApplicationForm(scholarshipProfileQuestions) {
-
-    const formQuestions = [];
-    const allProfileQuestions = [...userProfileFormConfig, ...scholarshipUserProfileSharedFormConfigs];
-
-    scholarshipProfileQuestions.forEach(scholarshipProfileQuestion => {
-        const positionInAllProfileQuestions =  allProfileQuestions.findIndex((item) => scholarshipProfileQuestion.key === item.keyName)
-
-        if (positionInAllProfileQuestions > -1) {
-            formQuestions.push(allProfileQuestions[positionInAllProfileQuestions]);
-        }
-
-    });
-
-    return formQuestions
-}
-
-/**
- * For an application that has application.scholarship_responses
- * in the form {"why-do-you-deserve-this-scholarship": "I am awesome."},
- * for each response, add info about the question:
- * {
-  "key": "why-do-you-deserve-this-scholarship",
-  "question": "Why do you deserve this scholarship?",
-  "type": "long_answer"
-  "response": "I am awesome."
-}
- * @param application
- * @param scholarship
- * @returns {*}
- */
-function addQuestionDetailToApplicationResponses(application, scholarship) {
-
-
-    const scholarshipResponses = {};
-    const userProfileResponses = {};
-    Object.keys(application.scholarship_responses).forEach( responseKey => {
-        const question = scholarship.specific_questions.find(question => {
-            return question.key === responseKey
-        });
-        if (question) {
-            scholarshipResponses[responseKey] = {
-                ...question,
-                "response": application.scholarship_responses[responseKey]
-            }
-        }
-    });
-
-    Object.keys(application.user_profile_responses).forEach( responseKey => {
-        const question = scholarship.user_profile_questions.find(question => {
-            return question.key === responseKey
-        });
-                if (question) {
-            userProfileResponses[responseKey] = {
-                ...question,
-                response: application.user_profile_responses[responseKey]
-            }
-        }
-    });
-
-    return {
-        scholarship_responses: scholarshipResponses,
-        user_profile_responses: userProfileResponses,
-    };
-
 }
 
 

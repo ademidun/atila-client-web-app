@@ -35,15 +35,19 @@ class BlogsApi {
         return apiCompletionPromise;
     };
 
-    static update = (id, blog) => {
+    static update = (id, blog, method="put") => {
 
         const apiCompletionPromise = request({
-            method: 'put',
+            method,
             data: blog,
             url: `${BlogsApi.blogsApiUrl}/${id}/`,
         });
 
         return apiCompletionPromise;
+    };
+
+    static patch = (id, blog) => {
+        return BlogsApi.update(id, blog, "patch")
     };
 }
 

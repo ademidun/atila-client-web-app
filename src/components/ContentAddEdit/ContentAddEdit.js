@@ -9,6 +9,17 @@ import {connect} from "react-redux";
 import {slugify} from "../../services/utils";
 import UtilsAPI from "../../services/UtilsAPI";
 import {toastNotify} from "../../models/Utils";
+import Loading from "../Loading";
+
+const defaultContent = {
+    title: '',
+    slug: '',
+    description: '',
+    body: '',
+    essay_source_url: '',
+    header_image_url: '',
+    published: false,
+};
 
 class ContentAddEdit extends React.Component {
 
@@ -16,20 +27,17 @@ class ContentAddEdit extends React.Component {
         super(props);
 
         this.state = {
-            content: {
-                title: '',
-                slug: '',
-                description: '',
-                body: '',
-                essay_source_url: '',
-                header_image_url: '',
-                published: false,
-            },
+            content: defaultContent,
             showPreview: false,
             contentPostError: null,
             contentGetError: null,
             isAddContentMode: false,
-            showContentAddOptions: false
+            showContentAddOptions: false,
+            // CKEditor doesn't get updated when the state changes,
+            // so we hve to set isLoading to true by default.
+            // this way the CkEditor only gets rendered when the data has been loaded
+            // (when content.body has been loaded).
+            isLoading: true,
         }
     }
 
@@ -40,7 +48,7 @@ class ContentAddEdit extends React.Component {
         const { userProfile, match : { path }} = this.props;
 
         if ( path===`/${contentType.toLowerCase()}/add` ) {
-            this.setState({isAddContentMode: true});
+            this.setState({isAddContentMode: true, isLoading: false});
             const content = this.state.content;
 
             if(userProfile) {
@@ -56,7 +64,11 @@ class ContentAddEdit extends React.Component {
     }
 
     loadContent = () => {
-        UtilsAPI.loadContent(this);
+        if (this.props.content) {
+            this.setState({content: this.props.content, isLoading: false});
+        } else {
+            UtilsAPI.loadContent(this);
+        }
     };
 
     updateForm = (event) => {
@@ -91,13 +103,13 @@ class ContentAddEdit extends React.Component {
         if(event){
             event.preventDefault();
         }
-        const { ContentAPI, userProfile, contentType, match : { params : { slug, username }} } = this.props;
+        const { ContentAPI, userProfile, contentType } = this.props;
+        const { content, isAddContentMode } = this.state;
 
         if(!userProfile) {
             toastNotify(`⚠️ Warning, you must be logged in to add ${contentType}s`);
             return;
         }
-        const { content, isAddContentMode } = this.state;
 
         let postResponsePromise = null;
         if (isAddContentMode) {
@@ -105,18 +117,42 @@ class ContentAddEdit extends React.Component {
         }
         else {
             content.user = content.user.id;
-            postResponsePromise = ContentAPI.update(content.id, content);
+            const contentToPatch = {};
+            Object.keys(defaultContent).forEach(defaultContentKey => {
+                contentToPatch[defaultContentKey] = content[defaultContentKey]
+            });
+            postResponsePromise = ContentAPI.patch(content.id, contentToPatch);
         }
         postResponsePromise
             .then(res=> {
                 this.setState({isAddContentMode: false});
-                this.setState({content: res.data});
-                const successMessage = (<p>
+                const updatedContent = res.data;
+                this.setState({content: updatedContent});
+                let { match : { params : { slug, username }} } = this.props;
+
+                if (updatedContent.user) {
+                    username = updatedContent.user.username;
+                }
+                if (updatedContent.slug) {
+                    slug = updatedContent.slug;
+                }
+
+                // When viewing an application, we will use the same url structure as essays
+                let contentTypeForSlug = contentType.toLowerCase();
+                if (contentTypeForSlug === "application") {
+                    contentTypeForSlug = "essay"
+                }
+                const successMessage = (
+                    <>
+                    <p>
                     <span role="img" aria-label="happy face emoji">🙂</span>
                     Successfully saved {' '}
-                    <Link to={`/${contentType.toLowerCase()}/${username}/${slug}`}>
+                    <Link to={`/${contentTypeForSlug}/${username}/${slug}`}>
                         {content.title}
-                </Link></p>);
+                </Link></p>
+                        {!updatedContent.published && <small>Must be published to view</small>}
+                    </>
+                        );
                 toastNotify(successMessage, 'info', {position: 'bottom-right'});
             })
             .catch(err=> {
@@ -130,7 +166,7 @@ class ContentAddEdit extends React.Component {
     render() {
 
         const { contentType, match : { params : { slug, username }}  } = this.props;
-        const { isAddContentMode, contentPostError, showContentAddOptions} = this.state;
+        const { isAddContentMode, contentPostError, showContentAddOptions, isLoading} = this.state;
 
         const elementTitle = isAddContentMode ? `Add ${contentType}` : `Edit ${contentType}`;
 
@@ -138,7 +174,11 @@ class ContentAddEdit extends React.Component {
             title, description, published, header_image_url, body, essay_source_url
         } } = this.state;
 
-        const defaultBody = '<p>Write your story here...</p>';
+        if (!isAddContentMode && isLoading) {
+            return (<div>
+                <Loading isLoading={isLoading}/>
+            </div>);
+        }
 
         return (
             <div className="mt-3">
@@ -171,8 +211,18 @@ class ContentAddEdit extends React.Component {
                         style={{ fontSize: 'small' }}>
                         Unpublished
                     </p>}
+                    {published &&
+                    <p  className="badge badge-primary mx-1"
+                        style={{ fontSize: 'small' }}>
+                        Published
+                    </p>}
                     {showContentAddOptions &&
                     <div className="col-12">
+                        {/*
+                            If there is already a description, we will include a <p> element
+                            that allows the user to see the application.
+                        */}
+                        {description && <p className="text-muted">Description</p>}
                     <textarea placeholder="Description"
                               className="col-12 mb-3 form-control"
                               name="description"
@@ -202,11 +252,8 @@ class ContentAddEdit extends React.Component {
                     }
                     <CKEditor
                         editor={ InlineEditor }
-                        data={body || defaultBody}
-                        onInit={ this.editorInit }
+                        data={body}
                         onChange={ this.editorChange }
-                        onBlur={ this.editorBlur }
-                        onFocus={ this.editorFocus }
                     />
                     {contentPostError &&
                     <pre className="text-danger" style={{ whiteSpace: 'pre-wrap' }}>

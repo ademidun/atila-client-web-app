@@ -44,6 +44,10 @@ class EssaysApi {
 
         return apiCompletionPromise;
     };
+
+    static patch = (id, essay) => {
+        return EssaysApi.update(id, essay, "patch")
+    };
 }
 
 export default EssaysApi;

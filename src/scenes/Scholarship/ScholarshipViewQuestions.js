@@ -2,11 +2,11 @@ import React from 'react'
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
 import {Link, withRouter} from "react-router-dom";
+import FormDynamic from "../../components/Form/FormDynamic";
 import {
     transformProfileQuestionsToApplicationForm,
     transformScholarshipQuestionsToApplicationForm
-} from "../Application/ApplicationDetail";
-import FormDynamic from "../../components/Form/FormDynamic";
+} from "../Application/ApplicationUtils";
 
 class ScholarshipViewQuestions extends React.Component {
     constructor(props) {
