@@ -50,6 +50,41 @@ const teamMembers = [
     link2_type: "Website",
     link2_url: "https://hadihakeem.com/",
   },
+  {
+    first_name: "Eric",
+    last_name: "Wang",
+    position: "Software/Marketing",
+    username: "ericwang451",
+    img_url: "https://i.imgur.com/4JzQWpi.png",
+    description_1:
+        "Eric is currently studying Computer Science at Western University.",
+    link_type: "LinkedIn",
+    link_url: "https://www.linkedin.com/in/eric-wang-1b0b70193/",
+    link2_type: "Website",
+    link2_url: "https://ericwang451.github.io/",
+  },
+  {
+    first_name: "Linda",
+    last_name: "Zhang",
+    position: "Marketing",
+    username: "lindazhang1",
+    img_url: "https://i.imgur.com/gjaPQIe.jpg",
+    description_1:
+        "Linda is currently studying Business Management and Organizational Studies at Western University.",
+    link_type: "LinkedIn",
+    link_url: "https://www.linkedin.com/in/linda-zhang-21a2b9179/",
+  },
+  {
+    first_name: "Reesa",
+    last_name: "Dayani",
+    position: "Marketing",
+    username: "reesadayani",
+    img_url: "https://i.imgur.com/uMcBG2o.jpg",
+    description_1:
+        "Reesa is currently studying Computer Science at Western University.",
+    link_type: "LinkedIn",
+    link_url: "https://www.linkedin.com/in/reesa-dayani-ab7697172/",
+  },
 ];
 
 function TeamMemberCard({ teamMember, showLinkedin = true }) {
@@ -131,7 +166,7 @@ const Team = ({ showArray = null, showLinkedin = true, showSeo = true }) => {
   const seoContent = {
     title: "Atila Team - The people that make Atila awesome",
     description: "Atila's team, the people that make Atila awesome.",
-    image: "https://i.imgur.com/ekfz2sj.png",
+    image: "https://imgur.com/pMr6tlk",
     slug: "/team",
   };
 
