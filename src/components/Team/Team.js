@@ -53,7 +53,7 @@ const teamMembers = [
   {
     first_name: "Eric",
     last_name: "Wang",
-    position: "Marketing",
+    position: "Software/Marketing",
     username: "ericwang451",
     img_url: "https://i.imgur.com/4JzQWpi.png",
     description_1:
