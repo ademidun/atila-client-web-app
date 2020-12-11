@@ -55,7 +55,7 @@ const teamMembers = [
     last_name: "Wang",
     position: "Marketing",
     username: "ericwang451",
-    img_url: "https://media-exp1.licdn.com/dms/image/C5603AQEzj6xm38cJaw/profile-displayphoto-shrink_400_400/0/1604418350192?e=1613001600&v=beta&t=2aK2W8g48JT4k-fy-oensFZVKyOsAjGfEUT73IFBa9Y",
+    img_url: "https://i.imgur.com/4JzQWpi.png",
     description_1:
         "Eric is currently studying Computer Science at Western University.",
     link_type: "LinkedIn",
@@ -67,27 +67,23 @@ const teamMembers = [
     first_name: "Linda",
     last_name: "Zhang",
     position: "Marketing",
-    username: "",
-    img_url: "https://media-exp1.licdn.com/dms/image/C4E03AQFYTWrwzzaY1Q/profile-displayphoto-shrink_400_400/0?e=1613001600&v=beta&t=1d3_MRs0NoxHTXfr4ig1LjdYRdaHzeREA1DIosnef6g",
+    username: "lindazhang1",
+    img_url: "https://i.imgur.com/gjaPQIe.jpg",
     description_1:
         "Linda is currently studying Business Management and Organizational Studies at Western University.",
     link_type: "LinkedIn",
     link_url: "https://www.linkedin.com/in/linda-zhang-21a2b9179/",
-    link2_type: "Website",
-    link2_url: "",
   },
   {
     first_name: "Reesa",
     last_name: "Dayani",
     position: "Marketing",
-    username: "",
-    img_url: "https://media-exp1.licdn.com/dms/image/C4D03AQED8UjIhTLDIg/profile-displayphoto-shrink_400_400/0?e=1613001600&v=beta&t=dZDQ1msLeb0o2Sqzxstm8GXfsOTx5T3oPDhkq92XVBk",
+    username: "reesadayani",
+    img_url: "https://i.imgur.com/uMcBG2o.jpg",
     description_1:
         "Reesa is currently studying Computer Science at Western University.",
     link_type: "LinkedIn",
     link_url: "https://www.linkedin.com/in/reesa-dayani-ab7697172/",
-    link2_type: "Website",
-    link2_url: "",
   },
 ];
 
@@ -170,7 +166,7 @@ const Team = ({ showArray = null, showLinkedin = true, showSeo = true }) => {
   const seoContent = {
     title: "Atila Team - The people that make Atila awesome",
     description: "Atila's team, the people that make Atila awesome.",
-    image: "https://i.imgur.com/aQ6JSXN.png",
+    image: "https://imgur.com/pMr6tlk",
     slug: "/team",
   };
 
