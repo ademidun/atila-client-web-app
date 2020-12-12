@@ -119,7 +119,7 @@ class ScholarshipManage extends React.Component {
         const { scholarship, applications, isLoadingApplications,
             unsubmittedApplications, responseMessage, isModalVisible, applicationTypeToEmail } = this.state;
         const { TextArea } = Input;
-        const confirmText = "Are you sure you want to unsubmit all submitted applications? This action cannot be undone.";
+        // const confirmText = "Are you sure you want to unsubmit all submitted applications? This action cannot be undone.";
 
         if (!userProfile) {
             return (
