@@ -191,21 +191,25 @@ class ScholarshipManage extends React.Component {
                 <br />
                 <br />
 
-                {userProfile.is_atila_admin &&
-                <>
-                    <Popconfirm placement="right"
-                                title={confirmText}
-                                onConfirm={() => this.unSubmitApplications()}
-                                okText="Yes"
-                                cancelText="No">
-                        <Button type="primary" size={"large"} danger>
-                            Un-Submit all Applications
-                        </Button>
-                    </Popconfirm>
-                    <br />
-                    <br />
-                </>
-                }
+                {/*
+                    Todo replace un-submit applications with ability to resubmit:
+                        https://github.com/ademidun/atila-client-web-app/issues/279
+                */}
+                {/*{userProfile.is_atila_admin &&*/}
+                {/*<>*/}
+                {/*    <Popconfirm placement="right"*/}
+                {/*                title={confirmText}*/}
+                {/*                onConfirm={() => this.unSubmitApplications()}*/}
+                {/*                okText="Yes"*/}
+                {/*                cancelText="No">*/}
+                {/*        <Button type="primary" size={"large"} danger>*/}
+                {/*            Un-Submit all Applications*/}
+                {/*        </Button>*/}
+                {/*    </Popconfirm>*/}
+                {/*    <br />*/}
+                {/*    <br />*/}
+                {/*</>*/}
+                {/*}*/}
 
                 {responseMessage &&
                 <Alert
