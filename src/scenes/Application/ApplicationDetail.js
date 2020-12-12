@@ -500,7 +500,7 @@ class ApplicationDetail extends  React.Component{
                        type="number" step={0.01} min={0} max={10}
                        onChange={this.updateApplicationScore}
                        value={applicationScore}/>
-                <p>Your score is automatically saved</p>
+                <p>Your score is automatically usaved</p>
             </div>);
         }
 
