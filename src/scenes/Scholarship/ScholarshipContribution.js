@@ -231,8 +231,8 @@ class ScholarshipContribution extends React.Component {
                         <Button className="float-right col-md-6"
                                 onClick={() => this.changePage(pageNumber+1)}
                                 disabled={invalidInput
-                                || pageNumber === 2 && !contributor.first_name
-                                || pageNumber === 3 && !contributor.email}>
+                                || (pageNumber === 2 && !contributor.first_name)
+                                || (pageNumber === 3 && !contributor.email)}>
                             Next
                         </Button>}
                     </div>
