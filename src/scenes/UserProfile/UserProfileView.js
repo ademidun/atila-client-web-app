@@ -78,12 +78,10 @@ class UserProfileView extends React.Component {
 
         this.setState({showProfilePictureUpload: !showProfilePictureUpload});
 
-        console.log({event})
     };
 
 
     onChangeProfilePicture = (event) => {
-        console.log({event});
         const { loggedInUserProfile, updateLoggedInUserProfile } = this.props;
 
         UserProfileAPI.patch(

@@ -160,7 +160,7 @@ class ScholarshipsAPI {
         const apiCompletionPromise = request({
             method: 'post',
             data: data,
-            url: `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/publish-scholarship/`,
+            url: `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/fund-scholarship/`,
         });
 
         return apiCompletionPromise;

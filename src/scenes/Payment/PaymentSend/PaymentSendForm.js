@@ -1,5 +1,6 @@
 // CheckoutForm.js
 import React from 'react';
+import PropTypes from "prop-types";
 import {CardElement, injectStripe} from 'react-stripe-elements';
 import {Alert, Button, Col, Result, Row} from "antd";
 import {Link, withRouter} from "react-router-dom";
@@ -13,7 +14,6 @@ import {ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT, ATILA_SCHOLARSHIP_FEE} 
 import {formatCurrency, getErrorMessage} from "../../../services/utils";
 import PaymentAPI from "../../../services/PaymentAPI";
 import {ScholarshipDisableEditMessage, ScholarshipPropType, ScholarshipFundingWillPublishMessage} from "../../../models/Scholarship";
-import PropTypes from "prop-types";
 import Environment from "../../../services/Environment";
 
 export const PREMIUM_PRICE_BEFORE_TAX = 9;
@@ -23,10 +23,15 @@ class PaymentSendForm extends React.Component {
     constructor(props) {
         super(props);
 
-        const { scholarship } = props;
+        const { scholarship, contributor } = props;
+        let { contributorFundingAmount } = props;
+
+        if (!contributorFundingAmount) {
+            contributorFundingAmount = scholarship.funding_amount;
+        }
 
         // totalPaymentAmount = scholarship.funding_amount + (Atila 9% fee + 13% tax)
-        const totalPaymentAmount = Number.parseInt(scholarship.funding_amount)  +
+        const totalPaymentAmount = Number.parseInt(contributorFundingAmount)  +
             (ATILA_SCHOLARSHIP_FEE * 1.13 * Number.parseInt(scholarship.funding_amount));
 
         this.state = {
@@ -37,6 +42,8 @@ class PaymentSendForm extends React.Component {
             isResponseErrorMessage: null,
             isPaymentSuccess: scholarship.is_funded,
             totalPaymentAmount,
+            contributor,
+            contributorFundingAmount,
             // Leaving the following message in case it's relevant to an error I might encounter when funding scholarships
             // have to set it here, otherwise it may get set after user subscribes for an account
             // then instead of showing 'Payment successful' it showed 'You already have a premium account'
@@ -69,14 +76,16 @@ class PaymentSendForm extends React.Component {
 
         const { first_name, last_name, email } = userProfile;
         const fullName = `${first_name} ${last_name}`;
-        const { totalPaymentAmount } = this.state;
+        const { totalPaymentAmount, contributor, contributorFundingAmount } = this.state;
 
         this.setState({isResponseLoading: true});
         this.setState({isResponseLoadingMessage: 'Processing Payment'});
         this.setState({isResponseErrorMessage: null});
 
         const paymentData = {
-            scholarship: { funding_amount: totalPaymentAmount, name: scholarship.name, id: scholarship.id }
+            scholarship: { name: scholarship.name, id: scholarship.id },
+            funding_amount: totalPaymentAmount,
+            contributor,
         };
 
         try{
@@ -104,7 +113,9 @@ class PaymentSendForm extends React.Component {
                     // The payment has been processed!
                     if (cardPaymentResult.paymentIntent.status === 'succeeded') {
                         this.setState({isPaymentSuccess: true});
-                        this.fundScholarship({stripe_payment_intent_id: cardPaymentResult.paymentIntent.id})
+
+                        this.fundScholarship({ stripe_payment_intent_id: cardPaymentResult.paymentIntent.id,
+                                                     contributor, funding_amount: contributorFundingAmount})
                     }
                 }
 
@@ -139,7 +150,7 @@ class PaymentSendForm extends React.Component {
 
         const { cardHolderName, isResponseLoading, isResponseLoadingMessage,
             isPaymentSuccess,
-            isResponseErrorMessage, totalPaymentAmount} = this.state;
+            isResponseErrorMessage, totalPaymentAmount, contributorFundingAmount} = this.state;
 
         const isResponseErrorMessageWithContactLink = (<div style={{whiteSpace: "pre-line"}}>
             {isResponseErrorMessage}
@@ -208,7 +219,6 @@ class PaymentSendForm extends React.Component {
                                 />
                                 }
                             </div>
-                            {!isPaymentSuccess &&
                             <form onSubmit={this.handleSubmit}>
                                 <Row gutter={16}>
                                     <Col span={24} className="mb-3">
@@ -227,9 +237,9 @@ class PaymentSendForm extends React.Component {
                                         <CardElement style={{base: {fontSize: '18px'}}} ref={this.cardElementRef} />
 
                                         {["dev", "staging"].includes(Environment.name) &&
-                                            <p className="my-3">
-                                                Test with: 4000001240000000
-                                            </p>
+                                        <p className="my-3">
+                                            Test with: 4000001240000000
+                                        </p>
                                         }
                                     </Col>
                                 </Row>
@@ -263,10 +273,11 @@ class PaymentSendForm extends React.Component {
                                 <ScholarshipDisableEditMessage />
                                 <br />
 
-                            </form>}
+                            </form>
                         </Col>
                         <Col sm={24} md={12}>
-                            <Invoice scholarship={scholarship} />
+                            <Invoice scholarship={scholarship}
+                                     contributorFundingAmount={contributorFundingAmount} />
                         </Col>
                     </Row>
                 </div>
@@ -276,13 +287,23 @@ class PaymentSendForm extends React.Component {
 }
 
 PaymentSendForm.defaultProps = {
-    userProfile: null
+    userProfile: null,
+    contributor: {
+        "is_anonymous": false,
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "user": null,
+    },
+    contributorFundingAmount: null,
 };
 
 PaymentSendForm.propTypes = {
     userProfile: UserProfilePropType,
     scholarship: ScholarshipPropType,
     updateScholarship: PropTypes.func,
+    contributor: PropTypes.shape({}),
+    contributorFundingAmount: PropTypes.number,
 };
 const mapDispatchToProps = {
     updateLoggedInUserProfile

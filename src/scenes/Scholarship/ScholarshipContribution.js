@@ -36,7 +36,7 @@ class ScholarshipContribution extends React.Component {
             last_name: "",
             funding_amount: "",
             email: "",
-            username: "",
+            user: null,
             is_anonymous:false,
         };
 
@@ -86,10 +86,15 @@ class ScholarshipContribution extends React.Component {
 
         let { contributor } = this.state;
         let invalidInput = null;
+        let value = event.target.value;
+
+        if (event.target.name === "funding_amount") {
+            value = Number.parseInt(value)
+        }
 
         contributor = {
             ...contributor,
-            [event.target.name]: event.target.value
+            [event.target.name]: value
         };
         if (contributor && contributor.funding_amount < 50) {
             invalidInput = "Minimum contribution amount is $50.";
@@ -113,6 +118,7 @@ class ScholarshipContribution extends React.Component {
     };
 
     submitScholarshipContributor = (event) => {
+        // TODO implement some logic that should happen after a scholarship has been funded
         console.log({event});
     };
 
@@ -144,6 +150,9 @@ class ScholarshipContribution extends React.Component {
                                name="funding_amount"
                                placeholder="Funding Amount"
                                className="col-12"
+                               type="number"
+                               min="0"
+                               step="1"
                                onChange={this.updateContributorInfo}/>
                     </div>
 
@@ -191,7 +200,10 @@ class ScholarshipContribution extends React.Component {
                     }
                     {pageNumber === 4 &&
                     <div className="my-3">
-                        <PaymentSend scholarship={scholarship} updateScholarship={this.submitScholarshipContributor} />
+                        <PaymentSend scholarship={scholarship}
+                                     updateScholarship={this.submitScholarshipContributor}
+                                     contributorFundingAmount={contributor.funding_amount}
+                                     contributor={contributor}/>
                     </div>
                     }
 
@@ -218,7 +230,9 @@ class ScholarshipContribution extends React.Component {
                         {pageNumber < scholarshipContributionPages.length &&
                         <Button className="float-right col-md-6"
                                 onClick={() => this.changePage(pageNumber+1)}
-                                disabled={invalidInput}>
+                                disabled={invalidInput
+                                || pageNumber === 2 && !contributor.first_name
+                                || pageNumber === 3 && !contributor.email}>
                             Next
                         </Button>}
                     </div>
