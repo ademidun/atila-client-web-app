@@ -34,7 +34,7 @@ class ScholarshipContribution extends React.Component {
         const defaultContributor = {
             first_name: "",
             last_name: "",
-            amount: "",
+            funding_amount: "",
             email: "",
             username: "",
             is_anonymous:false,
@@ -46,7 +46,7 @@ class ScholarshipContribution extends React.Component {
             isLoadingScholarship: true,
             pageNumber: 1,
             contributor: defaultContributor,
-            invalidInput: !defaultContributor.amount,
+            invalidInput: !defaultContributor.funding_amount,
         }
     }
 
@@ -91,7 +91,7 @@ class ScholarshipContribution extends React.Component {
             ...contributor,
             [event.target.name]: event.target.value
         };
-        if (contributor && contributor.amount < 50) {
+        if (contributor && contributor.funding_amount < 50) {
             invalidInput = "Minimum contribution amount is $50.";
         }
 
@@ -139,9 +139,9 @@ class ScholarshipContribution extends React.Component {
                             How much would you like to contribute to {scholarship.name}?
                         </h1>
 
-                        <Input value={contributor.amount}
+                        <Input value={contributor.funding_amount}
                                prefix="$"
-                               name="amount"
+                               name="funding_amount"
                                placeholder="Funding Amount"
                                className="col-12"
                                onChange={this.updateContributorInfo}/>
