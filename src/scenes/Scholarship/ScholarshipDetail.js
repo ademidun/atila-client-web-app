@@ -267,17 +267,21 @@ class ScholarshipDetail extends React.Component {
                             <h1>
                                 {name}{' '}
                                 {scholarship.is_atila_direct_application &&
-                                <AtilaDirectApplicationsPopover
-                                    title="This is a verified Atila Direct Application Scholarship"
-                                    children={<img
-                                        alt="user profile"
-                                        style={{ width:'25px' }}
-                                        className="rounded-circle"
-                                        src={verifiedBadge} />} />}
+                                    <>
+                                        <AtilaDirectApplicationsPopover
+                                                title="This is a verified Atila Direct Application Scholarship"
+                                                children={<img
+                                                alt="user profile"
+                                                style={{ width:'25px' }}
+                                                className="rounded-circle"
+                                                src={verifiedBadge} />} />
+
+                                        <div style={{fontSize: "15px", fontWeight: "normal"}} className="text-center mb-3">
+                                            (Hint: Hover over or click the blue check to learn why this scholarship has a blue check.)
+                                        </div>
+                                        </>
+                                        }
                             </h1>
-                            <div style={{fontSize: "15px", fontWeight: "normal"}} className="text-center mb-3">
-                                (Hint: Hover over or click the blue check to learn why this scholarship has a blue check.)
-                            </div>
 
                             <img
                                 style={{ maxHeight: '300px', width: 'auto'}}
@@ -346,6 +350,15 @@ class ScholarshipDetail extends React.Component {
                                 <br/>
                                 Amount: {fundingString}
                             </p>
+                            {scholarship.is_atila_direct_application  && !isScholarshipDeadlinePassed &&
+                                <div className="mb-3">
+                                    <Button>
+                                        <Link to={`/scholarship/${slug}/contribute`}>
+                                            Contribute
+                                        </Link>
+                                    </Button><br/>
+                                </div>
+                            }
                             {is_not_available &&
                             <Alert
                                 type="error"
