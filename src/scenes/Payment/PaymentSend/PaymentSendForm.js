@@ -45,11 +45,11 @@ class PaymentSendForm extends React.Component {
         this.cardElementRef = React.createRef();
     }
 
-    publishScholarship = (data) => {
+    fundScholarship = (data) => {
         const { scholarship, updateScholarship } = this.props;
         this.setState({isResponseLoading: true});
         ScholarshipsAPI
-            .publishScholarship(scholarship.id, data)
+            .fundScholarship(scholarship.id, data)
             .then(res => {
                 const { scholarship } = res.data;
                 updateScholarship(scholarship)
@@ -104,7 +104,7 @@ class PaymentSendForm extends React.Component {
                     // The payment has been processed!
                     if (cardPaymentResult.paymentIntent.status === 'succeeded') {
                         this.setState({isPaymentSuccess: true});
-                        this.publishScholarship({stripe_payment_intent_id: cardPaymentResult.paymentIntent.id})
+                        this.fundScholarship({stripe_payment_intent_id: cardPaymentResult.paymentIntent.id})
                     }
                 }
 

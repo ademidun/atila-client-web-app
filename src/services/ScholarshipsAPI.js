@@ -155,7 +155,7 @@ class ScholarshipsAPI {
         return apiCompletionPromise;
     };
 
-    static publishScholarship = (id, data) => {
+    static fundScholarship = (id, data) => {
 
         const apiCompletionPromise = request({
             method: 'post',
