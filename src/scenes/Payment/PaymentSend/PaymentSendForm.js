@@ -30,9 +30,9 @@ class PaymentSendForm extends React.Component {
             contributorFundingAmount = scholarship.funding_amount;
         }
 
-        // totalPaymentAmount = scholarship.funding_amount + (Atila 9% fee + 13% tax)
+        // totalPaymentAmount = contributorFundingAmount + (Atila 9% fee + 13% tax)
         const totalPaymentAmount = Number.parseInt(contributorFundingAmount)  +
-            (ATILA_SCHOLARSHIP_FEE * 1.13 * Number.parseInt(scholarship.funding_amount));
+            (ATILA_SCHOLARSHIP_FEE * 1.13 * Number.parseInt(contributorFundingAmount));
 
         this.state = {
             cardHolderName: "",
@@ -40,7 +40,7 @@ class PaymentSendForm extends React.Component {
             isResponseLoading: false,
             isResponseLoadingMessage: "",
             isResponseErrorMessage: null,
-            isPaymentSuccess: scholarship.is_funded,
+            isPaymentSuccess: null,
             totalPaymentAmount,
             contributor,
             contributorFundingAmount,
@@ -172,7 +172,7 @@ class PaymentSendForm extends React.Component {
             )
         }
 
-        let canFundScholarship = scholarship.id && Number.parseInt(scholarship.funding_amount) >= ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT;
+        let canFundScholarship = scholarship.id && Number.parseInt(contributorFundingAmount) >= ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT;
         let canFundScholarshipMessage = `Confirm order (${formatCurrency(totalPaymentAmount)})`;
 
         if (!canFundScholarship) {
@@ -248,7 +248,7 @@ class PaymentSendForm extends React.Component {
                                         type="primary"
                                         size="large"
                                         style={{height: "auto"}}
-                                        disabled={isResponseLoading || !canFundScholarship}
+                                        disabled={isResponseLoading || !canFundScholarship || isPaymentSuccess}
                                         onClick={this.handleSubmit}>
                                     {canFundScholarshipMessage}
                                 </Button>

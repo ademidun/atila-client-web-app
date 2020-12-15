@@ -7,7 +7,6 @@ import Loading from "../../components/Loading";
 import {Button, Input, Steps} from "antd";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import PaymentSend from "../Payment/PaymentSend/PaymentSend";
-import {ScholarshipPropType} from "../../models/Scholarship";
 import {UserProfilePropType} from "../../models/UserProfile";
 
 const { Step } = Steps;
@@ -267,4 +266,4 @@ const mapStateToProps = state => {
     return { userProfile: state.data.user.loggedInUserProfile };
 };
 
-export default connect(mapStateToProps)(ScholarshipContribution);
+export default withRouter(connect(mapStateToProps)(ScholarshipContribution));
