@@ -17,7 +17,7 @@ import ScholarshipDeadlineWithTags from "../../components/ScholarshipDeadlineWit
 import {Alert, Button, message} from 'antd';
 import verifiedBadge from '../../components/assets/verified.png';
 import {AtilaDirectApplicationsPopover} from "../../models/Scholarship";
-import ScholarshipFinalists from "./ScholarshipFinalists";
+import ScholarshipFinalists, {UserProfilesCards} from "./ScholarshipFinalists";
 
 class ScholarshipDetail extends React.Component {
 
@@ -26,6 +26,7 @@ class ScholarshipDetail extends React.Component {
 
         this.state = {
             scholarship: null,
+            contributors: null,
             currentUserScholarshipApplication: null,
             scholarshipUserProfile: null,
             isLoadingScholarship: true,
@@ -71,8 +72,8 @@ class ScholarshipDetail extends React.Component {
         const { match : { params : { slug }}, userProfile, location } = this.props;
         ScholarshipsAPI.getSlug(slug)
             .then(res => {
-                const { scholarship } = res.data;
-                this.setState({ scholarship }, () => {
+                const { scholarship, contributors } = res.data;
+                this.setState({ scholarship, contributors }, () => {
                     if (location && location.hash) {
                         scrollToElement(location.hash);
                     }
@@ -206,7 +207,7 @@ class ScholarshipDetail extends React.Component {
 
         const { isLoadingScholarship, scholarship,
             errorLoadingScholarship, scholarshipUserProfile,
-            pageViews, currentUserScholarshipApplication, isLoadingApplication } = this.state;
+            pageViews, currentUserScholarshipApplication, isLoadingApplication, contributors } = this.state;
         const { userProfile } = this.props;
 
         if (errorLoadingScholarship) {
@@ -352,12 +353,19 @@ class ScholarshipDetail extends React.Component {
                             </p>
                             {scholarship.is_atila_direct_application  && !isScholarshipDeadlinePassed &&
                                 <div className="mb-3">
-                                    <Button>
+                                    <Button type="primary">
                                         <Link to={`/scholarship/${slug}/contribute`}>
                                             Contribute
                                         </Link>
                                     </Button><br/>
                                 </div>
+                            }
+                            {contributors && contributors.length > 0 &&
+                                <div>
+                                    <h3 className="text-center">Contributors</h3>
+                                    <UserProfilesCards userProfiles={contributors} userKey="id" />
+                                </div>
+
                             }
                             {is_not_available &&
                             <Alert

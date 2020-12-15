@@ -60,27 +60,7 @@ class ScholarshipFinalists extends React.Component {
         return (
             <div className={`${className}`}>
                 <h3 className="text-center">{title}</h3>
-                <Row gutter={[{ xs: 8, sm: 16}, 16]}>
-                    {scholarshipFinalistUserProfiles.map(user => {
-                        return (
-                            // Use zoom:0.8 as a temporary workaround so that that ScholarshipFinalists doesn't
-                            // take up too much space.
-                            <Col xs={24} md={12} lg={8} style={{zoom:0.9}} key={user.username}>
-                                <div className="bg-light mb-3 p-1 rounded-pill">
-                                    <Link to={`/profile/${user.username}`} >
-                                        <img
-                                            alt="user profile"
-                                            style={{ height: '50px', maxWidth: 'auto' }}
-                                            className="rounded-circle py-1 pr-1"
-                                            src={user.profile_pic_url} />
-                                        {user.first_name} {user.last_name}
-                                    </Link>
-                                    {user.is_winner && <Tag color="green">Winner</Tag>}
-                                </div>
-                            </Col>)
-                    })}
-
-                </Row>
+                <UserProfilesCards userProfiles={scholarshipFinalistUserProfiles} />
                 <h3 className="text-center">{title}' Essays</h3>
                 <Row gutter={[{ xs: 8, sm: 16}, 16]}>
                     {scholarshipFinalistEssays.map(item => {
@@ -101,6 +81,47 @@ class ScholarshipFinalists extends React.Component {
             </div>
         );
     }
+}
+
+export function UserProfilesCards({userProfiles, userKey="username"}) {
+    return (<Row gutter={[{ xs: 8, sm: 16}, 16]}>
+        {userProfiles.map(user => {
+
+            let userDisplay = (
+                <Link to={`/profile/${user.username}`} >
+                    <img
+                        alt="user profile"
+                        style={{ height: '50px', maxWidth: 'auto' }}
+                        className="rounded-circle py-1 pr-1"
+                        src={user.profile_pic_url} />
+                    {user.first_name} {user.last_name}
+                </Link>);
+
+            if (user.is_anonymous) {
+                userDisplay = (
+                    <div>
+                        <img
+                            alt="user profile"
+                            style={{ height: '50px', maxWidth: 'auto' }}
+                            className="rounded-circle py-1 pr-1"
+                            src={user.profile_pic_url} />
+                        Anonymous
+                    </div>);
+            }
+
+            return (
+                // Use zoom:0.8 as a temporary workaround so that that ScholarshipFinalists doesn't
+                // take up too much space.
+                <Col xs={24} md={12} lg={8} style={{zoom:0.9}} key={user[userKey]}>
+                    <div className="bg-light mb-3 p-1 rounded-pill">
+                        {userDisplay}
+                        {user.is_winner && <Tag color="green">Winner</Tag>}
+                    </div>
+                </Col>)
+        })}
+
+    </Row>)
+
 }
 
 ScholarshipFinalists.defaultProps = {
