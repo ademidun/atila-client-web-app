@@ -1,11 +1,14 @@
 import React from 'react'
 import {Link, withRouter} from "react-router-dom";
+import {connect} from "react-redux";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
 
 import {Button, Input, Steps} from "antd";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import PaymentSend from "../Payment/PaymentSend/PaymentSend";
+import {ScholarshipPropType} from "../../models/Scholarship";
+import {UserProfilePropType} from "../../models/UserProfile";
 
 const { Step } = Steps;
 
@@ -31,6 +34,8 @@ let scholarshipContributionPages = [
 class ScholarshipContribution extends React.Component {
     constructor(props) {
         super(props);
+
+        const { userProfile } = props;
         const defaultContributor = {
             first_name: "",
             last_name: "",
@@ -39,6 +44,15 @@ class ScholarshipContribution extends React.Component {
             user: null,
             is_anonymous:false,
         };
+
+        // pre-fill the contributor information with the logged in user profile details
+        if (userProfile) {
+            Object.keys(defaultContributor).forEach(defaultContributorKey => {
+                if ( userProfile[defaultContributorKey]) {
+                    defaultContributor[defaultContributorKey] = userProfile[defaultContributorKey];
+                }
+            });
+        }
 
         this.state = {
             scholarship: null,
@@ -241,4 +255,16 @@ class ScholarshipContribution extends React.Component {
     }
 }
 
-export default withRouter(ScholarshipContribution);
+ScholarshipContribution.defaultProps = {
+    userProfile: null
+};
+ScholarshipContribution.propTypes = {
+    // redux
+    userProfile: UserProfilePropType
+};
+
+const mapStateToProps = state => {
+    return { userProfile: state.data.user.loggedInUserProfile };
+};
+
+export default connect(mapStateToProps)(ScholarshipContribution);
