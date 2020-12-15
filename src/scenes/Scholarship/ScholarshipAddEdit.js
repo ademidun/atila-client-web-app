@@ -231,7 +231,7 @@ class ScholarshipAddEdit extends React.Component{
         const { match : { params : { slug }} } = this.props;
         ScholarshipsAPI.getSlug(slug)
             .then(res => {
-                const scholarship = ScholarshipsAPI.cleanScholarship(res.data);
+                const scholarship = ScholarshipsAPI.cleanScholarship(res.data.scholarship);
                 if (!scholarship.is_editable) {
                     this.disableScholarshipInputs();
                 }

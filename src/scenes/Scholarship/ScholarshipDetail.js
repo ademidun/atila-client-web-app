@@ -71,7 +71,7 @@ class ScholarshipDetail extends React.Component {
         const { match : { params : { slug }}, userProfile, location } = this.props;
         ScholarshipsAPI.getSlug(slug)
             .then(res => {
-                const scholarship = res.data;
+                const { scholarship } = res.data;
                 this.setState({ scholarship }, () => {
                     if (location && location.hash) {
                         scrollToElement(location.hash);

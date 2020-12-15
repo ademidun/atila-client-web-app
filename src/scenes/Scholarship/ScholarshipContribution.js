@@ -56,7 +56,7 @@ class ScholarshipContribution extends React.Component {
         ScholarshipsAPI
             .getSlug(slug)
             .then(res => {
-                const scholarship = res.data;
+                const { scholarship } = res.data;
                 this.setState({ scholarship });
 
                 // TODO, scholarship serializer should return the userprofile information inside scholarship.owner
