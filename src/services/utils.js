@@ -145,7 +145,10 @@ export function toTitleCase(str) {
     return str;
 }
 
-export function formatCurrency(input) {
+export function formatCurrency(input, convertToInteger=false) {
+    if (convertToInteger) {
+        input = Number.parseInt(input);
+    }
     return input.toLocaleString('en-ca', {style : 'currency', currency: 'CAD'});
 }
 
