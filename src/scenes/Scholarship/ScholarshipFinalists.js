@@ -123,7 +123,8 @@ export function UserProfilesCards({userProfiles, userKey="username"}) {
                 <Col xs={24} md={12} style={{zoom:0.9}} key={user[userKey]}>
                     <div className="bg-light mb-3 p-1 rounded-pill">
                         {userDisplay}
-                        {user.is_winner && <Tag color="green">Winner</Tag>}
+                        {user.is_winner && <Tag color="green">{' '}Winner</Tag>}
+                        {user.is_owner && <Tag color="green">{' '}Creator</Tag>}
                     </div>
                 </Col>)
         })}
