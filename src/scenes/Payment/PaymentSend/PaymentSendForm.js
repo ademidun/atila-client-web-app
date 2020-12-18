@@ -141,12 +141,7 @@ class PaymentSendForm extends React.Component {
     };
 
     render() {
-        const { userProfile, scholarship } = this.props;
-        if (!userProfile) {
-            return (<h3>
-                You do not have permission to access this page.
-            </h3>)
-        }
+        const { scholarship } = this.props;
 
         const { cardHolderName, isResponseLoading, isResponseLoadingMessage,
             isPaymentSuccess,
