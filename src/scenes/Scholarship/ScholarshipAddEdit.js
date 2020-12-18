@@ -597,7 +597,7 @@ class ScholarshipAddEdit extends React.Component{
                         </div>}
                         {pageNumber === 4 &&
                         <div className="my-3">
-                            <PaymentSend scholarship={scholarship} updateScholarship={this.updateScholarship} />
+                            <PaymentSend scholarship={scholarship} updateScholarship={this.updateScholarship} contributor={userProfile} />
                         </div>
                         }
                         <div className="my-2" style={{clear: 'both'}}>

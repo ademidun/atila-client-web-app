@@ -25,6 +25,12 @@ class PaymentSendForm extends React.Component {
 
         const { scholarship, contributor } = props;
         let { contributorFundingAmount } = props;
+        let cardHolderName = "";
+
+        if (contributor && contributor.first_name && contributor.last_name) {
+            cardHolderName = `${contributor.first_name} ${contributor.last_name}`;
+        }
+
 
         if (!contributorFundingAmount) {
             contributorFundingAmount = scholarship.funding_amount;
@@ -35,7 +41,7 @@ class PaymentSendForm extends React.Component {
             (ATILA_SCHOLARSHIP_FEE * 1.13 * Number.parseInt(contributorFundingAmount));
 
         this.state = {
-            cardHolderName: "",
+            cardHolderName,
             addressCountry: "",
             isResponseLoading: false,
             isResponseLoadingMessage: "",
@@ -72,11 +78,10 @@ class PaymentSendForm extends React.Component {
 
     handleSubmit = async (ev) => {
         ev.preventDefault();
-        const { stripe, userProfile, scholarship } = this.props;
+        const { stripe, scholarship } = this.props;
 
-        const { first_name, last_name, email } = userProfile;
-        const fullName = `${first_name} ${last_name}`;
-        const { totalPaymentAmount, contributor, contributorFundingAmount } = this.state;
+        const { totalPaymentAmount, contributor, contributorFundingAmount, cardHolderName } = this.state;
+        const { email } = contributor;
 
         this.setState({isResponseLoading: true});
         this.setState({isResponseLoadingMessage: 'Processing Payment'});
@@ -95,7 +100,7 @@ class PaymentSendForm extends React.Component {
                     payment_method: {
                         card: this.cardElementRef.current._element,
                         billing_details: {
-                            name: fullName,
+                            name: cardHolderName,
                             email: email,
                         },
                     },
@@ -145,7 +150,7 @@ class PaymentSendForm extends React.Component {
 
         const { cardHolderName, isResponseLoading, isResponseLoadingMessage,
             isPaymentSuccess,
-            isResponseErrorMessage, totalPaymentAmount, contributorFundingAmount} = this.state;
+            isResponseErrorMessage, totalPaymentAmount, contributorFundingAmount, contributor} = this.state;
 
         const isResponseErrorMessageWithContactLink = (<div style={{whiteSpace: "pre-line"}}>
             {isResponseErrorMessage}
@@ -272,7 +277,9 @@ class PaymentSendForm extends React.Component {
                         </Col>
                         <Col sm={24} md={12}>
                             <Invoice scholarship={scholarship}
-                                     contributorFundingAmount={contributorFundingAmount} />
+                                     contributorFundingAmount={contributorFundingAmount}
+                                     cardHolderName={cardHolderName}
+                                     contributor={contributor}/>
                         </Col>
                     </Row>
                 </div>

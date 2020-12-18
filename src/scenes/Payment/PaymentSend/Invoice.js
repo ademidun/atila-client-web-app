@@ -10,9 +10,9 @@ import './Invoice.scss'
 
 // source: https://github.com/sparksuite/simple-html-invoice-template
 const logoImageData = "https://firebasestorage.googleapis.com/v0/b/atila-7.appspot.com/o/public%2Fatila-logo-right-way-circle-transparent.png?alt=media&token=c7b77a1a-9563-41ef-90e9-57025a7dbd87";
-function Invoice({ userProfile, scholarship, contributorFundingAmount }) {
+function Invoice({ contributor, scholarship, contributorFundingAmount, cardHolderName }) {
 
-    const { first_name, last_name, email } = userProfile;
+    const { email } = contributor;
 
     const fundingAmount = Number.parseInt(contributorFundingAmount);
     const atilaFee = contributorFundingAmount * ATILA_SCHOLARSHIP_FEE;
@@ -52,7 +52,7 @@ function Invoice({ userProfile, scholarship, contributorFundingAmount }) {
                             <tbody>
                             <tr>
                                 <td>
-                                    {first_name} {last_name}<br />
+                                    {cardHolderName}<br />
                                     {email}
                                 </td>
                             </tr>
@@ -119,11 +119,13 @@ function Invoice({ userProfile, scholarship, contributorFundingAmount }) {
 }
 
 Invoice.defaultProps = {
-    userProfile: null
+    contributor: null,
 };
 Invoice.propTypes = {
     scholarship: ScholarshipPropType,
     contributorFundingAmount: PropTypes.number,
+    contributor: PropTypes.shape({}),
+    cardHolderName: PropTypes.string,
     // redux
     userProfile: UserProfilePropType
 };
