@@ -8,6 +8,7 @@ import {Button, Input, Steps} from "antd";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import PaymentSend from "../Payment/PaymentSend/PaymentSend";
 import {UserProfilePropType} from "../../models/UserProfile";
+import Register from "../../components/Register";
 
 const { Step } = Steps;
 
@@ -60,6 +61,7 @@ class ScholarshipContribution extends React.Component {
             pageNumber: 1,
             contributor: defaultContributor,
             invalidInput: !defaultContributor.funding_amount,
+            showRegistrationForm: true,
         }
     }
 
@@ -135,8 +137,16 @@ class ScholarshipContribution extends React.Component {
         console.log({event});
     };
 
+    toggleShowRegistrationForm = () => {
+        const { showRegistrationForm } = this.state;
+
+        this.setState({showRegistrationForm: !showRegistrationForm});
+    };
+
     render () {
-        const { isLoadingScholarship, scholarship, pageNumber, contributor,scholarshipOwner, invalidInput } = this.state;
+        const { isLoadingScholarship, scholarship, pageNumber,
+            contributor, scholarshipOwner, invalidInput, showRegistrationForm } = this.state;
+        const { userProfile } = this.props;
 
         const scholarshipSteps = (<Steps current={pageNumber-1} onChange={(current) => this.changePage(current+1)}>
             { scholarshipContributionPages.map(item => (
@@ -211,8 +221,21 @@ class ScholarshipContribution extends React.Component {
                                onChange={this.updateContributorInfo}/>
                     </div>
                     }
-                    {pageNumber === 4 &&
+                    {pageNumber >= 4 &&
                     <div className="my-3">
+                        {pageNumber === 5 && !userProfile &&
+                            <div className="text-center">
+                                <h3>Optional: Create an Account</h3> <br/>
+                                <Button onClick={this.toggleShowRegistrationForm}>
+                                    {showRegistrationForm ? 'Hide ': 'Show '} Registration Form
+                                </Button>
+                                {showRegistrationForm &&
+                                    <Register location={this.props.location}
+                                              userProfile={contributor}
+                                              disableRedirect={true} />
+                                }
+                            </div>
+                        }
                         <PaymentSend scholarship={scholarship}
                                      updateScholarship={this.submitScholarshipContributor}
                                      contributorFundingAmount={contributor.funding_amount}
@@ -229,26 +252,26 @@ class ScholarshipContribution extends React.Component {
                     }
                 </div>
 
-                    <div className="row">
-                        {pageNumber > 1 &&
-                        <Button className="float-left col-md-6"
-                                onClick={() => this.changePage(pageNumber-1)}>Back</Button>}
-                        {pageNumber === 1 &&
-                        <Button className="float-left col-md-6">
-                            <Link to={`/scholarship/${scholarship.slug}`}>
-                                Back
-                            </Link>
-                        </Button>}
+                <div className="row">
+                    {pageNumber > 1 &&
+                    <Button className="float-left col-md-6"
+                            onClick={() => this.changePage(pageNumber-1)}>Back</Button>}
+                    {pageNumber === 1 &&
+                    <Button className="float-left col-md-6">
+                        <Link to={`/scholarship/${scholarship.slug}`}>
+                            Back
+                        </Link>
+                    </Button>}
 
-                        {pageNumber < scholarshipContributionPages.length &&
-                        <Button className="float-right col-md-6"
-                                onClick={() => this.changePage(pageNumber+1)}
-                                disabled={invalidInput
-                                || (pageNumber === 2 && !contributor.first_name)
-                                || (pageNumber === 3 && !contributor.email)}>
-                            Next
-                        </Button>}
-                    </div>
+                    {pageNumber < scholarshipContributionPages.length &&
+                    <Button className="float-right col-md-6"
+                            onClick={() => this.changePage(pageNumber+1)}
+                            disabled={invalidInput
+                            || (pageNumber === 2 && !contributor.first_name)
+                            || (pageNumber === 3 && !contributor.email)}>
+                        Next
+                    </Button>}
+                </div>
             </div>
         )
     }
