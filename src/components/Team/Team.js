@@ -162,7 +162,7 @@ TeamMemberCard.propTypes = {
   teamMember: PropTypes.shape({}),
 };
 
-const Team = ({ showArray = null, showLinkedin = true, showSeo = true }) => {
+const Team = ({ showArray = null, showLinkedin = true, showSeo = true, showAbout=true }) => {
   const seoContent = {
     title: "Atila Team - The people that make Atila awesome",
     description: "Atila's team, the people that make Atila awesome.",
@@ -238,7 +238,8 @@ const Team = ({ showArray = null, showLinkedin = true, showSeo = true }) => {
             Or message us on any of our social media platforms, found at the bottom of this page.
           </Col>
         </Row>
-        <About hideTeam={true} />
+        { showAbout && <About showTeam={false} />}
+
       </div>
     </React.Fragment>
   );
