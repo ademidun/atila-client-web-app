@@ -24,6 +24,7 @@ class PaymentSendForm extends React.Component {
         super(props);
 
         const { scholarship, contributor, userProfile } = props;
+        const { location } = props;
         let { contributorFundingAmount } = props;
         let cardHolderName = "";
         let isScholarshipOwner = false;
@@ -35,6 +36,8 @@ class PaymentSendForm extends React.Component {
         if (contributor && contributor.first_name && contributor.last_name) {
             cardHolderName = `${contributor.first_name} ${contributor.last_name}`;
         }
+
+        let isScholarshipEditMode = location.pathname.includes('/scholarship/edit/') || location.pathname === "/scholarship/add" || location.pathname === "/scholarship/add/";
 
 
         if (!contributorFundingAmount) {
@@ -51,7 +54,8 @@ class PaymentSendForm extends React.Component {
             isResponseLoading: false,
             isResponseLoadingMessage: "",
             isResponseErrorMessage: null,
-            isPaymentSuccess: null,
+            isPaymentSuccess: isScholarshipEditMode && scholarship.is_funded,
+            isScholarshipEditMode,
             totalPaymentAmount,
             contributor,
             contributorFundingAmount,

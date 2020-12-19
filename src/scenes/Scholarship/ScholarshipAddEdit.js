@@ -335,6 +335,7 @@ class ScholarshipAddEdit extends React.Component{
 
     updateForm = (event) => {
         let value = event.target.value;
+        let eventName = event.target.name;
 
         if (event.target.type==='checkbox'){
             value = event.target.checked
@@ -344,7 +345,7 @@ class ScholarshipAddEdit extends React.Component{
         }
 
 
-        if (event.target.name==='location') {
+        if (eventName==='location') {
             const { locationData } = this.state;
             const newLocation = transformLocation(event.target.value);
 
@@ -361,21 +362,26 @@ class ScholarshipAddEdit extends React.Component{
             return;
 
         }
+
+        if (eventName === "funding_amount") {
+            value = Number.parseInt(value)
+        }
+
         let { scholarship, criteriaInfoInitialLoad } = this.state;
 
-        if (event.target.name.includes('.')) {
-            scholarship = nestedFieldUpdate(scholarship, event.target.name, value);
+        if (eventName.includes('.')) {
+            scholarship = nestedFieldUpdate(scholarship, eventName, value);
         }
         else {
             const scholarship = this.state.scholarship;
 
-            if ( Array.isArray(scholarship[event.target.name]) && !Array.isArray(value) ) {
-                scholarship[event.target.name].push(value);
+            if ( Array.isArray(scholarship[eventName]) && !Array.isArray(value) ) {
+                scholarship[eventName].push(value);
             } else {
-                scholarship[event.target.name] =value;
+                scholarship[eventName] = value;
             }
 
-            if(event.target.name==='name') {
+            if(eventName==='name') {
                 scholarship.slug = slugify(event.target.value);
             }
         }
@@ -384,7 +390,7 @@ class ScholarshipAddEdit extends React.Component{
          * See declaration of criteriaInfoInitialLoad in ScholarshipAddEdit.constructor()
          * to see why we need the following code snippet.
          */
-        if(event.target.name === "criteria_info" && criteriaInfoInitialLoad) {
+        if(eventName === "criteria_info" && criteriaInfoInitialLoad) {
             this.setState({criteriaInfoInitialLoad: false})
         } else {
             this.updateScholarship(scholarship);
@@ -611,7 +617,10 @@ class ScholarshipAddEdit extends React.Component{
                         </div>}
                         {pageNumber === 4 &&
                         <div className="my-3">
-                            <PaymentSend scholarship={scholarship} updateScholarship={this.updateScholarship} contributor={contributor} />
+                            <PaymentSend scholarship={scholarship}
+                                         updateScholarship={this.updateScholarship}
+                                         contributor={contributor}
+                                         contributorFundingAmount={Number.parseInt(scholarship.funding_amount)} />
                         </div>
                         }
                         <div className="my-2" style={{clear: 'both'}}>
