@@ -23,9 +23,14 @@ class PaymentSendForm extends React.Component {
     constructor(props) {
         super(props);
 
-        const { scholarship, contributor } = props;
+        const { scholarship, contributor, userProfile } = props;
         let { contributorFundingAmount } = props;
         let cardHolderName = "";
+        let isScholarshipOwner = false;
+
+        if (userProfile) {
+            isScholarshipOwner = scholarship.owner === userProfile.user;
+        }
 
         if (contributor && contributor.first_name && contributor.last_name) {
             cardHolderName = `${contributor.first_name} ${contributor.last_name}`;
@@ -50,6 +55,7 @@ class PaymentSendForm extends React.Component {
             totalPaymentAmount,
             contributor,
             contributorFundingAmount,
+            isScholarshipOwner
             // Leaving the following message in case it's relevant to an error I might encounter when funding scholarships
             // have to set it here, otherwise it may get set after user subscribes for an account
             // then instead of showing 'Payment successful' it showed 'You already have a premium account'
@@ -149,7 +155,7 @@ class PaymentSendForm extends React.Component {
         const { scholarship } = this.props;
 
         const { cardHolderName, isResponseLoading, isResponseLoadingMessage,
-            isPaymentSuccess,
+            isPaymentSuccess, isScholarshipOwner,
             isResponseErrorMessage, totalPaymentAmount, contributorFundingAmount, contributor} = this.state;
 
         const isResponseErrorMessageWithContactLink = (<div style={{whiteSpace: "pre-line"}}>
@@ -188,9 +194,9 @@ class PaymentSendForm extends React.Component {
         }
 
         const isPaymentSuccessText = (<div>
-            Payment was successful. See your live scholarship at: <br/>
+            Payment was successful. See the live scholarship at: <br/>
             <Link to={`/scholarship/${scholarship.slug}`} >{scholarship.name}</Link> <br/>
-            Check your email inbox for your receipt.
+            Check your email for your receipt.
         </div>);
 
         return (
@@ -203,22 +209,17 @@ class PaymentSendForm extends React.Component {
                                 {isPaymentSuccess &&
                                 <Result
                                     status="success"
-                                    title="Your Scholarship has been funded 🙂"
+                                    title="Scholarship Contribution was Successful 🙂"
                                     subTitle={isPaymentSuccessText}
                                     extra={[
-                                        <p key="next-steps">
-                                            Next Steps:
-                                        </p>,
                                         <Link to={`/scholarship/${scholarship.slug}`} key="view">
                                             View Scholarship
-                                        </Link>,
-                                        <Link to={`/scholarship/${scholarship.id}/manage`} key="manage">
-                                            Manage Applications
                                         </Link>,
                                     ]}
                                 />
                                 }
                             </div>
+                            {!isPaymentSuccess &&
                             <form onSubmit={this.handleSubmit}>
                                 <Row gutter={16}>
                                     <Col span={24} className="mb-3">
@@ -267,13 +268,17 @@ class PaymentSendForm extends React.Component {
                                     className="mb-3"
                                 />
                                 }
-
-                                <ScholarshipFundingWillPublishMessage />
-                                <br />
-                                <ScholarshipDisableEditMessage />
-                                <br />
+                                {isScholarshipOwner &&
+                                    <>
+                                        <ScholarshipFundingWillPublishMessage />
+                                        <br />
+                                        <ScholarshipDisableEditMessage />
+                                        <br />
+                                    </>
+                                }
 
                             </form>
+                            }
                         </Col>
                         <Col sm={24} md={12}>
                             <Invoice scholarship={scholarship}

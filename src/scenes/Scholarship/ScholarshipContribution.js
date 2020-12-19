@@ -100,16 +100,27 @@ class ScholarshipContribution extends React.Component {
         }
 
         let { contributor } = this.state;
+        let { is_anonymous } = contributor;
         let invalidInput = null;
         let value = event.target.value;
-
-        if (event.target.name === "funding_amount") {
+        let eventName = event.target.name;
+        if (event.target.type==='checkbox'){
+            value = event.target.checked
+        }
+        if (eventName === "funding_amount") {
             value = Number.parseInt(value)
         }
+        // If the user types a first name or last name then that implies they are not anonymous.
+        if (eventName === "first_name" || eventName === "last_name") {
+            is_anonymous = !!value;
+        }
+
+        console.log({is_anonymous});
 
         contributor = {
             ...contributor,
-            [event.target.name]: value
+            is_anonymous,
+            [eventName]: value
         };
         if (contributor && contributor.funding_amount < 50) {
             invalidInput = "Minimum contribution amount is $50.";
@@ -159,7 +170,7 @@ class ScholarshipContribution extends React.Component {
         }
 
         return (
-            <div className="content-detail container mt-5">
+            <div className="container mt-5">
                 {scholarshipSteps}
                 <div className="row my-3">
                     {pageNumber === 1 &&
@@ -222,11 +233,20 @@ class ScholarshipContribution extends React.Component {
                     </div>
                     }
                     {pageNumber >= 4 &&
-                    <div className="my-3">
+                    <div className="col-12">
+                        {pageNumber === 4 &&
+                        <h1>
+                            Enter Payment Details
+                        </h1>
+                        }
                         {pageNumber === 5 && !userProfile &&
-                            <div className="text-center">
-                                <h3>Optional: Create an Account</h3> <br/>
-                                <Button onClick={this.toggleShowRegistrationForm}>
+                            <div className="col-12 text-center mb-3">
+                                <h1>Optional: Create an Account</h1> <br/>
+                                <p className="text-muted">
+                                    Creating an account will allow you to view all your contributions
+                                    on Atila and request being added as a reviewer to applications for this scholarship.
+                                </p>
+                                <Button onClick={this.toggleShowRegistrationForm} type="link">
                                     {showRegistrationForm ? 'Hide ': 'Show '} Registration Form
                                 </Button>
                                 {showRegistrationForm &&
