@@ -9,6 +9,7 @@ import UserProfileAPI from "../../services/UserProfileAPI";
 import PaymentSend from "../Payment/PaymentSend/PaymentSend";
 import {UserProfilePropType} from "../../models/UserProfile";
 import Register from "../../components/Register";
+import FileInput from "../../components/Form/FileInput";
 
 const { Step } = Steps;
 
@@ -112,10 +113,8 @@ class ScholarshipContribution extends React.Component {
         }
         // If the user types a first name or last name then that implies they are not anonymous.
         if (eventName === "first_name" || eventName === "last_name") {
-            is_anonymous = !!value;
+            is_anonymous = !value;
         }
-
-        console.log({is_anonymous});
 
         contributor = {
             ...contributor,
@@ -209,6 +208,18 @@ class ScholarshipContribution extends React.Component {
                                placeholder="Last name"
                                className="col-12"
                                onChange={this.updateContributorInfo}/>
+                               <hr/>
+
+                           <h3>Optional: Add a Picture of yourself to go with your donation</h3>
+                            <FileInput title={"Profile Picture"}
+                                       type={"image"}
+                                       keyName={"profile_pic_url"}
+                                       filePath={`user-profile-pictures-contributors`}
+                                       onChangeHandler={this.updateContributorInfo} />
+                            {contributor.profile_pic_url && <img src={contributor.profile_pic_url}
+                                                                 alt={contributor.first_name}
+                                                                 width="250"
+                                                                 className="card center-block my-3"/> }
 
                         <Button className="float-right col-md-6" type="link"
                                 onClick={() => {

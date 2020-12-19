@@ -105,7 +105,7 @@ export function UserProfilesCards({userProfiles, userKey="username"}) {
                     {user.first_name} {user.last_name}{' '}{fundingAmount}
                 </Link>);
 
-            if (user.is_anonymous) {
+            if (user.is_anonymous || !user.username) {
                 userDisplay = (
                     <div>
                         <img
@@ -113,7 +113,7 @@ export function UserProfilesCards({userProfiles, userKey="username"}) {
                             style={{ height: '50px', maxWidth: 'auto' }}
                             className="rounded-circle py-1 pr-1"
                             src={user.profile_pic_url} />
-                        Anonymous{' '}{fundingAmount}
+                        {user.is_anonymous ? "Anonymous" : `${user.first_name} ${user.last_name}`}{' '}{fundingAmount}
                     </div>);
             }
 
