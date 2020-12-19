@@ -131,6 +131,17 @@ export let DEFAULT_SCHOLARSHIP = {
     language: [],
 };
 
+export let DEFAULT_SCHOLARSHIP_CONTRIBUTOR = {
+    first_name: "",
+    last_name: "",
+    funding_amount: "",
+    email: "",
+    user: null,
+    is_anonymous:false,
+    username: null,
+    profile_pic_url: null,
+};
+
 const atilaDirectApplicationsPopoverContent = (
     <div>
         These types of scholarships allows sponsors to start and fund scholarships

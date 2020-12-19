@@ -10,7 +10,7 @@ import {MAJORS_LIST, SCHOOLS_LIST} from "../../models/ConstantsForm";
 import {scholarshipUserProfileSharedFormConfigs, toastNotify} from "../../models/Utils";
 import {
     AtilaDirectApplicationsPopover,
-    DEFAULT_SCHOLARSHIP, ScholarshipDisableEditMessage
+    DEFAULT_SCHOLARSHIP, DEFAULT_SCHOLARSHIP_CONTRIBUTOR, ScholarshipDisableEditMessage
 } from "../../models/Scholarship";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -171,6 +171,20 @@ class ScholarshipAddEdit extends React.Component{
     constructor(props) {
         super(props);
 
+        const { userProfile } = props;
+
+        let contributor = DEFAULT_SCHOLARSHIP_CONTRIBUTOR;
+
+        if (userProfile) {
+            Object.keys(contributor).forEach(contributorKey => {
+
+                if (userProfile[contributorKey]) {
+                    contributor[contributorKey] = userProfile[contributorKey]
+                }
+
+            });
+        }
+
         this.state = {
             scholarship: Object.assign({}, DEFAULT_SCHOLARSHIP),
             isAddScholarshipMode: false,
@@ -186,6 +200,7 @@ class ScholarshipAddEdit extends React.Component{
              * run auto-save on the initial load.
              */
             criteriaInfoInitialLoad: true,
+            contributor,
         };
     }
 
@@ -298,9 +313,8 @@ class ScholarshipAddEdit extends React.Component{
     /**
      * If the scholarship is a direct application and has been published, scholarship.is_editable should be false.
      * Therefore deadline, eligibility and specific questions should be disabled.
-     * @param scholarship
      */
-    disableScholarshipInputs = (scholarship) => {
+    disableScholarshipInputs = () => {
         /**
          * Disable inputs after a brief timeout to ensure that elements have loaded before jquery adds the disabled prop.
          */
@@ -416,7 +430,7 @@ class ScholarshipAddEdit extends React.Component{
             toastNotify(`⚠️ Warning, you must be logged in to add a scholarship`);
             return;
         }
-        let postResponsePromise = null;
+        let postResponsePromise;
 
         if(isAddScholarshipMode) {
             postResponsePromise = ScholarshipsAPI.create(scholarship,locationData)
@@ -466,7 +480,7 @@ class ScholarshipAddEdit extends React.Component{
     render() {
 
         const { scholarship, isAddScholarshipMode, scholarshipPostError,
-            isLoadingScholarship, pageNumber, locationData, errorLoadingScholarship } = this.state;
+            isLoadingScholarship, pageNumber, locationData, errorLoadingScholarship, contributor } = this.state;
         const { userProfile } = this.props;
 
         if (errorLoadingScholarship) {
@@ -597,7 +611,7 @@ class ScholarshipAddEdit extends React.Component{
                         </div>}
                         {pageNumber === 4 &&
                         <div className="my-3">
-                            <PaymentSend scholarship={scholarship} updateScholarship={this.updateScholarship} contributor={userProfile} />
+                            <PaymentSend scholarship={scholarship} updateScholarship={this.updateScholarship} contributor={contributor} />
                         </div>
                         }
                         <div className="my-2" style={{clear: 'both'}}>

@@ -10,6 +10,7 @@ import PaymentSend from "../Payment/PaymentSend/PaymentSend";
 import {UserProfilePropType} from "../../models/UserProfile";
 import Register from "../../components/Register";
 import FileInput from "../../components/Form/FileInput";
+import {DEFAULT_SCHOLARSHIP_CONTRIBUTOR} from "../../models/Scholarship";
 
 const { Step } = Steps;
 
@@ -37,16 +38,18 @@ class ScholarshipContribution extends React.Component {
         super(props);
 
         const { userProfile } = props;
-        const defaultContributor = {
-            first_name: "",
-            last_name: "",
-            funding_amount: "",
-            email: "",
-            user: null,
-            is_anonymous:false,
-        };
+        /**
+         * Usually you might use something like: Object.assign({}, DEFAULT_SCHOLARSHIP_CONTRIBUTOR)
+         * to avoid contributor values persisting between different re-renderings
+         * as was done in DEFAULT_SCHOLARSHIP (see: ScholarshipAddEdit.js).
+         * But in DEFAULT_SCHOLARSHIP the problem came when we wanted to add different users, in this use case
+         * it's more likely that a user who contributed towards one scholarship, is likely to be the same user
+         * that contributes to another or the same scholarship. So persisting state values in this scenario,
+         * is actually an advantage.
+         */
+        const defaultContributor = DEFAULT_SCHOLARSHIP_CONTRIBUTOR;
 
-        // pre-fill the contributor information with the logged in user profile details
+        // Pre-fill the contributor information with the logged-in user profile details.
         if (userProfile) {
             Object.keys(defaultContributor).forEach(defaultContributorKey => {
                 if ( userProfile[defaultContributorKey]) {
