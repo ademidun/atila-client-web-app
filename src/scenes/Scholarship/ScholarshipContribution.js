@@ -263,6 +263,7 @@ class ScholarshipContribution extends React.Component {
                                     <div className="col-12">
                                         <img src={contributor.funding_confirmation_image_url}
                                              style={{width: "100%"}} alt={`Scholarship Contribution confirmation for ${contributor.first_name}`} />
+                                             <p>Image may take a few seconds to display, please wait...</p>
                                     </div>
                                     <div className="col-12 text-center">
                                         <a target="_blank" rel="noopener noreferrer" href={contributor.funding_confirmation_image_url}>
