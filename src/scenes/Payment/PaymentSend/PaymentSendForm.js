@@ -10,7 +10,11 @@ import {updateLoggedInUserProfile} from "../../../redux/actions/user";
 import Loading from "../../../components/Loading";
 import Invoice from "./Invoice";
 import ScholarshipsAPI from "../../../services/ScholarshipsAPI";
-import {ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT, ATILA_SCHOLARSHIP_FEE} from "../../../models/Constants";
+import {
+    ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP,
+    ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_START_SCHOLARSHIP,
+    ATILA_SCHOLARSHIP_FEE
+} from "../../../models/Constants";
 import {formatCurrency, getErrorMessage} from "../../../services/utils";
 import PaymentAPI from "../../../services/PaymentAPI";
 import {ScholarshipDisableEditMessage, ScholarshipPropType, ScholarshipFundingWillPublishMessage} from "../../../models/Scholarship";
@@ -39,6 +43,12 @@ class PaymentSendForm extends React.Component {
 
         let isScholarshipEditMode = location.pathname.includes('/scholarship/edit/') || location.pathname === "/scholarship/add" || location.pathname === "/scholarship/add/";
 
+        let minimumFundingAmount = ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP;
+
+        if (isScholarshipEditMode) {
+            minimumFundingAmount = ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_START_SCHOLARSHIP;
+        }
+
 
         if (!contributorFundingAmount) {
             contributorFundingAmount = scholarship.funding_amount;
@@ -59,10 +69,8 @@ class PaymentSendForm extends React.Component {
             totalPaymentAmount,
             contributor,
             contributorFundingAmount,
-            isScholarshipOwner
-            // Leaving the following message in case it's relevant to an error I might encounter when funding scholarships
-            // have to set it here, otherwise it may get set after user subscribes for an account
-            // then instead of showing 'Payment successful' it showed 'You already have a premium account'
+            isScholarshipOwner,
+            minimumFundingAmount,
         };
 
         this.cardElementRef = React.createRef();
@@ -163,7 +171,8 @@ class PaymentSendForm extends React.Component {
 
         const { cardHolderName, isResponseLoading, isResponseLoadingMessage,
             isPaymentSuccess, isScholarshipOwner,
-            isResponseErrorMessage, totalPaymentAmount, contributorFundingAmount, contributor} = this.state;
+            isResponseErrorMessage, totalPaymentAmount, contributorFundingAmount,
+            contributor, minimumFundingAmount} = this.state;
 
         const isResponseErrorMessageWithContactLink = (<div style={{whiteSpace: "pre-line"}}>
             {isResponseErrorMessage}
@@ -185,7 +194,7 @@ class PaymentSendForm extends React.Component {
             )
         }
 
-        let canFundScholarship = scholarship.id && Number.parseInt(contributorFundingAmount) >= ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT;
+        let canFundScholarship = scholarship.id && Number.parseInt(contributorFundingAmount) >= minimumFundingAmount;
         let canFundScholarshipMessage = `Confirm order (${formatCurrency(totalPaymentAmount)})`;
 
         if (!canFundScholarship) {
@@ -195,7 +204,7 @@ class PaymentSendForm extends React.Component {
                 canFundScholarshipMessage = (<React.Fragment>
                     Scholarship funding amount <br/>
                     must be greater than or equal to
-                    ${ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT}
+                    ${minimumFundingAmount}
                 </React.Fragment>);
             }
         }

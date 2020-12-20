@@ -2,7 +2,11 @@ import React from "react";
 import './Pricing.scss';
 import {Link} from "react-router-dom";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
-import {ATILA_SCHOLARSHIP_FEE} from "../../models/Constants";
+import {
+    ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP,
+    ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_START_SCHOLARSHIP,
+    ATILA_SCHOLARSHIP_FEE
+} from "../../models/Constants";
 
 
 
@@ -155,8 +159,10 @@ export function PricingExample() {
                         </td>
                         <td>
                             <p>
-                                {/*TODO change to use variable ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT*/}
-                                Sponsor picks the value ($50 minimum)
+                                Sponsor picks the value: <br/>
+                                ${ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_START_SCHOLARSHIP} minimum to start
+                                a scholarship or ${ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP}
+                                {' '}minimum to contribute to an existing scholarship.
                             </p>
                         </td>
                     </tr>

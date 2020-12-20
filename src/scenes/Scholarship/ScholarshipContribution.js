@@ -12,6 +12,7 @@ import Register from "../../components/Register";
 import FileInput from "../../components/Form/FileInput";
 import {DEFAULT_SCHOLARSHIP_CONTRIBUTOR} from "../../models/Scholarship";
 import ScholarshipContributionProfilePictureChooser from "./ScholarshipContributionProfilePictureChooser";
+import {ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP} from "../../models/Constants";
 
 const { Step } = Steps;
 
@@ -125,8 +126,8 @@ class ScholarshipContribution extends React.Component {
             is_anonymous,
             [eventName]: value
         };
-        if (contributor && contributor.funding_amount < 50) {
-            invalidInput = "Minimum contribution amount is $50.";
+        if (contributor && contributor.funding_amount < ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP) {
+            invalidInput = `Minimum contribution amount is $${ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP}.`;
         }
 
         this.setState({ contributor, invalidInput });
@@ -167,7 +168,7 @@ class ScholarshipContribution extends React.Component {
 
         const scholarshipSteps = (<Steps current={pageNumber-1} onChange={(current) => this.changePage(current+1)}>
             { scholarshipContributionPages.map(item => (
-                <Step key={item.title} title={item.title} />
+                <Step key={item.title} title={item.title} disabled={invalidInput} />
             ))}
         </Steps>);
 
