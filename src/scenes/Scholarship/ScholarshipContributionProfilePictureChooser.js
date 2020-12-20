@@ -38,7 +38,7 @@ class ScholarshipContributionProfilePictureChooser extends React.Component {
                     <Button onClick={()=> this.updateSelectedProfilePicture(profilePicture)}
                             key={profilePicture}>
                         <img src={profilePicture}
-                             alt="Contributor Profile picture"
+                             alt="Contributor Profile"
                              className="rounded-circle shadow border mt-4"
                               style={{width: "250px"}}/>
                     </Button>

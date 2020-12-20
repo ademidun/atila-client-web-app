@@ -165,6 +165,10 @@ class ScholarshipContribution extends React.Component {
         // set pageNumber to the last page of scholarshipContributionPages
         this.setState({contributor, pageNumber: scholarshipContributionPages.length, fundingComplete: true});
 
+        setTimeout(()=> {
+            document.getElementById("hide-after-3-seconds").style.display = "none";
+        }, 3000)
+
     };
 
     toggleShowRegistrationForm = () => {
@@ -180,14 +184,8 @@ class ScholarshipContribution extends React.Component {
         const scholarshipSteps = (<Steps current={pageNumber-1} onChange={(current) => this.changePage(current+1)}>
             { scholarshipContributionPages.map(item => {
 
-                /**
-                 * Email may not exist in contributor object if it has been returned from the API
-                 * and contributor state is being updated in onFundingComplete. So only disable the steps navigation
-                 * if an email exists AND it is not a valid email.
-                 * */
-
-                let disableStep = invalidInput || !fundingComplete && (["Payment", "Complete"].includes(item.title)
-                    && !isValidEmail(contributor.email));
+                let disableStep = invalidInput || (!fundingComplete && (["Payment", "Complete"].includes(item.title)
+                    && !isValidEmail(contributor.email)));
 
                 if(item.title === "Complete") {
                     disableStep = !fundingComplete;
@@ -289,12 +287,22 @@ class ScholarshipContribution extends React.Component {
                                     <div className="col-12">
                                         <img src={contributor.funding_confirmation_image_url}
                                              style={{width: "100%"}} alt={`Scholarship Contribution confirmation for ${contributor.first_name}`} />
-                                             <p>Image may take a few seconds to display, please wait...</p>
+                                             {/*
+                                                After 3 seconds, hide the message that tells the user the image may take some time to load.
+                                                The images are generated using htmlcsstoimage.com which can take about 3 seconds to load.
+                                                This message lets the user know to stay on the page and not navigate away.
+                                             */}
+                                             <p id="hide-after-3-seconds">Your confirmation image may take a few seconds to display, please wait...</p>
                                     </div>
                                     <div className="col-12 text-center">
                                         <a target="_blank" rel="noopener noreferrer" href={contributor.funding_confirmation_image_url}>
                                             View Image (Right click or hold on mobile to save image)
                                         </a>
+                                    </div>
+                                    <div className="float-left col-12">
+                                        <Link to={`/scholarship/${scholarship.slug}`}>
+                                            View Scholarship: {scholarship.name}
+                                        </Link>
                                     </div>
                                     </>
                                 }

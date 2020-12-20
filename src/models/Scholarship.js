@@ -136,7 +136,7 @@ export let DEFAULT_SCHOLARSHIP = {
 let contributor_profile_pic_1 = "https://firebasestorage.googleapis.com/v0/b/atila-7.appspot.com/o/user-profiles%2Fgeneral-data%2Fdefault-profile-pic.png?alt=media&token=455c59f7-3a05-43f1-a79e-89abff1eae57";
 
 // https://unsplash.com/photos/jBUCxayAzm0
-let contributor_profile_pic_2 = "https://images.unsplash.com/photo-1586326448571-8c6e1e473bad?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTF8fHxlbnwwfHx8&auto=format&fit=crop&w=400&h=400";
+// let contributor_profile_pic_2 = "https://images.unsplash.com/photo-1586326448571-8c6e1e473bad?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTF8fHxlbnwwfHx8&auto=format&fit=crop&w=400&h=400";
 
 // https://unsplash.com/photos/G8cB8hY3yvU
 let contributor_profile_pic_3 = "https://images.unsplash.com/photo-1588943211346-0908a1fb0b01?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=400&h=400";
@@ -145,22 +145,22 @@ let contributor_profile_pic_3 = "https://images.unsplash.com/photo-1588943211346
 let contributor_profile_pic_4 = "https://images.unsplash.com/photo-1510771463146-e89e6e86560e?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=400";
 
 // https://unsplash.com/photos/G8cB8hY3yvU
-let contributor_profile_pic_5 = "https://images.unsplash.com/photo-1588943211346-0908a1fb0b01?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=400&h=400";
-
-// https://unsplash.com/photos/sVtcRzphxbk
-let contributor_profile_pic_6 = "https://images.unsplash.com/photo-1593134257782-e89567b7718a?ixid=MXwxMjA3fDB8MHxzZWFyY2h8NHx8cHVwcHl8ZW58MHx8MHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=400";
-
-// cat blue background
-// https://unsplash.com/photos/G8cB8hY3yvU
-let contributor_profile_pic_7 = "https://images.unsplash.com/photo-1574158622682-e40e69881006?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=400";
-
-// cat blue eyes
-// https://unsplash.com/photos/IFxjDdqK_0U
-let contributor_profile_pic_8 = "https://images.unsplash.com/photo-1472491235688-bdc81a63246e?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=400&h=400";
-
-// grey cat licking paws
-// hhttps://unsplash.com/photos/Hd7vwFzZpH0
-let contributor_profile_pic_9 = "https://images.unsplash.com/photo-1511275539165-cc46b1ee89bf?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=400";
+// let contributor_profile_pic_5 = "https://images.unsplash.com/photo-1588943211346-0908a1fb0b01?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=400&h=400";
+//
+// // https://unsplash.com/photos/sVtcRzphxbk
+// let contributor_profile_pic_6 = "https://images.unsplash.com/photo-1593134257782-e89567b7718a?ixid=MXwxMjA3fDB8MHxzZWFyY2h8NHx8cHVwcHl8ZW58MHx8MHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=400";
+//
+// // cat blue background
+// // https://unsplash.com/photos/G8cB8hY3yvU
+// let contributor_profile_pic_7 = "https://images.unsplash.com/photo-1574158622682-e40e69881006?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=400";
+//
+// // cat blue eyes
+// // https://unsplash.com/photos/IFxjDdqK_0U
+// let contributor_profile_pic_8 = "https://images.unsplash.com/photo-1472491235688-bdc81a63246e?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=400&h=400";
+//
+// // grey cat licking paws
+// // https://unsplash.com/photos/Hd7vwFzZpH0
+// let contributor_profile_pic_9 = "https://images.unsplash.com/photo-1511275539165-cc46b1ee89bf?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=400";
 
 // light brown cat with light green eyes
 // https://unsplash.com/photos/uhnbTZC7N9k
