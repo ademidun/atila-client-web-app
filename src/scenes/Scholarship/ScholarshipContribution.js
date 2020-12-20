@@ -246,10 +246,14 @@ class ScholarshipContribution extends React.Component {
                                        keyName={"profile_pic_url"}
                                        filePath={`user-profile-pictures-contributors`}
                                        onChangeHandler={this.updateContributorInfo} />
-                            {contributor.profile_pic_url && <img src={contributor.profile_pic_url}
+                            {contributor.profile_pic_url &&
+                            <>
+                            <img src={contributor.profile_pic_url}
                                                                  alt={contributor.first_name}
                                                                  style={{width: "150px"}}
-                                                                 className="rounded-circle shadow my-3"/> }
+                                                                 className="rounded-circle shadow my-3"/>
+                            </>
+                            }
 
                             <h3 className="my-3">Or Select your Preferred image</h3>
                             <ScholarshipContributionProfilePictureChooser contributor={contributor}

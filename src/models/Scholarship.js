@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import {UserProfileTest1} from "./UserProfile";
+import {DEFAULT_USER_PROFILE_PICTURE_URL, UserProfileTest1} from "./UserProfile";
 import {Link} from "react-router-dom";
 import React from "react";
 import {Alert, Popover} from "antd";
@@ -132,8 +132,8 @@ export let DEFAULT_SCHOLARSHIP = {
 };
 
 // TODO Crop Images and give attribution on Terms and Conditions page;
-// Note that the unsplash query parameter URLS are all cropped such that they are perfectly square
-let contributor_profile_pic_1 = "https://firebasestorage.googleapis.com/v0/b/atila-7.appspot.com/o/user-profiles%2Fgeneral-data%2Fdefault-profile-pic.png?alt=media&token=455c59f7-3a05-43f1-a79e-89abff1eae57";
+// Note that the Unsplash query parameter URLS are all cropped such that they are perfectly square
+let contributor_profile_pic_1 = DEFAULT_USER_PROFILE_PICTURE_URL;
 
 // https://unsplash.com/photos/jBUCxayAzm0
 // let contributor_profile_pic_2 = "https://images.unsplash.com/photo-1586326448571-8c6e1e473bad?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTF8fHxlbnwwfHx8&auto=format&fit=crop&w=400&h=400";

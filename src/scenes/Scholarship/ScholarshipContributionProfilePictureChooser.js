@@ -4,22 +4,29 @@ import {
     SCHOLARSHIP_CONTRIBUTOR_PROFILE_PICTURES
 } from "../../models/Scholarship";
 import {Button} from "antd";
+import {withRouter} from "react-router-dom";
+import {connect} from "react-redux";
 
 class ScholarshipContributionProfilePictureChooser extends React.Component {
     constructor(props) {
         super(props);
 
-        const { contributor } = props;
+        const { contributor, userProfile } = props;
+
+        let profilePictures = SCHOLARSHIP_CONTRIBUTOR_PROFILE_PICTURES.slice();
+
+        if (userProfile && !SCHOLARSHIP_CONTRIBUTOR_PROFILE_PICTURES.includes(userProfile.profile_pic_url)) {
+            profilePictures.unshift(userProfile.profile_pic_url);
+        }
 
         this.state = {
-            profilePictures: SCHOLARSHIP_CONTRIBUTOR_PROFILE_PICTURES,
+            profilePictures,
             selectedPicture: contributor.profile_pic_url,
         }
     }
 
     updateSelectedProfilePicture(picture) {
         const { onSelectedPicture } = this.props;
-        console.log({picture});
         const syntheticEvent = {
             target: {
                 name: "profile_pic_url",
@@ -48,10 +55,15 @@ class ScholarshipContributionProfilePictureChooser extends React.Component {
     }
 }
 
-
 ScholarshipContributionProfilePictureChooser.propTypes = {
     onSelectedPicture: PropTypes.func,
     contributor: PropTypes.shape({}),
+    //redux
+    userProfile: PropTypes.shape({})
 };
 
-export default ScholarshipContributionProfilePictureChooser;
+const mapStateToProps = state => {
+    return { userProfile: state.data.user.loggedInUserProfile };
+};
+
+export default withRouter(connect(mapStateToProps)(ScholarshipContributionProfilePictureChooser));
