@@ -68,7 +68,6 @@ describe('services/utils.js', () => {
             const guestUserId = getGuestUserId();
 
             const guestUserId2 = getGuestUserId();
-            console.log({guestUserId2});
             expect(guestUserId).toBeTruthy();
             expect(guestUserId2).toEqual(guestUserId);
         });

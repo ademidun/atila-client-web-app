@@ -1,21 +1,21 @@
 import React from "react";
-import './Invoice.scss'
+import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {UserProfilePropType} from "../../../models/UserProfile";
 import moment from "moment";
 import {ScholarshipPropType} from "../../../models/Scholarship";
 import {ATILA_SCHOLARSHIP_FEE, ATILA_SCHOLARSHIP_FEE_TAX} from "../../../models/Constants";
 import {formatCurrency} from "../../../services/utils";
+import './Invoice.scss'
 
 // source: https://github.com/sparksuite/simple-html-invoice-template
 const logoImageData = "https://firebasestorage.googleapis.com/v0/b/atila-7.appspot.com/o/public%2Fatila-logo-right-way-circle-transparent.png?alt=media&token=c7b77a1a-9563-41ef-90e9-57025a7dbd87";
-function Invoice({ userProfile, scholarship }) {
+function Invoice({ contributor, scholarship, contributorFundingAmount, cardHolderName }) {
 
-    const { first_name, last_name, email } = userProfile;
-    const { funding_amount } = scholarship;
+    const { email } = contributor;
 
-    const fundingAmount = Number.parseInt(funding_amount);
-    const atilaFee = funding_amount * ATILA_SCHOLARSHIP_FEE;
+    const fundingAmount = Number.parseInt(contributorFundingAmount);
+    const atilaFee = contributorFundingAmount * ATILA_SCHOLARSHIP_FEE;
     const atilaFeeTax = atilaFee * ATILA_SCHOLARSHIP_FEE_TAX;
     const totalAmount = fundingAmount + atilaFee + atilaFeeTax;
 
@@ -52,7 +52,7 @@ function Invoice({ userProfile, scholarship }) {
                             <tbody>
                             <tr>
                                 <td>
-                                    {first_name} {last_name}<br />
+                                    {cardHolderName}<br />
                                     {email}
                                 </td>
                             </tr>
@@ -119,10 +119,13 @@ function Invoice({ userProfile, scholarship }) {
 }
 
 Invoice.defaultProps = {
-    userProfile: null
+    contributor: null,
 };
 Invoice.propTypes = {
     scholarship: ScholarshipPropType,
+    contributorFundingAmount: PropTypes.number,
+    contributor: PropTypes.shape({}),
+    cardHolderName: PropTypes.string,
     // redux
     userProfile: UserProfilePropType
 };

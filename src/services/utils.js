@@ -145,7 +145,10 @@ export function toTitleCase(str) {
     return str;
 }
 
-export function formatCurrency(input) {
+export function formatCurrency(input, convertToInteger=false) {
+    if (convertToInteger) {
+        input = Number.parseInt(input);
+    }
     return input.toLocaleString('en-ca', {style : 'currency', currency: 'CAD'});
 }
 
@@ -462,4 +465,13 @@ export function myJoin(value, separator) {
     } else {
         return value.join(separator)
     }
+}
+
+/**
+ * @see https://stackoverflow.com/a/46181/5405197
+ * @returns {boolean}
+ */
+export function isValidEmail(email) {
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
 }

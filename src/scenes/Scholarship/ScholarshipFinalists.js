@@ -5,7 +5,7 @@ import {Row, Col, Tag} from "antd";
 import ContentCard from "../../components/ContentCard";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
-import {genericItemTransform} from "../../services/utils";
+import {formatCurrency, genericItemTransform} from "../../services/utils";
 
 class ScholarshipFinalists extends React.Component {
 
@@ -60,27 +60,7 @@ class ScholarshipFinalists extends React.Component {
         return (
             <div className={`${className}`}>
                 <h3 className="text-center">{title}</h3>
-                <Row gutter={[{ xs: 8, sm: 16}, 16]}>
-                    {scholarshipFinalistUserProfiles.map(user => {
-                        return (
-                            // Use zoom:0.8 as a temporary workaround so that that ScholarshipFinalists doesn't
-                            // take up too much space.
-                            <Col xs={24} md={12} lg={8} style={{zoom:0.9}} key={user.username}>
-                                <div className="bg-light mb-3 p-1 rounded-pill">
-                                    <Link to={`/profile/${user.username}`} >
-                                        <img
-                                            alt="user profile"
-                                            style={{ height: '50px', maxWidth: 'auto' }}
-                                            className="rounded-circle py-1 pr-1"
-                                            src={user.profile_pic_url} />
-                                        {user.first_name} {user.last_name}
-                                    </Link>
-                                    {user.is_winner && <Tag color="green">Winner</Tag>}
-                                </div>
-                            </Col>)
-                    })}
-
-                </Row>
+                <UserProfilesCards userProfiles={scholarshipFinalistUserProfiles} />
                 <h3 className="text-center">{title}' Essays</h3>
                 <Row gutter={[{ xs: 8, sm: 16}, 16]}>
                     {scholarshipFinalistEssays.map(item => {
@@ -101,6 +81,54 @@ class ScholarshipFinalists extends React.Component {
             </div>
         );
     }
+}
+
+export function UserProfilesCards({userProfiles, userKey="username"}) {
+    return (<Row gutter={[{ xs: 8, sm: 16}, 16]}>
+        {userProfiles.map(user => {
+
+            let fundingAmount = <>
+                {user.funding_amount &&
+                    <strong>
+                        :{' '}{ formatCurrency(user.funding_amount, true) }
+                    </strong>
+                }
+        </>;
+
+            let userDisplay = (
+                <Link to={`/profile/${user.username}`} >
+                    <img
+                        alt="user profile"
+                        className="rounded-circle py-1 pr-1 square-icon"
+                        src={user.profile_pic_url} />
+                    {user.first_name} {user.last_name}{' '}{fundingAmount}
+                </Link>);
+
+            if (user.is_anonymous || !user.username) {
+                userDisplay = (
+                    <div>
+                        <img
+                            alt="user profile"
+                            className="rounded-circle py-1 pr-1 square-icon"
+                            src={user.profile_pic_url} />
+                        {user.is_anonymous ? "Anonymous" : `${user.first_name} ${user.last_name}`}{' '}{fundingAmount}
+                    </div>);
+            }
+
+            return (
+                // Use zoom:0.8 as a temporary workaround so that that ScholarshipFinalists doesn't
+                // take up too much space.
+                <Col xs={24} md={12} style={{zoom:0.9}} key={user[userKey]}>
+                    <div className="bg-light mb-3 p-1 rounded-pill">
+                        {userDisplay}
+                        {user.is_winner && <Tag color="green">{' '}Winner</Tag>}
+                        {user.is_owner && <Tag color="green">{' '}Creator</Tag>}
+                    </div>
+                </Col>)
+        })}
+
+    </Row>)
+
 }
 
 ScholarshipFinalists.defaultProps = {

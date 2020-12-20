@@ -196,7 +196,6 @@ class ApplicationDetail extends  React.Component{
 
             ApplicationsAPI.scoreApplication(application.id, scorerId, applicationScore)
                 .then(res => {
-                    console.log({res})
                 })
                 .catch(err=>{
                     console.log({err});

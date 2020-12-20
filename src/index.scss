@@ -206,3 +206,13 @@ label {
 .card-text {
   white-space: pre-line;
 }
+
+.square-icon {
+  height: 150px;
+  width: 150px;
+  object-fit: cover;
+}
+
+.object-fit-fill {
+  object-fit: fill !important;
+}

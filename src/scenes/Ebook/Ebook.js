@@ -19,8 +19,6 @@ class Ebook extends React.Component {
         const {location: {search}} = props;
         const params = new URLSearchParams(search);
         let audience = unSlugify(params.get('audience') || '1');
-        console.log({search, audience});
-        console.log("EBOOK_AUDIENCE_IMAGES[audience]", EBOOK_AUDIENCE_IMAGES[audience]);
 
         if (EBOOK_AUDIENCE_IMAGES[audience]===undefined) {
             audience = '1';
@@ -36,7 +34,6 @@ class Ebook extends React.Component {
     render() {
 
         const {audience} = this.state;
-        console.log({audience});
 
         const seoContent = {
             title:

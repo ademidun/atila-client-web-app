@@ -17,7 +17,7 @@ import ScholarshipDeadlineWithTags from "../../components/ScholarshipDeadlineWit
 import {Alert, Button, message} from 'antd';
 import verifiedBadge from '../../components/assets/verified.png';
 import {AtilaDirectApplicationsPopover} from "../../models/Scholarship";
-import ScholarshipFinalists from "./ScholarshipFinalists";
+import ScholarshipFinalists, {UserProfilesCards} from "./ScholarshipFinalists";
 
 class ScholarshipDetail extends React.Component {
 
@@ -26,6 +26,7 @@ class ScholarshipDetail extends React.Component {
 
         this.state = {
             scholarship: null,
+            contributors: null,
             currentUserScholarshipApplication: null,
             scholarshipUserProfile: null,
             isLoadingScholarship: true,
@@ -71,8 +72,8 @@ class ScholarshipDetail extends React.Component {
         const { match : { params : { slug }}, userProfile, location } = this.props;
         ScholarshipsAPI.getSlug(slug)
             .then(res => {
-                const scholarship = res.data;
-                this.setState({ scholarship }, () => {
+                const { scholarship, contributors } = res.data;
+                this.setState({ scholarship, contributors }, () => {
                     if (location && location.hash) {
                         scrollToElement(location.hash);
                     }
@@ -206,7 +207,7 @@ class ScholarshipDetail extends React.Component {
 
         const { isLoadingScholarship, scholarship,
             errorLoadingScholarship, scholarshipUserProfile,
-            pageViews, currentUserScholarshipApplication, isLoadingApplication } = this.state;
+            pageViews, currentUserScholarshipApplication, isLoadingApplication, contributors } = this.state;
         const { userProfile } = this.props;
 
         if (errorLoadingScholarship) {
@@ -267,17 +268,21 @@ class ScholarshipDetail extends React.Component {
                             <h1>
                                 {name}{' '}
                                 {scholarship.is_atila_direct_application &&
-                                <AtilaDirectApplicationsPopover
-                                    title="This is a verified Atila Direct Application Scholarship"
-                                    children={<img
-                                        alt="user profile"
-                                        style={{ width:'25px' }}
-                                        className="rounded-circle"
-                                        src={verifiedBadge} />} />}
+                                    <>
+                                        <AtilaDirectApplicationsPopover
+                                                title="This is a verified Atila Direct Application Scholarship"
+                                                children={<img
+                                                alt="user profile"
+                                                style={{ width:'25px' }}
+                                                className="rounded-circle"
+                                                src={verifiedBadge} />} />
+
+                                        <div style={{fontSize: "15px", fontWeight: "normal"}} className="text-center mb-3">
+                                            (Hint: Hover over or click the blue check to learn why this scholarship has a blue check.)
+                                        </div>
+                                        </>
+                                        }
                             </h1>
-                            <div style={{fontSize: "15px", fontWeight: "normal"}} className="text-center mb-3">
-                                (Hint: Hover over or click the blue check to learn why this scholarship has a blue check.)
-                            </div>
 
                             <img
                                 style={{ maxHeight: '300px', width: 'auto'}}
@@ -346,6 +351,22 @@ class ScholarshipDetail extends React.Component {
                                 <br/>
                                 Amount: {fundingString}
                             </p>
+                            {scholarship.is_atila_direct_application  && !isScholarshipDeadlinePassed &&
+                                <div className="mb-3">
+                                    <Button type="primary">
+                                        <Link to={`/scholarship/${slug}/contribute`}>
+                                            Contribute
+                                        </Link>
+                                    </Button><br/>
+                                </div>
+                            }
+                            {contributors && contributors.length > 0 &&
+                                <div>
+                                    <h3 className="text-center">Contributors</h3>
+                                    <UserProfilesCards userProfiles={contributors} userKey="id" />
+                                </div>
+
+                            }
                             {is_not_available &&
                             <Alert
                                 type="error"

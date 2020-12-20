@@ -4,13 +4,14 @@ import {Tab, Tabs} from 'react-bootstrap';
 import {withRouter} from "react-router-dom";
 import UserProfileAPI from '../../services/UserProfileAPI';
 import ContentCard from '../../components/ContentCard';
-import {genericItemTransform} from '../../services/utils';
+import {genericItemTransform, truncate} from '../../services/utils';
 import Loading from '../../components/Loading';
 import UserProfileEdit from './UserProfileEdit';
 import UserProfileViewSavedScholarships from './UserProfileSavedScholarships';
 import {RESERVED_USERNAMES} from "../../models/Constants";
 import UserProfileApplications from "./UserProfileApplications";
 import UserProfileCreatedScholarships from "./UserProfileCreatedScholarships";
+import {Link} from "react-router-dom";
 
 class UserProfileViewTabs extends React.Component {
 
@@ -21,6 +22,7 @@ class UserProfileViewTabs extends React.Component {
             blogs: null,
             essays: null,
             scholarships: null,
+            contributions: null,
         }
     }
 
@@ -36,11 +38,15 @@ class UserProfileViewTabs extends React.Component {
             .then(res => {
                 this.setState({essays: res.data.essays });
             });
+        UserProfileAPI.getUserContent(userId, 'contributions')
+            .then(res => {
+                this.setState({contributions: res.data.contributions });
+            });
     }
 
     render() {
 
-        const { blogs, essays } = this.state;
+        const { blogs, essays, contributions } = this.state;
         const { isProfileEditable } = this.props;
         let { match : { params : { tab, username }} } = this.props;
         let defaultActiveKey = isProfileEditable ? 'edit' : 'blogs';
@@ -94,6 +100,12 @@ class UserProfileViewTabs extends React.Component {
                             contentList={essays}
                             contentType={'essay'}/>
                     </Tab>
+                    <Tab eventKey='contributions' title='Contributions'>
+                        <TabItemContentList
+                            contentList={contributions}
+                            contentType={'contribution'}
+                            isProfileEditable={isProfileEditable}/>
+                    </Tab>
                 </Tabs>
             </div>
         )
@@ -102,17 +114,57 @@ class UserProfileViewTabs extends React.Component {
 
 }
 
-function TabItemContentList({ contentList, contentType }){
+function TabItemContentList({ contentList, contentType, isProfileEditable }){
 
     if (!contentList) {
         return (<Loading title={`Loading ${contentType}s`} className='mt-3' />)
     }
     return (<div className='col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-3'>
-        {contentList.map( content =>
-            <ContentCard key={content.id} content={genericItemTransform(content)}
-                         className='col-12 mb-3'
-                         hideImage={contentType==='essay'}
-            />
+        {contentList.map( content => {
+
+            if (contentType === "contribution") {
+
+                const { scholarship } = content;
+                return (
+                    <div className="col-12 card text-center mb-3 py-3" key={`${content.scholarship.id}`}>
+                        {content.is_anonymous &&
+                        <p className="text-muted">This scholarship ws made anonymously, only you can see this scholarship. </p>
+                        }
+                        <h3>
+                            <Link  title={scholarship.name} to={`/scholarship/${scholarship.slug}`}>
+                                {truncate(scholarship.name)}
+                            </Link>
+                        </h3>
+                        <div>
+                            <img src={scholarship.img_url}
+                                 alt={scholarship.name}
+                                 className="rounded-circle shadow my-3 square-icon mr-3"/>
+
+                            <img src="https://freeiconshop.com/wp-content/uploads/edd/plus-flat.png" alt="Plus sign" width="50px" />
+                            <img src={content.profile_pic_url}
+                                 alt={content.first_name}
+                                 style={{width: "150px"}}
+                                 className="rounded-circle shadow my-3 square-icon ml-3"/>
+                        </div>
+                        {isProfileEditable && content.funding_confirmation_image_url &&
+
+                        <div className="col-12">
+                            <p className="text-muted">Only you can see the image below: </p>
+                            <img src={content.funding_confirmation_image_url}
+                                 style={{width: "100%"}} alt={`Scholarship Contribution confirmation for ${content.first_name}`} />
+                        </div>
+
+                        }
+                    </div>
+                )
+            } else {
+                return (
+                    <ContentCard key={content.id} content={genericItemTransform(content)}
+                                 className='col-12 mb-3'
+                                 hideImage={contentType==='essay'}
+                    />)
+            }
+        }
 
         )}
     </div>)

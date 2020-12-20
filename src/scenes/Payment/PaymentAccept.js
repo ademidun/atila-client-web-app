@@ -101,7 +101,6 @@ class PaymentAccept extends React.Component {
         UserProfileAPI.patch(
             userProfileUpdateData, userProfile.user)
             .then(res => {
-                console.log('res.data', res.data);
                 updateLoggedInUserProfile(res.data);
             })
             .catch(err=> {
@@ -324,8 +323,6 @@ class PaymentAccept extends React.Component {
         const userProfileUpdateData = {
             [event.target.name]: event.target.value
         };
-
-        console.log({userProfileUpdateData});
 
         this.updateUserProfile(userProfileUpdateData);
     };

@@ -10,7 +10,7 @@ class PaymentSend extends React.Component {
 
     render() {
 
-        const { scholarship, updateScholarship } = this.props;
+        const { scholarship, onFundingComplete, contributor, contributorFundingAmount } = this.props;
 
         return (
             // ...
@@ -19,7 +19,10 @@ class PaymentSend extends React.Component {
             >
 
                 <Elements>
-                    <PaymentSendForm scholarship={scholarship} updateScholarship={updateScholarship} />
+                    <PaymentSendForm scholarship={scholarship}
+                                     onFundingComplete={onFundingComplete}
+                                     contributor={contributor}
+                                     contributorFundingAmount={contributorFundingAmount} />
                 </Elements>
             </StripeProvider>
         )
@@ -27,8 +30,10 @@ class PaymentSend extends React.Component {
 }
 
 PaymentSend.propTypes = {
-    updateScholarship: PropTypes.func,
+    onFundingComplete: PropTypes.func,
     scholarship: ScholarshipPropType,
+    contributor: PropTypes.shape({}),
+    contributorFundingAmount: PropTypes.number,
 };
 
 export default PaymentSend;

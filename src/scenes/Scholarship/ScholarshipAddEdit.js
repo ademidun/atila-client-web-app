@@ -10,7 +10,7 @@ import {MAJORS_LIST, SCHOOLS_LIST} from "../../models/ConstantsForm";
 import {scholarshipUserProfileSharedFormConfigs, toastNotify} from "../../models/Utils";
 import {
     AtilaDirectApplicationsPopover,
-    DEFAULT_SCHOLARSHIP, ScholarshipDisableEditMessage
+    DEFAULT_SCHOLARSHIP, DEFAULT_SCHOLARSHIP_CONTRIBUTOR, ScholarshipDisableEditMessage
 } from "../../models/Scholarship";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -171,6 +171,20 @@ class ScholarshipAddEdit extends React.Component{
     constructor(props) {
         super(props);
 
+        const { userProfile } = props;
+
+        let contributor = DEFAULT_SCHOLARSHIP_CONTRIBUTOR;
+
+        if (userProfile) {
+            Object.keys(contributor).forEach(contributorKey => {
+
+                if (userProfile[contributorKey]) {
+                    contributor[contributorKey] = userProfile[contributorKey]
+                }
+
+            });
+        }
+
         this.state = {
             scholarship: Object.assign({}, DEFAULT_SCHOLARSHIP),
             isAddScholarshipMode: false,
@@ -186,6 +200,7 @@ class ScholarshipAddEdit extends React.Component{
              * run auto-save on the initial load.
              */
             criteriaInfoInitialLoad: true,
+            contributor,
         };
     }
 
@@ -231,7 +246,7 @@ class ScholarshipAddEdit extends React.Component{
         const { match : { params : { slug }} } = this.props;
         ScholarshipsAPI.getSlug(slug)
             .then(res => {
-                const scholarship = ScholarshipsAPI.cleanScholarship(res.data);
+                const scholarship = ScholarshipsAPI.cleanScholarship(res.data.scholarship);
                 if (!scholarship.is_editable) {
                     this.disableScholarshipInputs();
                 }
@@ -298,9 +313,8 @@ class ScholarshipAddEdit extends React.Component{
     /**
      * If the scholarship is a direct application and has been published, scholarship.is_editable should be false.
      * Therefore deadline, eligibility and specific questions should be disabled.
-     * @param scholarship
      */
-    disableScholarshipInputs = (scholarship) => {
+    disableScholarshipInputs = () => {
         /**
          * Disable inputs after a brief timeout to ensure that elements have loaded before jquery adds the disabled prop.
          */
@@ -321,6 +335,7 @@ class ScholarshipAddEdit extends React.Component{
 
     updateForm = (event) => {
         let value = event.target.value;
+        let eventName = event.target.name;
 
         if (event.target.type==='checkbox'){
             value = event.target.checked
@@ -330,7 +345,7 @@ class ScholarshipAddEdit extends React.Component{
         }
 
 
-        if (event.target.name==='location') {
+        if (eventName==='location') {
             const { locationData } = this.state;
             const newLocation = transformLocation(event.target.value);
 
@@ -347,21 +362,26 @@ class ScholarshipAddEdit extends React.Component{
             return;
 
         }
+
+        if (eventName === "funding_amount") {
+            value = Number.parseInt(value)
+        }
+
         let { scholarship, criteriaInfoInitialLoad } = this.state;
 
-        if (event.target.name.includes('.')) {
-            scholarship = nestedFieldUpdate(scholarship, event.target.name, value);
+        if (eventName.includes('.')) {
+            scholarship = nestedFieldUpdate(scholarship, eventName, value);
         }
         else {
             const scholarship = this.state.scholarship;
 
-            if ( Array.isArray(scholarship[event.target.name]) && !Array.isArray(value) ) {
-                scholarship[event.target.name].push(value);
+            if ( Array.isArray(scholarship[eventName]) && !Array.isArray(value) ) {
+                scholarship[eventName].push(value);
             } else {
-                scholarship[event.target.name] =value;
+                scholarship[eventName] = value;
             }
 
-            if(event.target.name==='name') {
+            if(eventName==='name') {
                 scholarship.slug = slugify(event.target.value);
             }
         }
@@ -370,7 +390,7 @@ class ScholarshipAddEdit extends React.Component{
          * See declaration of criteriaInfoInitialLoad in ScholarshipAddEdit.constructor()
          * to see why we need the following code snippet.
          */
-        if(event.target.name === "criteria_info" && criteriaInfoInitialLoad) {
+        if(eventName === "criteria_info" && criteriaInfoInitialLoad) {
             this.setState({criteriaInfoInitialLoad: false})
         } else {
             this.updateScholarship(scholarship);
@@ -390,6 +410,11 @@ class ScholarshipAddEdit extends React.Component{
                 }, 1000);
             }
         })
+    };
+
+    onFundingComplete = (fundingData) => {
+        const { scholarship } = fundingData;
+        this.updateScholarship(scholarship);
     };
 
     autoSaveScholarship = () => {
@@ -416,7 +441,7 @@ class ScholarshipAddEdit extends React.Component{
             toastNotify(`⚠️ Warning, you must be logged in to add a scholarship`);
             return;
         }
-        let postResponsePromise = null;
+        let postResponsePromise;
 
         if(isAddScholarshipMode) {
             postResponsePromise = ScholarshipsAPI.create(scholarship,locationData)
@@ -466,7 +491,7 @@ class ScholarshipAddEdit extends React.Component{
     render() {
 
         const { scholarship, isAddScholarshipMode, scholarshipPostError,
-            isLoadingScholarship, pageNumber, locationData, errorLoadingScholarship } = this.state;
+            isLoadingScholarship, pageNumber, locationData, errorLoadingScholarship, contributor } = this.state;
         const { userProfile } = this.props;
 
         if (errorLoadingScholarship) {
@@ -597,7 +622,10 @@ class ScholarshipAddEdit extends React.Component{
                         </div>}
                         {pageNumber === 4 &&
                         <div className="my-3">
-                            <PaymentSend scholarship={scholarship} updateScholarship={this.updateScholarship} />
+                            <PaymentSend scholarship={scholarship}
+                                         onFundingComplete={this.onFundingComplete}
+                                         contributor={contributor}
+                                         contributorFundingAmount={Number.parseInt(scholarship.funding_amount)} />
                         </div>
                         }
                         <div className="my-2" style={{clear: 'both'}}>

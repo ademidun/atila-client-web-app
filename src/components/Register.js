@@ -68,8 +68,8 @@ PasswordShowHide.propTypes = {
 };
 
 const accountTypes = [
-    { label: 'Find Scholarships', value: 'student' },
-    { label: 'Start a Scholarship', value: 'sponsor' },
+    { label: 'Apply for Scholarships', value: 'student' },
+    { label: 'Fund Scholarships', value: 'sponsor' },
 ];
 
 class Register extends React.Component {

@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import {UserProfileTest1} from "./UserProfile";
+import {DEFAULT_USER_PROFILE_PICTURE_URL, UserProfileTest1} from "./UserProfile";
 import {Link} from "react-router-dom";
 import React from "react";
 import {Alert, Popover} from "antd";
@@ -129,6 +129,78 @@ export let DEFAULT_SCHOLARSHIP = {
     sports: [],
     disability: [],
     language: [],
+};
+
+export const SCHOLARSHIP_CONTRIBUTION_EXAMPLE_IMAGE = "https://hcti.io/v1/image/10084573-8f25-43ab-9ebc-87cfaea84651";
+
+// TODO Crop Images and give attribution on Terms and Conditions page;
+// Note that the Unsplash query parameter URLS are all cropped such that they are perfectly square
+let contributor_profile_pic_1 = DEFAULT_USER_PROFILE_PICTURE_URL;
+
+// https://unsplash.com/photos/jBUCxayAzm0
+// let contributor_profile_pic_2 = "https://images.unsplash.com/photo-1586326448571-8c6e1e473bad?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTF8fHxlbnwwfHx8&auto=format&fit=crop&w=400&h=400";
+
+// https://unsplash.com/photos/G8cB8hY3yvU
+let contributor_profile_pic_3 = "https://images.unsplash.com/photo-1588943211346-0908a1fb0b01?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=400&h=400";
+
+// https://unsplash.com/photos/2s6ORaJY6gI
+let contributor_profile_pic_4 = "https://images.unsplash.com/photo-1510771463146-e89e6e86560e?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=400";
+
+// https://unsplash.com/photos/G8cB8hY3yvU
+// let contributor_profile_pic_5 = "https://images.unsplash.com/photo-1588943211346-0908a1fb0b01?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=400&h=400";
+//
+// // https://unsplash.com/photos/sVtcRzphxbk
+// let contributor_profile_pic_6 = "https://images.unsplash.com/photo-1593134257782-e89567b7718a?ixid=MXwxMjA3fDB8MHxzZWFyY2h8NHx8cHVwcHl8ZW58MHx8MHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=400";
+//
+// // cat blue background
+// // https://unsplash.com/photos/G8cB8hY3yvU
+// let contributor_profile_pic_7 = "https://images.unsplash.com/photo-1574158622682-e40e69881006?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=400";
+//
+// // cat blue eyes
+// // https://unsplash.com/photos/IFxjDdqK_0U
+// let contributor_profile_pic_8 = "https://images.unsplash.com/photo-1472491235688-bdc81a63246e?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=400&h=400";
+//
+// // grey cat licking paws
+// // https://unsplash.com/photos/Hd7vwFzZpH0
+// let contributor_profile_pic_9 = "https://images.unsplash.com/photo-1511275539165-cc46b1ee89bf?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=400";
+
+// light brown cat with light green eyes
+// https://unsplash.com/photos/uhnbTZC7N9k
+let contributor_profile_pic_10 = "https://images.unsplash.com/photo-1569591159212-b02ea8a9f239?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&h=400&w=400";
+
+
+export let SCHOLARSHIP_CONTRIBUTOR_PROFILE_PICTURES = [
+    contributor_profile_pic_1,
+    // contributor_profile_pic_2,
+    contributor_profile_pic_3,
+    contributor_profile_pic_4,
+    // contributor_profile_pic_5,
+    // contributor_profile_pic_6,
+    // contributor_profile_pic_7,
+    // contributor_profile_pic_8,
+    // contributor_profile_pic_9,
+    contributor_profile_pic_10,
+];
+
+export function getRandomContributorProfilePicture(excludeDefaultProfilePicture=true) {
+
+    // exclude the first element which is default profile picture profile picture;
+    let animalPictures = SCHOLARSHIP_CONTRIBUTOR_PROFILE_PICTURES;
+    if (excludeDefaultProfilePicture) {
+        animalPictures = animalPictures.slice(1);
+    }
+    return animalPictures[Math.floor(Math.random() * animalPictures.length)];
+}
+
+export let DEFAULT_SCHOLARSHIP_CONTRIBUTOR = {
+    first_name: "",
+    last_name: "",
+    funding_amount: "",
+    email: "",
+    user: null,
+    is_anonymous:false,
+    username: null,
+    profile_pic_url: getRandomContributorProfilePicture(),
 };
 
 const atilaDirectApplicationsPopoverContent = (

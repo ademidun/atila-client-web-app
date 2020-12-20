@@ -70,7 +70,6 @@ class SecurityQuestionAndAnswer extends  React.Component{
         UserProfileAPI.verifySecurityAnswer(
             userProfileUpdateData, userProfile.user)
             .then(res => {
-                console.log({res});
                 this.setState({verificationSucceeded: true});
             })
             .catch(err=> {

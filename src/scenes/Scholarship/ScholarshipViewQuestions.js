@@ -24,7 +24,7 @@ class ScholarshipViewQuestions extends React.Component {
         ScholarshipsAPI
             .getSlug(slug)
             .then(res => {
-                const scholarship = res.data;
+                const { scholarship } = res.data;
                 this.setState({ scholarship });
             })
             .catch(err => {

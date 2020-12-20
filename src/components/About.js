@@ -12,7 +12,7 @@ const aboutContent = [
         body: <React.Fragment>
 
             Atila was founded in 2018 by Tomiwa Ademidun in his second-last year at Western University when he realized that his program
-            was the most expensive undergrad program in Canada and he would be graduating with about $65,000 in student loans.
+            was the most expensive undergrad program in Canada and he would be graduating with over $65,000 in student loans.
 
         </React.Fragment>,
         image: "https://i.imgur.com/WjXcGym.png",
@@ -24,8 +24,8 @@ const aboutContent = [
             <div className="text-muted ml-3">
                 "As the child of immigrants from a middle-class family,
                 paying for university was a big challenge. My thinking was that if I'm having this problem, other students probably have this problem as well. <br/><br/>
-                I did some research and this turned out to be true. The average student graduates with about $26,000 in student loans.
-                So I wanted to see if I could build something that would help me find scholarships and build it so that other students could use it as well."
+                I did some research and this turned out to be true. At the time, the average student with student loans was graduating with $26,000 in debt.
+                So I built something that would help me find scholarships and built it in such a way that other students could use it as well."
             </div>
             <span>
                 - Tomiwa, Founder Atila
@@ -86,7 +86,7 @@ images.forEach(image => {
     image.thumbnail = image.url;
 });
 
-function About({hideTeam= false}) {
+function About({showTeam= true}) {
     const seoContent = {
         ...defaultSeoContent,
         title: 'About Atila - Giving Students Financial Freedom'
@@ -99,7 +99,7 @@ function About({hideTeam= false}) {
                 About Atila: Our Story
             </h1>
             <h3 className="col-sm-12 text-center text-muted">
-                Giving Students Financial Freedom.
+                Democratizing Financial Freedom for Education
             </h3>
             <div className="offset-lg-1">
 
@@ -113,7 +113,7 @@ function About({hideTeam= false}) {
                 />
 
 
-                {!hideTeam && <Team />}
+                {showTeam && <Team showAbout={false} />}
             </div>
         </div>
     )
