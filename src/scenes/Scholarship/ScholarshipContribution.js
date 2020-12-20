@@ -10,7 +10,7 @@ import PaymentSend from "../Payment/PaymentSend/PaymentSend";
 import {UserProfilePropType} from "../../models/UserProfile";
 import Register from "../../components/Register";
 import FileInput from "../../components/Form/FileInput";
-import {DEFAULT_SCHOLARSHIP_CONTRIBUTOR} from "../../models/Scholarship";
+import {DEFAULT_SCHOLARSHIP_CONTRIBUTOR, SCHOLARSHIP_CONTRIBUTION_EXAMPLE_IMAGE} from "../../models/Scholarship";
 import ScholarshipContributionProfilePictureChooser from "./ScholarshipContributionProfilePictureChooser";
 import {ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP} from "../../models/Constants";
 import {isValidEmail} from "../../services/utils";
@@ -166,7 +166,9 @@ class ScholarshipContribution extends React.Component {
         this.setState({contributor, pageNumber: scholarshipContributionPages.length, fundingComplete: true});
 
         setTimeout(()=> {
-            document.getElementById("hide-after-3-seconds").style.display = "none";
+            if (document.getElementById("hide-after-3-seconds")) {
+                document.getElementById("hide-after-3-seconds").style.display = "none";
+            }
         }, 3000)
 
     };
@@ -190,6 +192,12 @@ class ScholarshipContribution extends React.Component {
                 if(item.title === "Complete") {
                     disableStep = !fundingComplete;
                 }
+                /*
+                * Cast explicitly to boolean for example if disableStep has the value of invalidInput,
+                * and invalidInput is a string, we need to cast it to boolean. Otherwise, ant design doesn't show
+                * the disabled mouse cursor icon on hover over disabled steps.
+                * */
+                disableStep = !!disableStep;
 
                 return (<Step key={item.title} title={item.title} disabled={disableStep} />)
             })}
@@ -240,6 +248,14 @@ class ScholarshipContribution extends React.Component {
                                className="col-12"
                                onChange={this.updateContributorInfo}/>
                                <hr/>
+
+                            <Button className="float-right col-md-6" type="link"
+                                    onClick={() => {
+                                        this.contributeAnonymously();
+                                        this.changePage(pageNumber+1);
+                                    }}>
+                                Skip to contribute anonymously
+                            </Button>
                            <h3>Add a Picture of yourself to go with your donation</h3>
                             <FileInput title={"Profile Picture"}
                                        type={"image"}
@@ -258,14 +274,6 @@ class ScholarshipContribution extends React.Component {
                             <h3 className="my-3">Or Select your Preferred image</h3>
                             <ScholarshipContributionProfilePictureChooser contributor={contributor}
                                                                           onSelectedPicture={this.updateContributorInfo}/>
-
-                        <Button className="float-right col-md-6" type="link"
-                                onClick={() => {
-                                    this.contributeAnonymously();
-                                    this.changePage(pageNumber+1);
-                                }}>
-                            Skip to contribute anonymously
-                        </Button>
                     </div>
                     }
                     {pageNumber === 3 &&
@@ -298,36 +306,36 @@ class ScholarshipContribution extends React.Component {
                                              */}
                                              <p id="hide-after-3-seconds">Your confirmation image may take a few seconds to display, please wait...</p>
                                     </div>
-                                    <div className="col-12 text-center">
+                                    <div className="col-12 text-center mb-3">
                                         <a target="_blank" rel="noopener noreferrer" href={contributor.funding_confirmation_image_url}>
                                             View Image (Right click or hold on mobile to save image)
                                         </a>
-                                    </div>
-                                    <div className="float-left col-12">
-                                        <Link to={`/scholarship/${scholarship.slug}`}>
-                                            View Scholarship: {scholarship.name}
-                                        </Link>
                                     </div>
                                     </>
                                 }
                                 {contributor.is_anonymous &&
                                     <div>
-                                        <h4 className="text-muted text-center">
-                                            No image to share since you' we're anonymous but if you decide to share your name for future scholarships,
+                                        <h6 className="text-muted text-center">
+                                            No image to share since you're anonymous, but if you decide to share your name for future scholarships,
                                         you can get an image like this:
-                                        </h4>
+                                        </h6>
                                         <div className="col-12">
                                             {/*TODO get a picture of Reesa or Linda contributing to a scholarship*/}
-                                            <img src="https://hcti.io/v1/image/10084573-8f25-43ab-9ebc-87cfaea84651"
-                                                 style={{width: "100%"}} alt={`Scholarship Contribution confirmation for ${contributor.first_name}`} />
-                                        </div>
-                                        <div className="col-12 text-center">
-                                            <a target="_blank" rel="noopener noreferrer" href="https://hcti.io/v1/image/10084573-8f25-43ab-9ebc-87cfaea84651">
-                                                View Image (Right click or hold on mobile to save image)
-                                            </a>
+                                            <img src={SCHOLARSHIP_CONTRIBUTION_EXAMPLE_IMAGE}
+                                                 style={{width: "70%"}} alt={`Scholarship Contribution confirmation for ${contributor.first_name}`} />
                                         </div>
                                     </div>
                                 }
+                                <div className="col-12 text-center mb-3">
+                                    <a target="_blank" rel="noopener noreferrer" href={contributor.is_anonymous ? SCHOLARSHIP_CONTRIBUTION_EXAMPLE_IMAGE : contributor.funding_confirmation_image_url}>
+                                        View Image (Right click or hold on mobile to save image)
+                                    </a>
+                                </div>
+                                <div className="float-left col-12 mb-3">
+                                    <Link to={`/scholarship/${scholarship.slug}`}>
+                                        View Scholarship: {scholarship.name}
+                                    </Link>
+                                </div>
                                 <div className="col-12 text-center mb-3">
                                 <h1>Optional: Create an Account</h1> <br/>
                                 <p className="text-muted">
