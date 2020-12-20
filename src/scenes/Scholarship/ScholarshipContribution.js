@@ -145,9 +145,13 @@ class ScholarshipContribution extends React.Component {
 
     };
 
-    submitScholarshipContributor = (event) => {
+    onFundingComplete = (fundingCompletionData) => {
         // TODO implement some logic that should happen after a scholarship has been funded
-        console.log({event});
+        const { contributor } = fundingCompletionData;
+
+        // set pageNumber to the last page of scholarshipContributionPages
+        this.setState({contributor, pageNumber: scholarshipContributionPages.length});
+
     };
 
     toggleShowRegistrationForm = () => {
@@ -248,13 +252,41 @@ class ScholarshipContribution extends React.Component {
                     }
                     {pageNumber >= 4 &&
                     <div className="col-12">
-                        {pageNumber === 4 &&
-                        <h1>
-                            Enter Payment Details
-                        </h1>
-                        }
-                        {pageNumber === 5 && !userProfile &&
-                            <div className="col-12 text-center mb-3">
+                        {pageNumber === 5 &&
+                            <div>
+                                <h1>Share your Contribution Image</h1>
+                                {contributor.funding_confirmation_image_url &&
+                                    <>
+                                    <div className="col-12">
+                                        <img src={contributor.funding_confirmation_image_url}
+                                             style={{width: "100%"}} alt={`Scholarship Contribution confirmation for ${contributor.first_name}`} />
+                                    </div>
+                                    <div className="col-12 text-center">
+                                        <a target="_blank" rel="noopener noreferrer" href={contributor.funding_confirmation_image_url}>
+                                            View Image (Right click or hold this link to save image)
+                                        </a>
+                                    </div>
+                                    </>
+                                }
+                                {contributor.is_anonymous &&
+                                    <div>
+                                        <h4 className="text-muted text-center">
+                                            No image to share since you' we're anonymous but if you decide to share your name for future scholarships,
+                                        you can get an image like this:
+                                        </h4>
+                                        <div className="col-12">
+                                            {/*TODO get a picture of Reesa or Linda contributing to a scholarship*/}
+                                            <img src="https://hcti.io/v1/image/10084573-8f25-43ab-9ebc-87cfaea84651"
+                                                 style={{width: "100%"}} alt={`Scholarship Contribution confirmation for ${contributor.first_name}`} />
+                                        </div>
+                                        <div className="col-12 text-center">
+                                            <a target="_blank" rel="noopener noreferrer" href="https://hcti.io/v1/image/10084573-8f25-43ab-9ebc-87cfaea84651">
+                                                View Image (Right click or hold this link to save image)
+                                            </a>
+                                        </div>
+                                    </div>
+                                }
+                                <div className="col-12 text-center mb-3">
                                 <h1>Optional: Create an Account</h1> <br/>
                                 <p className="text-muted">
                                     Creating an account will allow you to view all your contributions
@@ -269,9 +301,15 @@ class ScholarshipContribution extends React.Component {
                                               disableRedirect={true} />
                                 }
                             </div>
+                            </div>
+                        }
+                        {pageNumber === 4 &&
+                        <h1>
+                            Enter Payment Details
+                        </h1>
                         }
                         <PaymentSend scholarship={scholarship}
-                                     updateScholarship={this.submitScholarshipContributor}
+                                     onFundingComplete={this.onFundingComplete}
                                      contributorFundingAmount={contributor.funding_amount}
                                      contributor={contributor}/>
                     </div>

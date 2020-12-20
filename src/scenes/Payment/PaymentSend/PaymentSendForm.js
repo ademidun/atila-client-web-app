@@ -69,13 +69,13 @@ class PaymentSendForm extends React.Component {
     }
 
     fundScholarship = (data) => {
-        const { scholarship, updateScholarship } = this.props;
+        const { scholarship, onFundingComplete } = this.props;
         this.setState({isResponseLoading: true});
+        this.setState({isResponseLoadingMessage: 'Saving Contribution'});
         ScholarshipsAPI
             .fundScholarship(scholarship.id, data)
             .then(res => {
-                const { scholarship } = res.data;
-                updateScholarship(scholarship)
+                onFundingComplete(res.data)
             })
             .catch(err => {
                 this.setState({isResponseErrorMessage: getErrorMessage(err)});
@@ -124,13 +124,15 @@ class PaymentSendForm extends React.Component {
                             " try selecting your expiry date."
                     }
                     this.setState({isResponseErrorMessage});
+                    this.setState({isResponseLoading: false});
                 } else {
                     // The payment has been processed!
                     if (cardPaymentResult.paymentIntent.status === 'succeeded') {
                         this.setState({isPaymentSuccess: true});
+                        this.setState({isResponseLoading: false});
 
                         this.fundScholarship({ stripe_payment_intent_id: cardPaymentResult.paymentIntent.id,
-                                                     contributor, funding_amount: contributorFundingAmount})
+                                                     contributor, funding_amount: contributorFundingAmount});
                     }
                 }
 
@@ -138,15 +140,16 @@ class PaymentSendForm extends React.Component {
                 console.log({confirmCardPaymentError});
                 console.log("getErrorMessage(confirmCardPaymentError)", getErrorMessage(confirmCardPaymentError));
                 this.setState({ isResponseErrorMessage: getErrorMessage(confirmCardPaymentError) });
+                this.setState({isResponseLoading: false});
             }
 
         } catch (getClientSecretError) {
             console.log({getClientSecretError});
             console.log("getErrorMessage(getClientSecretError)", getErrorMessage(getClientSecretError));
             this.setState({isResponseErrorMessage: getErrorMessage(getClientSecretError)});
+            this.setState({isResponseLoading: false});
         }
 
-        this.setState({isResponseLoading: false});
     };
 
     updateForm = (event) => {
@@ -197,15 +200,24 @@ class PaymentSendForm extends React.Component {
             }
         }
 
-        const isPaymentSuccessText = (<div>
-            Payment was successful. See the live scholarship at: <br/>
-            <Link to={`/scholarship/${scholarship.slug}`} >{scholarship.name}</Link> <br/>
-            Check your email for your receipt.
-        </div>);
 
         return (
             <React.Fragment>
                 <div className="container">
+
+                    {isResponseLoading &&
+                        <Loading
+                            isLoading={isResponseLoading}
+                            title={isResponseLoadingMessage} />
+                    }
+
+                    {isResponseErrorMessage &&
+                        <Alert
+                            type="error"
+                            message={isResponseErrorMessageWithContactLink}
+                            className="mb-3"
+                        />
+                    }
 
                     <Row gutter={16}>
                         <Col sm={24} md={12}>
@@ -214,10 +226,10 @@ class PaymentSendForm extends React.Component {
                                 <Result
                                     status="success"
                                     title="Scholarship Contribution was Successful 🙂"
-                                    subTitle={isPaymentSuccessText}
+                                    subTitle="Check your email for your receipt."
                                     extra={[
                                         <Link to={`/scholarship/${scholarship.slug}`} key="view">
-                                            View Scholarship
+                                            View Scholarship: {scholarship.name}
                                         </Link>,
                                     ]}
                                 />
@@ -258,21 +270,7 @@ class PaymentSendForm extends React.Component {
                                     {canFundScholarshipMessage}
                                 </Button>
 
-                                {isResponseLoading &&
-
-                                <Loading
-                                    isLoading={isResponseLoading}
-                                    title={isResponseLoadingMessage} />
-                                }
-
-                                {isResponseErrorMessage &&
-                                <Alert
-                                    type="error"
-                                    message={isResponseErrorMessageWithContactLink}
-                                    className="mb-3"
-                                />
-                                }
-                                {isScholarshipOwner &&
+                                {isScholarshipOwner && !scholarship.is_funded &&
                                     <>
                                         <ScholarshipFundingWillPublishMessage />
                                         <br />
@@ -312,7 +310,7 @@ PaymentSendForm.defaultProps = {
 PaymentSendForm.propTypes = {
     userProfile: UserProfilePropType,
     scholarship: ScholarshipPropType,
-    updateScholarship: PropTypes.func,
+    onFundingComplete: PropTypes.func,
     contributor: PropTypes.shape({}),
     contributorFundingAmount: PropTypes.number,
 };

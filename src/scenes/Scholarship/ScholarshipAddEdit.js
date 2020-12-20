@@ -412,6 +412,11 @@ class ScholarshipAddEdit extends React.Component{
         })
     };
 
+    onFundingComplete = (fundingData) => {
+        const { scholarship } = fundingData;
+        this.updateScholarship(scholarship);
+    };
+
     autoSaveScholarship = () => {
         const { isAddScholarshipMode } = this.state;
 
@@ -618,7 +623,7 @@ class ScholarshipAddEdit extends React.Component{
                         {pageNumber === 4 &&
                         <div className="my-3">
                             <PaymentSend scholarship={scholarship}
-                                         updateScholarship={this.updateScholarship}
+                                         onFundingComplete={this.onFundingComplete}
                                          contributor={contributor}
                                          contributorFundingAmount={Number.parseInt(scholarship.funding_amount)} />
                         </div>
