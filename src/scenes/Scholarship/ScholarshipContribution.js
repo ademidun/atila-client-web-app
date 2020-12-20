@@ -11,6 +11,7 @@ import {UserProfilePropType} from "../../models/UserProfile";
 import Register from "../../components/Register";
 import FileInput from "../../components/Form/FileInput";
 import {DEFAULT_SCHOLARSHIP_CONTRIBUTOR} from "../../models/Scholarship";
+import ScholarshipContributionProfilePictureChooser from "./ScholarshipContributionProfilePictureChooser";
 
 const { Step } = Steps;
 
@@ -101,7 +102,7 @@ class ScholarshipContribution extends React.Component {
     updateContributorInfo = (event) => {
         if (event.preventDefault) {
             event.preventDefault();
-        }
+        };
 
         let { contributor } = this.state;
         let { is_anonymous } = contributor;
@@ -163,7 +164,6 @@ class ScholarshipContribution extends React.Component {
     render () {
         const { isLoadingScholarship, scholarship, pageNumber,
             contributor, scholarshipOwner, invalidInput, showRegistrationForm } = this.state;
-        const { userProfile } = this.props;
 
         const scholarshipSteps = (<Steps current={pageNumber-1} onChange={(current) => this.changePage(current+1)}>
             { scholarshipContributionPages.map(item => (
@@ -176,7 +176,7 @@ class ScholarshipContribution extends React.Component {
         }
 
         return (
-            <div className="container mt-5">
+            <div className="container mt-5 text-center">
                 {scholarshipSteps}
                 <div className="row my-3">
                     {pageNumber === 1 &&
@@ -216,8 +216,7 @@ class ScholarshipContribution extends React.Component {
                                className="col-12"
                                onChange={this.updateContributorInfo}/>
                                <hr/>
-
-                           <h3>Optional: Add a Picture of yourself to go with your donation</h3>
+                           <h3>Add a Picture of yourself to go with your donation</h3>
                             <FileInput title={"Profile Picture"}
                                        type={"image"}
                                        keyName={"profile_pic_url"}
@@ -225,8 +224,12 @@ class ScholarshipContribution extends React.Component {
                                        onChangeHandler={this.updateContributorInfo} />
                             {contributor.profile_pic_url && <img src={contributor.profile_pic_url}
                                                                  alt={contributor.first_name}
-                                                                 width="250"
-                                                                 className="card center-block my-3"/> }
+                                                                 style={{width: "150px"}}
+                                                                 className="rounded-circle shadow my-3"/> }
+
+                            <h3 className="my-3">Or Select your Preferred image</h3>
+                            <ScholarshipContributionProfilePictureChooser contributor={contributor}
+                                                                          onSelectedPicture={this.updateContributorInfo}/>
 
                         <Button className="float-right col-md-6" type="link"
                                 onClick={() => {
@@ -263,7 +266,7 @@ class ScholarshipContribution extends React.Component {
                                     </div>
                                     <div className="col-12 text-center">
                                         <a target="_blank" rel="noopener noreferrer" href={contributor.funding_confirmation_image_url}>
-                                            View Image (Right click or hold this link to save image)
+                                            View Image (Right click or hold on mobile to save image)
                                         </a>
                                     </div>
                                     </>
@@ -281,7 +284,7 @@ class ScholarshipContribution extends React.Component {
                                         </div>
                                         <div className="col-12 text-center">
                                             <a target="_blank" rel="noopener noreferrer" href="https://hcti.io/v1/image/10084573-8f25-43ab-9ebc-87cfaea84651">
-                                                View Image (Right click or hold this link to save image)
+                                                View Image (Right click or hold on mobile to save image)
                                             </a>
                                         </div>
                                     </div>
