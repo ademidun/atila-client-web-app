@@ -13,6 +13,7 @@ import FileInput from "../../components/Form/FileInput";
 import {DEFAULT_SCHOLARSHIP_CONTRIBUTOR} from "../../models/Scholarship";
 import ScholarshipContributionProfilePictureChooser from "./ScholarshipContributionProfilePictureChooser";
 import {ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP} from "../../models/Constants";
+import {isValidEmail} from "../../services/utils";
 
 const { Step } = Steps;
 
@@ -68,6 +69,7 @@ class ScholarshipContribution extends React.Component {
             contributor: defaultContributor,
             invalidInput: !defaultContributor.funding_amount,
             showRegistrationForm: true,
+            fundingComplete: false,
         }
     }
 
@@ -103,18 +105,23 @@ class ScholarshipContribution extends React.Component {
     updateContributorInfo = (event) => {
         if (event.preventDefault) {
             event.preventDefault();
-        };
-
-        let { contributor } = this.state;
+        }
+        let { contributor, pageNumber } = this.state;
         let { is_anonymous } = contributor;
         let invalidInput = null;
         let value = event.target.value;
         let eventName = event.target.name;
-        if (event.target.type==='checkbox'){
-            value = event.target.checked
-        }
+        const keyCode = event.code || event.key;
+
         if (eventName === "funding_amount") {
             value = Number.parseInt(value)
+        }
+
+        if (eventName === "email") {
+            if (value && !isValidEmail(value)) {
+                // Don't print a full invalid input statement because user might still be typing
+                invalidInput = true;
+            }
         }
         // If the user types a first name or last name then that implies they are not anonymous.
         if (eventName === "first_name" || eventName === "last_name") {
@@ -130,7 +137,11 @@ class ScholarshipContribution extends React.Component {
             invalidInput = `Minimum contribution amount is $${ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP}.`;
         }
 
-        this.setState({ contributor, invalidInput });
+        this.setState({ contributor, invalidInput }, () => {
+            if (!invalidInput && keyCode === 'Enter'){
+                this.changePage(pageNumber+1);
+            }
+        });
     };
 
     contributeAnonymously = () => {
@@ -152,7 +163,7 @@ class ScholarshipContribution extends React.Component {
         const { contributor } = fundingCompletionData;
 
         // set pageNumber to the last page of scholarshipContributionPages
-        this.setState({contributor, pageNumber: scholarshipContributionPages.length});
+        this.setState({contributor, pageNumber: scholarshipContributionPages.length, fundingComplete: true});
 
     };
 
@@ -164,12 +175,26 @@ class ScholarshipContribution extends React.Component {
 
     render () {
         const { isLoadingScholarship, scholarship, pageNumber,
-            contributor, scholarshipOwner, invalidInput, showRegistrationForm } = this.state;
+            contributor, scholarshipOwner, invalidInput, showRegistrationForm, fundingComplete } = this.state;
 
         const scholarshipSteps = (<Steps current={pageNumber-1} onChange={(current) => this.changePage(current+1)}>
-            { scholarshipContributionPages.map(item => (
-                <Step key={item.title} title={item.title} disabled={invalidInput} />
-            ))}
+            { scholarshipContributionPages.map(item => {
+
+                /**
+                 * Email may not exist in contributor object if it has been returned from the API
+                 * and contributor state is being updated in onFundingComplete. So only disable the steps navigation
+                 * if an email exists AND it is not a valid email.
+                 * */
+
+                let disableStep = invalidInput || !fundingComplete && (["Payment", "Complete"].includes(item.title)
+                    && !isValidEmail(contributor.email));
+
+                if(item.title === "Complete") {
+                    disableStep = !fundingComplete;
+                }
+
+                return (<Step key={item.title} title={item.title} disabled={disableStep} />)
+            })}
         </Steps>);
 
         if (isLoadingScholarship) {
