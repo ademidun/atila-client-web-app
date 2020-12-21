@@ -13,8 +13,15 @@ import Loading from "../../components/Loading";
 import {toastNotify} from "../../models/Utils";
 import FormDynamic from "../../components/Form/FormDynamic";
 import {Link} from "react-router-dom";
-import {Button, Popconfirm} from "antd";
-import {formatCurrency, getErrorMessage, handleError, prettifyKeys, scrollToElement} from "../../services/utils";
+import {Button, Popconfirm, Steps} from "antd";
+import {
+    formatCurrency,
+    getErrorMessage,
+    handleError,
+    isValidEmail,
+    prettifyKeys,
+    scrollToElement
+} from "../../services/utils";
 import Register from "../../components/Register";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
@@ -26,6 +33,20 @@ import {
 } from "./ApplicationUtils";
 import ApplicationEssayAddEdit from "./ApplicationEssayAddEdit";
 // import SecurityQuestionAndAnswer from "./SecurityQuestionAndAnswer";
+
+const { Step } = Steps;
+
+let applicationPages = [
+    {
+        title: 'Questions',
+    },
+    {
+        title: 'Verification',
+    },
+    {
+        title: 'Review',
+    }
+];
 
 let autoSaveTimeoutId;
 class ApplicationDetail extends  React.Component{
@@ -48,7 +69,8 @@ class ApplicationDetail extends  React.Component{
             isUsingLocalApplication: pathname.includes("/local/"),
             promptRegisterBeforeSubmitting: false,
             userProfileForRegistration: null,
-            registrationSuccessMessage: null
+            registrationSuccessMessage: null,
+            pageNumber: 1
         }
     }
 
@@ -440,13 +462,25 @@ class ApplicationDetail extends  React.Component{
         }
     };
 
+    changePage = (pageNumber) => {
+        this.setState({pageNumber});
+    };
+
     render() {
         const { match : { params : { applicationID }}, userProfile } = this.props;
         const { application, isLoadingApplication, scholarship, isSavingApplication, isSubmittingApplication,
             scholarshipUserProfileQuestionsFormConfig, scholarshipQuestionsFormConfig,
             viewMode, isUsingLocalApplication, promptRegisterBeforeSubmitting, registrationSuccessMessage,
-            applicationScore } = this.state;
+            applicationScore, pageNumber } = this.state;
 
+        const applicationSteps =
+            (<Steps current={pageNumber-1} onChange={(current) => this.changePage(current+1)}>
+            { applicationPages.map(item => {
+                return (<Step key={item.title} title={item.title} />)
+            })}
+        </Steps>)
+
+        let inViewMode = viewMode || application.is_submitted || application.is_payment_accepted;
         let dateModified;
         if (application.date_modified) {
             dateModified = new Date(application.date_modified);
@@ -499,12 +533,12 @@ class ApplicationDetail extends  React.Component{
                        type="number" step={0.01} min={0} max={10}
                        onChange={this.updateApplicationScore}
                        value={applicationScore}/>
-                <p>Your score is automatically usaved</p>
+                <p>Your score is automatically saved</p>
             </div>);
         }
 
 
-        const { deadline} = scholarship;
+        const { deadline } = scholarship;
 
         let scholarshipDateMoment = moment(deadline);
         const isScholarshipDeadlinePassed = scholarshipDateMoment.diff(moment(), 'days') < 0;
@@ -546,8 +580,9 @@ class ApplicationDetail extends  React.Component{
                         <div>
                             {scholarshipUserProfileQuestionsFormConfig && scholarshipQuestionsFormConfig &&
                             <div>
-                                {!viewMode && !application.is_submitted &&
+                                {!inViewMode &&
                                 <>
+                                    {applicationSteps}
                                     <h2>Profile Questions</h2>
                                     <FormDynamic onUpdateForm={event => this.updateForm(event, 'user_profile_responses')}
                                                  model={application.user_profile_responses}
@@ -565,6 +600,18 @@ class ApplicationDetail extends  React.Component{
                                     {!registrationSuccessMessage && !promptRegisterBeforeSubmitting &&
                                         submitContent
                                     }
+                                    <br />
+                                    <br />
+
+                                    <div className="my-2" style={{clear: 'both'}}>
+                                        {pageNumber > 1 &&
+                                        <button className="btn btn-outline-primary float-left col-md-6"
+                                                onClick={() => this.changePage(pageNumber-1)}>Back</button>}
+
+                                        {pageNumber < applicationPages.length &&
+                                        <button className="btn btn-outline-primary float-right col-md-6"
+                                                onClick={() => this.changePage(pageNumber+1)}>Next</button>}
+                                    </div>
                                 </>
                                 }
                                 {application.is_submitted &&
@@ -598,7 +645,7 @@ class ApplicationDetail extends  React.Component{
                                 }
                                 {registrationSuccessMessage}
 
-                                {(viewMode || application.is_submitted || application.is_payment_accepted) &&
+                                {inViewMode &&
                                 <>
 
                                     {applicationScoreContent}
@@ -613,6 +660,7 @@ class ApplicationDetail extends  React.Component{
                             }
 
                         </div>
+
                         {isLoadingApplication && <Loading  title="Loading Application..."/>}
                         {isSavingApplication && <Loading  title="Saving Application..."/>}
                         {isSubmittingApplication && <Loading  title="Submitting Application..."/>}
