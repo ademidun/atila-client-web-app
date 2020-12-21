@@ -95,7 +95,7 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
         case 'autocomplete':
             inputForm = (
                 <React.Fragment>
-                    <ArrayEdit itemsList={modelValue}
+                    <ArrayEdit itemsList={modelValue||[]}
                                keyName={keyName}
                                model={model}
                                onUpdateItemsList={onUpdateForm}/>

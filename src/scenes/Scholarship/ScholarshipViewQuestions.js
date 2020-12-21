@@ -45,7 +45,6 @@ class ScholarshipViewQuestions extends React.Component {
 
         const userProfileQuestionsFormConfig = transformProfileQuestionsToApplicationForm(scholarship.user_profile_questions);
         const scholarshipQuestionsFormConfig = transformScholarshipQuestionsToApplicationForm(scholarship.specific_questions);
-
         return (
             <div className="container mt-5">
                 <h1>Questions for <Link to={`/scholarship/${scholarship.slug}`}>{scholarship.name}</Link></h1>
