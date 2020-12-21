@@ -562,7 +562,14 @@ class ApplicationDetail extends  React.Component{
             </p>)
         }
 
-
+        let viewModeContent = (<>
+                {applicationScoreContent}
+                <h2>Profile Questions</h2>
+                {this.viewForm(scholarship.user_profile_questions, application.user_profile_responses)}
+                <br />
+                <h2>Scholarship Questions</h2>
+                {this.viewForm(scholarship.specific_questions, application.scholarship_responses)}
+        </>)
 
         return (
             <>
@@ -583,22 +590,35 @@ class ApplicationDetail extends  React.Component{
                                 {!inViewMode &&
                                 <>
                                     {applicationSteps}
-                                    <h2>Profile Questions</h2>
-                                    <FormDynamic onUpdateForm={event => this.updateForm(event, 'user_profile_responses')}
-                                                 model={application.user_profile_responses}
-                                                 inputConfigs=
-                                                     {scholarshipUserProfileQuestionsFormConfig}
-                                    />
+                                    {(pageNumber === 1) &&
+                                    <>
+                                        <br />
+                                        <h2>Profile Questions</h2>
+                                        <FormDynamic onUpdateForm={event => this.updateForm(event, 'user_profile_responses')}
+                                        model={application.user_profile_responses}
+                                        inputConfigs=
+                                        {scholarshipUserProfileQuestionsFormConfig}
+                                        />
 
-                                    <h2>Scholarship Questions</h2>
-                                    <FormDynamic onUpdateForm={event => this.updateForm(event, 'scholarship_responses')}
-                                                 model={application.scholarship_responses}
-                                                 inputConfigs=
-                                                     {scholarshipQuestionsFormConfig}
-                                    />
-                                    {dateModified}
-                                    {!registrationSuccessMessage && !promptRegisterBeforeSubmitting &&
-                                        submitContent
+                                        <h2>Scholarship Questions</h2>
+                                        <FormDynamic onUpdateForm={event => this.updateForm(event, 'scholarship_responses')}
+                                        model={application.scholarship_responses}
+                                        inputConfigs=
+                                        {scholarshipQuestionsFormConfig}
+                                        />
+                                        {dateModified}
+                                        {!registrationSuccessMessage && !promptRegisterBeforeSubmitting &&
+                                            submitContent
+                                        }
+                                    </>
+                                    }
+                                    {(pageNumber === 2) &&
+                                        <div id="security">
+                                            <SecurityQuestionAndAnswer />
+                                        </div>
+                                    }
+                                    {(pageNumber === 3) &&
+                                        viewModeContent
                                     }
                                     <br />
                                     <br />
@@ -620,12 +640,6 @@ class ApplicationDetail extends  React.Component{
                                         <ApplicationEssayAddEdit application={application} />
                                     </div>
                                 }
-                                {application && userProfile && application.user &&
-                                    application.user.user === userProfile.user  &&
-                                    <div id="security">
-                                        <SecurityQuestionAndAnswer />
-                                    </div>
-                                }
                                 {promptRegisterBeforeSubmitting &&
                                 <>
                                     <h3>Create a username and password to access your application later
@@ -645,17 +659,7 @@ class ApplicationDetail extends  React.Component{
                                 }
                                 {registrationSuccessMessage}
 
-                                {inViewMode &&
-                                <>
-
-                                    {applicationScoreContent}
-                                    <h2>Profile Questions</h2>
-                                    {this.viewForm(scholarship.user_profile_questions, application.user_profile_responses)}
-                                    <br />
-                                    <h2>Scholarship Questions</h2>
-                                    {this.viewForm(scholarship.specific_questions, application.scholarship_responses)}
-                                </>
-                                }
+                                {inViewMode && viewModeContent}
                             </div>
                             }
 
