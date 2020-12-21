@@ -3,6 +3,7 @@ import {DEFAULT_USER_PROFILE_PICTURE_URL, UserProfileTest1} from "./UserProfile"
 import {Link} from "react-router-dom";
 import React from "react";
 import {Alert, Popover} from "antd";
+import {AUTOCOMPLETE_KEY_LIST} from "./ConstantsForm";
 
 let nextMonth = new Date();
 nextMonth.setDate(nextMonth.getDate() + 30);
@@ -67,15 +68,10 @@ export const scholarshipUserProfileQuestionOptions = [
     "first_name",
     "last_name",
     "email",
+    "gender",
     "post_secondary_school",
     "major",
-    "eligible_programs",
-    "eligible_major",
-    "ethnicity",
-    "country",
-    "citizenship",
-    "extracurricular_description",
-    "academic_career_goals",
+    ...AUTOCOMPLETE_KEY_LIST,
 ];
 
 export const ScholarshipPropType = PropTypes.shape({

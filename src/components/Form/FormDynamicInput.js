@@ -1,6 +1,6 @@
 import {nestedFieldGet, prettifyKeys} from "../../services/utils";
 import React from "react";
-import ArrayEdit from "../ArrayEdit";
+import { Select} from 'antd';
 import AutoComplete from "../AutoComplete";
 import PropTypes from "prop-types";
 import {InputConfigPropType} from "../../models/Utils";
@@ -9,12 +9,25 @@ import CKEditor from "@ckeditor/ckeditor5-react";
 import InlineEditor from "@ckeditor/ckeditor5-build-inline";
 import "./FormDynamicInput.scss";
 import FileInput from "./FileInput";
+import {emojiDictionary} from "../../models/Constants";
+
+const { Option } = Select;
 
 const editorChange = ( event, editor, name, updateForm ) => {
     const newEvent = {
         target: {
             name: name,
             value: editor.getData()
+        }
+    };
+    updateForm(newEvent);
+};
+
+const selectChange = ( name, value, updateForm ) => {
+    const newEvent = {
+        target: {
+            name,
+            value
         }
     };
     updateForm(newEvent);
@@ -44,6 +57,12 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
 
     // to fix controlled components issue: https://fb.me/react-controlled-components
     modelValue = modelValue || '';
+
+    if (type === "autocomplete") {
+        if (!Array.isArray(modelValue)) {
+            modelValue = [];
+        }
+    }
 
     switch (type) {
         case 'textarea':
@@ -95,14 +114,19 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
         case 'autocomplete':
             inputForm = (
                 <React.Fragment>
-                    <ArrayEdit itemsList={modelValue}
-                               keyName={keyName}
-                               model={model}
-                               onUpdateItemsList={onUpdateForm}/>
-                    <AutoComplete suggestions={suggestions}
-                                  placeholder={placeholder}
-                                  onSelected={onUpdateForm}
-                                  keyName={keyName}/>
+                    <Select mode="tags" style={{ width: '100%' }}
+                            value={modelValue}
+                            placeholder={placeholder}
+                            onChange={(selected) => selectChange(keyName, selected, onUpdateForm)}>
+                        {suggestions.map(suggestion => (
+                            <Option key={suggestion}
+                                    value={suggestion}>
+                                {prettifyKeys(suggestion)}{' '}
+
+                                {emojiDictionary[suggestion.toLowerCase()] && emojiDictionary[suggestion.toLowerCase()]}
+                            </Option>
+                        ))}
+                    </Select>
                 </React.Fragment>
             );
             break;

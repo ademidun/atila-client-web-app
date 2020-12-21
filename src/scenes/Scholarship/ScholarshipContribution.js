@@ -306,11 +306,6 @@ class ScholarshipContribution extends React.Component {
                                              */}
                                              <p id="hide-after-3-seconds">Your confirmation image may take a few seconds to display, please wait...</p>
                                     </div>
-                                    <div className="col-12 text-center mb-3">
-                                        <a target="_blank" rel="noopener noreferrer" href={contributor.funding_confirmation_image_url}>
-                                            View Image (Right click or hold on mobile to save image)
-                                        </a>
-                                    </div>
                                     </>
                                 }
                                 {contributor.is_anonymous &&
@@ -331,7 +326,7 @@ class ScholarshipContribution extends React.Component {
                                         View Image (Right click or hold on mobile to save image)
                                     </a>
                                 </div>
-                                <div className="float-left col-12 mb-3">
+                                <div className="col-12 text-center mb-3">
                                     <Link to={`/scholarship/${scholarship.slug}`}>
                                         View Scholarship: {scholarship.name}
                                     </Link>
