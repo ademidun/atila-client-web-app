@@ -607,9 +607,7 @@ class ApplicationDetail extends  React.Component{
                                         {scholarshipQuestionsFormConfig}
                                         />
                                         {dateModified}
-                                        {!registrationSuccessMessage && !promptRegisterBeforeSubmitting &&
-                                            submitContent
-                                        }
+
                                     </>
                                     }
                                     {(pageNumber === 2) &&
@@ -618,7 +616,12 @@ class ApplicationDetail extends  React.Component{
                                         </div>
                                     }
                                     {(pageNumber === 3) &&
+                                        <>
                                         viewModeContent
+                                        {!registrationSuccessMessage && !promptRegisterBeforeSubmitting &&
+                                            submitContent
+                                        }
+                                        </>
                                     }
                                     <br />
                                     <br />
