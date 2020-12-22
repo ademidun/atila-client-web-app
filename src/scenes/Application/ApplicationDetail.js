@@ -14,14 +14,7 @@ import {toastNotify} from "../../models/Utils";
 import FormDynamic from "../../components/Form/FormDynamic";
 import {Link} from "react-router-dom";
 import {Button, Popconfirm, Steps} from "antd";
-import {
-    formatCurrency,
-    getErrorMessage,
-    handleError,
-    isValidEmail,
-    prettifyKeys,
-    scrollToElement
-} from "../../services/utils";
+import { formatCurrency, getErrorMessage, handleError, prettifyKeys, scrollToElement } from "../../services/utils";
 import Register from "../../components/Register";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
