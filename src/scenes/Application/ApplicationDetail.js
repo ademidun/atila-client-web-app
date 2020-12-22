@@ -248,12 +248,10 @@ class ApplicationDetail extends  React.Component{
                     <h5 className="text-center text-muted">
                         <span role="img" aria-label="happy face emoji">🙂 </span>
                         Successfully saved your application! <br/>
-                        {/*TODO temporarily open in new tab until we can get the props to update when applicationID or scholarship ID in url changes*/}
-                        <Link to={`/application/${application.id}`} target="_blank">View your Application</Link>{' '}
-                        before submitting
                     </h5>);
+                const successMessagePlain = "🙂 Successfully saved your application!"
 
-                toastNotify(successMessage, 'info', {position: 'bottom-right'});
+                toastNotify(successMessagePlain, 'info', {position: 'bottom-right'});
 
                 this.setState({registrationSuccessMessage: successMessage, promptRegisterBeforeSubmitting: false});
                 this.props.history.push(`/application/${application.id}`)
@@ -597,7 +595,6 @@ class ApplicationDetail extends  React.Component{
                          inputConfigs=
                              {scholarshipQuestionsFormConfig}
             />
-            {dateModified}
             </>)
 
         if (isScholarshipDeadlinePassed) {
@@ -695,7 +692,7 @@ class ApplicationDetail extends  React.Component{
                                 {!inViewMode && !userProfile &&
                                     <>
                                         {applicationForm}
-                                        {!registrationSuccessMessage && !promptRegisterBeforeSubmitting &&
+                                        {!promptRegisterBeforeSubmitting &&
                                         submitContent
                                         }
                                     </>
