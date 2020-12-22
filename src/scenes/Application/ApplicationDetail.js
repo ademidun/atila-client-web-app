@@ -65,7 +65,6 @@ class ApplicationDetail extends  React.Component{
             isUsingLocalApplication: pathname.includes("/local/"),
             promptRegisterBeforeSubmitting: false,
             userProfileForRegistration: null,
-            registrationSuccessMessage: null,
             pageNumber: 1
         }
     }
@@ -239,22 +238,10 @@ class ApplicationDetail extends  React.Component{
         ApplicationsAPI
             .getOrCreate({scholarship_responses, user_profile_responses, scholarship: scholarship.id, user: userProfile.user})
             .then(res=>{
-                // State needs to be updated with new application from response ideally
-                // const application = res.data
-                // this.setState({application})
-                // TEMPORARY SOLUTION
-                const { data: { application } } = res;
-                const successMessage = (
-                    <h5 className="text-center text-muted">
-                        <span role="img" aria-label="happy face emoji">🙂 </span>
-                        Successfully saved your application! <br/>
-                    </h5>);
-                const successMessagePlain = "🙂 Successfully saved your application!"
+                const { application } = res.data
 
-                toastNotify(successMessagePlain, 'info', {position: 'bottom-right'});
-
-                this.setState({registrationSuccessMessage: successMessage, promptRegisterBeforeSubmitting: false});
                 this.props.history.push(`/application/${application.id}`)
+                window.location.reload()
             })
             .catch(err => {
                 console.log({err});
@@ -495,7 +482,7 @@ class ApplicationDetail extends  React.Component{
         const { match : { params : { applicationID }}, userProfile } = this.props;
         const { application, isLoadingApplication, scholarship, isSavingApplication, isSubmittingApplication,
             scholarshipUserProfileQuestionsFormConfig, scholarshipQuestionsFormConfig,
-            viewMode, isUsingLocalApplication, promptRegisterBeforeSubmitting, registrationSuccessMessage,
+            viewMode, isUsingLocalApplication, promptRegisterBeforeSubmitting,
             applicationScore, pageNumber } = this.state;
 
         const applicationSteps =
@@ -722,8 +709,6 @@ class ApplicationDetail extends  React.Component{
                                               onRegistrationFinished={this.createApplicationAfterRegistration} />
                                 </>
                                 }
-                                {registrationSuccessMessage}
-
                                 {inViewMode && viewModeContent}
                             </div>
                             }
