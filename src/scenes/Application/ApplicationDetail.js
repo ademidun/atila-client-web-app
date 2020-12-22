@@ -256,6 +256,7 @@ class ApplicationDetail extends  React.Component{
                 toastNotify(successMessage, 'info', {position: 'bottom-right'});
 
                 this.setState({registrationSuccessMessage: successMessage, promptRegisterBeforeSubmitting: false});
+                this.props.history.push(`/application/${application.id}`)
             })
             .catch(err => {
                 console.log({err});
@@ -672,9 +673,7 @@ class ApplicationDetail extends  React.Component{
                                     {(pageNumber === 3) &&
                                         <>
                                         {viewModeContent}
-                                        {!registrationSuccessMessage && !promptRegisterBeforeSubmitting &&
-                                            submitContent
-                                        }
+                                        {submitContent}
                                         </>
                                     }
                                     <br />
