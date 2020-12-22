@@ -25,7 +25,9 @@ import {
     transformScholarshipQuestionsToApplicationForm
 } from "./ApplicationUtils";
 import ApplicationEssayAddEdit from "./ApplicationEssayAddEdit";
-// import SecurityQuestionAndAnswer from "./SecurityQuestionAndAnswer";
+import FileInput from "../../components/Form/FileInput";
+import {DEFAULT_USER_PROFILE_PICTURE_URL} from "../../models/UserProfile";
+import UserProfileAPI from "../../services/UserProfileAPI";
 
 const { Step } = Steps;
 
@@ -459,6 +461,21 @@ class ApplicationDetail extends  React.Component{
         this.setState({pageNumber});
     };
 
+    onChangeProfilePicture = (event) => {
+        const { loggedInUserProfile, updateLoggedInUserProfile } = this.props;
+
+        UserProfileAPI.patch(
+            {
+                profile_pic_url: event.target.value,
+            }, loggedInUserProfile.user)
+            .then(res => {
+                updateLoggedInUserProfile(res.data);
+            })
+            .catch(err=> {
+                console.log({err});
+            });
+    };
+
     render() {
         const { match : { params : { applicationID }}, userProfile } = this.props;
         const { application, isLoadingApplication, scholarship, isSavingApplication, isSubmittingApplication,
@@ -600,21 +617,37 @@ class ApplicationDetail extends  React.Component{
                                 {!inViewMode && userProfile &&
                                 <>
                                     {applicationSteps}
+                                    <br />
                                     {(pageNumber === 1) &&
                                     <>
-                                        <br />
                                         {applicationForm}
                                         {dateModified}
                                     </>
                                     }
                                     {(pageNumber === 2) &&
-                                        <div id="security">
-                                            <SecurityQuestionAndAnswer />
-                                        </div>
+                                        <>
+                                            <h2>Upload Profile Picture</h2>
+                                            {(userProfile.profile_pic_url === DEFAULT_USER_PROFILE_PICTURE_URL) &&
+                                            <>
+                                            <FileInput title={"Profile Picture"}
+                                                       type={"image"}
+                                                       keyName={"profile_pic_url"}
+                                                       filePath={`user-profile-pictures/${userProfile.user}`}
+                                                       onChangeHandler={this.onChangeProfilePicture} />
+                                           </>}
+                                            {(userProfile.profile_pic_url !== DEFAULT_USER_PROFILE_PICTURE_URL) &&
+                                            <p>Your profile picture has already been uploaded!
+                                            Click here if you would like to change it.</p>
+                                            }
+
+                                            <div id="security">
+                                                <SecurityQuestionAndAnswer />
+                                            </div>
+                                        </>
                                     }
                                     {(pageNumber === 3) &&
                                         <>
-                                        viewModeContent
+                                        {viewModeContent}
                                         {!registrationSuccessMessage && !promptRegisterBeforeSubmitting &&
                                             submitContent
                                         }
