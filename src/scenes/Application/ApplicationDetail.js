@@ -595,6 +595,7 @@ class ApplicationDetail extends  React.Component{
                          inputConfigs=
                              {scholarshipQuestionsFormConfig}
             />
+            {dateModified}
             </>)
 
         if (isScholarshipDeadlinePassed) {
@@ -635,7 +636,6 @@ class ApplicationDetail extends  React.Component{
                                     {(pageNumber === 1) &&
                                     <>
                                         {applicationForm}
-                                        {dateModified}
                                     </>
                                     }
                                     {(pageNumber === 2) &&
