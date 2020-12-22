@@ -28,6 +28,7 @@ import ApplicationEssayAddEdit from "./ApplicationEssayAddEdit";
 import FileInput from "../../components/Form/FileInput";
 import {DEFAULT_USER_PROFILE_PICTURE_URL} from "../../models/UserProfile";
 import UserProfileAPI from "../../services/UserProfileAPI";
+import {updateLoggedInUserProfile} from "../../redux/actions/user";
 
 const { Step } = Steps;
 
@@ -462,12 +463,27 @@ class ApplicationDetail extends  React.Component{
     };
 
     onChangeProfilePicture = (event) => {
-        const { loggedInUserProfile, updateLoggedInUserProfile } = this.props;
+        const { userProfile, updateLoggedInUserProfile } = this.props;
 
         UserProfileAPI.patch(
             {
                 profile_pic_url: event.target.value,
-            }, loggedInUserProfile.user)
+            }, userProfile.user)
+            .then(res => {
+                updateLoggedInUserProfile(res.data);
+            })
+            .catch(err=> {
+                console.log({err});
+            });
+    };
+
+    revertProfilePicture = (event) => {
+        const { userProfile, updateLoggedInUserProfile } = this.props;
+
+        UserProfileAPI.patch(
+            {
+                profile_pic_url: DEFAULT_USER_PROFILE_PICTURE_URL,
+            }, userProfile.user)
             .then(res => {
                 updateLoggedInUserProfile(res.data);
             })
@@ -636,10 +652,18 @@ class ApplicationDetail extends  React.Component{
                                                        onChangeHandler={this.onChangeProfilePicture} />
                                            </>}
                                             {(userProfile.profile_pic_url !== DEFAULT_USER_PROFILE_PICTURE_URL) &&
-                                            <p>Your profile picture has already been uploaded!
-                                            Click here if you would like to change it.</p>
+                                                <>
+                                                <p>Your profile picture has been uploaded! <Link to={`/profile/${userProfile.username}`} target={'_blank'}>
+                                                        Click here </Link> if you would like to change it. </p>
+                                                    <img
+                                                    alt="user profile"
+                                                    style={{ height: '250px', width: 'auto' }}
+                                                    className="rounded-circle cursor-pointer"
+                                                    src={userProfile.profile_pic_url}
+                                                    />
+                                                </>
                                             }
-
+                                            <Button onClick={()=>{this.revertProfilePicture()}}>Revert Profile Picture</Button>
                                             <div id="security">
                                                 <SecurityQuestionAndAnswer />
                                             </div>
@@ -685,6 +709,8 @@ class ApplicationDetail extends  React.Component{
                                 }
                                 {promptRegisterBeforeSubmitting &&
                                 <>
+                                    <br />
+                                    <br />
                                     <h3>Create a username and password to access your application later
                                     and review your application once more before submitting</h3>
                                     {/*
@@ -718,8 +744,10 @@ class ApplicationDetail extends  React.Component{
     }
 }
 
-
+const mapDispatchToProps = {
+    updateLoggedInUserProfile
+};
 const mapStateToProps = state => {
     return { userProfile: state.data.user.loggedInUserProfile };
 };
-export default connect(mapStateToProps)(ApplicationDetail);
+export default connect(mapStateToProps, mapDispatchToProps)(ApplicationDetail);
