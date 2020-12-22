@@ -556,6 +556,23 @@ class ApplicationDetail extends  React.Component{
             </Popconfirm>
         );
 
+        let applicationForm = (<>
+            <h2>Profile Questions</h2>
+            <FormDynamic onUpdateForm={event => this.updateForm(event, 'user_profile_responses')}
+                         model={application.user_profile_responses}
+                         inputConfigs=
+                             {scholarshipUserProfileQuestionsFormConfig}
+            />
+
+            <h2>Scholarship Questions</h2>
+            <FormDynamic onUpdateForm={event => this.updateForm(event, 'scholarship_responses')}
+                         model={application.scholarship_responses}
+                         inputConfigs=
+                             {scholarshipQuestionsFormConfig}
+            />
+            {dateModified}
+            </>)
+
         if (isScholarshipDeadlinePassed) {
             submitContent = (<p className="text-muted float-right">
                 Scholarship deadline has passed. Scholarship was due on {scholarshipDateString}
@@ -587,27 +604,14 @@ class ApplicationDetail extends  React.Component{
                         <div>
                             {scholarshipUserProfileQuestionsFormConfig && scholarshipQuestionsFormConfig &&
                             <div>
-                                {!inViewMode &&
+                                {!inViewMode && userProfile &&
                                 <>
                                     {applicationSteps}
                                     {(pageNumber === 1) &&
                                     <>
                                         <br />
-                                        <h2>Profile Questions</h2>
-                                        <FormDynamic onUpdateForm={event => this.updateForm(event, 'user_profile_responses')}
-                                        model={application.user_profile_responses}
-                                        inputConfigs=
-                                        {scholarshipUserProfileQuestionsFormConfig}
-                                        />
-
-                                        <h2>Scholarship Questions</h2>
-                                        <FormDynamic onUpdateForm={event => this.updateForm(event, 'scholarship_responses')}
-                                        model={application.scholarship_responses}
-                                        inputConfigs=
-                                        {scholarshipQuestionsFormConfig}
-                                        />
+                                        {applicationForm}
                                         {dateModified}
-
                                     </>
                                     }
                                     {(pageNumber === 2) &&
@@ -636,6 +640,14 @@ class ApplicationDetail extends  React.Component{
                                                 onClick={() => this.changePage(pageNumber+1)}>Next</button>}
                                     </div>
                                 </>
+                                }
+                                {!inViewMode && !userProfile &&
+                                    <>
+                                        {applicationForm}
+                                        {!registrationSuccessMessage && !promptRegisterBeforeSubmitting &&
+                                        submitContent
+                                        }
+                                    </>
                                 }
                                 {application.is_submitted &&
                                     <div id="publish" className="row col-12 my-3">
