@@ -656,14 +656,16 @@ class ApplicationDetail extends  React.Component{
                                     <br />
                                     <br />
 
-                                    <div className="my-2" style={{clear: 'both'}}>
+                                    <div className="row">
                                         {pageNumber > 1 &&
-                                        <button className="btn btn-outline-primary float-left col-md-6"
-                                                onClick={() => this.changePage(pageNumber-1)}>Back</button>}
+                                        <Button className="float-left col-md-6"
+                                                onClick={() => this.changePage(pageNumber-1)}>Back</Button>}
 
                                         {pageNumber < applicationPages.length &&
-                                        <button className="btn btn-outline-primary float-right col-md-6"
-                                                onClick={() => this.changePage(pageNumber+1)}>Next</button>}
+                                        <Button className="float-right col-md-6"
+                                                onClick={() => this.changePage(pageNumber+1)}>
+                                            Next
+                                        </Button>}
                                     </div>
                                 </>
                                 }
