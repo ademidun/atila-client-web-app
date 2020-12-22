@@ -242,6 +242,10 @@ class ApplicationDetail extends  React.Component{
 
                 this.props.history.push(`/application/${application.id}`)
                 window.location.reload()
+                /* Instead of setting all the state variables manually to work for a real application,
+                   it's cleaner to just refresh, and all of that will be taken care of automatically.
+                   This is better for maintanability as well because when adding new state variables, they don't
+                   need to be considered to be updated here.*/
             })
             .catch(err => {
                 console.log({err});
@@ -253,13 +257,23 @@ class ApplicationDetail extends  React.Component{
     };
 
     submitApplicationRemotely = () => {
-        this.setState({isSubmittingApplication: true});
-        // TODO when this function is called, if user is not logged in. Show the Registration component
-        //  and return
-
         const { application, scholarship } = this.state;
+        const { userProfile } = this.props;
         const { scholarship_responses, user_profile_responses } = addQuestionDetailToApplicationResponses(application, scholarship);
 
+        if (userProfile.profile_pic_url === DEFAULT_USER_PROFILE_PICTURE_URL){
+            const failMessage = "A profile picture must be set in the Verification Step.";
+            toastNotify(failMessage, 'error')
+            return;
+        }
+
+        if (!userProfile.security_question_is_answered){
+            const failMessage = "A security question and answer must be set in the Verification Step.";
+            toastNotify(failMessage, 'error')
+            return;
+        }
+
+        this.setState({isSubmittingApplication: true});
         ApplicationsAPI
             .submit(application.id, {scholarship_responses, user_profile_responses})
             .then(res=>{
@@ -463,21 +477,6 @@ class ApplicationDetail extends  React.Component{
             });
     };
 
-    revertProfilePicture = (event) => {
-        const { userProfile, updateLoggedInUserProfile } = this.props;
-
-        UserProfileAPI.patch(
-            {
-                profile_pic_url: DEFAULT_USER_PROFILE_PICTURE_URL,
-            }, userProfile.user)
-            .then(res => {
-                updateLoggedInUserProfile(res.data);
-            })
-            .catch(err=> {
-                console.log({err});
-            });
-    };
-
     render() {
         const { match : { params : { applicationID }}, userProfile } = this.props;
         const { application, isLoadingApplication, scholarship, isSavingApplication, isSubmittingApplication,
@@ -628,18 +627,9 @@ class ApplicationDetail extends  React.Component{
                                     {(pageNumber === 2) &&
                                         <>
                                             <h2>Upload Profile Picture</h2>
-                                            {(userProfile.profile_pic_url === DEFAULT_USER_PROFILE_PICTURE_URL) &&
-                                            <>
-                                            <FileInput title={"Profile Picture"}
-                                                       type={"image"}
-                                                       keyName={"profile_pic_url"}
-                                                       filePath={`user-profile-pictures/${userProfile.user}`}
-                                                       onChangeHandler={this.onChangeProfilePicture} />
-                                           </>}
                                             {(userProfile.profile_pic_url !== DEFAULT_USER_PROFILE_PICTURE_URL) &&
                                                 <>
-                                                <p>Your profile picture has been uploaded! <Link to={`/profile/${userProfile.username}`} target={'_blank'}>
-                                                        Click here </Link> if you would like to change it. </p>
+                                                <p>Your profile picture has been uploaded!</p>
                                                     <img
                                                     alt="user profile"
                                                     style={{ height: '250px', width: 'auto' }}
@@ -648,7 +638,11 @@ class ApplicationDetail extends  React.Component{
                                                     />
                                                 </>
                                             }
-                                            <Button onClick={()=>{this.revertProfilePicture()}}>Revert Profile Picture</Button>
+                                            <FileInput title={"Profile Picture"}
+                                                       type={"image"}
+                                                       keyName={"profile_pic_url"}
+                                                       filePath={`user-profile-pictures/${userProfile.user}`}
+                                                       onChangeHandler={this.onChangeProfilePicture} />
                                             <div id="security">
                                                 <SecurityQuestionAndAnswer />
                                             </div>
