@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import ContentCard from "./ContentCard";
 import Loading from "./Loading";
 import ScholarshipsAPI from "../services/ScholarshipsAPI";
+import {genericItemTransform} from "../services/utils";
 
 class RelatedItems extends React.Component {
 
@@ -18,12 +19,12 @@ class RelatedItems extends React.Component {
     }
     componentDidMount() {
 
-        const { itemType, id } = this.props;
+        const { id } = this.props;
         this.setState({ isLoadingRelatedItems: true });
         let relatedItemsPromise  = Promise.resolve();
 
         relatedItemsPromise = ScholarshipsAPI
-            .relatedItems(`${itemType}-${id}`);
+            .relatedItems(`${id}`);
         relatedItemsPromise
             .then(res => {
                 let relatedItems = [];
@@ -45,7 +46,7 @@ class RelatedItems extends React.Component {
     render () {
 
         const { relatedItems, isLoadingRelatedItems  } = this.state;
-        const { className  } = this.props;
+        const { className, itemType  } = this.props;
 
         if (isLoadingRelatedItems) {
             return (
@@ -62,6 +63,9 @@ class RelatedItems extends React.Component {
                 {relatedItems.map(item => {
                     if (["blog", "essay"].includes(item.type)) {
                         item.slug = `/${item.type}/${item.slug}`;
+                    }
+                    if (itemType === "scholarship") {
+                        item = genericItemTransform(item);
                     }
                     return (<ContentCard key={item.slug}
                                          content={item}
