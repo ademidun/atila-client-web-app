@@ -650,7 +650,7 @@ class ApplicationDetail extends  React.Component{
                                             </div>
                                         </>
                                     }
-                                    {(pageNumber === 3) &&
+                                    {(pageNumber === applicationPages.length) &&
                                         <>
                                         {viewModeContent}
                                         </>
