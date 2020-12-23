@@ -77,7 +77,7 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
             break;
         case 'checkbox':
             inputForm = (
-                <div className="col-12 mb-3">
+                <div>
                     {!hideLabel &&
                     <label htmlFor={keyName} className="mr-3">
                         {placeholder}
@@ -114,8 +114,16 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
         case 'autocomplete':
             inputForm = (
                 <React.Fragment>
+                    {/*When there is a value in the select field, the placeholder is hidden and user may not
+                    know what value was in that field. Adding a label that displays if there is a model value,
+                    fixes this problem.*/}
+                    {modelValue && modelValue.length >  0 &&
+                        <label htmlFor={keyName}>
+                            {placeholder}:{' '}
+                        </label>
+
+                    }
                     <Select mode="tags" style={{ width: '100%' }}
-                            className="mb-3"
                             value={modelValue}
                             placeholder={placeholder}
                             onChange={(selected) => selectChange(keyName, selected, onUpdateForm)}>
@@ -231,7 +239,7 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
     }
 
     inputForm = (
-        <div className={`FormDynamicInput w-100 ${className ? ` ${className}` : ''} ${inputConfig.error ? ' input-error' : ''}`}>
+        <div className={`FormDynamicInput w-100 ${className ? ` ${className}` : 'col-12 mb-2'} ${inputConfig.error ? ' input-error' : ''}`}>
             {html && html(model)}
             {inputForm}
         </div>
