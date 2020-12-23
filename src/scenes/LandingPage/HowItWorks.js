@@ -2,6 +2,10 @@ import React from 'react';
 import {Link} from "react-router-dom";
 import {Button, Tag} from "antd";
 import LandingPageLiveDemo from "./LandingPageLiveDemo";
+import {
+    ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP,
+    ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_START_SCHOLARSHIP
+} from "../../models/Constants";
 
 function HowItWorks({accountType}) {
 
@@ -24,7 +28,7 @@ const howItWorksStudent = [
         body: <React.Fragment>
             <Link to="register">Register</Link> for a free account in 15 seconds.<br/>
 
-            Tell us your school, program, ethnicity, gender, etc. to get matched
+            Tell us your school, program, etc. to get matched
             with the right scholarships for you.
 
         </React.Fragment>,
@@ -103,8 +107,9 @@ export function HowItWorksSponsor({hideLearnMore = false}) {
         title: "Fund Scholarship",
             body: <p>Fund the scholarship with a credit card or debit card.
                 <br/><br/>
-        The minimum funding amount for a scholarship is just $50.
-        </p>,
+        The minimum funding amount for a scholarship is just ${ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_START_SCHOLARSHIP}. <br/> <br/>
+            The minimum funding amount for additional contributions is ${ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP}.
+            </p>,
             image: "https://i.imgur.com/kgpSskJ.png",
         },
         {
