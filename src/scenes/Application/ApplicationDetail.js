@@ -14,7 +14,7 @@ import {toastNotify} from "../../models/Utils";
 import FormDynamic from "../../components/Form/FormDynamic";
 import {Link} from "react-router-dom";
 import {Button, Popconfirm, Steps} from "antd";
-import { formatCurrency, getErrorMessage, handleError, prettifyKeys, scrollToElement } from "../../services/utils";
+import { getErrorMessage, handleError, prettifyKeys, scrollToElement } from "../../services/utils";
 import Register from "../../components/Register";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
@@ -29,6 +29,7 @@ import FileInput from "../../components/Form/FileInput";
 import {DEFAULT_USER_PROFILE_PICTURE_URL} from "../../models/UserProfile";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import {updateLoggedInUserProfile} from "../../redux/actions/user";
+import ApplicationDetailHeader from "./ApplicationDetailHeader";
 
 const { Step } = Steps;
 
@@ -277,11 +278,23 @@ class ApplicationDetail extends  React.Component{
         ApplicationsAPI
             .submit(application.id, {scholarship_responses, user_profile_responses})
             .then(res=>{
+
+                // TODO figure out how to call setState({application}) after submission without causing the following error:
+                //  Uncaught Error: Objects are not valid as a React child (found: object with keys {key, response}).
+                //  If you meant to render a collection of children, use an array instead.
+
                 // State needs to be updated with new application from response ideally
                 // const application = res.data
                 // this.setState({application})
                 // TEMPORARY SOLUTION
-                this.setState({viewMode: true})
+
+                const submittedApplication = {
+                    ...application,
+                    is_submitted: true,
+                };
+                this.setState({ application: submittedApplication, viewMode: true});
+
+                window.scrollTo(0, 0);
                 const successMessage = (
                     <p>
                     <span role="img" aria-label="happy face emoji">🙂 </span>
@@ -401,63 +414,6 @@ class ApplicationDetail extends  React.Component{
                 </div>
             </div>
         ));
-    };
-
-    renderHeader = () => {
-        const { application, scholarship } = this.state;
-        if (application.accepted_payment) {
-            return (
-                <h3 className={"text-success"}>
-                    You have already accepted your payment for this scholarship!
-                </h3>
-            )
-        }
-
-        if (application.is_winner && scholarship) {
-            return (
-                <div>
-                    <h3 className="text-success">
-                        Congratulations! You received the award of{' '}
-                        {formatCurrency(Number.parseInt(scholarship.funding_amount))}
-                    </h3>
-                    <Button onClick={()=> {}} type="primary">
-                        <Link to={`/payment/accept/?application=${application.id}`}>
-                            Accept Payment
-                        </Link>
-                    </Button>
-                </div>
-            )
-        }
-
-        let dateSubmitted;
-        if (application.is_submitted) {
-
-            dateSubmitted = new Date(application.date_submitted);
-            return (
-                <>
-                <h5 className="text-muted">
-                    Your application was submitted on
-                    {' '}
-                    {dateSubmitted.toDateString()}{' '}
-                    {dateSubmitted.toLocaleTimeString()}
-                    {' '}
-                    Good luck! <br/>
-                </h5>
-                <div>
-                    <strong>
-                        <ol>
-                            <li>Important: Make sure you received your submission confirmation in your email.</li>
-                            <li>If it's in your spam, mark it as not spam.</li>
-                            <li>If you don't mark the Atila emails as not spam, you might also miss the email to accept your award payment if you win.</li>
-                            <li>If you don't accept your award before the acceptance deadline, it might be given to someone else.</li>
-                        </ol>
-                    </strong>
-                    Contact us using the chat in the bottom right if you need help.
-                </div>
-
-                </>
-            )
-        }
     };
 
     changePage = (pageNumber) => {
@@ -625,7 +581,7 @@ class ApplicationDetail extends  React.Component{
                         </Link>
                         </h1>
                         }
-                        {this.renderHeader()}
+                        <ApplicationDetailHeader application={application} scholarship={scholarship} />
                         <div>
                             {scholarshipUserProfileQuestionsFormConfig && scholarshipQuestionsFormConfig &&
                             <div>
