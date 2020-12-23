@@ -563,7 +563,7 @@ class ApplicationDetail extends  React.Component{
                         onConfirm={this.submitApplication}
                         okText="Yes" cancelText="No">
                 <Button type={"primary"}
-                        className={"float-right"}>
+                        className={"float-right col-md-6"}>
                     Submit...
                 </Button>
             </Popconfirm>
@@ -653,7 +653,6 @@ class ApplicationDetail extends  React.Component{
                                     {(pageNumber === 3) &&
                                         <>
                                         {viewModeContent}
-                                        {submitContent}
                                         </>
                                     }
                                     <br />
@@ -669,6 +668,12 @@ class ApplicationDetail extends  React.Component{
                                                 onClick={() => this.changePage(pageNumber+1)}>
                                             Next
                                         </Button>}
+
+                                        {pageNumber === applicationPages.length &&
+                                        <>
+                                            {submitContent}
+                                        </>
+                                        }
                                     </div>
                                 </>
                                 }
