@@ -115,6 +115,7 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
             inputForm = (
                 <React.Fragment>
                     <Select mode="tags" style={{ width: '100%' }}
+                            className="mb-3"
                             value={modelValue}
                             placeholder={placeholder}
                             onChange={(selected) => selectChange(keyName, selected, onUpdateForm)}>
