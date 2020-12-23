@@ -350,8 +350,6 @@ class ApplicationDetail extends  React.Component{
         }
         application[applicationResponseType][name] = value;
 
-        console.log({ name, value });
-
         this.setState(prevState => ({
             application: {
                 ...prevState.application,
@@ -448,8 +446,8 @@ class ApplicationDetail extends  React.Component{
                         <ol>
                             <li>Important: Make sure you received your submission confirmation in your email.</li>
                             <li>If it's in your spam, mark it as not spam.</li>
-                            <li>If you don't complete those steps, you might also miss the email to accept your award payment if you win.</li>
-                            <li>If you if you don't accept your award before the acceptance deadline, it might be given to someone else.</li>
+                            <li>If you don't mark the Atila emails as not spam, you might also miss the email to accept your award payment if you win.</li>
+                            <li>If you don't accept your award before the acceptance deadline, it might be given to someone else.</li>
                         </ol>
                     </strong>
                     Contact us using the chat in the bottom right if you need help.
@@ -553,16 +551,27 @@ class ApplicationDetail extends  React.Component{
 
         const { deadline } = scholarship;
 
+        let isMissingProfilePicture = false;
+        let isMissingSecurityQuestionAnswer = false;
+
+        if (userProfile) {
+            isMissingProfilePicture = !userProfile.profile_pic_url ||
+                userProfile.profile_pic_url === DEFAULT_USER_PROFILE_PICTURE_URL;
+            isMissingSecurityQuestionAnswer = !userProfile.security_question_is_answered;
+        }
+
         let scholarshipDateMoment = moment(deadline);
         const isScholarshipDeadlinePassed = scholarshipDateMoment.diff(moment(), 'days') < 0;
         let scholarshipDateString = scholarshipDateMoment.format('dddd, MMMM DD, YYYY');
-
+        let disableSubmit = isMissingProfilePicture||isMissingSecurityQuestionAnswer;
         let submitContent = (
             <Popconfirm placement="topRight" title={"Once you submit your application, you won't be able to edit it." +
             " Are you sure you want to submit?"}
+                        disabled={disableSubmit}
                         onConfirm={this.submitApplication}
                         okText="Yes" cancelText="No">
                 <Button type={"primary"}
+                        disabled={disableSubmit}
                         className={"float-right col-md-6"}>
                     Submit...
                 </Button>
@@ -599,7 +608,7 @@ class ApplicationDetail extends  React.Component{
                 <br />
                 <h2>Scholarship Questions</h2>
                 {this.viewForm(scholarship.specific_questions, application.scholarship_responses)}
-        </>)
+        </>);
 
         return (
             <>
@@ -629,9 +638,16 @@ class ApplicationDetail extends  React.Component{
                                     {(pageNumber === 2) &&
                                         <>
                                             <h2>Upload Profile Picture</h2>
-                                            {(userProfile.profile_pic_url !== DEFAULT_USER_PROFILE_PICTURE_URL) &&
+
+                                            <h6 className="text-muted">
+                                                As part of account verification and to
+                                                ensure a community of real students
+                                                you must upload a picture of yourself.
+                                            </h6>
+
+                                            {!isMissingProfilePicture &&
                                                 <>
-                                                <p>Your profile picture has been uploaded!</p>
+                                                <p className="text-muted">Picture upload step complete</p>
                                                     <img
                                                     alt="user profile"
                                                     style={{ height: '250px', width: 'auto' }}
@@ -640,11 +656,14 @@ class ApplicationDetail extends  React.Component{
                                                     />
                                                 </>
                                             }
+                                            {isMissingProfilePicture &&
                                             <FileInput title={"Profile Picture"}
                                                        type={"image"}
                                                        keyName={"profile_pic_url"}
                                                        filePath={`user-profile-pictures/${userProfile.user}`}
                                                        onChangeHandler={this.onChangeProfilePicture} />
+
+                                            }
                                             <div id="security">
                                                 <SecurityQuestionAndAnswer />
                                             </div>
@@ -674,6 +693,23 @@ class ApplicationDetail extends  React.Component{
                                             {submitContent}
                                         </>
                                         }
+                                        {pageNumber > 1 && (isMissingProfilePicture || isMissingSecurityQuestionAnswer) &&
+                                        <div className="text-muted float-right">
+
+                                            {isMissingSecurityQuestionAnswer &&
+                                            <p>
+                                                Add a security question and answer before you can submit.
+                                            </p>
+                                            }
+                                            {isMissingProfilePicture &&
+                                            <p>
+                                                Add a picture of yourself before you can submit.
+                                            </p>
+                                            }
+                                        </div>
+
+                                        }
+
                                     </div>
                                 </>
                                 }
