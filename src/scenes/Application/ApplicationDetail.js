@@ -658,7 +658,7 @@ class ApplicationDetail extends  React.Component{
                                     <br />
                                     <br />
 
-                                    <div className="row">
+                                    <div>
                                         {pageNumber > 1 &&
                                         <Button className="float-left col-md-6"
                                                 onClick={() => this.changePage(pageNumber-1)}>Back</Button>}
