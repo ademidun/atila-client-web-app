@@ -305,8 +305,10 @@ class ScholarshipDetail extends React.Component {
                                     View Scholarship Application
                                 </a> <br/>
                             </React.Fragment>}
-                            {scholarshipUserProfile && userProfile &&
-                            userProfile.user === scholarshipUserProfile.user &&
+                            {((scholarshipUserProfile && userProfile &&
+                            userProfile.user === scholarshipUserProfile.user)
+                            || (userProfile && userProfile.is_atila_admin))
+                            &&
                             <React.Fragment>
 
                                 <Link to={`/scholarship/edit/${slug}`}>
