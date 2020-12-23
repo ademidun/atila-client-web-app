@@ -107,11 +107,11 @@ class LandingPage extends React.Component {
                     {!userProfile &&
                     <React.Fragment>
                         <Banner/>
+                        {scholarshipsContentDirectApplication}
                         <hr/>
                         <HowItWorks accountType={"Student"}/>
                         <hr/>
                         <Testimonials showSeo={false} filterArray={['Jasleen', 'Natalie', 'Grace', 'Chris']} />
-                        {scholarshipsContentDirectApplication}
                         <hr/>
                         <div className="p-5">
                             <Link to="/register" className="btn btn-primary center-block font-size-xl">
