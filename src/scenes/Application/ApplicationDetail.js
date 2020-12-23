@@ -680,12 +680,6 @@ class ApplicationDetail extends  React.Component{
                                         }
                                     </>
                                 }
-                                {application.is_submitted &&
-                                    <div id="publish" className="row col-12 my-3">
-                                        <h2>Publish your Application as an Essay</h2>
-                                        <ApplicationEssayAddEdit application={application} />
-                                    </div>
-                                }
                                 {promptRegisterBeforeSubmitting &&
                                 <>
                                     <br />
@@ -706,6 +700,15 @@ class ApplicationDetail extends  React.Component{
                                 </>
                                 }
                                 {inViewMode && viewModeContent}
+                                {application.is_submitted &&
+                                    <>
+                                        <hr/>
+                                        <div id="publish" className="row col-12 my-3">
+                                            <h2>Publish your Application as an Essay</h2>
+                                            <ApplicationEssayAddEdit application={application} />
+                                        </div>
+                                </>
+                                }
                             </div>
                             }
 
