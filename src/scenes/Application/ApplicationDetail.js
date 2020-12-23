@@ -495,14 +495,14 @@ class ApplicationDetail extends  React.Component{
         let dateModified;
         if (application.date_modified) {
             dateModified = new Date(application.date_modified);
-            dateModified =  (<p className="text-muted float-left">
+            dateModified =  (<div className="text-muted float-left col-12">
                 Last Auto-Saved {isUsingLocalApplication? " locally ": null}: {dateModified.toDateString()}{' '}
                 {dateModified.toLocaleTimeString()}
-            </p>)
+            </div>)
         } else {
-            dateModified =  (<p className="text-muted float-left">
+            dateModified =  (<div className="text-muted float-left col-12">
                 Start typing and your application will automatically save
-            </p>)
+            </div>)
         }
         let seoContent = {
             ...defaultSeoContent,
@@ -580,6 +580,7 @@ class ApplicationDetail extends  React.Component{
 
         let applicationForm = (<>
             <h2>Profile Questions</h2>
+            {dateModified}
             <FormDynamic onUpdateForm={event => this.updateForm(event, 'user_profile_responses')}
                          model={application.user_profile_responses}
                          inputConfigs=
@@ -587,13 +588,13 @@ class ApplicationDetail extends  React.Component{
             />
 
             <h2>Scholarship Questions</h2>
+            {dateModified}
             <FormDynamic onUpdateForm={event => this.updateForm(event, 'scholarship_responses')}
                          model={application.scholarship_responses}
                          inputConfigs=
                              {scholarshipQuestionsFormConfig}
             />
-            {dateModified}
-            </>)
+            </>);
 
         if (isScholarshipDeadlinePassed) {
             submitContent = (<p className="text-muted float-right">
