@@ -231,7 +231,7 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
             title: <b>Full Name</b>,
             dataIndex: 'user',
             key: '1',
-            render: (userProfile) => (userProfile && userProfile.first_name && `${userProfile.first_name} ${userProfile.last_name}`),
+            render: (userProfile, application) => (`${application.first_name} ${application.last_name}`),
             sorter: (a, b) => `${a.user.first_name} ${a.user.last_name}`.localeCompare(`${b.user.first_name} ${b.user.last_name}`),
             sortDirections: ['ascend' , 'descend'],
         },
@@ -261,7 +261,8 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
             title: <b>All Scores</b>,
             dataIndex: 'user_scores',
             key: '2',
-            render: (id, application) => (
+            // Could either use userScores or application.user_scores, they're the same.
+            render: (userScores, application) => (
                 <React.Fragment>
                     {application.user_scores && Object.keys(application.user_scores).length > 0 &&
 
