@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import {Table, Popconfirm, Button, Tag, Alert, Modal, Input, Radio} from "antd";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
-import {WINNER_SELECTED_MESSAGE} from "../../models/Scholarship";
+import {WINNER_SELECTED_MESSAGE, CodeNamesExplanationMessage} from "../../models/Scholarship";
 
 class ScholarshipManage extends React.Component {
     constructor(props) {
@@ -218,6 +218,7 @@ class ScholarshipManage extends React.Component {
                     style={{maxWidth: '300px', whiteSpace: "pre-line"}}
                 />
                 }
+                <CodeNamesExplanationMessage />
                 <ApplicationsTable applications={allApplications} scholarship={scholarship} selectWinner={this.selectWinner}/>
             </div>
         )

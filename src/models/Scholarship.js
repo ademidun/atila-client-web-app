@@ -247,3 +247,10 @@ export const ScholarshipFundingWillPublishMessage = () => (
         message={"Funding your scholarship will publish it and make it live!"}
     />
 );
+
+export const CodeNamesExplanationMessage = () => (
+    <Alert
+        type="info"
+        message={"Code names using colors and dog breeds are used to prevent biases in the application review process."}
+    />
+);
