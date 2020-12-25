@@ -401,7 +401,7 @@ class ApplicationDetail extends  React.Component{
      * first_name: "Hadi"
      * last_name: "hakeem8
      */
-    viewForm = (questions, responseDict) => {
+    viewForm = (questions, responseDict, isOwnerofApplication) => {
         let { application } = this.state;
 
         return questions.map((question) => {
@@ -409,7 +409,8 @@ class ApplicationDetail extends  React.Component{
                 return (<div key={question.key}>
                     <div className="white-space-pre-wrap">
                         <b>{prettifyKeys(question.key)}:</b><br/>
-                        {application[question.key]}
+                        {isOwnerofApplication && responseDict[question.key]}
+                        {!isOwnerofApplication && application[question.key]}
                     </div>
                 </div>)
             }
@@ -576,10 +577,10 @@ class ApplicationDetail extends  React.Component{
         let viewModeContent = (<>
                 {applicationScoreContent}
                 <h2>Profile Questions</h2>
-                {this.viewForm(scholarship.user_profile_questions, application.user_profile_responses)}
+                {this.viewForm(scholarship.user_profile_questions, application.user_profile_responses, isOwnerOfApplication)}
                 <br />
                 <h2>Scholarship Questions</h2>
-                {this.viewForm(scholarship.specific_questions, application.scholarship_responses)}
+                {this.viewForm(scholarship.specific_questions, application.scholarship_responses, isOwnerOfApplication)}
         </>);
 
         return (
