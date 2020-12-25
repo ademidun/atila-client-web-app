@@ -402,18 +402,28 @@ class ApplicationDetail extends  React.Component{
      * last_name: "hakeem8
      */
     viewForm = (questions, responseDict) => {
+        let { application } = this.state;
 
-        return questions.map((question) => (
-            <div key={question.key}>
+        return questions.map((question) => {
+            if (question.key === "first_name" || question.key === "last_name") {
+                return (<div key={question.key}>
+                    <div className="white-space-pre-wrap">
+                        <b>{prettifyKeys(question.key)}:</b><br/>
+                        {application[question.key]}
+                    </div>
+                </div>)
+            }
+            return (<div key={question.key}>
                 <div className="white-space-pre-wrap">
-                    <b>{question.question||prettifyKeys(question.key)}:</b><br/>
+                    <b>{question.question || prettifyKeys(question.key)}:</b><br/>
 
                     {question.type === "long_answer" ?
-                        <div className="my-1" dangerouslySetInnerHTML={{__html: responseDict[question.key]}} />
-                        : question.type === "checkbox" ? responseDict[question.key] ? "Yes" : "No" : responseDict[question.key]}
+                        <div className="my-1" dangerouslySetInnerHTML={{__html: responseDict[question.key]}}/>
+                        : question.type === "checkbox" ?
+                            responseDict[question.key] ? "Yes" : "No"
+                            : responseDict[question.key]}
                 </div>
-            </div>
-        ));
+            </div>)});
     };
 
     changePage = (pageNumber) => {
