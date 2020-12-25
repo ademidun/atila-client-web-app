@@ -520,7 +520,7 @@ class ApplicationDetail extends  React.Component{
 
         if (application.user && !isOwnerOfApplication) {
             applicationScoreContent = (<div>
-                <p>You can score applications on Atila's website or use your own system to review application. <br />
+                <p>You can score applications on Atila's website or use your own system to review applications. <br />
                 <b>These scores are only used to help you keep track of applications.</b></p>
                 <input className="form-control col-12"
                        type="number" step={0.01} min={0} max={10}
