@@ -504,10 +504,23 @@ class ApplicationDetail extends  React.Component{
             )
         }
 
+        let isMissingProfilePicture = false;
+        let isMissingSecurityQuestionAnswer = false;
+        let isOwnerOfApplication = true;
+
+        if (userProfile) {
+            isMissingProfilePicture = !userProfile.profile_pic_url ||
+                userProfile.profile_pic_url === DEFAULT_USER_PROFILE_PICTURE_URL;
+            isMissingSecurityQuestionAnswer = !userProfile.security_question_is_answered;
+            isOwnerOfApplication = (application.user.user === userProfile.user);
+        }
+
         let applicationScoreContent = null;
 
-        if (application.user && userProfile && application.user.user !== userProfile.user) {
+        if (application.user && !isOwnerOfApplication) {
             applicationScoreContent = (<div>
+                <p>You can score applications on Atila's website or use your own system to review application. <br />
+                <b>These scores are only used to help you keep track of applications.</b></p>
                 <input className="form-control col-12"
                        type="number" step={0.01} min={0} max={10}
                        onChange={this.updateApplicationScore}
@@ -516,17 +529,7 @@ class ApplicationDetail extends  React.Component{
             </div>);
         }
 
-
         const { deadline } = scholarship;
-
-        let isMissingProfilePicture = false;
-        let isMissingSecurityQuestionAnswer = false;
-
-        if (userProfile) {
-            isMissingProfilePicture = !userProfile.profile_pic_url ||
-                userProfile.profile_pic_url === DEFAULT_USER_PROFILE_PICTURE_URL;
-            isMissingSecurityQuestionAnswer = !userProfile.security_question_is_answered;
-        }
 
         let scholarshipDateMoment = moment(deadline);
         const isScholarshipDeadlinePassed = scholarshipDateMoment.diff(moment(), 'days') < 0;
@@ -591,7 +594,7 @@ class ApplicationDetail extends  React.Component{
                         </Link>
                         </h1>
                         }
-                        <ApplicationDetailHeader application={application} scholarship={scholarship} />
+                        <ApplicationDetailHeader application={application} scholarship={scholarship} userProfile={userProfile}/>
                         <div>
                             {scholarshipUserProfileQuestionsFormConfig && scholarshipQuestionsFormConfig &&
                             <div>
@@ -710,7 +713,7 @@ class ApplicationDetail extends  React.Component{
                                 </>
                                 }
                                 {inViewMode && viewModeContent}
-                                {application.is_submitted &&
+                                {application.is_submitted && isOwnerOfApplication &&
                                     <>
                                         <hr/>
                                         <div id="publish" className="row col-12 my-3">
