@@ -515,7 +515,7 @@ export function createTableOfContents(parentSelector="") {
 
     let tableOfContents =
         "<nav role='navigation' class='table-of-contents'>" +
-        "<h2>On this page:</h2>" +
+        "<h2>Table of Contents:</h2>" +
         "<ul>";
 
     // Only show the table of contents if there are headings in the document.
