@@ -8,7 +8,13 @@ import RelatedItems from "../RelatedItems";
 import {connect} from "react-redux";
 import AnalyticsService from "../../services/AnalyticsService";
 import HelmetSeo from "../HelmetSeo";
-import {genericItemTransform, guestPageViewsIncrement, scrollToElement, toTitleCase} from "../../services/utils";
+import {
+    createTableOfContents,
+    genericItemTransform,
+    guestPageViewsIncrement,
+    scrollToElement,
+    toTitleCase
+} from "../../services/utils";
 import {Button} from "antd";
 import AtilaPointsPaywallModal from "../AtilaPointsPaywallModal";
 
@@ -61,6 +67,8 @@ class ContentDetail extends React.Component {
 
                 const content = res.data.blog || res.data.essay;
                 this.setState({content}, () => {
+
+                    createTableOfContents(".content-detail");
                     if (location && location.hash) {
                         scrollToElement(location.hash);
                     }
