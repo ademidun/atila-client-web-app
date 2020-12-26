@@ -479,11 +479,11 @@ export function isValidEmail(email) {
 /**
  *
  * @param parentSelector: Where to insert the new table of contents.
- * Leave blank to return the able of contents and choos where you want
- * to insert.
+ * Leave blank if you only wnat to return the table of contents without
+ * automatically prepending to the parent component.
  * @see: https://css-tricks.com/automatic-table-of-contents/
  */
-export function createTableOfContents(parentSelector) {
+export function createTableOfContents(parentSelector="") {
 
     let element, title, link, newLine;
     let allLines = "";
@@ -518,16 +518,16 @@ export function createTableOfContents(parentSelector) {
         "<h2>On this page:</h2>" +
         "<ul>";
 
-    // Only show the table of contents if there are headings in the
-    // content
+    // Only show the table of contents if there are headings in the document.
     if (newLine) {
         tableOfContents += allLines;
         tableOfContents += "</ul>" +
             "</nav>";
 
-        console.log({tableOfContents});
+        if (parentSelector) {
+            $(parentSelector).prepend(tableOfContents);
+        }
 
-        $(parentSelector).prepend(tableOfContents);
     }
 
     return tableOfContents;
