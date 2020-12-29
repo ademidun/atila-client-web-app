@@ -243,7 +243,7 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
             render: (id, application) => (
                 <React.Fragment>
                     {application.is_winner && <><Tag color="green">Winner</Tag>{' '}</>}
-                    {application.is_submitted? <Link to={`/application/${application.id}/view`}>View</Link> : "Cannot view unsubmitted application"}
+                    {application.is_submitted? <Link to={`/application/${application.id}`}>View</Link> : "Cannot view unsubmitted application"}
                 </React.Fragment>
             ),
         },
