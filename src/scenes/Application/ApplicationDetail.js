@@ -62,7 +62,6 @@ class ApplicationDetail extends  React.Component{
             isSubmittingApplication: false,
             scholarshipUserProfileQuestionsFormConfig: null,
             scholarshipQuestionsFormConfig: null,
-            viewMode: false,
             isUsingLocalApplication: pathname.includes("/local/"),
             promptRegisterBeforeSubmitting: false,
             userProfileForRegistration: null,
@@ -71,9 +70,6 @@ class ApplicationDetail extends  React.Component{
     }
 
     componentDidMount() {
-        let viewMode = this.props.location.pathname.includes("view")
-        this.setState({viewMode})
-
         this.getApplication();
     }
 
@@ -292,7 +288,7 @@ class ApplicationDetail extends  React.Component{
                     ...application,
                     is_submitted: true,
                 };
-                this.setState({ application: submittedApplication, viewMode: true});
+                this.setState({ application: submittedApplication });
 
                 window.scrollTo(0, 0);
                 const successMessage = (
@@ -450,7 +446,7 @@ class ApplicationDetail extends  React.Component{
         const { match : { params : { applicationID }}, userProfile } = this.props;
         const { application, isLoadingApplication, scholarship, isSavingApplication, isSubmittingApplication,
             scholarshipUserProfileQuestionsFormConfig, scholarshipQuestionsFormConfig,
-            viewMode, isUsingLocalApplication, promptRegisterBeforeSubmitting,
+            isUsingLocalApplication, promptRegisterBeforeSubmitting,
             applicationScore, pageNumber } = this.state;
 
         const applicationSteps =
@@ -460,7 +456,7 @@ class ApplicationDetail extends  React.Component{
             })}
         </Steps>)
 
-        let inViewMode = viewMode || application.is_submitted || application.is_payment_accepted;
+        let inViewMode = application.is_submitted;
         let dateModified;
         if (application.date_modified) {
             dateModified = new Date(application.date_modified);
@@ -507,13 +503,12 @@ class ApplicationDetail extends  React.Component{
 
         let isMissingProfilePicture = false;
         let isMissingSecurityQuestionAnswer = false;
-        let isOwnerOfApplication = true;
+        let isOwnerOfApplication = application.user && (application.user.user === userProfile.user);
 
         if (userProfile) {
             isMissingProfilePicture = !userProfile.profile_pic_url ||
                 userProfile.profile_pic_url === DEFAULT_USER_PROFILE_PICTURE_URL;
             isMissingSecurityQuestionAnswer = !userProfile.security_question_is_answered;
-            isOwnerOfApplication = (application.user.user === userProfile.user);
         }
 
         let applicationScoreContent = null;
@@ -714,7 +709,7 @@ class ApplicationDetail extends  React.Component{
                                 </>
                                 }
                                 {inViewMode && viewModeContent}
-                                {application.is_submitted && isOwnerOfApplication &&
+                                {inViewMode && isOwnerOfApplication &&
                                     <>
                                         <hr/>
                                         <div id="publish" className="row col-12 my-3">
