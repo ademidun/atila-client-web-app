@@ -503,7 +503,7 @@ class ApplicationDetail extends  React.Component{
 
         let isMissingProfilePicture = false;
         let isMissingSecurityQuestionAnswer = false;
-        let isOwnerOfApplication = application.user && (application.user.user === userProfile.user);
+        let isOwnerOfApplication = userProfile && application.user && (application.user.user === userProfile.user);
 
         if (userProfile) {
             isMissingProfilePicture = !userProfile.profile_pic_url ||
