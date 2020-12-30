@@ -401,14 +401,16 @@ class ApplicationDetail extends  React.Component{
         let { application } = this.state;
 
         return questions.map((question) => {
-            if (question.key === "first_name" || question.key === "last_name") {
+            if ((question.key === "first_name" || question.key === "last_name") && !isOwnerofApplication) {
                 return (<div key={question.key}>
                     <div className="white-space-pre-wrap">
                         <b>{prettifyKeys(question.key)}:</b><br/>
-                        {isOwnerofApplication && responseDict[question.key]}
-                        {!isOwnerofApplication && application[question.key]}
+                        {application[question.key]}
                     </div>
-                </div>)
+                </div>);
+            }
+            if (question.key === "email" && !isOwnerofApplication) {
+                return null;
             }
             return (<div key={question.key}>
                 <div className="white-space-pre-wrap">
