@@ -592,7 +592,7 @@ class ApplicationDetail extends  React.Component{
                         </Link>
                         </h1>
                         }
-                        <ApplicationDetailHeader application={application} scholarship={scholarship} userProfile={userProfile}/>
+                        <ApplicationDetailHeader application={application} scholarship={scholarship} isOwnerOfApplication={isOwnerOfApplication}/>
                         <div>
                             {scholarshipUserProfileQuestionsFormConfig && scholarshipQuestionsFormConfig &&
                             <div>

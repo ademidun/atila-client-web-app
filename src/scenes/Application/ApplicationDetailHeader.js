@@ -4,9 +4,7 @@ import {Button} from "antd";
 import { formatCurrency } from "../../services/utils";
 
 
-function ApplicationDetailHeader({ application, scholarship, userProfile }){
-    let isOwnerOfApplication = (application.user.user === userProfile.user);
-
+function ApplicationDetailHeader({ application, scholarship, isOwnerOfApplication }){
     if (!isOwnerOfApplication) {
         return null;
     }
