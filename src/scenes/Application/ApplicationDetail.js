@@ -515,7 +515,7 @@ class ApplicationDetail extends  React.Component{
 
         let applicationScoreContent = null;
 
-        if (application.user && !isOwnerOfApplication) {
+        if (!isOwnerOfApplication) {
             applicationScoreContent = (<div>
                 <p>You can score applications on Atila's website or use your own system to review applications. <br />
                 <b>These scores are only used to help you keep track of applications.</b></p>
