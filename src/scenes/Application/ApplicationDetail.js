@@ -207,14 +207,16 @@ class ApplicationDetail extends  React.Component{
 
         const scorerId = userProfile.user;
         this.setState({applicationScore}, () => {
-
-            ApplicationsAPI.scoreApplication(application.id, scorerId, applicationScore)
-                .then(res => {
-                })
-                .catch(err=>{
-                    console.log({err});
-                    toastNotify(handleError(err))
-                })
+            // Prevent an API Request if the field is blank.
+            if (applicationScore.length !== 0) {
+                ApplicationsAPI.scoreApplication(application.id, scorerId, applicationScore)
+                    .then(res => {
+                    })
+                    .catch(err => {
+                        console.log({err});
+                        toastNotify(handleError(err))
+                    })
+            }
         })
     };
 
