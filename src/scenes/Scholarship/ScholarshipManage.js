@@ -233,8 +233,17 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
             title: <b>Full Name</b>,
             dataIndex: 'user',
             key: '1',
-            render: (userProfile, application) => (`${application.first_name_code} ${application.last_name_code}`),
-            sorter: (a, b) => `${a.first_name_code} ${a.last_name_code}`.localeCompare(`${b.first_name_code} ${b.last_name_code}`),
+            render: (userProfile, application) => {
+
+                return application.user ? `${application.user.first_name} ${application.user.last_name}` :
+                    `${application.first_name_code} ${application.last_name_code}`;
+            },
+            sorter: (a, b) =>{
+
+                const aString = a.user ? `${a.user.first_name} ${a.user.last_name}` : `${a.first_name_code} ${a.last_name_code}`;
+                const bString = b.user? `${b.user.first_name} ${b.user.last_name}` : `${b.first_name_code} ${b.last_name_code}`;
+                return aString.localeCompare(bString)
+            } ,
             sortDirections: ['ascend' , 'descend'],
         },
         {
