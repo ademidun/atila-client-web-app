@@ -327,7 +327,8 @@ class ScholarshipDetail extends React.Component {
                                     View Application Form
                                 </Link>
                                 <br />
-                                {applyToScholarshipButton}
+                                {applyToScholarshipButton} <br/>
+                                {scholarship.is_blind_applications && <BlindApplicationsExplanationMessage />}
                             </div>
                             }
 
@@ -379,8 +380,6 @@ class ScholarshipDetail extends React.Component {
                             }
                             <ScholarshipShareSaveButtons scholarship={scholarship} />
                             <hr />
-                            {scholarship.is_atila_direct_application && scholarship.is_blind_applications &&
-                            <BlindApplicationsExplanationMessage />}
                             <div className="my-3">
                                 <h3>Description</h3>
                                 <p>

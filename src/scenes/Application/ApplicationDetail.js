@@ -30,6 +30,7 @@ import {DEFAULT_USER_PROFILE_PICTURE_URL} from "../../models/UserProfile";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import ApplicationDetailHeader from "./ApplicationDetailHeader";
+import {BlindApplicationsExplanationMessage} from "../../models/Scholarship";
 
 const { Step } = Steps;
 
@@ -400,7 +401,8 @@ class ApplicationDetail extends  React.Component{
      * last_name: "hakeem8
      */
     viewForm = (questions, responseDict, isOwnerofApplication) => {
-        let { application } = this.state;
+        const { application, scholarship: {is_blind_applications} } = this.state;
+
 
         return questions.map((question) => {
             if (question.key === "first_name" || question.key === "last_name") {
@@ -411,11 +413,11 @@ class ApplicationDetail extends  React.Component{
                 return (<div key={question.key}>
                     <div className="white-space-pre-wrap">
                         <b>{prettifyKeys(question.key)}:</b><br/>
-                        {application.user? application.user[question.key] : application[key_code]}
+                        {application.user && !is_blind_applications? application.user[question.key] : application[key_code]}
                     </div>
                 </div>);
             }
-            if (question.key === "email" && !isOwnerofApplication) {
+            if (question.key === "email" && (is_blind_applications || !isOwnerofApplication)) {
                 return null;
             }
             return (<div key={question.key}>
@@ -581,7 +583,8 @@ class ApplicationDetail extends  React.Component{
 
         let viewModeContent = (<>
                 {applicationScoreContent}
-                <h2>Profile Questions</h2>
+                <h2>Profile Questions</h2> <br/>
+                {scholarship.is_blind_applications && <BlindApplicationsExplanationMessage />}
                 {this.viewForm(scholarship.user_profile_questions, application.user_profile_responses, isOwnerOfApplication)}
                 <br />
                 <h2>Scholarship Questions</h2>

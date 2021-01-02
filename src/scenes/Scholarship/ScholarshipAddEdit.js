@@ -51,6 +51,12 @@ let scholarshipFormConfigsPage1 = [
         className: 'font-weight-bold',
     },
     {
+        keyName: 'is_blind_applications',
+        placeholder:"Hide names of applicants until a winner is selected",
+        type: 'checkbox',
+        className: 'font-weight-bold',
+    },
+    {
         keyName: 'criteria_info',
         type: 'html_editor',
         placeholder: 'Additional Information',
