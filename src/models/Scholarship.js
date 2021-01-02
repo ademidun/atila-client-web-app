@@ -254,3 +254,11 @@ export const CodeNamesExplanationMessage = () => (
         message={"Code names using colors and dog breeds are used to prevent biases in the application review process."}
     />
 );
+
+export const BlindApplicationsExplanationMessage = () => (
+    <Alert
+        type="info"
+        message={"This scholarship hides the names of the applicants to the scholarship reviewer " +
+        "until a winner has been selected. This is done to reduces biases in the application review process."}
+    />
+);

@@ -16,7 +16,7 @@ import ScholarshipExtraCriteria from "./ScholarshipExtraCriteria";
 import ScholarshipDeadlineWithTags from "../../components/ScholarshipDeadlineWithTags";
 import {Alert, Button, message} from 'antd';
 import verifiedBadge from '../../components/assets/verified.png';
-import {AtilaDirectApplicationsPopover} from "../../models/Scholarship";
+import {AtilaDirectApplicationsPopover, BlindApplicationsExplanationMessage} from "../../models/Scholarship";
 import ScholarshipFinalists, {UserProfilesCards} from "./ScholarshipFinalists";
 
 class ScholarshipDetail extends React.Component {
@@ -379,6 +379,7 @@ class ScholarshipDetail extends React.Component {
                             }
                             <ScholarshipShareSaveButtons scholarship={scholarship} />
                             <hr />
+                            {scholarship.is_blind_applications && <BlindApplicationsExplanationMessage />}
                             <div className="my-3">
                                 <h3>Description</h3>
                                 <p>
