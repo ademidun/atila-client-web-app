@@ -21,7 +21,8 @@ class ScholarshipsList extends React.Component {
 
         const { userProfile,
             match : { params : { searchString: searchStringRaw } },
-        } = this.props;
+            location: { pathname },
+        } = props;
 
         const searchString = unSlugify(searchStringRaw);
 
@@ -45,7 +46,8 @@ class ScholarshipsList extends React.Component {
             pageNumber: 1,
             totalScholarshipsCount: 0,
             totalFunding: null,
-            isCompleteProfile: !userProfile || isCompleteUserProfile(userProfile)
+            isCompleteProfile: !userProfile || isCompleteUserProfile(userProfile),
+            isViewingDirectApplications: pathname.includes("/scholarship/direct")
         }
     }
 
@@ -106,7 +108,8 @@ class ScholarshipsList extends React.Component {
             location: { pathname },
         } = this.props;
 
-        const { scholarships, totalScholarshipsCount, scholarshipsScoreBreakdown } = this.state;
+        const { scholarships, totalScholarshipsCount,
+            scholarshipsScoreBreakdown, isViewingDirectApplications } = this.state;
         let { searchPayload } = this.state;
 
         searchPayload = {
@@ -114,7 +117,7 @@ class ScholarshipsList extends React.Component {
             previewMode: searchPayload.view_as_user ? null : searchPayload.previewMode,
         };
 
-        if (pathname.includes("/scholarship/direct")) {
+        if (isViewingDirectApplications) {
             searchPayload.direct_applications_only = true
         }
 
@@ -141,7 +144,12 @@ class ScholarshipsList extends React.Component {
 
                     this.setState({ scholarshipsScoreBreakdown: updatedScoreBreakdown });
                 } else {
-                    scholarshipResults.push(...res.data.data.slice(0,3));
+                    /*
+                     Since we are trying to promote the direct application scholarships we have,
+                     default to showing more applications. Show 5 instead of 3.
+                    */
+                    const resultsLimit = isViewingDirectApplications ? 5 : 3;
+                    scholarshipResults.push(...res.data.data.slice(0,resultsLimit));
                 }
                 this.setState({ totalFunding: res.data.funding });
                 this.setState({ totalScholarshipsCount: res.data.length });
@@ -320,20 +328,21 @@ class ScholarshipsList extends React.Component {
         } else if (!userProfile) {
             loadMoreScholarshipsOrRegisterCTA = (<div className="font-size-xl">
                 {
-                    scholarships && scholarships.length < totalScholarshipsCount
+                    scholarships
                     &&
                         <Button type="primary" className="font-size-larger col-12 mt-1" style={{fontSize: "25px"}}>
                             <Link to="/register">
-                                    Register for Free to see all
-                                    {totalScholarshipsCount > 3 ? ` ${totalScholarshipsCount} ` : null}
-                                    Scholarships
+                                    Register for free to see
+                                    {scholarships.length < totalScholarshipsCount ?
+                                        ` all ${totalScholarshipsCount} ` : " more "}
+                                    scholarships
                             </Link>
                         </Button>
                 }
 
                 <Button type="primary" className="font-size-larger col-12 my-3" style={{fontSize: "25px"}}>
                     <Link to="/start">
-                        Start a Scholarship
+                        Start a scholarship
                     </Link>
                 </Button>
             </div>);
