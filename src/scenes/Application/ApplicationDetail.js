@@ -401,8 +401,9 @@ class ApplicationDetail extends  React.Component{
      * last_name: "hakeem8
      */
     viewForm = (questions, responseDict, isOwnerofApplication) => {
-        const { application, scholarship: {is_blind_applications} } = this.state;
+        const { application, scholarship } = this.state;
 
+        let displayRealName = isOwnerofApplication || scholarship.is_winner_selected || !scholarship.is_blind_applications
 
         return questions.map((question) => {
             if (question.key === "first_name" || question.key === "last_name") {
@@ -413,11 +414,11 @@ class ApplicationDetail extends  React.Component{
                 return (<div key={question.key}>
                     <div className="white-space-pre-wrap">
                         <b>{prettifyKeys(question.key)}:</b><br/>
-                        {application.user && !is_blind_applications? application.user[question.key] : application[key_code]}
+                        {displayRealName? application.user[question.key] : application[key_code]}
                     </div>
                 </div>);
             }
-            if (question.key === "email" && (is_blind_applications || !isOwnerofApplication)) {
+            if (question.key === "email" && !isOwnerofApplication) {
                 return null;
             }
             return (<div key={question.key}>
