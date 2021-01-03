@@ -111,6 +111,7 @@ export let DEFAULT_SCHOLARSHIP = {
     metadata: {},
     eligible_schools: [],
     is_atila_direct_application: false,
+    is_blind_applications: false,
     is_editable: true,
     published: false,
     is_funded: false,
@@ -246,4 +247,19 @@ export const ScholarshipFundingWillPublishMessage = () => (
         type="success"
         message={"Funding your scholarship will publish it and make it live!"}
     />
+);
+
+export const BlindApplicationsExplanationMessage = () => (
+    <div className="my-3" >
+        <Alert
+            type="info"
+            message={<div style={{whiteSpace: "pre-line"}}>
+                This is a Blind Application Scholarship: The names of the applicants
+                are hidden to the scholarship reviewer
+                until a winner has been selected. <br/> This is done to reduce bias in the application review process.
+                <br /> <Link to="/blog/tomiwa/atila-blind-applications">Learn More</Link>
+            </div>}
+        />
+
+    </div>
 );

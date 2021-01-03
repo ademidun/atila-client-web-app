@@ -26,11 +26,11 @@ describe('<ScholarshipsList />', () => {
     });
 
     it('renders without crashing', () => {
-
         const wrapper = shallow(
             <MemoryRouter>
             <ScholarshipsList
-                match={{ params: { searchString: 'engineering' } } }
+                match={{ params: { searchString: 'engineering' } }}
+                location={{ pathname: '/' }}
                 store={store}
             />
             </MemoryRouter>

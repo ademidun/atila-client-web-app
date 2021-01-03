@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import {Table, Popconfirm, Button, Tag, Alert, Modal, Input, Radio} from "antd";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
-import {WINNER_SELECTED_MESSAGE} from "../../models/Scholarship";
+import {WINNER_SELECTED_MESSAGE, BlindApplicationsExplanationMessage} from "../../models/Scholarship";
 
 class ScholarshipManage extends React.Component {
     constructor(props) {
@@ -166,15 +166,28 @@ class ScholarshipManage extends React.Component {
                 <br />
 
                 <Button type="primary" size={"large"} onClick={this.showModal}>
-                    Email Applicants
+                    Email Applicants...
                 </Button>
                 <Modal
-                    title={<Input id='email-subject' placeholder={"Email subject..."}/>}
+                    title='Draft Email'
                     visible={isModalVisible}
-                    onOk={()=>{this.emailApplicants()}}
-                    onCancel={()=>{this.handleModalCancel()}}
-                    okText={"Email Applicants"}
+                    onCancel={this.handleModalCancel}
+                    footer={[
+                        <Button key="back" onClick={this.handleModalCancel}>
+                            Cancel
+                        </Button>,
+                        <Popconfirm placement="topLeft" title="Are you sure you want to send email?"
+                                    onConfirm={this.emailApplicants}
+                                    okText="Yes"
+                                    cancelText="No">
+                            <Button key="submit" type="primary">
+                                Send Email...
+                            </Button>
+                        </Popconfirm>
+                            ,
+                    ]}
                 >
+                    <Input id='email-subject' className="mb-2" placeholder={"Email subject..."}/>
                     <TextArea id='email-body' rows={6} placeholder={"Email body..."}/>
                     <br />
                     <br />
@@ -218,6 +231,8 @@ class ScholarshipManage extends React.Component {
                     style={{maxWidth: '300px', whiteSpace: "pre-line"}}
                 />
                 }
+
+                {scholarship.is_blind_applications && <BlindApplicationsExplanationMessage />}
                 <ApplicationsTable applications={allApplications} scholarship={scholarship} selectWinner={this.selectWinner}/>
             </div>
         )
@@ -231,8 +246,17 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
             title: <b>Full Name</b>,
             dataIndex: 'user',
             key: '1',
-            render: (userProfile) => (userProfile && userProfile.first_name && `${userProfile.first_name} ${userProfile.last_name}`),
-            sorter: (a, b) => `${a.user.first_name} ${a.user.last_name}`.localeCompare(`${b.user.first_name} ${b.user.last_name}`),
+            render: (userProfile, application) => {
+
+                return application.user ? `${application.user.first_name} ${application.user.last_name}` :
+                    `${application.first_name_code} ${application.last_name_code}`;
+            },
+            sorter: (a, b) =>{
+
+                const aString = a.user ? `${a.user.first_name} ${a.user.last_name}` : `${a.first_name_code} ${a.last_name_code}`;
+                const bString = b.user? `${b.user.first_name} ${b.user.last_name}` : `${b.first_name_code} ${b.last_name_code}`;
+                return aString.localeCompare(bString)
+            } ,
             sortDirections: ['ascend' , 'descend'],
         },
         {
@@ -242,7 +266,7 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
             render: (id, application) => (
                 <React.Fragment>
                     {application.is_winner && <><Tag color="green">Winner</Tag>{' '}</>}
-                    {application.is_submitted? <Link to={`/application/${application.id}/view`}>View</Link> : "Cannot view unsubmitted application"}
+                    {application.is_submitted? <Link to={`/application/${application.id}`}>View</Link> : "Cannot view unsubmitted application"}
                 </React.Fragment>
             ),
         },
@@ -261,7 +285,8 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
             title: <b>All Scores</b>,
             dataIndex: 'user_scores',
             key: '2',
-            render: (id, application) => (
+            // Could either use userScores or application.user_scores, they're the same.
+            render: (userScores, application) => (
                 <React.Fragment>
                     {application.user_scores && Object.keys(application.user_scores).length > 0 &&
 
