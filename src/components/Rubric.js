@@ -1,8 +1,5 @@
 import React from 'react';
-import {DescriptionsWithScreenshots} from "../scenes/LandingPage/HowItWorks";
 import HelmetSeo, {defaultSeoContent} from "./HelmetSeo";
-import Team from "./Team/Team";
-import ImageGallery from "react-image-gallery";
 
 function Rubric() {
     const seoContent = {
