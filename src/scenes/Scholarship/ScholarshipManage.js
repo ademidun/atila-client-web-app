@@ -166,15 +166,28 @@ class ScholarshipManage extends React.Component {
                 <br />
 
                 <Button type="primary" size={"large"} onClick={this.showModal}>
-                    Email Applicants
+                    Email Applicants...
                 </Button>
                 <Modal
-                    title={<Input id='email-subject' placeholder={"Email subject..."}/>}
+                    title='Draft Email'
                     visible={isModalVisible}
-                    onOk={()=>{this.emailApplicants()}}
-                    onCancel={()=>{this.handleModalCancel()}}
-                    okText={"Email Applicants"}
+                    onCancel={this.handleModalCancel}
+                    footer={[
+                        <Button key="back" onClick={this.handleModalCancel}>
+                            Cancel
+                        </Button>,
+                        <Popconfirm placement="topLeft" title="Are you sure you want to send email?"
+                                    onConfirm={this.emailApplicants}
+                                    okText="Yes"
+                                    cancelText="No">
+                            <Button key="submit" type="primary">
+                                Send Email...
+                            </Button>
+                        </Popconfirm>
+                            ,
+                    ]}
                 >
+                    <Input id='email-subject' className="mb-2" placeholder={"Email subject..."}/>
                     <TextArea id='email-body' rows={6} placeholder={"Email body..."}/>
                     <br />
                     <br />
