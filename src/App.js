@@ -56,6 +56,9 @@ const Testimonials = loadable(() => import("./components/Testimonials"), {
 const About = loadable(() => import("./components/About"), {
   fallback: <Loading />,
 });
+const Rubric = loadable(() => import("./components/Rubric"), {
+  fallback: <Loading />,
+});
 const TermsConditions = loadable(() => import("./components/TermsConditions"), {
   fallback: <Loading />,
 });
@@ -193,6 +196,7 @@ class App extends React.Component {
               />
               <Route path='/team' component={GoogleAnalyticsTracker(Team)} />
               <Route path='/testimonials' component={GoogleAnalyticsTracker(Testimonials)} />
+              <Route path='/rubric' component={GoogleAnalyticsTracker(Rubric)} />
               <Route path='/about' component={GoogleAnalyticsTracker(About)} />
               <Route
                 path='/terms-and-conditions'
