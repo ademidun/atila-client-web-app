@@ -49,6 +49,7 @@ class ScholarshipsListFilter extends React.Component {
 
         return (
             <div className="row">
+                {model &&
                 <div className="col-sm-6">
                     <label htmlFor="filter_by_user" className="float-left">
                         Filter by:
@@ -80,6 +81,7 @@ class ScholarshipsListFilter extends React.Component {
                     </div>
                     }
                 </div>
+                }
                 <div className="col-sm-6 col-md-3">
                     <label htmlFor="sort_by" className="float-left">
                         Sort by:

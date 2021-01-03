@@ -409,15 +409,16 @@ class ScholarshipsList extends React.Component {
                             {totalFunding && `${totalFunding} in funding`}
                         </h2>
                         <h3>
-
+                            {userProfile &&
                             <Button type="link"
                                     onClick={this.toggleViewAllScholarships}
                                     style={{fontSize: '1.5rem', height: "auto"}}>
                                 <div style={{whiteSpace: "break-spaces"}}>
                                     View {searchPayload.previewMode === 'universalSearch' ? 'scholarships for my profile' :
-                                    'all Scholarships' }
+                                    'all Scholarships'}
                                 </div>
                             </Button>
+                            }
                         </h3>
 
                         {viewAsUserProfile &&
