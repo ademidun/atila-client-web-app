@@ -287,7 +287,15 @@ class ScholarshipsList extends React.Component {
                 {/*change next line*/}
                 <strong>
                     {myJoin(filterItems, ', ')})
-                </strong>
+                </strong> <br />
+                {!userProfile &&
+                <p>
+                    Using default {filterValue}. {' '}
+                    <Link to="/register">
+                        Sign up {' '}
+                    </Link>
+                    to filter by your own {filterValue}.
+                </p>}
             </h3>)
         }
     };
