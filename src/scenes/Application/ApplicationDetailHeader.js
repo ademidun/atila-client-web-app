@@ -4,8 +4,10 @@ import {Button} from "antd";
 import { formatCurrency } from "../../services/utils";
 
 
-function ApplicationDetailHeader({ application, scholarship }){
-
+function ApplicationDetailHeader({ application, scholarship, isOwnerOfApplication }){
+    if (!isOwnerOfApplication) {
+        return null;
+    }
 
     if (application.accepted_payment) {
         return (
