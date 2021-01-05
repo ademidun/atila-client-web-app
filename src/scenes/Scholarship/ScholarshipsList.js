@@ -271,12 +271,15 @@ class ScholarshipsList extends React.Component {
         })
     };
 
-    getFilterHeader = (filterItems, filterValue, username) => {
+    getFilterHeader = (filterItems, filterValue, userProfile) => {
         if (filterItems.length === 0) {
 
             return (<h3>
                     No {filterValue} found for your profile <br/>
-                <Link to={`/profile/${username}/edit`}>Edit profile</Link> to filter by {filterValue}.
+                    {userProfile &&
+                        <>
+                    <Link to={`/profile/${userProfile.username}/edit`}>Edit profile</Link> to filter by {filterValue}.
+                        </>}
             </h3>)
         } else {
             return (<h3>
@@ -411,7 +414,7 @@ class ScholarshipsList extends React.Component {
                         </h1>
                         {searchPayload.filter_by_user &&
                         this.getFilterHeader(transformFilterDisplay(searchPayload.filter_by_user, userProfile),
-                            prettifyKeys(searchPayload.filter_by_user), userProfile.username)
+                            prettifyKeys(searchPayload.filter_by_user), userProfile)
                         }
                         <h2 className="text-muted">
                             {totalFunding && `${totalFunding} in funding`}
