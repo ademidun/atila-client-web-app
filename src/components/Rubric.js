@@ -1,6 +1,5 @@
 import React from 'react';
 import HelmetSeo, {defaultSeoContent} from "./HelmetSeo";
-import './Rubric.scss';
 
 function Rubric() {
     const seoContent = {
@@ -16,7 +15,7 @@ function Rubric() {
                 </h1>
                 <div className="card shadow">
                     <div className="card p-2">
-                        <table className="table table-responsive border-sm-light">
+                        <table className="table table-responsive table-bordered table-hover">
                             <div className="p-1">
                                 <tbody>
                                 <tr>
