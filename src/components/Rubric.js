@@ -106,7 +106,7 @@ function Rubric() {
                                     <p>Goals</p>
                                 </td>
                                 <td>
-                                    <p>The applicant does not have goals</p>
+                                    <p>The applicant states few or no goals</p>
                                 </td>
                                 <td>
                                     <p>The applicant states some goals, but may not be applicable or does not incorporate their individuality in their answer.</p>
@@ -137,19 +137,19 @@ function Rubric() {
                             </tr>
                             <tr>
                                 <td>
-                                    <p>Creativity*</p>
+                                    <p>Creativity</p>
                                 </td>
                                 <td>
-                                    <p>Poor writing technique that fails to get the point across.</p>
+                                    <p>Poor communication technique that fails to get the point across.</p>
                                     <br /><br /><br /><br /></td>
                                 <td>
-                                    <p>Acceptable use of writing techniques that somewhat demonstrates their points. Sentence structures are boring or repeated many times</p>
+                                    <p>Acceptable use of communication techniques that somewhat demonstrates their points. Sentence structures are boring or repeated many times</p>
                                 </td>
                                 <td>
-                                    <p>Sufficient use of writing techniques that aptly demonstrates the points made. Organized so it is easy to follow</p>
+                                    <p>Sufficient use of communication techniques that aptly demonstrates the points made. Organized so it is easy to follow</p>
                                 </td>
                                 <td>
-                                    <p>Creative use of writing techniques that clearly demonstrates the points above. Organized in a well thought-out way that is easy to follow.</p>
+                                    <p>Creative use of communication techniques that clearly demonstrates the points above. Organized in a well thought-out way that is easy to follow.</p>
                                 </td>
                             </tr>
                             </tbody>
