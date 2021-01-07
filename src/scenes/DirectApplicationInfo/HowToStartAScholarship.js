@@ -49,11 +49,6 @@ export const howToStartAScholarshipInformationItems = [
 
 class HowToStartAScholarship extends React.Component {
 
-    constructor(props) {
-        super(props);
-
-    }
-
     componentDidMount() {
 
         createTableOfContents(".how-to-start-scholarship-questions");
