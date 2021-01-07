@@ -76,7 +76,7 @@ export function HowItWorksStudent() {
             </h5>
             <div className="offset-lg-1">
 
-                <DescriptionsWithScreenshots items={howItWorksStudent} />
+                <DescriptionsWithScreenshotsList items={howItWorksStudent} />
 
 
                 <LandingPageLiveDemo youtubeVideoId="xC4e7J2sxuI" title="How to Start a Scholarship on Atila" />
@@ -166,7 +166,7 @@ export function HowItWorksSponsor({hideLearnMore = false}) {
             <LandingPageLiveDemo />
             }
             <div>
-            <DescriptionsWithScreenshots items={howItWorksSponsorItems} />
+            <DescriptionsWithScreenshotsList items={howItWorksSponsorItems} />
             </div>
 
             {/*Hide Learn More is true on the /start page. Which is when we want to show the demo first
@@ -193,38 +193,45 @@ export function HowItWorksSponsor({hideLearnMore = false}) {
     )
 }
 
-export function DescriptionsWithScreenshots({items})   {
+export function DescriptionsWithScreenshotsList({items})   {
 
     return (
         <div className="row">
             {items.map( (item, index) => (
-                <React.Fragment key={item.title}>
-                    <div className="card shadow m-3 p-3 col-lg-4 col-sm-12">
-                        <h3 className="m-3 text-muted strong">
-                            {index+1}. {item.title}
-                        </h3>
-                        <div className="m-3">
-                            {item.body}
-                        </div>
-                    </div>
-                    <div className="card shadow m-3 p-3 col-lg-7 col-sm-12">
-
-                        {/*Note: TO get the image to size responsively.
-                            I just had to put it inside a parent div and add 'col-12' class.*/}
-                        <img src={item.image}
-                             alt={item.title}
-                             title={item.title}
-                             className="col-12"
-                        />
-                        {item.imageCaption &&
-                        <p className="col-12 text-center text-muted">
-                            {item.imageCaption}
-                        </p>
-                        }
-                    </div>
-
-                </React.Fragment>
+                <DescriptionWithScreenshot item={item} index={index} />
             ))}
         </div>
+    )
+}
+
+export function DescriptionWithScreenshot({item, index=null})   {
+
+    return (
+        <React.Fragment key={item.title}>
+            <div className="card shadow m-3 p-3 col-lg-4 col-sm-12">
+                <h3 className="m-3 text-muted strong">
+                    {index ? `${index+1}. ` : null} {item.title}
+                </h3>
+                <div className="m-3">
+                    {item.body}
+                </div>
+            </div>
+            <div className="card shadow m-3 p-3 col-lg-7 col-sm-12">
+
+                {/*Note: TO get the image to size responsively.
+                            I just had to put it inside a parent div and add 'col-12' class.*/}
+                <img src={item.image}
+                     alt={item.title}
+                     title={item.title}
+                     className="col-12"
+                />
+                {item.imageCaption &&
+                <p className="col-12 text-center text-muted">
+                    {item.imageCaption}
+                </p>
+                }
+            </div>
+
+        </React.Fragment>
     )
 }

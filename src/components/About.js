@@ -1,5 +1,5 @@
 import React from 'react';
-import {DescriptionsWithScreenshots} from "../scenes/LandingPage/HowItWorks";
+import {DescriptionsWithScreenshotsList} from "../scenes/LandingPage/HowItWorks";
 import HelmetSeo, {defaultSeoContent} from "./HelmetSeo";
 import Team from "./Team/Team";
 import ImageGallery from "react-image-gallery";
@@ -103,7 +103,7 @@ function About({showTeam= true}) {
             </h3>
             <div className="offset-lg-1">
 
-                <DescriptionsWithScreenshots items={aboutContent} />
+                <DescriptionsWithScreenshotsList items={aboutContent} />
 
                 <h1>Pictures of the Atila Team</h1>
                 <ImageGallery
