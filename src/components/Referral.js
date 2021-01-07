@@ -1,16 +1,17 @@
 import React from 'react';
 import { connect } from "react-redux";
-import  { Redirect } from 'react-router-dom'
+import { toastNotify } from "../models/Utils";
 
 class Referral extends React.Component {
     componentDidMount() {
         const { referredByUsername } = this.props.match.params;
         localStorage.setItem('referred_by', referredByUsername);
-
+        toastNotify('The user who referred you has been saved and will be saved upon registration.', 'info')
+        this.props.history.push('')
     }
 
     render() {
-        return <Redirect to=''  />
+        return null
     }
 }
 
