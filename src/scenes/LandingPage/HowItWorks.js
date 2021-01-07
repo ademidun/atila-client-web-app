@@ -59,6 +59,56 @@ const howItWorksStudent = [
  ];
 
 
+export const howItWorksSponsorItems = [
+    {
+        title: "Create Scholarship",
+        body: <React.Fragment>
+            Enter details about the scholarship: <br/>
+            What inspired you to start it?{' '}
+            When's the deadline?{' '}
+            Who's eligible?{' '}
+            Any short answer or essay questions?{' '} etc.
+        </React.Fragment>,
+        image: "https://imgur.com/Bqo8XfQ.jpg"
+    },
+    {
+        title: "Fund Scholarship",
+        body: <p>Fund the scholarship with a credit card or debit card.
+            <br/><br/>
+            The minimum funding amount for a scholarship is just ${ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_START_SCHOLARSHIP}. <br/> <br/>
+            The minimum funding amount for additional contributions is ${ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP}.
+        </p>,
+        image: "https://i.imgur.com/kgpSskJ.png",
+    },
+    {
+        title: "Promote Scholarship",
+        body: "Atila will help you promote your scholarship to our network of over 100 schools and student organizations.",
+        image: "https://i.imgur.com/0ZOKqSz.png",
+        imageCaption: "A few examples of the organizations we notify when scholarships relevant to their students are launched.",
+    },
+    {
+        title: "Select Winner",
+        body: "Review student applications and select winner. Funds directly transferred to winner's bank " +
+            "account within 24 hours. All sponsors receive a thank you letter from winner.",
+        image: "https://imgur.com/HDecTqt.jpg",
+    },
+    {
+        title: <React.Fragment>The Big Cheque Special! <Tag color="green">Bonus</Tag></React.Fragment>,
+        body: "For scholarships valued at over $5,000, we mail a big cheque to the winner " +
+            "on behalf of the scholarship sponsor at no additional cost.",
+        image: "https://i.imgur.com/6p5wMBm.jpeg",
+        imageCaption: <React.Fragment>
+            Source: <a href="https://lasentinel.net/dulans-restaurants-help-dorsey-grad-attend-howard-university.html"
+                       target="_blank"
+                       rel="noopener noreferrer">
+            LA Sentinel
+        </a>
+            <br/>
+            <small>Note: This is just an example. Atila has no affiliation with the scholarship shown above.</small>
+        </React.Fragment>
+    },
+];
+
 export function HowItWorksStudent() {
 
     return (
@@ -90,56 +140,6 @@ export function HowItWorksStudent() {
 }
 
 export function HowItWorksSponsor({hideLearnMore = false}) {
-
-    const howItWorksSponsorItems = [
-        {
-        title: "Create Scholarship",
-        body: <React.Fragment>
-        Enter details about the scholarship: <br/>
-        What inspired you to start it?{' '}
-            When's the deadline?{' '}
-            Who's eligible?{' '}
-            Any short answer or essay questions?{' '} etc.
-        </React.Fragment>,
-            image: "https://imgur.com/Bqo8XfQ.jpg"
-        },
-        {
-        title: "Fund Scholarship",
-            body: <p>Fund the scholarship with a credit card or debit card.
-                <br/><br/>
-        The minimum funding amount for a scholarship is just ${ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_START_SCHOLARSHIP}. <br/> <br/>
-            The minimum funding amount for additional contributions is ${ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP}.
-            </p>,
-            image: "https://i.imgur.com/kgpSskJ.png",
-        },
-        {
-        title: "Promote Scholarship",
-        body: "Atila will help you promote your scholarship to our network of over 100 schools and student organizations.",
-        image: "https://i.imgur.com/0ZOKqSz.png",
-        imageCaption: "A few examples of the organizations we notify when scholarships relevant to their students are launched.",
-        },
-        {
-        title: "Select Winner",
-        body: "Review student applications and select winner. Funds directly transferred to winner's bank " +
-            "account within 24 hours. All sponsors receive a thank you letter from winner.",
-        image: "https://imgur.com/HDecTqt.jpg",
-        },
-        {
-            title: <React.Fragment>The Big Cheque Special! <Tag color="green">Bonus</Tag></React.Fragment>,
-        body: "For scholarships valued at over $5,000, we mail a big cheque to the winner " +
-            "on behalf of the scholarship sponsor for free.",
-        image: "https://i.imgur.com/6p5wMBm.jpeg",
-        imageCaption: <React.Fragment>
-            Source: <a href="https://lasentinel.net/dulans-restaurants-help-dorsey-grad-attend-howard-university.html"
-                       target="_blank"
-                       rel="noopener noreferrer">
-            LA Sentinel
-        </a>
-            <br/>
-            <small>Note: This is just an example. Atila has no affiliation with the scholarship shown above.</small>
-        </React.Fragment>
-        },
-    ];
 
     return (
         <div className="container">
