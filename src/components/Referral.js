@@ -4,9 +4,14 @@ import { toastNotify } from "../models/Utils";
 
 class Referral extends React.Component {
     componentDidMount() {
+        const { userProfile } = this.props
         const { referredByUsername } = this.props.match.params;
         localStorage.setItem('referred_by', referredByUsername);
-        toastNotify('The user who referred you has been saved and will be saved upon registration.', 'info')
+
+        if (!userProfile) {
+            toastNotify('The user who referred you has been saved and will be saved upon registration.', 'info')
+        }
+
         this.props.history.push('')
     }
 
