@@ -126,6 +126,11 @@ function Footer({location, history}) {
                       SiteMap
                     </Link>
                   </div>
+                  <div>
+                    <Link to="/rubric">
+                      Rubric
+                    </Link>
+                  </div>
                 </div>
               </Col>
               <Col md={6} sm={12} xs={24}>
