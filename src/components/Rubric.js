@@ -5,7 +5,7 @@ import HelmetSeo, {defaultSeoContent} from "./HelmetSeo";
 function Rubric() {
     const seoContent = {
         ...defaultSeoContent,
-        title: 'Atila Rubric - How Atila Scores Scholarship Applications'
+        title: 'Atila Rubric - How Scholarship Applications are Scored'
     };
     return (
         <div className="mt-3">
@@ -25,7 +25,7 @@ function Rubric() {
                         when <Link to="start">reviewing</Link> or <Link to="apply">writing</Link> scholarship applications.
                         <br/>
                         <br/>
-                        This rubric is simply meant as a guideline and certain categories may not be required for all applications.
+                        This rubric is simply meant as a guideline and certain categories may not be applicable for all applications.
 
                     </p>
                     <div className="p-3">
