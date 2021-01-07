@@ -8,16 +8,16 @@ function Rubric() {
         title: 'Atila Rubric - How Atila Scores Scholarship Applications'
     };
     return (
-        <div class="mt-5">
+        <div className="mt-5">
             <div className="container">
                 <HelmetSeo content={seoContent}/>
                 <h1 className="col-sm-12 text-center">
                     Atila Rubric - How Atila Scores Scholarship Applications
                 </h1>
                 <div className="card shadow">
-                    <div class="card p-2">
+                    <div className="card p-2">
                         <table className="table table-responsive border-sm-light">
-                            <div class="p-1">
+                            <div className="p-1">
                                 <tbody>
                                 <tr>
                                     <td> </td>
