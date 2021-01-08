@@ -32,7 +32,7 @@ function Pricing() {
                     <div className="container">
                         <h1>Pricing</h1>
                         <h5 className="text-white text-center">
-                            Atila is completely free for students. Sponsors pay {ATILA_SCHOLARSHIP_FEE_AS_INTEGER}% of the total scholarship value.
+                            Atila is free for students. Sponsors pay {ATILA_SCHOLARSHIP_FEE_AS_INTEGER}% of the total scholarship value.
                         </h5>
                         <div className="panel pricing-table">
 
