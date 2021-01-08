@@ -34,6 +34,20 @@ export const howToStartAScholarshipInformationItems = [
         imageCaption: "",
     },
     {
+        title: "What does the Atila fee cover?",
+        body: (<div>
+            Some of the things the Atila fee covers include:
+            <ol>
+                <li>A portion is reinvested in sponsoring more scholarships</li>
+                <li>Payment processing fees</li>
+                <li>Marketing and sales to get more sponsors to start scholarships and students to apply</li>
+                <li>Website hosting and server costs</li>
+            </ol>
+        </div>),
+        image: "https://i.imgur.com/s0xmEVc.png",
+        imageCaption: "",
+    },
+    {
         title: "Are scholarships funded on Atila tax-deductible?",
         body: (<div>
             <p>Scholarships are processed through the Atila Foundation which submitted it&rsquo;s application to be a Registered Charity in November 2020. <br/>
