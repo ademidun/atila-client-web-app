@@ -84,6 +84,7 @@ class Register extends React.Component {
 
         let nextLocation = params.get('redirect') || '/scholarship';
         let accountType = params.get('type') || accountTypes[0].value;
+        let referredBy = localStorage.getItem('referred_by') || ''
 
         if (nextLocation==='/') {
             nextLocation = '/scholarship';
@@ -95,6 +96,7 @@ class Register extends React.Component {
                 username: '',
                 email: '',
                 password: '',
+                referred_by: referredBy,
                 account_type: accountType,
                 agreeTermsConditions: false,
                 ...props.userProfile,
@@ -236,7 +238,7 @@ class Register extends React.Component {
 
         const { userProfile, isResponseError, responseOkMessage,
             loadingResponse, isTermsConditionsModalVisible, formErrors } = this.state;
-        const { first_name, last_name, username, email, password, agreeTermsConditions, account_type } = userProfile;
+        const { first_name, last_name, username, email, password, referred_by, agreeTermsConditions, account_type } = userProfile;
 
         let formErrorsContent = Object.keys(formErrors).map((errorType) => (
             <div key={errorType}>
@@ -293,6 +295,13 @@ class Register extends React.Component {
                                    required
                             />
                             <PasswordShowHide password={password} updateForm={this.updateForm} />
+
+                            &nbsp;Referred By
+                            <input className="col-12 mb-3 form-control"
+                                   name="referred_by"
+                                   value={referred_by}
+                                   onChange={this.updateForm}
+                            />
 
                             <div className="col-12">
                             <label>
