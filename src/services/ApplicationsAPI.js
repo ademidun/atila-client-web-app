@@ -37,6 +37,7 @@ class ApplicationsAPI {
 
             const { deadline, funding_amount, id, name, slug, specific_questions, user_profile_questions } = scholarship;
             applicationData = {
+                user: {},
                 user_profile_responses: {},
                 scholarship_responses: {},
                 scholarship: { deadline, funding_amount, id, name, slug, specific_questions, user_profile_questions }
