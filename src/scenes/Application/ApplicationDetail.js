@@ -500,11 +500,12 @@ class ApplicationDetail extends  React.Component{
                     <HelmetSeo content={seoContent}/>
                     <div className="card shadow p-3">
                         <h1>Application not found</h1>
+                        {!userProfile &&
                         <h5 className="center-block text-muted">
                             Try <Link to={`/login?redirect=application/${applicationID}`}>
                             logging in</Link> to view this page if your application is here.
                         </h5>
-
+                        }
                     </div>
                 </div>
             )
