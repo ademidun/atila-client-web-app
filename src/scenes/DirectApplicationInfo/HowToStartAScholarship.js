@@ -53,7 +53,7 @@ export const howToStartAScholarshipInformationItems = [
             <p>Scholarships are processed through the Atila Foundation which submitted it&rsquo;s application to be a Registered Charity in November 2020. <br/>
 
             If our application is approved in 2021, any donations made in the 2021 calendar year and beyond are eligible for tax-deductible receipts,
-                even if the donation was made before Atila receives registered charity status (source: <a href="https://www.canada.ca/en/revenue-agency/services/charities-giving/charities/policies-guidance/policy-commentary-009-official-donation-receipts-a-newly-registered-charity.html">Canada Revenue Agency</a>).</p>
+                even if the donation was made before Atila receives registered charity status (source: <a href="https://www.canada.ca/en/revenue-agency/services/charities-giving/charities/policies-guidance/policy-commentary-009-official-donation-receipts-a-newly-registered-charity.html" target="_blank" rel="noreferrer">Canada Revenue Agency</a>).</p>
             <p>If you know anyone who can help speed up or increase our chances of being approved, please contact us.</p>
         </div>),
         image: "https://i.imgur.com/VEiCq75.png",
@@ -63,13 +63,13 @@ export const howToStartAScholarshipInformationItems = [
         title: "What is the minimum amount to start a scholarship?",
         body: (<div>
             <p>A scholarship can be started for $50 and you can contribute to existing
-                scholarships for $10. A big part of our vision is democratizing access to education funding. <a href="https://i.imgur.com/PdsKQBU.png">Starting a scholarship typically requires thousands of dollars</a>. This creates a barrier to entry for people who want to start a scholarship, but don&rsquo;t have the money to start an endowment. By making it very easy and affordable for anyone to start a scholarship, more people are able to make a positive impact and help more students.</p>
+                scholarships for $10. Atila's vision is democratizing access to education funding. This means making it easier for students to find scholarships. It also means making it easier for people to support students. <a href="https://i.imgur.com/PdsKQBU.png" target="_blank" rel="noreferrer">Starting a scholarship typically requires thousands of dollars</a>. This creates a barrier to entry for people who want to start a scholarship, but don&rsquo;t have the money to start an endowment. By making it very easy and affordable for anyone to start a scholarship, more people are able to make a positive impact and help more students.</p>
         </div>),
     },
     {
         title: "Can Other people Contribute to a Scholarship?",
         body: (<div>
-            <p>Anyone can contribute to an existing scholarship for as little as $10. So if you and some of your family members, friends or colleagues at work decide to start a scholarship. One person will be the scholarship creator and others can contribute to the scholarship and be invited to review and grade the applications.</p>
+            <p>Anyone can contribute to an existing scholarship for as little as $10. So if you decide to start a scholarship; your family, friends, colleagues at work, kind strangers on the internet, etc. can contribute to the scholarship.</p>
         </div>),
     },
     {
@@ -78,15 +78,15 @@ export const howToStartAScholarshipInformationItems = [
             <p>
                 The scholarship sponsor reviews the applications and picks the finalists and winners. <br/>
 
-                If you want help filtering the applications, Atila will help you review the applications, present you a narrowed down list of the top applications and then you can pick the winner.
+                <br/>If you want help filtering the applications, Atila will help you review the applications, present you a narrowed down list of the top applications and then you can pick the winner.
 
                 There is no additional cost for this service.
             </p>
             <ol>
                 <li aria-level="1">Students submit applications: Submitted applications can start being graded as applications are sent in.</li>
                 <li aria-level="1">Deadline passes</li>
-                <li aria-level="1">Scholarship Sponsor and Atila have 7 days to score the existing applications and pick a winner. Scores are used internally, to help reviewers track and rank applications, scores are not shown to students.</li>
-                <li aria-level="1">Finalists are chosen: Usually around 5-10 applications. Finalists must submit proof of enrollment, a recent transcript and complete the security verification step.</li>
+                <li aria-level="1">Scholarship Sponsor and Atila have 7 days to score the existing applications and pick a winner. Scores are used internally, to help reviewers track and rank applications, these scores are not shown to students.</li>
+                <li aria-level="1">Finalists are chosen: Usually around 5-10 applications are chosen as finalists. Finalists must submit proof of enrollment, a recent transcript and complete the security verification step.</li>
                 <li aria-level="1">Winner is selected and has 7 days to verify proof of enrollment and write a thank you letter to the sponsor. Once that is complete, funds are transferred to the student within 24 hours.</li>
             </ol>
         </div>),
@@ -139,7 +139,7 @@ class HowToStartAScholarship extends React.Component {
                                          style={{maxHeight: "450px", width: "auto"}}
                                     />
                                     {item.imageCaption &&
-                                    <p className="col-12 text-center text-muted">
+                                    <p className="col-12 text-center text-muted pb-3">
                                         {item.imageCaption}
                                     </p>
                                     }
