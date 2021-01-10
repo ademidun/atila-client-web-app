@@ -165,7 +165,7 @@ class Register extends React.Component {
         const { setLoggedInUserProfile, disableRedirect, onRegistrationFinished } = this.props;
         const { userProfile } = this.state;
         let { nextLocation } = this.state;
-        const { email, username, password, account_type } = userProfile;
+        const { email, username, password, account_type, referred_by } = userProfile;
 
         this.setState({ loadingResponse: true});
         this.setState({ isResponseError: null});
@@ -173,7 +173,7 @@ class Register extends React.Component {
         const userProfileSendData = {
             first_name: userProfile.first_name,
             last_name: userProfile.last_name,
-            email, username, account_type,
+            email, username, account_type, referred_by,
         };
 
         // If this is a sponsor account type, redirect to the add a scholarship page
