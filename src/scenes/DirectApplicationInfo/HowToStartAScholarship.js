@@ -53,7 +53,7 @@ export const howToStartAScholarshipInformationItems = [
             <p>Scholarships are processed through the Atila Foundation which submitted it&rsquo;s application to be a Registered Charity in November 2020. <br/>
 
             If our application is approved in 2021, any donations made in the 2021 calendar year and beyond are eligible for tax-deductible receipts,
-                even if the donation was made before Atila receives registered charity status (source: <a href="https://www.canada.ca/en/revenue-agency/services/charities-giving/charities/policies-guidance/policy-commentary-009-official-donation-receipts-a-newly-registered-charity.html" target="_blank" rel="noreferrer">Canada Revenue Agency</a>).</p>
+                even if the donation was made before Atila receives registered charity status (source: <a href="https://www.canada.ca/en/revenue-agency/services/charities-giving/charities/policies-guidance/policy-commentary-009-official-donation-receipts-a-newly-registered-charity.html" target="_blank" rel="noopener noreferrer">Canada Revenue Agency</a>).</p>
             <p>If you know anyone who can help speed up or increase our chances of being approved, please contact us.</p>
         </div>),
         image: "https://i.imgur.com/VEiCq75.png",
@@ -63,7 +63,7 @@ export const howToStartAScholarshipInformationItems = [
         title: "What is the minimum amount to start a scholarship?",
         body: (<div>
             <p>A scholarship can be started for $50 and you can contribute to existing
-                scholarships for $10. Atila's vision is democratizing access to education funding. This means making it easier for students to find scholarships. It also means making it easier for people to support students. <a href="https://i.imgur.com/PdsKQBU.png" target="_blank" rel="noreferrer">Starting a scholarship typically requires thousands of dollars</a>. This creates a barrier to entry for people who want to start a scholarship, but don&rsquo;t have the money to start an endowment. By making it very easy and affordable for anyone to start a scholarship, more people are able to make a positive impact and help more students.</p>
+                scholarships for $10. Atila's vision is democratizing access to education funding. This means making it easier for students to find scholarships. It also means making it easier for people to support students. <a href="https://i.imgur.com/PdsKQBU.png" target="_blank" rel="noopener noreferrer">Starting a scholarship typically requires thousands of dollars</a>. This creates a barrier to entry for people who want to start a scholarship, but don&rsquo;t have the money to start an endowment. By making it very easy and affordable for anyone to start a scholarship, more people are able to make a positive impact and help more students.</p>
         </div>),
     },
     {
