@@ -9,7 +9,7 @@ class Referral extends React.Component {
         localStorage.setItem('referred_by', referredByUsername);
 
         if (!userProfile) {
-            toastNotify('The user who referred you has been saved and will be saved upon registration.', 'info')
+            toastNotify('The user who referred you has been saved and will be used upon registration.', 'info')
         }
 
         this.props.history.push('')
