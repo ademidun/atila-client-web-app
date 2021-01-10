@@ -55,6 +55,7 @@ let scholarshipFormConfigsPage1 = [
         placeholder:"Hide names of applicants until a winner is selected",
         type: 'checkbox',
         className: 'font-weight-bold',
+        isHidden: (scholarship) => (!scholarship.is_atila_direct_application),
     },
     {
         keyName: 'criteria_info',
