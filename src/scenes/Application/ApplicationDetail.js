@@ -362,8 +362,6 @@ class ApplicationDetail extends  React.Component{
         }
         application[applicationResponseType][name] = value;
 
-        console.log({ name, value });
-
         this.setState(prevState => ({
             application: {
                 ...prevState.application,
