@@ -216,3 +216,20 @@ label {
 .object-fit-fill {
   object-fit: fill !important;
 }
+
+.ant-back-top {
+  left: 100px;
+}
+
+@media screen and (max-width: 480px) {
+  .ant-back-top {
+    left: 20px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .ant-back-top {
+    left: 60px;
+  }
+
+}

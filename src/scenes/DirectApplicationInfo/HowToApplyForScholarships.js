@@ -38,7 +38,7 @@ function HowToApplyForScholarships() {
                             <br/>
                             <small>
                                 <sup>*</sup>
-                                Only currently available for students with Canadian or American Bank Accounts. <br/>
+                                Currently only available for students with Canadian or American Bank Accounts. <br/>
                             </small></li>
                     </ol>
                     <h2>Questions</h2>
