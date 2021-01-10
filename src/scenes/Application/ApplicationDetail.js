@@ -362,8 +362,6 @@ class ApplicationDetail extends  React.Component{
         }
         application[applicationResponseType][name] = value;
 
-        console.log({ name, value });
-
         this.setState(prevState => ({
             application: {
                 ...prevState.application,
@@ -414,7 +412,7 @@ class ApplicationDetail extends  React.Component{
                 return (<div key={question.key}>
                     <div className="white-space-pre-wrap">
                         <b>{prettifyKeys(question.key)}:</b><br/>
-                        {displayRealName? application.user[question.key] : application[key_code]}
+                        {displayRealName? responseDict[question.key] : application[key_code]}
                     </div>
                 </div>);
             }
