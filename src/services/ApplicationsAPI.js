@@ -49,13 +49,6 @@ class ApplicationsAPI {
         }
 
         applicationData = JSON.parse(applicationData);
-
-        // Retroactively fix a bug where some applications were created locally without applicationData.user
-        // see: https://github.com/ademidun/atila-client-web-app/pull/294
-        applicationData.user = applicationData.user ? applicationData.user : {};
-        applicationData.user_profile_responses = applicationData.user_profile_responses ? applicationData.user_profile_responses : {};
-        applicationData.scholarship_responses = applicationData.scholarship_responses ? applicationData.scholarship_responses : {};
-
         applicationData.scholarship = scholarship;
 
         return applicationData;

@@ -414,7 +414,7 @@ class ApplicationDetail extends  React.Component{
                 return (<div key={question.key}>
                     <div className="white-space-pre-wrap">
                         <b>{prettifyKeys(question.key)}:</b><br/>
-                        {displayRealName? application.user[question.key] : application[key_code]}
+                        {displayRealName? responseDict[question.key] : application[key_code]}
                     </div>
                 </div>);
             }
