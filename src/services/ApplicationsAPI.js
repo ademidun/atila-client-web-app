@@ -63,6 +63,16 @@ class ApplicationsAPI {
         return apiCompletionPromise;
     };
 
+    static list = (page=1) => {
+
+        const apiCompletionPromise = request({
+            method: 'get',
+            url: `${ApplicationsAPI.applicationsApiUrl}/all-finalists/?page=${page}/`,
+        });
+
+        return apiCompletionPromise;
+    };
+
     static getSlug = (slug) => {
 
         const apiCompletionPromise = request({
