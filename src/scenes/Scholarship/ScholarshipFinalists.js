@@ -6,6 +6,7 @@ import ContentCard from "../../components/ContentCard";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
 import {formatCurrency, genericItemTransform} from "../../services/utils";
+import ApplicationsAPI from "../../services/ApplicationsAPI";
 
 class ScholarshipFinalists extends React.Component {
 
@@ -21,11 +22,15 @@ class ScholarshipFinalists extends React.Component {
     }
     componentDidMount() {
 
-        const { id } = this.props;
+        const { id, allFinalists } = this.props;
         this.setState({ isLoadingScholarshipFinalists: true });
 
-        const scholarshipFinalistsPromise = ScholarshipsAPI
-            .getFinalists(`${id}`);
+        let scholarshipFinalistsPromise;
+        if (allFinalists) {
+            scholarshipFinalistsPromise = ApplicationsAPI.allFinalists();
+        } else {
+            scholarshipFinalistsPromise = ScholarshipsAPI.getFinalists(`${id}`);
+        }
         scholarshipFinalistsPromise
             .then(res => {
                 this.setState({
@@ -134,13 +139,15 @@ export function UserProfilesCards({userProfiles, userKey="username"}) {
 ScholarshipFinalists.defaultProps = {
     className: '',
     title: 'Related',
+    allFinalists: false,
 };
 
 ScholarshipFinalists.propTypes = {
     className: PropTypes.string,
     title: PropTypes.string,
+    allFinalists: PropTypes.bool,
     itemType: PropTypes.string.isRequired,
-    id: PropTypes.number.isRequired,
+    id: PropTypes.number,
 };
 
 export default ScholarshipFinalists;

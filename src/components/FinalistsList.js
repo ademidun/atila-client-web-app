@@ -1,13 +1,15 @@
 import React from 'react';
 
-import ApplicationsAPI from "../services/ApplicationsAPI";
-import ContentList from "./ContentList";
+import ScholarshipFinalists from "../scenes/Scholarship/ScholarshipFinalists";
 
 class FinalistsList extends React.Component {
 
     render () {
         return (
-            <ContentList ContentAPI={ApplicationsAPI} contentType={'Essays'} />
+
+            <div className="my-3" id="finalists">
+                <ScholarshipFinalists itemType={"essay"} allFinalists={true} title="Finalists" />
+            </div>
         );
     }
 }

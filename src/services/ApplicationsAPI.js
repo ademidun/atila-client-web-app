@@ -63,7 +63,7 @@ class ApplicationsAPI {
         return apiCompletionPromise;
     };
 
-    static list = (page=1) => {
+    static allFinalists = (page=1) => {
 
         const apiCompletionPromise = request({
             method: 'get',
