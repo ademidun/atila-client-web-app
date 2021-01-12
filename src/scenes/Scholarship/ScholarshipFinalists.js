@@ -51,7 +51,7 @@ class ScholarshipFinalists extends React.Component {
     render () {
 
         const { scholarshipFinalistEssays, scholarshipFinalistUserProfiles, isLoadingScholarshipFinalists  } = this.state;
-        const { className, title  } = this.props;
+        const { className, title, showEssaysFirst  } = this.props;
 
         if (isLoadingScholarshipFinalists) {
             return (
@@ -65,29 +65,44 @@ class ScholarshipFinalists extends React.Component {
         return (
             <div className={`${className}`}>
                 <h3 className="text-center">{title}</h3>
+                {showEssaysFirst &&
+                <ScholarshipFinalistEssays title={title} scholarshipFinalistEssays={scholarshipFinalistEssays} />
+                }
                 <UserProfilesCards userProfiles={scholarshipFinalistUserProfiles} />
-                <h3 className="text-center">{title}' Essays</h3>
-                <Row gutter={[{ xs: 8, sm: 16}, 16]}>
-                    {scholarshipFinalistEssays.map(item => {
-                        // set this so getItemType() in genericItemTransform() returns an essay
-                        item.essay_source_url="";
-                        return (
-                            // Use zoom:0.8 as a temporary workaround so that that ScholarshipFinalists doesn't
-                            // take up too much space.
-                            <Col xs={24} md={12} lg={8} style={{zoom:0.9}} key={item.slug}>
-                                <ContentCard key={item.slug}
-                                             content={genericItemTransform(item)}
-                                             customStyle={{height: "850px"}}
-                                             className="mb-3" />
-                            </Col>)
-                    })}
+                {!showEssaysFirst &&
+                <ScholarshipFinalistEssays title={title} scholarshipFinalistEssays={scholarshipFinalistEssays} />
+                }
 
-                </Row>
             </div>
         );
     }
 }
 
+export function ScholarshipFinalistEssays({ title, scholarshipFinalistEssays }) {
+
+    return (
+        <React.Fragment>
+            <h3 className="text-center">{title}' Essays</h3>
+            <Row gutter={[{ xs: 8, sm: 16}, 16]}>
+                {scholarshipFinalistEssays.map(item => {
+                    // set this so getItemType() in genericItemTransform() returns an essay
+                    item.essay_source_url="";
+                    return (
+                        // Use zoom:0.8 as a temporary workaround so that that ScholarshipFinalists doesn't
+                        // take up too much space.
+                        <Col xs={24} md={12} lg={8} style={{zoom:0.9}} key={item.slug}>
+                            <ContentCard key={item.slug}
+                                         content={genericItemTransform(item)}
+                                         customStyle={{height: "850px"}}
+                                         className="mb-3" />
+                        </Col>)
+                })}
+
+            </Row>
+        </React.Fragment>
+    )
+
+}
 export function UserProfilesCards({userProfiles, userKey="username"}) {
     return (<Row gutter={[{ xs: 8, sm: 16}, 16]}>
         {userProfiles.map(user => {
@@ -140,12 +155,14 @@ ScholarshipFinalists.defaultProps = {
     className: '',
     title: 'Related',
     allFinalists: false,
+    showEssaysFirst: false,
 };
 
 ScholarshipFinalists.propTypes = {
     className: PropTypes.string,
     title: PropTypes.string,
     allFinalists: PropTypes.bool,
+    showEssaysFirst: PropTypes.bool,
     itemType: PropTypes.string.isRequired,
     id: PropTypes.number,
 };
