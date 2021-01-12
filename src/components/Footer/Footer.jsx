@@ -56,7 +56,7 @@ function Footer({location, history}) {
                   </div>
                   <div>
                     <Link to="/high-school">
-                      High School
+                      Advice for High School Students
                     </Link>
                   </div>
                   <div>
