@@ -77,9 +77,10 @@ class Navbar extends React.Component {
                         <Tag color="green">new</Tag>
                     </Link>
                 </Menu.Item>
-                <Menu.Item key="search">
-                    <Link to="/search">Search</Link>
-                </Menu.Item>
+                {/*<Menu.Item key="search">*/}
+                {/*TODO see how many people are actually using search */}
+                {/*    <Link to="/search">Search</Link>*/}
+                {/*</Menu.Item>*/}
                 <Menu.Item key="essays">
                     <Link to="/essay">Essays</Link>
                 </Menu.Item>
@@ -89,8 +90,9 @@ class Navbar extends React.Component {
                 <Menu.Item key="scholarships">
                     <Link to="/scholarship">Scholarships</Link>
                 </Menu.Item>
-                <Menu.Item key="high-school">
-                    <Link to="/high-school">High School</Link>
+                <Menu.Item key="finalists">
+                    <Link to="/finalists">Finalists</Link>{' '}
+                    <Tag color="green">new</Tag>
                 </Menu.Item>
                 <Menu.Item key="about">
                     <Link to="/about">About</Link>
