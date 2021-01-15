@@ -19,7 +19,8 @@ class Search extends React.Component {
             location : { search },
         } = this.props;
         const params = new URLSearchParams(search);
-        const searchQuery = unSlugify(params.get('q') || '');
+        const { urlQuery } = this.props.match.params
+        const searchQuery = unSlugify(params.get('q') || urlQuery || '');
 
         this.state = {
             searchQuery,
@@ -45,7 +46,8 @@ class Search extends React.Component {
             location : { search },
         } = props;
         const params = new URLSearchParams(search);
-        const searchQuery = unSlugify(params.get('q') || '');
+        const { urlQuery } = props.match.params
+        const searchQuery = unSlugify(params.get('q') || urlQuery || '');
         const { prevSearchQuery } = state;
 
         if (searchQuery !== prevSearchQuery) {
@@ -113,11 +115,21 @@ class Search extends React.Component {
         if (event && event.preventDefault) {
             event.preventDefault();
         }
+
         const { searchQuery } = this.state;
-        this.props.history.push({
-            pathname: '/search',
-            search: `?q=${slugify(searchQuery)}`
-        });
+        const { pathname } = this.props.location;
+
+        if (pathname.includes("/search")) {
+            this.props.history.push({
+                pathname: '/search',
+                search: `?q=${slugify(searchQuery)}`
+            });
+        } else {
+            this.props.history.push({
+                pathname: `/s/${slugify(searchQuery)}`
+            });
+        }
+
         this.setState({ isLoadingResponse: true }, () => {
             this.loadItems();
         });
