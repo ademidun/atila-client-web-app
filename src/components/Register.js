@@ -251,6 +251,11 @@ class Register extends React.Component {
                     <div>
                         <h1>Register</h1>
                         <form className="row p-3 form-group" onSubmit={this.submitForm}>
+                            {first_name &&
+                                <label>
+                                    First Name
+                                </label>
+                            }
                             <input placeholder="First name"
                                    className="col-12 mb-3 form-control"
                                    name="first_name"
@@ -258,6 +263,11 @@ class Register extends React.Component {
                                    onChange={this.updateForm}
                                    required
                             />
+                            {last_name &&
+                            <label>
+                                Last Name
+                            </label>
+                            }
                             <input placeholder="Last Name"
                                    name="last_name"
                                    className="col-12 mb-3 form-control"
@@ -296,7 +306,7 @@ class Register extends React.Component {
                             />
                             <PasswordShowHide password={password} updateForm={this.updateForm} />
 
-                            &nbsp;Referred By
+                            <label>Referred By</label>
                             <input className="col-12 mb-3 form-control"
                                    name="referred_by"
                                    value={referred_by}
