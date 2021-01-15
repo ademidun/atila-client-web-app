@@ -115,11 +115,21 @@ class Search extends React.Component {
         if (event && event.preventDefault) {
             event.preventDefault();
         }
+
         const { searchQuery } = this.state;
-        this.props.history.push({
-            pathname: '/search',
-            search: `?q=${slugify(searchQuery)}`
-        });
+        const { pathname } = this.props.location;
+
+        if (pathname.includes("/search")) {
+            this.props.history.push({
+                pathname: '/search',
+                search: `?q=${slugify(searchQuery)}`
+            });
+        } else {
+            this.props.history.push({
+                pathname: `/s/${slugify(searchQuery)}`
+            });
+        }
+
         this.setState({ isLoadingResponse: true }, () => {
             this.loadItems();
         });
