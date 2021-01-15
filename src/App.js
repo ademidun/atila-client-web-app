@@ -161,7 +161,7 @@ class App extends React.Component {
                 component={GoogleAnalyticsTracker(Search)}
               />
               <Route
-                  path='/s/:urlQuery'
+                  path='/s/:urlQuery?'
                   component={GoogleAnalyticsTracker(Search)}
               />
               <Route path='/login' component={GoogleAnalyticsTracker(Login)} />
