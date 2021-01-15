@@ -217,7 +217,7 @@ class App extends React.Component {
                 path='/siteMap'
                 component={GoogleAnalyticsTracker(SiteMap)}
               />
-              <Route path='/j/:referredByUsername' component={GoogleAnalyticsTracker(Referral)} />
+              <Route path='/j/:referredByUsername?' component={GoogleAnalyticsTracker(Referral)} />
             </Switch>
           )}
           <Footer />
