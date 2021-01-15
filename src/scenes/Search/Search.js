@@ -19,7 +19,8 @@ class Search extends React.Component {
             location : { search },
         } = this.props;
         const params = new URLSearchParams(search);
-        const searchQuery = unSlugify(params.get('q') || '');
+        const { urlQuery } = this.props.match.params
+        const searchQuery = unSlugify(params.get('q') || urlQuery || '');
 
         this.state = {
             searchQuery,
@@ -45,7 +46,8 @@ class Search extends React.Component {
             location : { search },
         } = props;
         const params = new URLSearchParams(search);
-        const searchQuery = unSlugify(params.get('q') || '');
+        const { urlQuery } = props.match.params
+        const searchQuery = unSlugify(params.get('q') || urlQuery || '');
         const { prevSearchQuery } = state;
 
         if (searchQuery !== prevSearchQuery) {
