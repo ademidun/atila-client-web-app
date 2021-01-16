@@ -1,15 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TweenOne from 'rc-tween-one';
-import QueueAnim from 'rc-queue-anim';
 import ScrollParallax from 'rc-scroll-anim/lib/ScrollParallax';
-import BannerImage from './BannerImage';
 import {Button} from "antd";
 import {Link, withRouter} from "react-router-dom";
 import AutoComplete from "../../components/AutoComplete";
 import {MASTER_LIST_EVERYTHING_UNDERSCORE} from "../../models/ConstantsForm";
 import {slugify} from "../../services/utils";
-import {SCHOLARSHIP_CONTRIBUTION_EXAMPLE_IMAGE} from "../../models/Scholarship";
 import bannerImage from "./assets/landing-cover-big-scholarship.png";
 
 const loop = {
