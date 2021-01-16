@@ -19,8 +19,7 @@ class Search extends React.Component {
             location : { search },
         } = this.props;
         const params = new URLSearchParams(search);
-        const { urlQuery } = this.props.match.params
-        const searchQuery = unSlugify(params.get('q') || urlQuery || '');
+        const searchQuery = unSlugify(params.get('q') || '');
 
         this.state = {
             searchQuery,
@@ -33,7 +32,21 @@ class Search extends React.Component {
     }
 
     componentDidMount() {
+        // Redirect to /search if necessary
+        if (!this.props.location.pathname.includes("/search")) {
+            const { urlQuery } = this.props.match.params
 
+            if (urlQuery) {
+                this.props.history.push({
+                    pathname: '/search',
+                    search: `?q=${slugify(urlQuery)}`
+                });
+            } else {
+                this.props.history.push({
+                    pathname: '/search'
+                });
+            }
+        }
         const { searchQuery } = this.state;
         if (searchQuery) {
             this.loadItems();
@@ -46,8 +59,7 @@ class Search extends React.Component {
             location : { search },
         } = props;
         const params = new URLSearchParams(search);
-        const { urlQuery } = props.match.params
-        const searchQuery = unSlugify(params.get('q') || urlQuery || '');
+        const searchQuery = unSlugify(params.get('q') || '');
         const { prevSearchQuery } = state;
 
         if (searchQuery !== prevSearchQuery) {
@@ -115,21 +127,11 @@ class Search extends React.Component {
         if (event && event.preventDefault) {
             event.preventDefault();
         }
-
         const { searchQuery } = this.state;
-        const { pathname } = this.props.location;
-
-        if (pathname.includes("/search")) {
-            this.props.history.push({
-                pathname: '/search',
-                search: `?q=${slugify(searchQuery)}`
-            });
-        } else {
-            this.props.history.push({
-                pathname: `/s/${slugify(searchQuery)}`
-            });
-        }
-
+        this.props.history.push({
+            pathname: '/search',
+            search: `?q=${slugify(searchQuery)}`
+        });
         this.setState({ isLoadingResponse: true }, () => {
             this.loadItems();
         });
@@ -187,7 +189,7 @@ class Search extends React.Component {
                 </form>
 
                 { searchResults && (searchResults.scholarships || searchResults.essays || searchResults.blogs) &&
-                    <SearchResultsDisplay searchResults={searchResults} />
+                <SearchResultsDisplay searchResults={searchResults} />
                 }
                 <ResponseDisplay isLoadingResponse={isLoadingResponse}
                                  responseError={responseError}
