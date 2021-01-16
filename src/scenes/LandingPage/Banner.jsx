@@ -9,6 +9,8 @@ import {Link, withRouter} from "react-router-dom";
 import AutoComplete from "../../components/AutoComplete";
 import {MASTER_LIST_EVERYTHING_UNDERSCORE} from "../../models/ConstantsForm";
 import {slugify} from "../../services/utils";
+import {SCHOLARSHIP_CONTRIBUTION_EXAMPLE_IMAGE} from "../../models/Scholarship";
+import bannerImage from "./assets/landing-cover-big-scholarship.png";
 
 const loop = {
   duration: 3000,
@@ -74,11 +76,10 @@ class Banner extends React.Component {
           </svg>
           <ScrollParallax location="banner" className="banner-bg" animation={{ playScale: [1, 1.5], rotate: 0 }} />
         </div>
-        <QueueAnim className={`${className} page`} type="alpha" delay={150}>
-          <QueueAnim
-            className="text-wrapper responsive-text pl-md-5"
+        <div className={`${className} page row`}>
+          <div
+            className="col-lg-6 col-md-6 col-sm-12"
             key="text"
-            type="bottom"
           >
             <h1 key="h1" className="mt-sm-5">
               Atila
@@ -135,11 +136,12 @@ class Banner extends React.Component {
                 </Button>
               </div>
             </form>
-          </QueueAnim>
-          <div className="img-wrapper" key="image">
-            <ScrollParallax location="banner" component={BannerImage} animation={{ playScale: [1, 1.5], y: 80 }} />
           </div>
-        </QueueAnim>
+          <div className="col-lg-6 col-md-6 col-sm-12 text-center" key="image">
+            <img src={bannerImage}
+                 className="col-12" alt="Big cheque" />
+          </div>
+        </div>
       </div>
     );
   }
