@@ -128,7 +128,7 @@ export let DEFAULT_SCHOLARSHIP = {
     language: [],
 };
 
-export const SCHOLARSHIP_CONTRIBUTION_EXAMPLE_IMAGE = "https://hcti.io/v1/image/10084573-8f25-43ab-9ebc-87cfaea84651";
+export const SCHOLARSHIP_CONTRIBUTION_EXAMPLE_IMAGE = "https://hcti.io/v1/image/45ca4aac-0a18-4f52-bac3-07d98648a75d";
 
 // TODO Crop Images and give attribution on Terms and Conditions page;
 // Note that the Unsplash query parameter URLS are all cropped such that they are perfectly square
