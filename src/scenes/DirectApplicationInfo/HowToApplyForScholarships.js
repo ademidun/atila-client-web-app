@@ -27,7 +27,7 @@ function HowToApplyForScholarships() {
                         </Link>
                     </h5>
 
-                    <LandingPageLiveDemo youtubeVideoId="xC4e7J2sxuI" title="How to Start a Scholarship on Atila" />
+                    <LandingPageLiveDemo youtubeVideoId="iLIHhuY9b0k" title="How to Start a Scholarship on Atila" />
 
                     <ol>
                         <li>Create your profile to find scholarships you qualify for.<br /><br /></li>
