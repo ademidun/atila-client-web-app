@@ -109,8 +109,8 @@ class HowToStartAScholarship extends React.Component {
         const seoContent = {
             title: 'How to Start a Scholarship',
             description: presentationDescription,
-            image: 'https://i.ytimg.com/vi/bpyEWzblFrU/maxresdefault.jpg',
-            slug: '/high-school'
+            image: 'https://i.imgur.com/aNdWwl8.png',
+            slug: '/start'
         };
 
         return (
