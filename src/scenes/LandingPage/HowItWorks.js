@@ -69,7 +69,7 @@ export const howItWorksSponsorItems = [
             Who's eligible?{' '}
             Any short answer or essay questions?{' '} etc.
         </React.Fragment>,
-        image: "https://imgur.com/Bqo8XfQ.jpg"
+        image: "https://imgur.com/HgIoMJ9.jpg"
     },
     {
         title: "Fund Scholarship",
@@ -129,7 +129,7 @@ export function HowItWorksStudent() {
                 <DescriptionsWithScreenshotsList items={howItWorksStudent} />
 
 
-                <LandingPageLiveDemo youtubeVideoId="xC4e7J2sxuI" title="How to Start a Scholarship on Atila" />
+                <LandingPageLiveDemo youtubeVideoId="iLIHhuY9b0k" title="How to Start a Scholarship on Atila" />
 
                 <h1 className="col-sm-12 text-center">
                     <Link to="/apply"> Learn More </Link>
