@@ -32,8 +32,7 @@ function HowToApplyForScholarships() {
                     <ol>
                         <li>Create your profile to find scholarships you qualify for.<br /><br /></li>
                         <li>Find a scholarship you want and click Apply now. Save time by pre-filling similar responses you&rsquo;ve entered in the past.<br /><br /></li>
-                        <li>If selected, write a thank you email to the sponsor<br /><br /></li>
-                        <li>Connect your bank Account<br /><br /></li>
+                        <li>If selected, provide proof of enrollment and write a thank you letter to the sponsor<br /><br /></li>
                         <li>Accept payment and have funds deposited to your bank account within 24 hours<sup>*</sup>.
                             <br/>
                             <small>
