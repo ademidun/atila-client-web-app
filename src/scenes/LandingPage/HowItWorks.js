@@ -69,7 +69,7 @@ export const howItWorksSponsorItems = [
             Who's eligible?{' '}
             Any short answer or essay questions?{' '} etc.
         </React.Fragment>,
-        image: "https://imgur.com/Bqo8XfQ.jpg"
+        image: "https://imgur.com/HgIoMJ9.jpg"
     },
     {
         title: "Fund Scholarship",

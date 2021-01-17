@@ -18,7 +18,7 @@ export const howToStartAScholarshipInformationItems = [
                 <li>Review Applications and pick a winner</li>
             </ol>
         </div>),
-        image: "https://imgur.com/Bqo8XfQ.jpg",
+        image: "https://imgur.com/HgIoMJ9.jpg",
         imageCaption: "",
     },
     {
