@@ -5,14 +5,12 @@ import LandingPageLiveDemo from "../LandingPage/LandingPageLiveDemo";
 
 function HowToApplyForScholarships() {
 
-    const presentationDescription = 'This is a presentation for high school students' +
-        ' about your life after high school: what are your options, ' +
-        'how to learn what path is best for you and how can they achieve your goals.';
+    const presentationDescription = '1. Find an account. 2. Fill an application form. 3. If you win, get your funding within 24 hours.';
     const seoContent = {
         title: 'How to Apply for Scholarships',
         description: presentationDescription,
-        image: 'https://i.ytimg.com/vi/bpyEWzblFrU/maxresdefault.jpg',
-        slug: '/high-school'
+        image: 'https://i.imgur.com/HqZEU5N.png',
+        slug: '/apply'
     };
 
     return (
