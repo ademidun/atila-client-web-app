@@ -23,7 +23,7 @@ export const howToStartAScholarshipInformationItems = [
 
 ];
 
-class HowToStartAScholarship extends React.Component {
+class Values extends React.Component {
 
     render() {
         const presentationDescription = 'Easily start a scholarship with Atila. Enter scholarship details. Fund your scholarship. Pick a winner.';
@@ -77,4 +77,4 @@ class HowToStartAScholarship extends React.Component {
     }
 }
 
-export default HowToStartAScholarship;
+export default Values;

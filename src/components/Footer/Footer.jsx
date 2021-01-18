@@ -131,6 +131,11 @@ function Footer({location, history}) {
                       Rubric
                     </Link>
                   </div>
+                  <div>
+                    <Link to="/values">
+                      Atila's Values
+                    </Link>
+                  </div>
                 </div>
               </Col>
               <Col md={6} sm={12} xs={24}>
