@@ -6,10 +6,9 @@ import './LoginRegister.scss';
 import {setLoggedInUserProfile} from "../redux/actions/user";
 import {connect} from "react-redux";
 import TermsConditions from "./TermsConditions";
-import { Modal } from "antd";
+import { Modal, Radio, AutoComplete } from "antd";
 import {Link} from "react-router-dom";
 import {forbiddenCharacters, hasForbiddenCharacters} from "../models/Utils";
-import { Radio } from 'antd';
 
 export class PasswordShowHide extends React.Component {
 
@@ -240,6 +239,12 @@ class Register extends React.Component {
             })
     };
 
+    updateReferredByField = (data) => {
+        console.log(data)
+        const newUserProfile = { ...this.state.userProfile, referred_by: data }
+        this.setState({userProfile: newUserProfile})
+    };
+
     render () {
 
         const { userProfile, isResponseError, responseOkMessage,
@@ -252,6 +257,12 @@ class Register extends React.Component {
                 {formErrors[errorType]}
             </div>
         ));
+
+        let TEST_OPTIONS = [
+            {'label': 'hadi', 'value': 'hadi'},
+            {'label': 'tomiwa', 'value': 'tomiwa'},
+            {'label': 'dev', 'value': 'dev'},
+        ]
         return (
             <div className="container mt-5">
                 <div className="card shadow p-3">
@@ -324,12 +335,18 @@ class Register extends React.Component {
                             {referredByChecked &&
                             <div className={'col-12'}>
 
-                            <label>I was referred by</label>
-                            <input className="col-12 mb-3 form-control"
-                                   name="referred_by"
-                                   value={referred_by}
-                                   onChange={this.updateForm}
-                            />
+                            <label>I was referred by</label> <br />
+                                <AutoComplete
+                                    filterOption
+                                    options={TEST_OPTIONS}
+                                    name="referred_by"
+                                    value={referred_by}
+                                    onChange={this.updateReferredByField}
+                                    style={{
+                                        width: 200,
+                                    }}
+                                />
+                                <br /><br />
                             </div>
                             }
                             <div className="col-12">
