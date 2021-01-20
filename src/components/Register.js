@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import UserProfileAPI from "../services/UserProfileAPI";
+import SearchApi from "../services/SearchAPI";
 import Loading from "./Loading";
 import './LoginRegister.scss';
 import {setLoggedInUserProfile} from "../redux/actions/user";
@@ -102,6 +103,7 @@ class Register extends React.Component {
                 ...props.userProfile,
             },
             nextLocation,
+            referredByOptions: null,
             isResponseError: null,
             responseOkMessage: null,
             loadingResponse: null,
@@ -239,16 +241,17 @@ class Register extends React.Component {
             })
     };
 
-    updateReferredByField = (data) => {
-        console.log(data)
-        const newUserProfile = { ...this.state.userProfile, referred_by: data }
+    updateReferredByField = (newReferredByField) => {
+
+
+        const newUserProfile = { ...this.state.userProfile, referred_by: newReferredByField }
         this.setState({userProfile: newUserProfile})
     };
 
     render () {
 
         const { userProfile, isResponseError, responseOkMessage,
-            loadingResponse, isTermsConditionsModalVisible, formErrors } = this.state;
+            loadingResponse, isTermsConditionsModalVisible, formErrors, referredByOptions } = this.state;
         const { first_name, last_name, username, email, password,
             referred_by, agreeTermsConditions, account_type, referredByChecked } = userProfile;
 
@@ -258,11 +261,6 @@ class Register extends React.Component {
             </div>
         ));
 
-        let TEST_OPTIONS = [
-            {'label': 'hadi', 'value': 'hadi'},
-            {'label': 'tomiwa', 'value': 'tomiwa'},
-            {'label': 'dev', 'value': 'dev'},
-        ]
         return (
             <div className="container mt-5">
                 <div className="card shadow p-3">
@@ -338,7 +336,8 @@ class Register extends React.Component {
                             <label>I was referred by</label> <br />
                                 <AutoComplete
                                     filterOption
-                                    options={TEST_OPTIONS}
+                                    options={referredByOptions}
+                                    open={!!referredByOptions}
                                     name="referred_by"
                                     value={referred_by}
                                     onChange={this.updateReferredByField}
