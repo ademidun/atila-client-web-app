@@ -368,7 +368,7 @@ class Register extends React.Component {
                                 <AutoComplete
                                     filterOption
                                     options={referredByOptions}
-                                    open={!!referredByOptions}
+                                    defaultOpen={false}
                                     name="referred_by"
                                     value={referred_by}
                                     onChange={this.updateReferredByField}
