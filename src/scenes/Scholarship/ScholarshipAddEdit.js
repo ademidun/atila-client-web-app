@@ -457,14 +457,13 @@ class ScholarshipAddEdit extends React.Component{
         }
         postResponsePromise
             .then(res => {
-                this.setState({isAddScholarshipMode: false});
                 const savedScholarship = ScholarshipsAPI.cleanScholarship(res.data);
                 if (!savedScholarship.is_editable) {
                     this.disableScholarshipInputs();
                 }
-                this.setState({ scholarship: savedScholarship });
 
                 if (isAddScholarshipMode) {
+                    this.setState({ scholarship: savedScholarship });
                     const successMessage = (<p>
                         <span role="img" aria-label="happy face emoji">🙂</span>
                         Successfully saved {' '}
@@ -474,6 +473,8 @@ class ScholarshipAddEdit extends React.Component{
                     </p>);
                     toastNotify(successMessage, 'info', {position: 'bottom-right'});
                 }
+
+                this.setState({isAddScholarshipMode: false});
             })
             .catch(err=> {
                 console.log({err});
