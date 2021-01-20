@@ -152,11 +152,6 @@ class Register extends React.Component {
         }
         userProfile[event.target.name] = value;
 
-        // Clear the referred by field on untick.
-        if (event.target.name === 'referredByChecked') {
-            userProfile.referred_by = "";
-        }
-
         this.setState({ userProfile });
     };
 
@@ -174,16 +169,20 @@ class Register extends React.Component {
         const { setLoggedInUserProfile, disableRedirect, onRegistrationFinished } = this.props;
         const { userProfile } = this.state;
         let { nextLocation } = this.state;
-        const { email, username, password, account_type, referred_by } = userProfile;
+        const { email, username, password, account_type, referred_by, referredByChecked } = userProfile;
 
         this.setState({ loadingResponse: true});
         this.setState({ isResponseError: null});
 
-        const userProfileSendData = {
+        let userProfileSendData = {
             first_name: userProfile.first_name,
             last_name: userProfile.last_name,
-            email, username, account_type, referred_by,
+            email, username, account_type,
         };
+
+        if (referredByChecked) {
+            userProfileSendData = { ...userProfileSendData, referred_by}
+        }
 
         // If this is a sponsor account type, redirect to the add a scholarship page
         if (account_type === accountTypes[1].value && nextLocation === '/scholarship') {
