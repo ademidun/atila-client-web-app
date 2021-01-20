@@ -72,6 +72,8 @@ const accountTypes = [
     { label: 'Fund Scholarships', value: 'sponsor' },
 ];
 
+const START_AUTOCOMPLETE_LENGTH = 3;
+
 class Register extends React.Component {
 
     constructor(props){
@@ -242,11 +244,40 @@ class Register extends React.Component {
     };
 
     updateReferredByField = (newReferredByField) => {
-
-
         const newUserProfile = { ...this.state.userProfile, referred_by: newReferredByField }
-        this.setState({userProfile: newUserProfile})
+        this.setState({userProfile: newUserProfile}, ()=>{
+            const { referredByOptions } = this.state
+
+            if (newReferredByField.length < START_AUTOCOMPLETE_LENGTH) {
+                this.setState({referredByOptions: null})
+            } else {
+                if (!referredByOptions) {
+                    this.getReferredByOptions()
+                }
+            }
+        })
     };
+
+    getReferredByOptions = () => {
+        const { userProfile } = this.state;
+        const { referred_by } = userProfile;
+
+        SearchApi
+            .searchUserProfiles(referred_by)
+            .then(res => {
+                let { user_profiles } = res.data
+
+                let newReferredByOptions = user_profiles.map(userProfile => ({
+                        'label': userProfile.username,
+                        'value': userProfile.username
+                    }))
+
+                this.setState({referredByOptions: newReferredByOptions})
+            })
+            .catch(err => {
+                console.log({err})
+            })
+    }
 
     render () {
 
@@ -333,7 +364,7 @@ class Register extends React.Component {
                             {referredByChecked &&
                             <div className={'col-12'}>
 
-                            <label>I was referred by</label> <br />
+                            <label>I was referred by... (Use your friend's account username)</label> <br />
                                 <AutoComplete
                                     filterOption
                                     options={referredByOptions}
@@ -342,7 +373,7 @@ class Register extends React.Component {
                                     value={referred_by}
                                     onChange={this.updateReferredByField}
                                     style={{
-                                        width: 200,
+                                        width: 300,
                                     }}
                                 />
                                 <br /><br />
