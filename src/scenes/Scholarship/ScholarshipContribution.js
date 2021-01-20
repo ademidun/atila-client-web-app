@@ -315,7 +315,6 @@ class ScholarshipContribution extends React.Component {
                                         you can get an image like this:
                                         </h6>
                                         <div className="col-12">
-                                            {/*TODO get a picture of Reesa or Linda contributing to a scholarship*/}
                                             <img src={SCHOLARSHIP_CONTRIBUTION_EXAMPLE_IMAGE}
                                                  style={{width: "70%"}} alt={`Scholarship Contribution confirmation for ${contributor.first_name}`} />
                                         </div>

@@ -84,6 +84,11 @@ function Footer({location, history}) {
                       Blogs
                     </Link>
                   </div>
+                  <div>
+                    <Link to="/search">
+                      Search
+                    </Link>
+                  </div>
                 </div>
               </Col>
               <Col md={6} sm={12} xs={24}>

@@ -32,7 +32,21 @@ class Search extends React.Component {
     }
 
     componentDidMount() {
+        // Redirect to /search if necessary
+        if (!this.props.location.pathname.includes("/search")) {
+            const { urlQuery } = this.props.match.params
 
+            if (urlQuery) {
+                this.props.history.push({
+                    pathname: '/search',
+                    search: `?q=${slugify(urlQuery)}`
+                });
+            } else {
+                this.props.history.push({
+                    pathname: '/search'
+                });
+            }
+        }
         const { searchQuery } = this.state;
         if (searchQuery) {
             this.loadItems();
@@ -175,7 +189,7 @@ class Search extends React.Component {
                 </form>
 
                 { searchResults && (searchResults.scholarships || searchResults.essays || searchResults.blogs) &&
-                    <SearchResultsDisplay searchResults={searchResults} />
+                <SearchResultsDisplay searchResults={searchResults} />
                 }
                 <ResponseDisplay isLoadingResponse={isLoadingResponse}
                                  responseError={responseError}

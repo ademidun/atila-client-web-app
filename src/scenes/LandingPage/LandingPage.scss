@@ -21,8 +21,16 @@ $border-color: rgba(229, 231, 235, 100);
   position: relative;
   padding: 0 24px;
 }
+.home-page-wrapper .page h1 {
+  font-size: 75px;
+  line-height: 40px;
+  color: $home-text-color;
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 5%;
+}
 .home-page-wrapper .page h2 {
-  font-size: 35px;
+  font-size: 30px;
   line-height: 40px;
   color: $home-text-color;
   text-align: center;
