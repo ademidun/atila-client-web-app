@@ -27,7 +27,10 @@ class ReferredAutocomplete extends React.Component {
                     this.getReferredByOptions()
                 }
             }
-            onFieldUpdate(newReferredByField);
+
+            if (onFieldUpdate) {
+                onFieldUpdate(newReferredByField);
+            }
         })
     };
 
