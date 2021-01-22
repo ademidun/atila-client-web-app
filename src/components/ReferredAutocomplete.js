@@ -14,6 +14,7 @@ class ReferredAutocomplete extends React.Component {
             referredBy: ""
         }
     }
+
     updateReferredByField = (newReferredByField) => {
         const { onFieldUpdate } = this.props;
 
