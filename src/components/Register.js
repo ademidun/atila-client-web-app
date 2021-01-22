@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import UserProfileAPI from "../services/UserProfileAPI";
-import SearchApi from "../services/SearchAPI";
 import Loading from "./Loading";
 import './LoginRegister.scss';
 import {setLoggedInUserProfile} from "../redux/actions/user";
 import {connect} from "react-redux";
 import TermsConditions from "./TermsConditions";
-import { Modal, Radio, AutoComplete } from "antd";
+import { Modal, Radio } from "antd";
 import {Link} from "react-router-dom";
 import {forbiddenCharacters, hasForbiddenCharacters} from "../models/Utils";
 import ReferredAutocomplete from "./ReferredAutocomplete";
