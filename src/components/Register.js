@@ -10,6 +10,7 @@ import TermsConditions from "./TermsConditions";
 import { Modal, Radio, AutoComplete } from "antd";
 import {Link} from "react-router-dom";
 import {forbiddenCharacters, hasForbiddenCharacters} from "../models/Utils";
+import ReferredAutocomplete from "./ReferredAutocomplete";
 
 export class PasswordShowHide extends React.Component {
 
@@ -72,8 +73,6 @@ const accountTypes = [
     { label: 'Fund Scholarships', value: 'sponsor' },
 ];
 
-const START_AUTOCOMPLETE_LENGTH = 3;
-
 class Register extends React.Component {
 
     constructor(props){
@@ -105,7 +104,6 @@ class Register extends React.Component {
                 ...props.userProfile,
             },
             nextLocation,
-            referredByOptions: null,
             isResponseError: null,
             responseOkMessage: null,
             loadingResponse: null,
@@ -242,48 +240,18 @@ class Register extends React.Component {
             })
     };
 
-    updateReferredByField = (newReferredByField) => {
-        const newUserProfile = { ...this.state.userProfile, referred_by: newReferredByField }
-        this.setState({userProfile: newUserProfile}, ()=>{
-            const { referredByOptions } = this.state
-
-            if (newReferredByField.length < START_AUTOCOMPLETE_LENGTH) {
-                this.setState({referredByOptions: null})
-            } else {
-                if (!referredByOptions) {
-                    this.getReferredByOptions()
-                }
-            }
-        })
-    };
-
-    getReferredByOptions = () => {
+    onAutocompleteUpdate = (newReferredByValue) => {
         const { userProfile } = this.state;
-        const { referred_by } = userProfile;
-
-        SearchApi
-            .searchUserProfiles(referred_by)
-            .then(res => {
-                let { user_profiles } = res.data
-
-                let newReferredByOptions = user_profiles.map(userProfile => ({
-                        'label': userProfile.username,
-                        'value': userProfile.username
-                    }))
-
-                this.setState({referredByOptions: newReferredByOptions})
-            })
-            .catch(err => {
-                console.log({err})
-            })
+        const newUserProfile = { ...userProfile, referred_by: newReferredByValue };
+        this.setState({userProfile: newUserProfile});
     }
 
     render () {
 
         const { userProfile, isResponseError, responseOkMessage,
-            loadingResponse, isTermsConditionsModalVisible, formErrors, referredByOptions } = this.state;
+            loadingResponse, isTermsConditionsModalVisible, formErrors } = this.state;
         const { first_name, last_name, username, email, password,
-            referred_by, agreeTermsConditions, account_type, referredByChecked } = userProfile;
+                agreeTermsConditions, account_type, referredByChecked } = userProfile;
 
         let formErrorsContent = Object.keys(formErrors).map((errorType) => (
             <div key={errorType}>
@@ -364,17 +332,7 @@ class Register extends React.Component {
                             <div className={'col-12'}>
 
                             <label>I was referred by... (Use your friend's account username)</label> <br />
-                                <AutoComplete
-                                    filterOption
-                                    options={referredByOptions}
-                                    defaultOpen={false}
-                                    name="referred_by"
-                                    value={referred_by}
-                                    onChange={this.updateReferredByField}
-                                    style={{
-                                        width: 300,
-                                    }}
-                                />
+                                <ReferredAutocomplete onFieldUpdate={this.onAutocompleteUpdate} />
                                 <br /><br />
                             </div>
                             }
