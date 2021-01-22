@@ -74,4 +74,4 @@ class ReferredAutocomplete extends React.Component {
 }
 
 
-export default ReferredAutocomplete
+export default ReferredAutocomplete;
