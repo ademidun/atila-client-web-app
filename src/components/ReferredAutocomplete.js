@@ -17,7 +17,7 @@ class ReferredAutocomplete extends React.Component {
     updateReferredByField = (newReferredByField) => {
         const { onFieldUpdate } = this.props;
 
-        this.setState({referred_by: newReferredByField}, ()=>{
+        this.setState({referredBy: newReferredByField}, ()=>{
             const { referredByOptions } = this.state
 
             if (newReferredByField.length < START_AUTOCOMPLETE_LENGTH) {
@@ -35,10 +35,10 @@ class ReferredAutocomplete extends React.Component {
     };
 
     getReferredByOptions = () => {
-        const { referred_by } = this.state;
+        const { referredBy } = this.state;
 
         SearchApi
-            .searchUserProfiles(referred_by)
+            .searchUserProfiles(referredBy)
             .then(res => {
                 let { user_profiles } = res.data
 
@@ -55,15 +55,14 @@ class ReferredAutocomplete extends React.Component {
     }
 
     render() {
-        const { referred_by, referredByOptions } = this.state;
+        const { referredBy, referredByOptions } = this.state;
 
         return (
             <AutoComplete
                 filterOption
                 options={referredByOptions}
                 defaultOpen={false}
-                name="referred_by"
-                value={referred_by}
+                value={referredBy}
                 onChange={this.updateReferredByField}
                 style={{
                     width: 300,
