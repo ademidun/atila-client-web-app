@@ -19,7 +19,6 @@ import {formatCurrency, getErrorMessage} from "../../../services/utils";
 import PaymentAPI from "../../../services/PaymentAPI";
 import {ScholarshipDisableEditMessage, ScholarshipPropType, ScholarshipFundingWillPublishMessage} from "../../../models/Scholarship";
 import Environment from "../../../services/Environment";
-import CopyOutlined from "@ant-design/icons/lib/icons/CopyOutlined";
 
 export const PREMIUM_PRICE_BEFORE_TAX = 9;
 export const PREMIUM_PRICE_WITH_TAX = 10.17;
