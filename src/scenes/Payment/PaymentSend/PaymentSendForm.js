@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from "prop-types";
 import {CardElement, injectStripe} from 'react-stripe-elements';
-import {Alert, Button, Col, Result, Row, notification, message} from "antd";
+import {Alert, Button, Col, Result, Row} from "antd";
 import {Link, withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 import {UserProfilePropType} from "../../../models/UserProfile";
@@ -77,38 +77,14 @@ class PaymentSendForm extends React.Component {
         this.cardElementRef = React.createRef();
     }
 
-    openReferralNotification = () => {
-        const { userProfile } = this.props;
-        const referralLink = "https://atila.ca/j/" + userProfile.username;
-
-        const onCopy = () => {
-            navigator.clipboard.writeText(referralLink)
-                .then(()=>{
-                    message.success('Referral link has been copied.')
-                })
-        }
-
-        const args = {
-            message: 'Your Referral Link',
-            description:
-                (<>Use your referral link <CopyOutlined onClick={() => onCopy()}/><br />
-                to get Atila points when new users sign up with your link.</>),
-            duration: 0,
-        };
-        notification['info'](args);
-    }
-
     fundScholarship = (data) => {
-        const { scholarship, onFundingComplete, userProfile } = this.props;
+        const { scholarship, onFundingComplete } = this.props;
         this.setState({isResponseLoading: true});
         this.setState({isResponseLoadingMessage: 'Saving Contribution'});
         ScholarshipsAPI
             .fundScholarship(scholarship.id, data)
             .then(res => {
                 onFundingComplete(res.data)
-                if (userProfile) {
-                    this.openReferralNotification();
-                }
             })
             .catch(err => {
                 this.setState({isResponseErrorMessage: getErrorMessage(err)});
