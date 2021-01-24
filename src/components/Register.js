@@ -267,7 +267,7 @@ class Register extends React.Component {
                 let { user_profiles } = res.data
 
                 let newReferredByOptions = user_profiles.map(userProfile => ({
-                        'label': userProfile.username,
+                        'label': `${userProfile.first_name} ${userProfile.last_name} (${userProfile.username})`,
                         'value': userProfile.username
                     }))
 
@@ -362,12 +362,16 @@ class Register extends React.Component {
                             />
                             {referredByChecked &&
                             <div className={'col-12'}>
+                                {referred_by && 
+                                    referred_by                                
+                                }
 
-                            <label>I was referred by... (Use your friend's account username)</label> <br />
+                            <label>I was referred by...</label> <br />
                                 <AutoComplete
                                     filterOption
                                     options={referredByOptions}
                                     defaultOpen={false}
+                                    placeholder="Enter the first name, last name or username of the person who referred you."
                                     name="referred_by"
                                     value={referred_by}
                                     onChange={this.updateReferredByField}
