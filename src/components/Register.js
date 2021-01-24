@@ -84,6 +84,7 @@ class Register extends React.Component {
 
         let nextLocation = params.get('redirect') || '/scholarship';
         let accountType = params.get('type') || accountTypes[0].value;
+        let referredBy = localStorage.getItem('referred_by') || ''
 
         if (nextLocation==='/') {
             nextLocation = '/scholarship';
@@ -95,6 +96,8 @@ class Register extends React.Component {
                 username: '',
                 email: '',
                 password: '',
+                referred_by: referredBy,
+                referredByChecked: !!referredBy,
                 account_type: accountType,
                 agreeTermsConditions: false,
                 ...props.userProfile,
@@ -146,6 +149,11 @@ class Register extends React.Component {
         }
         userProfile[event.target.name] = value;
 
+        // Clear the referred by field on untick.
+        if (event.target.name === 'referredByChecked') {
+            userProfile.referred_by = "";
+        }
+
         this.setState({ userProfile });
     };
 
@@ -163,7 +171,7 @@ class Register extends React.Component {
         const { setLoggedInUserProfile, disableRedirect, onRegistrationFinished } = this.props;
         const { userProfile } = this.state;
         let { nextLocation } = this.state;
-        const { email, username, password, account_type } = userProfile;
+        const { email, username, password, account_type, referred_by } = userProfile;
 
         this.setState({ loadingResponse: true});
         this.setState({ isResponseError: null});
@@ -171,7 +179,7 @@ class Register extends React.Component {
         const userProfileSendData = {
             first_name: userProfile.first_name,
             last_name: userProfile.last_name,
-            email, username, account_type,
+            email, username, account_type, referred_by,
         };
 
         // If this is a sponsor account type, redirect to the add a scholarship page
@@ -236,7 +244,8 @@ class Register extends React.Component {
 
         const { userProfile, isResponseError, responseOkMessage,
             loadingResponse, isTermsConditionsModalVisible, formErrors } = this.state;
-        const { first_name, last_name, username, email, password, agreeTermsConditions, account_type } = userProfile;
+        const { first_name, last_name, username, email, password,
+            referred_by, agreeTermsConditions, account_type, referredByChecked } = userProfile;
 
         let formErrorsContent = Object.keys(formErrors).map((errorType) => (
             <div key={errorType}>
@@ -249,6 +258,11 @@ class Register extends React.Component {
                     <div>
                         <h1>Register</h1>
                         <form className="row p-3 form-group" onSubmit={this.submitForm}>
+                            {first_name &&
+                                <label>
+                                    First Name
+                                </label>
+                            }
                             <input placeholder="First name"
                                    className="col-12 mb-3 form-control"
                                    name="first_name"
@@ -256,6 +270,11 @@ class Register extends React.Component {
                                    onChange={this.updateForm}
                                    required
                             />
+                            {last_name &&
+                            <label>
+                                Last Name
+                            </label>
+                            }
                             <input placeholder="Last Name"
                                    name="last_name"
                                    className="col-12 mb-3 form-control"
@@ -294,6 +313,25 @@ class Register extends React.Component {
                             />
                             <PasswordShowHide password={password} updateForm={this.updateForm} />
 
+                            <label className='mr-3 mb-3'>&nbsp; Did a user refer you to Atila?</label>
+                            <input placeholder="Did a user refer you to Atila?"
+                                   className={'mt-1'}
+                                   type="checkbox"
+                                   name="referredByChecked"
+                                   checked={referredByChecked}
+                                   onChange={this.updateForm}
+                            />
+                            {referredByChecked &&
+                            <div className={'col-12'}>
+
+                            <label>I was referred by</label>
+                            <input className="col-12 mb-3 form-control"
+                                   name="referred_by"
+                                   value={referred_by}
+                                   onChange={this.updateForm}
+                            />
+                            </div>
+                            }
                             <div className="col-12">
                             <label>
                                 I want to

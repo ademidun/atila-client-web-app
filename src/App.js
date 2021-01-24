@@ -62,6 +62,9 @@ const About = loadable(() => import("./components/About"), {
 const Rubric = loadable(() => import("./components/Rubric"), {
   fallback: <Loading />,
 });
+const Referral = loadable(() => import("./components/Referral"), {
+  fallback: <Loading />,
+});
 const Values = loadable(() => import("./components/Values"), {
   fallback: <Loading/>,
 });
@@ -222,6 +225,7 @@ class App extends React.Component {
                 path='/siteMap'
                 component={GoogleAnalyticsTracker(SiteMap)}
               />
+              <Route path='/j/:referredByUsername?' component={GoogleAnalyticsTracker(Referral)} />
             </Switch>
           )}
           <Footer />
