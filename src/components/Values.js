@@ -2,7 +2,7 @@ import React from "react";
 import { BackTop} from "antd";
 import HelmetSeo from "./HelmetSeo";
 
-export const howToStartAScholarshipInformationItems = [
+export const informationItems = [
     {
         title: "What Matters Most to Us",
         body: (<div>
@@ -26,24 +26,24 @@ export const howToStartAScholarshipInformationItems = [
 class Values extends React.Component {
 
     render() {
-        const presentationDescription = 'Easily start a scholarship with Atila. Enter scholarship details. Fund your scholarship. Pick a winner.';
+        const seoDescription = "Here are some of the values we care about the most.";
         const seoContent = {
-            title: 'How to Start a Scholarship',
-            description: presentationDescription,
-            image: 'https://i.ytimg.com/vi/bpyEWzblFrU/maxresdefault.jpg',
-            slug: '/high-school'
+            title: "Atila's Values",
+            description: seoDescription,
+            image: "https://i.imgur.com/GeVZdus.png",
+            slug: "/values"
         };
 
         return (
-            <div className="HowToStartAScholarship">
+            <div className="Values">
                 <HelmetSeo content={seoContent} />
                 <h1 className="col-sm-12 text-center">
                     Atila's Values
                 </h1>
                 <BackTop/>
                 <div className="container mt-5">
-                    <div className="card shadow p-3 how-to-start-scholarship-questions">
-                        {howToStartAScholarshipInformationItems.map(item => (
+                    <div className="card shadow p-3">
+                        {informationItems.map(item => (
                             <div>
                                 <div className="p-3">
                                     <h2>{item.title}</h2>
