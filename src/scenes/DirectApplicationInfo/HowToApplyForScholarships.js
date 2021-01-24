@@ -5,14 +5,12 @@ import LandingPageLiveDemo from "../LandingPage/LandingPageLiveDemo";
 
 function HowToApplyForScholarships() {
 
-    const presentationDescription = 'This is a presentation for high school students' +
-        ' about your life after high school: what are your options, ' +
-        'how to learn what path is best for you and how can they achieve your goals.';
+    const presentationDescription = '1. Find an account. 2. Fill an application form. 3. If you win, get your funding within 24 hours.';
     const seoContent = {
         title: 'How to Apply for Scholarships',
         description: presentationDescription,
-        image: 'https://i.ytimg.com/vi/bpyEWzblFrU/maxresdefault.jpg',
-        slug: '/high-school'
+        image: 'https://i.imgur.com/HqZEU5N.png',
+        slug: '/apply'
     };
 
     return (
@@ -27,13 +25,12 @@ function HowToApplyForScholarships() {
                         </Link>
                     </h5>
 
-                    <LandingPageLiveDemo youtubeVideoId="xC4e7J2sxuI" title="How to Start a Scholarship on Atila" />
+                    <LandingPageLiveDemo youtubeVideoId="iLIHhuY9b0k" title="How to Start a Scholarship on Atila" />
 
                     <ol>
                         <li>Create your profile to find scholarships you qualify for.<br /><br /></li>
                         <li>Find a scholarship you want and click Apply now. Save time by pre-filling similar responses you&rsquo;ve entered in the past.<br /><br /></li>
-                        <li>If selected, write a thank you email to the sponsor<br /><br /></li>
-                        <li>Connect your bank Account<br /><br /></li>
+                        <li>If selected, provide proof of enrollment and write a thank you letter to the sponsor<br /><br /></li>
                         <li>Accept payment and have funds deposited to your bank account within 24 hours<sup>*</sup>.
                             <br/>
                             <small>

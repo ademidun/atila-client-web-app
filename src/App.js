@@ -53,6 +53,9 @@ const Team = loadable(() => import("./components/Team/Team"), {
 const Testimonials = loadable(() => import("./components/Testimonials"), {
   fallback: <Loading />,
 });
+const FinalistsList = loadable(() => import("./components/FinalistsList"), {
+  fallback: <Loading />,
+});
 const About = loadable(() => import("./components/About"), {
   fallback: <Loading />,
 });
@@ -160,6 +163,10 @@ class App extends React.Component {
                 path='/search'
                 component={GoogleAnalyticsTracker(Search)}
               />
+              <Route
+                  path='/s/:urlQuery?'
+                  component={GoogleAnalyticsTracker(Search)}
+              />
               <Route path='/login' component={GoogleAnalyticsTracker(Login)} />
               <Route
                 path='/pricing'
@@ -202,6 +209,7 @@ class App extends React.Component {
               <Route path='/about' component={GoogleAnalyticsTracker(About)} />
               <Route path='/rubric' component={GoogleAnalyticsTracker(Rubric)} />
               <Route path='/values' component={GoogleAnalyticsTracker(Values)} />
+              <Route path='/finalists' component={GoogleAnalyticsTracker(FinalistsList)} />
               <Route
                 path='/terms-and-conditions'
                 component={GoogleAnalyticsTracker(TermsConditions)}
