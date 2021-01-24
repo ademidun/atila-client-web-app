@@ -106,6 +106,7 @@ class Register extends React.Component {
             },
             nextLocation,
             referredByOptions: null,
+            referredByUserProfile: null,
             isResponseError: null,
             responseOkMessage: null,
             loadingResponse: null,
@@ -257,6 +258,10 @@ class Register extends React.Component {
         })
     };
 
+    selectReferredByField = (value, option) => {
+        this.setState({referredByUserProfile: option.label})
+    };
+
     getReferredByOptions = () => {
         const { userProfile } = this.state;
         const { referred_by } = userProfile;
@@ -267,8 +272,14 @@ class Register extends React.Component {
                 let { user_profiles } = res.data
 
                 let newReferredByOptions = user_profiles.map(userProfile => ({
-                        'label': `${userProfile.first_name} ${userProfile.last_name} (${userProfile.username})`,
-                        'value': userProfile.username
+                        'label': <div>
+                            {userProfile.first_name} {userProfile.last_name} ({userProfile.username})
+                            <img src={userProfile.profile_pic_url}
+                                 className="rounded-circle m-1 border-info" 
+                                 style={{width: "30px"}} />
+                        </div>,
+                        'value': userProfile.username,
+                        // custom DOM attribute must be set to lowercase
                     }))
 
                 this.setState({referredByOptions: newReferredByOptions})
@@ -281,7 +292,8 @@ class Register extends React.Component {
     render () {
 
         const { userProfile, isResponseError, responseOkMessage,
-            loadingResponse, isTermsConditionsModalVisible, formErrors, referredByOptions } = this.state;
+            loadingResponse, isTermsConditionsModalVisible,
+             formErrors, referredByOptions, referredByUserProfile } = this.state;
         const { first_name, last_name, username, email, password,
             referred_by, agreeTermsConditions, account_type, referredByChecked } = userProfile;
 
@@ -362,11 +374,9 @@ class Register extends React.Component {
                             />
                             {referredByChecked &&
                             <div className={'col-12'}>
-                                {referred_by && 
-                                    referred_by                                
-                                }
 
                             <label>I was referred by...</label> <br />
+                                {referredByUserProfile}
                                 <AutoComplete
                                     filterOption
                                     options={referredByOptions}
@@ -378,6 +388,7 @@ class Register extends React.Component {
                                     style={{
                                         width: 300,
                                     }}
+                                    onSelect={(value, option) =>{this.selectReferredByField(value, option)}}
                                 />
                                 <br /><br />
                             </div>
