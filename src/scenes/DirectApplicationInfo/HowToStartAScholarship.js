@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 import { BackTop, Button } from "antd";
 import HelmetSeo from "../../components/HelmetSeo";
 import {howItWorksSponsorItems} from "../LandingPage/HowItWorks";
-import {createTableOfContents} from "../../services/utils";
+import {createTableOfContents, scrollToElement} from "../../services/utils";
 import LandingPageLiveDemo from "../LandingPage/LandingPageLiveDemo";
 
 export const howToStartAScholarshipInformationItems = [
@@ -102,6 +102,16 @@ class HowToStartAScholarship extends React.Component {
     componentDidMount() {
 
         createTableOfContents(".how-to-start-scholarship-questions");
+
+        const { location } = this.props;
+
+        if (location && location.hash) {
+            // Pause for 300 milliseconds before scrolling to the hash element, without this setTimeout
+            // the element kept scrolling back to the top of the page.
+            setTimeout(() => {
+                scrollToElement(location.hash);
+        }, 300);
+        }
     }
 
     render() {
@@ -109,7 +119,7 @@ class HowToStartAScholarship extends React.Component {
         const seoContent = {
             title: 'How to Start a Scholarship',
             description: presentationDescription,
-            image: 'https://i.imgur.com/aNdWwl8.png',
+            image: 'https://i.imgur.com/Lo9Yhmm.png',
             slug: '/start'
         };
 
