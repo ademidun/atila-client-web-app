@@ -271,16 +271,21 @@ class Register extends React.Component {
             .then(res => {
                 let { user_profiles } = res.data
 
-                let newReferredByOptions = user_profiles.map(userProfile => ({
+                let newReferredByOptions = user_profiles.map(userProfile => {
+                    
+                    let nameDisplay= `${userProfile.first_name} ${userProfile.last_name} (${userProfile.username})`;
+                    return {
                         'label': <div>
-                            {userProfile.first_name} {userProfile.last_name} ({userProfile.username})
+                            {nameDisplay}
                             <img src={userProfile.profile_pic_url}
-                                 className="rounded-circle m-1 border-info" 
+                                 className="rounded-circle m-1"
+                                 alt={nameDisplay} 
                                  style={{width: "30px"}} />
                         </div>,
                         'value': userProfile.username,
                         // custom DOM attribute must be set to lowercase
-                    }))
+                    }
+                })
 
                 this.setState({referredByOptions: newReferredByOptions})
             })
