@@ -276,11 +276,11 @@ class Register extends React.Component {
                     let nameDisplay= `${userProfile.first_name} ${userProfile.last_name} (${userProfile.username})`;
                     return {
                         'label': <div>
+                        <img src={userProfile.profile_pic_url}
+                             className="rounded-circle m-1"
+                             alt={nameDisplay} 
+                             style={{width: "30px"}} />
                             {nameDisplay}
-                            <img src={userProfile.profile_pic_url}
-                                 className="rounded-circle m-1"
-                                 alt={nameDisplay} 
-                                 style={{width: "30px"}} />
                         </div>,
                         'value': userProfile.username,
                         // custom DOM attribute must be set to lowercase
@@ -369,9 +369,8 @@ class Register extends React.Component {
                             />
                             <PasswordShowHide password={password} updateForm={this.updateForm} />
 
-                            <label className='mr-3 mb-3'>&nbsp; Did a user refer you to Atila?</label>
-                            <input placeholder="Did a user refer you to Atila?"
-                                   className={'mt-1'}
+                            <label className='mr-3 mb-3'>&nbsp; Did someone refer you to Atila?</label>
+                            <input className={'mt-1'}
                                    type="checkbox"
                                    name="referredByChecked"
                                    checked={referredByChecked}
@@ -380,18 +379,18 @@ class Register extends React.Component {
                             {referredByChecked &&
                             <div className={'col-12'}>
 
-                            <label>I was referred by...</label> <br />
+                            <label>If they have an Atila account, you can enter their name or username here...</label> <br />
                                 {referredByUserProfile}
                                 <AutoComplete
                                     filterOption
                                     options={referredByOptions}
                                     defaultOpen={false}
-                                    placeholder="Enter the first name, last name or username of the person who referred you."
+                                    placeholder="Enter name or username of referrer."
                                     name="referred_by"
                                     value={referred_by}
                                     onChange={this.updateReferredByField}
                                     style={{
-                                        width: 300,
+                                        width: "100%",
                                     }}
                                     onSelect={(value, option) =>{this.selectReferredByField(value, option)}}
                                 />
