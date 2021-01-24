@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from "react-redux";
 import { toastNotify } from "../models/Utils";
+import { Link } from 'react-router-dom';
 
 class Referral extends React.Component {
     componentDidMount() {
@@ -8,9 +9,15 @@ class Referral extends React.Component {
         const { referredByUsername } = this.props.match.params;
 
         if (referredByUsername) {
+
+
+            const referredByMessage = (<p>
+            You were referred by {referredByUsername}.This referral has been saved 
+            and will be used when you <Link to="/register">register</Link>.
+            </p>)
             localStorage.setItem('referred_by', referredByUsername);
             if (!userProfile) {
-                toastNotify('The user who referred you has been saved and will be used upon registration.', 'info')
+                toastNotify(referredByMessage, 'info')
             }
         }
 
