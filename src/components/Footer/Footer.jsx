@@ -56,7 +56,7 @@ function Footer({location, history}) {
                   </div>
                   <div>
                     <Link to="/high-school">
-                      High School
+                      Advice for High School Students
                     </Link>
                   </div>
                   <div>
@@ -84,13 +84,24 @@ function Footer({location, history}) {
                       Blogs
                     </Link>
                   </div>
+                  <div>
+                    <Link to="/search">
+                      Search
+                    </Link>
+                  </div>
                 </div>
               </Col>
               <Col md={6} sm={12} xs={24}>
                 <div className="footer-center">
                   <div>
                     <Link to="/schools">
-                      Schools and Jobs Ebook
+                      The Best Canadian universities for Getting a Job
+                    </Link>
+                  </div>
+                  <div>
+                    <Link to="/finalists">
+                      Finalists and Winners{' '}
+                      <Tag color="green">new</Tag>
                     </Link>
                   </div>
                   <div>
@@ -102,14 +113,6 @@ function Footer({location, history}) {
                     <Link to="/profile/atilaeng">
                       Engineering
                     </Link>
-                  </div>
-                  <div>
-                    <a href="https://tech.atila.ca"
-                       target="_blank"
-                       rel="noopener noreferrer"
-                    >
-                      Atila Tech
-                    </a>
                   </div>
                   <div>
                     <Link to="/terms-and-conditions">

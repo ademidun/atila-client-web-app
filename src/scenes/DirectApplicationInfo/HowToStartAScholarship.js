@@ -3,7 +3,8 @@ import {Link} from "react-router-dom";
 import { BackTop, Button } from "antd";
 import HelmetSeo from "../../components/HelmetSeo";
 import {howItWorksSponsorItems} from "../LandingPage/HowItWorks";
-import {createTableOfContents} from "../../services/utils";
+import {createTableOfContents, scrollToElement} from "../../services/utils";
+import LandingPageLiveDemo from "../LandingPage/LandingPageLiveDemo";
 
 export const howToStartAScholarshipInformationItems = [
     {
@@ -12,11 +13,12 @@ export const howToStartAScholarshipInformationItems = [
             <ol>
                 <li>Visit the <Link to="/scholarship/add">add a scholarship</Link> page</li>
                 <li>Enter details about the scholarship such as the name of the scholarship, who is eligible, the story behind why you started the scholarship, the deadline, funding amount, questions for the applicants, etc.</li>
-                <li>Fund your scholarship using a credit card</li>
+                <li>Fund your scholarship</li>
+                <li>Optional: Others can contribute to the scholarship as well</li>
                 <li>Review Applications and pick a winner</li>
             </ol>
         </div>),
-        image: "https://imgur.com/Bqo8XfQ.jpg",
+        image: "https://imgur.com/HgIoMJ9.jpg",
         imageCaption: "",
     },
     {
@@ -100,6 +102,16 @@ class HowToStartAScholarship extends React.Component {
     componentDidMount() {
 
         createTableOfContents(".how-to-start-scholarship-questions");
+
+        const { location } = this.props;
+
+        if (location && location.hash) {
+            // Pause for 300 milliseconds before scrolling to the hash element, without this setTimeout
+            // the element kept scrolling back to the top of the page.
+            setTimeout(() => {
+                scrollToElement(location.hash);
+        }, 300);
+        }
     }
 
     render() {
@@ -107,8 +119,8 @@ class HowToStartAScholarship extends React.Component {
         const seoContent = {
             title: 'How to Start a Scholarship',
             description: presentationDescription,
-            image: 'https://i.ytimg.com/vi/bpyEWzblFrU/maxresdefault.jpg',
-            slug: '/high-school'
+            image: 'https://i.imgur.com/Lo9Yhmm.png',
+            slug: '/start'
         };
 
         return (
@@ -120,33 +132,37 @@ class HowToStartAScholarship extends React.Component {
                 <BackTop/>
                 <div className="container mt-5">
                     <div className="card shadow p-3 how-to-start-scholarship-questions">
-                        {howToStartAScholarshipInformationItems.map(item => (
-                            <div>
-                                <div className="p-3">
-                                <h2>{item.title}</h2>
-                                    {item.body}
-                                </div>
-                                {item.image &&
+                        <LandingPageLiveDemo />
+                        <hr/>
+                        <div>
+                            {howToStartAScholarshipInformationItems.map(item => (
+                                <div>
+                                    <div className="p-3">
+                                        <h2>{item.title}</h2>
+                                        {item.body}
+                                    </div>
+                                    {item.image &&
 
-                                <div className="col-12 mb-4 shadow text-center">
+                                    <div className="col-12 mb-4 shadow text-center">
 
-                                    {/*Note: TO get the image to size responsively.
+                                        {/*Note: TO get the image to size responsively.
                             I just had to put it inside a parent div and add 'col-12' class.*/}
-                                    <img src={item.image}
-                                         alt={item.title}
-                                         title={item.title}
-                                         className="col-12 p-3"
-                                         style={{maxHeight: "450px", width: "auto"}}
-                                    />
-                                    {item.imageCaption &&
-                                    <p className="col-12 text-center text-muted pb-3">
-                                        {item.imageCaption}
-                                    </p>
+                                        <img src={item.image}
+                                             alt={item.title}
+                                             title={item.title}
+                                             className="col-12 p-3"
+                                             style={{maxHeight: "450px", width: "auto"}}
+                                        />
+                                        {item.imageCaption &&
+                                        <p className="col-12 text-center text-muted pb-3">
+                                            {item.imageCaption}
+                                        </p>
+                                        }
+                                    </div>
                                     }
                                 </div>
-                                }
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
 
                     <Button type="primary" className="font-size-larger col-12 mt-1" style={{fontSize: "25px"}}>

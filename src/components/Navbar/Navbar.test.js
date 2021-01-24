@@ -16,16 +16,28 @@ describe('<Navbar />', () => {
     it('renders without crashing', () => {
         shallow(<Navbar />);
     });
+    /* TODO: uncomment this test if we add search back due to popularity
 
-    it('renders searchLink', () => {
+        it('renders searchLink', () => {
+            const store = mockStore(initialReduxState);
+            const wrapper = mount(
+                <MemoryRouter>
+                    <Navbar store={store} />
+                </MemoryRouter>
+            );
+            const searchLink = 'href="/search"';
+            expect(wrapper.find(Navbar).html()).toContain(searchLink);
+        });*/
+
+    it('renders finalists', () => {
         const store = mockStore(initialReduxState);
         const wrapper = mount(
             <MemoryRouter>
                 <Navbar store={store} />
             </MemoryRouter>
         );
-        const searchLink = 'href="/search"';
-        expect(wrapper.find(Navbar).html()).toContain(searchLink);
+        const finalistsLink = 'href="/finalists"';
+        expect(wrapper.find(Navbar).html()).toContain(finalistsLink);
     });
 
     it('renders userprofile nav item', () => {
