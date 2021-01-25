@@ -1,15 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import UserProfileAPI from "../services/UserProfileAPI";
+import SearchApi from "../services/SearchAPI";
 import Loading from "./Loading";
 import './LoginRegister.scss';
 import {setLoggedInUserProfile} from "../redux/actions/user";
 import {connect} from "react-redux";
 import TermsConditions from "./TermsConditions";
-import { Modal } from "antd";
+import { Modal, Radio, AutoComplete } from "antd";
 import {Link} from "react-router-dom";
 import {forbiddenCharacters, hasForbiddenCharacters} from "../models/Utils";
-import { Radio } from 'antd';
 
 export class PasswordShowHide extends React.Component {
 
@@ -72,6 +72,8 @@ const accountTypes = [
     { label: 'Fund Scholarships', value: 'sponsor' },
 ];
 
+const START_AUTOCOMPLETE_LENGTH = 3;
+
 class Register extends React.Component {
 
     constructor(props){
@@ -103,6 +105,8 @@ class Register extends React.Component {
                 ...props.userProfile,
             },
             nextLocation,
+            referredByOptions: null,
+            referredByUserProfile: null,
             isResponseError: null,
             responseOkMessage: null,
             loadingResponse: null,
@@ -149,11 +153,6 @@ class Register extends React.Component {
         }
         userProfile[event.target.name] = value;
 
-        // Clear the referred by field on untick.
-        if (event.target.name === 'referredByChecked') {
-            userProfile.referred_by = "";
-        }
-
         this.setState({ userProfile });
     };
 
@@ -171,16 +170,20 @@ class Register extends React.Component {
         const { setLoggedInUserProfile, disableRedirect, onRegistrationFinished } = this.props;
         const { userProfile } = this.state;
         let { nextLocation } = this.state;
-        const { email, username, password, account_type, referred_by } = userProfile;
+        const { email, username, password, account_type, referred_by, referredByChecked } = userProfile;
 
         this.setState({ loadingResponse: true});
         this.setState({ isResponseError: null});
 
-        const userProfileSendData = {
+        let userProfileSendData = {
             first_name: userProfile.first_name,
             last_name: userProfile.last_name,
-            email, username, account_type, referred_by,
+            email, username, account_type,
         };
+
+        if (referredByChecked) {
+            userProfileSendData = { ...userProfileSendData, referred_by}
+        }
 
         // If this is a sponsor account type, redirect to the add a scholarship page
         if (account_type === accountTypes[1].value && nextLocation === '/scholarship') {
@@ -240,10 +243,62 @@ class Register extends React.Component {
             })
     };
 
+    updateReferredByField = (newReferredByField) => {
+        const newUserProfile = { ...this.state.userProfile, referred_by: newReferredByField }
+        this.setState({userProfile: newUserProfile}, ()=>{
+            const { referredByOptions } = this.state
+
+            if (newReferredByField.length < START_AUTOCOMPLETE_LENGTH) {
+                this.setState({referredByOptions: null})
+            } else {
+                if (!referredByOptions) {
+                    this.getReferredByOptions()
+                }
+            }
+        })
+    };
+
+    selectReferredByField = (value, option) => {
+        this.setState({referredByUserProfile: option.label})
+    };
+
+    getReferredByOptions = () => {
+        const { userProfile } = this.state;
+        const { referred_by } = userProfile;
+
+        SearchApi
+            .searchUserProfiles(referred_by)
+            .then(res => {
+                let { user_profiles } = res.data
+
+                let newReferredByOptions = user_profiles.map(userProfile => {
+                    
+                    let nameDisplay= `${userProfile.first_name} ${userProfile.last_name} (${userProfile.username})`;
+                    return {
+                        'label': <div>
+                        <img src={userProfile.profile_pic_url}
+                             className="rounded-circle m-1"
+                             alt={nameDisplay} 
+                             style={{width: "30px"}} />
+                            {nameDisplay}
+                        </div>,
+                        'value': userProfile.username,
+                        // custom DOM attribute must be set to lowercase
+                    }
+                })
+
+                this.setState({referredByOptions: newReferredByOptions})
+            })
+            .catch(err => {
+                console.log({err})
+            })
+    }
+
     render () {
 
         const { userProfile, isResponseError, responseOkMessage,
-            loadingResponse, isTermsConditionsModalVisible, formErrors } = this.state;
+            loadingResponse, isTermsConditionsModalVisible,
+             formErrors, referredByOptions, referredByUserProfile } = this.state;
         const { first_name, last_name, username, email, password,
             referred_by, agreeTermsConditions, account_type, referredByChecked } = userProfile;
 
@@ -252,6 +307,7 @@ class Register extends React.Component {
                 {formErrors[errorType]}
             </div>
         ));
+
         return (
             <div className="container mt-5">
                 <div className="card shadow p-3">
@@ -313,9 +369,8 @@ class Register extends React.Component {
                             />
                             <PasswordShowHide password={password} updateForm={this.updateForm} />
 
-                            <label className='mr-3 mb-3'>&nbsp; Did a user refer you to Atila?</label>
-                            <input placeholder="Did a user refer you to Atila?"
-                                   className={'mt-1'}
+                            <label className='mr-3 mb-3'>&nbsp; Did someone refer you to Atila?</label>
+                            <input className={'mt-1'}
                                    type="checkbox"
                                    name="referredByChecked"
                                    checked={referredByChecked}
@@ -324,12 +379,22 @@ class Register extends React.Component {
                             {referredByChecked &&
                             <div className={'col-12'}>
 
-                            <label>I was referred by</label>
-                            <input className="col-12 mb-3 form-control"
-                                   name="referred_by"
-                                   value={referred_by}
-                                   onChange={this.updateForm}
-                            />
+                            <label>If they have an Atila account, you can enter their name or username here...</label> <br />
+                                {referredByUserProfile}
+                                <AutoComplete
+                                    filterOption
+                                    options={referredByOptions}
+                                    defaultOpen={false}
+                                    placeholder="Enter name or username of referrer."
+                                    name="referred_by"
+                                    value={referred_by}
+                                    onChange={this.updateReferredByField}
+                                    style={{
+                                        width: "100%",
+                                    }}
+                                    onSelect={(value, option) =>{this.selectReferredByField(value, option)}}
+                                />
+                                <br /><br />
                             </div>
                             }
                             <div className="col-12">

@@ -32,6 +32,16 @@ class SearchApi {
 
         return apiCompletionPromise;
     };
+
+    static searchUserProfiles = (searchQuery) => {
+
+        const apiCompletionPromise = request({
+            method: 'get',
+            url: `${SearchApi.searchUrl}/user-profiles/?q=${searchQuery}`,
+        });
+
+        return apiCompletionPromise;
+    };
 }
 
 export default SearchApi;
