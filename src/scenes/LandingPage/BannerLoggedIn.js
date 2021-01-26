@@ -76,7 +76,7 @@ class BannerLoggedIn extends React.Component {
                         key="text"
                         type="bottom"
                     >
-                        <h1 key="h1" className="mt-sm-5">
+                        <h1 key="h1" className="mt-5">
                             {humanizedGreeting}
                         </h1>
                         <div className="mt-sm-3 text-center">
