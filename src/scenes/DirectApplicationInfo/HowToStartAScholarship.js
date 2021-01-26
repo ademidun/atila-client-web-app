@@ -165,14 +165,14 @@ class HowToStartAScholarship extends React.Component {
                         </div>
                     </div>
 
-                    <Button type="primary" className="font-size-larger col-12 mt-1" style={{fontSize: "25px"}}>
-                        <Link to="/register">
+                    <Button type="primary" className="font-size-larger col-12 mt-3 my-2" style={{fontSize: "25px"}}>
+                        <Link to="/register?type=sponsor">
                             Step 1: Create an Account
                         </Link>
                     </Button>
 
-                    <Button type="primary" className="font-size-larger col-12 mt-1" style={{fontSize: "25px"}}>
-                        <Link to="/register">
+                    <Button type="primary" className="font-size-larger col-12 my-2" style={{fontSize: "25px"}}>
+                        <Link to="/scholarship/add">
                             Step 2: Add a Scholarship
                         </Link>
                     </Button>
