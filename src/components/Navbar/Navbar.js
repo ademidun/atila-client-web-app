@@ -73,8 +73,8 @@ class Navbar extends React.Component {
                   style={{float: "none"}}>
                 <Menu.Item key="start">
                     <Link to="/start">
-                        Start a Scholarship{' '}
-                        <Tag color="green">new</Tag>
+                        <Tag color="green">new</Tag>{' '}
+                        Start a Scholarship
                     </Link>
                 </Menu.Item>
                 {/*<Menu.Item key="search">*/}
@@ -91,8 +91,8 @@ class Navbar extends React.Component {
                     <Link to="/scholarship">Scholarships</Link>
                 </Menu.Item>
                 <Menu.Item key="finalists">
-                    <Link to="/finalists">Finalists</Link>{' '}
-                    <Tag color="green">new</Tag>
+                    <Tag color="green">new</Tag>{' '}
+                    <Link to="/finalists">Finalists</Link>
                 </Menu.Item>
                 <Menu.Item key="about">
                     <Link to="/about">About</Link>
