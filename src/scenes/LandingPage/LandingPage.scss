@@ -21,6 +21,10 @@ $border-color: rgba(229, 231, 235, 100);
   position: relative;
   padding: 0 24px;
 }
+.home-page-wrapper.logged-in .page h1 {
+  font-size: 50px;
+  line-height: 65px;
+}
 .home-page-wrapper .page h1 {
   font-size: 75px;
   line-height: 40px;
