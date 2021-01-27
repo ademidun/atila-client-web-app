@@ -165,10 +165,19 @@ class ApplicationDetail extends  React.Component{
         ApplicationsAPI
             .patch(applicationID, applicationData)
             .then(res=>{
-                const { data: application } = res;
-                const { scholarship } = application;
+                const { data: updatedApplication } = res;
+                let { application } = this.state;
+                
+                /**
+                 * We only want to update the date_modified so it can show up in the UI
+                 *  and the user knows the data was autosaved.
+                 */
+                application = {
+                    ...application,
+                    date_modified: updatedApplication.date_modified
+                };
+                this.setState({application});
 
-                this.afterSaveApplication(application, scholarship);
             })
             .catch(err => {
                 console.log({err});
