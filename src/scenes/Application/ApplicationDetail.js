@@ -164,12 +164,7 @@ class ApplicationDetail extends  React.Component{
 
         ApplicationsAPI
             .patch(applicationID, applicationData)
-            .then(res=>{
-                const { data: application } = res;
-                const { scholarship } = application;
-
-                this.afterSaveApplication(application, scholarship);
-            })
+            .then(res=>{})
             .catch(err => {
                 console.log({err});
                 toastNotify(`An error occurred. Please message us using the chat button in the bottom right.`, 'error');
