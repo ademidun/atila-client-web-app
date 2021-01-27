@@ -72,6 +72,18 @@ let scholarshipFormConfigsPage1 = [
         </label>),
     },
     {
+        keyName: 'learn_more_url',
+        placeholder: 'Optional: A URL to a place where others can learn more about you or your organization',
+        type: 'url',
+        isHidden: (scholarship) => (!scholarship.is_atila_direct_application),
+    },
+    {
+        keyName: 'learn_more_title',
+        placeholder: 'Title for the url: e.g. Learn more about Skateaboards for Hope',
+        type: 'text',
+        isHidden: (scholarship) => (!scholarship.is_atila_direct_application),
+    },
+    {
         keyName: 'scholarship_url',
         placeholder: 'Scholarship Url',
         type: 'url',

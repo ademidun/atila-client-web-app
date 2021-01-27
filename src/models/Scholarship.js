@@ -97,6 +97,8 @@ export let DEFAULT_SCHOLARSHIP = {
     description: '',
     img_url: '',
     scholarship_url: '',
+    learn_more_url: '',
+    learn_more_title: '',
     specific_questions: [],
     user_profile_questions: scholarshipUserProfileQuestionOptions.slice(0,3).map(question => ({key: question})),
     form_url: '',
