@@ -77,13 +77,6 @@ class Navbar extends React.Component {
                         Start a Scholarship
                     </Link>
                 </Menu.Item>
-                {/*<Menu.Item key="search">*/}
-                {/*TODO see how many people are actually using search */}
-                {/*    <Link to="/search">Search</Link>*/}
-                {/*</Menu.Item>*/}
-                <Menu.Item key="essays">
-                    <Link to="/essay">Essays</Link>
-                </Menu.Item>
                 <Menu.Item key="blogs">
                     <Link to="/blog">Blogs</Link>
                 </Menu.Item>
@@ -94,9 +87,29 @@ class Navbar extends React.Component {
                     <Tag color="green">new</Tag>{' '}
                     <Link to="/finalists">Finalists</Link>
                 </Menu.Item>
-                <Menu.Item key="about">
-                    <Link to="/about">About</Link>
-                </Menu.Item>
+
+                <SubMenu
+                        key="more"
+                        title="More"
+                    >
+                    <Menu.Item key="apply">
+                        <Link to="/apply">
+                            <Tag color="green">new</Tag>{' '}
+                            Apply for a Scholarship
+                        </Link>
+                    </Menu.Item>
+                        <Menu.Item key="essays">
+                            <Link to="/essay">Essays</Link>
+                        </Menu.Item>
+                        <Menu.Item key="search">
+                            <Link to="/search">Search</Link>
+                        </Menu.Item> 
+                        <Menu.Item key="about">
+                            <Link to="/about">About</Link>
+                        </Menu.Item>
+                    </SubMenu>
+                
+                
                 {!userProfile && !isLoadingLoggedInUserProfile &&
                 <Menu.Item key="login">
                     <Link to={`/login?redirect=${pathname}${search}`}
