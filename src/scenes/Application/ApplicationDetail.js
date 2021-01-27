@@ -164,7 +164,21 @@ class ApplicationDetail extends  React.Component{
 
         ApplicationsAPI
             .patch(applicationID, applicationData)
-            .then(res=>{})
+            .then(res=>{
+                const { data: updatedApplication } = res;
+                let { application } = this.state;
+                
+                /**
+                 * We only want to update the date_modified so it can show up in the UI
+                 *  and the user knows the data was autosaved.
+                 */
+                application = {
+                    ...application,
+                    date_modified: updatedApplication.date_modified
+                };
+                this.setState({application});
+
+            })
             .catch(err => {
                 console.log({err});
                 toastNotify(`An error occurred. Please message us using the chat button in the bottom right.`, 'error');
