@@ -43,14 +43,29 @@ class ScholarshipViewQuestions extends React.Component {
         }
 
 
-        const userProfileQuestionsFormConfig = transformProfileQuestionsToApplicationForm(scholarship.user_profile_questions);
-        const scholarshipQuestionsFormConfig = transformScholarshipQuestionsToApplicationForm(scholarship.specific_questions);
+        const userProfileQuestionsFormConfig = transformProfileQuestionsToApplicationForm(scholarship.user_profile_questions)
+        .map(formConfig => (
+            formConfig = {
+                ...formConfig,
+                disabled: true,
+            }
+        ));
+        const scholarshipQuestionsFormConfig = transformScholarshipQuestionsToApplicationForm(scholarship.specific_questions)
+        .map(formConfig => (
+            formConfig = {
+                ...formConfig,
+                disabled: true,
+            }
+        ));
+        const notSavingResponsesReminder = (<React.Fragment>
+                                            <h5 className="text-center text-muted">Note: None of your responses here are saved.
+                                            Visit the <Link to={`/scholarship/${scholarship.slug}`}>scholarship page</Link>{' '} 
+                                            and click Apply Now to apply.</h5>
+                                            </React.Fragment>);
         return (
             <div className="container mt-5">
                 <h1>Questions for <Link to={`/scholarship/${scholarship.slug}`}>{scholarship.name}</Link></h1>
-                <h5 className="text-center text-muted">Note: None of your responses here are saved.
-
-                    Visit the <Link to={`/scholarship/${scholarship.slug}`}>scholarship page</Link> and click Apply Now to apply</h5>
+                {notSavingResponsesReminder}
                 <br />
                 <h3> User Profile Questions </h3>
                 <FormDynamic onUpdateForm={() => {}}
@@ -61,7 +76,8 @@ class ScholarshipViewQuestions extends React.Component {
                 <FormDynamic onUpdateForm={() => {}}
                              model={{}}
                              inputConfigs={scholarshipQuestionsFormConfig}
-                />
+                /><br/>
+                {notSavingResponsesReminder}
             </div>
         )
     }
