@@ -328,6 +328,7 @@ class ScholarshipDetail extends React.Component {
                                 </Link>
                                 <br />
                                 {scholarship.learn_more_url && 
+                                <React.Fragment>
                                 <Button size="large"
                                             className="mt-3" style={{fontSize: "20px", width: "300px"}}>
                                     <a  href={scholarship.learn_more_url} 
@@ -335,7 +336,9 @@ class ScholarshipDetail extends React.Component {
                                         rel='noopener noreferrer'>
                                         {scholarship.learn_more_title || `Learn More about ${scholarship.name}`}
                                     </a>
-                                </Button>
+                                </Button><br/>
+
+                                </React.Fragment>
                                 
                                 }
                                 {applyToScholarshipButton} <br/>
