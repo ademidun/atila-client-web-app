@@ -327,6 +327,9 @@ class ScholarshipDetail extends React.Component {
                                     View Application Form
                                 </Link>
                                 <br />
+                                {applyToScholarshipButton && <React.Fragment>
+                                    {applyToScholarshipButton} <br/>
+                                    </React.Fragment>}
                                 {scholarship.learn_more_url && 
                                 <React.Fragment>
                                 <Button size="large"
@@ -341,7 +344,6 @@ class ScholarshipDetail extends React.Component {
                                 </React.Fragment>
                                 
                                 }
-                                {applyToScholarshipButton} <br/>
                                 {scholarship.is_blind_applications && <BlindApplicationsExplanationMessage />}
                             </div>
                             }
