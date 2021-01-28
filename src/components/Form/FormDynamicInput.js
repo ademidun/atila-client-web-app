@@ -36,7 +36,7 @@ const selectChange = ( name, value, updateForm ) => {
 function FormDynamicInput({model, onUpdateForm, inputConfig}) {
 
     const { type, keyName, html, suggestions, className,
-        options, valueDisplay, isHidden, hideLabel, label } = inputConfig;
+        options, valueDisplay, isHidden, hideLabel, label, disabled } = inputConfig;
     let {placeholder} = inputConfig;
     let inputForm = null;
 
@@ -72,6 +72,7 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
                           name={keyName}
                           value={modelValue}
                           onChange={onUpdateForm}
+                          disabled={disabled}
                 />
             );
             break;
@@ -88,6 +89,7 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
                            name={keyName}
                            checked={modelValue}
                            onChange={onUpdateForm}
+                           disabled={disabled}
                     />
                 </div>
             );
@@ -104,6 +106,7 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
                         name={keyName}
                         value={modelValue||placeholder}
                         onChange={onUpdateForm}
+                        disabled={disabled}
                     >
                         <option key={placeholder} disabled hidden>{placeholder}</option>
                         {options.map(option => (<option key={option}>{option}</option>))}
@@ -126,6 +129,7 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
                     <Select mode="tags" style={{ width: '100%' }}
                             value={modelValue}
                             placeholder={placeholder}
+                            disabled={disabled}
                             onChange={(selected) => selectChange(keyName, selected, onUpdateForm)}>
                         {suggestions.map(suggestion => (
                             <Option key={suggestion}
@@ -181,12 +185,14 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
         case 'html_editor':
 
             inputForm = (
-                <div className="mb-3">
+                <div className="mb-3"
+                     style={{cursor: disabled ? "not-allowed": "default"}}>
                     {label && <label htmlFor={keyName} className="float-left">
                         {label}
                     </label>}
                     <CKEditor
                         editor={InlineEditor}
+                        disabled={disabled}
                         data={modelValue}
                         onChange={ (event, editor) => editorChange(event, editor, keyName, onUpdateForm) }
                     />
@@ -206,6 +212,7 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
 
                 <div className="floating mb-3">
                     <input placeholder={placeholder}
+                     disabled={disabled}
                            className="col-12 form-control floating__input"
                            name={keyName}
                            value={modelValue}
@@ -226,6 +233,7 @@ function FormDynamicInput({model, onUpdateForm, inputConfig}) {
                     <input placeholder={placeholder}
                            className="col-12 form-control floating__input"
                            name={keyName}
+                           disabled={disabled}
                            value={modelValue}
                            onChange={onUpdateForm}
                            type={type}

@@ -232,7 +232,7 @@ class ScholarshipDetail extends React.Component {
         const isScholarshipDeadlinePassed = scholarshipDateMoment.diff(moment(), 'days') < 0;
 
         let applyToScholarshipButton = (<Button type="primary" size="large"
-                                                className="mt-3" style={{fontSize: "20px"}}
+                                                className="mt-3" style={{fontSize: "20px", width: "300px"}}
                                                 onClick={this.getOrCreateApplication}
                                                 disabled={isLoadingApplication}>
             {isLoadingApplication ? "Checking for existing Application..." : "Apply Now"}
@@ -241,7 +241,7 @@ class ScholarshipDetail extends React.Component {
         if(currentUserScholarshipApplication) {
             applyToScholarshipButton = (
                 <Button type="primary" size="large"
-                        className="mt-3" style={{fontSize: "20px"}} disabled={isLoadingApplication}>
+                        className="mt-3" style={{fontSize: "20px", width: "300px"}} disabled={isLoadingApplication}>
                 <Link to={`/application/${currentUserScholarshipApplication.id}`}>
                     {currentUserScholarshipApplication.is_submitted || isScholarshipDeadlinePassed ? "View Application" : "Continue Application"}
                 </Link>
@@ -327,7 +327,23 @@ class ScholarshipDetail extends React.Component {
                                     View Application Form
                                 </Link>
                                 <br />
-                                {applyToScholarshipButton} <br/>
+                                {applyToScholarshipButton && <React.Fragment>
+                                    {applyToScholarshipButton} <br/>
+                                    </React.Fragment>}
+                                {scholarship.learn_more_url && 
+                                <React.Fragment>
+                                <Button size="large"
+                                            className="mt-3" style={{fontSize: "20px", width: "300px"}}>
+                                    <a  href={scholarship.learn_more_url} 
+                                        target="_blank" 
+                                        rel='noopener noreferrer'>
+                                        {scholarship.learn_more_title || `Learn More about ${scholarship.name}`}
+                                    </a>
+                                </Button><br/>
+
+                                </React.Fragment>
+                                
+                                }
                                 {scholarship.is_blind_applications && <BlindApplicationsExplanationMessage />}
                             </div>
                             }
