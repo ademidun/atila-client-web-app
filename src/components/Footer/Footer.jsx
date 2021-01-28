@@ -12,7 +12,8 @@ import {
   faSpotify,
   faTwitter,
   faYoutube,
-  faReddit
+  faReddit,
+    faTiktok
 } from "@fortawesome/free-brands-svg-icons";
 
 const goBack = (event, history) => {
@@ -161,6 +162,11 @@ function Footer({location, history}) {
                   <div>
                     <a  target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/atilatech/">
                       Instagram <FontAwesomeIcon icon={faInstagram} />
+                    </a>
+                  </div>
+                  <div>
+                    <a  target="_blank" rel="noopener noreferrer" href="https://www.tiktok.com/@atila.tech">
+                      TikTok <FontAwesomeIcon icon={faTiktok} />
                     </a>
                   </div>
                 </div>
