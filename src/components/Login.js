@@ -143,7 +143,7 @@ class Login extends React.Component {
                         <HelmetSeo content={seoContent}/>
                         <h1>Login</h1>
                         {redirectInstructions}
-                        <form className="row p-3" onSubmit={this.submitForm}>
+                        <div className="row p-3">
                             <input placeholder="Username or Email"
                                    className="col-12 mb-3 form-control"
                                    name="username"
@@ -154,6 +154,7 @@ class Login extends React.Component {
                             <PasswordShowHide password={password} updateForm={this.updateForm} />
                             <div className="w-100">
                                 <Button className="col-sm-12 col-md-5 float-left mb-1 button-cta"
+                                        onClick={this.submitForm}
                                         type="primary"
                                         disabled={isLoadingResponse}>
                                     Login
@@ -172,9 +173,9 @@ class Login extends React.Component {
                                     }}>
                                 Forgot password?
                             </Button>
-                        </form>
+                        </div>
                         {forgotPassword &&
-                        <form className="row p-3" onSubmit={this.submitResetPasswordForm}>
+                        <div className="row p-3">
                             <label>Enter username or email to receive password reset token</label>
                             <input placeholder="Username or Email"
                                    className="col-12 mb-3 form-control"
@@ -183,16 +184,17 @@ class Login extends React.Component {
                                    autoComplete="username"
                                    onChange={this.updateForm}
                             />
-                            <Button className="col-sm-12 col-md-5 float-left mb-3"
-                                    type="submit"
-                                    disabled={isLoadingResponse}>
+                            <Button className="col-sm-12 col-md-5 float-left mb-3 button-cta"
+                                    type="primary"
+                                    disabled={isLoadingResponse}
+                                    onClick={this.submitResetPasswordForm}>
                                 Send Email
                             </Button>
                             <label className="w-100">
                                 Already have a reset token?
                                 <Link to="/verify?verification_type=reset_password"> Reset password </Link>
                             </label>
-                        </form>
+                        </div>
 
                         }
 
