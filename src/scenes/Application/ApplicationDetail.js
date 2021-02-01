@@ -76,10 +76,10 @@ class ApplicationDetail extends  React.Component{
     }
 
     getApplication = () => {
-        const { userProfile } = this.props;
+        const { userProfile, location : { pathname } } = this.props;
         const { isUsingLocalApplication } = this.state;
 
-        if (userProfile) {
+        if (userProfile && !pathname.includes("/local/")) {
             this.getApplicationRemotely();
         } else if (isUsingLocalApplication) {
             this.getApplicationLocally();
