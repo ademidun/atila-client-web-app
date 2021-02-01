@@ -7,7 +7,7 @@ import './LoginRegister.scss';
 import {setLoggedInUserProfile} from "../redux/actions/user";
 import {connect} from "react-redux";
 import TermsConditions from "./TermsConditions";
-import { Modal, Radio, AutoComplete } from "antd";
+import { Modal, Radio, AutoComplete, Button } from "antd";
 import {Link} from "react-router-dom";
 import {forbiddenCharacters, hasForbiddenCharacters} from "../models/Utils";
 
@@ -480,12 +480,12 @@ class Register extends React.Component {
                             }
                             {loadingResponse &&
                             <Loading title="Loading Response..." className="center-block my-3"/>}
-                            <button className="btn btn-primary col-12 mb-3"
-                                    type="submit"
+                            <Button className="col-12 mb-3 button-cta"
+                                    type="primary"
                                     disabled={loadingResponse || !agreeTermsConditions ||
                                     Object.keys(formErrors).length > 0}>
                                 Register
-                            </button>
+                            </Button>
 
                             {loginCTA}
 

@@ -8,6 +8,7 @@ import {PasswordShowHide} from "./Register";
 import {setLoggedInUserProfile} from "../redux/actions/user";
 import ResponseDisplay from "./ResponseDisplay";
 import HelmetSeo, {defaultSeoContent} from "./HelmetSeo";
+import { Button } from "antd";
 
 class Login extends React.Component {
 
@@ -152,23 +153,25 @@ class Login extends React.Component {
                             />
                             <PasswordShowHide password={password} updateForm={this.updateForm} />
                             <div className="w-100">
-                                <button className="btn btn-primary col-sm-12 col-md-5 float-left mb-1"
-                                        type="submit"
+                                <Button className="col-sm-12 col-md-5 float-left mb-1 button-cta"
+                                        type="primary"
                                         disabled={isLoadingResponse}>
                                     Login
-                                </button>
-                                <Link to={`/register?redirect=${nextLocation}`}
-                                      className="btn btn-outline-primary col-sm-12 col-md-5 float-right">
-                                    Register
-                                </Link>
+                                </Button>
+                                <Button className="col-sm-12 col-md-5 float-right button-cta">
+                                    <Link to={`/register?redirect=${nextLocation}`}>
+                                        Register
+                                    </Link>
+                                </Button>
                             </div>
-                            <button className="btn btn-link max-width-fit-content"
+                            <Button className="max-width-fit-content button-cta"
+                                    type="link"
                                     onClick={event=> {
                                         event.preventDefault();
                                         this.setState({forgotPassword: true});
                                     }}>
                                 Forgot password?
-                            </button>
+                            </Button>
                         </form>
                         {forgotPassword &&
                         <form className="row p-3" onSubmit={this.submitResetPasswordForm}>
@@ -180,11 +183,11 @@ class Login extends React.Component {
                                    autoComplete="username"
                                    onChange={this.updateForm}
                             />
-                            <button className="btn btn-primary col-sm-12 col-md-5 float-left mb-3"
+                            <Button className="col-sm-12 col-md-5 float-left mb-3"
                                     type="submit"
                                     disabled={isLoadingResponse}>
                                 Send Email
-                            </button>
+                            </Button>
                             <label className="w-100">
                                 Already have a reset token?
                                 <Link to="/verify?verification_type=reset_password"> Reset password </Link>
