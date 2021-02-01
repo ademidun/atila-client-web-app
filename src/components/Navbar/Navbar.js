@@ -44,6 +44,8 @@ class Navbar extends React.Component {
         const { userProfile, isLoadingLoggedInUserProfile } = this.props;
         const { location: { pathname, search } } = this.props;
 
+        console.log({pathname, search});
+
         if(userProfile) {
             LogRocket.identify(userProfile.user, {
                 name: `${userProfile.first_name} ${userProfile.last_name}`,

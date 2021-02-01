@@ -8,6 +8,7 @@ import {PasswordShowHide} from "./Register";
 import {setLoggedInUserProfile} from "../redux/actions/user";
 import ResponseDisplay from "./ResponseDisplay";
 import HelmetSeo, {defaultSeoContent} from "./HelmetSeo";
+import { Button } from "antd";
 
 class Login extends React.Component {
 
@@ -23,6 +24,9 @@ class Login extends React.Component {
         const params = new URLSearchParams(search);
 
         let nextLocation = params.get('redirect') || '/scholarship';
+        let applyNow = params.get('applyNow') || false;
+        let mostRecentlyViewedContentName = localStorage.getItem('mostRecentlyViewedContentName') || '';
+        let mostRecentlyViewedContentSlug = localStorage.getItem('mostRecentlyViewedContentSlug') || '';
 
         if (nextLocation==='/' || nextLocation.includes('/register')) {
             nextLocation = '/scholarship';
@@ -33,6 +37,9 @@ class Login extends React.Component {
             username: '',
             password: '',
             nextLocation,
+            applyNow,
+            mostRecentlyViewedContentName,
+            mostRecentlyViewedContentSlug,
             responseError: null,
             isLoadingResponse: null,
             responseOkMessage: null,
@@ -112,19 +119,31 @@ class Login extends React.Component {
     render () {
         const { username, password,
             responseError, isLoadingResponse,
-            responseOkMessage, forgotPassword, nextLocation } = this.state;
+            responseOkMessage, forgotPassword, nextLocation,
+            mostRecentlyViewedContentName, mostRecentlyViewedContentSlug, applyNow } = this.state;
 
         const seoContent = {
             ...defaultSeoContent,
             title: 'Login'
         };
+
+        let redirectInstructions = null;
+
+        if (mostRecentlyViewedContentName && nextLocation 
+            && mostRecentlyViewedContentSlug && nextLocation.includes(mostRecentlyViewedContentSlug)) {
+            redirectInstructions = (<h3 className="text-center text-muted">
+                Login to {applyNow? "start or continue application for: " : "see: "}
+                <Link to={nextLocation}>{mostRecentlyViewedContentName}</Link>
+            </h3>)
+        }
         return (
             <div className="container mt-5">
                 <div className="card shadow p-3">
                     <div>
                         <HelmetSeo content={seoContent}/>
                         <h1>Login</h1>
-                        <form className="row p-3" onSubmit={this.submitForm}>
+                        {redirectInstructions}
+                        <div className="row p-3">
                             <input placeholder="Username or Email"
                                    className="col-12 mb-3 form-control"
                                    name="username"
@@ -134,26 +153,29 @@ class Login extends React.Component {
                             />
                             <PasswordShowHide password={password} updateForm={this.updateForm} />
                             <div className="w-100">
-                                <button className="btn btn-primary col-sm-12 col-md-5 float-left mb-1"
-                                        type="submit"
+                                <Button className="col-sm-12 col-md-5 float-left mb-1 button-cta"
+                                        onClick={this.submitForm}
+                                        type="primary"
                                         disabled={isLoadingResponse}>
                                     Login
-                                </button>
-                                <Link to={`/register?redirect=${nextLocation}`}
-                                      className="btn btn-outline-primary col-sm-12 col-md-5 float-right">
-                                    Register
-                                </Link>
+                                </Button>
+                                <Button className="col-sm-12 col-md-5 float-right button-cta">
+                                    <Link to={`/register?redirect=${nextLocation}`}>
+                                        Register
+                                    </Link>
+                                </Button>
                             </div>
-                            <button className="btn btn-link max-width-fit-content"
+                            <Button className="max-width-fit-content button-cta"
+                                    type="link"
                                     onClick={event=> {
                                         event.preventDefault();
                                         this.setState({forgotPassword: true});
                                     }}>
                                 Forgot password?
-                            </button>
-                        </form>
+                            </Button>
+                        </div>
                         {forgotPassword &&
-                        <form className="row p-3" onSubmit={this.submitResetPasswordForm}>
+                        <div className="row p-3">
                             <label>Enter username or email to receive password reset token</label>
                             <input placeholder="Username or Email"
                                    className="col-12 mb-3 form-control"
@@ -162,16 +184,17 @@ class Login extends React.Component {
                                    autoComplete="username"
                                    onChange={this.updateForm}
                             />
-                            <button className="btn btn-primary col-sm-12 col-md-5 float-left mb-3"
-                                    type="submit"
-                                    disabled={isLoadingResponse}>
+                            <Button className="col-sm-12 col-md-5 float-left mb-3 button-cta"
+                                    type="primary"
+                                    disabled={isLoadingResponse}
+                                    onClick={this.submitResetPasswordForm}>
                                 Send Email
-                            </button>
+                            </Button>
                             <label className="w-100">
                                 Already have a reset token?
                                 <Link to="/verify?verification_type=reset_password"> Reset password </Link>
                             </label>
-                        </form>
+                        </div>
 
                         }
 

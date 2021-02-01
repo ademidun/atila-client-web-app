@@ -31,6 +31,7 @@ import UserProfileAPI from "../../services/UserProfileAPI";
 import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import ApplicationDetailHeader from "./ApplicationDetailHeader";
 import {BlindApplicationsExplanationMessage} from "../../models/Scholarship";
+import ApplicationsLocal from './ApplicationsLocal';
 
 const { Step } = Steps;
 
@@ -75,10 +76,10 @@ class ApplicationDetail extends  React.Component{
     }
 
     getApplication = () => {
-        const { userProfile } = this.props;
+        const { userProfile, location : { pathname } } = this.props;
         const { isUsingLocalApplication } = this.state;
 
-        if (userProfile) {
+        if (userProfile && !pathname.includes("/local/")) {
             this.getApplicationRemotely();
         } else if (isUsingLocalApplication) {
             this.getApplicationLocally();
@@ -553,18 +554,31 @@ class ApplicationDetail extends  React.Component{
         let scholarshipDateString = scholarshipDateMoment.format('dddd, MMMM DD, YYYY');
         let disableSubmit = isMissingProfilePicture||isMissingSecurityQuestionAnswer;
         let submitContent = (
-            <Popconfirm placement="topRight" title={"Once you submit your application, you won't be able to edit it." +
-            " Are you sure you want to submit?"}
-                        disabled={disableSubmit}
-                        onConfirm={this.submitApplication}
-                        okText="Yes" cancelText="No">
-                <Button type={"primary"}
-                        disabled={disableSubmit}
-                        className={"float-right col-md-6"}>
-                    Submit...
-                </Button>
-            </Popconfirm>
-        );
+                    <div className={"float-right col-md-6"}>
+                        You must have an account to submit locally saved applications.
+                        
+                        Visit <Link to={`/scholarship/${scholarship.slug}`}>scholarship page</Link>{' '}
+                        and click Apply Now or Continue Application. You will still be able to access your locally saved responses
+                        until February 3.
+                    </div>
+        )
+        ;
+
+        if (userProfile) {
+            submitContent = (
+                <Popconfirm placement="topRight" title={"Once you submit your application, you won't be able to edit it." +
+                " Are you sure you want to submit?"}
+                            disabled={disableSubmit}
+                            onConfirm={this.submitApplication}
+                            okText="Yes" cancelText="No">
+                    <Button type={"primary"}
+                            disabled={disableSubmit}
+                            className={"float-right col-md-6"}>
+                        Submit...
+                    </Button>
+                </Popconfirm>
+            );
+        }
 
         let applicationForm = (<>
             <h2>Profile Questions</h2>
@@ -612,6 +626,7 @@ class ApplicationDetail extends  React.Component{
                         </Link>
                         </h1>
                         }
+                        {scholarship && <ApplicationsLocal scholarship={scholarship} />}
                         <ApplicationDetailHeader application={application} scholarship={scholarship} isOwnerOfApplication={isOwnerOfApplication}/>
                         <div>
                             {scholarshipUserProfileQuestionsFormConfig && scholarshipQuestionsFormConfig &&

@@ -18,6 +18,7 @@ import {Alert, Button, message} from 'antd';
 import verifiedBadge from '../../components/assets/verified.png';
 import {AtilaDirectApplicationsPopover, BlindApplicationsExplanationMessage} from "../../models/Scholarship";
 import ScholarshipFinalists, {UserProfilesCards} from "./ScholarshipFinalists";
+import ApplicationsLocal from '../Application/ApplicationsLocal';
 
 class ScholarshipDetail extends React.Component {
 
@@ -85,6 +86,12 @@ class ScholarshipDetail extends React.Component {
                     const notAvailableText = (<p className="text-danger">Scholarship is no longer available</p>);
                     message.error(notAvailableText, 3);
                 }
+                /*
+                    Save the most recently viewed scholarship to local storage so that if user gets redirected to register/login page
+                    they can easily get back here.
+                */
+                localStorage.setItem("mostRecentlyViewedContentName", scholarship.name);
+                localStorage.setItem("mostRecentlyViewedContentSlug", location.pathname);
 
                 this.findExistingApplication();
 
@@ -133,8 +140,6 @@ class ScholarshipDetail extends React.Component {
 
         if(userProfile) {
             this.findExistingApplicationRemotely(scholarship, userProfile);
-        } else {
-            this.findExistingApplicationLocally(scholarship);
         }
 
     };
@@ -157,13 +162,6 @@ class ScholarshipDetail extends React.Component {
                 this.setState({isLoadingApplication: false});
             });
     };
-
-    findExistingApplicationLocally = (scholarship) => {
-        const localApplicationID = `local_application_scholarship_id_${scholarship.id}`;
-        if (localStorage.getItem(localApplicationID)) {
-            this.setState({ currentUserScholarshipApplication: {id: `local/scholarship_${scholarship.id}`} })
-        }
-    }
 
     getOrCreateApplication = () => {
         const { userProfile } = this.props;
@@ -209,6 +207,7 @@ class ScholarshipDetail extends React.Component {
             errorLoadingScholarship, scholarshipUserProfile,
             pageViews, currentUserScholarshipApplication, isLoadingApplication, contributors } = this.state;
         const { userProfile } = this.props;
+        const { location: { pathname } } = this.props;
 
         if (errorLoadingScholarship) {
             return errorLoadingScholarship;
@@ -231,28 +230,37 @@ class ScholarshipDetail extends React.Component {
         let scholarshipDateMoment = moment(deadline);
         const isScholarshipDeadlinePassed = scholarshipDateMoment.diff(moment(), 'days') < 0;
 
-        let applyToScholarshipButton = (<Button type="primary" size="large"
+        let applyToScholarshipButton = null;
+        if (isScholarshipDeadlinePassed) {
+            applyToScholarshipButton = null;
+        } else if (!userProfile) {
+            applyToScholarshipButton = (<Button type="primary" size="large"
+                                                className="mt-3" style={{fontSize: "20px", width: "300px"}}
+                                                disabled={isLoadingApplication}>
+                                            <Link to={`/register?redirect=${pathname}&applyNow=1`}>
+                                            Apply Now
+                                            </Link>
+                                        </Button>)
+        } else {
+            applyToScholarshipButton = (<Button type="primary" size="large"
                                                 className="mt-3" style={{fontSize: "20px", width: "300px"}}
                                                 onClick={this.getOrCreateApplication}
                                                 disabled={isLoadingApplication}>
-            {isLoadingApplication ? "Checking for existing Application..." : "Apply Now"}
-        </Button>);
+                                    {isLoadingApplication ? "Checking for existing Application..." : "Apply Now"}
+                                    </Button>);
 
-        if(currentUserScholarshipApplication) {
-            applyToScholarshipButton = (
-                <Button type="primary" size="large"
-                        className="mt-3" style={{fontSize: "20px", width: "300px"}} disabled={isLoadingApplication}>
-                <Link to={`/application/${currentUserScholarshipApplication.id}`}>
-                    {currentUserScholarshipApplication.is_submitted || isScholarshipDeadlinePassed ? "View Application" : "Continue Application"}
-                </Link>
-            </Button>)
-        } else if (isScholarshipDeadlinePassed) {
-            applyToScholarshipButton = null;
-        }
-
-        if(scholarshipUserProfile && userProfile &&
-            userProfile.user === scholarshipUserProfile.user) {
-            applyToScholarshipButton = null;
+            if(currentUserScholarshipApplication) {
+                applyToScholarshipButton = (
+                    <Button type="primary" size="large"
+                            className="mt-3" style={{fontSize: "20px", width: "300px"}} disabled={isLoadingApplication}>
+                    <Link to={`/application/${currentUserScholarshipApplication.id}`}>
+                        {currentUserScholarshipApplication.is_submitted || 
+                        isScholarshipDeadlinePassed ? "View Application" : "Continue Application"}
+                    </Link>
+                </Button>)
+            } else if (scholarshipUserProfile && userProfile.user === scholarshipUserProfile.user) {
+                applyToScholarshipButton = null;
+            }
         }
 
         return (
@@ -330,6 +338,7 @@ class ScholarshipDetail extends React.Component {
                                 {applyToScholarshipButton && <React.Fragment>
                                     {applyToScholarshipButton} <br/>
                                     </React.Fragment>}
+                                {scholarship && <ApplicationsLocal scholarship={scholarship} />}
                                 {scholarship.learn_more_url && 
                                 <React.Fragment>
                                 <Button size="large"
