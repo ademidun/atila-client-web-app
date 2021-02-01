@@ -18,6 +18,7 @@ import {Alert, Button, message} from 'antd';
 import verifiedBadge from '../../components/assets/verified.png';
 import {AtilaDirectApplicationsPopover, BlindApplicationsExplanationMessage} from "../../models/Scholarship";
 import ScholarshipFinalists, {UserProfilesCards} from "./ScholarshipFinalists";
+import ApplicationsLocal from '../Application/ApplicationsLocal';
 
 class ScholarshipDetail extends React.Component {
 
@@ -337,6 +338,7 @@ class ScholarshipDetail extends React.Component {
                                 {applyToScholarshipButton && <React.Fragment>
                                     {applyToScholarshipButton} <br/>
                                     </React.Fragment>}
+                                {scholarship && <ApplicationsLocal scholarship={scholarship} />}
                                 {scholarship.learn_more_url && 
                                 <React.Fragment>
                                 <Button size="large"

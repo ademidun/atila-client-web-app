@@ -31,6 +31,7 @@ import UserProfileAPI from "../../services/UserProfileAPI";
 import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import ApplicationDetailHeader from "./ApplicationDetailHeader";
 import {BlindApplicationsExplanationMessage} from "../../models/Scholarship";
+import ApplicationsLocal from './ApplicationsLocal';
 
 const { Step } = Steps;
 
@@ -612,6 +613,7 @@ class ApplicationDetail extends  React.Component{
                         </Link>
                         </h1>
                         }
+                        {scholarship && <ApplicationsLocal scholarship={scholarship} />}
                         <ApplicationDetailHeader application={application} scholarship={scholarship} isOwnerOfApplication={isOwnerOfApplication}/>
                         <div>
                             {scholarshipUserProfileQuestionsFormConfig && scholarshipQuestionsFormConfig &&
