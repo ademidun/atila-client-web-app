@@ -85,6 +85,12 @@ class ScholarshipDetail extends React.Component {
                     const notAvailableText = (<p className="text-danger">Scholarship is no longer available</p>);
                     message.error(notAvailableText, 3);
                 }
+                /*
+                    Save the most recently viewed scholarship to local storage so that if user gets redirected to register/login page
+                    they can easily get back here.
+                */
+                localStorage.setItem("mostRecentlyViewedContentName", scholarship.name);
+                localStorage.setItem("mostRecentlyViewedContentSlug", location.pathname);
 
                 this.findExistingApplication();
 
@@ -209,6 +215,7 @@ class ScholarshipDetail extends React.Component {
             errorLoadingScholarship, scholarshipUserProfile,
             pageViews, currentUserScholarshipApplication, isLoadingApplication, contributors } = this.state;
         const { userProfile } = this.props;
+        const { location: { pathname } } = this.props;
 
         if (errorLoadingScholarship) {
             return errorLoadingScholarship;
@@ -233,10 +240,20 @@ class ScholarshipDetail extends React.Component {
 
         let applyToScholarshipButton = (<Button type="primary" size="large"
                                                 className="mt-3" style={{fontSize: "20px", width: "300px"}}
+                                                disabled={isLoadingApplication}>
+                                        <Link to={`/register?redirect=${pathname}&applyNow=1`}>
+                                        {isLoadingApplication ? "Checking for existing Application..." : "Apply Now"}
+                                        </Link>
+                                        </Button>);
+
+        if (userProfile) {
+            applyToScholarshipButton = (<Button type="primary" size="large"
+                                                className="mt-3" style={{fontSize: "20px", width: "300px"}}
                                                 onClick={this.getOrCreateApplication}
                                                 disabled={isLoadingApplication}>
             {isLoadingApplication ? "Checking for existing Application..." : "Apply Now"}
         </Button>);
+        }
 
         if(currentUserScholarshipApplication) {
             applyToScholarshipButton = (

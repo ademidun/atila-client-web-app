@@ -85,8 +85,11 @@ class Register extends React.Component {
         const params = new URLSearchParams(search);
 
         let nextLocation = params.get('redirect') || '/scholarship';
+        let applyNow = params.get('applyNow') || false;
         let accountType = params.get('type') || accountTypes[0].value;
-        let referredBy = localStorage.getItem('referred_by') || ''
+        let referredBy = localStorage.getItem('referred_by') || '';
+        let mostRecentlyViewedContentName = localStorage.getItem('mostRecentlyViewedContentName') || '';
+        let mostRecentlyViewedContentSlug = localStorage.getItem('mostRecentlyViewedContentSlug') || '';
 
         if (nextLocation==='/') {
             nextLocation = '/scholarship';
@@ -105,6 +108,9 @@ class Register extends React.Component {
                 ...props.userProfile,
             },
             nextLocation,
+            applyNow,
+            mostRecentlyViewedContentName,
+            mostRecentlyViewedContentSlug,
             referredByOptions: null,
             referredByUserProfile: null,
             isResponseError: null,
@@ -298,9 +304,12 @@ class Register extends React.Component {
 
         const { userProfile, isResponseError, responseOkMessage,
             loadingResponse, isTermsConditionsModalVisible,
-             formErrors, referredByOptions, referredByUserProfile } = this.state;
+             formErrors, referredByOptions, referredByUserProfile, applyNow,
+              mostRecentlyViewedContentName, nextLocation, mostRecentlyViewedContentSlug } = this.state;
         const { first_name, last_name, username, email, password,
             referred_by, agreeTermsConditions, account_type, referredByChecked } = userProfile;
+        
+        const { location: { search } } = this.props;
 
         let formErrorsContent = Object.keys(formErrors).map((errorType) => (
             <div key={errorType}>
@@ -308,11 +317,31 @@ class Register extends React.Component {
             </div>
         ));
 
+        let loginCTA = (                
+            <Link to={`/login${search}`} className="text-center col-12 mb-3">
+            Already have an account? Login
+        </Link>
+        )
+
+        let redirectInstructions = null;
+
+        if (mostRecentlyViewedContentName && nextLocation 
+            && mostRecentlyViewedContentSlug && nextLocation.includes(mostRecentlyViewedContentSlug)) {
+            redirectInstructions = (<h3 className="text-center text-muted">
+                You need an account to {applyNow? "apply for: " : "see: "}
+                <Link to={nextLocation}>{mostRecentlyViewedContentName}</Link>
+                {applyNow? " and track your application status." : null}
+                <br/>
+                {loginCTA}
+            </h3>)
+        }
+
         return (
             <div className="container mt-5">
                 <div className="card shadow p-3">
                     <div>
                         <h1>Register</h1>
+                        {redirectInstructions}
                         <form className="row p-3 form-group" onSubmit={this.submitForm}>
                             {first_name &&
                                 <label>
@@ -457,6 +486,8 @@ class Register extends React.Component {
                                     Object.keys(formErrors).length > 0}>
                                 Register
                             </button>
+
+                            {loginCTA}
 
                         </form>
                     </div>
