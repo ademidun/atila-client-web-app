@@ -79,7 +79,7 @@ let scholarshipFormConfigsPage1 = [
     },
     {
         keyName: 'learn_more_title',
-        placeholder: 'Title for the url: e.g. Learn more about Skateaboards for Hope',
+        placeholder: 'Title for the url: e.g. Learn more about Skateboards for Hope',
         type: 'text',
         isHidden: (scholarship) => (!scholarship.is_atila_direct_application),
     },
