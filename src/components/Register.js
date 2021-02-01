@@ -10,7 +10,6 @@ import TermsConditions from "./TermsConditions";
 import { Modal, Radio, AutoComplete, Button } from "antd";
 import {Link} from "react-router-dom";
 import {forbiddenCharacters, hasForbiddenCharacters} from "../models/Utils";
-import RemoteSearch from './RemoteSearch';
 
 export class PasswordShowHide extends React.Component {
 
@@ -411,7 +410,6 @@ class Register extends React.Component {
 
                             <label>If they have an Atila account, you can enter their name or username here...</label> <br />
                                 {referredByUserProfile}
-                                <RemoteSearch />
                                 <AutoComplete
                                     filterOption
                                     options={referredByOptions}
