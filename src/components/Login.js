@@ -23,6 +23,9 @@ class Login extends React.Component {
         const params = new URLSearchParams(search);
 
         let nextLocation = params.get('redirect') || '/scholarship';
+        let applyNow = params.get('applyNow') || false;
+        let mostRecentlyViewedContentName = localStorage.getItem('mostRecentlyViewedContentName') || '';
+        let mostRecentlyViewedContentSlug = localStorage.getItem('mostRecentlyViewedContentSlug') || '';
 
         if (nextLocation==='/' || nextLocation.includes('/register')) {
             nextLocation = '/scholarship';
@@ -33,6 +36,9 @@ class Login extends React.Component {
             username: '',
             password: '',
             nextLocation,
+            applyNow,
+            mostRecentlyViewedContentName,
+            mostRecentlyViewedContentSlug,
             responseError: null,
             isLoadingResponse: null,
             responseOkMessage: null,
@@ -112,18 +118,30 @@ class Login extends React.Component {
     render () {
         const { username, password,
             responseError, isLoadingResponse,
-            responseOkMessage, forgotPassword, nextLocation } = this.state;
+            responseOkMessage, forgotPassword, nextLocation,
+            mostRecentlyViewedContentName, mostRecentlyViewedContentSlug, applyNow } = this.state;
 
         const seoContent = {
             ...defaultSeoContent,
             title: 'Login'
         };
+
+        let redirectInstructions = null;
+
+        if (mostRecentlyViewedContentName && nextLocation 
+            && mostRecentlyViewedContentSlug && nextLocation.includes(mostRecentlyViewedContentSlug)) {
+            redirectInstructions = (<h3 className="text-center text-muted">
+                Login to {applyNow? "start or continue application for: " : "see: "}
+                <Link to={nextLocation}>{mostRecentlyViewedContentName}</Link>
+            </h3>)
+        }
         return (
             <div className="container mt-5">
                 <div className="card shadow p-3">
                     <div>
                         <HelmetSeo content={seoContent}/>
                         <h1>Login</h1>
+                        {redirectInstructions}
                         <form className="row p-3" onSubmit={this.submitForm}>
                             <input placeholder="Username or Email"
                                    className="col-12 mb-3 form-control"
