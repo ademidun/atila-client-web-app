@@ -238,38 +238,37 @@ class ScholarshipDetail extends React.Component {
         let scholarshipDateMoment = moment(deadline);
         const isScholarshipDeadlinePassed = scholarshipDateMoment.diff(moment(), 'days') < 0;
 
-        let applyToScholarshipButton = (<Button type="primary" size="large"
+        let applyToScholarshipButton = null;
+        if (isScholarshipDeadlinePassed) {
+            applyToScholarshipButton = null;
+        } else if (!userProfile) {
+            applyToScholarshipButton = (<Button type="primary" size="large"
                                                 className="mt-3" style={{fontSize: "20px", width: "300px"}}
                                                 disabled={isLoadingApplication}>
-                                        <Link to={`/register?redirect=${pathname}&applyNow=1`}>
-                                        {isLoadingApplication ? "Checking for existing Application..." : "Apply Now"}
-                                        </Link>
-                                        </Button>);
-
-        if (userProfile) {
+                                            <Link to={`/register?redirect=${pathname}&applyNow=1`}>
+                                            Apply Now
+                                            </Link>
+                                        </Button>)
+        } else {
             applyToScholarshipButton = (<Button type="primary" size="large"
                                                 className="mt-3" style={{fontSize: "20px", width: "300px"}}
                                                 onClick={this.getOrCreateApplication}
                                                 disabled={isLoadingApplication}>
-            {isLoadingApplication ? "Checking for existing Application..." : "Apply Now"}
-        </Button>);
-        }
+                                    {isLoadingApplication ? "Checking for existing Application..." : "Apply Now"}
+                                    </Button>);
 
-        if(currentUserScholarshipApplication) {
-            applyToScholarshipButton = (
-                <Button type="primary" size="large"
-                        className="mt-3" style={{fontSize: "20px", width: "300px"}} disabled={isLoadingApplication}>
-                <Link to={`/application/${currentUserScholarshipApplication.id}`}>
-                    {currentUserScholarshipApplication.is_submitted || isScholarshipDeadlinePassed ? "View Application" : "Continue Application"}
-                </Link>
-            </Button>)
-        } else if (isScholarshipDeadlinePassed) {
-            applyToScholarshipButton = null;
-        }
-
-        if(scholarshipUserProfile && userProfile &&
-            userProfile.user === scholarshipUserProfile.user) {
-            applyToScholarshipButton = null;
+            if(currentUserScholarshipApplication) {
+                applyToScholarshipButton = (
+                    <Button type="primary" size="large"
+                            className="mt-3" style={{fontSize: "20px", width: "300px"}} disabled={isLoadingApplication}>
+                    <Link to={`/application/${currentUserScholarshipApplication.id}`}>
+                        {currentUserScholarshipApplication.is_submitted || 
+                        isScholarshipDeadlinePassed ? "View Application" : "Continue Application"}
+                    </Link>
+                </Button>)
+            } else if (scholarshipUserProfile && userProfile.user === scholarshipUserProfile.user) {
+                applyToScholarshipButton = null;
+            }
         }
 
         return (
