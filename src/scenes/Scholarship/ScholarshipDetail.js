@@ -139,8 +139,6 @@ class ScholarshipDetail extends React.Component {
 
         if(userProfile) {
             this.findExistingApplicationRemotely(scholarship, userProfile);
-        } else {
-            this.findExistingApplicationLocally(scholarship);
         }
 
     };
@@ -163,13 +161,6 @@ class ScholarshipDetail extends React.Component {
                 this.setState({isLoadingApplication: false});
             });
     };
-
-    findExistingApplicationLocally = (scholarship) => {
-        const localApplicationID = `local_application_scholarship_id_${scholarship.id}`;
-        if (localStorage.getItem(localApplicationID)) {
-            this.setState({ currentUserScholarshipApplication: {id: `local/scholarship_${scholarship.id}`} })
-        }
-    }
 
     getOrCreateApplication = () => {
         const { userProfile } = this.props;
