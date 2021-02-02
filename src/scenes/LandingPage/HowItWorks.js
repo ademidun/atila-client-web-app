@@ -121,9 +121,27 @@ export function HowItWorksStudent() {
                 <Link to="/scholarship">Apply for Scholarships.</Link>{' '}
                 Get Funded.
             </h2>
-            <h5 className="col-sm-12 text-center text-muted">
-                Atila is 100% free for students
-            </h5>
+
+            <div></div>
+            <h3 className="col-sm-12 text-center">
+                Used by over 1,000 students at Universities such as...
+            </h3>
+            <div>
+                <img src="https://imgur.com/VXhmyOx.jpg" width="200" height="150" alt="University of Toronto"></img>
+                <img src="https://imgur.com/6kJAH06.jpg" width="200" height="100" alt="Ivey Business School"></img>
+                <img src="https://imgur.com/BSIjvEC.jpg" width="220" height="85" alt="McGill University"></img>
+                <img src="https://imgur.com/zOQZsdL.jpg" width="240" height="120" alt="University of British Columbia"></img>
+                <img src="https://imgur.com/XPjzuEl.jpg" width="220" height="70" alt="University of Alberta"></img>
+            </div>
+            <h3 className="col-sm-12 text-center">
+                And High Schools such as...
+            </h3>
+            <div>
+                <img src="https://imgur.com/oJu53qu.jpg" width="200" height="150" alt="Toronto District School Board"></img>
+                <img src="https://imgur.com/MCacdYu.jpg" width="300" height="150" alt="Waterloo Region District School Board"></img>
+                <img src="https://imgur.com/CBbAmV0.jpg" width="180" height="190" alt="Durham District School Board"></img>
+                <img src="https://imgur.com/bwUy1WL.jpg" width="280" height="180" alt="Waterloo Catholic District School Board"></img>
+            </div>
             <div className="offset-lg-1">
 
                 <DescriptionsWithScreenshotsList items={howItWorksStudent} />
