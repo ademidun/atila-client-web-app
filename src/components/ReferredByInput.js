@@ -100,9 +100,9 @@ class ReferredByInput extends React.Component {
         notFoundContent = "Please enter at least 3 characters";
     } else if (isLoading) {
         notFoundContent = (
-            <p>
+            <div>
                 Loading <Spin />
-            </p>
+            </div>
         )
     } else {
         notFoundContent = "No user found"

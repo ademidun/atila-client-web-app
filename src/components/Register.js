@@ -297,7 +297,7 @@ class Register extends React.Component {
                     <div>
                         <h1>Register</h1>
                         {redirectInstructions}
-                        <form className="row p-3 form-group" onSubmit={this.submitForm}>
+                        <div className="row p-3 form-group">
                             {first_name &&
                                 <label>
                                     First Name
@@ -433,7 +433,7 @@ class Register extends React.Component {
 
                             {loginCTA}
 
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
