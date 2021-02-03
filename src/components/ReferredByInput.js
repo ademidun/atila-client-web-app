@@ -2,17 +2,9 @@ import React from 'react';
 import { connect } from "react-redux";
 import { AutoComplete } from 'antd';
 import { MinusCircleOutlined } from "@ant-design/icons";
-
+import SearchApi from '../services/SearchAPI';
+import { Spin } from 'antd';
 const { Option } = AutoComplete;
-
-const mockVal = (str, repeat = 1) => {
-  return {
-    profile_pic_url: "https://i.imgur.com/Ezc5Hyf.jpg",
-    first_name: str.repeat(repeat),
-    last_name: str.repeat(repeat),
-    username: `username__${str.repeat(repeat)}`,
-};
-};
 
 const UserProfileReferralPreview  = ({userProfile}) => {
 
@@ -39,6 +31,7 @@ class ReferredByInput extends React.Component {
             referredBySearchValue: "",
             referralOptions: [],
             referredByUserProfile: null,
+            isLoading: false,
         }
 
     }
@@ -47,17 +40,31 @@ class ReferredByInput extends React.Component {
     console.log("onSearch");
     console.log({searchText});
 
-    let referralOptions = [];
-
     if (!searchText || searchText.length < 3) {
-        referralOptions = [];
-        this.setState({referralOptions})
+        this.setState({referralOptions: [] })
     } else {
-        referralOptions = [mockVal(searchText), mockVal(searchText, 2), mockVal(searchText, 3)];
-        this.setState({referralOptions})
+        this.searchUserProfiles(searchText);
     }
     
   };
+
+  searchUserProfiles = (searchText) => {
+    this.setState({isLoading: true});
+    
+    SearchApi
+    .searchUserProfiles(searchText)
+    .then(res => {
+        let { user_profiles } = res.data;
+        this.setState({referralOptions: user_profiles})
+
+    })
+    .catch(err => {
+        console.log({err})
+    })
+    .finally( () => {
+        this.setState({isLoading: false});
+    })
+  }
 
   onSelect = (data, selectedUserProfile) => {
     console.log('onSelect', data, selectedUserProfile);
@@ -79,24 +86,25 @@ class ReferredByInput extends React.Component {
 
   render() {
 
-    const { referralOptions, referredBySearchValue, referredByUserProfile } = this.state;
+    const { referralOptions, referredBySearchValue, referredByUserProfile, isLoading } = this.state;
     console.log({ referralOptions, referredBySearchValue });
+
+    let notFoundContent;
+
+    if (!referredBySearchValue || referredBySearchValue.length < 3) {
+        notFoundContent = "Please enter at least 3 characters";
+    } else if (isLoading) {
+        notFoundContent = (
+            <p>
+                Loading <Spin />
+            </p>
+        )
+    } else {
+        notFoundContent = "No user found"
+    }
 
     return (
       <>
-      {referredByUserProfile && 
-      <div className="my-2">
-        <UserProfileReferralPreview userProfile={referredByUserProfile} />
-        <MinusCircleOutlined
-            style={{
-                fontSize: "30px",
-            }} 
-            onClick={()=>{
-                this.onClear();
-            }}
-        />
-      </div>
-      }
         <AutoComplete
           style={{
             width: "100%",
@@ -104,7 +112,7 @@ class ReferredByInput extends React.Component {
           disabled={!!referredByUserProfile}
           value={referredBySearchValue}
           onSelect={this.onSelect}
-          notFoundContent={!referredBySearchValue || referredBySearchValue.length < 3 ? "Please enter at least 3 characters": "No user found"}
+          notFoundContent={notFoundContent}
           onSearch={this.onSearch}
           onChange={this.onChange}
           placeholder="Enter name or username of person who referred you"
@@ -118,6 +126,19 @@ class ReferredByInput extends React.Component {
                 </Option>
             ))}
       </AutoComplete>
+      {referredByUserProfile && 
+      <div className="my-2">
+        <UserProfileReferralPreview userProfile={referredByUserProfile} />
+        <MinusCircleOutlined
+            style={{
+                fontSize: "30px",
+            }} 
+            onClick={()=>{
+                this.onClear();
+            }}
+        />
+      </div>
+      }
       </>
     );
   };
