@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { AutoComplete } from 'antd';
 import { MinusCircleOutlined } from "@ant-design/icons";
@@ -7,8 +8,6 @@ import { Spin } from 'antd';
 const { Option } = AutoComplete;
 
 const UserProfileReferralPreview  = ({userProfile}) => {
-
-    console.log({userProfile});
     
     let nameDisplay= `${userProfile.first_name} ${userProfile.last_name} (${userProfile.username})`;
     return (
@@ -28,7 +27,7 @@ class ReferredByInput extends React.Component {
         super(props);
 
         this.state = {
-            referredBySearchValue: "",
+            referredBySearchValue: props.username || "",
             referralOptions: [],
             referredByUserProfile: null,
             isLoading: false,
@@ -37,8 +36,6 @@ class ReferredByInput extends React.Component {
     }
 
   onSearch = (searchText) => {
-    console.log("onSearch");
-    console.log({searchText});
 
     if (!searchText || searchText.length < 3) {
         this.setState({referralOptions: [] })
@@ -67,18 +64,20 @@ class ReferredByInput extends React.Component {
   }
 
   onSelect = (data, selectedUserProfile) => {
-    console.log('onSelect', data, selectedUserProfile);
+
+    const { onSelect } = this.props;
     this.setState({referredByUserProfile: selectedUserProfile.userprofile});
+
+    if (onSelect && selectedUserProfile.userprofile) {
+        onSelect(selectedUserProfile.userprofile);
+    }
   };
 
   onChange = (data) => {
-      console.log("onChange");
-      console.log({data});
       this.setState({referredBySearchValue: data});
   };
 
   onClear = () => {
-      console.log("onClear");
       this.onChange("");
       this.onSearch("");
       this.onSelect(null, {});
@@ -87,7 +86,6 @@ class ReferredByInput extends React.Component {
   render() {
 
     const { referralOptions, referredBySearchValue, referredByUserProfile, isLoading } = this.state;
-    console.log({ referralOptions, referredBySearchValue });
 
     let notFoundContent;
 
@@ -147,6 +145,11 @@ class ReferredByInput extends React.Component {
 
 const mapStateToProps = state => {
     return { userProfile: state.data.user.loggedInUserProfile };
+};
+
+ReferredByInput.propTypes = {
+    username: PropTypes.string,
+    onSelect: PropTypes.func,
 };
 
 export default connect(mapStateToProps)(ReferredByInput);

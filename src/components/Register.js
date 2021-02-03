@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import UserProfileAPI from "../services/UserProfileAPI";
-import SearchApi from "../services/SearchAPI";
 import Loading from "./Loading";
 import './LoginRegister.scss';
 import {setLoggedInUserProfile} from "../redux/actions/user";
 import {connect} from "react-redux";
 import TermsConditions from "./TermsConditions";
-import { Modal, Radio, AutoComplete, Button } from "antd";
+import { Modal, Radio, Button } from "antd";
 import {Link} from "react-router-dom";
 import {forbiddenCharacters, hasForbiddenCharacters} from "../models/Utils";
 import ReferredByInput from './ReferredByInput';
@@ -73,7 +72,6 @@ const accountTypes = [
     { label: 'Fund Scholarships', value: 'sponsor' },
 ];
 
-const START_AUTOCOMPLETE_LENGTH = 3;
 
 class Register extends React.Component {
 
@@ -112,8 +110,6 @@ class Register extends React.Component {
             applyNow,
             mostRecentlyViewedContentName,
             mostRecentlyViewedContentSlug,
-            referredByOptions: null,
-            referredByUserProfile: null,
             isResponseError: null,
             responseOkMessage: null,
             loadingResponse: null,
@@ -245,70 +241,28 @@ class Register extends React.Component {
                     this.setState({ responseError: contactMessage });
                 }
             })
-            .finally(res => {
+            .finally(() => {
                 this.setState({ loadingResponse: false});
             })
     };
 
-    updateReferredByField = (newReferredByField) => {
-        const newUserProfile = { ...this.state.userProfile, referred_by: newReferredByField }
-        this.setState({userProfile: newUserProfile}, ()=>{
-            const { referredByOptions } = this.state
-
-            if (newReferredByField.length < START_AUTOCOMPLETE_LENGTH) {
-                this.setState({referredByOptions: null})
-            } else {
-                if (!referredByOptions) {
-                    this.getReferredByOptions()
-                }
-            }
-        })
+    selectReferredByUserProfile = (referredByUserProfile) => {
+        const newUserProfile = { ...this.state.userProfile, referred_by: referredByUserProfile.username }
+        this.setState({userProfile: newUserProfile});
     };
 
     selectReferredByField = (value, option) => {
         this.setState({referredByUserProfile: option.label})
     };
 
-    getReferredByOptions = () => {
-        const { userProfile } = this.state;
-        const { referred_by } = userProfile;
-
-        SearchApi
-            .searchUserProfiles(referred_by)
-            .then(res => {
-                let { user_profiles } = res.data
-
-                let newReferredByOptions = user_profiles.map(userProfile => {
-                    
-                    let nameDisplay= `${userProfile.first_name} ${userProfile.last_name} (${userProfile.username})`;
-                    return {
-                        'label': <div>
-                        <img src={userProfile.profile_pic_url}
-                             className="rounded-circle m-1"
-                             alt={nameDisplay} 
-                             style={{width: "30px"}} />
-                            {nameDisplay}
-                        </div>,
-                        'value': userProfile.username,
-                        // custom DOM attribute must be set to lowercase
-                    }
-                })
-
-                this.setState({referredByOptions: newReferredByOptions})
-            })
-            .catch(err => {
-                console.log({err})
-            })
-    }
-
     render () {
 
         const { userProfile, isResponseError, responseOkMessage,
             loadingResponse, isTermsConditionsModalVisible,
-             formErrors, referredByOptions, referredByUserProfile, applyNow,
+             formErrors, applyNow,
               mostRecentlyViewedContentName, nextLocation, mostRecentlyViewedContentSlug } = this.state;
-        const { first_name, last_name, username, email, password,
-            referred_by, agreeTermsConditions, account_type, referredByChecked } = userProfile;
+        const { first_name, last_name, username, email, password, referred_by,
+            agreeTermsConditions, account_type, referredByChecked } = userProfile;
         
         const { location: { search } } = this.props;
 
@@ -399,7 +353,7 @@ class Register extends React.Component {
                             />
                             <PasswordShowHide password={password} updateForm={this.updateForm} />
 
-                            <label className='mr-3 mb-3'>&nbsp; Did someone refer you to Atila?</label>
+                            <label className='mr-3 mb-3'>Did someone refer you to Atila?</label>
                             <input className={'mt-1'}
                                    type="checkbox"
                                    name="referredByChecked"
@@ -407,33 +361,16 @@ class Register extends React.Component {
                                    onChange={this.updateForm}
                             />
                             {referredByChecked &&
-                            <div className={'col-12'}>
+                            <div className="w-100 my-1">
 
                             <label>If they have an Atila account, you can enter their name or username here...</label> <br />
-                                {referredByUserProfile}
-                                <ReferredByInput />
-                                <AutoComplete
-                                    filterOption
-                                    options={referredByOptions}
-                                    defaultOpen={false}
-                                    placeholder="Enter name or username of referrer."
-                                    name="referred_by"
-                                    value={referred_by}
-                                    onChange={this.updateReferredByField}
-                                    style={{
-                                        width: "100%",
-                                    }}
-                                    onSelect={(value, option) =>{this.selectReferredByField(value, option)}}
-                                />
-                                <br /><br />
+                                <ReferredByInput username={referred_by} onSelect={this.selectReferredByUserProfile} />
                             </div>
                             }
-                            <div className="col-12">
+                            <div className="w-100 my-1">
                             <label>
                                 I want to
-                            </label>
-                            </div>
-                            <div className="col-12 mb-3">
+                            </label><br/>
                                 <Radio.Group
                                     options={accountTypes}
                                     onChange={this.updateForm}
@@ -444,7 +381,7 @@ class Register extends React.Component {
                                 />
                             </div>
 
-                            <div className="col-12 mb-3">
+                            <div className="mb-3">
                                 <Modal
                                     title="Terms and Conditions"
                                     visible={isTermsConditionsModalVisible}
@@ -467,6 +404,8 @@ class Register extends React.Component {
                                        onChange={this.updateForm}
                                 />
                             </div>
+                            <hr/>
+                            <div className="w-100">
                             {responseOkMessage &&
                             <p className="text-success">
                                 {responseOkMessage}
@@ -480,10 +419,13 @@ class Register extends React.Component {
                             {isResponseError &&
                              isResponseError
                             }
+
+                            </div>
                             {loadingResponse &&
                             <Loading title="Loading Response..." className="center-block my-3"/>}
                             <Button className="col-12 mb-3 button-cta"
                                     type="primary"
+                                    onClick={this.submitForm}
                                     disabled={loadingResponse || !agreeTermsConditions ||
                                     Object.keys(formErrors).length > 0}>
                                 Register
