@@ -45,6 +45,13 @@ class ReferredByInput extends React.Component {
     
   };
 
+  componentDidMount() {
+      const { username } = this.props;
+      if (username) {
+          this.searchUserProfiles(username);
+      }
+  }
+
   searchUserProfiles = (searchText) => {
     this.setState({isLoading: true});
     
@@ -109,6 +116,7 @@ class ReferredByInput extends React.Component {
           }}
           disabled={!!referredByUserProfile}
           value={referredBySearchValue}
+          defaultOpen={this.props.username}
           onSelect={this.onSelect}
           notFoundContent={notFoundContent}
           onSearch={this.onSearch}
