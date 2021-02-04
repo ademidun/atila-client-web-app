@@ -3,6 +3,7 @@ import React from 'react';
 import {PasswordShowHide} from "./Register";
 import UserProfileAPI from "../services/UserProfileAPI";
 import ResponseDisplay from "./ResponseDisplay";
+import { getErrorMessage } from '../services/utils';
 
 class VerifyAccount extends React.Component {
 
@@ -71,8 +72,9 @@ class VerifyAccount extends React.Component {
             })
             .catch(err => {
                 console.log({err});
+                console.log("getErrorMessage(err)", getErrorMessage(err));
                 if (err.response && err.response.data) {
-                    this.setState({ responseError: err.response.data});
+                    this.setState({ responseError: getErrorMessage(err)});
                 }
             })
             .finally(res => {
