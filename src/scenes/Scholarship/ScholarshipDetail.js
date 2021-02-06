@@ -407,7 +407,7 @@ class ScholarshipDetail extends React.Component {
                             <hr />
                             <div className="my-3">
                                 <h3>Description</h3>
-                                <p>
+                                <p style={{"whiteSpace": "pre-line"}}>
                                     {description}
                                 </p>
                                 <ScholarshipExtraCriteria scholarship={scholarship} />
