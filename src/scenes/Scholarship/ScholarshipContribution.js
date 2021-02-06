@@ -212,6 +212,16 @@ class ScholarshipContribution extends React.Component {
         const navigationButtons = (
             <div className="row">
 
+            {pageNumber > 1 &&
+            <Button className="float-left col-md-6 mb-3"
+                    onClick={() => this.changePage(pageNumber-1)}>Back</Button>}
+            {pageNumber === 1 &&
+            <Button className="float-left col-md-6 mb-3">
+                <Link to={`/scholarship/${scholarship.slug}`}>
+                    Back
+                </Link>
+            </Button>}
+
             {pageNumber < scholarshipContributionPages.length &&
             <Button className="float-right col-md-6 mb-3"
                     type="primary"
@@ -220,16 +230,6 @@ class ScholarshipContribution extends React.Component {
                     || (pageNumber === 2 && !contributor.first_name)
                     || (pageNumber === 3 && !contributor.email)}>
                 Next
-            </Button>}
-
-            {pageNumber > 1 &&
-            <Button className="float-left col-md-6"
-                    onClick={() => this.changePage(pageNumber-1)}>Back</Button>}
-            {pageNumber === 1 &&
-            <Button className="float-left col-md-6">
-                <Link to={`/scholarship/${scholarship.slug}`}>
-                    Back
-                </Link>
             </Button>}
         </div>
         )
