@@ -99,6 +99,8 @@ class ScholarshipContribution extends React.Component {
     };
 
     changePage = (pageNumber) => {
+        // scroll to the top of page on each navigation
+        window.scrollTo(0, 0);
         this.setState({pageNumber});
     };
 
