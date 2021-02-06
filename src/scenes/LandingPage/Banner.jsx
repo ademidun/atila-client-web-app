@@ -119,13 +119,13 @@ class Banner extends React.Component {
                   </p>
                 </div>
                 <Button type="primary"
-                        className="center-block mb-3">
+                        className="center-block mt-3">
                   <Link to="/scholarship">
                     Find Scholarships
                   </Link>
                 </Button>
                 <Button type="primary"
-                        className="center-block mb-3">
+                        className="center-block my-3">
                   <Link to="/start">
                     Start a Scholarship
                   </Link>
