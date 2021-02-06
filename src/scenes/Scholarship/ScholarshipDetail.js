@@ -297,10 +297,19 @@ class ScholarshipDetail extends React.Component {
                                 src={img_url}
                                 className="center-block"
                                 alt={name} />
+                                <hr/>
                         </div>
 
 
                         <div className="col-md-8">
+                            <div className="scholarship-description">
+                                <h3>Description</h3>
+                                <p style={{"whiteSpace": "pre-line"}}>
+                                    {description}
+                                </p>
+                                <ScholarshipExtraCriteria scholarship={scholarship} />
+                            </div>
+                            <hr/>
                             {scholarship_url && !scholarship.is_atila_direct_application &&
                             <React.Fragment>
                                 <a href={scholarship_url} target="_blank" rel="noopener noreferrer">
@@ -405,13 +414,6 @@ class ScholarshipDetail extends React.Component {
                             }
                             <ScholarshipShareSaveButtons scholarship={scholarship} />
                             <hr />
-                            <div className="my-3">
-                                <h3>Description</h3>
-                                <p style={{"whiteSpace": "pre-line"}}>
-                                    {description}
-                                </p>
-                                <ScholarshipExtraCriteria scholarship={scholarship} />
-                            </div>
                             {isScholarshipDeadlinePassed &&
                                 <div className="my-3" id="finalists">
                                     <ScholarshipFinalists itemType={"essay"} id={scholarship.id} title="Finalists" />
