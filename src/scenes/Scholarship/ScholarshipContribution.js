@@ -99,6 +99,8 @@ class ScholarshipContribution extends React.Component {
     };
 
     changePage = (pageNumber) => {
+        // scroll to the top of page on each navigation
+        window.scrollTo(0, 0);
         this.setState({pageNumber});
     };
 
@@ -203,9 +205,34 @@ class ScholarshipContribution extends React.Component {
             })}
         </Steps>);
 
-        if (isLoadingScholarship) {
+        if (isLoadingScholarship || !scholarship) {
             return (<Loading title={`Loading Form`} className='mt-3' />)
         }
+
+        const navigationButtons = (
+            <div className="row">
+
+            {pageNumber > 1 &&
+            <Button className="float-left col-md-6 mb-3"
+                    onClick={() => this.changePage(pageNumber-1)}>Back</Button>}
+            {pageNumber === 1 &&
+            <Button className="float-left col-md-6 mb-3">
+                <Link to={`/scholarship/${scholarship.slug}`}>
+                    Back
+                </Link>
+            </Button>}
+
+            {pageNumber < scholarshipContributionPages.length &&
+            <Button className="float-right col-md-6 mb-3"
+                    type="primary"
+                    onClick={() => this.changePage(pageNumber+1)}
+                    disabled={invalidInput
+                    || (pageNumber === 2 && !contributor.first_name)
+                    || (pageNumber === 3 && !contributor.email)}>
+                Next
+            </Button>}
+        </div>
+        )
 
         return (
             <div className="container mt-5 text-center">
@@ -367,27 +394,8 @@ class ScholarshipContribution extends React.Component {
 
                     }
                 </div>
-
-                <div className="row">
-                    {pageNumber > 1 &&
-                    <Button className="float-left col-md-6"
-                            onClick={() => this.changePage(pageNumber-1)}>Back</Button>}
-                    {pageNumber === 1 &&
-                    <Button className="float-left col-md-6">
-                        <Link to={`/scholarship/${scholarship.slug}`}>
-                            Back
-                        </Link>
-                    </Button>}
-
-                    {pageNumber < scholarshipContributionPages.length &&
-                    <Button className="float-right col-md-6"
-                            onClick={() => this.changePage(pageNumber+1)}
-                            disabled={invalidInput
-                            || (pageNumber === 2 && !contributor.first_name)
-                            || (pageNumber === 3 && !contributor.email)}>
-                        Next
-                    </Button>}
-                </div>
+                {navigationButtons}
+            
             </div>
         )
     }

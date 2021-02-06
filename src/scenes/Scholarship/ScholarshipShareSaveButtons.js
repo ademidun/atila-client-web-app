@@ -122,6 +122,12 @@ class ScholarshipShareSaveButtons extends React.Component {
                          title="Save scholarship and get an email reminder 1 week and 1 day before the deadline.">
                     <FontAwesomeIcon className="ml-1 btn-outline-primary" icon={faQuestionCircle}/>
                 </Tooltip>
+                <br/>
+                <p className="text-muted" style={{"fontSize": "medium"}}>
+                <span role="img" className="text-dark" aria-label="backhand index finger pointing up emoji">👆🏿</span>
+                    {' '}
+                    Save scholarship to get a reminder before the deadline.
+                </p>
 
 
             </div>

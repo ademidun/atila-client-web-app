@@ -297,10 +297,19 @@ class ScholarshipDetail extends React.Component {
                                 src={img_url}
                                 className="center-block"
                                 alt={name} />
+                                <hr/>
                         </div>
 
 
                         <div className="col-md-8">
+                            <div className="scholarship-description">
+                                <h3>Description</h3>
+                                <p style={{"whiteSpace": "pre-line"}}>
+                                    {description}
+                                </p>
+                                <ScholarshipExtraCriteria scholarship={scholarship} />
+                            </div>
+                            <hr/>
                             {scholarship_url && !scholarship.is_atila_direct_application &&
                             <React.Fragment>
                                 <a href={scholarship_url} target="_blank" rel="noopener noreferrer">
@@ -338,6 +347,8 @@ class ScholarshipDetail extends React.Component {
                                 {applyToScholarshipButton && <React.Fragment>
                                     {applyToScholarshipButton} <br/>
                                     </React.Fragment>}
+                                <br/>
+                                <ScholarshipShareSaveButtons scholarship={scholarship} />
                                 {scholarship && <ApplicationsLocal scholarship={scholarship} />}
                                 {scholarship.learn_more_url && 
                                 <React.Fragment>
@@ -356,7 +367,8 @@ class ScholarshipDetail extends React.Component {
                                 {scholarship.is_blind_applications && <BlindApplicationsExplanationMessage />}
                             </div>
                             }
-
+                            {!scholarship.is_atila_direct_application && <ScholarshipShareSaveButtons scholarship={scholarship} />}
+                            
                             <br/><br/>
                             {
                                 scholarshipUserProfile &&
@@ -403,19 +415,13 @@ class ScholarshipDetail extends React.Component {
                                 style={{maxWidth: '300px'}}
                             />
                             }
-                            <ScholarshipShareSaveButtons scholarship={scholarship} />
-                            <hr />
-                            <div className="my-3">
-                                <h3>Description</h3>
-                                <p>
-                                    {description}
-                                </p>
-                                <ScholarshipExtraCriteria scholarship={scholarship} />
-                            </div>
                             {isScholarshipDeadlinePassed &&
-                                <div className="my-3" id="finalists">
+                            <React.Fragment>
+                            <hr />
+                            <div className="my-3" id="finalists">
                                     <ScholarshipFinalists itemType={"essay"} id={scholarship.id} title="Finalists" />
-                                </div>
+                            </div>
+                            </React.Fragment>
                             }
 
                             {/*todo find a way to secure against XSS: https://stackoverflow.com/a/19277723*/}
