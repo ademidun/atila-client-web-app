@@ -415,11 +415,13 @@ class ScholarshipDetail extends React.Component {
                                 style={{maxWidth: '300px'}}
                             />
                             }
-                            <hr />
                             {isScholarshipDeadlinePassed &&
-                                <div className="my-3" id="finalists">
+                            <React.Fragment>
+                            <hr />
+                            <div className="my-3" id="finalists">
                                     <ScholarshipFinalists itemType={"essay"} id={scholarship.id} title="Finalists" />
-                                </div>
+                            </div>
+                            </React.Fragment>
                             }
 
                             {/*todo find a way to secure against XSS: https://stackoverflow.com/a/19277723*/}
