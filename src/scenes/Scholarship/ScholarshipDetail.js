@@ -347,6 +347,8 @@ class ScholarshipDetail extends React.Component {
                                 {applyToScholarshipButton && <React.Fragment>
                                     {applyToScholarshipButton} <br/>
                                     </React.Fragment>}
+                                <br/>
+                                <ScholarshipShareSaveButtons scholarship={scholarship} />
                                 {scholarship && <ApplicationsLocal scholarship={scholarship} />}
                                 {scholarship.learn_more_url && 
                                 <React.Fragment>
@@ -365,7 +367,8 @@ class ScholarshipDetail extends React.Component {
                                 {scholarship.is_blind_applications && <BlindApplicationsExplanationMessage />}
                             </div>
                             }
-
+                            {!scholarship.is_atila_direct_application && <ScholarshipShareSaveButtons scholarship={scholarship} />}
+                            
                             <br/><br/>
                             {
                                 scholarshipUserProfile &&
@@ -412,7 +415,6 @@ class ScholarshipDetail extends React.Component {
                                 style={{maxWidth: '300px'}}
                             />
                             }
-                            <ScholarshipShareSaveButtons scholarship={scholarship} />
                             <hr />
                             {isScholarshipDeadlinePassed &&
                                 <div className="my-3" id="finalists">
