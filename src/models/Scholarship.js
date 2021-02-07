@@ -265,3 +265,18 @@ export const BlindApplicationsExplanationMessage = () => (
 
     </div>
 );
+
+export const ReferralBonusScholarshipExplanationMessage = () => (
+    <div className="my-3" >
+        <Alert
+            type="info"
+            message={<div style={{whiteSpace: "pre-line"}}>
+                This scholarship is eligible for a referral bonus. <br/>
+                If someone you refer to this scholarship wins, you get $50. <br/>
+                If they become a finalist, you get 500 Atila Points.
+                <br /> <Link to="/points">Learn More</Link>
+            </div>}
+        />
+
+    </div>
+);
