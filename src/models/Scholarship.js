@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 import React from "react";
 import {Alert, Popover} from "antd";
 import {AUTOCOMPLETE_KEY_LIST} from "./ConstantsForm";
+import UserProfileReferralCode from '../scenes/UserProfile/UserProfileReferralCode';
 
 let nextMonth = new Date();
 nextMonth.setDate(nextMonth.getDate() + 30);
@@ -275,6 +276,9 @@ export const ReferralBonusScholarshipExplanationMessage = () => (
                 If someone you refer to this scholarship wins, you get $50. <br/>
                 If they become a finalist, you get 500 Atila Points.
                 <br /> <Link to="/points">Learn More</Link>
+
+            <br />
+            <UserProfileReferralCode />
             </div>}
         />
 
