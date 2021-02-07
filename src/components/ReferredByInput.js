@@ -2,11 +2,12 @@ import React from 'react';
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {updateLoggedInUserProfile} from "../redux/actions/user";
-import { AutoComplete } from 'antd';
+import { AutoComplete, Alert } from 'antd';
 import { MinusCircleOutlined } from "@ant-design/icons";
 import SearchApi from '../services/SearchAPI';
 import { Spin } from 'antd';
 import UserProfileAPI from '../services/UserProfileAPI';
+import { getErrorMessage } from '../services/utils';
 const { Option } = AutoComplete;
 
 const UserProfileReferralPreview  = ({userProfile}) => {
@@ -33,6 +34,7 @@ class ReferredByInput extends React.Component {
             referralOptions: [],
             referredByUserProfile: null,
             isLoading: false,
+            referralError: null
         }
 
     }
@@ -58,7 +60,7 @@ class ReferredByInput extends React.Component {
   }
 
   searchUserProfiles = (searchText) => {
-    this.setState({isLoading: true});
+    this.setState({isLoading: true, referralError: null});
     
     SearchApi
     .searchUserProfiles(searchText)
@@ -68,7 +70,7 @@ class ReferredByInput extends React.Component {
 
     })
     .catch(err => {
-        console.log({err})
+        this.setState({referralError: getErrorMessage(err)});
     })
     .finally( () => {
         this.setState({isLoading: false});
@@ -81,17 +83,16 @@ class ReferredByInput extends React.Component {
 
     if (loggedInUserProfile && selectedUserProfile.userprofile) {
 
-        this.setState({isLoading: true});
+        this.setState({isLoading: true, referralError: null});
         UserProfileAPI
         .patch({referred_by: selectedUserProfile.userprofile.username}, loggedInUserProfile.user)
         .then(res => {
-            console.log({res});
-            // const { data: userProfile } = res;
-            // updateLoggedInUserProfile(userProfile);
+            const { data: userProfile } = res;
+            updateLoggedInUserProfile(userProfile);
             this.setState({referredByUserProfile: selectedUserProfile.userprofile});
         })
         .catch(err => {
-            console.log({err})
+            this.setState({referralError: getErrorMessage(err)});
         })
         .finally( () => {
             this.setState({isLoading: false});
@@ -118,7 +119,8 @@ class ReferredByInput extends React.Component {
 
   render() {
 
-    const { referralOptions, referredBySearchValue, referredByUserProfile, isLoading } = this.state;
+    const { referralOptions, referredBySearchValue, referredByUserProfile,
+         isLoading, referralError } = this.state;
 
     let notFoundContent;
 
@@ -163,6 +165,7 @@ class ReferredByInput extends React.Component {
         </div>
       {referredByUserProfile && 
       <div className="my-2">
+        Referred by: <br/>
         <UserProfileReferralPreview userProfile={referredByUserProfile} />
         <MinusCircleOutlined
             style={{
@@ -174,6 +177,16 @@ class ReferredByInput extends React.Component {
         />
       </div>
       }
+      {referralError &&
+      <div className="my-2">
+        Error: <br/>
+        <Alert
+            type="error"
+            message={referralError}
+            style={{maxWidth: '300px'}}
+        />
+        </div>
+        }
       </div>
     );
   };
