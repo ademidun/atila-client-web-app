@@ -1,7 +1,6 @@
 import React from "react";
 import { message, Button } from 'antd';
 
-import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import {connect} from "react-redux";
 import ReferredByInput from "../../components/ReferredByInput";
 
@@ -25,6 +24,9 @@ class UserProfileReferralManagement extends React.Component {
         e.target.focus();
         message.success('copied!')
         this.setState({ copySuccess: 'Copied!' });
+        setTimeout(() => {
+            this.setState({ copySuccess: '' });
+        }, 3000);
       };
     
       render() {
@@ -37,9 +39,10 @@ class UserProfileReferralManagement extends React.Component {
           <div>
             Your Referral Code:
               <input
-                class="form-control"
+                className="form-control"
                 ref={(textarea) => this.textArea = textarea}
                 value={referralUrl}
+                readOnly={true}
               />
               {
                /* Logical shortcut for only displaying the 
@@ -53,9 +56,9 @@ class UserProfileReferralManagement extends React.Component {
               }
 
             <div className="mb-3">
-              <p className="text-muted" style={{fontSize: "smaller"}}>
-                  Were you referred to Atila by someone? Enter their name or username below:
-              </p>
+              <label>
+                  Were you referred to Atila by someone?
+              </label>
             <ReferredByInput />
             </div>
           </div>
@@ -64,13 +67,8 @@ class UserProfileReferralManagement extends React.Component {
 
 
 }
-
-const mapDispatchToProps = {
-    updateLoggedInUserProfile
-};
-
 const mapStateToProps = state => {
     return { userProfile: state.data.user.loggedInUserProfile };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserProfileReferralManagement);
+export default connect(mapStateToProps)(UserProfileReferralManagement);

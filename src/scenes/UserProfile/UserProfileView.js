@@ -138,7 +138,7 @@ class UserProfileView extends React.Component {
                 <HelmetSeo content={seoContent} />
                 <div className="card shadow p-3">
                     <div className="row">
-                        <div className="col-md-4 col-sm-12">
+                        <div className="col-md-5 col-sm-12 text-center">
                          <img
                             alt="user profile"
                             style={{ height: '250px', width: 'auto' }}
@@ -166,14 +166,10 @@ class UserProfileView extends React.Component {
                                    </>
 
                                 }
-                                <hr/>
-
-                                <UserProfileReferralManagement />
-                                <hr/>
                             </div>
                             }
                         </div>
-                        <div className="col-md-8 col-sm-12">
+                        <div className="col-md-6 col-sm-12">
                                 <h1>{ userProfileView.first_name }{' '}{ userProfileView.last_name }</h1>
                             {userProfileView.public_metadata && userProfileView.public_metadata.profile_link_url &&
                             <a href={userProfileView.public_metadata.profile_link_url}
@@ -184,6 +180,9 @@ class UserProfileView extends React.Component {
                                 {userProfileView.public_metadata.profile_link_name}
                             </a>
                             }
+                            <hr/>
+                            <UserProfileReferralManagement />
+                            <hr/>
                         </div>
                     </div>
                 </div>
