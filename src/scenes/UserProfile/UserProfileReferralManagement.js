@@ -11,19 +11,19 @@ const atilaPointsPopoverContent = (
         Get points for referring people to Atila to apply and start scholarships:
         <ul>
             <li>
-                100 points for referring someone to Atila
+                100 points for each person you refer to Atila
             </li>
             <li>
-                If the person you refer wins a scholarship you get $50
+                If someone you refer wins a scholarship you get $50
             </li>
             <li>
-                1000 points if someone you refer starts a scholarship
+                1,000 points if someone you refer starts a scholarship
             </li>
             <li>
-                If they become a finalist you get 500 points
+                500 points, if they become a finalist
             </li>
             <li>
-                People with the top 5 points every couple of months gets cash prizes and gifts.
+                People with the top 5 points every four months gets cash prizes and gifts
             </li>
         </ul>
         <Link to="/points">Learn More</Link>
