@@ -9,6 +9,7 @@ import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import {RESERVED_USERNAMES} from "../../models/Constants";
 import FileInput from "../../components/Form/FileInput";
 import {updateLoggedInUserProfile} from "../../redux/actions/user";
+import UserProfileReferralManagement from './UserProfileReferralManagement';
 
 class UserProfileView extends React.Component {
 
@@ -165,6 +166,10 @@ class UserProfileView extends React.Component {
                                    </>
 
                                 }
+                                <hr/>
+
+                                <UserProfileReferralManagement />
+                                <hr/>
                             </div>
                             }
                         </div>
