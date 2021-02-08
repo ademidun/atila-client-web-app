@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
 import loadable from "@loadable/component";
 import "bootstrap/dist/css/bootstrap.css";
 import { connect } from "react-redux";
@@ -213,6 +213,7 @@ class App extends React.Component {
               <Route path='/rubric' component={GoogleAnalyticsTracker(Rubric)} />
               <Route path='/values' component={GoogleAnalyticsTracker(Values)} />
               <Route path='/finalists' component={GoogleAnalyticsTracker(FinalistsList)} />
+              <Redirect from="/points" to="/blog/tomiwa/atila-points" />
               <Route
                 path='/terms-and-conditions'
                 component={GoogleAnalyticsTracker(TermsConditions)}

@@ -362,8 +362,6 @@ class Register extends React.Component {
                             />
                             {referredByChecked &&
                             <div className="w-100 my-1">
-
-                            <label>If they have an Atila account, you can enter their name or username here...</label> <br />
                                 <ReferredByInput username={referred_by} onSelect={this.selectReferredByUserProfile} />
                             </div>
                             }

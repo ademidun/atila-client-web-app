@@ -110,7 +110,7 @@ class HowToStartAScholarship extends React.Component {
             // the element kept scrolling back to the top of the page.
             setTimeout(() => {
                 scrollToElement(location.hash);
-        }, 300);
+            }, 300);
         }
     }
 

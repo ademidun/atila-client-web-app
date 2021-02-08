@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 import React from "react";
 import {Alert, Popover} from "antd";
 import {AUTOCOMPLETE_KEY_LIST} from "./ConstantsForm";
+import UserProfileReferralCode from '../scenes/UserProfile/UserProfileReferralCode';
 
 let nextMonth = new Date();
 nextMonth.setDate(nextMonth.getDate() + 30);
@@ -260,6 +261,24 @@ export const BlindApplicationsExplanationMessage = () => (
                 are hidden to the scholarship reviewer
                 until a winner has been selected. <br/> This is done to reduce bias in the application review process.
                 <br /> <Link to="/blog/tomiwa/atila-blind-applications">Learn More</Link>
+            </div>}
+        />
+
+    </div>
+);
+
+export const ReferralBonusScholarshipExplanationMessage = () => (
+    <div className="my-3" >
+        <Alert
+            type="info"
+            message={<div style={{whiteSpace: "pre-line"}}>
+                This scholarship is eligible for a referral bonus. <br/>
+                If someone you refer to this scholarship wins, you get $50. <br/>
+                If they become a finalist, you get 500 Atila Points.
+                <br /> <Link to="/points">Learn More</Link>
+
+            <br />
+            <UserProfileReferralCode />
             </div>}
         />
 
