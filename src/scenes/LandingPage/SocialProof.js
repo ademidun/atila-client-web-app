@@ -1,6 +1,6 @@
 import React from "react";
 
-function HowItWorksStudent() {
+export function SocialProof() {
     return (
         <div className="card w-150">
             <div className="shadow p-3">
