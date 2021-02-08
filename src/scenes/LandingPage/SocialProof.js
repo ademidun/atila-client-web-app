@@ -1,5 +1,16 @@
 import React from "react";
 
+const schoolImages = [
+    {
+        "url": "https://imgur.com/VXhmyOx.jpg",
+        "alt": "University of Toronto",
+    },
+    {
+        "url": "https://imgur.com/6kJAH06.jpg",
+        "alt": "Ivey Business School",
+    }
+]
+
 export function SocialProof() {
     return (
         <div className="card w-150">
@@ -8,16 +19,17 @@ export function SocialProof() {
                     Used by over 1,000 students at universities, colleges, and high schools such as...
                 </h3>
                 <div>
-                    <img src="https://imgur.com/VXhmyOx.jpg" width="150" height="120" alt="University of Toronto"></img>
-                    <img src="https://imgur.com/6kJAH06.jpg" width="150" height="85" alt="Ivey Business School"/>
+                    {schoolImages.map (schoolImage => (
+                    <img src={schoolImage.url} width="150" height="auto" alt={schoolImage.alt}/>
+                    ))}
                     <img src="https://imgur.com/BSIjvEC.jpg" width="170" height="70" alt="McGill University"></img>
                     <img src="https://imgur.com/zOQZsdL.jpg" width="150" height="75" alt="University of British Columbia"></img>
                     <img src="https://imgur.com/XPjzuEl.jpg" width="155" height="50" alt="University of Alberta"></img>
                     <img src="https://imgur.com/eHdi4cu.jpg" width="175" height="80" alt="Simon Fraser University"></img>
                     <img src="https://imgur.com/aPk1hmk.jpg" width="120" height="60" alt="Humber College"></img>
+                    <img src="https://imgur.com/YLUk42o.jpg" width="120" height="70" alt="Carleton University"></img>
                 </div>
                 <div>
-                    <img src="https://imgur.com/YLUk42o.jpg" width="120" height="70" alt="Carleton University"></img>
                     <img src="https://imgur.com/oJu53qu.jpg" width="150" height="120" alt="Toronto District School Board"></img>
                     <img src="https://imgur.com/MCacdYu.jpg" width="180" height="85"
                          alt="Waterloo Region District School Board"></img>
