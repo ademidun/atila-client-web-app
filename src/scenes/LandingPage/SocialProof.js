@@ -13,10 +13,11 @@ const schoolImages = [
 
 export function SocialProof() {
     return (
-        <div className="card w-150">
+        <div className="card w-150 text-center">
             <div className="shadow p-3">
                 <h3 className="col-sm-12 text-center">
-                    Used by over 1,000 students at universities, colleges, and high schools such as...
+                    Used by over 1,000 students across Canada at universities, colleges, and high schools
+                    such as...
                 </h3>
                 <div>
                     {schoolImages.map (schoolImage => (
@@ -28,6 +29,7 @@ export function SocialProof() {
                     <img src="https://imgur.com/eHdi4cu.jpg" width="175" height="80" alt="Simon Fraser University"></img>
                     <img src="https://imgur.com/aPk1hmk.jpg" width="120" height="60" alt="Humber College"></img>
                     <img src="https://imgur.com/YLUk42o.jpg" width="120" height="70" alt="Carleton University"></img>
+                    <img src="https://i.imgur.com/w2ztHKJ.png" width="150" height="auto" alt="Langara College"></img>
                 </div>
                 <div>
                     <img src="https://imgur.com/oJu53qu.jpg" width="150" height="120" alt="Toronto District School Board"></img>
@@ -37,7 +39,7 @@ export function SocialProof() {
                     <img src="https://imgur.com/bwUy1WL.jpg" width="190" height="120"
                          alt="Waterloo Catholic District School Board"></img>
                     <img src="https://imgur.com/XghA3ft.jpg" width="130" height="120"
-                         alt="Waterloo Catholic District School Board"></img>
+                         alt="Halton District School Board"></img>
                 </div>
             </div>
         </div>
