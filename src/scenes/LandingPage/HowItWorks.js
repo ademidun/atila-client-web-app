@@ -6,6 +6,7 @@ import {
     ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP,
     ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_START_SCHOLARSHIP
 } from "../../models/Constants";
+import { SocialProof } from './SocialProof';
 
 function HowItWorks({accountType}) {
 
@@ -121,9 +122,8 @@ export function HowItWorksStudent() {
                 <Link to="/scholarship">Apply for Scholarships.</Link>{' '}
                 Get Funded.
             </h2>
-            <h5 className="col-sm-12 text-center text-muted">
-                Atila is 100% free for students
-            </h5>
+            <h5 className="col-sm-12 text-center text-muted">Atila is 100% free for students</h5>
+            <SocialProof />
             <div className="offset-lg-1">
 
                 <DescriptionsWithScreenshotsList items={howItWorksStudent} />
