@@ -6,6 +6,7 @@ import { Popover } from 'antd';
 import ReferredByInput from "../../components/ReferredByInput";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import UserProfileReferralCode from './UserProfileReferralCode';
+import UserProfileReferredUsers from './UserProfileReferredUsers';
 
 const atilaPointsPopoverContent = (
     <div>
@@ -67,6 +68,8 @@ class UserProfileReferralManagement extends React.Component {
               </label>
             <ReferredByInput />
             </div>
+            <hr />
+            <UserProfileReferredUsers />
           </div>
         );
       }

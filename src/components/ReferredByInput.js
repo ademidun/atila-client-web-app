@@ -10,7 +10,7 @@ import UserProfileAPI from '../services/UserProfileAPI';
 import { getErrorMessage } from '../services/utils';
 const { Option } = AutoComplete;
 
-const UserProfileReferralPreview  = ({userProfile}) => {
+export const UserProfileReferralPreview  = ({userProfile}) => {
     
     let nameDisplay= `${userProfile.first_name} ${userProfile.last_name} (${userProfile.username})`;
     return (
