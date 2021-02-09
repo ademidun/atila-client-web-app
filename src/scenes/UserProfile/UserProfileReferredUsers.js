@@ -16,7 +16,7 @@ class UserProfileReferredUsers extends React.Component {
             referredUserProfiles: [],
             atilaPointsDetail: {}, 
             isLoading: null,
-            getReferralsError: "",
+            requestError: "",
             showReferredUsers: false,
             showAtilaPointsDetail: false,
         }
@@ -39,7 +39,7 @@ class UserProfileReferredUsers extends React.Component {
         })
         .catch(err => {
             console.log({err});
-            this.setState({ getReferralsError: getErrorMessage(err) });
+            this.setState({ requestError: getErrorMessage(err) });
         })
         .finally(() => {
             this.setState({isLoading: false});
@@ -62,7 +62,7 @@ class UserProfileReferredUsers extends React.Component {
 
       render() {
 
-        const {  referredUserProfiles, atilaPointsDetail, isLoading, getReferralsError } = this.state;
+        const {  referredUserProfiles, atilaPointsDetail, isLoading, requestError } = this.state;
 
         if (isLoading) {
             return (
@@ -74,15 +74,25 @@ class UserProfileReferredUsers extends React.Component {
         }
         
 
-        const referredUsersList = (
+        let referredUsersList = (
                 <Menu>
                     {referredUserProfiles.map(userProfile => (
                         <Menu.Item key={userProfile.username}>
-                            <UserProfileReferralPreview  userProfile={userProfile} linkProfile={true}/>
+                            <UserProfileReferralPreview  userProfile={userProfile} />
                         </Menu.Item>
                     ))}
                 </Menu>
         )
+
+        if (referredUserProfiles.length === 0) {
+            referredUsersList = (
+                <Menu>
+                    <Menu.Item>
+                        No referred users
+                    </Menu.Item>
+                </Menu>
+            )
+        }
 
         const atilaPointsDetailList = (
             <Menu>
@@ -97,22 +107,26 @@ class UserProfileReferredUsers extends React.Component {
         
         return (
             <div>
-                <Dropdown overlay={referredUsersList}>
-                <Button>
-                    Referred Users <DownOutlined />
-                </Button>
-                </Dropdown>
-                <Dropdown overlay={atilaPointsDetailList}>
-                <Button>
-                    Atila Points Detail <DownOutlined />
-                </Button>
-                </Dropdown>
-                {getReferralsError &&
+                {!requestError && 
+                <>
+                    <Dropdown overlay={referredUsersList}>
+                    <Button>
+                        Referred Users <DownOutlined />
+                    </Button>
+                    </Dropdown>
+                    <Dropdown overlay={atilaPointsDetailList}>
+                    <Button>
+                        Atila Points Detail <DownOutlined />
+                    </Button>
+                    </Dropdown>
+                </>
+                }
+                {requestError &&
                     <div className="my-2">
                         Error: <br/>
                         <Alert
                             type="error"
-                            message={getReferralsError}
+                            message={requestError}
                             style={{maxWidth: '300px'}}
                         />
                     </div>
