@@ -56,6 +56,9 @@ const Testimonials = loadable(() => import("./components/Testimonials"), {
 const FinalistsList = loadable(() => import("./components/FinalistsList"), {
   fallback: <Loading />,
 });
+const AtilaPointsRankings = loadable(() => import("./components/AtilaPointsRankings"), {
+  fallback: <Loading />,
+});
 const About = loadable(() => import("./components/About"), {
   fallback: <Loading />,
 });
@@ -211,8 +214,9 @@ class App extends React.Component {
               <Route path='/testimonials' component={GoogleAnalyticsTracker(Testimonials)} />
               <Route path='/about' component={GoogleAnalyticsTracker(About)} />
               <Route path='/rubric' component={GoogleAnalyticsTracker(Rubric)} />
-              <Route path='/values' component={GoogleAnalyticsTracker(Values)} />
+              <Route path='/values' component={GoogleAnalyticsTracker(Values)} />UserProfileRankings
               <Route path='/finalists' component={GoogleAnalyticsTracker(FinalistsList)} />
+              <Route path='/rankings' component={GoogleAnalyticsTracker(AtilaPointsRankings)} />
               <Redirect from="/points" to="/blog/tomiwa/atila-points" />
               <Route
                 path='/terms-and-conditions'

@@ -180,8 +180,12 @@ class UserProfileView extends React.Component {
                                 {userProfileView.public_metadata.profile_link_name}
                             </a>
                             }
+                            {isProfileEditable && 
+                            <>
                             <hr/>
-                            <UserProfileReferralManagement />
+                            <UserProfileReferralManagement /> 
+                            </>
+                            }
                             <hr/>
                         </div>
                     </div>

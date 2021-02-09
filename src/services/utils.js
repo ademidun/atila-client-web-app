@@ -295,7 +295,9 @@ export function scrollToElement(elementSelector) {
 export function getErrorMessage(error) {
 
     let formattedMessage = "";
-    if(error.response && error.response.data ) {
+    if (error.response && error.response.status === 500) {
+        formattedMessage = "Internal server error. Please contact us."
+    } else if(error.response && error.response.data ) {
         if(error.response.data.error && error.response.data.error.message) {
             formattedMessage = error.response.data.error.message
         } else if (error.response.data.error) {

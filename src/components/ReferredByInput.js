@@ -8,11 +8,20 @@ import SearchApi from '../services/SearchAPI';
 import { Spin } from 'antd';
 import UserProfileAPI from '../services/UserProfileAPI';
 import { getErrorMessage } from '../services/utils';
+import { Link } from 'react-router-dom';
 const { Option } = AutoComplete;
 
-const UserProfileReferralPreview  = ({userProfile}) => {
+export const UserProfileReferralPreview  = ({userProfile, linkProfile=false}) => {
     
     let nameDisplay= `${userProfile.first_name} ${userProfile.last_name} (${userProfile.username})`;
+
+    if(linkProfile) {
+        nameDisplay = (
+            <Link to={`/profile/${userProfile.username}`}>
+                {nameDisplay}
+            </Link>
+        )
+    }
     return (
         <div style={{display: "inline"}} className="mr-1">
         <img src={userProfile.profile_pic_url}
