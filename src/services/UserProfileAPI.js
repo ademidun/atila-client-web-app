@@ -9,6 +9,7 @@ import {IP_DATA_URL} from "../models/Constants";
 class UserProfileAPI {
 
     static userProfileEndPoint = `${Environment.apiUrl}/user-profiles`;
+    static userProfileListEndPoint = `${Environment.apiUrl}/user-profile`;
     static userEndPoint = `${Environment.apiUrl}/users`;
 
     static getUsername = (username) => {
@@ -36,6 +37,19 @@ class UserProfileAPI {
         const apiCompletionPromise = request({
             method: 'get',
             url: `${this.userProfileEndPoint}/${userId}/${contentType}/`,
+        });
+
+        return apiCompletionPromise;
+    };
+    /**
+     * Used for paths that exist at the list level.
+     * @param {*} pathName 
+     */
+    static list = (pathName) => {
+
+        const apiCompletionPromise = request({
+            method: 'get',
+            url: `${this.userProfileListEndPoint}/${pathName}/`,
         });
 
         return apiCompletionPromise;
