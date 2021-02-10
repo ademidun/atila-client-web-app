@@ -48,6 +48,16 @@ class EssaysApi {
     static patch = (id, essay) => {
         return EssaysApi.update(id, essay, "patch")
     };
+
+    static relatedItems = (id) => {
+
+        const apiCompletionPromise = request({
+            method: 'get',
+            url: `${EssaysApi.essaysApiUrl}/${id}/related/`,
+        });
+
+        return apiCompletionPromise;
+    };
 }
 
 export default EssaysApi;
