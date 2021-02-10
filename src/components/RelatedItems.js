@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import ContentCard from "./ContentCard";
 import Loading from "./Loading";
-import ScholarshipsAPI from "../services/ScholarshipsAPI";
 import {genericItemTransform} from "../services/utils";
 
 class RelatedItems extends React.Component {
