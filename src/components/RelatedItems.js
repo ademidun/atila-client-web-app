@@ -4,6 +4,9 @@ import PropTypes from 'prop-types';
 import ContentCard from "./ContentCard";
 import Loading from "./Loading";
 import {genericItemTransform} from "../services/utils";
+import ScholarshipsAPI from "../services/ScholarshipsAPI";
+import BlogsApi from "../services/BlogsAPI";
+import EssaysApi from "../services/EssaysAPI";
 
 class RelatedItems extends React.Component {
 
@@ -18,8 +21,24 @@ class RelatedItems extends React.Component {
     }
     componentDidMount() {
 
-        const { id, ContentAPI } = this.props;
+        const { id, itemType } = this.props;
         this.setState({ isLoadingRelatedItems: true });
+
+        let ContentAPI;
+        switch (itemType) {
+            case "scholarship":
+                ContentAPI = ScholarshipsAPI;
+                break;
+            case "blog":
+                ContentAPI = BlogsApi;
+                break;
+            case "essay":
+                ContentAPI = EssaysApi;
+                break;
+            default:
+                ContentAPI = ScholarshipsAPI;
+                break;
+        }
 
         let relatedItemsPromise;
         relatedItemsPromise = ContentAPI
