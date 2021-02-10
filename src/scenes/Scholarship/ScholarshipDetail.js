@@ -432,7 +432,8 @@ class ScholarshipDetail extends React.Component {
                         <RelatedItems
                             className="col-md-4"
                             id={id}
-                            itemType={'scholarship'} />
+                            itemType={'scholarship'}
+                            ContentAPI={ScholarshipsAPI} />
 
                         {!userProfile  &&
                         <React.Fragment>

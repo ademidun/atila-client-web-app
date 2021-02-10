@@ -92,7 +92,7 @@ class ContentDetail extends React.Component {
     
     render () {
 
-        const { className, contentType, userProfile, contentSlug } = this.props;
+        const { className, contentType, userProfile, contentSlug, ContentAPI } = this.props;
         const { errorGettingContent, content, pageViews } = this.state;
 
         if (errorGettingContent) {
@@ -185,7 +185,8 @@ class ContentDetail extends React.Component {
                         <RelatedItems
                             className="col-md-4"
                             id={id}
-                            itemType={contentType} />
+                            itemType={contentType}
+                            ContentAPI={ContentAPI} />
                     </div>
 
             </div>

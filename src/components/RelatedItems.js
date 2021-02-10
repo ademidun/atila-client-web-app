@@ -19,13 +19,12 @@ class RelatedItems extends React.Component {
     }
     componentDidMount() {
 
-        const { id } = this.props;
+        const { id, ContentAPI } = this.props;
         this.setState({ isLoadingRelatedItems: true });
-        let relatedItemsPromise  = Promise.resolve();
 
-        relatedItemsPromise = ScholarshipsAPI
-            .relatedItems(`${id}`);
-        relatedItemsPromise
+        let relatedItemsPromise;
+        relatedItemsPromise = ContentAPI
+            .relatedItems(`${id}`)
             .then(res => {
                 let relatedItems = [];
                 if (res.data.results) {
