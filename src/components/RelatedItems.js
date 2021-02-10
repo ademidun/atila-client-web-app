@@ -63,7 +63,7 @@ class RelatedItems extends React.Component {
     render () {
 
         const { relatedItems, isLoadingRelatedItems  } = this.state;
-        const { className, itemType  } = this.props;
+        const { className } = this.props;
 
         if (isLoadingRelatedItems) {
             return (
@@ -78,12 +78,7 @@ class RelatedItems extends React.Component {
             <div className={`${className}`}>
                 <h3 className="text-center">Related</h3>
                 {relatedItems.map(item => {
-                    if (["blog", "essay"].includes(item.type)) {
-                        item.slug = `/${item.type}/${item.slug}`;
-                    }
-                    if (itemType === "scholarship") {
-                        item = genericItemTransform(item);
-                    }
+                    item = genericItemTransform(item);
                     return (<ContentCard key={item.slug}
                                          content={item}
                                          className="mb-3" />)
