@@ -62,6 +62,13 @@ class ScholarshipContribution extends React.Component {
             });
         }
 
+
+        let referredBy = localStorage.getItem('referred_by') || '';
+        if (!defaultContributor.referred_by) {
+            defaultContributor.referred_by = referredBy
+        }
+
+
         this.state = {
             scholarship: null,
             scholarshipOwner: null,
@@ -71,6 +78,7 @@ class ScholarshipContribution extends React.Component {
             invalidInput: !defaultContributor.funding_amount,
             showRegistrationForm: true,
             fundingComplete: false,
+            referredByUserProfile: null,
         }
     }
 
@@ -184,12 +192,12 @@ class ScholarshipContribution extends React.Component {
 
     selectReferredByUserProfile = (referredByUserProfile) => {
         const newContributor = { ...this.state.contributor, referred_by: referredByUserProfile.username }
-        this.setState({contributor: newContributor});
+        this.setState({contributor: newContributor, referredByUserProfile});
     };
 
     render () {
         const { userProfile } = this.props;
-        const { isLoadingScholarship, scholarship, pageNumber,
+        const { isLoadingScholarship, scholarship, pageNumber, referredByUserProfile,
             contributor, scholarshipOwner, invalidInput, showRegistrationForm, fundingComplete } = this.state;
 
         const scholarshipSteps = (<Steps current={pageNumber-1} onChange={(current) => this.changePage(current+1)}>
@@ -330,7 +338,9 @@ class ScholarshipContribution extends React.Component {
                             <br />
                             <br />
                             <h2>Were you referred to contribute by a user? (Optional)</h2>
-                            <ReferredByInput username={contributor.referred_by} onSelect={this.selectReferredByUserProfile} />
+                            <ReferredByInput username={contributor.referred_by} 
+                            onSelect={this.selectReferredByUserProfile} 
+                            referredByUserProfile={referredByUserProfile} />
                         </>
                         }
                     </div>

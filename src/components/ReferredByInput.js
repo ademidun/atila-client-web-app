@@ -41,7 +41,7 @@ class ReferredByInput extends React.Component {
         this.state = {
             referredBySearchValue: props.username || "",
             referralOptions: [],
-            referredByUserProfile: null,
+            referredByUserProfile: props.referredByUserProfile || null,
             isLoading: false,
             referralError: null
         }
@@ -214,6 +214,7 @@ ReferredByInput.propTypes = {
     username: PropTypes.string,
     onSelect: PropTypes.func,
     loggedInUserProfile: PropTypes.shape({}),
+    referredByUserProfile: PropTypes.shape({}),
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ReferredByInput);
