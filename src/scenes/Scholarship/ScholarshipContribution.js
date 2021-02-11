@@ -182,6 +182,11 @@ class ScholarshipContribution extends React.Component {
         this.setState({showRegistrationForm: !showRegistrationForm});
     };
 
+    selectReferredByUserProfile = (referredByUserProfile) => {
+        const newContributor = { ...this.state.contributor, referred_by: referredByUserProfile.username }
+        this.setState({contributor: newContributor});
+    };
+
     render () {
         const { userProfile } = this.props;
         const { isLoadingScholarship, scholarship, pageNumber,
@@ -237,7 +242,7 @@ class ScholarshipContribution extends React.Component {
         )
 
         // Show the referred by field if the no logged in user, or if no referred by field.
-        const showReferredByInput = (!userProfile || !contributor.referred_by)
+        const showReferredByInput = (!fundingComplete) && (!userProfile || !contributor.referred_by)
 
         return (
             <div className="container mt-5 text-center">
@@ -309,7 +314,7 @@ class ScholarshipContribution extends React.Component {
                     </div>
                     }
                     {pageNumber === 3 &&
-                        <div className="col-12">
+                    <div className="col-12">
                         <h1>
                             Email to receive your funding confirmation
                         </h1>
@@ -319,6 +324,15 @@ class ScholarshipContribution extends React.Component {
                                placeholder="Email"
                                className="col-12"
                                onChange={this.updateContributorInfo}/>
+
+                        {showReferredByInput &&
+                        <>
+                            <br />
+                            <br />
+                            <h2>Were you referred to contribute by a user? (Optional)</h2>
+                            <ReferredByInput username={contributor.referred_by} onSelect={this.selectReferredByUserProfile} />
+                        </>
+                        }
                     </div>
                     }
                     {pageNumber >= 4 &&
@@ -391,7 +405,7 @@ class ScholarshipContribution extends React.Component {
                         <PaymentSend scholarship={scholarship}
                                      onFundingComplete={this.onFundingComplete}
                                      contributorFundingAmount={contributor.funding_amount}
-                                     contributor={contributor}/>
+                                     contributor={contributor} />
                     </div>
                     }
 
