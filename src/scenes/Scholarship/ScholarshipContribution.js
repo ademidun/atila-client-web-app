@@ -241,8 +241,8 @@ class ScholarshipContribution extends React.Component {
         </div>
         )
 
-        // Show the referred by field if the no logged in user, or if no referred by field.
-        const showReferredByInput = (!fundingComplete) && (!userProfile || !contributor.referred_by)
+        // Show the referred by field if there is no logged in user or there is no referred by field.
+        const showReferredByInput = !userProfile || !contributor.referred_by
 
         return (
             <div className="container mt-5 text-center">
