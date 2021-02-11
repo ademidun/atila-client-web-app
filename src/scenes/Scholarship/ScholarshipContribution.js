@@ -14,6 +14,7 @@ import {DEFAULT_SCHOLARSHIP_CONTRIBUTOR, SCHOLARSHIP_CONTRIBUTION_EXAMPLE_IMAGE}
 import ScholarshipContributionProfilePictureChooser from "./ScholarshipContributionProfilePictureChooser";
 import {ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP} from "../../models/Constants";
 import {isValidEmail} from "../../services/utils";
+import ReferredByInput from "../../components/ReferredByInput";
 
 const { Step } = Steps;
 
@@ -182,6 +183,7 @@ class ScholarshipContribution extends React.Component {
     };
 
     render () {
+        const { userProfile } = this.props;
         const { isLoadingScholarship, scholarship, pageNumber,
             contributor, scholarshipOwner, invalidInput, showRegistrationForm, fundingComplete } = this.state;
 
@@ -233,6 +235,9 @@ class ScholarshipContribution extends React.Component {
             </Button>}
         </div>
         )
+
+        // Show the referred by field if the no logged in user, or if no referred by field.
+        const showReferredByInput = (!userProfile || !contributor.referred_by)
 
         return (
             <div className="container mt-5 text-center">

@@ -199,6 +199,7 @@ export let DEFAULT_SCHOLARSHIP_CONTRIBUTOR = {
     email: "",
     user: null,
     is_anonymous:false,
+    referred_by: null,
     username: null,
     profile_pic_url: getRandomContributorProfilePicture(),
 };
