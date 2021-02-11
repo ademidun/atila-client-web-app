@@ -362,21 +362,25 @@ class ScholarshipContribution extends React.Component {
                                         View Scholarship: {scholarship.name}
                                     </Link>
                                 </div>
+                                {!userProfile &&
                                 <div className="col-12 text-center mb-3">
-                                <h1>Optional: Create an Account</h1> <br/>
-                                <p className="text-muted">
-                                    Creating an account will allow you to view all your contributions
-                                    on Atila and request being added as a reviewer to applications for this scholarship.
-                                </p>
-                                <Button onClick={this.toggleShowRegistrationForm} type="link">
-                                    {showRegistrationForm ? 'Hide ': 'Show '} Registration Form
-                                </Button>
-                                {showRegistrationForm &&
+                                    <h1>Optional: Create an Account</h1> <br/>
+                                    <p className="text-muted">
+                                        Creating an account will allow you to view all your contributions
+                                        on Atila and request being added as a reviewer to applications for this
+                                        scholarship.
+                                    </p>
+                                    <Button onClick={this.toggleShowRegistrationForm} type="link">
+                                        {showRegistrationForm ? 'Hide ' : 'Show '} Registration Form
+                                    </Button>
+                                    {showRegistrationForm &&
                                     <Register location={this.props.location}
                                               userProfile={contributor}
-                                              disableRedirect={true} />
+                                              disableRedirect={true}/>
+                                    }
+                                </div>
                                 }
-                            </div>
+
                             </div>
                         }
                         {pageNumber === 4 &&
