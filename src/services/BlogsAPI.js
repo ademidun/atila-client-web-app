@@ -49,6 +49,16 @@ class BlogsApi {
     static patch = (id, blog) => {
         return BlogsApi.update(id, blog, "patch")
     };
+
+    static relatedItems = (id) => {
+
+        const apiCompletionPromise = request({
+            method: 'get',
+            url: `${BlogsApi.blogsApiUrl}/${id}/related/`,
+        });
+
+        return apiCompletionPromise;
+    };
 }
 
 export default BlogsApi;

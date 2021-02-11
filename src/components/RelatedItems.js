@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 
 import ContentCard from "./ContentCard";
 import Loading from "./Loading";
-import ScholarshipsAPI from "../services/ScholarshipsAPI";
 import {genericItemTransform} from "../services/utils";
+import ScholarshipsAPI from "../services/ScholarshipsAPI";
+import BlogsApi from "../services/BlogsAPI";
+import EssaysApi from "../services/EssaysAPI";
 
 class RelatedItems extends React.Component {
 
@@ -19,13 +21,28 @@ class RelatedItems extends React.Component {
     }
     componentDidMount() {
 
-        const { id } = this.props;
+        const { id, itemType } = this.props;
         this.setState({ isLoadingRelatedItems: true });
-        let relatedItemsPromise  = Promise.resolve();
 
-        relatedItemsPromise = ScholarshipsAPI
-            .relatedItems(`${id}`);
-        relatedItemsPromise
+        let ContentAPI;
+        switch (itemType) {
+            case "scholarship":
+                ContentAPI = ScholarshipsAPI;
+                break;
+            case "blog":
+                ContentAPI = BlogsApi;
+                break;
+            case "essay":
+                ContentAPI = EssaysApi;
+                break;
+            default:
+                ContentAPI = ScholarshipsAPI;
+                break;
+        }
+
+        let relatedItemsPromise;
+        relatedItemsPromise = ContentAPI
+            .relatedItems(`${id}`)
             .then(res => {
                 let relatedItems = [];
                 if (res.data.results) {
@@ -46,7 +63,7 @@ class RelatedItems extends React.Component {
     render () {
 
         const { relatedItems, isLoadingRelatedItems  } = this.state;
-        const { className, itemType  } = this.props;
+        const { className } = this.props;
 
         if (isLoadingRelatedItems) {
             return (
@@ -61,12 +78,7 @@ class RelatedItems extends React.Component {
             <div className={`${className}`}>
                 <h3 className="text-center">Related</h3>
                 {relatedItems.map(item => {
-                    if (["blog", "essay"].includes(item.type)) {
-                        item.slug = `/${item.type}/${item.slug}`;
-                    }
-                    if (itemType === "scholarship") {
-                        item = genericItemTransform(item);
-                    }
+                    item = genericItemTransform(item);
                     return (<ContentCard key={item.slug}
                                          content={item}
                                          className="mb-3" />)
