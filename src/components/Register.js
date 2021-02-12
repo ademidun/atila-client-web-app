@@ -251,10 +251,6 @@ class Register extends React.Component {
         this.setState({userProfile: newUserProfile});
     };
 
-    selectReferredByField = (value, option) => {
-        this.setState({referredByUserProfile: option.label})
-    };
-
     render () {
 
         const { userProfile, isResponseError, responseOkMessage,

@@ -14,6 +14,7 @@ import {DEFAULT_SCHOLARSHIP_CONTRIBUTOR, SCHOLARSHIP_CONTRIBUTION_EXAMPLE_IMAGE}
 import ScholarshipContributionProfilePictureChooser from "./ScholarshipContributionProfilePictureChooser";
 import {ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP} from "../../models/Constants";
 import {isValidEmail} from "../../services/utils";
+import ReferredByInput from "../../components/ReferredByInput";
 
 const { Step } = Steps;
 
@@ -61,6 +62,13 @@ class ScholarshipContribution extends React.Component {
             });
         }
 
+
+        let referredBy = localStorage.getItem('referred_by') || '';
+        if (!defaultContributor.referred_by) {
+            defaultContributor.referred_by = referredBy
+        }
+
+
         this.state = {
             scholarship: null,
             scholarshipOwner: null,
@@ -70,6 +78,7 @@ class ScholarshipContribution extends React.Component {
             invalidInput: !defaultContributor.funding_amount,
             showRegistrationForm: true,
             fundingComplete: false,
+            referredByUserProfile: null,
         }
     }
 
@@ -181,8 +190,14 @@ class ScholarshipContribution extends React.Component {
         this.setState({showRegistrationForm: !showRegistrationForm});
     };
 
+    selectReferredByUserProfile = (referredByUserProfile) => {
+        const newContributor = { ...this.state.contributor, referred_by: referredByUserProfile.username }
+        this.setState({contributor: newContributor, referredByUserProfile});
+    };
+
     render () {
-        const { isLoadingScholarship, scholarship, pageNumber,
+        const { userProfile } = this.props;
+        const { isLoadingScholarship, scholarship, pageNumber, referredByUserProfile,
             contributor, scholarshipOwner, invalidInput, showRegistrationForm, fundingComplete } = this.state;
 
         const scholarshipSteps = (<Steps current={pageNumber-1} onChange={(current) => this.changePage(current+1)}>
@@ -228,11 +243,15 @@ class ScholarshipContribution extends React.Component {
                     onClick={() => this.changePage(pageNumber+1)}
                     disabled={invalidInput
                     || (pageNumber === 2 && !contributor.first_name)
-                    || (pageNumber === 3 && !contributor.email)}>
+                    || (pageNumber === 3 && !contributor.email)
+                    || (pageNumber === 4 && !fundingComplete)}>
                 Next
             </Button>}
         </div>
         )
+
+        // Show the referred by field if there is no logged in user or there is no referred by field.
+        const showReferredByInput = !userProfile || !contributor.referred_by
 
         return (
             <div className="container mt-5 text-center">
@@ -304,7 +323,7 @@ class ScholarshipContribution extends React.Component {
                     </div>
                     }
                     {pageNumber === 3 &&
-                        <div className="col-12">
+                    <div className="col-12">
                         <h1>
                             Email to receive your funding confirmation
                         </h1>
@@ -314,6 +333,17 @@ class ScholarshipContribution extends React.Component {
                                placeholder="Email"
                                className="col-12"
                                onChange={this.updateContributorInfo}/>
+
+                        {showReferredByInput &&
+                        <>
+                            <br />
+                            <br />
+                            <h2>Were you referred to contribute by a user? (Optional)</h2>
+                            <ReferredByInput username={contributor.referred_by} 
+                            onSelect={this.selectReferredByUserProfile} 
+                            referredByUserProfile={referredByUserProfile} />
+                        </>
+                        }
                     </div>
                     }
                     {pageNumber >= 4 &&
@@ -357,21 +387,25 @@ class ScholarshipContribution extends React.Component {
                                         View Scholarship: {scholarship.name}
                                     </Link>
                                 </div>
+                                {!userProfile &&
                                 <div className="col-12 text-center mb-3">
-                                <h1>Optional: Create an Account</h1> <br/>
-                                <p className="text-muted">
-                                    Creating an account will allow you to view all your contributions
-                                    on Atila and request being added as a reviewer to applications for this scholarship.
-                                </p>
-                                <Button onClick={this.toggleShowRegistrationForm} type="link">
-                                    {showRegistrationForm ? 'Hide ': 'Show '} Registration Form
-                                </Button>
-                                {showRegistrationForm &&
+                                    <h1>Optional: Create an Account</h1> <br/>
+                                    <p className="text-muted">
+                                        Creating an account will allow you to view all your contributions
+                                        on Atila and request being added as a reviewer to applications for this
+                                        scholarship.
+                                    </p>
+                                    <Button onClick={this.toggleShowRegistrationForm} type="link">
+                                        {showRegistrationForm ? 'Hide ' : 'Show '} Registration Form
+                                    </Button>
+                                    {showRegistrationForm &&
                                     <Register location={this.props.location}
                                               userProfile={contributor}
-                                              disableRedirect={true} />
+                                              disableRedirect={true}/>
+                                    }
+                                </div>
                                 }
-                            </div>
+
                             </div>
                         }
                         {pageNumber === 4 &&
@@ -382,7 +416,7 @@ class ScholarshipContribution extends React.Component {
                         <PaymentSend scholarship={scholarship}
                                      onFundingComplete={this.onFundingComplete}
                                      contributorFundingAmount={contributor.funding_amount}
-                                     contributor={contributor}/>
+                                     contributor={contributor} />
                     </div>
                     }
 
