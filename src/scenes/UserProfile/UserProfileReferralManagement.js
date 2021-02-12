@@ -7,22 +7,31 @@ import ReferredByInput from "../../components/ReferredByInput";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import UserProfileReferralCode from './UserProfileReferralCode';
 import UserProfileReferredUsers from './UserProfileReferredUsers';
+import { POINTS_FOR_CREATING_AN_ACCOUNT, POINTS_FOR_STARTING_A_SCHOLARSHIP,
+     POINTS_FOR_BEING_A_SCHOLARSHIP_FINALIST, POINTS_FOR_BEING_A_SCHOLARSHIP_WINNER } from '../../models/AtilaPoints';
 
 const atilaPointsPopoverContent = (
     <div>
-        Get points for referring people to Atila to apply and start scholarships:
+        Get money and points for referring people to Atila and completing tasks:
         <ul>
             <li>
-                100 points for each person you refer to Atila
+                {POINTS_FOR_CREATING_AN_ACCOUNT} points for each person you refer to Atila
             </li>
             <li>
-                If someone you refer wins a scholarship you get $50
+                If someone you refer wins a scholarship you both get $50 <br/>
             </li>
             <li>
-                1,000 points if someone you refer starts a scholarship
+                If you win a scholarship you get {POINTS_FOR_BEING_A_SCHOLARSHIP_WINNER * 2} points
             </li>
             <li>
-                500 points, if they become a finalist
+                If you refer someone who wins a scholarship you get {POINTS_FOR_BEING_A_SCHOLARSHIP_WINNER} points
+            </li>
+            <li>
+                {POINTS_FOR_STARTING_A_SCHOLARSHIP} points if someone you refer starts a scholarship + 20% commision
+            </li>
+            <li>
+                You get {POINTS_FOR_BEING_A_SCHOLARSHIP_FINALIST * 2} if you are a scholarship finalist
+                You get {POINTS_FOR_BEING_A_SCHOLARSHIP_FINALIST} points, if you refer someone that is a finalist
             </li>
             <li>
                 People with the top 5 points every four months gets cash prizes and gifts

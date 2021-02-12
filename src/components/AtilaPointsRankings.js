@@ -7,6 +7,7 @@ import UserProfileAPI from '../services/UserProfileAPI';
 import { UserProfileReferralPreview } from "./ReferredByInput";
 import defaultSeoContent from './HelmetSeo';
 import HelmetSeo from "./HelmetSeo";
+import { AtilaPointsPopover } from '../scenes/UserProfile/UserProfileReferralManagement';
 
 
 class AtilaPointsRankings extends React.Component {
@@ -53,7 +54,8 @@ class AtilaPointsRankings extends React.Component {
         
         const subtitle = (
             <h3 className="text-center text-muted">
-                Top students with the most <Link to="/points">Atila Points</Link>
+                Top students with the most {' '}
+                <AtilaPointsPopover children={<Link to="/points">Atila Points</Link>} />
             </h3>
         )
         const seoContent = {
