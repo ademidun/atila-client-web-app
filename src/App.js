@@ -214,7 +214,7 @@ class App extends React.Component {
               <Route path='/testimonials' component={GoogleAnalyticsTracker(Testimonials)} />
               <Route path='/about' component={GoogleAnalyticsTracker(About)} />
               <Route path='/rubric' component={GoogleAnalyticsTracker(Rubric)} />
-              <Route path='/values' component={GoogleAnalyticsTracker(Values)} />UserProfileRankings
+              <Route path='/values' component={GoogleAnalyticsTracker(Values)} />
               <Route path='/finalists' component={GoogleAnalyticsTracker(FinalistsList)} />
               <Route path='/rankings' component={GoogleAnalyticsTracker(AtilaPointsRankings)} />
               <Redirect from="/points" to="/blog/tomiwa/atila-points" />

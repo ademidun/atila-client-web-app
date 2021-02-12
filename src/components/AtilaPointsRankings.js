@@ -9,7 +9,7 @@ import defaultSeoContent from './HelmetSeo';
 import HelmetSeo from "./HelmetSeo";
 
 
-class UserProfileRankings extends React.Component {
+class AtilaPointsRankings extends React.Component {
 
     constructor(props) {
         super(props);
@@ -75,8 +75,8 @@ class UserProfileRankings extends React.Component {
                         <Spin />
                     </div>
                 }
-                <table class="table table-hover col-12">
-                <thead>
+                <table class="table table-striped col-12">
+                <thead style={{"backgroundColor": "aliceblue"}}>
                     <tr>
                     <th scope="col">#</th>
                     <th scope="col">Name</th>
@@ -132,4 +132,4 @@ const mapStateToProps = state => {
     return { userProfile: state.data.user.loggedInUserProfile };
 };
 
-export default connect(mapStateToProps)(UserProfileRankings);
+export default connect(mapStateToProps)(AtilaPointsRankings);
