@@ -243,7 +243,8 @@ class ScholarshipContribution extends React.Component {
                     onClick={() => this.changePage(pageNumber+1)}
                     disabled={invalidInput
                     || (pageNumber === 2 && !contributor.first_name)
-                    || (pageNumber === 3 && !contributor.email)}>
+                    || (pageNumber === 3 && !contributor.email)
+                    || (pageNumber === 4 && !fundingComplete)}>
                 Next
             </Button>}
         </div>
