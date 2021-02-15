@@ -74,18 +74,16 @@ class Navbar extends React.Component {
                 <Menu.Item key="start">
                     <Link to="/start">
                         <Tag color="green">new</Tag>{' '}
-                        Start a Scholarship
+                        How to Start a Scholarship
                     </Link>
-                </Menu.Item>
-                <Menu.Item key="blogs">
-                    <Link to="/blog">Blogs</Link>
                 </Menu.Item>
                 <Menu.Item key="scholarships">
                     <Link to="/scholarship">Scholarships</Link>
                 </Menu.Item>
-                <Menu.Item key="finalists">
-                    <Tag color="green">new</Tag>{' '}
-                    <Link to="/finalists">Finalists</Link>
+                <Menu.Item key="rankings">
+                    <Link to="/rankings">
+                        <Tag color="green">new</Tag>{' '}
+                        Atila Points Rankings</Link>
                 </Menu.Item>
 
                 <SubMenu
@@ -95,8 +93,15 @@ class Navbar extends React.Component {
                     <Menu.Item key="apply">
                         <Link to="/apply">
                             <Tag color="green">new</Tag>{' '}
-                            Apply for a Scholarship
+                            How to Apply for a Scholarship
                         </Link>
+                    </Menu.Item>
+                    <Menu.Item key="finalists">
+                        <Tag color="green">new</Tag>{' '}
+                        <Link to="/finalists">Finalists</Link>
+                    </Menu.Item>
+                    <Menu.Item key="blogs">
+                        <Link to="/blog">Blogs</Link>
                     </Menu.Item>
                         <Menu.Item key="essays">
                             <Link to="/essay">Essays</Link>
