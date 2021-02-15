@@ -67,7 +67,7 @@ class AtilaPointsRankings extends React.Component {
         };
         
         return (
-            <div className="container p-2">
+            <div className="container p-2 mt-3">
                 <HelmetSeo content={seoContent}/>
                 <div className="mb-3">
                     <h1>Atila Rankings</h1>
