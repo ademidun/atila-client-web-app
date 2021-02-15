@@ -34,9 +34,11 @@ class AtilaPointsRankings extends React.Component {
 
         
 
-        UserProfileAPI.list('atila-points/rankings')
+        fetch('https://run.mocky.io/v3/e2db9648-a273-4f21-9eb4-40bb5465fd2b')
+            .then(res=> res.json())
         .then(res => {
-            const { user_profiles: userProfiles } = res.data;
+            console.log({res});
+            const { user_profiles: userProfiles } = res;
             this.setState({ userProfiles });
         })
         .catch(err => {
@@ -77,7 +79,7 @@ class AtilaPointsRankings extends React.Component {
                         <Spin />
                     </div>
                 }
-                <table class="table table-striped col-12">
+                <table class="table table-hover col-12">
                 <thead style={{"backgroundColor": "aliceblue"}}>
                     <tr>
                     <th scope="col">#</th>
