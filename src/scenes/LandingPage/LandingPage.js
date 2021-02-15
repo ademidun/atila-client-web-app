@@ -40,9 +40,10 @@ class LandingPage extends React.Component {
         this.setState({ scholarshipsDueSoonIsLoading: true });
 
         const scholarshipPromises = [
-            ScholarshipsAPI.list('direct-application'),
-            ScholarshipsAPI.list('due-soon'),
-            ScholarshipsAPI.list('?ordering=date_time_created'),
+
+            fetch('https://run.mocky.io/v3/d4c28211-11af-485e-814c-b8719e433656').then(res=> res.json()).then(res => ({data:res})),
+            fetch('https://run.mocky.io/v3/d4c28211-11af-485e-814c-b8719e433656').then(res=> res.json()).then(res => ({data:res})),
+            fetch('https://run.mocky.io/v3/d4c28211-11af-485e-814c-b8719e433656').then(res=> res.json()).then(res => ({data:res})),
         ];
 
         try {
@@ -75,9 +76,9 @@ class LandingPage extends React.Component {
             }
             {scholarshipsDirectApplication &&
             <LandingPageContent title={`Direct Application Scholarships`}
-                                link="scholarship/direct"
-                                contentList={scholarshipsDirectApplication}
-                                contentType="scholarship" />
+                link="scholarship/direct"
+                contentList={scholarshipsDirectApplication}
+                contentType="scholarship" />
             }
         </React.Fragment>);
         const scholarshipsContentDueSoon = (<React.Fragment>
@@ -107,6 +108,16 @@ class LandingPage extends React.Component {
                     {!userProfile &&
                     <React.Fragment>
                         <Banner/>
+                        <h1 className="col-sm-12 text-center mt-4">
+                            <Link to="/apply"> How to Get Scholarships </Link>
+                        </h1>
+                        <h2 className="col-sm-12 text-center mt-1">
+                            <Link to="/register">Create Profile.</Link>{' '}
+                            <Link to="/scholarship">Apply for Scholarships.</Link>{' '}
+                            Get Funded.
+                        </h2>
+                        <h5 className="col-sm-12 text-center text-muted mt-3 mb-3">Atila is 100% free for students</h5>
+                        <hr/>
                         {scholarshipsContentDirectApplication}
                         <hr/>
                         <HowItWorks accountType={"Student"}/>

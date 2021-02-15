@@ -114,15 +114,6 @@ export function HowItWorksStudent() {
 
     return (
         <div className="container">
-            <h1 className="col-sm-12 text-center">
-                <Link to="/apply"> How to Get Scholarships </Link>
-            </h1>
-            <h2 className="col-sm-12 text-center">
-                <Link to="/register">Create Profile.</Link>{' '}
-                <Link to="/scholarship">Apply for Scholarships.</Link>{' '}
-                Get Funded.
-            </h2>
-            <h5 className="col-sm-12 text-center text-muted">Atila is 100% free for students</h5>
             <SocialProof />
             <div className="offset-lg-1">
 
