@@ -34,8 +34,7 @@ class AtilaPointsRankings extends React.Component {
 
         
 
-        fetch('https://run.mocky.io/v3/e2db9648-a273-4f21-9eb4-40bb5465fd2b')
-            .then(res=> res.json())
+        UserProfileAPI.list('atila-points/rankings')
         .then(res => {
             console.log({res});
             const { user_profiles: userProfiles } = res;
