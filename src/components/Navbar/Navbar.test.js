@@ -29,15 +29,15 @@ describe('<Navbar />', () => {
             expect(wrapper.find(Navbar).html()).toContain(searchLink);
         });*/
 
-    it('renders finalists', () => {
+    it('renders rankings', () => {
         const store = mockStore(initialReduxState);
         const wrapper = mount(
             <MemoryRouter>
                 <Navbar store={store} />
             </MemoryRouter>
         );
-        const finalistsLink = 'href="/finalists"';
-        expect(wrapper.find(Navbar).html()).toContain(finalistsLink);
+        const rankingsLink = 'href="/rankings"';
+        expect(wrapper.find(Navbar).html()).toContain(rankingsLink);
     });
 
     it('renders userprofile nav item', () => {
