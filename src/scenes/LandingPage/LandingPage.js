@@ -111,6 +111,7 @@ class LandingPage extends React.Component {
                     {!userProfile &&
                     <React.Fragment>
                         <Banner/>
+                        <hr/>
                         <HowItWorks accountType={"Student"}/>
                         <hr/>
                         <Testimonials showSeo={false} filterArray={['Jasleen', 'Natalie', 'Grace', 'Chris', 'Hania', 'Oluwatofunmi']} />
