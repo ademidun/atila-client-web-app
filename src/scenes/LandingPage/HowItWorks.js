@@ -39,7 +39,8 @@ const howItWorksStudent = [
         title: "Apply for Scholarships",
         body: <React.Fragment>
             Apply for multiple scholarships all from one site.
-            Autofill similar responses used in past scholarships to save time.
+            {/* TODO uncomment this line when we add this feature */}
+            {/* Autofill similar responses used in past scholarships to save time. */}
         </React.Fragment>,
         image: "https://imgur.com/a49KkBZ.jpg"
 
