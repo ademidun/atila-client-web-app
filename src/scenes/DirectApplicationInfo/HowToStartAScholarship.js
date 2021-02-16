@@ -36,7 +36,7 @@ export const howToStartAScholarshipInformationItems = [
                 <p>More Information can be found on the <Link to="/pricing">pricing</Link> page.</p>
             </ol>
         </div>),
-        image: "https://i.imgur.com/s0xmEVc.png",
+        image: "https://i.imgur.com/qeovalb.png",
         imageCaption: "Atila pricing diagram",
     },
     {
