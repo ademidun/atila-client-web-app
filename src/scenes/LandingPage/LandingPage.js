@@ -74,11 +74,15 @@ class LandingPage extends React.Component {
             <Loading title="Loading Scholarships ..." />
             }
             {scholarshipsDirectApplication &&
+            <>
             <LandingPageContent title={`Direct Application Scholarships`}
                                 link="scholarship/direct"
                                 contentList={scholarshipsDirectApplication}
                                 contentType="scholarship" />
+                                <hr/>
+            </>
             }
+            
         </React.Fragment>);
         const scholarshipsContentDueSoon = (<React.Fragment>
             {scholarshipsDueSoonIsLoading &&
@@ -107,12 +111,11 @@ class LandingPage extends React.Component {
                     {!userProfile &&
                     <React.Fragment>
                         <Banner/>
-                        {scholarshipsContentDirectApplication}
-                        <hr/>
                         <HowItWorks accountType={"Student"}/>
                         <hr/>
-                        <Testimonials showSeo={false} filterArray={['Jasleen', 'Natalie', 'Grace', 'Chris']} />
+                        <Testimonials showSeo={false} filterArray={['Jasleen', 'Natalie', 'Grace', 'Chris', 'Hania', 'Oluwatofunmi']} />
                         <hr/>
+                        {scholarshipsContentDirectApplication}
                         <div className="p-5">
                             <Link to="/register" className="btn btn-primary center-block font-size-xl">
                                 Register for Free
