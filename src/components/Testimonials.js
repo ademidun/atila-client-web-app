@@ -40,6 +40,20 @@ let testimonials = [
     description: "A great resource for students, I have posted this on my Student Services google class.",
   },
   {
+    first_name: "Hania",
+    last_name: "Noor",
+    position: "Kinesiology Student, University of Toronto",
+    description: "I really like that I get emails about scholarships I am eligible for. It’s really helpful especially during these times. This service is amazing and beneficial and so I believe that more students should know about it.",
+    profile_pic_url: "https://imgur.com/aIRQWeC.jpg",
+  },
+  {
+    first_name: "Oluwatofunmi",
+    last_name: "",
+    position: "Radiation Therapy Student, Laurentian University",
+    description: "I think it is a great platform. It has a simple and easy to use user interface. There are so many students out there looking for funding opportunities and personally I know a few friends that can really use this platform to support their income and education. ",
+    profile_pic_url: "https://imgur.com/5a8TcOu.jpg",
+  },
+  {
     first_name: "Sarim",
     last_name: "Zia",
     position: "Garth Webb Secondary School",
@@ -65,20 +79,6 @@ let testimonials = [
     position: "Student, J Clarke Richardson",
     description: "It's a good website that provides scholarships, sometimes it can be hard to find stuff." +
         " You could make the visuals easier to follow.",
-  },
-  {
-    first_name: "Hania",
-    last_name: "Noor",
-    position: "Kinesiology Student, University of Toronto",
-    description: "I really like that I get emails about scholarships I am eligible for. It’s really helpful especially during these times. This service is amazing and beneficial and so I believe that more students should know about it.",
-    profile_pic_url: "https://imgur.com/aIRQWeC.jpg",
-  },
-  {
-    first_name: "Oluwatofunmi",
-    last_name: "",
-    position: "Radiation Therapy Student, Laurentian University",
-    description: "I think it is a great platform. It has a simple and easy to use user interface. There are so many students out there looking for funding opportunities and personally I know a few friends that can really use this platform to support their income and education. ",
-    profile_pic_url: "https://imgur.com/5a8TcOu.jpg",
   },
   // {
   //   first_name: "Samantha",

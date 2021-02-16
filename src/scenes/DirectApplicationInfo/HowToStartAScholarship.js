@@ -13,9 +13,13 @@ export const howToStartAScholarshipInformationItems = [
             <ol>
                 <li>Visit the <Link to="/scholarship/add">add a scholarship</Link> page</li>
                 <li>Enter details about the scholarship such as the name of the scholarship, who is eligible, the story behind why you started the scholarship, the deadline, funding amount, questions for the applicants, etc.</li>
-                <li>Fund your scholarship</li>
-                <li>Optional: Others can contribute to the scholarship as well</li>
-                <li>Review Applications and pick a winner</li>
+                <li>Fund your scholarship. Optional:{' '}
+                    <Link to="/blog/tomiwa/introducing-atila-scholarship-pools-anyone-can-contribute-to-scholarships">
+                    Others can contribute to the scholarship as well
+                    </Link>
+                </li>
+                <li>Pick finalists and Atila reviews finalists</li>
+                <li>Pick winner, Atila reviews winner, winner writes thank you letter and receives funds</li>
             </ol>
         </div>),
         image: "https://imgur.com/HgIoMJ9.jpg",
@@ -32,8 +36,8 @@ export const howToStartAScholarshipInformationItems = [
                 <p>More Information can be found on the <Link to="/pricing">pricing</Link> page.</p>
             </ol>
         </div>),
-        image: "https://i.imgur.com/s0xmEVc.png",
-        imageCaption: "",
+        image: "https://i.imgur.com/qeovalb.png",
+        imageCaption: "Atila pricing diagram",
     },
     {
         title: "What does the Atila fee cover?",
@@ -45,21 +49,16 @@ export const howToStartAScholarshipInformationItems = [
                 <li>Marketing and sales to get more sponsors to start scholarships and students to apply</li>
                 <li>Website hosting and server costs</li>
             </ol>
-        </div>),
-        image: "https://i.imgur.com/s0xmEVc.png",
-        imageCaption: "",
+        </div>)
     },
     {
         title: "Are scholarships funded on Atila tax-deductible?",
         body: (<div>
-            <p>Scholarships are processed through the Atila Foundation which submitted it&rsquo;s application to be a Registered Charity in November 2020. <br/>
-
-            If our application is approved in 2021, any donations made in the 2021 calendar year and beyond are eligible for tax-deductible receipts,
-                even if the donation was made before Atila receives registered charity status (source: <a href="https://www.canada.ca/en/revenue-agency/services/charities-giving/charities/policies-guidance/policy-commentary-009-official-donation-receipts-a-newly-registered-charity.html" target="_blank" rel="noopener noreferrer">Canada Revenue Agency</a>).</p>
-            <p>If you know anyone who can help speed up or increase our chances of being approved, please contact us.</p>
-        </div>),
-        image: "https://i.imgur.com/VEiCq75.png",
-        imageCaption: "",
+            <p>Scholarships funded through Atila are not currently tax-deductible. We have met with lawyers and experts
+                on registered charities about the process for issuing tax receipts.
+                We will update this page with more information if anything changes.
+            </p>
+        </div>)
     },
     {
         title: "What is the minimum amount to start a scholarship?",
@@ -165,7 +164,7 @@ class HowToStartAScholarship extends React.Component {
                                         {/*Note: TO get the image to size responsively.
                             I just had to put it inside a parent div and add 'col-12' class.*/}
                                         <img src={item.image}
-                                             alt={item.title}
+                                             alt={item.imageCaption||item.title}
                                              title={item.title}
                                              className="col-12 p-3"
                                              style={{maxHeight: "450px", width: "auto"}}
