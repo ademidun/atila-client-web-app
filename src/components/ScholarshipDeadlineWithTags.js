@@ -13,7 +13,7 @@ function ScholarshipDeadlineWithTags({scholarship, datePrefix}) {
     let color = null;
 
     let scholarshipDateMoment = moment(deadline);
-    if (open_date && open_date > todayMoment.toISOString()) {
+    if (open_date && !open_date.includes("2022-12-31") && open_date > todayMoment.toISOString()) {
         scholarshipDateMoment = moment(open_date);
         tagPrefix = 'opens';
         datePrefix = 'Opens: ';
@@ -34,7 +34,7 @@ function ScholarshipDeadlineWithTags({scholarship, datePrefix}) {
     }
 
 
-    if (deadline.includes("2022-01-01") && !open_date) {
+    if (deadline.includes("2022-01-01") && (!open_date || open_date.includes("2022-12-31"))) {
         scholarshipDateString = "TBA";
         tag = null
     }
