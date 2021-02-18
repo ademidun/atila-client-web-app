@@ -21,13 +21,13 @@ class ButtonModal extends React.Component {
     };
 
     render() {
-        const { buttonSize, buttonText, modalTitle, modalBody, submitText, onSubmit } = this.props;
+        const { showModalButtonSize, showModalText, modalTitle, modalBody, submitText, onSubmit } = this.props;
         const { isModalVisible } = this.state;
 
         return(
             <div>
-                <Button type="primary" size={buttonSize} onClick={this.showModal}>
-                    {buttonText}
+                <Button type="primary" size={showModalButtonSize} onClick={this.showModal}>
+                    {showModalText}
                 </Button>
                 <Modal
                     title={modalTitle}

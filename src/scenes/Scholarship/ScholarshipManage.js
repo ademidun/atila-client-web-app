@@ -5,6 +5,7 @@ import {Table, Popconfirm, Button, Tag, Alert, Modal, Input, Radio} from "antd";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
 import {WINNER_SELECTED_MESSAGE, BlindApplicationsExplanationMessage} from "../../models/Scholarship";
+import ButtonModal from "../../components/ButtonModal";
 
 class ScholarshipManage extends React.Component {
     constructor(props) {
@@ -17,6 +18,7 @@ class ScholarshipManage extends React.Component {
             isLoadingApplications: false,
             responseMessage: null,
             isModalVisible: false,
+            inviteCollaboratorEmail: '',
             applicationTypeToEmail: 'all' // This is only for the modal to email applicants
         }
     }
@@ -114,6 +116,21 @@ class ScholarshipManage extends React.Component {
             })
     };
 
+    inviteCollaborator = () => {
+        const { scholarship, inviteCollaboratorEmail } = this.state;
+        ScholarshipsAPI
+            .inviteCollaborator(scholarship.id, inviteCollaboratorEmail)
+            .then(res => {
+                const {scholarship, applications, unsubmitted_applications: unsubmittedApplications} =  res.data;
+                this.setState({scholarship, applications, unsubmittedApplications});
+                this.setState({responseMessage: `${inviteCollaboratorEmail} has been sent an invite email.`})
+            })
+            .catch(err => {
+                console.log({err});
+                this.setState({responseMessage: `There was an error inviting ${inviteCollaboratorEmail}.\n\n Please message us using the chat icon in the bottom right of your screen.`})
+            })
+    }
+
     render() {
         const { userProfile } = this.props;
         const { scholarship, applications, isLoadingApplications,
@@ -148,6 +165,13 @@ class ScholarshipManage extends React.Component {
             { label: 'Exclude Winners', value: 'exclude_winners' },
             { label: 'Finalists Only', value: 'finalists' }
         ];
+
+        let inviteCollaboratorModalBody = (
+                <Input
+                    placeholder={"Collaborator's email..."}
+                    onChange={(e)=>{this.setState({inviteCollaboratorEmail: e.target.value})}}
+                />
+        )
 
         return (
             <div className="container mt-5">
@@ -201,6 +225,19 @@ class ScholarshipManage extends React.Component {
                         buttonStyle="solid"
                     />
                 </Modal>
+
+                <br />
+                <br />
+
+                <ButtonModal
+                    showModalButtonSize={"large"}
+                    showModalText={"Invite Collaborator"}
+                    modalTitle={"Invite Collaborator"}
+                    modalBody={inviteCollaboratorModalBody}
+                    submitText={"Send Invite"}
+                    onSubmit={this.inviteCollaborator}
+                />
+
                 <br />
                 <br />
 
