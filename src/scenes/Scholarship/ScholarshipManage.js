@@ -121,7 +121,8 @@ class ScholarshipManage extends React.Component {
         ScholarshipsAPI
             .inviteCollaborator(scholarship.id, inviteCollaboratorEmail)
             .then(res => {
-                const {scholarship, invites_sent} =  res.data;
+                // invites_sent is also in res.data
+                const {scholarship} =  res.data;
                 this.setState({scholarship});
                 this.setState({responseMessage: `${inviteCollaboratorEmail} has been sent an invite email.`})
             })

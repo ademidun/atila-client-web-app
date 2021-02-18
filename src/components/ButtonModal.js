@@ -20,8 +20,14 @@ class ButtonModal extends React.Component {
         this.setState({isModalVisible: false});
     };
 
+    onSubmit = (event) => {
+        const { onSubmit } = this.props;
+        onSubmit(event);
+        this.handleModalCancel();
+    }
+
     render() {
-        const { showModalButtonSize, showModalText, modalTitle, modalBody, submitText, onSubmit } = this.props;
+        const { showModalButtonSize, showModalText, modalTitle, modalBody, submitText } = this.props;
         const { isModalVisible } = this.state;
 
         return(
@@ -37,7 +43,7 @@ class ButtonModal extends React.Component {
                         <Button key="back" onClick={this.handleModalCancel}>
                             Cancel
                         </Button>,
-                        <Button key="submit" type="primary" onClick={onSubmit}>
+                        <Button key="submit" type="primary" onClick={this.onSubmit}>
                             {submitText}
                         </Button>,
                     ]}
