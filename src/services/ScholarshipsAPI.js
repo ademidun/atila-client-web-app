@@ -187,6 +187,18 @@ class ScholarshipsAPI {
 
         return apiCompletionPromise;
     };
+
+    static inviteCollaborator = (id, email) => {
+        let data = {'email': email};
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: data,
+            url: `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/invite-collaborator/`,
+        });
+
+        return apiCompletionPromise;
+    };
 }
 
 export default ScholarshipsAPI;
