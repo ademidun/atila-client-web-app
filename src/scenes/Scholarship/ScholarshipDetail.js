@@ -228,10 +228,10 @@ class ScholarshipDetail extends React.Component {
         }
 
         let scholarshipDateMoment = moment(deadline);
-        const isScholarshipDeadlinePassed = scholarshipDateMoment.diff(moment(), 'days') < 0;
+        const isScholarshipDeadlinePassed = scholarshipDateMoment.diff(moment()) < 0;
 
         let applyToScholarshipButton = null;
-        if (isScholarshipDeadlinePassed) {
+        if (isScholarshipDeadlinePassed && !currentUserScholarshipApplication) {
             applyToScholarshipButton = null;
         } else if (!userProfile) {
             applyToScholarshipButton = (<Button type="primary" size="large"
