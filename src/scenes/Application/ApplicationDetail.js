@@ -68,7 +68,8 @@ class ApplicationDetail extends  React.Component{
             isUsingLocalApplication: pathname.includes("/local/"),
             promptRegisterBeforeSubmitting: false,
             userProfileForRegistration: null,
-            pageNumber: 1
+            pageNumber: 1,
+            isScholarshipDeadlinePassed: false,
         }
     }
 
@@ -96,7 +97,13 @@ class ApplicationDetail extends  React.Component{
             .then(res=>{
                 const { data: application } = res;
                 const { scholarship } = application;
-                this.setState({application, scholarship});
+                const { deadline } = scholarship;
+                
+                const isScholarshipDeadlinePassed = moment(deadline).diff(moment()) < 0;
+                // If the scholarship has expired, set the pageNumber to the last page, else, set it to the current page in state.
+                const pageNumber = isScholarshipDeadlinePassed ? applicationPages.length : this.state.pageNumber;
+
+                this.setState({application, scholarship, isScholarshipDeadlinePassed, pageNumber});
                 if (application.user_scores) {
                     const applicationScore = application.user_scores[userProfile.user] ?
                         application.user_scores[userProfile.user]["score"] : 0;
@@ -467,7 +474,7 @@ class ApplicationDetail extends  React.Component{
         const { application, isLoadingApplication, scholarship, isSavingApplication, isSubmittingApplication,
             scholarshipUserProfileQuestionsFormConfig, scholarshipQuestionsFormConfig,
             isUsingLocalApplication, promptRegisterBeforeSubmitting,
-            applicationScore, pageNumber } = this.state;
+            applicationScore, pageNumber, isScholarshipDeadlinePassed } = this.state;
 
         const applicationSteps =
             (<Steps current={pageNumber-1} onChange={(current) => this.changePage(current+1)}>
@@ -548,11 +555,7 @@ class ApplicationDetail extends  React.Component{
             </div>);
         }
 
-        const { deadline } = scholarship;
-
-        let scholarshipDateMoment = moment(deadline);
-        const isScholarshipDeadlinePassed = scholarshipDateMoment.diff(moment()) < 0;
-        let scholarshipDateString = scholarshipDateMoment.format('dddd, MMMM DD, YYYY');
+        let scholarshipDateString = moment(scholarship.deadline).format('dddd, MMMM DD, YYYY');
         let disableSubmit = isMissingProfilePicture||isMissingSecurityQuestionAnswer;
         let submitContent = (
                     <div className={"float-right col-md-6"}>
@@ -603,7 +606,7 @@ class ApplicationDetail extends  React.Component{
         if (isScholarshipDeadlinePassed) {
             deadlinePassedMessage = (
                 <Alert  message={`Scholarship deadline has passed. 
-                        Scholarship was due on ${scholarshipDateString}`} />
+                        Scholarship was due on ${scholarshipDateString}.`} />
             );
         submitContent = null;
         }
