@@ -32,6 +32,7 @@ import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import ApplicationDetailHeader from "./ApplicationDetailHeader";
 import {BlindApplicationsExplanationMessage} from "../../models/Scholarship";
 import ApplicationsLocal from './ApplicationsLocal';
+import { Alert } from 'antd';
 
 const { Step } = Steps;
 
@@ -550,7 +551,7 @@ class ApplicationDetail extends  React.Component{
         const { deadline } = scholarship;
 
         let scholarshipDateMoment = moment(deadline);
-        const isScholarshipDeadlinePassed = scholarshipDateMoment.diff(moment(), 'days') < 0;
+        const isScholarshipDeadlinePassed = scholarshipDateMoment.diff(moment()) < 0;
         let scholarshipDateString = scholarshipDateMoment.format('dddd, MMMM DD, YYYY');
         let disableSubmit = isMissingProfilePicture||isMissingSecurityQuestionAnswer;
         let submitContent = (
@@ -598,10 +599,13 @@ class ApplicationDetail extends  React.Component{
             />
             </>);
 
+        let deadlinePassedMessage = null;
         if (isScholarshipDeadlinePassed) {
-            submitContent = (<p className="text-muted float-right">
-                Scholarship deadline has passed. Scholarship was due on {scholarshipDateString}
-            </p>)
+            deadlinePassedMessage = (
+                <Alert  message={`Scholarship deadline has passed. 
+                        Scholarship was due on ${scholarshipDateString}`} />
+            );
+        submitContent = null;
         }
 
         let viewModeContent = (<>
@@ -635,6 +639,12 @@ class ApplicationDetail extends  React.Component{
                                 <>
                                     {applicationSteps}
                                     <br />
+                                    {deadlinePassedMessage && 
+                                    <>
+                                    {deadlinePassedMessage}
+                                    <br/>
+                                    </>
+                                    }
                                     {(pageNumber === 1) &&
                                     <>
                                         {applicationForm}
@@ -695,10 +705,22 @@ class ApplicationDetail extends  React.Component{
 
                                         {pageNumber === applicationPages.length &&
                                         <>
-                                            {submitContent}
+                                            {!isScholarshipDeadlinePassed && submitContent}
+                                            {/* 
+                                            If the scholarship deadline has passed.
+                                            Show the submit content on a seperate line. Since
+                                            it won't be a submit button but an alert message telling the user
+                                            that the scholarship deadline has passed.
+                                            */}
+                                            {isScholarshipDeadlinePassed &&
+
+                                            <div className="float-right col-md-6">
+                                                {deadlinePassedMessage}
+                                            </div>
+                                            }
                                         </>
                                         }
-                                        {pageNumber > 1 && (isMissingProfilePicture || isMissingSecurityQuestionAnswer) &&
+                                        {pageNumber > 1 && !isScholarshipDeadlinePassed  && (isMissingProfilePicture || isMissingSecurityQuestionAnswer) &&
                                         <div className="text-muted float-right">
 
                                             {isMissingSecurityQuestionAnswer &&
