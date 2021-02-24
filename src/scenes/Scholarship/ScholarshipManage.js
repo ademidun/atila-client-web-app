@@ -19,6 +19,8 @@ class ScholarshipManage extends React.Component {
             responseMessage: null,
             isModalVisible: false,
             inviteCollaboratorEmail: '',
+            // This is called email, but currently it is for inviting using usernames. This is because
+            //  eventually we might switch to using emails.
             applicationTypeToEmail: 'all' // This is only for the modal to email applicants
         }
     }
@@ -169,7 +171,7 @@ class ScholarshipManage extends React.Component {
 
         let inviteCollaboratorModalBody = (
                 <Input
-                    placeholder={"Collaborator's atila username..."}
+                    placeholder={"Collaborator's Atila username..."}
                     onChange={(e)=>{this.setState({inviteCollaboratorEmail: e.target.value})}}
                 />
         )
