@@ -169,7 +169,7 @@ class ScholarshipManage extends React.Component {
 
         let inviteCollaboratorModalBody = (
                 <Input
-                    placeholder={"Collaborator's email..."}
+                    placeholder={"Collaborator's atila username..."}
                     onChange={(e)=>{this.setState({inviteCollaboratorEmail: e.target.value})}}
                 />
         )
