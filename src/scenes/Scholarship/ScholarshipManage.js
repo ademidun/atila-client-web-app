@@ -20,7 +20,8 @@ class ScholarshipManage extends React.Component {
             inviteCollaboratorEmail: '',
             // This is called email, but currently it is for inviting using usernames. This is because
             //  eventually we might switch to using emails.
-            applicationTypeToEmail: 'all' // This is only for the modal to email applicants
+            applicationTypeToEmail: 'all', // This is only for the modal to email applicants
+            reviewersPerApplication: 2,
         }
     }
 
@@ -123,10 +124,22 @@ class ScholarshipManage extends React.Component {
             })
     }
 
+    autoAssignReviewers = () => {
+
+    }
+
+    updateReviewersPerApplication = (event) => {
+        if (event.preventDefault) {
+            event.preventDefault();
+        }
+        let numVal = Number.parseInt(event.target.value);
+        this.setState({reviewersPerApplication: numVal});
+    }
+
     render() {
         const { userProfile } = this.props;
         const { scholarship, applications, isLoadingApplications,
-            unsubmittedApplications, responseMessage, applicationTypeToEmail } = this.state;
+            unsubmittedApplications, responseMessage, applicationTypeToEmail, reviewersPerApplication } = this.state;
         const { TextArea } = Input;
         // const confirmText = "Are you sure you want to unsubmit all submitted applications? This action cannot be undone.";
 
@@ -164,6 +177,7 @@ class ScholarshipManage extends React.Component {
                     onChange={(e)=>{this.setState({inviteCollaboratorEmail: e.target.value})}}
                 />
         )
+        let isScholarshipOwner = userProfile.user === scholarship.owner
 
         let emailApplicantsModalBody = (
             <>
@@ -180,6 +194,18 @@ class ScholarshipManage extends React.Component {
                     optionType="button"
                     buttonStyle="solid"
                 />
+            </>
+        )
+
+        let autoAssignReviewersModalBody = (
+            <>
+                <h6>Number of reviewers per application</h6>
+                <Input value={reviewersPerApplication}
+                       name="reviewers_per_application"
+                       placeholder="Reviewers Per Application"
+                       type="number"
+                       step="1"
+                       onChange={this.updateReviewersPerApplication} />
             </>
         )
 
@@ -220,6 +246,20 @@ class ScholarshipManage extends React.Component {
                     submitText={"Send Invite"}
                     onSubmit={this.inviteCollaborator}
                 />
+
+                {isScholarshipOwner &&
+                <>
+                    <br />
+                    <ButtonModal
+                        showModalButtonSize={"large"}
+                        showModalText={"Auto Assign Reviewers"}
+                        modalTitle={"Auto Assign Reviewers"}
+                        modalBody={autoAssignReviewersModalBody}
+                        submitText={"Confirm Auto Assigning"}
+                        onSubmit={this.autoAssignReviewers}
+                    />
+                </>
+                }
 
                 <br />
                 <br />
