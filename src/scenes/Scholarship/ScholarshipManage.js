@@ -126,6 +126,7 @@ class ScholarshipManage extends React.Component {
 
     autoAssignReviewers = () => {
         const { scholarship, reviewersPerApplication } = this.state;
+        // Do some sort of bounds checking for reviewersPerApplication
 
         ScholarshipsAPI
             .assignReviewers(scholarship.id, reviewersPerApplication)
