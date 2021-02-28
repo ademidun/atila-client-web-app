@@ -218,6 +218,7 @@ class ScholarshipManage extends React.Component {
                        name="reviewers_per_application"
                        placeholder="Reviewers Per Application"
                        type="number"
+                       min="1"
                        step="1"
                        onChange={this.updateReviewersPerApplication} />
             </>
