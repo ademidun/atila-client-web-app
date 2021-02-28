@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
-import {Table, Popconfirm, Button, Tag, Alert, Modal, Input, Radio} from "antd";
+import {Table, Popconfirm, Button, Tag, Alert, Input, Radio} from "antd";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
 import {WINNER_SELECTED_MESSAGE, BlindApplicationsExplanationMessage} from "../../models/Scholarship";
@@ -17,7 +17,6 @@ class ScholarshipManage extends React.Component {
             unsubmittedApplications: null,
             isLoadingApplications: false,
             responseMessage: null,
-            isModalVisible: false,
             inviteCollaboratorEmail: '',
             // This is called email, but currently it is for inviting using usernames. This is because
             //  eventually we might switch to using emails.
@@ -68,10 +67,6 @@ class ScholarshipManage extends React.Component {
             })
     };
 
-    showModal = () => {
-        this.setState({isModalVisible: true});
-    };
-
     emailApplicants = () => {
         const { scholarship, applicationTypeToEmail } = this.state;
         const scholarshipID = scholarship.id;
@@ -90,12 +85,6 @@ class ScholarshipManage extends React.Component {
                 console.log({err});
                 this.setState({responseMessage: "There was an error emailing the applicants.\n\n Please message us using the chat icon in the bottom right of your screen."});
             });
-
-        this.setState({isModalVisible: false});
-    };
-
-    handleModalCancel = () => {
-        this.setState({isModalVisible: false});
     };
 
     onRadioClick = e => {
@@ -137,7 +126,7 @@ class ScholarshipManage extends React.Component {
     render() {
         const { userProfile } = this.props;
         const { scholarship, applications, isLoadingApplications,
-            unsubmittedApplications, responseMessage, isModalVisible, applicationTypeToEmail } = this.state;
+            unsubmittedApplications, responseMessage, applicationTypeToEmail } = this.state;
         const { TextArea } = Input;
         // const confirmText = "Are you sure you want to unsubmit all submitted applications? This action cannot be undone.";
 
@@ -176,6 +165,24 @@ class ScholarshipManage extends React.Component {
                 />
         )
 
+        let emailApplicantsModalBody = (
+            <>
+                <Input id='email-subject' className="mb-2" placeholder={"Email subject..."}/>
+                <TextArea id='email-body' rows={6} placeholder={"Email body..."}/>
+                <br />
+                <br />
+                <b>Which applications would you like to send this email to?</b>
+                <br />
+                <Radio.Group
+                    options={applicationOptions}
+                    onChange={this.onRadioClick}
+                    value={applicationTypeToEmail}
+                    optionType="button"
+                    buttonStyle="solid"
+                />
+            </>
+        )
+
         return (
             <div className="container mt-5">
                 <h2>
@@ -192,44 +199,17 @@ class ScholarshipManage extends React.Component {
                 <br />
                 <br />
 
-                <Button type="primary" size={"large"} onClick={this.showModal}>
-                    Email Applicants...
-                </Button>
-                <Modal
-                    title='Draft Email'
-                    visible={isModalVisible}
-                    onCancel={this.handleModalCancel}
-                    footer={[
-                        <Button key="back" onClick={this.handleModalCancel}>
-                            Cancel
-                        </Button>,
-                        <Popconfirm placement="topLeft" title="Are you sure you want to send email?"
-                                    onConfirm={this.emailApplicants}
-                                    okText="Yes"
-                                    cancelText="No">
-                            <Button key="submit" type="primary">
-                                Send Email...
-                            </Button>
-                        </Popconfirm>
-                            ,
-                    ]}
-                >
-                    <Input id='email-subject' className="mb-2" placeholder={"Email subject..."}/>
-                    <TextArea id='email-body' rows={6} placeholder={"Email body..."}/>
-                    <br />
-                    <br />
-                    <b>Which applications would you like to send this email to?</b>
-                    <br />
-                    <Radio.Group
-                        options={applicationOptions}
-                        onChange={this.onRadioClick}
-                        value={applicationTypeToEmail}
-                        optionType="button"
-                        buttonStyle="solid"
-                    />
-                </Modal>
+                <ButtonModal
+                    showModalButtonSize={"large"}
+                    showModalText={"Email Applicants..."}
+                    modalTitle={"Draft Email"}
+                    modalBody={emailApplicantsModalBody}
+                    submitText={"Send Email..."}
+                    onSubmit={this.emailApplicants}
+                    addPopConfirm={true}
+                    popConfirmText={"Are you sure you want to send email?"}
+                />
 
-                <br />
                 <br />
 
                 <ButtonModal

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button, Modal } from "antd";
+import {Button, Modal, Popconfirm} from "antd";
 
 
 class ButtonModal extends React.Component {
@@ -27,8 +27,33 @@ class ButtonModal extends React.Component {
     }
 
     render() {
-        const { showModalButtonSize, showModalText, modalTitle, modalBody, submitText } = this.props;
+        const { showModalButtonSize, showModalText, modalTitle, modalBody, submitText, addPopConfirm, popConfirmText } = this.props;
         const { isModalVisible } = this.state;
+
+        const modalFooter = [
+            <Button key="back" onClick={this.handleModalCancel}>
+                Cancel
+            </Button>,
+            <Button key="submit" type="primary" onClick={this.onSubmit}>
+                {submitText}
+            </Button>,
+        ]
+
+        const modalFooterWithPopConfirm = [
+            <Button key="back" onClick={this.handleModalCancel}>
+                Cancel
+            </Button>,
+            <Popconfirm placement="topLeft" title={popConfirmText}
+                        onConfirm={this.onSubmit}
+                        okText="Yes"
+                        cancelText="No">
+                <Button key="submit" type="primary">
+                    {submitText}
+                </Button>
+            </Popconfirm>
+        ]
+
+        let footer = addPopConfirm ? modalFooterWithPopConfirm : modalFooter
 
         return(
             <div>
@@ -39,14 +64,7 @@ class ButtonModal extends React.Component {
                     title={modalTitle}
                     visible={isModalVisible}
                     onCancel={this.handleModalCancel}
-                    footer={[
-                        <Button key="back" onClick={this.handleModalCancel}>
-                            Cancel
-                        </Button>,
-                        <Button key="submit" type="primary" onClick={this.onSubmit}>
-                            {submitText}
-                        </Button>,
-                    ]}
+                    footer={footer}
                 >
                     {modalBody}
                 </Modal>
