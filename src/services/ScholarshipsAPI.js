@@ -199,6 +199,18 @@ class ScholarshipsAPI {
 
         return apiCompletionPromise;
     };
+
+    static assignReviewers = (id, reviewersPerApplication) => {
+        let data = {'reviewers_per_application': reviewersPerApplication}
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: data,
+            url: `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/assign-reviewers/`,
+        });
+
+        return apiCompletionPromise;
+    };
 }
 
 export default ScholarshipsAPI;

@@ -125,6 +125,20 @@ class ScholarshipManage extends React.Component {
     }
 
     autoAssignReviewers = () => {
+        const { scholarship, reviewersPerApplication } = this.state;
+
+        ScholarshipsAPI
+            .assignReviewers(scholarship.id, reviewersPerApplication)
+            .then(res=> {
+                const {scholarship, applications, unsubmitted_applications: unsubmittedApplications} =  res.data;
+                const responseMessage = `Scholarship reviewers have been assigned.`;
+
+                this.setState({scholarship, applications, unsubmittedApplications, responseMessage});
+            })
+            .catch(err=>{
+                console.log({err});
+                this.setState({responseMessage: "There was an error assigning reviewers.\n\n Please message us using the chat icon in the bottom right of your screen."});
+            })
 
     }
 
