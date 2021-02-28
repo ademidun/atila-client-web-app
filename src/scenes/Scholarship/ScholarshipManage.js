@@ -252,19 +252,19 @@ class ScholarshipManage extends React.Component {
                     popConfirmText={"Are you sure you want to send email?"}
                 />
 
-                <br />
-
-                <ButtonModal
-                    showModalButtonSize={"large"}
-                    showModalText={"Invite Collaborator"}
-                    modalTitle={"Invite Collaborator"}
-                    modalBody={inviteCollaboratorModalBody}
-                    submitText={"Send Invite"}
-                    onSubmit={this.inviteCollaborator}
-                />
-
                 {isScholarshipOwner &&
                 <>
+                    <br />
+                    {/*TEMPORARILY only allow the scholarship owner to see the invite button. Until the serializer
+                    for scholarship collaborators has been done.*/}
+                    <ButtonModal
+                        showModalButtonSize={"large"}
+                        showModalText={"Invite Collaborator"}
+                        modalTitle={"Invite Collaborator"}
+                        modalBody={inviteCollaboratorModalBody}
+                        submitText={"Send Invite"}
+                        onSubmit={this.inviteCollaborator}
+                    />
                     <br />
                     <ButtonModal
                         showModalButtonSize={"large"}
