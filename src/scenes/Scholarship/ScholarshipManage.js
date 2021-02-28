@@ -1,10 +1,10 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
-import {Table, Popconfirm, Button, Tag, Alert, Input, Radio} from "antd";
+import {Alert, Button, Input, Popconfirm, Radio, Table, Tag} from "antd";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
-import {WINNER_SELECTED_MESSAGE, BlindApplicationsExplanationMessage} from "../../models/Scholarship";
+import {BlindApplicationsExplanationMessage, WINNER_SELECTED_MESSAGE} from "../../models/Scholarship";
 import ButtonModal from "../../components/ButtonModal";
 
 class ScholarshipManage extends React.Component {
@@ -360,7 +360,7 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
         {
             title: <b>All Scores</b>,
             dataIndex: 'user_scores',
-            key: '2',
+            key: '3',
             // Could either use userScores or application.user_scores, they're the same.
             render: (userScores, application) => (
                 <React.Fragment>
@@ -390,9 +390,23 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
             ),
         },
         {
+            title: <b>Assigned Reviewers</b>,
+            dataIndex: 'assigned_reviewers',
+            key: '4',
+            render: (reviewers, application) => {
+                if (reviewers) {
+                    return reviewers.map(reviewer => (
+                        <>
+                        {reviewer.first_name} {reviewer.last_name}<br/>
+                        </>
+                    ))
+                }
+            },
+        },
+        {
             title: <b>Select Winner</b>,
             dataIndex: 'id',
-            key: '3',
+            key: '5',
             render: (applicationID, application) => (
                 <React.Fragment>
                     {application.is_submitted? renderWinnerButton(applicationID, scholarship, selectWinner) : "Cannot select unsubmitted application"}
