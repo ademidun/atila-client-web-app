@@ -50,13 +50,16 @@ let scholarshipFormConfigsPage1 = [
         type: 'checkbox',
         className: 'font-weight-bold',
     },
-    {
+    // Temporarily hide blind applications feature to prevent confusing the application process.
+    // We currently launched a bunch of new features and this might confuse new potential sponsors.
+    // We can make the blind applications feature available on a case-by-case basis if a scholarship sponsor wants it.
+/*     {
         keyName: 'is_blind_applications',
         placeholder:"Hide names of applicants until a winner is selected",
         type: 'checkbox',
         className: 'font-weight-bold',
         isHidden: (scholarship) => (!scholarship.is_atila_direct_application),
-    },
+    }, */
     {
         keyName: 'criteria_info',
         type: 'html_editor',
