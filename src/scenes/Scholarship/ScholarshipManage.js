@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
-import {Alert, Button, Input, Popconfirm, Radio, Table, Tag} from "antd";
+import {Alert, Button, Input, InputNumber, Popconfirm, Radio, Table, Tag} from "antd";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
 import {BlindApplicationsExplanationMessage, WINNER_SELECTED_MESSAGE} from "../../models/Scholarship";
@@ -143,12 +143,8 @@ class ScholarshipManage extends React.Component {
 
     }
 
-    updateReviewersPerApplication = (event) => {
-        if (event.preventDefault) {
-            event.preventDefault();
-        }
-        let numVal = Number.parseInt(event.target.value);
-        this.setState({reviewersPerApplication: numVal});
+    updateReviewersPerApplication = (reviewersPerApplication) => {
+        this.setState({reviewersPerApplication});
     }
 
     render() {
@@ -212,16 +208,17 @@ class ScholarshipManage extends React.Component {
             </>
         )
 
+        const { collaborators } = scholarship;
+        let numOfReviewers = collaborators.length + 1
+
         let autoAssignReviewersModalBody = (
             <>
                 <h6>Number of reviewers per application</h6>
-                <Input value={reviewersPerApplication}
-                       name="reviewers_per_application"
-                       placeholder="Reviewers Per Application"
-                       type="number"
-                       min="1"
-                       step="1"
-                       onChange={this.updateReviewersPerApplication} />
+                <InputNumber value={reviewersPerApplication}
+                             min={1}
+                             max={numOfReviewers}
+                             step={1}
+                             onChange={this.updateReviewersPerApplication} />
             </>
         )
 

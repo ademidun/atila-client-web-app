@@ -9,7 +9,6 @@ import {connect} from "react-redux";
 import AnalyticsService from "../../services/AnalyticsService";
 import ScholarshipShareSaveButtons from "./ScholarshipShareSaveButtons";
 import HelmetSeo from "../../components/HelmetSeo";
-import UserProfileAPI from "../../services/UserProfileAPI";
 import ApplicationsAPI from "../../services/ApplicationsAPI";
 import AtilaPointsPaywallModal from "../../components/AtilaPointsPaywallModal";
 import ScholarshipExtraCriteria from "./ScholarshipExtraCriteria";
