@@ -97,6 +97,22 @@ export const howToStartAScholarshipInformationItems = [
 
 ];
 
+
+
+export const startAScholarshipFeatures = [
+    {
+        title: "Easily score and manage all applications",
+        body: (<div>
+            <ol>
+                <li>Invite others to help you score applications</li>
+                <li>Sort and filter applications by score</li>
+            </ol>
+        </div>),
+        image: "https://i.imgur.com/b9J1uyA.png",
+        imageCaption: "",
+    },
+]
+
 class HowToStartAScholarship extends React.Component {
 
     componentDidMount() {
@@ -153,6 +169,15 @@ class HowToStartAScholarship extends React.Component {
                         <hr/>
                         <div>
                             {howToStartAScholarshipInformationItems.map(item => (
+                                <InformationWithImage item={item} />
+                            ))}
+                        </div>
+                        <hr/>
+                        <h1 className="col-sm-12 text-center">
+                            Features
+                        </h1>
+                        <div>
+                            {startAScholarshipFeatures.map(item => (
                                 <InformationWithImage item={item} />
                             ))}
                         </div>
