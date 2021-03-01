@@ -6,6 +6,7 @@ import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
 import {BlindApplicationsExplanationMessage, WINNER_SELECTED_MESSAGE} from "../../models/Scholarship";
 import ButtonModal from "../../components/ButtonModal";
+import {UserProfilePreview} from "../../components/ReferredByInput";
 
 class ScholarshipManage extends React.Component {
     constructor(props) {
@@ -208,19 +209,32 @@ class ScholarshipManage extends React.Component {
             </>
         )
 
-        const { collaborators } = scholarship;
-        let numOfReviewers = collaborators.length + 1
+        const { collaborators, owner_detail } = scholarship;
+
+        const reviewers = [owner_detail, ...collaborators]
 
         let autoAssignReviewersModalBody = (
             <>
                 <h6>Number of reviewers per application</h6>
                 <InputNumber value={reviewersPerApplication}
                              min={1}
-                             max={numOfReviewers}
+                             max={reviewers.length}
                              step={1}
                              onChange={this.updateReviewersPerApplication} />
+                {(reviewersPerApplication > reviewers.length || reviewersPerApplication < 1) &&
+                <p style={{"color": "red"}}>
+                    Reviewers per application must be {  reviewersPerApplication < 1 ?
+                    "greater than 0" : `less than or equal to the number of reviewers (${reviewers.length})`}
+                </p>
+                }
             </>
         )
+
+        let reviewersPreview = reviewers.map(reviewer => (
+            <div style={{"marginRight": "3%"}}>
+                <UserProfilePreview userProfile={reviewer} linkProfile={true}/>
+            </div>
+        ))
 
         return (
             <div className="container mt-5">
@@ -275,6 +289,8 @@ class ScholarshipManage extends React.Component {
                 }
 
                 <br />
+                <h5>Reviewers</h5>
+                {reviewersPreview}
                 <br />
 
                 {/*
