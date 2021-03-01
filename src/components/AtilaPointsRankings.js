@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import { Spin, Alert } from 'antd';
 import { getErrorMessage } from "../services/utils";
 import UserProfileAPI from '../services/UserProfileAPI';
-import { UserProfileReferralPreview } from "./ReferredByInput";
+import { UserProfilePreview } from "./ReferredByInput";
 import defaultSeoContent from './HelmetSeo';
 import HelmetSeo from "./HelmetSeo";
 import { AtilaPointsPopover } from '../scenes/UserProfile/UserProfileReferralManagement';
@@ -81,7 +81,7 @@ class AtilaPointsRankings extends React.Component {
                         </th>
                         <td>
                             <Link to={`/profile/${userProfile.username}`} style={{display: "block"}}>
-                            <UserProfileReferralPreview userProfile={userProfile} />
+                            <UserProfilePreview userProfile={userProfile} />
                             </Link>
                         </td>
                         <td className="font-weight-bold">

@@ -4,7 +4,7 @@ import { Spin, Menu, Alert, Button, Dropdown } from 'antd';
 import { getErrorMessage, prettifyKeys } from "../../services/utils";
 import UserProfileAPI from '../../services/UserProfileAPI';
 import { DownOutlined } from '@ant-design/icons';
-import { UserProfileReferralPreview } from '../../components/ReferredByInput';
+import { UserProfilePreview } from '../../components/ReferredByInput';
 
 
 class UserProfileReferredUsers extends React.Component {
@@ -78,7 +78,7 @@ class UserProfileReferredUsers extends React.Component {
                 <Menu>
                     {referredUserProfiles.map(userProfile => (
                         <Menu.Item key={userProfile.username}>
-                            <UserProfileReferralPreview  userProfile={userProfile} />
+                            <UserProfilePreview userProfile={userProfile} />
                         </Menu.Item>
                     ))}
                 </Menu>
