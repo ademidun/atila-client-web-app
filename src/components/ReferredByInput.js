@@ -11,7 +11,7 @@ import { getErrorMessage } from '../services/utils';
 import { Link } from 'react-router-dom';
 const { Option } = AutoComplete;
 
-export const UserProfileReferralPreview  = ({userProfile, linkProfile=false}) => {
+export const UserProfilePreview  = ({userProfile, linkProfile=false}) => {
     
     let nameDisplay= `${userProfile.first_name} ${userProfile.last_name} (${userProfile.username})`;
 
@@ -167,7 +167,7 @@ class ReferredByInput extends React.Component {
                                 value={userProfile.username || userProfile}
                                 // custom userprofile prop must be all lowercase
                                 userprofile={userProfile}>
-                            <UserProfileReferralPreview userProfile={userProfile} />
+                            <UserProfilePreview userProfile={userProfile} />
                         </Option>
                     ))}
             </AutoComplete>
@@ -175,7 +175,7 @@ class ReferredByInput extends React.Component {
       {referredByUserProfile && 
       <div className="my-2">
         Referred by: <br/>
-        <UserProfileReferralPreview userProfile={referredByUserProfile} />
+        <UserProfilePreview userProfile={referredByUserProfile} />
         <MinusCircleOutlined
             style={{
                 fontSize: "30px",

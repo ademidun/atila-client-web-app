@@ -1,11 +1,12 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
-import {Table, Popconfirm, Button, Tag, Alert, Modal, Input, Radio} from "antd";
+import {Alert, Button, Input, InputNumber, Popconfirm, Radio, Table, Tag} from "antd";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
-import {WINNER_SELECTED_MESSAGE, BlindApplicationsExplanationMessage} from "../../models/Scholarship";
+import {BlindApplicationsExplanationMessage, WINNER_SELECTED_MESSAGE} from "../../models/Scholarship";
 import ButtonModal from "../../components/ButtonModal";
+import {UserProfilePreview} from "../../components/ReferredByInput";
 
 class ScholarshipManage extends React.Component {
     constructor(props) {
@@ -17,9 +18,11 @@ class ScholarshipManage extends React.Component {
             unsubmittedApplications: null,
             isLoadingApplications: false,
             responseMessage: null,
-            isModalVisible: false,
             inviteCollaboratorEmail: '',
-            applicationTypeToEmail: 'all' // This is only for the modal to email applicants
+            // This is called email, but currently it is for inviting using usernames. This is because
+            //  eventually we might switch to using emails.
+            applicationTypeToEmail: 'all', // This is only for the modal to email applicants
+            reviewersPerApplication: 2,
         }
     }
 
@@ -66,10 +69,6 @@ class ScholarshipManage extends React.Component {
             })
     };
 
-    showModal = () => {
-        this.setState({isModalVisible: true});
-    };
-
     emailApplicants = () => {
         const { scholarship, applicationTypeToEmail } = this.state;
         const scholarshipID = scholarship.id;
@@ -88,12 +87,6 @@ class ScholarshipManage extends React.Component {
                 console.log({err});
                 this.setState({responseMessage: "There was an error emailing the applicants.\n\n Please message us using the chat icon in the bottom right of your screen."});
             });
-
-        this.setState({isModalVisible: false});
-    };
-
-    handleModalCancel = () => {
-        this.setState({isModalVisible: false});
     };
 
     onRadioClick = e => {
@@ -132,10 +125,33 @@ class ScholarshipManage extends React.Component {
             })
     }
 
+    autoAssignReviewers = () => {
+        const { scholarship, reviewersPerApplication } = this.state;
+        // Do some sort of bounds checking for reviewersPerApplication
+
+        ScholarshipsAPI
+            .assignReviewers(scholarship.id, reviewersPerApplication)
+            .then(res=> {
+                const {scholarship, applications, unsubmitted_applications: unsubmittedApplications} =  res.data;
+                const responseMessage = `Scholarship reviewers have been assigned.`;
+
+                this.setState({scholarship, applications, unsubmittedApplications, responseMessage});
+            })
+            .catch(err=>{
+                console.log({err});
+                this.setState({responseMessage: "There was an error assigning reviewers.\n\n Please message us using the chat icon in the bottom right of your screen."});
+            })
+
+    }
+
+    updateReviewersPerApplication = (reviewersPerApplication) => {
+        this.setState({reviewersPerApplication});
+    }
+
     render() {
         const { userProfile } = this.props;
         const { scholarship, applications, isLoadingApplications,
-            unsubmittedApplications, responseMessage, isModalVisible, applicationTypeToEmail } = this.state;
+            unsubmittedApplications, responseMessage, applicationTypeToEmail, reviewersPerApplication } = this.state;
         const { TextArea } = Input;
         // const confirmText = "Are you sure you want to unsubmit all submitted applications? This action cannot be undone.";
 
@@ -169,10 +185,56 @@ class ScholarshipManage extends React.Component {
 
         let inviteCollaboratorModalBody = (
                 <Input
-                    placeholder={"Collaborator's email..."}
+                    placeholder={"Collaborator's Atila username..."}
                     onChange={(e)=>{this.setState({inviteCollaboratorEmail: e.target.value})}}
                 />
         )
+        let isScholarshipOwner = userProfile.user === scholarship.owner
+
+        let emailApplicantsModalBody = (
+            <>
+                <Input id='email-subject' className="mb-2" placeholder={"Email subject..."}/>
+                <TextArea id='email-body' rows={6} placeholder={"Email body..."}/>
+                <br />
+                <br />
+                <b>Which applications would you like to send this email to?</b>
+                <br />
+                <Radio.Group
+                    options={applicationOptions}
+                    onChange={this.onRadioClick}
+                    value={applicationTypeToEmail}
+                    optionType="button"
+                    buttonStyle="solid"
+                />
+            </>
+        )
+
+        const { collaborators, owner_detail } = scholarship;
+
+        const reviewers = [owner_detail, ...collaborators]
+
+        let autoAssignReviewersModalBody = (
+            <>
+                <h6>Number of reviewers per application</h6>
+                <InputNumber value={reviewersPerApplication}
+                             min={1}
+                             max={reviewers.length}
+                             step={1}
+                             onChange={this.updateReviewersPerApplication} />
+                {(reviewersPerApplication > reviewers.length || reviewersPerApplication < 1) &&
+                <p style={{"color": "red"}}>
+                    Reviewers per application must be {  reviewersPerApplication < 1 ?
+                    "greater than 0" : `less than or equal to the number of reviewers (${reviewers.length})`}
+                </p>
+                }
+            </>
+        )
+
+        let reviewersPreview = reviewers.map(reviewer => (
+            <div style={{"marginRight": "3%"}}>
+                <UserProfilePreview userProfile={reviewer} linkProfile={true}/>
+            </div>
+        ))
 
         return (
             <div className="container mt-5">
@@ -190,56 +252,45 @@ class ScholarshipManage extends React.Component {
                 <br />
                 <br />
 
-                <Button type="primary" size={"large"} onClick={this.showModal}>
-                    Email Applicants...
-                </Button>
-                <Modal
-                    title='Draft Email'
-                    visible={isModalVisible}
-                    onCancel={this.handleModalCancel}
-                    footer={[
-                        <Button key="back" onClick={this.handleModalCancel}>
-                            Cancel
-                        </Button>,
-                        <Popconfirm placement="topLeft" title="Are you sure you want to send email?"
-                                    onConfirm={this.emailApplicants}
-                                    okText="Yes"
-                                    cancelText="No">
-                            <Button key="submit" type="primary">
-                                Send Email...
-                            </Button>
-                        </Popconfirm>
-                            ,
-                    ]}
-                >
-                    <Input id='email-subject' className="mb-2" placeholder={"Email subject..."}/>
-                    <TextArea id='email-body' rows={6} placeholder={"Email body..."}/>
-                    <br />
-                    <br />
-                    <b>Which applications would you like to send this email to?</b>
-                    <br />
-                    <Radio.Group
-                        options={applicationOptions}
-                        onChange={this.onRadioClick}
-                        value={applicationTypeToEmail}
-                        optionType="button"
-                        buttonStyle="solid"
-                    />
-                </Modal>
-
-                <br />
-                <br />
-
                 <ButtonModal
                     showModalButtonSize={"large"}
-                    showModalText={"Invite Collaborator"}
-                    modalTitle={"Invite Collaborator"}
-                    modalBody={inviteCollaboratorModalBody}
-                    submitText={"Send Invite"}
-                    onSubmit={this.inviteCollaborator}
+                    showModalText={"Email Applicants..."}
+                    modalTitle={"Draft Email"}
+                    modalBody={emailApplicantsModalBody}
+                    submitText={"Send Email..."}
+                    onSubmit={this.emailApplicants}
+                    addPopConfirm={true}
+                    popConfirmText={"Are you sure you want to send email?"}
                 />
 
+                {isScholarshipOwner &&
+                <>
+                    <br />
+                    {/*TEMPORARILY only allow the scholarship owner to see the invite button. Until the serializer
+                    for scholarship collaborators has been done.*/}
+                    <ButtonModal
+                        showModalButtonSize={"large"}
+                        showModalText={"Invite Collaborator"}
+                        modalTitle={"Invite Collaborator"}
+                        modalBody={inviteCollaboratorModalBody}
+                        submitText={"Send Invite"}
+                        onSubmit={this.inviteCollaborator}
+                    />
+                    <br />
+                    <ButtonModal
+                        showModalButtonSize={"large"}
+                        showModalText={"Auto Assign Reviewers"}
+                        modalTitle={"Auto Assign Reviewers"}
+                        modalBody={autoAssignReviewersModalBody}
+                        submitText={"Confirm Auto Assigning"}
+                        onSubmit={this.autoAssignReviewers}
+                    />
+                </>
+                }
+
                 <br />
+                <h5>Reviewers</h5>
+                {reviewersPreview}
                 <br />
 
                 {/*
@@ -278,6 +329,14 @@ class ScholarshipManage extends React.Component {
 }
 
 function ApplicationsTable({ applications, scholarship, selectWinner }){
+    const { collaborators, owner_detail } = scholarship;
+
+    let allReviewers = [...collaborators, owner_detail]
+
+    let assignedReviewersFilters = allReviewers.map(collaborator => {
+        return {'text': collaborator.username,
+                'value': collaborator.username}
+    })
 
     const columns = [
         {
@@ -322,7 +381,7 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
         {
             title: <b>All Scores</b>,
             dataIndex: 'user_scores',
-            key: '2',
+            key: '3',
             // Could either use userScores or application.user_scores, they're the same.
             render: (userScores, application) => (
                 <React.Fragment>
@@ -352,9 +411,25 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
             ),
         },
         {
+            title: <b>Assigned Reviewers</b>,
+            dataIndex: 'assigned_reviewers',
+            key: '4',
+            filters: assignedReviewersFilters,
+            onFilter: (value, application) => applicationReviewersUsernames(application).includes(value),
+            render: (reviewers, application) => {
+                if (reviewers) {
+                    return reviewers.map(reviewer => (
+                        <>
+                            {reviewer.first_name} {reviewer.last_name}<br/>
+                        </>
+                    ))
+                }
+            },
+        },
+        {
             title: <b>Select Winner</b>,
             dataIndex: 'id',
-            key: '3',
+            key: '5',
             render: (applicationID, application) => (
                 <React.Fragment>
                     {application.is_submitted? renderWinnerButton(applicationID, scholarship, selectWinner) : "Cannot select unsubmitted application"}
@@ -394,6 +469,16 @@ const renderWinnerButton = (applicationID, scholarship, selectWinner) => {
         </Popconfirm>
     )
 };
+
+const applicationReviewersUsernames = application => {
+    const { assigned_reviewers } = application;
+    if (assigned_reviewers) {
+        let usernames = assigned_reviewers.map(reviewer => reviewer.username);
+        return usernames;
+    } else {
+        return []
+    }
+}
 
 const mapStateToProps = state => {
     return { userProfile: state.data.user.loggedInUserProfile };
