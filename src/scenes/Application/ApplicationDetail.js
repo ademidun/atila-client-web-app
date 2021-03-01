@@ -542,7 +542,7 @@ class ApplicationDetail extends  React.Component{
         let applicationScoreContent = null;
 
         if (!isOwnerOfApplication) {
-            applicationScoreContent = (<div>
+            applicationScoreContent = (<div className="mb-3">
                 <p>
                     Give an application a score between 0-10 to help you rank the applications.<br />
                     These scores will not be shared with the applicant.
@@ -551,7 +551,10 @@ class ApplicationDetail extends  React.Component{
                        type="number" step={0.01} min={0} max={10}
                        onChange={this.updateApplicationScore}
                        value={applicationScore}/>
-                <p>Your score is automatically saved</p>
+                <p>Your score is automatically saved</p><br/>
+                <Link to={`/scholarship/${scholarship.id}/manage`}> 
+                    View all applications
+                </Link>
             </div>);
         }
 
