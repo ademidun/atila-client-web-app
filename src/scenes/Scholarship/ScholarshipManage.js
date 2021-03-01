@@ -405,7 +405,10 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
             ),
         },
         {
-            title: <b>Average Score</b>,
+            title: <p>
+            <b>Average Score </b>
+            {!showScores && <p>Click "Show Scores" to see reviewer scores</p>}
+            </p>,
             dataIndex: 'average_user_score',
             key: 'average_user_score',
             filters: possibleScoresFilter,
@@ -421,6 +424,11 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
                 return a.average_user_score - b.average_user_score;
             },
             sortDirections: ['descend', 'ascend'],
+            render: (average_user_score, application) => (
+                <>
+                    {showScores ? average_user_score : null }
+                </>
+            )
         },
         {
             title: <p>
