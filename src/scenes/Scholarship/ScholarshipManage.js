@@ -316,6 +316,14 @@ class ScholarshipManage extends React.Component {
 }
 
 function ApplicationsTable({ applications, scholarship, selectWinner }){
+    const { collaborators, owner_detail } = scholarship;
+
+    let allReviewers = [...collaborators, owner_detail]
+
+    let assignedReviewersFilters = allReviewers.map(collaborator => {
+        return {'text': collaborator.username,
+                'value': collaborator.username}
+    })
 
     const columns = [
         {
@@ -393,11 +401,13 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
             title: <b>Assigned Reviewers</b>,
             dataIndex: 'assigned_reviewers',
             key: '4',
+            filters: assignedReviewersFilters,
+            onFilter: (value, application) => applicationReviewersUsernames(application).includes(value),
             render: (reviewers, application) => {
                 if (reviewers) {
                     return reviewers.map(reviewer => (
                         <>
-                        {reviewer.first_name} {reviewer.last_name}<br/>
+                            {reviewer.first_name} {reviewer.last_name}<br/>
                         </>
                     ))
                 }
@@ -446,6 +456,16 @@ const renderWinnerButton = (applicationID, scholarship, selectWinner) => {
         </Popconfirm>
     )
 };
+
+const applicationReviewersUsernames = application => {
+    const { assigned_reviewers } = application;
+    if (assigned_reviewers) {
+        let usernames = assigned_reviewers.map(reviewer => reviewer.username);
+        return usernames;
+    } else {
+        return []
+    }
+}
 
 const mapStateToProps = state => {
     return { userProfile: state.data.user.loggedInUserProfile };

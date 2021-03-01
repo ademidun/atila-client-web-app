@@ -74,7 +74,8 @@ class ScholarshipDetail extends React.Component {
         ScholarshipsAPI.getSlug(slug)
             .then(res => {
                 const { scholarship, contributors } = res.data;
-                this.setState({ scholarship, contributors }, () => {
+                const { owner_detail } = scholarship;
+                this.setState({ scholarship, contributors, scholarshipUserProfile: owner_detail }, () => {
                     if (location && location.hash) {
                         scrollToElement(location.hash);
                     }
@@ -103,10 +104,6 @@ class ScholarshipDetail extends React.Component {
                             this.setState({pageViews: {guestPageViews}});
                         }
                     });
-                UserProfileAPI.get(scholarship.owner)
-                    .then(res => {
-                        this.setState({ scholarshipUserProfile: res.data });
-                    })
             })
             .catch((err) => {
                 let errorMessage = (<div className="text-center">
