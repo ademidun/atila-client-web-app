@@ -398,7 +398,11 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
                             {Object.keys(application.user_scores).map(scorerId => {
                                 return (
                                     <tr key={scorerId}>
-                                        <td>{application.user_scores[scorerId].user_id} </td>
+                                        <td>{application.user_scores[scorerId].user ?
+                                            <UserProfilePreview userProfile={application.user_scores[scorerId].user} /> :
+                                            application.user_scores[scorerId].user_id  
+                                            } 
+                                        </td>
                                         <td>{application.user_scores[scorerId].score}</td>
                                     </tr>
                                 )
