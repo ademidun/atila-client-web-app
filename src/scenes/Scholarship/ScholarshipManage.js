@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 import {Alert, Button, Input, InputNumber, Popconfirm, Radio, Table, Tag} from "antd";
@@ -331,7 +331,9 @@ class ScholarshipManage extends React.Component {
 function ApplicationsTable({ applications, scholarship, selectWinner }){
     const { collaborators, owner_detail } = scholarship;
 
-    let allReviewers = [...collaborators, owner_detail]
+    let allReviewers = [...collaborators, owner_detail];
+    // Automatically show the scores by default if the winner has been selected.
+    const [showScores, setShowScores] = useState(scholarship.is_winner_selected);
 
     let assignedReviewersFilters = allReviewers.map(collaborator => {
         return {'text': collaborator.username,
@@ -379,13 +381,16 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
             sortDirections: ['descend', 'ascend'],
         },
         {
-            title: <b>All Scores</b>,
+            title: <p>
+            <b>Reviewer Scores </b>
+            {!showScores && <p>Click "Show Scores" to see reviewer scores</p>}
+            </p>,
             dataIndex: 'user_scores',
             key: '3',
             // Could either use userScores or application.user_scores, they're the same.
             render: (userScores, application) => (
                 <React.Fragment>
-                    {application.user_scores && Object.keys(application.user_scores).length > 0 &&
+                    {showScores && application.user_scores && Object.keys(application.user_scores).length > 0 &&
 
                     <table className="table">
                         <thead>
@@ -410,6 +415,7 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
                         </tbody>
                     </table>
 
+                    
                     }
                 </React.Fragment>
             ),
@@ -442,7 +448,13 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
         },
     ];
 
-    return (<Table columns={columns} dataSource={applications} rowKey="id" />)
+    return (<>
+    <Button onClick={() => setShowScores(!showScores)} className="mb-3">
+        {showScores ? "Hide " : "Show "} Scores
+    </Button>
+    <Table columns={columns} dataSource={applications} rowKey="id" />
+    </>
+    )
 }
 
 const todayDate = new Date().toISOString();
