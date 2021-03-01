@@ -251,8 +251,8 @@ class ScholarshipManage extends React.Component {
         )
 
         let reviewersPreview = reviewers.map(reviewer => (
-            <div style={{"marginRight": "3%"}}>
-                <UserProfilePreview userProfile={reviewer} linkProfile={true}/>
+            <div style={{"marginRight": "3%"}} key={reviewer.user}>
+                <UserProfilePreview userProfile={reviewer.user} linkProfile={true}/>
             </div>
         ))
 
@@ -455,10 +455,10 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
             render: (reviewers, application) => {
                 if (reviewers) {
                     return reviewers.map(reviewer => (
-                        <>
+                        <div key={reviewer.user}>
                         <UserProfilePreview userProfile={reviewer} linkProfile={true}/>
                         <hr/>
-                        </>
+                        </div>
                     ))
                 }
             },
