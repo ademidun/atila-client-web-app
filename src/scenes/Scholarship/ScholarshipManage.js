@@ -252,7 +252,7 @@ class ScholarshipManage extends React.Component {
 
         let reviewersPreview = reviewers.map(reviewer => (
             <div style={{"marginRight": "3%"}} key={reviewer.user}>
-                <UserProfilePreview userProfile={reviewer.user} linkProfile={true}/>
+                <UserProfilePreview userProfile={reviewer} linkProfile={true}/>
             </div>
         ))
 
