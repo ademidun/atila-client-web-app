@@ -361,9 +361,18 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
     // Automatically show the scores by default if the winner has been selected.
     const [showScores, setShowScores] = useState(scholarship.is_winner_selected);
 
-    let assignedReviewersFilters = allReviewers.map(collaborator => {
+    let assignedReviewersFilter = allReviewers.map(collaborator => {
         return {'text': collaborator.username,
                 'value': collaborator.username}
+    })
+
+    const possibleScores = [null, ...Array(11).keys()];
+
+    const possibleScoresFilter = possibleScores.map(possibleScore => {
+        return {
+                'text': possibleScore === null ? "None" : possibleScore,
+                'value': possibleScore
+            }
     })
 
     const columns = [
@@ -399,10 +408,17 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
             title: <b>Average Score</b>,
             dataIndex: 'average_user_score',
             key: 'average_user_score',
+            filters: possibleScoresFilter,
+            onFilter: (value, application) => application.average_user_score === null ?  value === application.average_user_score : value === Number.parseInt(application.average_user_score),
             sorter: (a, b) => {
-                const aScore = a.average_user_score || 0;
-                const bScore = b.average_user_score || 0;
-                return aScore - bScore;
+                if (!a.average_user_score) {
+                    return -1;
+                }
+                else if (!b.average_user_score) {
+                    return 1;
+                }
+                
+                return a.average_user_score - b.average_user_score;
             },
             sortDirections: ['descend', 'ascend'],
         },
@@ -450,7 +466,7 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
             title: <b>Assigned Reviewers</b>,
             dataIndex: 'assigned_reviewers',
             key: '4',
-            filters: assignedReviewersFilters,
+            filters: assignedReviewersFilter,
             onFilter: (value, application) => applicationReviewersUsernames(application).includes(value),
             render: (reviewers, application) => {
                 if (reviewers) {
