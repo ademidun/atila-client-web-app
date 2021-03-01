@@ -456,7 +456,8 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
                 if (reviewers) {
                     return reviewers.map(reviewer => (
                         <>
-                            {reviewer.first_name} {reviewer.last_name}<br/>
+                        <UserProfilePreview userProfile={reviewer} linkProfile={true}/>
+                        <hr/>
                         </>
                     ))
                 }
