@@ -23,6 +23,7 @@ class ScholarshipManage extends React.Component {
             //  eventually we might switch to using emails.
             applicationTypeToEmail: 'all', // This is only for the modal to email applicants
             reviewersPerApplication: 2,
+            isLoadingMessage: null,
         }
     }
 
@@ -55,7 +56,7 @@ class ScholarshipManage extends React.Component {
 
         const winners = {winners: applicationID};
         const scholarshipID = scholarship.id;
-
+        this.setState({isLoadingMessage: "Messaging winners..."});
         ScholarshipsAPI
             .selectWinners(scholarshipID, winners)
             .then((res)=>{
@@ -67,6 +68,9 @@ class ScholarshipManage extends React.Component {
                 console.log({err});
                 this.setState({responseMessage: "There was an error selecting a winner.\n\n Please message us using the chat icon in the bottom right of your screen."});
             })
+            .then(() => {
+                this.setState({isLoadingMessage: null});
+            })
     };
 
     emailApplicants = () => {
@@ -75,6 +79,7 @@ class ScholarshipManage extends React.Component {
         const subject = document.getElementById('email-subject').value;
         const body = document.getElementById('email-body').value;
         const postData = {'subject': subject, 'body': body, 'type': applicationTypeToEmail};
+        this.setState({isLoadingMessage: "Emailing applicants..."});
 
         ScholarshipsAPI
             .emailApplicants(scholarshipID, postData)
@@ -86,6 +91,9 @@ class ScholarshipManage extends React.Component {
             .catch(err=>{
                 console.log({err});
                 this.setState({responseMessage: "There was an error emailing the applicants.\n\n Please message us using the chat icon in the bottom right of your screen."});
+            })
+            .then(() => {
+                this.setState({isLoadingMessage: null});
             });
     };
 
@@ -96,6 +104,7 @@ class ScholarshipManage extends React.Component {
     unSubmitApplications = () => {
         const { scholarship } = this.state;
         const scholarshipID = scholarship.id;
+        this.setState({isLoadingMessage: "Unsubmitting applications..."});
         ScholarshipsAPI
             .unSubmitApplications(scholarshipID, {})
             .then(res=> {
@@ -107,10 +116,14 @@ class ScholarshipManage extends React.Component {
                 console.log({err});
                 this.setState({responseMessage: "There was an error unsubmitting the applications.\n\n Please message us using the chat icon in the bottom right of your screen."});
             })
+            .then(() => {
+                this.setState({isLoadingMessage: null});
+            });
     };
 
     inviteCollaborator = () => {
         const { scholarship, inviteCollaboratorEmail } = this.state;
+        this.setState({isLoadingMessage: "Inviting collaborators..."});
         ScholarshipsAPI
             .inviteCollaborator(scholarship.id, inviteCollaboratorEmail)
             .then(res => {
@@ -123,11 +136,14 @@ class ScholarshipManage extends React.Component {
                 console.log({err});
                 this.setState({responseMessage: `There was an error inviting ${inviteCollaboratorEmail}.\n\n Please message us using the chat icon in the bottom right of your screen.`})
             })
+            .then(() => {
+                this.setState({isLoadingMessage: null});
+            });
     }
 
     autoAssignReviewers = () => {
         const { scholarship, reviewersPerApplication } = this.state;
-        // Do some sort of bounds checking for reviewersPerApplication
+        this.setState({isLoadingMessage: "Auto assigning reviewers..."});
 
         ScholarshipsAPI
             .assignReviewers(scholarship.id, reviewersPerApplication)
@@ -141,6 +157,9 @@ class ScholarshipManage extends React.Component {
                 console.log({err});
                 this.setState({responseMessage: "There was an error assigning reviewers.\n\n Please message us using the chat icon in the bottom right of your screen."});
             })
+            .then(() => {
+                this.setState({isLoadingMessage: null});
+            });
 
     }
 
@@ -151,7 +170,8 @@ class ScholarshipManage extends React.Component {
     render() {
         const { userProfile } = this.props;
         const { scholarship, applications, isLoadingApplications,
-            unsubmittedApplications, responseMessage, applicationTypeToEmail, reviewersPerApplication } = this.state;
+            unsubmittedApplications, responseMessage, applicationTypeToEmail,
+             reviewersPerApplication, isLoadingMessage } = this.state;
         const { TextArea } = Input;
         // const confirmText = "Are you sure you want to unsubmit all submitted applications? This action cannot be undone.";
 
@@ -260,6 +280,7 @@ class ScholarshipManage extends React.Component {
                     submitText={"Send Email..."}
                     onSubmit={this.emailApplicants}
                     addPopConfirm={true}
+                    disabled={isLoadingMessage}
                     popConfirmText={"Are you sure you want to send email?"}
                 />
 
@@ -275,6 +296,7 @@ class ScholarshipManage extends React.Component {
                         modalBody={inviteCollaboratorModalBody}
                         submitText={"Send Invite"}
                         onSubmit={this.inviteCollaborator}
+                        disabled={isLoadingMessage}
                     />
                     <br />
                     <ButtonModal
@@ -284,8 +306,12 @@ class ScholarshipManage extends React.Component {
                         modalBody={autoAssignReviewersModalBody}
                         submitText={"Confirm Auto Assigning"}
                         onSubmit={this.autoAssignReviewers}
+                        disabled={isLoadingMessage}
                     />
                 </>
+                }
+                {isLoadingMessage && 
+                <Loading title={isLoadingMessage} className='mt-3' />
                 }
 
                 <br />
