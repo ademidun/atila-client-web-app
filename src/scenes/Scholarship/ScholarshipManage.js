@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 import {Alert, Button, Input, InputNumber, Popconfirm, Radio, Table, Tag} from "antd";
@@ -23,6 +23,7 @@ class ScholarshipManage extends React.Component {
             //  eventually we might switch to using emails.
             applicationTypeToEmail: 'all', // This is only for the modal to email applicants
             reviewersPerApplication: 2,
+            isLoadingMessage: null,
         }
     }
 
@@ -55,7 +56,7 @@ class ScholarshipManage extends React.Component {
 
         const winners = {winners: applicationID};
         const scholarshipID = scholarship.id;
-
+        this.setState({isLoadingMessage: "Messaging winners..."});
         ScholarshipsAPI
             .selectWinners(scholarshipID, winners)
             .then((res)=>{
@@ -67,6 +68,9 @@ class ScholarshipManage extends React.Component {
                 console.log({err});
                 this.setState({responseMessage: "There was an error selecting a winner.\n\n Please message us using the chat icon in the bottom right of your screen."});
             })
+            .then(() => {
+                this.setState({isLoadingMessage: null});
+            })
     };
 
     emailApplicants = () => {
@@ -75,6 +79,7 @@ class ScholarshipManage extends React.Component {
         const subject = document.getElementById('email-subject').value;
         const body = document.getElementById('email-body').value;
         const postData = {'subject': subject, 'body': body, 'type': applicationTypeToEmail};
+        this.setState({isLoadingMessage: "Emailing applicants..."});
 
         ScholarshipsAPI
             .emailApplicants(scholarshipID, postData)
@@ -86,6 +91,9 @@ class ScholarshipManage extends React.Component {
             .catch(err=>{
                 console.log({err});
                 this.setState({responseMessage: "There was an error emailing the applicants.\n\n Please message us using the chat icon in the bottom right of your screen."});
+            })
+            .then(() => {
+                this.setState({isLoadingMessage: null});
             });
     };
 
@@ -96,6 +104,7 @@ class ScholarshipManage extends React.Component {
     unSubmitApplications = () => {
         const { scholarship } = this.state;
         const scholarshipID = scholarship.id;
+        this.setState({isLoadingMessage: "Unsubmitting applications..."});
         ScholarshipsAPI
             .unSubmitApplications(scholarshipID, {})
             .then(res=> {
@@ -107,10 +116,14 @@ class ScholarshipManage extends React.Component {
                 console.log({err});
                 this.setState({responseMessage: "There was an error unsubmitting the applications.\n\n Please message us using the chat icon in the bottom right of your screen."});
             })
+            .then(() => {
+                this.setState({isLoadingMessage: null});
+            });
     };
 
     inviteCollaborator = () => {
         const { scholarship, inviteCollaboratorEmail } = this.state;
+        this.setState({isLoadingMessage: "Inviting collaborators..."});
         ScholarshipsAPI
             .inviteCollaborator(scholarship.id, inviteCollaboratorEmail)
             .then(res => {
@@ -123,11 +136,14 @@ class ScholarshipManage extends React.Component {
                 console.log({err});
                 this.setState({responseMessage: `There was an error inviting ${inviteCollaboratorEmail}.\n\n Please message us using the chat icon in the bottom right of your screen.`})
             })
+            .then(() => {
+                this.setState({isLoadingMessage: null});
+            });
     }
 
     autoAssignReviewers = () => {
         const { scholarship, reviewersPerApplication } = this.state;
-        // Do some sort of bounds checking for reviewersPerApplication
+        this.setState({isLoadingMessage: "Auto assigning reviewers..."});
 
         ScholarshipsAPI
             .assignReviewers(scholarship.id, reviewersPerApplication)
@@ -141,6 +157,9 @@ class ScholarshipManage extends React.Component {
                 console.log({err});
                 this.setState({responseMessage: "There was an error assigning reviewers.\n\n Please message us using the chat icon in the bottom right of your screen."});
             })
+            .then(() => {
+                this.setState({isLoadingMessage: null});
+            });
 
     }
 
@@ -151,7 +170,8 @@ class ScholarshipManage extends React.Component {
     render() {
         const { userProfile } = this.props;
         const { scholarship, applications, isLoadingApplications,
-            unsubmittedApplications, responseMessage, applicationTypeToEmail, reviewersPerApplication } = this.state;
+            unsubmittedApplications, responseMessage, applicationTypeToEmail,
+             reviewersPerApplication, isLoadingMessage } = this.state;
         const { TextArea } = Input;
         // const confirmText = "Are you sure you want to unsubmit all submitted applications? This action cannot be undone.";
 
@@ -231,7 +251,7 @@ class ScholarshipManage extends React.Component {
         )
 
         let reviewersPreview = reviewers.map(reviewer => (
-            <div style={{"marginRight": "3%"}}>
+            <div style={{"marginRight": "3%"}} key={reviewer.user}>
                 <UserProfilePreview userProfile={reviewer} linkProfile={true}/>
             </div>
         ))
@@ -260,6 +280,7 @@ class ScholarshipManage extends React.Component {
                     submitText={"Send Email..."}
                     onSubmit={this.emailApplicants}
                     addPopConfirm={true}
+                    disabled={isLoadingMessage}
                     popConfirmText={"Are you sure you want to send email?"}
                 />
 
@@ -275,6 +296,7 @@ class ScholarshipManage extends React.Component {
                         modalBody={inviteCollaboratorModalBody}
                         submitText={"Send Invite"}
                         onSubmit={this.inviteCollaborator}
+                        disabled={isLoadingMessage}
                     />
                     <br />
                     <ButtonModal
@@ -284,8 +306,12 @@ class ScholarshipManage extends React.Component {
                         modalBody={autoAssignReviewersModalBody}
                         submitText={"Confirm Auto Assigning"}
                         onSubmit={this.autoAssignReviewers}
+                        disabled={isLoadingMessage}
                     />
                 </>
+                }
+                {isLoadingMessage && 
+                <Loading title={isLoadingMessage} className='mt-3' />
                 }
 
                 <br />
@@ -331,11 +357,22 @@ class ScholarshipManage extends React.Component {
 function ApplicationsTable({ applications, scholarship, selectWinner }){
     const { collaborators, owner_detail } = scholarship;
 
-    let allReviewers = [...collaborators, owner_detail]
+    let allReviewers = [...collaborators, owner_detail];
+    // Automatically show the scores by default if the winner has been selected.
+    const [showScores, setShowScores] = useState(scholarship.is_winner_selected);
 
-    let assignedReviewersFilters = allReviewers.map(collaborator => {
+    let assignedReviewersFilter = allReviewers.map(collaborator => {
         return {'text': collaborator.username,
                 'value': collaborator.username}
+    })
+
+    const possibleScores = [null, ...Array(11).keys()];
+
+    const possibleScoresFilter = possibleScores.map(possibleScore => {
+        return {
+                'text': possibleScore === null ? "None" : possibleScore,
+                'value': possibleScore
+            }
     })
 
     const columns = [
@@ -368,24 +405,42 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
             ),
         },
         {
-            title: <b>Average Score</b>,
+            title: <p>
+            <b>Average Score </b>
+            {!showScores && <p>Click "Show Scores" to see reviewer scores</p>}
+            </p>,
             dataIndex: 'average_user_score',
             key: 'average_user_score',
+            filters: possibleScoresFilter,
+            onFilter: (value, application) => application.average_user_score === null ?  value === application.average_user_score : value === Number.parseInt(application.average_user_score),
             sorter: (a, b) => {
-                const aScore = a.average_user_score || 0;
-                const bScore = b.average_user_score || 0;
-                return aScore - bScore;
+                if (!a.average_user_score) {
+                    return -1;
+                }
+                else if (!b.average_user_score) {
+                    return 1;
+                }
+                
+                return a.average_user_score - b.average_user_score;
             },
             sortDirections: ['descend', 'ascend'],
+            render: (average_user_score, application) => (
+                <>
+                    {showScores ? average_user_score : null }
+                </>
+            )
         },
         {
-            title: <b>All Scores</b>,
+            title: <p>
+            <b>Reviewer Scores </b>
+            {!showScores && <p>Click "Show Scores" to see reviewer scores</p>}
+            </p>,
             dataIndex: 'user_scores',
             key: '3',
             // Could either use userScores or application.user_scores, they're the same.
             render: (userScores, application) => (
                 <React.Fragment>
-                    {application.user_scores && Object.keys(application.user_scores).length > 0 &&
+                    {showScores && application.user_scores && Object.keys(application.user_scores).length > 0 &&
 
                     <table className="table">
                         <thead>
@@ -398,7 +453,11 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
                             {Object.keys(application.user_scores).map(scorerId => {
                                 return (
                                     <tr key={scorerId}>
-                                        <td>{application.user_scores[scorerId].user_id} </td>
+                                        <td>{application.user_scores[scorerId].user ?
+                                            <UserProfilePreview userProfile={application.user_scores[scorerId].user} /> :
+                                            application.user_scores[scorerId].user_id  
+                                            } 
+                                        </td>
                                         <td>{application.user_scores[scorerId].score}</td>
                                     </tr>
                                 )
@@ -406,6 +465,7 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
                         </tbody>
                     </table>
 
+                    
                     }
                 </React.Fragment>
             ),
@@ -414,14 +474,15 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
             title: <b>Assigned Reviewers</b>,
             dataIndex: 'assigned_reviewers',
             key: '4',
-            filters: assignedReviewersFilters,
+            filters: assignedReviewersFilter,
             onFilter: (value, application) => applicationReviewersUsernames(application).includes(value),
             render: (reviewers, application) => {
                 if (reviewers) {
                     return reviewers.map(reviewer => (
-                        <>
-                            {reviewer.first_name} {reviewer.last_name}<br/>
-                        </>
+                        <div key={reviewer.user}>
+                        <UserProfilePreview userProfile={reviewer} linkProfile={true}/>
+                        <hr/>
+                        </div>
                     ))
                 }
             },
@@ -438,7 +499,13 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
         },
     ];
 
-    return (<Table columns={columns} dataSource={applications} rowKey="id" />)
+    return (<>
+    <Button onClick={() => setShowScores(!showScores)} className="mb-3">
+        {showScores ? "Hide " : "Show "} Scores
+    </Button>
+    <Table columns={columns} dataSource={applications} rowKey="id" />
+    </>
+    )
 }
 
 const todayDate = new Date().toISOString();
