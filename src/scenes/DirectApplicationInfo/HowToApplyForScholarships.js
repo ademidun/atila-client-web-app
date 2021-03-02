@@ -2,8 +2,9 @@ import React from "react";
 import HelmetSeo from "../../components/HelmetSeo";
 import {Link} from "react-router-dom";
 import LandingPageLiveDemo from "../LandingPage/LandingPageLiveDemo";
-import {BackTop} from "antd";
+import { BackTop, Button } from "antd";
 import { createTableOfContents } from "../../services/utils";
+import InformationWithImage from "../../components/InformationWithImage";
 
 export const howToStartAScholarshipInformationItems = [
     {
@@ -96,6 +97,22 @@ class HowToApplyForScholarships extends React.Component {
             slug: '/apply'
         };
 
+        const ScholarshipCTA = (
+            <React.Fragment>
+                <Button type="primary" className="font-size-larger col-12 mt-3 my-2" style={{fontSize: "25px"}}>
+                        <Link to="/register?type=student">
+                            Step 1: Create an Account
+                        </Link>
+                    </Button>
+
+                    <Button type="primary" className="font-size-larger col-12 my-2" style={{fontSize: "25px"}}>
+                        <Link to="/scholarship">
+                            Step 2: Find Scholarships
+                        </Link>
+                    </Button>
+            </React.Fragment>
+        )
+
         return (
             <div className="HowToStartAScholarship">
                 <HelmetSeo content={seoContent} />
@@ -105,33 +122,11 @@ class HowToApplyForScholarships extends React.Component {
                 <BackTop/>
                 <div className="container mt-5">
                     <div className="card shadow p-3 how-to-apply-scholarship-questions">
+                        {ScholarshipCTA}
                         {howToStartAScholarshipInformationItems.map(item => (
-                            <div>
-                                <div className="p-3">
-                                    <h2>{item.title}</h2>
-                                    {item.body}
-                                </div>
-                                {item.image &&
-
-                                <div className="col-12 mb-4 shadow text-center">
-
-                                    {/*Note: TO get the image to size responsively.
-                            I just had to put it inside a parent div and add 'col-12' class.*/}
-                                    <img src={item.image}
-                                         alt={item.title}
-                                         title={item.title}
-                                         className="col-12 p-3"
-                                         style={{maxHeight: "450px", width: "auto"}}
-                                    />
-                                    {item.imageCaption &&
-                                    <p className="col-12 text-center text-muted pb-3">
-                                        {item.imageCaption}
-                                    </p>
-                                    }
-                                </div>
-                                }
-                            </div>
+                            <InformationWithImage item={item} />
                         ))}
+                        {ScholarshipCTA}
                     </div>
                 </div>
             </div>

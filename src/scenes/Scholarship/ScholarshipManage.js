@@ -267,7 +267,7 @@ class ScholarshipManage extends React.Component {
                 </Link>
                 <br/>
                 <Link to={`/scholarship/${scholarship.slug}`} className="text-center">
-                    View Scholarship
+                    View {scholarship.name}
                 </Link>
                 <br />
                 <br />
@@ -500,9 +500,15 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
     ];
 
     return (<>
-    <Button onClick={() => setShowScores(!showScores)} className="mb-3">
+    <Button 
+    onClick={() => setShowScores(!showScores)} 
+    disabled={!scholarship.is_winner_selected}
+    className="mb-3">
         {showScores ? "Hide " : "Show "} Scores
     </Button>
+    {!scholarship.is_winner_selected && 
+    <p>Scores are not available to view yet</p>
+    }
     <Table columns={columns} dataSource={applications} rowKey="id" />
     </>
     )

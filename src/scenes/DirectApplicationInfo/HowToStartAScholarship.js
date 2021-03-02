@@ -5,6 +5,7 @@ import HelmetSeo from "../../components/HelmetSeo";
 import {howItWorksSponsorItems} from "../LandingPage/HowItWorks";
 import {createTableOfContents, scrollToElement} from "../../services/utils";
 import LandingPageLiveDemo from "../LandingPage/LandingPageLiveDemo";
+import InformationWithImage from '../../components/InformationWithImage';
 
 export const howToStartAScholarshipInformationItems = [
     {
@@ -96,6 +97,22 @@ export const howToStartAScholarshipInformationItems = [
 
 ];
 
+
+
+export const startAScholarshipFeatures = [
+    {
+        title: "Easily score and manage all applications",
+        body: (<div>
+            <ol>
+                <li>Invite others to help you score applications</li>
+                <li>Sort and filter applications by score</li>
+            </ol>
+        </div>),
+        image: "https://i.imgur.com/b9J1uyA.png",
+        imageCaption: "",
+    },
+]
+
 class HowToStartAScholarship extends React.Component {
 
     componentDidMount() {
@@ -122,7 +139,7 @@ class HowToStartAScholarship extends React.Component {
             slug: '/start'
         };
 
-        const startScholarshipCTA = (
+        const ScholarshipCTA = (
             <React.Fragment>
                 <Button type="primary" className="font-size-larger col-12 mt-3 my-2" style={{fontSize: "25px"}}>
                         <Link to="/register?type=sponsor">
@@ -147,41 +164,26 @@ class HowToStartAScholarship extends React.Component {
                 <BackTop/>
                 <div className="container mt-5">
                     <div className="card shadow p-3 how-to-start-scholarship-questions">
-                        {startScholarshipCTA}
+                        {ScholarshipCTA}
                         <LandingPageLiveDemo />
                         <hr/>
                         <div>
                             {howToStartAScholarshipInformationItems.map(item => (
-                                <div>
-                                    <div className="p-3">
-                                        <h2>{item.title}</h2>
-                                        {item.body}
-                                    </div>
-                                    {item.image &&
-
-                                    <div className="col-12 mb-4 shadow text-center">
-
-                                        {/*Note: TO get the image to size responsively.
-                            I just had to put it inside a parent div and add 'col-12' class.*/}
-                                        <img src={item.image}
-                                             alt={item.imageCaption||item.title}
-                                             title={item.title}
-                                             className="col-12 p-3"
-                                             style={{maxHeight: "450px", width: "auto"}}
-                                        />
-                                        {item.imageCaption &&
-                                        <p className="col-12 text-center text-muted pb-3">
-                                            {item.imageCaption}
-                                        </p>
-                                        }
-                                    </div>
-                                    }
-                                </div>
+                                <InformationWithImage key={item.title} item={item} />
+                            ))}
+                        </div>
+                        <hr/>
+                        <h1 className="col-sm-12 text-center">
+                            Features
+                        </h1>
+                        <div>
+                            {startAScholarshipFeatures.map(item => (
+                                <InformationWithImage key={item.title} item={item} />
                             ))}
                         </div>
                     </div>
 
-                    {startScholarshipCTA}
+                    {ScholarshipCTA}
                 </div>
             </div>
         );
