@@ -275,7 +275,8 @@ class ApplicationDetail extends  React.Component{
     };
 
     submitApplicationRemotely = () => {
-        const { application, scholarship } = this.state;
+        let { application } = this.state;
+        const { scholarship } = this.state;
         const { userProfile } = this.props;
         const { scholarship_responses, user_profile_responses } = addQuestionDetailToApplicationResponses(application, scholarship);
 
@@ -296,20 +297,14 @@ class ApplicationDetail extends  React.Component{
             .submit(application.id, {scholarship_responses, user_profile_responses})
             .then(res=>{
 
-                // TODO figure out how to call setState({application}) after submission without causing the following error:
-                //  Uncaught Error: Objects are not valid as a React child (found: object with keys {key, response}).
-                //  If you meant to render a collection of children, use an array instead.
-
-                // State needs to be updated with new application from response ideally
-                // const application = res.data
-                // this.setState({application})
-                // TEMPORARY SOLUTION
-
-                const submittedApplication = {
+                const { data: { application : updatedApplication} } = res;
+                application = {
                     ...application,
-                    is_submitted: true,
+                    date_modified: updatedApplication.date_modified,
+                    is_submitted: updatedApplication.is_submitted,
+                    date_submitted: updatedApplication.date_submitted
                 };
-                this.setState({ application: submittedApplication });
+                this.setState({application});
 
                 window.scrollTo(0, 0);
                 const successMessage = (
@@ -559,7 +554,7 @@ class ApplicationDetail extends  React.Component{
         }
 
         let scholarshipDateString = moment(scholarship.deadline).format('dddd, MMMM DD, YYYY');
-        let disableSubmit = isMissingProfilePicture||isMissingSecurityQuestionAnswer;
+        let disableSubmit = isMissingProfilePicture||isMissingSecurityQuestionAnswer || isSubmittingApplication;
         let submitContent = (
                     <div className={"float-right col-md-6"}>
                         You must have an account to submit locally saved applications.
