@@ -169,7 +169,7 @@ class HowToStartAScholarship extends React.Component {
                         <hr/>
                         <div>
                             {howToStartAScholarshipInformationItems.map(item => (
-                                <InformationWithImage item={item} />
+                                <InformationWithImage key={item.title} item={item} />
                             ))}
                         </div>
                         <hr/>
@@ -178,7 +178,7 @@ class HowToStartAScholarship extends React.Component {
                         </h1>
                         <div>
                             {startAScholarshipFeatures.map(item => (
-                                <InformationWithImage item={item} />
+                                <InformationWithImage key={item.title} item={item} />
                             ))}
                         </div>
                     </div>

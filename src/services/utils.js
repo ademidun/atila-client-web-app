@@ -508,9 +508,18 @@ export function createTableOfContents(parentSelector="") {
         if (!link) {
             return;
         }
+
         link = `${window.location.pathname}${window.location.search}#${link}`;
 
-        newLine = `<li><a href="${link}">${title}</a></li>`;
+        let indentStyle = ""
+        if(element[0].localName === "h1") {
+            indentStyle = `font-size: larger`
+        } else {
+            const indentAmount = element[0].localName === "h2" ? "3%" : "5%";
+            indentStyle = `margin-left: ${indentAmount}`
+        }
+
+        newLine = `<li style="${indentStyle}"><a href="${link}">${title}</a></li>`;
         allLines += newLine
 
     });
