@@ -134,7 +134,12 @@ class ScholarshipManage extends React.Component {
             })
             .catch(err => {
                 console.log({err});
-                this.setState({responseMessage: `There was an error inviting ${inviteCollaboratorEmail}.\n\n Please message us using the chat icon in the bottom right of your screen.`})
+                const { response_message } = err.response.data;
+                if (response_message) {
+                    this.setState({responseMessage: response_message});
+                } else {
+                    this.setState({responseMessage: `There was an error inviting ${inviteCollaboratorEmail}.\n\n Please message us using the chat icon in the bottom right of your screen.`})
+                }
             })
             .then(() => {
                 this.setState({isLoadingMessage: null});
@@ -155,7 +160,12 @@ class ScholarshipManage extends React.Component {
             })
             .catch(err=>{
                 console.log({err});
-                this.setState({responseMessage: "There was an error assigning reviewers.\n\n Please message us using the chat icon in the bottom right of your screen."});
+                const { response_message } = err.response.data;
+                if (response_message) {
+                    this.setState({responseMessage: response_message});
+                } else {
+                    this.setState({responseMessage: "There was an error assigning reviewers.\n\n Please message us using the chat icon in the bottom right of your screen."});
+                }
             })
             .then(() => {
                 this.setState({isLoadingMessage: null});
