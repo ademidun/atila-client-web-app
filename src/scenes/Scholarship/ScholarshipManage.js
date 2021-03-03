@@ -358,13 +358,17 @@ class ScholarshipManage extends React.Component {
                 }
 
                 {scholarship.is_blind_applications && <BlindApplicationsExplanationMessage />}
-                <ApplicationsTable applications={allApplications} scholarship={scholarship} selectWinner={this.selectWinner}/>
+                <ApplicationsTable applications={allApplications}
+                                   scholarship={scholarship}
+                                   selectWinner={this.selectWinner}
+                                   isScholarshipOwner={isScholarshipOwner}
+                />
             </div>
         )
     }
 }
 
-function ApplicationsTable({ applications, scholarship, selectWinner }){
+function ApplicationsTable({ applications, scholarship, selectWinner, isScholarshipOwner }){
     const { collaborators, owner_detail } = scholarship;
 
     let allReviewers = [...collaborators, owner_detail];
@@ -384,6 +388,17 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
                 'value': possibleScore
             }
     })
+
+    const selectWinnerColumn = {
+        title: <b>Select Winner</b>,
+        dataIndex: 'id',
+        key: '5',
+        render: (applicationID, application) => (
+            <React.Fragment>
+                {application.is_submitted? renderWinnerButton(applicationID, scholarship, selectWinner) : "Cannot select unsubmitted application"}
+            </React.Fragment>
+        ),
+    };
 
     const columns = [
         {
@@ -497,17 +512,11 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
                 }
             },
         },
-        {
-            title: <b>Select Winner</b>,
-            dataIndex: 'id',
-            key: '5',
-            render: (applicationID, application) => (
-                <React.Fragment>
-                    {application.is_submitted? renderWinnerButton(applicationID, scholarship, selectWinner) : "Cannot select unsubmitted application"}
-                </React.Fragment>
-            ),
-        },
     ];
+
+    if (isScholarshipOwner) {
+        columns.push(selectWinnerColumn);
+    }
 
     return (<>
     <Button 
