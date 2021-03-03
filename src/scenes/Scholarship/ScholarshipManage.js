@@ -260,9 +260,10 @@ class ScholarshipManage extends React.Component {
             </>
         )
 
-        let reviewersPreview = reviewers.map(reviewer => (
+        let reviewersPreview = reviewers.map((reviewer, index) => (
             <div style={{"marginRight": "3%"}} key={reviewer.user}>
                 <UserProfilePreview userProfile={reviewer} linkProfile={true}/>
+                {index === 0 && <Tag color={'green'}>OWNER</Tag>}
             </div>
         ))
 
