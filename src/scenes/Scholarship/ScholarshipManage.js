@@ -297,8 +297,7 @@ class ScholarshipManage extends React.Component {
                 {isScholarshipOwner &&
                 <>
                     <br />
-                    {/*TEMPORARILY only allow the scholarship owner to see the invite button. Until the serializer
-                    for scholarship collaborators has been done.*/}
+                    {/*Only allow the scholarship owner to see the invite button. May want to be changed in the future.*/}
                     <ButtonModal
                         showModalButtonSize={"large"}
                         showModalText={"Invite Collaborator"}
@@ -306,7 +305,7 @@ class ScholarshipManage extends React.Component {
                         modalBody={inviteCollaboratorModalBody}
                         submitText={"Send Invite"}
                         onSubmit={this.inviteCollaborator}
-                        disabled={isLoadingMessage}
+                        disabled={isLoadingMessage || scholarship.is_winner_selected}
                     />
                     <br />
                     <ButtonModal
@@ -316,7 +315,7 @@ class ScholarshipManage extends React.Component {
                         modalBody={autoAssignReviewersModalBody}
                         submitText={"Confirm Auto Assigning"}
                         onSubmit={this.autoAssignReviewers}
-                        disabled={isLoadingMessage}
+                        disabled={isLoadingMessage || scholarship.is_winner_selected}
                     />
                 </>
                 }
