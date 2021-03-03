@@ -52,15 +52,15 @@ export const howToStartAScholarshipInformationItems = [
             </ol>
         </div>)
     },
-    {
-        title: "Are scholarships funded on Atila tax-deductible?",
-        body: (<div>
-            <p>Scholarships funded through Atila are not currently tax-deductible. We have met with lawyers and experts
-                on registered charities about the process for issuing tax receipts.
-                We will update this page with more information if anything changes.
-            </p>
-        </div>)
-    },
+    // {
+    //     title: "Are scholarships funded on Atila tax-deductible?",
+    //     body: (<div>
+    //         <p>Scholarships funded through Atila are not currently tax-deductible. We have met with lawyers and experts
+    //             on registered charities about the process for issuing tax receipts.
+    //             We will update this page with more information if anything changes.
+    //         </p>
+    //     </div>)
+    // },
     {
         title: "What is the minimum amount to start a scholarship?",
         body: (<div>

@@ -544,3 +544,13 @@ export function createTableOfContents(parentSelector="") {
     return tableOfContents;
 
 }
+
+/**
+ * https://stackoverflow.com/a/822486/5405197
+ * @param {*} html 
+ */
+export function stripHtml(html) {
+    let tmp = document.createElement("DIV");
+    tmp.innerHTML = html;
+    return tmp.textContent || tmp.innerText || "";
+ }
