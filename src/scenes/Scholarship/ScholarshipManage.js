@@ -174,13 +174,19 @@ class ScholarshipManage extends React.Component {
         const { scholarship, applications, isLoadingApplications,
             unsubmittedApplications, responseMessage, applicationTypeToEmail,
              reviewersPerApplication, isLoadingMessage } = this.state;
+
+        const { location: { pathname } } = this.props;
         const { TextArea } = Input;
         // const confirmText = "Are you sure you want to unsubmit all submitted applications? This action cannot be undone.";
 
         if (!userProfile) {
             return (
                 <div className="container mt-5">
-                    <h2><Link to={`/login`}>Log In</Link> to manage scholarships</h2>
+                    <h2>
+                        <Link to={`/login?redirect=${pathname}`}>
+                        Log In</Link>{' '}
+                        to manage scholarships
+                    </h2>
                 </div>
             )
         }
