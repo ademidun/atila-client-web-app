@@ -7,6 +7,8 @@ import Loading from "../../components/Loading";
 import {BlindApplicationsExplanationMessage, WINNER_SELECTED_MESSAGE} from "../../models/Scholarship";
 import ButtonModal from "../../components/ButtonModal";
 import {UserProfilePreview} from "../../components/ReferredByInput";
+import HelmetSeo, {defaultSeoContent} from '../../components/HelmetSeo';
+
 
 class ScholarshipManage extends React.Component {
     constructor(props) {
@@ -255,21 +257,29 @@ class ScholarshipManage extends React.Component {
                 <UserProfilePreview userProfile={reviewer} linkProfile={true}/>
             </div>
         ))
+        const seoContent = {
+            ...defaultSeoContent,
+            title: `${scholarship.name} application management`
+        };
 
         return (
             <div className="container mt-5">
+                <HelmetSeo  content={seoContent}/>
+                <h1>
+                <Link to={`/scholarship/${scholarship.slug}`} className="text-center">
+                    {scholarship.name}{' '}
+                </Link>
+                    application management
+                </h1>
                 <h2>
-                    Submitted Applications: {applications.length} <br/>
-                    Un-Submitted Applications (Under Draft): {unsubmittedApplications.length}
+                    Submitted applications: {applications.length} <br/>
+                    Un-Submitted applications (under draft): {unsubmittedApplications.length}
                 </h2>
+                <br />
                 <Link to={`/scholarship/edit/${scholarship.slug}`} className="text-center">
                     Edit Scholarship
                 </Link>
                 <br/>
-                <Link to={`/scholarship/${scholarship.slug}`} className="text-center">
-                    View {scholarship.name}
-                </Link>
-                <br />
                 <br />
 
                 <ButtonModal
