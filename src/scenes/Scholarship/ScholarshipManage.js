@@ -8,6 +8,8 @@ import {BlindApplicationsExplanationMessage, WINNER_SELECTED_MESSAGE} from "../.
 import ButtonModal from "../../components/ButtonModal";
 import {UserProfilePreview} from "../../components/ReferredByInput";
 import HelmetSeo, {defaultSeoContent} from '../../components/HelmetSeo';
+import { slugify } from '../../services/utils';
+import { CSVLink } from 'react-csv';
 
 
 class ScholarshipManage extends React.Component {
@@ -391,6 +393,8 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
             }
     })
 
+    let applicationsAsCSV = [];
+
     const columns = [
         {
             title: <b>Full Name</b>,
@@ -521,6 +525,12 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
     className="mb-3">
         {showScores ? "Hide " : "Show "} Scores
     </Button>
+
+    <CSVLink data={applicationsAsCSV}
+             filename={`${slugify(scholarship.name)}-applications.csv`}
+             style={{"float": "right"}}>
+        Download as CSV
+    </CSVLink>
     <Table columns={columns} dataSource={applications} rowKey="id" />
     </>
     )
