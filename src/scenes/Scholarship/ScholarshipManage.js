@@ -10,6 +10,7 @@ import {UserProfilePreview} from "../../components/ReferredByInput";
 import HelmetSeo, {defaultSeoContent} from '../../components/HelmetSeo';
 import { slugify } from '../../services/utils';
 import { CSVLink } from 'react-csv';
+import { convertApplicationsToCSVFormat } from '../../services/ApplicationsUtils';
 
 
 class ScholarshipManage extends React.Component {
@@ -393,7 +394,7 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
             }
     })
 
-    let applicationsAsCSV = [];
+    let applicationsAsCSV = convertApplicationsToCSVFormat(applications);
 
     const columns = [
         {
