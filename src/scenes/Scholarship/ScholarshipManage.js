@@ -7,6 +7,11 @@ import Loading from "../../components/Loading";
 import {BlindApplicationsExplanationMessage, WINNER_SELECTED_MESSAGE} from "../../models/Scholarship";
 import ButtonModal from "../../components/ButtonModal";
 import {UserProfilePreview} from "../../components/ReferredByInput";
+import HelmetSeo, {defaultSeoContent} from '../../components/HelmetSeo';
+import { slugify } from '../../services/utils';
+import { CSVLink } from 'react-csv';
+import { convertApplicationsToCSVFormat } from '../../services/ApplicationsUtils';
+
 
 class ScholarshipManage extends React.Component {
     constructor(props) {
@@ -182,13 +187,19 @@ class ScholarshipManage extends React.Component {
         const { scholarship, applications, isLoadingApplications,
             unsubmittedApplications, responseMessage, applicationTypeToEmail,
              reviewersPerApplication, isLoadingMessage } = this.state;
+
+        const { location: { pathname } } = this.props;
         const { TextArea } = Input;
         // const confirmText = "Are you sure you want to unsubmit all submitted applications? This action cannot be undone.";
 
         if (!userProfile) {
             return (
                 <div className="container mt-5">
-                    <h2><Link to={`/login`}>Log In</Link> to manage scholarships</h2>
+                    <h2>
+                        <Link to={`/login?redirect=${pathname}`}>
+                        Log In</Link>{' '}
+                        to manage scholarships
+                    </h2>
                 </div>
             )
         }
@@ -266,21 +277,29 @@ class ScholarshipManage extends React.Component {
                 {index === 0 && <Tag color={'green'}>OWNER</Tag>}
             </div>
         ))
+        const seoContent = {
+            ...defaultSeoContent,
+            title: `${scholarship.name} application management`
+        };
 
         return (
             <div className="container mt-5">
+                <HelmetSeo  content={seoContent}/>
+                <h1>
+                <Link to={`/scholarship/${scholarship.slug}`} className="text-center">
+                    {scholarship.name}{' '}
+                </Link>
+                    application management
+                </h1>
                 <h2>
-                    Submitted Applications: {applications.length} <br/>
-                    Un-Submitted Applications (Under Draft): {unsubmittedApplications.length}
+                    Submitted applications: {applications.length} <br/>
+                    Un-Submitted applications (under draft): {unsubmittedApplications.length}
                 </h2>
+                <br />
                 <Link to={`/scholarship/edit/${scholarship.slug}`} className="text-center">
                     Edit Scholarship
                 </Link>
                 <br/>
-                <Link to={`/scholarship/${scholarship.slug}`} className="text-center">
-                    View {scholarship.name}
-                </Link>
-                <br />
                 <br />
 
                 <ButtonModal
@@ -388,6 +407,8 @@ function ApplicationsTable({ applications, scholarship, selectWinner, isScholars
                 'value': possibleScore
             }
     })
+
+    let applicationsAsCSV = convertApplicationsToCSVFormat(applications);
 
     const selectWinnerColumn = {
         title: <b>Select Winner</b>,
@@ -520,14 +541,16 @@ function ApplicationsTable({ applications, scholarship, selectWinner, isScholars
 
     return (<>
     <Button 
-    onClick={() => setShowScores(!showScores)} 
-    disabled={!scholarship.is_winner_selected}
+    onClick={() => setShowScores(!showScores)}
     className="mb-3">
         {showScores ? "Hide " : "Show "} Scores
     </Button>
-    {!scholarship.is_winner_selected && 
-    <p>Scores are not available to view yet</p>
-    }
+
+    <CSVLink data={applicationsAsCSV}
+             filename={`${slugify(scholarship.name)}-applications.csv`}
+             style={{"float": "right"}}>
+        Download as CSV
+    </CSVLink>
     <Table columns={columns} dataSource={applications} rowKey="id" />
     </>
     )
