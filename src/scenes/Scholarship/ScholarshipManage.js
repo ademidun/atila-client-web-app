@@ -10,7 +10,7 @@ import {UserProfilePreview} from "../../components/ReferredByInput";
 import HelmetSeo, {defaultSeoContent} from '../../components/HelmetSeo';
 import { slugify } from '../../services/utils';
 import { CSVLink } from 'react-csv';
-import { convertApplicationsToCSVFormat } from '../../services/ApplicationsUtils';
+import { convertApplicationsToCSVFormat } from '../Application/ApplicationUtils';
 
 
 class ScholarshipManage extends React.Component {

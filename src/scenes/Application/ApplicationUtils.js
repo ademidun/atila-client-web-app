@@ -1,6 +1,8 @@
 import {SCHOLARSHIP_QUESTIONS_TYPES_TO_FORM_TYPES} from "../../models/Scholarship";
 import {userProfileFormConfig} from "../../models/UserProfile";
 import {scholarshipUserProfileSharedFormConfigs} from "../../models/Utils";
+import { stripHtml } from '../../services/utils';
+
 
 /**
  * Transform array of questions of the form:
@@ -100,4 +102,71 @@ export function addQuestionDetailToApplicationResponses(application, scholarship
         user_profile_responses: userProfileResponses,
     };
 
+}
+
+/**
+ * Convert a list of application objects with nested attributes
+ * and return as a list of flat dictionaries that can be exported as a csv.
+ * @param {Array} applications
+ * @returns {Array(Object)} applicationsCSV
+ */
+export function convertApplicationsToCSVFormat(applications) {
+
+    const allApplicationsCSV = [];
+
+    applications.forEach(application => {
+        /**
+         * Create the applicationCSV object in this order:
+         * 1. Add user profile attributes
+         * 2. Add user profile detail
+         * 3. Add application details
+         * 4. Add scholarship response details
+         */
+
+        let applicationCSV = {
+            application_id: application.id,
+        };
+        if (application.is_submitted) {
+            if (application.user) {
+                const { user: { user: user_id, first_name, last_name } } = application;
+
+                applicationCSV = {
+                    ...applicationCSV,
+                    user_id, first_name, last_name
+                };
+
+                for (const questionResponse of Object.values(application.user_profile_responses)) {
+                    applicationCSV[questionResponse.key] = questionResponse.response;
+                }
+            } else {//if scholarship.is_blind_application is True, user attribute is not available
+                const { first_name_code, last_name_code } = application;
+
+                applicationCSV = {
+                    ...applicationCSV,
+                    first_name_code, last_name_code,
+                };
+            }
+            
+
+        }
+        const { is_submitted, date_submitted, average_user_score } = application;
+
+
+
+        applicationCSV = {
+            ...applicationCSV,
+            is_submitted, date_submitted, average_user_score
+        };
+
+        if (application.is_submitted) {
+            for (const questionResponse of Object.values(application.scholarship_responses)) {
+                applicationCSV[questionResponse.question] = questionResponse.type === "long_answer" ? stripHtml(questionResponse.response) : questionResponse.response;
+            }
+        }
+
+        allApplicationsCSV.push(applicationCSV);
+
+    });
+
+    return allApplicationsCSV;
 }
