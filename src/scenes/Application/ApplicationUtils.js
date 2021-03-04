@@ -1,8 +1,8 @@
 import {SCHOLARSHIP_QUESTIONS_TYPES_TO_FORM_TYPES} from "../../models/Scholarship";
 import {userProfileFormConfig} from "../../models/UserProfile";
 import {scholarshipUserProfileSharedFormConfigs} from "../../models/Utils";
+import { stripHtml } from '../../services/utils';
 
-import { stripHtml } from './utils';
 
 /**
  * Transform array of questions of the form:
