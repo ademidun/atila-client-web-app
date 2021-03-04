@@ -139,7 +139,12 @@ class ScholarshipManage extends React.Component {
             })
             .catch(err => {
                 console.log({err});
-                this.setState({responseMessage: `There was an error inviting ${inviteCollaboratorEmail}.\n\n Please message us using the chat icon in the bottom right of your screen.`})
+                const { response_message } = err.response.data;
+                if (response_message) {
+                    this.setState({responseMessage: response_message});
+                } else {
+                    this.setState({responseMessage: `There was an error inviting ${inviteCollaboratorEmail}.\n\n Please message us using the chat icon in the bottom right of your screen.`})
+                }
             })
             .then(() => {
                 this.setState({isLoadingMessage: null});
@@ -160,7 +165,12 @@ class ScholarshipManage extends React.Component {
             })
             .catch(err=>{
                 console.log({err});
-                this.setState({responseMessage: "There was an error assigning reviewers.\n\n Please message us using the chat icon in the bottom right of your screen."});
+                const { response_message } = err.response.data;
+                if (response_message) {
+                    this.setState({responseMessage: response_message});
+                } else {
+                    this.setState({responseMessage: "There was an error assigning reviewers.\n\n Please message us using the chat icon in the bottom right of your screen."});
+                }
             })
             .then(() => {
                 this.setState({isLoadingMessage: null});
@@ -261,9 +271,10 @@ class ScholarshipManage extends React.Component {
             </>
         )
 
-        let reviewersPreview = reviewers.map(reviewer => (
+        let reviewersPreview = reviewers.map((reviewer, index) => (
             <div style={{"marginRight": "3%"}} key={reviewer.user}>
                 <UserProfilePreview userProfile={reviewer} linkProfile={true}/>
+                {index === 0 && <Tag color={'green'}>OWNER</Tag>}
             </div>
         ))
         const seoContent = {
@@ -306,8 +317,7 @@ class ScholarshipManage extends React.Component {
                 {isScholarshipOwner &&
                 <>
                     <br />
-                    {/*TEMPORARILY only allow the scholarship owner to see the invite button. Until the serializer
-                    for scholarship collaborators has been done.*/}
+                    {/*Only allow the scholarship owner to see the invite button. May want to be changed in the future.*/}
                     <ButtonModal
                         showModalButtonSize={"large"}
                         showModalText={"Invite Collaborator"}
@@ -315,7 +325,7 @@ class ScholarshipManage extends React.Component {
                         modalBody={inviteCollaboratorModalBody}
                         submitText={"Send Invite"}
                         onSubmit={this.inviteCollaborator}
-                        disabled={isLoadingMessage}
+                        disabled={isLoadingMessage || scholarship.is_winner_selected}
                     />
                     <br />
                     <ButtonModal
@@ -325,7 +335,7 @@ class ScholarshipManage extends React.Component {
                         modalBody={autoAssignReviewersModalBody}
                         submitText={"Confirm Auto Assigning"}
                         onSubmit={this.autoAssignReviewers}
-                        disabled={isLoadingMessage}
+                        disabled={isLoadingMessage || scholarship.is_winner_selected}
                     />
                 </>
                 }
@@ -367,13 +377,17 @@ class ScholarshipManage extends React.Component {
                 }
 
                 {scholarship.is_blind_applications && <BlindApplicationsExplanationMessage />}
-                <ApplicationsTable applications={allApplications} scholarship={scholarship} selectWinner={this.selectWinner}/>
+                <ApplicationsTable applications={allApplications}
+                                   scholarship={scholarship}
+                                   selectWinner={this.selectWinner}
+                                   isScholarshipOwner={isScholarshipOwner}
+                />
             </div>
         )
     }
 }
 
-function ApplicationsTable({ applications, scholarship, selectWinner }){
+function ApplicationsTable({ applications, scholarship, selectWinner, isScholarshipOwner }){
     const { collaborators, owner_detail } = scholarship;
 
     let allReviewers = [...collaborators, owner_detail];
@@ -395,6 +409,17 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
     })
 
     let applicationsAsCSV = convertApplicationsToCSVFormat(applications);
+
+    const selectWinnerColumn = {
+        title: <b>Select Winner</b>,
+        dataIndex: 'id',
+        key: '5',
+        render: (applicationID, application) => (
+            <React.Fragment>
+                {application.is_submitted? renderWinnerButton(applicationID, scholarship, selectWinner) : "Cannot select unsubmitted application"}
+            </React.Fragment>
+        ),
+    };
 
     const columns = [
         {
@@ -508,17 +533,11 @@ function ApplicationsTable({ applications, scholarship, selectWinner }){
                 }
             },
         },
-        {
-            title: <b>Select Winner</b>,
-            dataIndex: 'id',
-            key: '5',
-            render: (applicationID, application) => (
-                <React.Fragment>
-                    {application.is_submitted? renderWinnerButton(applicationID, scholarship, selectWinner) : "Cannot select unsubmitted application"}
-                </React.Fragment>
-            ),
-        },
     ];
+
+    if (isScholarshipOwner) {
+        columns.push(selectWinnerColumn);
+    }
 
     return (<>
     <Button 
