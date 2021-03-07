@@ -682,7 +682,9 @@ function ApplicationsTable({ applications, scholarship, selectWinner, isScholars
                             <hr/>
                         </div>
                     ))}
-                    {assignReviewerButton(application, allReviewers)}
+                    {allReviewers.length < application.assigned_reviewers.length &&
+                        assignReviewerButton(application, allReviewers)
+                    }
                 </>
             ),
         }
