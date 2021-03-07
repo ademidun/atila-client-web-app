@@ -261,15 +261,14 @@ class ScholarshipManage extends React.Component {
     assignReviewerButton = (application, allReviewers) => {
         const { isLoadingMessage, assignReviewerCurrentUser } = this.state;
 
-        if (application.user_scores) {
-
-            let applicationReviewerIds = Object.keys(application.user_scores)
+        if (application.assigned_reviewers) {
+            let applicationReviewerIds = application.assigned_reviewers.map(reviewer => reviewer.user.toString())
 
             function isNotAlreadyReviewer(reviewer) {
-                return !applicationReviewerIds.includes(reviewer.user)
+                return !applicationReviewerIds.includes(reviewer.user.toString())
             }
 
-            allReviewers.filter(isNotAlreadyReviewer)
+            allReviewers = allReviewers.filter(isNotAlreadyReviewer)
 
             let assignReviewerModalBody = <AssignReviewerRadioSelect reviewerOptions={allReviewers}
                                                                      updateCurrentReviewer={this.updateCurrentReviewer}/>
