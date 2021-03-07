@@ -179,8 +179,8 @@ export const maxApplicationScoreDifference = userScores => {
     }
 
     let userScoresList = Object.keys(userScores).map(key => {
-        let scoresInfo = userScores[key]
-        return scoresInfo['score']
+        let scoresInfo = userScores[key];
+        return Number(scoresInfo['score']);
     });
 
     if (!userScoresList) {

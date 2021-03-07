@@ -522,6 +522,28 @@ function ApplicationsTable({ applications, scholarship, selectWinner, isScholars
             ),
         },
         {
+            title: <b>Max Score Difference</b>,
+            dataIndex: 'user_scores',
+            key: '7',
+            render: (userScores, application) => (
+                <>
+                {showScores &&
+                    maxApplicationScoreDifference(application.user_scores)
+                }
+                </>
+            ),
+            sorter: (a, b) => {
+                if (!a.user_scores) {
+                    return -1;
+                }
+                else if (!b.user_scores) {
+                    return 1;
+                }
+
+                return maxApplicationScoreDifference(a.user_scores) - maxApplicationScoreDifference(b.user_scores);
+            },
+        },
+        {
             title: <b>Assigned Reviewers</b>,
             dataIndex: 'assigned_reviewers',
             key: '4',
