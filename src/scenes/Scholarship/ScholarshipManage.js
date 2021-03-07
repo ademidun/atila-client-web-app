@@ -291,7 +291,7 @@ class ScholarshipManage extends React.Component {
                             this.assignReviewer(application)
                         }}
                         addPopConfirm={true}
-                        disabled={isLoadingMessage}
+                        disabled={isLoadingMessage || scholarship.is_winner_selected}
                         popConfirmText={"Confirm adding reviewer?"}
                         onShowModal={()=>{this.updateCurrentReviewer(null)}}
                     />
