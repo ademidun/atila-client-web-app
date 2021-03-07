@@ -229,7 +229,7 @@ class ScholarshipManage extends React.Component {
 
     }
 
-    assignReviewer = (application, reviewer) => {
+    assignReviewer = (application) => {
         const { assignReviewerCurrentUser } = this.state;
 
         if (!assignReviewerCurrentUser) {
@@ -238,7 +238,7 @@ class ScholarshipManage extends React.Component {
             this.setState({isLoadingMessage: "Assigning Reviewer..."});
 
             ApplicationsAPI
-                .assignReviewer(application.id, reviewer.user)
+                .assignReviewer(application.id, assignReviewerCurrentUser.user)
                 .then(res => {
                     const {scholarship, applications, unsubmitted_applications: unsubmittedApplications} = res.data;
                     const responseMessage = `Reviewer has been assigned.`;
