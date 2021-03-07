@@ -188,6 +188,18 @@ class ApplicationsAPI {
 
         return apiCompletionPromise
     };
+
+    static assignReviewer = (id, reviewerID) => {
+        let data = {'user_id': reviewerID}
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: data,
+            url: `${this.applicationsApiUrl}/${id}/assign-reviewer/`
+        });
+
+        return apiCompletionPromise
+    }
 }
 
 export default ApplicationsAPI;

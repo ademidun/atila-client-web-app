@@ -11,9 +11,57 @@ import HelmetSeo, {defaultSeoContent} from '../../components/HelmetSeo';
 import { slugify } from '../../services/utils';
 import { CSVLink } from 'react-csv';
 import { convertApplicationsToCSVFormat, maxApplicationScoreDifference } from '../Application/ApplicationUtils';
+import ApplicationsAPI from "../../services/ApplicationsAPI";
 
 // Show a warning
 const maxReviewerScoreDifference = 3;
+
+class AssignReviewerRadioSelect extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            value: 0,
+        }
+    }
+
+    onChange = e => {
+        this.setState({
+            value: e.target.value,
+        }, ()=>{
+            const { value } = this.state;
+            const { reviewerOptions, updateCurrentReviewer } = this.props;
+
+            let newReviewer = reviewerOptions[value];
+            updateCurrentReviewer(newReviewer);
+        });
+    };
+
+    render() {
+        const radioStyle = {
+            display: 'block',
+            height: '30px',
+            lineHeight: '30px',
+        };
+
+        const { value } = this.state;
+        const { reviewerOptions } = this.props;
+
+        let reviewerRadioOptions = reviewerOptions.map((reviewer, index) => {
+            return (
+                <Radio style={radioStyle} value={index}>
+                    <UserProfilePreview userProfile={reviewer} />
+                </Radio>
+            )
+        })
+
+        return (
+            <Radio.Group onChange={this.onChange} value={value}>
+                {reviewerRadioOptions}
+            </Radio.Group>
+        );
+    }
+}
+
 
 class ScholarshipManage extends React.Component {
     constructor(props) {
@@ -31,6 +79,7 @@ class ScholarshipManage extends React.Component {
             applicationTypeToEmail: 'all', // This is only for the modal to email applicants
             reviewersPerApplication: 2,
             isLoadingMessage: null,
+            addReviewerCurrentUser: null,
         }
     }
 
@@ -177,6 +226,74 @@ class ScholarshipManage extends React.Component {
             .then(() => {
                 this.setState({isLoadingMessage: null});
             });
+
+    }
+
+    assignReviewer = (application, reviewer) => {
+        this.setState({isLoadingMessage: "Assigning Reviewer..."});
+
+        ApplicationsAPI
+            .assignReviewer(application.id, reviewer.user)
+            .then(res=> {
+                const {scholarship, applications, unsubmitted_applications: unsubmittedApplications} =  res.data;
+                const responseMessage = `Reviewer has been assigned.`;
+
+                this.setState({scholarship, applications, unsubmittedApplications, responseMessage});
+            })
+            .catch(err=>{
+                console.log({err});
+                const { response_message } = err.response.data;
+                if (response_message) {
+                    this.setState({responseMessage: response_message});
+                } else {
+                    this.setState({responseMessage: "There was an error assigning reviewer.\n\n Please message us using the chat icon in the bottom right of your screen."});
+                }
+            })
+            .then(() => {
+                this.setState({isLoadingMessage: null});
+            });
+    }
+
+    updateCurrentReviewer = (newReviewer) => {
+        this.setState({assignReviewerCurrentUser: newReviewer});
+    }
+
+    assignReviewerButton = (application, allReviewers) => {
+        const { isLoadingMessage, assignReviewerCurrentUser } = this.state;
+
+        if (application.user_scores) {
+
+            let applicationReviewerIds = Object.keys(application.user_scores)
+
+            function isNotAlreadyReviewer(reviewer) {
+                return !applicationReviewerIds.includes(reviewer.user)
+            }
+
+            allReviewers.filter(isNotAlreadyReviewer)
+
+            let assignReviewerModalBody = <AssignReviewerRadioSelect reviewerOptions={allReviewers}
+                                                                     updateCurrentReviewer={this.updateCurrentReviewer}/>
+
+            return (
+                <>
+                    <ButtonModal
+                        showModalButtonSize={"small"}
+                        showModalText={"Assign Reviewer..."}
+                        modalTitle={"Choose Reviewer"}
+                        modalBody={assignReviewerModalBody}
+                        submitText={"Add Reviewer"}
+                        onSubmit={() => {
+                            this.assignReviewer(application, assignReviewerCurrentUser)
+                        }}
+                        addPopConfirm={true}
+                        disabled={isLoadingMessage}
+                        popConfirmText={"Confirm adding reviewer?"}
+                    />
+                </>
+            )
+        } else {
+            return null
+        }
 
     }
 
@@ -383,13 +500,14 @@ class ScholarshipManage extends React.Component {
                                    scholarship={scholarship}
                                    selectWinner={this.selectWinner}
                                    isScholarshipOwner={isScholarshipOwner}
+                                   assignReviewerButton={this.assignReviewerButton}
                 />
             </div>
         )
     }
 }
 
-function ApplicationsTable({ applications, scholarship, selectWinner, isScholarshipOwner }){
+function ApplicationsTable({ applications, scholarship, selectWinner, isScholarshipOwner, assignReviewerButton }){
     const { collaborators, owner_detail } = scholarship;
 
     let allReviewers = [...collaborators, owner_detail];
@@ -549,17 +667,19 @@ function ApplicationsTable({ applications, scholarship, selectWinner, isScholars
             key: '4',
             filters: assignedReviewersFilter,
             onFilter: (value, application) => applicationReviewersUsernames(application).includes(value),
-            render: (reviewers, application) => {
-                if (reviewers) {
-                    return reviewers.map(reviewer => (
+            render: (reviewers, application) => (
+                <>
+                    {reviewers &&
+                    reviewers.map(reviewer => (
                         <div key={reviewer.user}>
-                        <UserProfilePreview userProfile={reviewer} linkProfile={true}/>
-                        <hr/>
+                            <UserProfilePreview userProfile={reviewer} linkProfile={true}/>
+                            <hr/>
                         </div>
-                    ))
-                }
-            },
-        },
+                    ))}
+                    {assignReviewerButton(application, allReviewers)}
+                </>
+            ),
+        }
     ];
 
     if (isScholarshipOwner) {
