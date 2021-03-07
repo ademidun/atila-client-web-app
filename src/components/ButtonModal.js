@@ -13,7 +13,9 @@ class ButtonModal extends React.Component {
     }
 
     showModal = () => {
-        this.setState({isModalVisible: true});
+        const { onShowModal } = this.props;
+        this.setState({isModalVisible: true})
+        onShowModal();
     };
 
     handleModalCancel = () => {

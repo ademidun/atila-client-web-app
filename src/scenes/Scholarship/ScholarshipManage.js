@@ -20,7 +20,7 @@ class AssignReviewerRadioSelect extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: 0,
+            value: null,
         }
     }
 
@@ -79,7 +79,7 @@ class ScholarshipManage extends React.Component {
             applicationTypeToEmail: 'all', // This is only for the modal to email applicants
             reviewersPerApplication: 2,
             isLoadingMessage: null,
-            addReviewerCurrentUser: null,
+            assignReviewerCurrentUser: null,
         }
     }
 
@@ -230,28 +230,34 @@ class ScholarshipManage extends React.Component {
     }
 
     assignReviewer = (application, reviewer) => {
-        this.setState({isLoadingMessage: "Assigning Reviewer..."});
+        const { assignReviewerCurrentUser } = this.state;
 
-        ApplicationsAPI
-            .assignReviewer(application.id, reviewer.user)
-            .then(res=> {
-                const {scholarship, applications, unsubmitted_applications: unsubmittedApplications} =  res.data;
-                const responseMessage = `Reviewer has been assigned.`;
+        if (!assignReviewerCurrentUser) {
+            this.setState({responseMessage: "You must select a reviewer."})
+        } else {
+            this.setState({isLoadingMessage: "Assigning Reviewer..."});
 
-                this.setState({scholarship, applications, unsubmittedApplications, responseMessage});
-            })
-            .catch(err=>{
-                console.log({err});
-                const { response_message } = err.response.data;
-                if (response_message) {
-                    this.setState({responseMessage: response_message});
-                } else {
-                    this.setState({responseMessage: "There was an error assigning reviewer.\n\n Please message us using the chat icon in the bottom right of your screen."});
-                }
-            })
-            .then(() => {
-                this.setState({isLoadingMessage: null});
-            });
+            ApplicationsAPI
+                .assignReviewer(application.id, reviewer.user)
+                .then(res => {
+                    const {scholarship, applications, unsubmitted_applications: unsubmittedApplications} = res.data;
+                    const responseMessage = `Reviewer has been assigned.`;
+
+                    this.setState({scholarship, applications, unsubmittedApplications, responseMessage});
+                })
+                .catch(err => {
+                    console.log({err});
+                    const {response_message} = err.response.data;
+                    if (response_message) {
+                        this.setState({responseMessage: response_message});
+                    } else {
+                        this.setState({responseMessage: "There was an error assigning reviewer.\n\n Please message us using the chat icon in the bottom right of your screen."});
+                    }
+                })
+                .then(() => {
+                    this.setState({isLoadingMessage: null});
+                });
+        }
     }
 
     updateCurrentReviewer = (newReviewer) => {
@@ -259,7 +265,7 @@ class ScholarshipManage extends React.Component {
     }
 
     assignReviewerButton = (application, allReviewers) => {
-        const { isLoadingMessage, assignReviewerCurrentUser } = this.state;
+        const { isLoadingMessage } = this.state;
 
         if (application.assigned_reviewers) {
             let applicationReviewerIds = application.assigned_reviewers.map(reviewer => reviewer.user.toString())
@@ -282,11 +288,12 @@ class ScholarshipManage extends React.Component {
                         modalBody={assignReviewerModalBody}
                         submitText={"Add Reviewer"}
                         onSubmit={() => {
-                            this.assignReviewer(application, assignReviewerCurrentUser)
+                            this.assignReviewer(application)
                         }}
                         addPopConfirm={true}
                         disabled={isLoadingMessage}
                         popConfirmText={"Confirm adding reviewer?"}
+                        onShowModal={()=>{this.updateCurrentReviewer(null)}}
                     />
                 </>
             )
