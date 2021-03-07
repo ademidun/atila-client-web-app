@@ -405,9 +405,9 @@ class ScholarshipManage extends React.Component {
                 <HelmetSeo  content={seoContent}/>
                 <h1>
                 <Link to={`/scholarship/${scholarship.slug}`} className="text-center">
-                    {scholarship.name}{' '}
+                    {scholarship.name}
                 </Link>
-                    application management
+                    {' '}application management
                 </h1>
                 <h2>
                     Submitted applications: {applications.length} <br/>
