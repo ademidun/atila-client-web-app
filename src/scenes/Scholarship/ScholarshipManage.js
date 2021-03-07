@@ -10,8 +10,10 @@ import {UserProfilePreview} from "../../components/ReferredByInput";
 import HelmetSeo, {defaultSeoContent} from '../../components/HelmetSeo';
 import { slugify } from '../../services/utils';
 import { CSVLink } from 'react-csv';
-import { convertApplicationsToCSVFormat } from '../Application/ApplicationUtils';
+import { convertApplicationsToCSVFormat, maxApplicationScoreDifference } from '../Application/ApplicationUtils';
 
+// Show a warning
+const maxReviewerScoreDifference = 3;
 
 class ScholarshipManage extends React.Component {
     constructor(props) {
@@ -508,6 +510,9 @@ function ApplicationsTable({ applications, scholarship, selectWinner, isScholars
                                     </tr>
                                 )
                             })}
+                            {maxApplicationScoreDifference(application.user_scores) >= maxReviewerScoreDifference &&
+                                <Alert message="This application has a high score variance." type="warning" showIcon />
+                            }
                         </tbody>
                     </table>
 

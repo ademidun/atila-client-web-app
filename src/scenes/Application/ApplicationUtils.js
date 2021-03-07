@@ -170,3 +170,30 @@ export function convertApplicationsToCSVFormat(applications) {
 
     return allApplicationsCSV;
 }
+
+export const maxApplicationScoreDifference = userScores => {
+    // Takes in application.user_scores as input and returns the max score difference
+
+    if (!userScores) {
+        return 0;
+    }
+
+    let userScoresList = Object.keys(userScores).map(key => {
+        let scoresInfo = userScores[key]
+        return scoresInfo['score']
+    });
+
+    if (!userScoresList) {
+        return  0;
+    }
+
+    let minNum = userScoresList[0];
+    let maxNum = userScoresList[0];
+
+    for (let i = 0; i < userScoresList.length; i++) {
+        minNum = Math.min(minNum, userScoresList[i]);
+        maxNum = Math.max(maxNum, userScoresList[i]);
+    }
+
+    return maxNum - minNum;
+}
