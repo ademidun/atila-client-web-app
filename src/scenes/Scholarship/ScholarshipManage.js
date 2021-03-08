@@ -265,7 +265,7 @@ class ScholarshipManage extends React.Component {
     }
 
     assignReviewerButton = (application, allReviewers) => {
-        const { isLoadingMessage } = this.state;
+        const { scholarship, isLoadingMessage } = this.state;
 
         if (application.assigned_reviewers) {
             let applicationReviewerIds = application.assigned_reviewers.map(reviewer => reviewer.user.toString())
@@ -682,7 +682,7 @@ function ApplicationsTable({ applications, scholarship, selectWinner, isScholars
                             <hr/>
                         </div>
                     ))}
-                    {allReviewers.length < application.assigned_reviewers.length &&
+                    {application.assigned_reviewers?.length < allReviewers.length &&
                         assignReviewerButton(application, allReviewers)
                     }
                 </>
