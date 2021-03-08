@@ -174,7 +174,7 @@ export function convertApplicationsToCSVFormat(applications) {
 export const maxApplicationScoreDifference = userScores => {
     // Takes in application.user_scores as input and returns the max score difference
 
-    if (!userScores) {
+    if (!userScores || Object.keys(userScores).length === 0) {
         return 0;
     }
 
