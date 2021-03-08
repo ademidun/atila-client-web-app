@@ -183,7 +183,7 @@ export const maxApplicationScoreDifference = userScores => {
         return Number(scoresInfo['score']);
     });
 
-    if (!userScoresList) {
+    if (userScoresList.length === 0) {
         return  0;
     }
 
