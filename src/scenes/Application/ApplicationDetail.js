@@ -49,6 +49,7 @@ let applicationPages = [
 ];
 
 let autoSaveTimeoutId;
+let scoreApplicationAutoSaveTimeoutId;
 class ApplicationDetail extends  React.Component{
 
     constructor(props) {
@@ -221,7 +222,7 @@ class ApplicationDetail extends  React.Component{
         this.makeScholarshipQuestionsForm(application, scholarship);
     };
 
-    updateApplicationScore = (event, eventType="applicationScore") => {
+    updateApplicationScore = (event, eventType="score") => {
         const { userProfile } = this.props;
         const { application } = this.state;
 
@@ -241,13 +242,22 @@ class ApplicationDetail extends  React.Component{
         this.setState({[updateStateKey[eventType]]: updateValue}, () => {
             // Prevent an API Request if the field is blank.
             if (updateValue.length !== 0) {
-                ApplicationsAPI.scoreApplication(application.id, scorerId, updateData)
-                    .then(res => {
-                    })
-                    .catch(err => {
-                        console.log({err});
-                        toastNotify(handleError(err))
-                    })
+                if (eventType === "notes") {
+                    // if it's a notes eventType, debounce to send the network request every 3 seconds
+                    // as opposed to sending the network request every keystroke to prevent overloading the network
+                    if (scoreApplicationAutoSaveTimeoutId) {
+                        clearTimeout(scoreApplicationAutoSaveTimeoutId);
+                    }
+                    scoreApplicationAutoSaveTimeoutId = setTimeout(() => {
+                        // Runs 1 second (1000 ms) after the last change
+                        this.callScoreApplicationAPI(application, scorerId, updateData);
+                    }, 3000);
+                } else {// else, if it's the score, we don't need to debounce because fewer changes are made and we want
+                // to update the score immediately on each key stroke.
+                    this.callScoreApplicationAPI(application, scorerId, updateData);
+                }
+                
+                
             }
 
         });
@@ -256,6 +266,15 @@ class ApplicationDetail extends  React.Component{
 
 };
 
+    callScoreApplicationAPI = (application, scorerId, updateData) => {
+        ApplicationsAPI.scoreApplication(application.id, scorerId, updateData)
+        .then(res => {
+        })
+        .catch(err => {
+            console.log({err});
+            toastNotify(handleError(err))
+        })
+    }
     submitApplication = () => {
         const { userProfile } = this.props;
         if (userProfile) {
