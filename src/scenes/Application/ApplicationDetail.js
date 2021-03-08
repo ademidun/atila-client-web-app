@@ -49,6 +49,7 @@ let applicationPages = [
 ];
 
 let autoSaveTimeoutId;
+let scoreApplicationAutoSaveTimeoutId;
 class ApplicationDetail extends  React.Component{
 
     constructor(props) {
@@ -59,6 +60,7 @@ class ApplicationDetail extends  React.Component{
         this.state = {
             application: {},
             applicationScore: 0,
+            applicationNotes: "",
             scholarship: null,
             isLoadingApplication: false,
             isSavingApplication: false,
@@ -107,7 +109,9 @@ class ApplicationDetail extends  React.Component{
                 if (application.user_scores) {
                     const applicationScore = application.user_scores[userProfile.user] ?
                         application.user_scores[userProfile.user]["score"] : 0;
-                    this.setState({applicationScore}, () => {
+                        const applicationNotes= application.user_scores[userProfile.user] ?
+                            application.user_scores[userProfile.user]["notes"] : "";
+                    this.setState({applicationScore, applicationNotes}, () => {
                         if (location && location.hash) {
                             scrollToElement(location.hash);
                         }
@@ -218,27 +222,59 @@ class ApplicationDetail extends  React.Component{
         this.makeScholarshipQuestionsForm(application, scholarship);
     };
 
-    updateApplicationScore = (event) => {
+    updateApplicationScore = (event, eventType="score") => {
         const { userProfile } = this.props;
         const { application } = this.state;
 
-        const applicationScore = event.target.value;
+        
 
         const scorerId = userProfile.user;
-        this.setState({applicationScore}, () => {
-            // Prevent an API Request if the field is blank.
-            if (applicationScore.length !== 0) {
-                ApplicationsAPI.scoreApplication(application.id, scorerId, applicationScore)
-                    .then(res => {
-                    })
-                    .catch(err => {
-                        console.log({err});
-                        toastNotify(handleError(err))
-                    })
-            }
-        })
-    };
+        let updateValue = event.target.value;
+        let updateData = {
+            [eventType]: updateValue
+        };
 
+        let updateStateKey = {
+            score: "applicationScore",
+            notes: "applicationNotes",
+        }
+        
+        this.setState({[updateStateKey[eventType]]: updateValue}, () => {
+            // Prevent an API Request if the field is blank.
+            if (updateValue.length !== 0) {
+                if (eventType === "notes") {
+                    // if it's a notes eventType, debounce to send the network request every 3 seconds
+                    // as opposed to sending the network request every keystroke to prevent overloading the network
+                    if (scoreApplicationAutoSaveTimeoutId) {
+                        clearTimeout(scoreApplicationAutoSaveTimeoutId);
+                    }
+                    scoreApplicationAutoSaveTimeoutId = setTimeout(() => {
+                        // Runs 1 second (1000 ms) after the last change
+                        this.callScoreApplicationAPI(application, scorerId, updateData);
+                    }, 3000);
+                } else {// else, if it's the score, we don't need to debounce because fewer changes are made and we want
+                // to update the score immediately on each key stroke.
+                    this.callScoreApplicationAPI(application, scorerId, updateData);
+                }
+                
+                
+            }
+
+        });
+        
+
+
+};
+
+    callScoreApplicationAPI = (application, scorerId, updateData) => {
+        ApplicationsAPI.scoreApplication(application.id, scorerId, updateData)
+        .then(res => {
+        })
+        .catch(err => {
+            console.log({err});
+            toastNotify(handleError(err))
+        })
+    }
     submitApplication = () => {
         const { userProfile } = this.props;
         if (userProfile) {
@@ -469,7 +505,7 @@ class ApplicationDetail extends  React.Component{
         const { application, isLoadingApplication, scholarship, isSavingApplication, isSubmittingApplication,
             scholarshipUserProfileQuestionsFormConfig, scholarshipQuestionsFormConfig,
             isUsingLocalApplication, promptRegisterBeforeSubmitting,
-            applicationScore, pageNumber, isScholarshipDeadlinePassed } = this.state;
+            applicationScore, applicationNotes, pageNumber, isScholarshipDeadlinePassed } = this.state;
 
         const applicationSteps =
             (<Steps current={pageNumber-1} onChange={(current) => this.changePage(current+1)}>
@@ -540,13 +576,22 @@ class ApplicationDetail extends  React.Component{
             applicationScoreContent = (<div className="mb-3">
                 <p>
                     Give an application a score between 0-10 to help you rank the applications.<br />
-                    These scores will not be shared with the applicant.
+                    You can also add some notes to the application.<br />
+                    These scores are not visible to the applicant.
                 </p>
                 <input className="form-control col-12"
                        type="number" step={0.01} min={0} max={10}
-                       onChange={this.updateApplicationScore}
+                       onChange={event => this.updateApplicationScore(event, "score")}
                        value={applicationScore}/>
-                <p>Your score is automatically saved</p><br/>
+                
+                <textarea
+                        placeholder="Notes"
+                        className="col-12 my-3 form-control"
+                        value={applicationNotes}
+                        onChange={event => this.updateApplicationScore(event, "notes")}
+                        rows="5"
+                />
+                <p>Your score and notes are automatically saved</p><br/>
                 <Link to={`/scholarship/${scholarship.id}/manage`}> 
                     View all applications
                 </Link>

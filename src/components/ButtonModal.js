@@ -13,7 +13,11 @@ class ButtonModal extends React.Component {
     }
 
     showModal = () => {
-        this.setState({isModalVisible: true});
+        const { onShowModal } = this.props;
+        this.setState({isModalVisible: true})
+        if (onShowModal) {
+            onShowModal();
+        }
     };
 
     handleModalCancel = () => {
@@ -22,8 +26,10 @@ class ButtonModal extends React.Component {
 
     onSubmit = (event) => {
         const { onSubmit } = this.props;
-        onSubmit(event);
         this.handleModalCancel();
+        if (onSubmit) {
+            onSubmit(event);
+        }
     }
 
     render() {

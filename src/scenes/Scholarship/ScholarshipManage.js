@@ -1,16 +1,62 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
-import {Alert, Button, Input, InputNumber, Popconfirm, Radio, Table, Tag} from "antd";
+import {Alert, Input, InputNumber, Radio, Tag} from "antd";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
 import {BlindApplicationsExplanationMessage, WINNER_SELECTED_MESSAGE} from "../../models/Scholarship";
 import ButtonModal from "../../components/ButtonModal";
 import {UserProfilePreview} from "../../components/ReferredByInput";
 import HelmetSeo, {defaultSeoContent} from '../../components/HelmetSeo';
-import { slugify } from '../../services/utils';
-import { CSVLink } from 'react-csv';
-import { convertApplicationsToCSVFormat } from '../Application/ApplicationUtils';
+import ApplicationsAPI from "../../services/ApplicationsAPI";
+import { ApplicationsTable } from './ApplicationsTable';
+
+
+class AssignReviewerRadioSelect extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            value: null,
+        }
+    }
+
+    onChange = e => {
+        this.setState({
+            value: e.target.value,
+        }, ()=>{
+            const { value } = this.state;
+            const { reviewerOptions, updateCurrentReviewer } = this.props;
+
+            let newReviewer = reviewerOptions[value];
+            updateCurrentReviewer(newReviewer);
+        });
+    };
+
+    render() {
+        const radioStyle = {
+            display: 'block',
+            height: '30px',
+            lineHeight: '30px',
+        };
+
+        const { value } = this.state;
+        const { reviewerOptions } = this.props;
+
+        let reviewerRadioOptions = reviewerOptions.map((reviewer, index) => {
+            return (
+                <Radio style={radioStyle} value={index}>
+                    <UserProfilePreview userProfile={reviewer} />
+                </Radio>
+            )
+        })
+
+        return (
+            <Radio.Group onChange={this.onChange} value={value}>
+                {reviewerRadioOptions}
+            </Radio.Group>
+        );
+    }
+}
 
 
 class ScholarshipManage extends React.Component {
@@ -29,6 +75,7 @@ class ScholarshipManage extends React.Component {
             applicationTypeToEmail: 'all', // This is only for the modal to email applicants
             reviewersPerApplication: 2,
             isLoadingMessage: null,
+            assignReviewerCurrentUser: null,
         }
     }
 
@@ -178,6 +225,80 @@ class ScholarshipManage extends React.Component {
 
     }
 
+    assignReviewer = (application) => {
+        const { assignReviewerCurrentUser } = this.state;
+
+        if (!assignReviewerCurrentUser) {
+            this.setState({responseMessage: "You must select a reviewer."})
+        } else {
+            this.setState({isLoadingMessage: "Assigning Reviewer..."});
+
+            ApplicationsAPI
+                .assignReviewer(application.id, assignReviewerCurrentUser.user)
+                .then(res => {
+                    const {scholarship, applications, unsubmitted_applications: unsubmittedApplications} = res.data;
+                    const responseMessage = `Reviewer has been assigned.`;
+
+                    this.setState({scholarship, applications, unsubmittedApplications, responseMessage});
+                })
+                .catch(err => {
+                    console.log({err});
+                    const {response_message} = err.response.data;
+                    if (response_message) {
+                        this.setState({responseMessage: response_message});
+                    } else {
+                        this.setState({responseMessage: "There was an error assigning reviewer.\n\n Please message us using the chat icon in the bottom right of your screen."});
+                    }
+                })
+                .then(() => {
+                    this.setState({isLoadingMessage: null});
+                });
+        }
+    }
+
+    updateCurrentReviewer = (newReviewer) => {
+        this.setState({assignReviewerCurrentUser: newReviewer});
+    }
+
+    assignReviewerButton = (application, allReviewers) => {
+        const { scholarship, isLoadingMessage } = this.state;
+
+        if (application.assigned_reviewers) {
+            let applicationReviewerIds = application.assigned_reviewers.map(reviewer => reviewer.user.toString())
+
+            function isNotAlreadyReviewer(reviewer) {
+                return !applicationReviewerIds.includes(reviewer.user.toString())
+            }
+
+            allReviewers = allReviewers.filter(isNotAlreadyReviewer)
+
+            let assignReviewerModalBody = <AssignReviewerRadioSelect reviewerOptions={allReviewers}
+                                                                     updateCurrentReviewer={this.updateCurrentReviewer}/>
+
+            return (
+                <>
+                    <ButtonModal
+                        showModalButtonSize={"small"}
+                        showModalText={"Assign Reviewer..."}
+                        modalTitle={"Choose Reviewer"}
+                        modalBody={assignReviewerModalBody}
+                        submitText={"Add Reviewer"}
+                        onSubmit={() => {
+                            this.assignReviewer(application)
+                        }}
+                        addPopConfirm={true}
+                        disabled={isLoadingMessage || scholarship.is_winner_selected}
+                        popConfirmText={"Confirm adding reviewer?"}
+                        onShowModal={()=>{this.updateCurrentReviewer(null)}}
+                    />
+                </>
+            )
+        } else {
+            return null
+        }
+
+    }
+
     updateReviewersPerApplication = (reviewersPerApplication) => {
         this.setState({reviewersPerApplication});
     }
@@ -287,9 +408,9 @@ class ScholarshipManage extends React.Component {
                 <HelmetSeo  content={seoContent}/>
                 <h1>
                 <Link to={`/scholarship/${scholarship.slug}`} className="text-center">
-                    {scholarship.name}{' '}
+                    {scholarship.name}
                 </Link>
-                    application management
+                    {' '}application management
                 </h1>
                 <h2>
                     Submitted applications: {applications.length} <br/>
@@ -381,217 +502,10 @@ class ScholarshipManage extends React.Component {
                                    scholarship={scholarship}
                                    selectWinner={this.selectWinner}
                                    isScholarshipOwner={isScholarshipOwner}
+                                   assignReviewerButton={this.assignReviewerButton}
                 />
             </div>
         )
-    }
-}
-
-function ApplicationsTable({ applications, scholarship, selectWinner, isScholarshipOwner }){
-    const { collaborators, owner_detail } = scholarship;
-
-    let allReviewers = [...collaborators, owner_detail];
-    // Automatically show the scores by default if the winner has been selected.
-    const [showScores, setShowScores] = useState(scholarship.is_winner_selected);
-
-    let assignedReviewersFilter = allReviewers.map(collaborator => {
-        return {'text': collaborator.username,
-                'value': collaborator.username}
-    })
-
-    const possibleScores = [null, ...Array(11).keys()];
-
-    const possibleScoresFilter = possibleScores.map(possibleScore => {
-        return {
-                'text': possibleScore === null ? "None" : possibleScore,
-                'value': possibleScore
-            }
-    })
-
-    let applicationsAsCSV = convertApplicationsToCSVFormat(applications);
-
-    const selectWinnerColumn = {
-        title: <b>Select Winner</b>,
-        dataIndex: 'id',
-        key: '5',
-        render: (applicationID, application) => (
-            <React.Fragment>
-                {application.is_submitted? renderWinnerButton(applicationID, scholarship, selectWinner) : "Cannot select unsubmitted application"}
-            </React.Fragment>
-        ),
-    };
-
-    const columns = [
-        {
-            title: <b>Full Name</b>,
-            dataIndex: 'user',
-            key: '1',
-            render: (userProfile, application) => {
-
-                return application.user ? `${application.user.first_name} ${application.user.last_name}` :
-                    `${application.first_name_code} ${application.last_name_code}`;
-            },
-            sorter: (a, b) =>{
-
-                const aString = a.user ? `${a.user.first_name} ${a.user.last_name}` : `${a.first_name_code} ${a.last_name_code}`;
-                const bString = b.user? `${b.user.first_name} ${b.user.last_name}` : `${b.first_name_code} ${b.last_name_code}`;
-                return aString.localeCompare(bString)
-            } ,
-            sortDirections: ['ascend' , 'descend'],
-        },
-        {
-            title: <b>Application</b>,
-            dataIndex: 'id',
-            key: '2',
-            render: (id, application) => (
-                <React.Fragment>
-                    {application.is_winner && <><Tag color="green">Winner</Tag>{' '}</>}
-                    {application.is_submitted? <Link to={`/application/${application.id}`}>View</Link> : "Cannot view unsubmitted application"}
-                </React.Fragment>
-            ),
-        },
-        {
-            title: <p>
-            <b>Average Score </b>
-            {!showScores && <p>Click "Show Scores" to see reviewer scores</p>}
-            </p>,
-            dataIndex: 'average_user_score',
-            key: 'average_user_score',
-            filters: possibleScoresFilter,
-            onFilter: (value, application) => application.average_user_score === null ?  value === application.average_user_score : value === Number.parseInt(application.average_user_score),
-            sorter: (a, b) => {
-                if (!a.average_user_score) {
-                    return -1;
-                }
-                else if (!b.average_user_score) {
-                    return 1;
-                }
-                
-                return a.average_user_score - b.average_user_score;
-            },
-            sortDirections: ['descend', 'ascend'],
-            render: (average_user_score, application) => (
-                <>
-                    {showScores ? average_user_score : null }
-                </>
-            )
-        },
-        {
-            title: <p>
-            <b>Reviewer Scores </b>
-            {!showScores && <p>Click "Show Scores" to see reviewer scores</p>}
-            </p>,
-            dataIndex: 'user_scores',
-            key: '3',
-            // Could either use userScores or application.user_scores, they're the same.
-            render: (userScores, application) => (
-                <React.Fragment>
-                    {showScores && application.user_scores && Object.keys(application.user_scores).length > 0 &&
-
-                    <table className="table">
-                        <thead>
-                        <tr>
-                            <th>User ID</th>
-                            <th>Score</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            {Object.keys(application.user_scores).map(scorerId => {
-                                return (
-                                    <tr key={scorerId}>
-                                        <td>{application.user_scores[scorerId].user ?
-                                            <UserProfilePreview userProfile={application.user_scores[scorerId].user} /> :
-                                            application.user_scores[scorerId].user_id  
-                                            } 
-                                        </td>
-                                        <td>{application.user_scores[scorerId].score}</td>
-                                    </tr>
-                                )
-                            })}
-                        </tbody>
-                    </table>
-
-                    
-                    }
-                </React.Fragment>
-            ),
-        },
-        {
-            title: <b>Assigned Reviewers</b>,
-            dataIndex: 'assigned_reviewers',
-            key: '4',
-            filters: assignedReviewersFilter,
-            onFilter: (value, application) => applicationReviewersUsernames(application).includes(value),
-            render: (reviewers, application) => {
-                if (reviewers) {
-                    return reviewers.map(reviewer => (
-                        <div key={reviewer.user}>
-                        <UserProfilePreview userProfile={reviewer} linkProfile={true}/>
-                        <hr/>
-                        </div>
-                    ))
-                }
-            },
-        },
-    ];
-
-    if (isScholarshipOwner) {
-        columns.push(selectWinnerColumn);
-    }
-
-    return (<>
-    <Button 
-    onClick={() => setShowScores(!showScores)}
-    className="mb-3">
-        {showScores ? "Hide " : "Show "} Scores
-    </Button>
-
-    <CSVLink data={applicationsAsCSV}
-             filename={`${slugify(scholarship.name)}-applications.csv`}
-             style={{"float": "right"}}>
-        Download as CSV
-    </CSVLink>
-    <Table columns={columns} dataSource={applications} rowKey="id" />
-    </>
-    )
-}
-
-const todayDate = new Date().toISOString();
-const renderWinnerButton = (applicationID, scholarship, selectWinner) => {
-    const confirmText = "Are you sure you want to pick this winner? You will not be able to undo this action.";
-
-    if (scholarship.is_winner_selected) {
-        return (
-            <p>
-                Winner has been selected
-            </p>
-        )
-    }
-
-    if (todayDate < scholarship.deadline) {
-        return (
-            <p>
-                You can pick a winner after the deadline has passed
-            </p>
-        )
-    }
-
-    return (
-        <Popconfirm placement="topLeft" title={confirmText} onConfirm={() => selectWinner(applicationID, scholarship)} okText="Yes" cancelText="No">
-            <Button className="btn-success">
-                Select Winner...
-            </Button>
-        </Popconfirm>
-    )
-};
-
-const applicationReviewersUsernames = application => {
-    const { assigned_reviewers } = application;
-    if (assigned_reviewers) {
-        let usernames = assigned_reviewers.map(reviewer => reviewer.username);
-        return usernames;
-    } else {
-        return []
     }
 }
 
