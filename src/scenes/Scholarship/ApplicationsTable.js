@@ -130,7 +130,7 @@ export class ApplicationsTable extends  React.Component {
                 // Could either use userScores or application.user_scores, they're the same.
                 render: (userScores, application) => (
                     <React.Fragment>
-                        {showScores && application.user_scores && Object.keys(application.user_scores).length > 0 &&
+                        {application.user_scores && Object.keys(application.user_scores).length > 0 &&
     
                             <table className="table">
                                 <thead>
@@ -148,9 +148,9 @@ export class ApplicationsTable extends  React.Component {
                                                     <UserProfilePreview userProfile={application.user_scores[scorerId].user} /> :
                                                     application.user_scores[scorerId].user_id}
                                                 </td>
-                                                <td>{application.user_scores[scorerId].score}</td>
+                                                <td>{showScores  && application.user_scores[scorerId].score}</td>
                                                 <td style={{whiteSpace: "pre-line"}}>
-                                                    {application.user_scores[scorerId].notes}
+                                                    {showScores  && application.user_scores[scorerId].notes}
                                                 </td>
                                             </tr>
                                         );
