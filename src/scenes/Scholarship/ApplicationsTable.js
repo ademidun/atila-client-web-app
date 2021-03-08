@@ -120,6 +120,7 @@ export function ApplicationsTable({ applications, scholarship, selectWinner, isS
                                 <tr>
                                     <th>User ID</th>
                                     <th>Score</th>
+                                    <th>Notes</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -131,6 +132,7 @@ export function ApplicationsTable({ applications, scholarship, selectWinner, isS
                                                 application.user_scores[scorerId].user_id}
                                             </td>
                                             <td>{application.user_scores[scorerId].score}</td>
+                                            <td>{application.user_scores[scorerId].notes}</td>
                                         </tr>
                                     );
                                 })}

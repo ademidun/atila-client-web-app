@@ -195,5 +195,5 @@ export const maxApplicationScoreDifference = userScores => {
         maxNum = Math.max(maxNum, userScoresList[i]);
     }
 
-    return maxNum - minNum;
+    return maxNum - minNum ? (maxNum - minNum).toFixed(2) : maxNum - minNum;
 }
