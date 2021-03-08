@@ -156,11 +156,11 @@ class ApplicationsAPI {
         return apiCompletionPromise
     };
 
-    static scoreApplication = (applicationId, scorerUserId, score) => {
+    static scoreApplication = (applicationId, scorerUserId, updateData) => {
 
         const apiCompletionPromise = request({
             method: 'post',
-            data: {user_id: scorerUserId, score},
+            data: {user_id: scorerUserId, ...updateData},
             url: `${this.applicationsApiUrl}/${applicationId}/score-application/`
         });
 
