@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
-import {Alert, Button, Input, InputNumber, Popconfirm, Radio, Tag} from "antd";
+import {Alert, Input, InputNumber, Radio, Tag} from "antd";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
 import {BlindApplicationsExplanationMessage, WINNER_SELECTED_MESSAGE} from "../../models/Scholarship";
@@ -11,8 +11,6 @@ import HelmetSeo, {defaultSeoContent} from '../../components/HelmetSeo';
 import ApplicationsAPI from "../../services/ApplicationsAPI";
 import { ApplicationsTable } from './ApplicationsTable';
 
-// Show a warning
-export const maxReviewerScoreDifference = 3;
 
 class AssignReviewerRadioSelect extends React.Component {
     constructor(props) {
@@ -508,45 +506,6 @@ class ScholarshipManage extends React.Component {
                 />
             </div>
         )
-    }
-}
-
-const todayDate = new Date().toISOString();
-export const renderWinnerButton = (applicationID, scholarship, selectWinner) => {
-    const confirmText = "Are you sure you want to pick this winner? You will not be able to undo this action.";
-
-    if (scholarship.is_winner_selected) {
-        return (
-            <p>
-                Winner has been selected
-            </p>
-        )
-    }
-
-    if (todayDate < scholarship.deadline) {
-        return (
-            <p>
-                You can pick a winner after the deadline has passed
-            </p>
-        )
-    }
-
-    return (
-        <Popconfirm placement="topLeft" title={confirmText} onConfirm={() => selectWinner(applicationID, scholarship)} okText="Yes" cancelText="No">
-            <Button className="btn-success">
-                Select Winner...
-            </Button>
-        </Popconfirm>
-    )
-};
-
-export const applicationReviewersUsernames = application => {
-    const { assigned_reviewers } = application;
-    if (assigned_reviewers) {
-        let usernames = assigned_reviewers.map(reviewer => reviewer.username);
-        return usernames;
-    } else {
-        return []
     }
 }
 
