@@ -28,7 +28,7 @@ export class ApplicationsTable extends  React.Component {
 
     render () {
 
-        const { applications, scholarship, selectWinner, isScholarshipOwner, assignReviewerButton } = this.props;
+        const { applications, scholarship, selectFinalistOrWinner, isScholarshipOwner, assignReviewerButton } = this.props;
         const { collaborators, owner_detail } = scholarship;
         const { showScores } = this.state;
     
@@ -53,12 +53,12 @@ export class ApplicationsTable extends  React.Component {
         let applicationsAsCSV = convertApplicationsToCSVFormat(applications);
     
         const selectWinnerColumn = {
-            title: <b>Select Winner</b>,
+            title: <b>Select {scholarship.is_finalists_notified ? " Winner" : " Finalists"}</b>,
             dataIndex: 'id',
             key: '5',
             render: (applicationID, application) => (
                 <React.Fragment>
-                    {application.is_submitted ? renderWinnerButton(applicationID, scholarship, selectWinner) : "Cannot select unsubmitted application"}
+                    {application.is_submitted ? renderFinalistOrWinnerButton(application, scholarship, selectFinalistOrWinner) : "Cannot select unsubmitted application"}
                 </React.Fragment>
             ),
         };
@@ -88,6 +88,7 @@ export class ApplicationsTable extends  React.Component {
                 render: (id, application) => (
                     <React.Fragment>
                         {application.is_winner && <><Tag color="green">Winner</Tag>{' '}</>}
+                        {!application.is_winner && application.is_finalist && <><Tag>Finalist</Tag>{' '}</>}
                         {application.is_submitted ? <Link to={`/application/${application.id}`}>View</Link> : "Cannot view unsubmitted application"}
                     </React.Fragment>
                 ),
@@ -229,8 +230,21 @@ export class ApplicationsTable extends  React.Component {
 }
 
 const todayDate = new Date().toISOString();
-export const renderWinnerButton = (applicationID, scholarship, selectWinner) => {
-    const confirmText = "Are you sure you want to pick this winner? You will not be able to undo this action.";
+export const renderFinalistOrWinnerButton = (application, scholarship, selectFinalistOrWinner) => {
+
+    let finalistOrWinnerText = scholarship.is_finalists_notified ? "winner" : "finalist"
+    let confirmText = `Are you sure you want to pick this ${finalistOrWinnerText}?`;
+    if (scholarship.is_finalists_notified) {
+        confirmText = confirmText + " You will not be able to undo this action.";
+    }
+
+    if (application.is_finalist && !scholarship.is_finalists_notified) {
+        return (
+            <p>
+                This finalist has been selected. Notify all finalists before you select a winner.
+            </p>
+        )
+    }
 
     if (scholarship.is_winner_selected) {
         return (
@@ -249,9 +263,9 @@ export const renderWinnerButton = (applicationID, scholarship, selectWinner) => 
     }
 
     return (
-        <Popconfirm placement="topLeft" title={confirmText} onConfirm={() => selectWinner(applicationID, scholarship)} okText="Yes" cancelText="No">
+        <Popconfirm placement="topLeft" title={confirmText} onConfirm={() => selectFinalistOrWinner(application, scholarship)} okText="Yes" cancelText="No">
             <Button className="btn-success">
-                Select Winner...
+                Select {finalistOrWinnerText}...
             </Button>
         </Popconfirm>
     )

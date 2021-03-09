@@ -105,6 +105,18 @@ class ApplicationsAPI {
         return apiCompletionPromise;
     };
 
+
+    static selectFinalist = (id, application) => {
+
+        const apiCompletionPromise = request({
+            method: "post",
+            data: application,
+            url: `${this.applicationsApiUrl}/${id}/set-finalist/`,
+        });
+
+        return apiCompletionPromise;
+    };
+
     static patch = (id, application) => {
         return ApplicationsAPI.update(id, application, "patch")
     };
