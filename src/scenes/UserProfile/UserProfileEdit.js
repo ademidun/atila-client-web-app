@@ -217,22 +217,25 @@ class UserProfileEdit extends React.Component {
                              inputConfigs=
                                  {userProfileFormConfig}
                 />
+                <div id="enrollment-proof">
 
-                <FileInput
-                    title={"Proof of Enrollment"}
-                    keyName="enrollment_proof"
-                    className="my-3"
-                    onChangeHandler={this.updateForm}
-                    type="image,pdf"
-                    filePath={`user-profile-files/${userProfile.user}`}
-                    uploadHint="Enrollment proof must be a PDF (preferred) or an image."/>
-                        {userProfile.enrollment_proof &&
-                            <div className="my-2">
-                                <a href={userProfile.enrollment_proof} target="_blank"  rel="noopener noreferrer">
-                                    View Proof of Enrollment
-                                </a>
-                            </div>
-                        }
+                    <FileInput
+                        title={"Proof of Enrollment"}
+                        keyName="enrollment_proof"
+                        className="my-3"
+                        onChangeHandler={this.updateForm}
+                        type="image,pdf"
+                        filePath={`user-profile-files/${userProfile.user}`}
+                        uploadHint="Enrollment proof must be a PDF (preferred) or an image."/>
+                            {userProfile.enrollment_proof &&
+                                <div className="my-2">
+                                    <a href={userProfile.enrollment_proof} target="_blank"  rel="noopener noreferrer">
+                                        View Proof of Enrollment
+                                    </a>
+                                </div>
+                            }
+
+                </div>
                 </>
                 }
                 {pageNumber === 2 &&
