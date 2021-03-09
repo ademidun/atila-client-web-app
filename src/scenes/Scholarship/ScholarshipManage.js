@@ -104,11 +104,21 @@ class ScholarshipManage extends React.Component {
             });
     };
 
-    selectWinner = (applicationID, scholarship) => {
+    selectFinalistOrWinner = (application, scholarship) => {
 
-        const winners = {winners: applicationID};
+        if (scholarship.is_finalists_notified) {
+            this.selectWinner(application, scholarship);
+        } else {
+            this.selectFinalist(application, scholarship);
+        }
+        
+    };
+
+    selectWinner = (application, scholarship) => {
+        const winners = {winners: application.id};
         const scholarshipID = scholarship.id;
         this.setState({isLoadingMessage: "Messaging winners..."});
+
         ScholarshipsAPI
             .selectWinners(scholarshipID, winners)
             .then((res)=>{
@@ -123,7 +133,26 @@ class ScholarshipManage extends React.Component {
             .then(() => {
                 this.setState({isLoadingMessage: null});
             })
-    };
+    }
+
+    selectFinalist = (application, scholarship) => {
+        this.setState({isLoadingMessage: "Updating application..."});
+
+        ApplicationsAPI
+            .selectFinalist(application.id, {is_finalist: true})
+            .then((res)=>{
+                console.log({res});
+                const {scholarship, applications, unsubmitted_applications: unsubmittedApplications} =  res.data;
+                this.setState({scholarship, applications, unsubmittedApplications});
+            })
+            .catch(err => {
+                console.log({err});
+                this.setState({responseMessage: "There was an error selecting a finalist.\n\n Please message us using the chat icon in the bottom right of your screen."});
+            })
+            .then(() => {
+                this.setState({isLoadingMessage: null});
+            })
+    }
 
     emailApplicants = () => {
         const { scholarship, applicationTypeToEmail } = this.state;
@@ -500,7 +529,7 @@ class ScholarshipManage extends React.Component {
                 {scholarship.is_blind_applications && <BlindApplicationsExplanationMessage />}
                 <ApplicationsTable applications={allApplications}
                                    scholarship={scholarship}
-                                   selectWinner={this.selectWinner}
+                                   selectFinalistOrWinner={this.selectFinalistOrWinner}
                                    isScholarshipOwner={isScholarshipOwner}
                                    assignReviewerButton={this.assignReviewerButton}
                 />
