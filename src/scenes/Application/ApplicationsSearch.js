@@ -63,7 +63,7 @@ ApplicationsSearch.propTypes = {
     applications: PropTypes.array.isRequired,
     updateSearch: PropTypes.func,
 };
-export function ApplicationPreview({ application }){
+export function ApplicationPreview({ application, searchTerm }){
 
     const applicationResponses = application.scholarship_responses;
     if (!applicationResponses || Object.values(applicationResponses).length === 0) {
@@ -78,7 +78,7 @@ export function ApplicationPreview({ application }){
     applicationResponsePreview = applicationResponsePreview.substring(0, 140);
 
     return (<div>
-        Preview: 
+        Preview ({searchTerm}): 
             <p className="text-muted">
             {applicationResponsePreview}...
             </p>

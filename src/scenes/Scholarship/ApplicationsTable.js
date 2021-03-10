@@ -38,7 +38,7 @@ export class ApplicationsTable extends  React.Component {
 
         const { scholarship, selectFinalistOrWinner, isScholarshipOwner, assignReviewerButton } = this.props;
         const { collaborators, owner_detail } = scholarship;
-        const { showScores, allApplications, filteredApplications } = this.state;
+        const { showScores, allApplications, filteredApplications, searchTerm } = this.state;
     
         let allReviewers = [...collaborators, owner_detail];
     
@@ -102,7 +102,7 @@ export class ApplicationsTable extends  React.Component {
                         && 
                             <>
                                 <hr/>
-                                <ApplicationPreview application={application} />
+                                <ApplicationPreview application={application} searchTerm={searchTerm} />
                             </>
                         }
                         
@@ -233,7 +233,7 @@ export class ApplicationsTable extends  React.Component {
                 className="mb-3">
                 {showScores ? "Hide " : "Show "} Scores
         </Button>
-        <ApplicationsSearch applications={allApplications} updateSearch={(filtered, searchTerm) => this.filterApplications(filtered)} />
+        <ApplicationsSearch applications={allApplications} updateSearch={(filtered, searchTerm) => this.filterApplications(filtered, searchTerm)} />
             <CSVLink data={applicationsAsCSV}
                 filename={`${slugify(scholarship.name)}-applications.csv`}
                 style={{ "float": "right" }}>
