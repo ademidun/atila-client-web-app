@@ -197,3 +197,31 @@ export const maxApplicationScoreDifference = userScores => {
 
     return maxNum - minNum ? (maxNum - minNum).toFixed(2) : maxNum - minNum;
 }
+
+/**
+ * Given a list of applications. Return all the applications that have a scholarship response that matches the searchTerm.
+ * @param {Array} applications 
+ * @param {String} searchTerm 
+ */
+export const searchApplications = (applications, searchTerm) => {
+
+    const matchingApplications = [];
+
+    applications.forEach(application => { 
+
+        if (!application.scholarship_responses) {
+            return;
+        }
+        for (const questionResponse of Object.values(application.scholarship_responses)) {
+            const responseText = questionResponse.type === "long_answer" ? stripHtml(questionResponse.response) : questionResponse.response;
+
+            if (responseText && String(responseText).includes(matchingApplications)) {
+                matchingApplications.push(application);
+                break;
+            }
+        }
+        
+    })
+
+    return matchingApplications;
+}

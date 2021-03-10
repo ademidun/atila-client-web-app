@@ -5,7 +5,7 @@ import { UserProfilePreview } from "../../components/ReferredByInput";
 import { slugify } from '../../services/utils';
 import { CSVLink } from 'react-csv';
 import { convertApplicationsToCSVFormat, maxApplicationScoreDifference } from '../Application/ApplicationUtils';
-import { ApplicationPreview } from '../Application/ApplicationPreview';
+import { ApplicationSearch, ApplicationPreview } from '../Application/ApplicationSearch';
 
 
 // Show a warning
@@ -226,7 +226,7 @@ export class ApplicationsTable extends  React.Component {
                 className="mb-3">
                 {showScores ? "Hide " : "Show "} Scores
         </Button>
-    
+        <ApplicationSearch applications={applications} />
             <CSVLink data={applicationsAsCSV}
                 filename={`${slugify(scholarship.name)}-applications.csv`}
                 style={{ "float": "right" }}>
@@ -295,14 +295,4 @@ export const getApplicationUsernamesByAttribute = (application, attributeName="a
     } 
     
     return usernames;
-}
-
-export const filterApplication = (application) => {
-    const { assigned_reviewers } = application;
-    if (assigned_reviewers) {
-        let usernames = assigned_reviewers.map(reviewer => reviewer.username);
-        return usernames;
-    } else {
-        return []
-    }
 }
