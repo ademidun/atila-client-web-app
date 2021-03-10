@@ -5,7 +5,7 @@ import { UserProfilePreview } from "../../components/ReferredByInput";
 import { slugify } from '../../services/utils';
 import { CSVLink } from 'react-csv';
 import { convertApplicationsToCSVFormat, maxApplicationScoreDifference } from '../Application/ApplicationUtils';
-import { ApplicationSearch, ApplicationPreview } from '../Application/ApplicationSearch';
+import { ApplicationsSearch, ApplicationPreview } from '../Application/ApplicationsSearch';
 
 
 // Show a warning
@@ -15,11 +15,14 @@ export class ApplicationsTable extends  React.Component {
     constructor(props) {
         super(props);
 
-        const { scholarship } = this.props;
+        const { scholarship, applications } = this.props;
 
         this.state = {
             // Automatically show the scores by default if the winner has been selected.
-            showScores: scholarship.is_winner_selected
+            showScores: scholarship.is_winner_selected,
+            allApplications: applications,
+            filteredApplications: applications,
+            searchTerm: "",
         }
     }
 
@@ -27,11 +30,15 @@ export class ApplicationsTable extends  React.Component {
         this.setState({showScores});
     }
 
+    filterApplications(filteredApplications, searchTerm){
+        this.setState({filteredApplications, searchTerm});
+    }
+
     render () {
 
-        const { applications, scholarship, selectFinalistOrWinner, isScholarshipOwner, assignReviewerButton } = this.props;
+        const { scholarship, selectFinalistOrWinner, isScholarshipOwner, assignReviewerButton } = this.props;
         const { collaborators, owner_detail } = scholarship;
-        const { showScores } = this.state;
+        const { showScores, allApplications, filteredApplications } = this.state;
     
         let allReviewers = [...collaborators, owner_detail];
     
@@ -51,7 +58,7 @@ export class ApplicationsTable extends  React.Component {
             };
         });
     
-        let applicationsAsCSV = convertApplicationsToCSVFormat(applications);
+        let applicationsAsCSV = convertApplicationsToCSVFormat(filteredApplications);
     
         const selectWinnerColumn = {
             title: <b>Select {scholarship.is_finalists_notified ? " Winner" : " Finalists"}</b>,
@@ -226,13 +233,13 @@ export class ApplicationsTable extends  React.Component {
                 className="mb-3">
                 {showScores ? "Hide " : "Show "} Scores
         </Button>
-        <ApplicationSearch applications={applications} />
+        <ApplicationsSearch applications={allApplications} updateSearch={(filtered, searchTerm) => this.filterApplications(filtered)} />
             <CSVLink data={applicationsAsCSV}
                 filename={`${slugify(scholarship.name)}-applications.csv`}
                 style={{ "float": "right" }}>
                 Download as CSV
         </CSVLink>
-            <Table columns={columns} dataSource={applications} rowKey="id" />
+            <Table columns={columns} dataSource={filteredApplications} rowKey="id" />
         </>
         );
 

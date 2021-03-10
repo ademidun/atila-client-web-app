@@ -215,9 +215,10 @@ export const searchApplications = (applications, searchTerm) => {
         for (const questionResponse of Object.values(application.scholarship_responses)) {
             const responseText = questionResponse.type === "long_answer" ? stripHtml(questionResponse.response) : questionResponse.response;
 
-            if (responseText && String(responseText).includes(matchingApplications)) {
+            let searchTermRegex = new RegExp(searchTerm, 'i');
+            if (responseText && String(responseText).match(searchTermRegex)) {
                 matchingApplications.push(application);
-                break;
+                return;
             }
         }
         
