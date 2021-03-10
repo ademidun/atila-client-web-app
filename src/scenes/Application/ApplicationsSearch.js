@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { stripHtml } from '../../services/utils';
 import { Input } from 'antd';
-import { searchApplications } from './ApplicationUtils';
+import { searchApplications, findOccurencesOfSearchTerm } from './ApplicationUtils';
 
 
 export class ApplicationsSearch extends React.Component {
@@ -75,12 +75,17 @@ export function ApplicationPreview({ application, searchTerm }){
     let applicationResponsePreview = Object.values(applicationResponses)[0];
     
     applicationResponsePreview =  applicationResponsePreview.type === "long_answer" ? stripHtml(applicationResponsePreview.response) : applicationResponsePreview.response;
-    applicationResponsePreview = applicationResponsePreview.substring(0, 140);
+    applicationResponsePreview = applicationResponsePreview.substring(0, 140) + "...";
+
+    if (searchTerm && searchTerm.length > 3) {
+        let matcingSnippets = findOccurencesOfSearchTerm(application, searchTerm);
+        applicationResponsePreview = matcingSnippets.map(snippet => <p key= {snippet.value}>{snippet.value}</p>)
+    }
 
     return (<div>
         Preview ({searchTerm}): 
-            <p className="text-muted">
-            {applicationResponsePreview}...
-            </p>
+            <div className="text-muted">
+            {applicationResponsePreview}
+            </div>
     </div>)
 }

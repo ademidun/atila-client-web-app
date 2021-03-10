@@ -233,7 +233,7 @@ export const searchApplications = (applications, searchTerm) => {
  * @param {String} searchTerm 
  */
 
-export const findOccurencesOfSearchTerm = ( application, searchTerm, contextSize=20 ) => {
+export const findOccurencesOfSearchTerm = ( application, searchTerm, contextSize=50 ) => {
     
     const occurencesOfSearchTerm = [];
 
@@ -276,7 +276,7 @@ export const findOccurencesOfSearchTerm = ( application, searchTerm, contextSize
 
             occurencesOfSearchTerm.push({
                 "key": questionResponse.key,
-                "context": context,
+                "value": context,
             })
         }
 
