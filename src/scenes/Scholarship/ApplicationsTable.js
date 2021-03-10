@@ -9,7 +9,7 @@ import { ApplicationsSearch, ApplicationPreview } from '../Application/Applicati
 
 
 // Show a warning
-export const maxReviewerScoreDifference = 3;
+export const maxReviewerScoreDifference = 2.1;
 
 export class ApplicationsTable extends  React.Component {
     constructor(props) {
