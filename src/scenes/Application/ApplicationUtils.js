@@ -197,3 +197,92 @@ export const maxApplicationScoreDifference = userScores => {
 
     return maxNum - minNum ? (maxNum - minNum).toFixed(2) : maxNum - minNum;
 }
+
+/**
+ * Given a list of applications. Return all the applications that have a scholarship response that matches the searchTerm.
+ * @param {Array} applications 
+ * @param {String} searchTerm 
+ */
+export const searchApplications = (applications, searchTerm) => {
+
+    const matchingApplications = [];
+
+    applications.forEach(application => { 
+
+        if (!application.scholarship_responses) {
+            return;
+        }
+
+        const matches = findOccurencesOfSearchTerm(application, searchTerm);
+
+        if (matches.length > 0) {
+            matchingApplications.push(application);
+            return;
+
+        }
+        
+    })
+
+    return matchingApplications;
+}
+
+/**
+ * Given an application and a searchTerm, return all the matches of that word with context.
+ * If contextSize is given Include N characters before the match and N characters after the match.
+ * @param {Object} application 
+ * @param {String} searchTerm 
+ */
+
+export const findOccurencesOfSearchTerm = ( application, searchTerm, contextSize=50 ) => {
+    
+    const occurencesOfSearchTerm = [];
+
+    for (const questionResponse of Object.values(application.scholarship_responses)) {
+        const responseText = questionResponse.type === "long_answer" ? stripHtml(questionResponse.response) : questionResponse.response;
+
+        let searchTermRegex = new RegExp(searchTerm, 'gi');
+        let matches;
+
+
+        while ((matches = searchTermRegex.exec(responseText)) !== null) {
+            
+            let context;
+            if (contextSize === 0) {
+                context = matches[0]
+            } else {
+                /**
+                 * Get the surrounding snippet that matches a search term.
+                 */
+
+                const fullTextStart = 0;
+                const fulTextEnd = responseText.length - 1;
+
+                let contextStart = matches.index - contextSize;
+                contextStart = Math.max( matches.index - contextSize, fullTextStart);
+
+                let contextEnd = Math.min(matches.index +  searchTerm.length + contextSize, fulTextEnd);
+                context = matches.input.substring(contextStart, contextEnd);
+
+                // If context does not start at the beginning of the full text, prefix with an elipsis.
+                // Add an elipsis suffix if context ends before the end of the full text.
+                if (contextStart > fullTextStart) {
+                    context = `...${context}`
+                } if (contextEnd < fulTextEnd) {
+                    context = `${context}...`
+                }
+                
+
+            }
+
+            occurencesOfSearchTerm.push({
+                "key": questionResponse.key,
+                "value": context,
+            })
+        }
+
+
+    }
+
+    return occurencesOfSearchTerm;
+
+}

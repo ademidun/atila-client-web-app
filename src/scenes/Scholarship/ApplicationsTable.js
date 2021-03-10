@@ -5,20 +5,24 @@ import { UserProfilePreview } from "../../components/ReferredByInput";
 import { slugify } from '../../services/utils';
 import { CSVLink } from 'react-csv';
 import { convertApplicationsToCSVFormat, maxApplicationScoreDifference } from '../Application/ApplicationUtils';
+import { ApplicationsSearch, ApplicationPreview } from '../Application/ApplicationsSearch';
 
 
 // Show a warning
-export const maxReviewerScoreDifference = 3;
+export const maxReviewerScoreDifference = 2.1;
 
 export class ApplicationsTable extends  React.Component {
     constructor(props) {
         super(props);
 
-        const { scholarship } = this.props;
+        const { scholarship, applications } = this.props;
 
         this.state = {
             // Automatically show the scores by default if the winner has been selected.
-            showScores: scholarship.is_winner_selected
+            showScores: scholarship.is_winner_selected,
+            allApplications: applications,
+            filteredApplications: applications,
+            searchTerm: "",
         }
     }
 
@@ -26,11 +30,15 @@ export class ApplicationsTable extends  React.Component {
         this.setState({showScores});
     }
 
+    filterApplications(filteredApplications, searchTerm){
+        this.setState({filteredApplications, searchTerm});
+    }
+
     render () {
 
-        const { applications, scholarship, selectFinalistOrWinner, isScholarshipOwner, assignReviewerButton } = this.props;
+        const { scholarship, selectFinalistOrWinner, isScholarshipOwner, assignReviewerButton } = this.props;
         const { collaborators, owner_detail } = scholarship;
-        const { showScores } = this.state;
+        const { showScores, allApplications, filteredApplications, searchTerm } = this.state;
     
         let allReviewers = [...collaborators, owner_detail];
     
@@ -50,7 +58,7 @@ export class ApplicationsTable extends  React.Component {
             };
         });
     
-        let applicationsAsCSV = convertApplicationsToCSVFormat(applications);
+        let applicationsAsCSV = convertApplicationsToCSVFormat(filteredApplications);
     
         const selectWinnerColumn = {
             title: <b>Select {scholarship.is_finalists_notified ? " Winner" : " Finalists"}</b>,
@@ -90,6 +98,15 @@ export class ApplicationsTable extends  React.Component {
                         {application.is_winner && <><Tag color="green">Winner</Tag>{' '}</>}
                         {!application.is_winner && application.is_finalist && <><Tag>Finalist</Tag>{' '}</>}
                         {application.is_submitted ? <Link to={`/application/${application.id}`}>View</Link> : "Cannot view unsubmitted application"}
+                        { application.scholarship_responses && Object.values(application.scholarship_responses).length > 0
+                        && 
+                            <>
+                                <hr/>
+                                <ApplicationPreview application={application} searchTerm={searchTerm} />
+                            </>
+                        }
+                        
+                        
                     </React.Fragment>
                 ),
             },
@@ -216,13 +233,13 @@ export class ApplicationsTable extends  React.Component {
                 className="mb-3">
                 {showScores ? "Hide " : "Show "} Scores
         </Button>
-    
+        <ApplicationsSearch applications={allApplications} updateSearch={(filtered, searchTerm) => this.filterApplications(filtered, searchTerm)} />
             <CSVLink data={applicationsAsCSV}
                 filename={`${slugify(scholarship.name)}-applications.csv`}
                 style={{ "float": "right" }}>
                 Download as CSV
         </CSVLink>
-            <Table columns={columns} dataSource={applications} rowKey="id" />
+            <Table columns={columns} dataSource={filteredApplications} rowKey="id" />
         </>
         );
 
@@ -285,14 +302,4 @@ export const getApplicationUsernamesByAttribute = (application, attributeName="a
     } 
     
     return usernames;
-}
-
-export const filterApplication = (application) => {
-    const { assigned_reviewers } = application;
-    if (assigned_reviewers) {
-        let usernames = assigned_reviewers.map(reviewer => reviewer.username);
-        return usernames;
-    } else {
-        return []
-    }
 }
