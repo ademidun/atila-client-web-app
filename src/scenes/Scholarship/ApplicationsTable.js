@@ -5,6 +5,7 @@ import { UserProfilePreview } from "../../components/ReferredByInput";
 import { slugify } from '../../services/utils';
 import { CSVLink } from 'react-csv';
 import { convertApplicationsToCSVFormat, maxApplicationScoreDifference } from '../Application/ApplicationUtils';
+import { ApplicationPreview } from '../Application/ApplicationPreview';
 
 
 // Show a warning
@@ -90,6 +91,15 @@ export class ApplicationsTable extends  React.Component {
                         {application.is_winner && <><Tag color="green">Winner</Tag>{' '}</>}
                         {!application.is_winner && application.is_finalist && <><Tag>Finalist</Tag>{' '}</>}
                         {application.is_submitted ? <Link to={`/application/${application.id}`}>View</Link> : "Cannot view unsubmitted application"}
+                        { application.scholarship_responses && Object.values(application.scholarship_responses).length > 0
+                        && 
+                            <>
+                                <hr/>
+                                <ApplicationPreview application={application} />
+                            </>
+                        }
+                        
+                        
                     </React.Fragment>
                 ),
             },
