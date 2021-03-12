@@ -300,7 +300,7 @@ class ScholarshipManage extends React.Component {
         this.setState({isLoadingMessage: "Notifying finalists and non-finalists..."});
 
         ScholarshipsAPI
-            .notifyFinalists(scholarship.id, )
+            .notifyApplicantsFinalistsSelected(scholarship.id, )
             .then(res=> {
                 const {scholarship, applications, unsubmitted_applications: unsubmittedApplications} =  res.data;
                 const responseMessage = `Scholarship finalists and non-finalists have been notified.`;
@@ -375,8 +375,11 @@ class ScholarshipManage extends React.Component {
              reviewersPerApplication, isLoadingMessage, emailSubject, emailBody } = this.state;
 
         const { location: { pathname } } = this.props;
+        const todayDate = new Date().toISOString();
         const { TextArea } = Input;
         // const confirmText = "Are you sure you want to unsubmit all submitted applications? This action cannot be undone.";
+        
+        let dateFinalistsNotified;
 
         if (!userProfile) {
             return (
@@ -400,6 +403,15 @@ class ScholarshipManage extends React.Component {
                 </h1>
             )
         }
+
+
+        if (scholarship.finalists_notified_date) {
+            dateFinalistsNotified = new Date(scholarship.finalists_notified_date);
+            dateFinalistsNotified =  (<div className="text-muted">
+                Finalists notified on {dateFinalistsNotified.toDateString()}{' '}
+                {dateFinalistsNotified.toLocaleTimeString()}
+            </div>)
+        } 
 
         const allApplications = [...applications, ...unsubmittedApplications];
         const applicationOptions = [
@@ -527,10 +539,10 @@ class ScholarshipManage extends React.Component {
                         onSubmit={this.autoAssignReviewers}
                         disabled={isLoadingMessage || scholarship.is_winner_selected}
                     />
-                    {!scholarship.is_finalists_notified && 
+                    {todayDate > scholarship.deadline && !scholarship.is_finalists_notified && 
                     <>
                         <br/>
-                        <Popconfirm onConfirm={this.confirmFinalists} disabled={true}
+                        <Popconfirm onConfirm={this.confirmFinalists} disabled={isLoadingMessage}
                         title="Are you sure? An email will be sent to all finalists and non-finalists."
                         placement="right">
                             <Button type="primary" size="large" disabled={isLoadingMessage}>
@@ -539,6 +551,12 @@ class ScholarshipManage extends React.Component {
                         </Popconfirm>
                         <br/>
                     </>
+                    }
+                    {dateFinalistsNotified && 
+                        <>
+                            <br/>
+                            {dateFinalistsNotified}
+                        </>
                     }
                                     {/*    <Popconfirm placement="right"*/}
                 {/*                title={confirmText}*/}

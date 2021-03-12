@@ -144,12 +144,12 @@ class ScholarshipsAPI {
         return apiCompletionPromise;
     };
 
-    static notifyFinalists = (id) => {
+    static notifyApplicantsFinalistsSelected = (id) => {
 
         const apiCompletionPromise = request({
             method: 'post',
             data: {},
-            url: `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/notify-finalists/`,
+            url: `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/notify-applicants-finalists-selected/`,
         });
 
         return apiCompletionPromise;
