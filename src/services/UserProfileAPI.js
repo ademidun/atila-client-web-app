@@ -32,6 +32,16 @@ class UserProfileAPI {
         return apiCompletionPromise;
     };
 
+    static verifyUserProfile = (userId, verificationData) => {
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: verificationData,
+            url: `${this.userProfileEndPoint}/${userId}/verify-user-profile/`,
+        });
+        return apiCompletionPromise;
+    };
+
     static get = (userId) => {
 
         const apiCompletionPromise = request({
