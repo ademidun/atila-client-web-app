@@ -144,6 +144,17 @@ class ScholarshipsAPI {
         return apiCompletionPromise;
     };
 
+    static notifyApplicantsFinalistsSelected = (id) => {
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: {},
+            url: `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/notify-applicants-finalists-selected/`,
+        });
+
+        return apiCompletionPromise;
+    };
+
     static selectWinners = (id, winners) => {
 
         const apiCompletionPromise = request({

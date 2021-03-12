@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
-import {Alert, Input, InputNumber, Radio, Tag} from "antd";
+import {Alert, Button, Input, InputNumber, Popconfirm, Radio, Tag} from "antd";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
 import {BlindApplicationsExplanationMessage, WINNER_SELECTED_MESSAGE} from "../../models/Scholarship";
@@ -76,6 +76,8 @@ class ScholarshipManage extends React.Component {
             reviewersPerApplication: 2,
             isLoadingMessage: null,
             assignReviewerCurrentUser: null,
+            emailSubject: "",
+            emailBody: "",
         }
     }
 
@@ -155,11 +157,9 @@ class ScholarshipManage extends React.Component {
     }
 
     emailApplicants = () => {
-        const { scholarship, applicationTypeToEmail } = this.state;
+        const { scholarship, applicationTypeToEmail, emailSubject, emailBody } = this.state;
         const scholarshipID = scholarship.id;
-        const subject = document.getElementById('email-subject').value;
-        const body = document.getElementById('email-body').value;
-        const postData = {'subject': subject, 'body': body, 'type': applicationTypeToEmail};
+        const postData = {subject: emailSubject, body: emailBody, 'type': applicationTypeToEmail};
         this.setState({isLoadingMessage: "Emailing applicants..."});
 
         ScholarshipsAPI
@@ -180,6 +180,15 @@ class ScholarshipManage extends React.Component {
 
     onRadioClick = e => {
         this.setState({applicationTypeToEmail: e.target.value,});
+    };
+
+    updateEmail = event => {
+        if (event.target.name === "email-subject") {
+            this.setState({emailSubject: event.target.value,});
+        } else if (event.target.name === "email-body") {
+            this.setState({emailBody: event.target.value,});
+        }
+        
     };
 
     unSubmitApplications = () => {
@@ -285,6 +294,32 @@ class ScholarshipManage extends React.Component {
         }
     }
 
+    confirmFinalists = () => {
+        const { scholarship } = this.state;
+        this.setState({isLoadingMessage: "Notifying finalists and non-finalists..."});
+
+        ScholarshipsAPI
+            .notifyApplicantsFinalistsSelected(scholarship.id, )
+            .then(res=> {
+                const {scholarship, applications, unsubmitted_applications: unsubmittedApplications} =  res.data;
+                const responseMessage = `Scholarship finalists and non-finalists have been notified.`;
+
+                this.setState({scholarship, applications, unsubmittedApplications, responseMessage});
+            })
+            .catch(err=>{
+                console.log({err});
+                const { response_message } = err.response.data;
+                if (response_message) {
+                    this.setState({responseMessage: response_message});
+                } else {
+                    this.setState({responseMessage: "There was an error notifying applicants.\n\n Please message us using the chat icon in the bottom right of your screen."});
+                }
+            })
+            .then(() => {
+                this.setState({isLoadingMessage: null});
+            });
+    }
+
     updateCurrentReviewer = (newReviewer) => {
         this.setState({assignReviewerCurrentUser: newReviewer});
     }
@@ -311,7 +346,7 @@ class ScholarshipManage extends React.Component {
                         showModalText={"Assign Reviewer..."}
                         modalTitle={"Choose Reviewer"}
                         modalBody={assignReviewerModalBody}
-                        submitText={"Add Reviewer"}
+                        submitText={"Add Reviewer..."}
                         onSubmit={() => {
                             this.assignReviewer(application)
                         }}
@@ -336,11 +371,14 @@ class ScholarshipManage extends React.Component {
         const { userProfile } = this.props;
         const { scholarship, applications, isLoadingApplications,
             unsubmittedApplications, responseMessage, applicationTypeToEmail,
-             reviewersPerApplication, isLoadingMessage } = this.state;
+             reviewersPerApplication, isLoadingMessage, emailSubject, emailBody } = this.state;
 
         const { location: { pathname } } = this.props;
+        const todayDate = new Date().toISOString();
         const { TextArea } = Input;
         // const confirmText = "Are you sure you want to unsubmit all submitted applications? This action cannot be undone.";
+        
+        let dateFinalistsNotified;
 
         if (!userProfile) {
             return (
@@ -365,13 +403,23 @@ class ScholarshipManage extends React.Component {
             )
         }
 
+
+        if (scholarship.finalists_notified_date) {
+            dateFinalistsNotified = new Date(scholarship.finalists_notified_date);
+            dateFinalistsNotified =  (<div className="text-muted">
+                Finalists notified on {dateFinalistsNotified.toDateString()}{' '}
+                {dateFinalistsNotified.toLocaleTimeString()}
+            </div>)
+        } 
+
         const allApplications = [...applications, ...unsubmittedApplications];
         const applicationOptions = [
             { label: 'All', value: 'all' },
             { label: 'Submitted', value: 'submitted' },
             { label: 'Unsubmitted', value: 'unsubmitted' },
             { label: 'Exclude Winners', value: 'exclude_winners' },
-            { label: 'Finalists Only', value: 'finalists' }
+            { label: 'Finalists Only', value: 'finalists' },
+            { label: 'Non Winner finalists', value: 'non_winner_finalists' }
         ];
 
         let inviteCollaboratorModalBody = (
@@ -384,8 +432,11 @@ class ScholarshipManage extends React.Component {
 
         let emailApplicantsModalBody = (
             <>
-                <Input id='email-subject' className="mb-2" placeholder={"Email subject..."}/>
-                <TextArea id='email-body' rows={6} placeholder={"Email body..."}/>
+                <Input name='email-subject' 
+                       value={emailSubject} 
+                       onChange={this.updateEmail} className="mb-2" placeholder={"Email subject..."}/>
+                <TextArea name='email-body' value={emailBody} 
+                                            onChange={this.updateEmail} rows={6} placeholder={"Email body..."}/>
                 <br />
                 <br />
                 <b>Which applications would you like to send this email to?</b>
@@ -470,7 +521,7 @@ class ScholarshipManage extends React.Component {
                     {/*Only allow the scholarship owner to see the invite button. May want to be changed in the future.*/}
                     <ButtonModal
                         showModalButtonSize={"large"}
-                        showModalText={"Invite Collaborator"}
+                        showModalText={"Invite Collaborator..."}
                         modalTitle={"Invite Collaborator"}
                         modalBody={inviteCollaboratorModalBody}
                         submitText={"Send Invite"}
@@ -480,13 +531,41 @@ class ScholarshipManage extends React.Component {
                     <br />
                     <ButtonModal
                         showModalButtonSize={"large"}
-                        showModalText={"Auto Assign Reviewers"}
+                        showModalText={"Auto Assign Reviewers..."}
                         modalTitle={"Auto Assign Reviewers"}
                         modalBody={autoAssignReviewersModalBody}
                         submitText={"Confirm Auto Assigning"}
                         onSubmit={this.autoAssignReviewers}
                         disabled={isLoadingMessage || scholarship.is_winner_selected}
                     />
+                    {todayDate > scholarship.deadline && !scholarship.is_finalists_notified && 
+                    <>
+                        <br/>
+                        <Popconfirm onConfirm={this.confirmFinalists} disabled={isLoadingMessage}
+                        title="Are you sure? An email will be sent to all finalists and non-finalists."
+                        placement="right">
+                            <Button type="primary" size="large" disabled={isLoadingMessage}>
+                                Confirm Finalists...
+                            </Button>
+                        </Popconfirm>
+                        <br/>
+                    </>
+                    }
+                    {dateFinalistsNotified && 
+                        <>
+                            <br/>
+                            {dateFinalistsNotified}
+                        </>
+                    }
+                                    {/*    <Popconfirm placement="right"*/}
+                {/*                title={confirmText}*/}
+                {/*                onConfirm={() => this.unSubmitApplications()}*/}
+                {/*                okText="Yes"*/}
+                {/*                cancelText="No">*/}
+                {/*        <Button type="primary" size={"large"} danger>*/}
+                {/*            Un-Submit all Applications*/}
+                {/*        </Button>*/}
+                {/*    </Popconfirm>*/}
                 </>
                 }
                 {isLoadingMessage && 
