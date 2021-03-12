@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
-import {Alert, Input, InputNumber, Radio, Tag} from "antd";
+import {Alert, Button, Input, InputNumber, Popconfirm, Radio, Tag} from "antd";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
 import {BlindApplicationsExplanationMessage, WINNER_SELECTED_MESSAGE} from "../../models/Scholarship";
@@ -295,6 +295,32 @@ class ScholarshipManage extends React.Component {
         }
     }
 
+    confirmFinalists = () => {
+        const { scholarship } = this.state;
+        this.setState({isLoadingMessage: "Notifying finalists and non-finalists..."});
+
+        ScholarshipsAPI
+            .notifyFinalists(scholarship.id, )
+            .then(res=> {
+                const {scholarship, applications, unsubmitted_applications: unsubmittedApplications} =  res.data;
+                const responseMessage = `Scholarship finalists and non-finalists have been notified.`;
+
+                this.setState({scholarship, applications, unsubmittedApplications, responseMessage});
+            })
+            .catch(err=>{
+                console.log({err});
+                const { response_message } = err.response.data;
+                if (response_message) {
+                    this.setState({responseMessage: response_message});
+                } else {
+                    this.setState({responseMessage: "There was an error notifying applicants.\n\n Please message us using the chat icon in the bottom right of your screen."});
+                }
+            })
+            .then(() => {
+                this.setState({isLoadingMessage: null});
+            });
+    }
+
     updateCurrentReviewer = (newReviewer) => {
         this.setState({assignReviewerCurrentUser: newReviewer});
     }
@@ -501,6 +527,28 @@ class ScholarshipManage extends React.Component {
                         onSubmit={this.autoAssignReviewers}
                         disabled={isLoadingMessage || scholarship.is_winner_selected}
                     />
+                    {!scholarship.is_finalists_notified && 
+                    <>
+                        <br/>
+                        <Popconfirm onConfirm={this.confirmFinalists} disabled={true}
+                        title="Are you sure? An email will be sent to all finalists and non-finalists."
+                        placement="right">
+                            <Button type="primary" size="large" disabled={isLoadingMessage}>
+                                Confirm Finalists...
+                            </Button>
+                        </Popconfirm>
+                        <br/>
+                    </>
+                    }
+                                    {/*    <Popconfirm placement="right"*/}
+                {/*                title={confirmText}*/}
+                {/*                onConfirm={() => this.unSubmitApplications()}*/}
+                {/*                okText="Yes"*/}
+                {/*                cancelText="No">*/}
+                {/*        <Button type="primary" size={"large"} danger>*/}
+                {/*            Un-Submit all Applications*/}
+                {/*        </Button>*/}
+                {/*    </Popconfirm>*/}
                 </>
                 }
                 {isLoadingMessage && 
