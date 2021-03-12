@@ -17,6 +17,8 @@ class UserProfileAdmin extends React.Component {
             userProfile: null,
             isLoading: null,
             errorMessage: null,
+            referralUserProfiles: null,
+            atilaPointsDetail: null,
         }
     }
 
@@ -32,7 +34,8 @@ class UserProfileAdmin extends React.Component {
         this.setState({isLoading: true});
         UserProfileAPI.getUsernameAdminView(username)
             .then(res => {
-                this.setState({userProfile: res.data.user_profile});
+                const { user_profile, referral_user_profiles, atila_points_detail } = res.data;
+                this.setState({userProfile: user_profile, referralUserProfiles: referral_user_profiles, atilaPointsDetail: atila_points_detail});
 
             })
             .catch(() => {
@@ -53,7 +56,7 @@ class UserProfileAdmin extends React.Component {
 
     render() {
         const { username } = this.props;
-        const { isLoading, errorMessage, userProfile } = this.state;
+        const { isLoading, errorMessage, userProfile, referralUserProfiles, atilaPointsDetail } = this.state;
 
         if (isLoading) {
             return (<Loading title={`Loading Admin for user`} className='mt-3' />)
@@ -107,7 +110,15 @@ class UserProfileAdmin extends React.Component {
             }
             <div>
                 <h3 className="text-center">Atila Points Breakdown for {username}</h3>
-                <UserProfileReferralManagement />
+                <pre style={{ whiteSpace: 'pre-wrap' }}>
+                    {JSON.stringify(referralUserProfiles, null, 4)}
+                </pre>
+                <pre style={{ whiteSpace: 'pre-wrap' }}>
+                    {JSON.stringify(atilaPointsDetail, null, 4)}
+                </pre>
+                <div style={{display: "none"}}>
+                    <UserProfileReferralManagement />
+                </div>
             </div>
         </React.Fragment>)
     }
