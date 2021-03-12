@@ -76,6 +76,8 @@ class ScholarshipManage extends React.Component {
             reviewersPerApplication: 2,
             isLoadingMessage: null,
             assignReviewerCurrentUser: null,
+            emailSubject: "",
+            emailBody: "",
         }
     }
 
@@ -155,11 +157,10 @@ class ScholarshipManage extends React.Component {
     }
 
     emailApplicants = () => {
-        const { scholarship, applicationTypeToEmail } = this.state;
+        const { scholarship, applicationTypeToEmail, emailSubject, emailBody } = this.state;
         const scholarshipID = scholarship.id;
-        const subject = document.getElementById('email-subject').value;
-        const body = document.getElementById('email-body').value;
-        const postData = {'subject': subject, 'body': body, 'type': applicationTypeToEmail};
+        const postData = {subject: emailSubject, body: emailBody, 'type': applicationTypeToEmail};
+        console.log({postData});
         this.setState({isLoadingMessage: "Emailing applicants..."});
 
         ScholarshipsAPI
@@ -180,6 +181,15 @@ class ScholarshipManage extends React.Component {
 
     onRadioClick = e => {
         this.setState({applicationTypeToEmail: e.target.value,});
+    };
+
+    updateEmail = event => {
+        if (event.target.name === "email-subject") {
+            this.setState({emailSubject: event.target.value,});
+        } else if (event.target.name === "email-body") {
+            this.setState({emailBody: event.target.value,});
+        }
+        
     };
 
     unSubmitApplications = () => {
@@ -336,7 +346,7 @@ class ScholarshipManage extends React.Component {
         const { userProfile } = this.props;
         const { scholarship, applications, isLoadingApplications,
             unsubmittedApplications, responseMessage, applicationTypeToEmail,
-             reviewersPerApplication, isLoadingMessage } = this.state;
+             reviewersPerApplication, isLoadingMessage, emailSubject, emailBody } = this.state;
 
         const { location: { pathname } } = this.props;
         const { TextArea } = Input;
@@ -371,7 +381,8 @@ class ScholarshipManage extends React.Component {
             { label: 'Submitted', value: 'submitted' },
             { label: 'Unsubmitted', value: 'unsubmitted' },
             { label: 'Exclude Winners', value: 'exclude_winners' },
-            { label: 'Finalists Only', value: 'finalists' }
+            { label: 'Finalists Only', value: 'finalists' },
+            { label: 'Non Winner finalists', value: 'non_winner_finalists' }
         ];
 
         let inviteCollaboratorModalBody = (
@@ -384,8 +395,11 @@ class ScholarshipManage extends React.Component {
 
         let emailApplicantsModalBody = (
             <>
-                <Input id='email-subject' className="mb-2" placeholder={"Email subject..."}/>
-                <TextArea id='email-body' rows={6} placeholder={"Email body..."}/>
+                <Input name='email-subject' 
+                       value={emailSubject} 
+                       onChange={this.updateEmail} className="mb-2" placeholder={"Email subject..."}/>
+                <TextArea name='email-body' value={emailBody} 
+                                            onChange={this.updateEmail} rows={6} placeholder={"Email body..."}/>
                 <br />
                 <br />
                 <b>Which applications would you like to send this email to?</b>
