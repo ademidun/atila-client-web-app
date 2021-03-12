@@ -7,7 +7,6 @@ import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import { Button, Input } from "antd";
 import UserProfileReferralManagement from './UserProfileReferralManagement';
 import { CheckCircleTwoTone, CloseCircleTwoTone } from "@ant-design/icons";
-import { DEFAULT_USER_PROFILE_PICTURE_URL } from '../../models/UserProfile';
 const { TextArea } = Input;
 class UserProfileAdmin extends React.Component {
 
@@ -125,7 +124,7 @@ class UserProfileAdmin extends React.Component {
                 Verification Steps:
                 <ol>
                     <li>
-                        {userProfile.profile_pic_url !== DEFAULT_USER_PROFILE_PICTURE_URL ? checkIcon : closeIcon}{' '}
+                        {userProfile.profile_pic_verified ? checkIcon : closeIcon}{' '}
                          Upload profile picture
                     </li>
 
