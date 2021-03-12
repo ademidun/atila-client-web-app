@@ -321,7 +321,7 @@ class ScholarshipManage extends React.Component {
                         showModalText={"Assign Reviewer..."}
                         modalTitle={"Choose Reviewer"}
                         modalBody={assignReviewerModalBody}
-                        submitText={"Add Reviewer"}
+                        submitText={"Add Reviewer..."}
                         onSubmit={() => {
                             this.assignReviewer(application)
                         }}
@@ -484,7 +484,7 @@ class ScholarshipManage extends React.Component {
                     {/*Only allow the scholarship owner to see the invite button. May want to be changed in the future.*/}
                     <ButtonModal
                         showModalButtonSize={"large"}
-                        showModalText={"Invite Collaborator"}
+                        showModalText={"Invite Collaborator..."}
                         modalTitle={"Invite Collaborator"}
                         modalBody={inviteCollaboratorModalBody}
                         submitText={"Send Invite"}
@@ -494,7 +494,7 @@ class ScholarshipManage extends React.Component {
                     <br />
                     <ButtonModal
                         showModalButtonSize={"large"}
-                        showModalText={"Auto Assign Reviewers"}
+                        showModalText={"Auto Assign Reviewers..."}
                         modalTitle={"Auto Assign Reviewers"}
                         modalBody={autoAssignReviewersModalBody}
                         submitText={"Confirm Auto Assigning"}
