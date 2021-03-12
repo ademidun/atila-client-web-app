@@ -22,6 +22,16 @@ class UserProfileAPI {
         return apiCompletionPromise;
     };
 
+    static getUsernameAdminView = (username) => {
+
+        const apiCompletionPromise = request({
+            method: 'get',
+            url: `${this.userProfileEndPoint}/admin-view/?username=${username}/`,
+        });
+
+        return apiCompletionPromise;
+    };
+
     static get = (userId) => {
 
         const apiCompletionPromise = request({

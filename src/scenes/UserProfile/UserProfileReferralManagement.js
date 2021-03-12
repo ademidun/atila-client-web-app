@@ -30,7 +30,7 @@ const atilaPointsPopoverContent = (
                 {POINTS_FOR_STARTING_A_SCHOLARSHIP} points if someone you refer starts a scholarship + 20% commision
             </li>
             <li>
-                You get {POINTS_FOR_BEING_A_SCHOLARSHIP_FINALIST * 2} if you are a scholarship finalist
+                {/* You get {POINTS_FOR_BEING_A_SCHOLARSHIP_FINALIST * 2} if you are a scholarship finalist */}
                 You get {POINTS_FOR_BEING_A_SCHOLARSHIP_FINALIST} points, if you refer someone that is a finalist
             </li>
             <li>

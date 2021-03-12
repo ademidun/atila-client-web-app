@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {connect} from "react-redux";
 import {Tab, Tabs} from 'react-bootstrap';
 import {withRouter} from "react-router-dom";
 import UserProfileAPI from '../../services/UserProfileAPI';
@@ -12,6 +13,7 @@ import {RESERVED_USERNAMES} from "../../models/Constants";
 import UserProfileApplications from "./UserProfileApplications";
 import UserProfileCreatedScholarships from "./UserProfileCreatedScholarships";
 import {Link} from "react-router-dom";
+import UserProfileAdmin from './UserProfileAdmin';
 
 class UserProfileViewTabs extends React.Component {
 
@@ -47,7 +49,7 @@ class UserProfileViewTabs extends React.Component {
     render() {
 
         const { blogs, essays, contributions } = this.state;
-        const { isProfileEditable } = this.props;
+        const { isProfileEditable, loggedInUserProfile } = this.props;
         let { match : { params : { tab, username }} } = this.props;
         let defaultActiveKey = isProfileEditable ? 'edit' : 'blogs';
 
@@ -61,15 +63,23 @@ class UserProfileViewTabs extends React.Component {
 
         if(tab) {
             defaultActiveKey = tab;
-            if (!['essays', 'blogs'].includes(tab) && !isProfileEditable) {
+            let validTabs = ['essays', 'blogs'];
+            if (loggedInUserProfile && loggedInUserProfile.is_atila_admin) {
+                validTabs.push("admin");
+            }
+            if (!validTabs.includes(tab) && !isProfileEditable) {
                 defaultActiveKey = 'blogs';
             }
         }
 
-
         return (
             <div className='mt-3'>
                 <Tabs defaultActiveKey={defaultActiveKey} transition={false} id="UserProfileViewTabs">
+                    { loggedInUserProfile && loggedInUserProfile.is_atila_admin &&
+                        <Tab eventKey='admin' title='Admin'>
+                            <UserProfileAdmin username={username} />
+                        </Tab>
+                    }
                     {isProfileEditable &&
                     <Tab eventKey='edit' title='Edit Profile'>
                         <UserProfileEdit />
@@ -177,4 +187,9 @@ UserProfileViewTabs.propTypes = {
     userProfile: PropTypes.shape({}).isRequired,
     isProfileEditable: PropTypes.bool
 };
-export default withRouter(UserProfileViewTabs);
+
+const mapStateToProps = state => {
+    return { loggedInUserProfile: state.data.user.loggedInUserProfile };
+};
+
+export default withRouter(connect(mapStateToProps)(UserProfileViewTabs));

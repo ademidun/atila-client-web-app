@@ -160,7 +160,6 @@ class ScholarshipManage extends React.Component {
         const { scholarship, applicationTypeToEmail, emailSubject, emailBody } = this.state;
         const scholarshipID = scholarship.id;
         const postData = {subject: emailSubject, body: emailBody, 'type': applicationTypeToEmail};
-        console.log({postData});
         this.setState({isLoadingMessage: "Emailing applicants..."});
 
         ScholarshipsAPI
