@@ -26,6 +26,20 @@ export class ApplicationsTable extends  React.Component {
         }
     }
 
+    static getDerivedStateFromProps(props, state) {
+        if (state.allApplications !== props.applications) {
+          // If the applications props from parent component changes,
+          // reset the visible applications and search term so that the new information
+          // is shown in the UI.
+          return {
+            allApplications: props.applications,
+            filteredApplications: props.applications,
+            searchTerm: "",
+          }
+        }
+        return null
+    }
+
     setShowScores(showScores) {
         this.setState({showScores});
     }
