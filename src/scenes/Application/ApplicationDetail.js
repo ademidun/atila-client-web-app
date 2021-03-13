@@ -581,8 +581,14 @@ class ApplicationDetail extends  React.Component{
                 </p>
                 <input className="form-control col-12"
                        type="number" step={0.01} min={0} max={10}
+                       disabled={scholarship.is_winner_selected}
                        onChange={event => this.updateApplicationScore(event, "score")}
                        value={applicationScore}/>
+                {scholarship.is_winner_selected && 
+                <p className="text-muted">
+                    Score cannot be changed after the winner has been selected
+                </p>
+                }
                 
                 <textarea
                         placeholder="Notes"
