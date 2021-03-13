@@ -249,9 +249,9 @@ class ApplicationDetail extends  React.Component{
                         clearTimeout(scoreApplicationAutoSaveTimeoutId);
                     }
                     scoreApplicationAutoSaveTimeoutId = setTimeout(() => {
-                        // Runs 1 second (1000 ms) after the last change
+                        // Runs a half second (500 ms) after the last change
                         this.callScoreApplicationAPI(application, scorerId, updateData);
-                    }, 3000);
+                    }, 500);
                 } else {// else, if it's the score, we don't need to debounce because fewer changes are made and we want
                 // to update the score immediately on each key stroke.
                     this.callScoreApplicationAPI(application, scorerId, updateData);
@@ -426,9 +426,9 @@ class ApplicationDetail extends  React.Component{
                 clearTimeout(autoSaveTimeoutId);
             }
             autoSaveTimeoutId = setTimeout(() => {
-                // Runs 1 second (1000 ms) after the last change
+                // Runs a half second (500 ms) after the last change
                 this.saveApplication();
-            }, 1000);
+            }, 500);
         })
 
     };
@@ -581,8 +581,14 @@ class ApplicationDetail extends  React.Component{
                 </p>
                 <input className="form-control col-12"
                        type="number" step={0.01} min={0} max={10}
+                       disabled={scholarship.is_winner_selected}
                        onChange={event => this.updateApplicationScore(event, "score")}
                        value={applicationScore}/>
+                {scholarship.is_winner_selected && 
+                <p className="text-muted">
+                    Score cannot be changed after the winner has been selected
+                </p>
+                }
                 
                 <textarea
                         placeholder="Notes"
