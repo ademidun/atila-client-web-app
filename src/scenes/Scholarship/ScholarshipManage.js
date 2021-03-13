@@ -496,27 +496,27 @@ class ScholarshipManage extends React.Component {
                     Submitted applications: {applications.length} <br/>
                     Un-Submitted applications (under draft): {unsubmittedApplications.length}
                 </h2>
-                <br />
-                <Link to={`/scholarship/edit/${scholarship.slug}`} className="text-center">
-                    Edit Scholarship
-                </Link>
-                <br/>
-                <br />
-
-                <ButtonModal
-                    showModalButtonSize={"large"}
-                    showModalText={"Email Applicants..."}
-                    modalTitle={"Draft Email"}
-                    modalBody={emailApplicantsModalBody}
-                    submitText={"Send Email..."}
-                    onSubmit={this.emailApplicants}
-                    addPopConfirm={true}
-                    disabled={isLoadingMessage}
-                    popConfirmText={"Are you sure you want to send email?"}
-                />
 
                 {isScholarshipOwner &&
                 <>
+
+                    <br />
+                    <Link to={`/scholarship/edit/${scholarship.slug}`} className="text-center">
+                        Edit Scholarship
+                    </Link>
+                    <br/>
+                    <br />
+                    <ButtonModal
+                        showModalButtonSize={"large"}
+                        showModalText={"Email Applicants..."}
+                        modalTitle={"Draft Email"}
+                        modalBody={emailApplicantsModalBody}
+                        submitText={"Send Email..."}
+                        onSubmit={this.emailApplicants}
+                        addPopConfirm={true}
+                        disabled={isLoadingMessage}
+                        popConfirmText={"Are you sure you want to send email?"}
+                    />
                     <br />
                     {/*Only allow the scholarship owner to see the invite button. May want to be changed in the future.*/}
                     <ButtonModal
