@@ -269,10 +269,10 @@ export const renderFinalistOrWinnerButton = (application, scholarship, selectFin
         confirmText = confirmText + " You will not be able to undo this action.";
     }
 
-    if (application.is_finalist && !scholarship.is_finalists_notified) {
+    if (todayDate < scholarship.deadline) {
         return (
             <p>
-                This finalist has been selected. Notify all finalists before you select a winner.
+                You can pick a winner after the deadline has passed
             </p>
         )
     }
@@ -285,14 +285,21 @@ export const renderFinalistOrWinnerButton = (application, scholarship, selectFin
         )
     }
 
-    if (todayDate < scholarship.deadline) {
+
+    if (application.is_finalist && !scholarship.is_finalists_notified) {
         return (
             <p>
-                You can pick a winner after the deadline has passed
+                This finalist has been selected. Confirm finalists before you select a winner.
             </p>
         )
     }
-
+    if (!application.is_finalist && scholarship.is_finalists_notified) {
+        return (
+            <p>
+                Only finalists can be selected as a winner
+            </p>
+        )
+    }
     return (
         <Popconfirm placement="topLeft" title={confirmText} onConfirm={() => selectFinalistOrWinner(application, scholarship)} okText="Yes" cancelText="No">
             <Button className="btn-success">
