@@ -165,10 +165,11 @@ class ContentAddEdit extends React.Component {
 
     render() {
 
-        const { contentType, match : { params : { slug, username }}  } = this.props;
-        const { isAddContentMode, contentPostError, showContentAddOptions, isLoading} = this.state;
+        const { publishText, contentType, match : { params : { slug, username }}  } = this.props;
+        const { isAddContentMode, contentPostError, showContentAddOptions, isLoading } = this.state;
 
         const elementTitle = isAddContentMode ? `Add ${contentType}` : `Edit ${contentType}`;
+        let publishButtonText = publishText || 'Publish'
 
         const { content : {
             title, description, published, header_image_url, body, essay_source_url
@@ -271,7 +272,7 @@ class ContentAddEdit extends React.Component {
                         <button type="button"
                                 onClick={this.togglePublish}
                                 className="btn btn-primary center-block">
-                            { published ? 'Unpublish': 'Publish'}
+                            { published ? 'Unpublish': publishButtonText}
                         </button>
                     </div>
 
