@@ -32,7 +32,7 @@ class ApplicationEssayAddEdit extends React.Component {
         return (
             <div className="container">
             <Switch checked={isAnonymous} onChange={this.onAnonymousChecked} />
-            {' '} Remain anonymous
+                {'  '} <b>Remain anonymous</b>
             <div className="text-center">
                 <ContentAddEdit contentType="Application"
                                 ContentAPI={ApplicationsAPI}
