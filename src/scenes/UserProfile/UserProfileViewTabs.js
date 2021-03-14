@@ -168,8 +168,14 @@ function TabItemContentList({ contentList, contentType, isProfileEditable }){
                     </div>
                 )
             } else {
+                let transformContent = genericItemTransform(content)
+                // Basically, if this is an application published as an essay then the
+                // slug needs to be corrected to include the /essay/username/ in the beginning.
+                if (contentType === 'essay' && !transformContent.slug.includes(contentType)) {
+                    transformContent.slug = `/${contentType}/${content.user.username}/${transformContent.slug}/`
+                }
                 return (
-                    <ContentCard key={content.id} content={genericItemTransform(content)}
+                    <ContentCard key={content.id} content={transformContent}
                                  className='col-12 mb-3'
                                  hideImage={contentType==='essay'}
                     />)
