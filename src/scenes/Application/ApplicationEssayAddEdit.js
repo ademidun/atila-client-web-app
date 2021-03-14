@@ -15,7 +15,6 @@ class ApplicationEssayAddEdit extends React.Component {
     }
 
     onAnonymousChecked = (newChecked) => {
-        console.log(newChecked)
         const { application } = this.props;
         this.setState({isAnonymous: newChecked});
         ApplicationsAPI
