@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ContentAddEdit from "../../components/ContentAddEdit/ContentAddEdit";
-import ApplicationsApi from "../../services/ApplicationsAPI";
+import ApplicationsAPI from "../../services/ApplicationsAPI";
 import { Switch } from 'antd';
 
 class ApplicationEssayAddEdit extends React.Component {
@@ -15,7 +15,14 @@ class ApplicationEssayAddEdit extends React.Component {
     }
 
     onAnonymousChecked = (newChecked) => {
+        console.log(newChecked)
+        const { application } = this.props;
         this.setState({isAnonymous: newChecked});
+        ApplicationsAPI
+            .patch(application.id, {is_anonymous: newChecked})
+            .catch(err => {
+                console.log({err});
+            })
     }
 
     render () {
@@ -29,7 +36,7 @@ class ApplicationEssayAddEdit extends React.Component {
             {' '} Remain anonymous
             <div className="text-center">
                 <ContentAddEdit contentType="Application"
-                                ContentAPI={ApplicationsApi}
+                                ContentAPI={ApplicationsAPI}
                                 content={application}
                                 publishText={publishText}
                 />

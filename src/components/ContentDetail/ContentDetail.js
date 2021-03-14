@@ -111,7 +111,8 @@ class ContentDetail extends React.Component {
 
         const canEditContent = userProfile && (userProfile.user === content.user.id || userProfile.is_atila_admin);
 
-        const { title, body, header_image_url, user, id, published } = content;
+        const { title, body, header_image_url, user, id, published, first_name_code, last_name_code,
+                is_anonymous } = content;
 
         let contentToDisplay = null;
 
@@ -162,11 +163,7 @@ class ContentDetail extends React.Component {
                          className="header-image"
                     />}
 
-                    {pageViews &&
-                    <AtilaPointsPaywallModal pageViews={pageViews} />
-                    }
-
-                    {user &&
+                    {user && !is_anonymous &&
                     <div className="bg-light my-3 p-1">
                         <Link to={`/profile/${user.username}`} >
                             <img
@@ -177,6 +174,15 @@ class ContentDetail extends React.Component {
                             {user.first_name} {user.last_name}
                         </Link>
                     </div>}
+                    {is_anonymous &&
+                    <div className="bg-light my-3 p-1">
+                        <b>{first_name_code} {last_name_code}</b>
+                    </div>}
+
+
+                    {pageViews &&
+                    <AtilaPointsPaywallModal pageViews={pageViews} />
+                    }
                 </div>
                     {/*todo find a way to secure against XSS: https://stackoverflow.com/a/19277723*/}
                     <div className="row">
