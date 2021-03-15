@@ -105,6 +105,16 @@ class ApplicationsAPI {
         return apiCompletionPromise;
     };
 
+    static convertApplicationToEssay = (id, questions, published) => {
+        const apiCompletionPromise = request({
+            method: "post",
+            data: { questions, published },
+            url: `${this.applicationsApiUrl}/${id}/convert-application-to-essay/`,
+        });
+
+        return apiCompletionPromise;
+    }
+
 
     static selectFinalist = (id, application) => {
 
