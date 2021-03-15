@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import CKEditor from "@ckeditor/ckeditor5-react";
 import InlineEditor from "@ckeditor/ckeditor5-build-inline";
 import {Helmet} from "react-helmet";
+import { Button, Popconfirm } from 'antd';
 import {Link, withRouter} from "react-router-dom";
 import TextareaAutosize from 'react-autosize-textarea';
 import {connect} from "react-redux";
@@ -10,6 +11,7 @@ import {slugify} from "../../services/utils";
 import UtilsAPI from "../../services/UtilsAPI";
 import {toastNotify} from "../../models/Utils";
 import Loading from "../Loading";
+import ApplicationsAPI from '../../services/ApplicationsAPI';
 
 const defaultContent = {
     title: '',
@@ -37,7 +39,7 @@ class ContentAddEdit extends React.Component {
             // so we hve to set isLoading to true by default.
             // this way the CkEditor only gets rendered when the data has been loaded
             // (when content.body has been loaded).
-            isLoading: true,
+            isLoading: `Loading ${props.contentType}`,
         }
     }
 
@@ -98,6 +100,33 @@ class ContentAddEdit extends React.Component {
 
         this.setState({content});
     };
+
+    generateEssayFromResponses = () => {
+
+        let { content } = this.state;
+
+        const questions = Object.keys(content.scholarship_responses);
+        const published = content.published;
+        this.setState({isLoading: "Autogenerating essay using your scholarship response"});
+        ApplicationsAPI.convertApplicationToEssay(content.id, questions, published).then(res => {
+
+            const { description, body } = res.data.application;
+
+            this.setState({
+                content: {
+                    ...this.state.content,
+                    body,
+                    description,
+                } 
+            });
+        })
+        .catch(err => {
+            this.setState({contentGetError: { err }});
+        })
+        .finally(() => {
+            this.setState({isLoading: false});
+        });
+    }
 
     submitForm = (event) => {
         if(event){
@@ -177,9 +206,42 @@ class ContentAddEdit extends React.Component {
 
         if (!isAddContentMode && isLoading) {
             return (<div>
-                <Loading isLoading={isLoading}/>
+                <Loading title={isLoading}/>
             </div>);
         }
+        const contentActions = (
+
+            <div className="col-12">
+            {contentType === "Application" && 
+                <div className="col-12 my-3">
+                    <Popconfirm placement="topRight" 
+                                title="This will overwrite your current essay. 
+                                Are you sure?" 
+                                onConfirm={this.generateEssayFromResponses}>
+
+                        <Button type="primary">
+                            Autogenerate essay using scholarship responses
+                        </Button>
+                    </Popconfirm>
+                </div>
+            }
+
+            <div className="col-12 my-3">
+                <button type="submit"
+                        className="btn btn-primary center-block">
+                    Save
+                </button>
+            </div>
+            <div className="col-12">
+                <button type="button"
+                        onClick={this.togglePublish}
+                        className="btn btn-primary center-block">
+                    { published ? 'Unpublish': publishButtonText}
+                </button>
+            </div>
+        </div>
+    
+        )
 
         return (
             <div className="mt-3">
@@ -196,6 +258,7 @@ class ContentAddEdit extends React.Component {
                                       style={{fontSize: '2.5rem'}}
                                       maxLength="140"
                     />
+                    {contentActions}
                     <button className="btn btn-link col-12 right"
                             type="button"
                             onClick={()=> this.setState({showContentAddOptions: !showContentAddOptions})}>
@@ -262,19 +325,7 @@ class ContentAddEdit extends React.Component {
                     </pre>
                     }
 
-                    <div className="col-12 my-3">
-                        <button type="submit"
-                                className="btn btn-primary center-block">
-                            Save
-                        </button>
-                    </div>
-                    <div className="col-12">
-                        <button type="button"
-                                onClick={this.togglePublish}
-                                className="btn btn-primary center-block">
-                            { published ? 'Unpublish': publishButtonText}
-                        </button>
-                    </div>
+                    {contentActions}
 
                 </form>
             </div>
