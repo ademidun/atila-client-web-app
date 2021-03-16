@@ -61,7 +61,7 @@ export function genericItemTransform (item) {
                 published: item.published,
                 first_name_code: item.first_name_code,
                 last_name_code: item.last_name_code,
-                is_anonymous: item.is_anonymous,
+                is_anonymous_essay: item.is_anonymous_essay,
             };
             break;
         case 'blog':
