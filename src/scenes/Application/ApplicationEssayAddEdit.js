@@ -10,29 +10,29 @@ class ApplicationEssayAddEdit extends React.Component {
         super(props);
 
         this.state = {
-          isAnonymous: false,
+          isAnonymousEssay: false,
         };
     }
 
     onAnonymousChecked = (newChecked) => {
         const { application } = this.props;
-        this.setState({isAnonymous: newChecked});
+        this.setState({isAnonymousEssay: newChecked});
         ApplicationsAPI
-            .patch(application.id, {is_anonymous: newChecked})
+            .patch(application.id, {is_anonymous_essay: newChecked})
             .catch(err => {
                 console.log({err});
             })
     }
 
     render () {
-        const { isAnonymous } = this.state;
+        const { isAnonymousEssay } = this.state;
         const { application } = this.props;
 
-        let publishText = isAnonymous ? 'Publish Anonymously' : 'Publish'
+        let publishText = isAnonymousEssay ? 'Publish Anonymously' : 'Publish'
         return (
             <div className="container">
-            <Switch checked={isAnonymous} onChange={this.onAnonymousChecked} />
-                {'  '} <b>Remain anonymous</b>
+            <Switch checked={isAnonymousEssay} onChange={this.onAnonymousChecked} />
+                {'  '} <b>Publish essay anonymously</b>
             <div className="text-center">
                 <ContentAddEdit contentType="Application"
                                 ContentAPI={ApplicationsAPI}
