@@ -131,6 +131,19 @@ class ReferredByInput extends React.Component {
     const { referralOptions, referredBySearchValue, referredByUserProfile,
          isLoading, referralError } = this.state;
 
+    const { loggedInUserProfile } = this.props;
+
+    /**
+     * If a user has already submitted an application or created a scholarship.
+     * They should not be able to change their referred by field anymore.
+     * Otherwise, users may decide to change their fields after the fact to get a referral bonus.
+     * See: https://github.com/ademidun/atila-django/pull/276
+     * Cast userProfileAlreadyActive to a boolean using '!!' so it doesn't get a value of zero
+     */
+    const userProfileAlreadyActive = !!((loggedInUserProfile.submitted_applications_count && loggedInUserProfile.submitted_applications_count > 0) 
+    || (loggedInUserProfile.created_scholarships_count && loggedInUserProfile.created_scholarships_count > 0));
+    
+
     let notFoundContent;
 
     if (!referredBySearchValue || referredBySearchValue.length < 3) {
@@ -153,7 +166,7 @@ class ReferredByInput extends React.Component {
                 style={{
                     width: "100%",
                 }}
-                disabled={!!referredByUserProfile}
+                disabled={!!referredByUserProfile||userProfileAlreadyActive}
                 value={referredBySearchValue}
                 defaultOpen={this.props.username}
                 onSelect={this.onSelect}
@@ -172,18 +185,27 @@ class ReferredByInput extends React.Component {
                     ))}
             </AutoComplete>
         </div>
+      {userProfileAlreadyActive && 
+      <p className="text-muted">
+          {loggedInUserProfile.submitted_applications_count > 0 && <p>Referral cannot be changed after an application has been submitted.</p>}
+          {loggedInUserProfile.created_scholarships_count > 0 && <p>Referral cannot be changed after a scholarship has been created.</p>}
+      </p>
+      }
       {referredByUserProfile && 
       <div className="my-2">
         Referred by: <br/>
         <UserProfilePreview userProfile={referredByUserProfile} />
+
+        {!userProfileAlreadyActive && 
         <MinusCircleOutlined
             style={{
                 fontSize: "30px",
-            }} 
+            }}
+            disabled={userProfileAlreadyActive}
             onClick={()=>{
                 this.onClear();
             }}
-        />
+        />}
       </div>
       }
       {referralError &&
