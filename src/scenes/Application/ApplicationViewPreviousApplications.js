@@ -1,6 +1,6 @@
 import React from "react";
 import UserProfileAPI from "../../services/UserProfileAPI";
-import { Button, Drawer } from "antd";
+import { Button, Drawer, message } from "antd";
 import Loading from "../../components/Loading";
 
 class ApplicationViewPreviousApplications extends React.Component {
@@ -49,6 +49,11 @@ class ApplicationViewPreviousApplications extends React.Component {
         this.setState({isChildDrawerVisible: false})
     };
 
+    copyToClipboard = (text) => {
+        navigator.clipboard.writeText(text)
+        message.success("Copied!")
+    }
+
     viewCurrentApplicationResponses = () => {
         const { currentApplication }  = this.state;
 
@@ -58,19 +63,30 @@ class ApplicationViewPreviousApplications extends React.Component {
 
         let responses = currentApplication.scholarship_responses;
 
-        return Object.keys(responses).map(key => (
-            <>
-                <b>{responses[key].question}</b>
-                <br />
-                {responses[key].type === "long_answer" ?
-                    <div className="my-1" dangerouslySetInnerHTML={{__html: responses[key].response}}/>
-                    : responses[key].type === "checkbox" ?
-                        responses[key].response ? "Yes" : "No"
-                        : responses[key].response}
-                <br />
-                <br />
-            </>
-        ))
+        return Object.keys(responses).map(key => {
+            const question = responses[key].question;
+            const type = responses[key].type;
+            const response = responses[key].response;
+
+            return (
+                <>
+                    <b>{question}</b>
+                    <br/>
+                    {type === "long_answer" ?
+                        <div className="my-1" dangerouslySetInnerHTML={{__html: response}}/>
+                        : type === "checkbox" ?
+                            response ? "Yes" : "No"
+                            : response}
+                    <br/>
+                    {type.includes("answer") &&
+                    <Button onClick={() => {
+                        this.copyToClipboard(response)
+                    }}>Copy To Clipboard</Button>}
+                    <br/>
+                    <br/>
+                </>
+            )
+        })
     }
 
     render() {
