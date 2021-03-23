@@ -33,6 +33,7 @@ import ApplicationDetailHeader from "./ApplicationDetailHeader";
 import {BlindApplicationsExplanationMessage} from "../../models/Scholarship";
 import ApplicationsLocal from './ApplicationsLocal';
 import { Alert } from 'antd';
+import ApplicationViewPreviousApplications from "./ApplicationViewPreviousApplications";
 
 const { Step } = Steps;
 
@@ -634,6 +635,8 @@ class ApplicationDetail extends  React.Component{
         }
 
         let applicationForm = (<>
+            <ApplicationViewPreviousApplications userProfile={userProfile} />
+            <br />
             <h2>Profile Questions</h2>
             {dateModified}
             <FormDynamic onUpdateForm={event => this.updateForm(event, 'user_profile_responses')}
