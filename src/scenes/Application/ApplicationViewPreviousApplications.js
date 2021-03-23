@@ -13,7 +13,7 @@ class ApplicationViewPreviousApplications extends React.Component {
             applications: null,
             isDrawerVisible: false,
             isChildDrawerVisible: false,
-            currentApplication: null,
+            openApplication: null,
         };
     }
 
@@ -23,11 +23,18 @@ class ApplicationViewPreviousApplications extends React.Component {
 
     getPreviousApplications() {
         const {user : userId}  = this.props.userProfile;
+        const { currentApplicationID } = this.props;
 
         this.setState({loading: "Loading previous applications"});
         UserProfileAPI.getUserContent(userId, 'applications')
             .then(res => {
-                const applications =  res.data.applications;
+                let applications =  res.data.applications;
+                if (currentApplicationID) {
+                    function excludeDuplicate(application) {
+                        return application.id !== currentApplicationID
+                    }
+                    applications = applications.filter(excludeDuplicate)
+                }
                 this.setState({applications});
             })
             .finally(() => {
@@ -43,7 +50,7 @@ class ApplicationViewPreviousApplications extends React.Component {
     };
 
     showChildDrawer = (application) => {
-        this.setState({isChildDrawerVisible: true, currentApplication: application})
+        this.setState({isChildDrawerVisible: true, openApplication: application})
     };
     onChildDrawerClose = () => {
         this.setState({isChildDrawerVisible: false})
@@ -54,14 +61,14 @@ class ApplicationViewPreviousApplications extends React.Component {
         message.success("Copied!")
     }
 
-    viewCurrentApplicationResponses = () => {
-        const { currentApplication }  = this.state;
+    viewOpenApplicationResponses = () => {
+        const { openApplication }  = this.state;
 
-        if (!currentApplication) {
+        if (!openApplication) {
             return null
         }
 
-        let responses = currentApplication.scholarship_responses;
+        let responses = openApplication.scholarship_responses;
 
         return Object.keys(responses).map(key => {
             const question = responses[key].question;
@@ -140,7 +147,7 @@ class ApplicationViewPreviousApplications extends React.Component {
                         onClose={this.onChildDrawerClose}
                         visible={isChildDrawerVisible}
                     >
-                        {this.viewCurrentApplicationResponses()}
+                        {this.viewOpenApplicationResponses()}
                     </Drawer>
                 </Drawer>
             </div>

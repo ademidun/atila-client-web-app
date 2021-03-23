@@ -635,7 +635,7 @@ class ApplicationDetail extends  React.Component{
         }
 
         let applicationForm = (<>
-            <ApplicationViewPreviousApplications userProfile={userProfile} />
+            <ApplicationViewPreviousApplications currentApplicationID={applicationID} userProfile={userProfile} />
             <br />
             <h2>Profile Questions</h2>
             {dateModified}
