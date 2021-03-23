@@ -13,6 +13,7 @@ class ApplicationViewPreviousApplications extends React.Component {
             applications: null,
             isDrawerVisible: false,
             isChildDrawerVisible: false,
+            currentApplication: null,
         };
     }
 
@@ -41,12 +42,32 @@ class ApplicationViewPreviousApplications extends React.Component {
         this.setState({isDrawerVisible: false})
     };
 
-    showChildDrawer = () => {
-        this.setState({isChildDrawerVisible: true})
+    showChildDrawer = (application) => {
+        this.setState({isChildDrawerVisible: true, currentApplication: application})
     };
     onChildDrawerClose = () => {
         this.setState({isChildDrawerVisible: false})
     };
+
+    viewCurrentApplicationResponses = () => {
+        const { currentApplication }  = this.state;
+
+        if (!currentApplication) {
+            return null
+        }
+
+        let responses = currentApplication.scholarship_responses;
+
+        return Object.keys(responses).map(key => (
+            <>
+                <b>{responses[key].question}</b>
+                <br />
+                <div className="my-1" dangerouslySetInnerHTML={{__html: responses[key].response}}/>
+                <br />
+                <br />
+            </>
+        ))
+    }
 
     render() {
         const { applications, loading, isDrawerVisible, isChildDrawerVisible } = this.state;
@@ -54,7 +75,7 @@ class ApplicationViewPreviousApplications extends React.Component {
         let scholarshipTitles = applications?.map(application => (
                 <>
                     <h4>{application.scholarship.name}</h4>
-                    <Button type="primary" onClick={this.showChildDrawer}>
+                    <Button type="primary" onClick={()=>{this.showChildDrawer(application)}}>
                         View application
                     </Button>
                     <br />
@@ -86,7 +107,7 @@ class ApplicationViewPreviousApplications extends React.Component {
                             onClose={this.onChildDrawerClose}
                             visible={isChildDrawerVisible}
                         >
-                            Responses here
+                            {this.viewCurrentApplicationResponses()}
                         </Drawer>
                     </>
                     }
