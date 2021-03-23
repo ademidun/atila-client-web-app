@@ -62,7 +62,11 @@ class ApplicationViewPreviousApplications extends React.Component {
             <>
                 <b>{responses[key].question}</b>
                 <br />
-                <div className="my-1" dangerouslySetInnerHTML={{__html: responses[key].response}}/>
+                {responses[key].type === "long_answer" ?
+                    <div className="my-1" dangerouslySetInnerHTML={{__html: responses[key].response}}/>
+                    : responses[key].type === "checkbox" ?
+                        responses[key].response ? "Yes" : "No"
+                        : responses[key].response}
                 <br />
                 <br />
             </>
@@ -74,7 +78,7 @@ class ApplicationViewPreviousApplications extends React.Component {
 
         let drawerContent;
 
-        if (loading) {
+        if (loading || !applications) {
             drawerContent = (
                 <Loading title={loading} />
             )
@@ -115,7 +119,7 @@ class ApplicationViewPreviousApplications extends React.Component {
                     {drawerContent}
                     <Drawer
                         title={<b>Responses</b>}
-                        width={320}
+                        width={400}
                         closable={true}
                         onClose={this.onChildDrawerClose}
                         visible={isChildDrawerVisible}
