@@ -124,24 +124,24 @@ let scholarshipFormConfigsPage1 = [
         </label>),
     },
 
-    // {
-    //     keyName: 'metadata.not_open_yet',
-    //     placeholder: 'Scholarship not open yet?',
-    //     type: 'checkbox',
-    // },
-    // {
-    //     keyName: 'open_date',
-    //     type: 'date',
-    //     isHidden: (scholarship) => (scholarship.metadata && !scholarship.metadata.not_open_yet),
-    //     html: () =>(<label htmlFor="open_date">
-    //         When does the scholarship open? <span role="img" aria-label="calendar emoji">🗓</span>
-    //     </label>),
-    // },
-    // {
-    //     keyName: 'is_not_available',
-    //     placeholder: 'Is not available?',
-    //     type: 'checkbox',
-    // },
+     {
+         keyName: 'metadata.not_open_yet',
+         placeholder: 'Scholarship not open yet?',
+         type: 'checkbox',
+     },
+     {
+         keyName: 'open_date',
+         type: 'date',
+         isHidden: (scholarship) => (scholarship.metadata && !scholarship.metadata.not_open_yet),
+         html: () =>(<label htmlFor="open_date">
+             When does the scholarship open? <span role="img" aria-label="calendar emoji">🗓</span>
+         </label>),
+     },
+     {
+         keyName: 'is_not_available',
+         placeholder: 'Is not available?',
+         type: 'checkbox',
+     },
 ];
 
 let additionalQuestions = [
