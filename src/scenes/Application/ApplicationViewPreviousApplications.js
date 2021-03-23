@@ -72,16 +72,32 @@ class ApplicationViewPreviousApplications extends React.Component {
     render() {
         const { applications, loading, isDrawerVisible, isChildDrawerVisible } = this.state;
 
-        let scholarshipTitles = applications?.map(application => (
+        let drawerContent;
+
+        if (loading) {
+            drawerContent = (
+                <Loading title={loading} />
+            )
+
+        } else if (applications.length === 0) {
+            drawerContent = (
+                <h3>You have no previous applications</h3>
+            )
+
+        } else {
+            drawerContent = applications.map(application => (
                 <>
                     <h4>{application.scholarship.name}</h4>
-                    <Button type="primary" onClick={()=>{this.showChildDrawer(application)}}>
+                    <Button type="primary" onClick={() => {
+                        this.showChildDrawer(application)
+                    }}>
                         View application
                     </Button>
-                    <br />
-                    <br />
+                    <br/>
+                    <br/>
                 </>
             ))
+        }
 
         return (
             <div>
@@ -96,22 +112,16 @@ class ApplicationViewPreviousApplications extends React.Component {
                     onClose={this.onDrawerClose}
                     visible={isDrawerVisible}
                 >
-                    {loading && <Loading title={loading} />}
-                    {!loading &&
-                    <>
-                        {scholarshipTitles}
-                        <Drawer
-                            title={<b>Responses</b>}
-                            width={320}
-                            closable={true}
-                            onClose={this.onChildDrawerClose}
-                            visible={isChildDrawerVisible}
-                        >
-                            {this.viewCurrentApplicationResponses()}
-                        </Drawer>
-                    </>
-                    }
-
+                    {drawerContent}
+                    <Drawer
+                        title={<b>Responses</b>}
+                        width={320}
+                        closable={true}
+                        onClose={this.onChildDrawerClose}
+                        visible={isChildDrawerVisible}
+                    >
+                        {this.viewCurrentApplicationResponses()}
+                    </Drawer>
                 </Drawer>
             </div>
         )
