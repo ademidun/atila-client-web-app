@@ -2,7 +2,7 @@ import React from 'react';
 import {configure, shallow} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import "core-js/stable";
-import Register, { PasswordShowHide } from './Register';
+import Register, { LOG_OUT_BEFORE_REGISTERING_HELP_TEXT, PasswordShowHide } from './Register';
 import configureStore from "redux-mock-store";
 import { initialReduxState, initialReduxStateLoggedIn } from '../models/Constants';
 import { MemoryRouter } from 'react-router-dom';
@@ -26,6 +26,7 @@ describe('<Register />', () => {
             </MemoryRouter>
             );
         expect(wrapper.html()).toBeTruthy();
+        expect(wrapper.html()).toContain("Register");
     });
 
     it('renders without crashing when logged in', () => {
@@ -40,6 +41,7 @@ describe('<Register />', () => {
             </MemoryRouter>
             );
         expect(wrapper.html()).toBeTruthy();
+        expect(wrapper.html()).toContain(LOG_OUT_BEFORE_REGISTERING_HELP_TEXT);
     });
 
 });
