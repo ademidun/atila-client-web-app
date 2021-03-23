@@ -1,6 +1,7 @@
 import React from "react";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import { Button, Drawer } from "antd";
+import Loading from "../../components/Loading";
 
 class ApplicationViewPreviousApplications extends React.Component {
 
@@ -48,7 +49,18 @@ class ApplicationViewPreviousApplications extends React.Component {
     };
 
     render() {
-        const { isDrawerVisible, isChildDrawerVisible } = this.state;
+        const { applications, loading, isDrawerVisible, isChildDrawerVisible } = this.state;
+
+        let scholarshipTitles = applications?.map(application => (
+                <>
+                    <h4>{application.scholarship.name}</h4>
+                    <Button type="primary" onClick={this.showChildDrawer}>
+                        View application
+                    </Button>
+                    <br />
+                    <br />
+                </>
+            ))
 
         return (
             <div>
@@ -57,24 +69,28 @@ class ApplicationViewPreviousApplications extends React.Component {
                 </Button>
 
                 <Drawer
-                    title="Previous Applications"
+                    title={<h2>Previous Applications</h2>}
                     width={520}
                     closable={false}
                     onClose={this.onDrawerClose}
                     visible={isDrawerVisible}
                 >
-                    <Button type="primary" onClick={this.showChildDrawer}>
-                        Two-level drawer
-                    </Button>
-                    <Drawer
-                        title="Responses"
-                        width={320}
-                        closable={true}
-                        onClose={this.onChildDrawerClose}
-                        visible={isChildDrawerVisible}
-                    >
-                        This is two-level drawer
-                    </Drawer>
+                    {loading && <Loading title={loading} />}
+                    {!loading &&
+                    <>
+                        {scholarshipTitles}
+                        <Drawer
+                            title={<b>Responses</b>}
+                            width={320}
+                            closable={true}
+                            onClose={this.onChildDrawerClose}
+                            visible={isChildDrawerVisible}
+                        >
+                            Responses here
+                        </Drawer>
+                    </>
+                    }
+
                 </Drawer>
             </div>
         )
