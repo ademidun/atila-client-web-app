@@ -141,12 +141,8 @@ class ReferredByInput extends React.Component {
      * Cast userProfileAlreadyActive to a boolean using '!!' so it doesn't get a value of zero
      */
     
-    let userProfileAlreadyActive = false;
-
-    if (loggedInUserProfile) {
-        userProfileAlreadyActive = !!((loggedInUserProfile.submitted_applications_count && loggedInUserProfile.submitted_applications_count > 0)
-            || (loggedInUserProfile.created_scholarships_count && loggedInUserProfile.created_scholarships_count > 0));
-    }
+     const userProfileAlreadyActive = !!((loggedInUserProfile.submitted_applications_count && loggedInUserProfile.submitted_applications_count > 0) 
+     || (loggedInUserProfile.created_scholarships_count && loggedInUserProfile.created_scholarships_count > 0));
 
     let notFoundContent;
 
