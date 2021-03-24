@@ -1,7 +1,9 @@
 import React from "react";
 import UserProfileAPI from "../../services/UserProfileAPI";
-import { Button, Drawer, message } from "antd";
+import { Button, Drawer, message, Collapse } from "antd";
 import Loading from "../../components/Loading";
+
+const { Panel } = Collapse;
 
 class ApplicationViewPreviousApplications extends React.Component {
 
@@ -12,8 +14,6 @@ class ApplicationViewPreviousApplications extends React.Component {
             loading: null,
             applications: null,
             isDrawerVisible: false,
-            isChildDrawerVisible: false,
-            openApplication: null,
         };
     }
 
@@ -45,59 +45,13 @@ class ApplicationViewPreviousApplications extends React.Component {
     showDrawer = () => {
         this.setState({isDrawerVisible: true})
     };
+
     onDrawerClose = () => {
         this.setState({isDrawerVisible: false})
     };
 
-    showChildDrawer = (application) => {
-        this.setState({isChildDrawerVisible: true, openApplication: application})
-    };
-    onChildDrawerClose = () => {
-        this.setState({isChildDrawerVisible: false})
-    };
-
-    copyToClipboard = (text) => {
-        navigator.clipboard.writeText(text)
-        message.success("Copied!")
-    }
-
-    viewOpenApplicationResponses = () => {
-        const { openApplication }  = this.state;
-
-        if (!openApplication) {
-            return null
-        }
-
-        let responses = openApplication.scholarship_responses;
-
-        return Object.keys(responses).map(key => {
-            const question = responses[key].question;
-            const type = responses[key].type;
-            const response = responses[key].response;
-
-            return (
-                <>
-                    <b>{question}</b>
-                    <br/>
-                    {type === "long_answer" ?
-                        <div className="my-1" dangerouslySetInnerHTML={{__html: response}}/>
-                        : type === "checkbox" ?
-                            response ? "Yes" : "No"
-                            : response}
-                    <br/>
-                    {type.includes("answer") &&
-                    <Button onClick={() => {
-                        this.copyToClipboard(response)
-                    }}>Copy To Clipboard</Button>}
-                    <br/>
-                    <br/>
-                </>
-            )
-        })
-    }
-
     render() {
-        const { applications, loading, isDrawerVisible, isChildDrawerVisible } = this.state;
+        const { applications, loading, isDrawerVisible } = this.state;
 
         let drawerContent;
 
@@ -112,18 +66,16 @@ class ApplicationViewPreviousApplications extends React.Component {
             )
 
         } else {
-            drawerContent = applications.map(application => (
-                <>
-                    <h4>{application.scholarship.name}</h4>
-                    <Button type="primary" onClick={() => {
-                        this.showChildDrawer(application)
-                    }}>
-                        View application
-                    </Button>
-                    <br/>
-                    <br/>
-                </>
+            let collapseContent = applications.map((application, index) => (
+                <Panel header={<h4>{application.scholarship.name}</h4>} key={index}>
+                    <ViewApplicationResponses application={application} />
+                </Panel>
             ))
+            drawerContent = (
+                <Collapse>
+                    {collapseContent}
+                </Collapse>
+            )
         }
 
         return (
@@ -140,20 +92,44 @@ class ApplicationViewPreviousApplications extends React.Component {
                     visible={isDrawerVisible}
                 >
                     {drawerContent}
-                    <Drawer
-                        title={<b>Responses</b>}
-                        width={400}
-                        closable={true}
-                        onClose={this.onChildDrawerClose}
-                        visible={isChildDrawerVisible}
-                    >
-                        {this.viewOpenApplicationResponses()}
-                    </Drawer>
                 </Drawer>
             </div>
         )
     }
+}
 
+function ViewApplicationResponses ({application}) {
+    let responses = application.scholarship_responses;
+
+    return Object.keys(responses).map(key => {
+        const question = responses[key].question;
+        const type = responses[key].type;
+        const response = responses[key].response;
+
+        return (
+            <>
+                <b>{question}</b>
+                <br/>
+                {type === "long_answer" ?
+                    <div className="my-1" dangerouslySetInnerHTML={{__html: response}}/>
+                    : type === "checkbox" ?
+                        response ? "Yes" : "No"
+                        : response}
+                <br/>
+                {type.includes("answer") &&
+                <Button onClick={() => {
+                    copyToClipboard(response)
+                }}>Copy To Clipboard</Button>}
+                <br/>
+                <br/>
+            </>
+        )
+    })
+}
+
+const copyToClipboard = text => {
+    navigator.clipboard.writeText(text)
+    message.success("Copied!")
 }
 
 export default ApplicationViewPreviousApplications
