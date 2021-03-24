@@ -7,6 +7,7 @@ import { toastNotify } from "../models/Utils";
 const incorrectInfoOptions = [
     "Wrong Deadline",
     "No longer available",
+    "Other",
 ]
 
 class ReportIncorrectInfo extends React.Component {
