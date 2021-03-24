@@ -18,6 +18,7 @@ import verifiedBadge from '../../components/assets/verified.png';
 import {AtilaDirectApplicationsPopover, BlindApplicationsExplanationMessage, ReferralBonusScholarshipExplanationMessage} from "../../models/Scholarship";
 import ScholarshipFinalists, {UserProfilesCards} from "./ScholarshipFinalists";
 import ApplicationsLocal from '../Application/ApplicationsLocal';
+import ReportIncorrectInfo from "../../components/ReportIncorrectInfo";
 
 class ScholarshipDetail extends React.Component {
 
@@ -385,6 +386,8 @@ class ScholarshipDetail extends React.Component {
                             }
                             <p className="font-weight-bold">
                                 <ScholarshipDeadlineWithTags scholarship={scholarship} />
+                                <br/>
+                                <ReportIncorrectInfo />
                                 <br/>
                                 Amount: {fundingString}
                             </p>
