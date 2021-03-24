@@ -222,6 +222,17 @@ class ScholarshipsAPI {
 
         return apiCompletionPromise;
     };
+
+    static reportIncorrectInfo = (id, data) => {
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: data,
+            url: `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/report-incorrect-info/`,
+        });
+
+        return apiCompletionPromise;
+    };
 }
 
 export default ScholarshipsAPI;

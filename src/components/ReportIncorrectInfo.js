@@ -1,7 +1,8 @@
 import React from 'react';
 import ButtonModal from "./ButtonModal";
 import { Radio, Input } from 'antd';
-
+import ScholarshipsAPI from "../services/ScholarshipsAPI";
+import { toastNotify } from "../models/Utils";
 
 const incorrectInfoOptions = [
     "Wrong Deadline",
@@ -14,13 +15,31 @@ class ReportIncorrectInfo extends React.Component {
         super(props);
 
         this.state = {
-            infoOptionsIndex: null,
+            infoOptionsIndex: 0,
             additionalInfo: "",
         };
     }
 
     sendReport = () => {
+        const { infoOptionsIndex, additionalInfo } = this.state;
+        const { scholarship } = this.props;
 
+        const postData = {
+            "incorrect_info": incorrectInfoOptions[infoOptionsIndex],
+            "additional_info": additionalInfo
+        }
+
+        ScholarshipsAPI
+            .reportIncorrectInfo(scholarship.id, postData)
+            .then(res => {
+                const successMessage = "Your report has been delivered. Thanks for making Atila more reliable.";
+                toastNotify(successMessage);
+            })
+            .catch(err => {
+                console.log({err})
+                const errorMessage = "An error occurred. Please message us using the chat button in the bottom right.";
+                toastNotify(errorMessage, 'error')
+            })
     }
 
     onRadioSelect = e => {

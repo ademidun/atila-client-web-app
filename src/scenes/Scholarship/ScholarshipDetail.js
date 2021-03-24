@@ -387,7 +387,7 @@ class ScholarshipDetail extends React.Component {
                             <p className="font-weight-bold">
                                 <ScholarshipDeadlineWithTags scholarship={scholarship} />
                                 <br/>
-                                <ReportIncorrectInfo />
+                                <ReportIncorrectInfo scholarship={scholarship} />
                                 <br/>
                                 Amount: {fundingString}
                             </p>
