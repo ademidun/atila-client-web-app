@@ -11,6 +11,8 @@ import {Link} from "react-router-dom";
 import {forbiddenCharacters, hasForbiddenCharacters} from "../models/Utils";
 import ReferredByInput from './ReferredByInput';
 
+export const LOG_OUT_BEFORE_REGISTERING_HELP_TEXT = "A user is already logged in. Log out to create an account";
+
 export class PasswordShowHide extends React.Component {
 
     constructor(props) {
@@ -260,7 +262,19 @@ class Register extends React.Component {
         const { first_name, last_name, username, email, password, referred_by,
             agreeTermsConditions, account_type, referredByChecked } = userProfile;
         
-        const { location: { search } } = this.props;
+        const { location: { search }, loggedInUserProfile } = this.props;
+
+        if (loggedInUserProfile) {
+            return (
+                <div className="container mt-5">
+                <div className="card shadow p-3">
+                <h1>
+                    {LOG_OUT_BEFORE_REGISTERING_HELP_TEXT}
+                </h1>
+                </div>
+            </div>
+            )
+        }
 
         let formErrorsContent = Object.keys(formErrors).map((errorType) => (
             <div key={errorType}>
@@ -434,6 +448,11 @@ class Register extends React.Component {
         )
     }
 }
+
+const mapStateToProps = state => {
+    return { loggedInUserProfile: state.data.user.loggedInUserProfile };
+};
+
 const mapDispatchToProps = {
     setLoggedInUserProfile
 };
@@ -451,4 +470,4 @@ Register.propTypes = {
     userProfile:PropTypes.shape({}),
 };
 
-export default connect(null, mapDispatchToProps)(Register);
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

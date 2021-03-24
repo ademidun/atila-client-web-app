@@ -27,3 +27,9 @@ Taken from [PR #8](https://github.com/ademidun/atila-client-web-app/pull/8/files
 
 - Then you can reference the redux state from `mapStateToProps()` and `state.data.user.loggedInUserProfile`
 - If you are adding an action, you can do: `mapDispatchToProps()`
+
+## Testing
+
+`npm test`
+
+To test a specific file: `npm test -- SomeTestFileToRun` for example: `npm test -- Register`
