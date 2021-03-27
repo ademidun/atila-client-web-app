@@ -2,7 +2,7 @@ import {SCHOLARSHIP_QUESTIONS_TYPES_TO_FORM_TYPES} from "../../models/Scholarshi
 import {userProfileFormConfig} from "../../models/UserProfile";
 import {scholarshipUserProfileSharedFormConfigs} from "../../models/Utils";
 import { stripHtml } from '../../services/utils';
-
+import React from 'react';
 
 /**
  * Transform array of questions of the form:
@@ -247,8 +247,9 @@ export const findOccurencesOfSearchTerm = ( application, searchTerm, contextSize
         while ((matches = searchTermRegex.exec(responseText)) !== null) {
             
             let context;
+            let contextHtml;
             if (contextSize === 0) {
-                context = matches[0]
+                context = contextHtml = matches[0]
             } else {
                 /**
                  * Get the surrounding snippet that matches a search term.
@@ -262,6 +263,15 @@ export const findOccurencesOfSearchTerm = ( application, searchTerm, contextSize
 
                 let contextEnd = Math.min(matches.index +  searchTerm.length + contextSize, fulTextEnd);
                 context = matches.input.substring(contextStart, contextEnd);
+                contextHtml = (
+                    <>
+                    {contextStart > fullTextStart ? "..." : ""} {matches.input.substring(contextStart, matches.index)}
+                    <strong style={{"color": "black"}}>
+                        {matches.input.substring(matches.index, matches.index + searchTerm.length)}
+                    </strong>
+                    {matches.input.substring(matches.index + searchTerm.length, contextEnd)} {contextEnd < fulTextEnd ? "..." : ""}
+                    </>
+                )
 
                 // If context does not start at the beginning of the full text, prefix with an elipsis.
                 // Add an elipsis suffix if context ends before the end of the full text.
@@ -277,6 +287,7 @@ export const findOccurencesOfSearchTerm = ( application, searchTerm, contextSize
             occurencesOfSearchTerm.push({
                 "key": questionResponse.key,
                 "value": context,
+                "html": contextHtml,
             })
         }
 

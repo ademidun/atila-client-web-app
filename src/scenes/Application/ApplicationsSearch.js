@@ -79,7 +79,7 @@ export function ApplicationPreview({ application, searchTerm }){
 
     if (searchTerm && searchTerm.length > 3) {
         let matcingSnippets = findOccurencesOfSearchTerm(application, searchTerm);
-        applicationResponsePreview = matcingSnippets.map(snippet => <p key= {snippet.value}>{snippet.value}</p>)
+        applicationResponsePreview = matcingSnippets.map(snippet => <p key= {snippet.value}>{snippet.html}</p>)
     }
 
     return (<div>
