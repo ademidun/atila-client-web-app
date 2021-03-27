@@ -80,9 +80,11 @@ export function ApplicationPreview({ application, searchTerm }){
         applicationResponsePreview = applicationResponsePreview.substring(0, 140) + "...";
     } 
 
-    if (searchTerm && searchTerm.length > 3) {
-        let matcingSnippets = findOccurencesOfSearchTerm(application, searchTerm);
-        applicationResponsePreview = matcingSnippets.map(snippet => <p key= {snippet.value}>{snippet.html}</p>)
+    // Only start highlighting the text when the search term has 3 characters or more.
+    // Otherwise, you would return too many noisy results if you match on just 1 or 2 characters.
+    if (searchTerm && searchTerm.length >= 3) {
+        let matchingSnippets = findOccurencesOfSearchTerm(application, searchTerm);
+        applicationResponsePreview = matchingSnippets.map(snippet => <p key= {snippet.value}>{snippet.html}</p>)
     }
 
     return (<div>
