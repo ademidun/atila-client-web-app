@@ -266,9 +266,9 @@ export const findOccurencesOfSearchTerm = ( application, searchTerm, contextSize
                 contextHtml = (
                     <>
                     {contextStart > fullTextStart ? "..." : ""} {matches.input.substring(contextStart, matches.index)}
-                    <strong style={{"color": "black"}}>
+                    <span  style={{backgroundColor: "yellow"}}>
                         {matches.input.substring(matches.index, matches.index + searchTerm.length)}
-                    </strong>
+                    </span>
                     {matches.input.substring(matches.index + searchTerm.length, contextEnd)} {contextEnd < fulTextEnd ? "..." : ""}
                     </>
                 )
