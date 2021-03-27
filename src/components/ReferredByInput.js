@@ -190,10 +190,10 @@ class ReferredByInput extends React.Component {
             </AutoComplete>
         </div>
       {userProfileAlreadyActive && 
-      <p className="text-muted">
+      <div className="text-muted">
           {loggedInUserProfile.submitted_applications_count > 0 && <p>Referral cannot be changed after an application has been submitted.</p>}
           {loggedInUserProfile.created_scholarships_count > 0 && <p>Referral cannot be changed after a scholarship has been created.</p>}
-      </p>
+      </div>
       }
       {referredByUserProfile && 
       <div className="my-2">
