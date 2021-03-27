@@ -115,7 +115,6 @@ export class ApplicationsTable extends  React.Component {
                         { application.scholarship_responses && Object.values(application.scholarship_responses).length > 0
                         && 
                             <>
-                                <hr/>
                                 <ApplicationPreview application={application} searchTerm={searchTerm} />
                             </>
                         }

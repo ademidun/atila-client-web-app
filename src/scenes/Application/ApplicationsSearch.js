@@ -70,12 +70,13 @@ export function ApplicationPreview({ application, searchTerm }){
         return null
     }
 
-
-
     let applicationResponsePreview = Object.values(applicationResponses)[0];
-    
-    applicationResponsePreview =  applicationResponsePreview.type === "long_answer" ? stripHtml(applicationResponsePreview.response) : applicationResponsePreview.response;
-    applicationResponsePreview = applicationResponsePreview.substring(0, 140) + "...";
+
+    if (applicationResponsePreview && applicationResponsePreview.type) {
+
+        applicationResponsePreview =  applicationResponsePreview.type === "long_answer" ? stripHtml(applicationResponsePreview.response) : applicationResponsePreview.response;
+        applicationResponsePreview = applicationResponsePreview.substring(0, 140) + "...";
+    } 
 
     if (searchTerm && searchTerm.length > 3) {
         let matcingSnippets = findOccurencesOfSearchTerm(application, searchTerm);

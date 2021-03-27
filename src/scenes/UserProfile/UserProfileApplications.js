@@ -6,6 +6,7 @@ import {Link} from "react-router-dom";
 import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import {connect} from "react-redux";
 import ScholarshipDeadlineWithTags from "../../components/ScholarshipDeadlineWithTags";
+import { ApplicationPreview, ApplicationsSearch } from '../Application/ApplicationsSearch';
 
 class UserProfileApplications extends React.Component {
 
@@ -55,7 +56,11 @@ function ApplicationsTable({ applications }){
             dataIndex: 'id',
             key: 'applicationID',
             render: (text, application) => (
-                <Link to={`/application/${application.id}`}>View Application <br/>({text})</Link>
+                <>
+                    <Link to={`/application/${application.id}`}>View Application <br/>({text})</Link>
+                    <hr/>
+                    <ApplicationPreview application={application} searchTerm={""} />
+                </>
             ),
         },
         {
@@ -77,7 +82,11 @@ function ApplicationsTable({ applications }){
         }
     ];
 
-    return (<Table columns={columns} dataSource={applications} rowKey="id" />)
+    return (
+    <>
+        <ApplicationsSearch applications={applications} updateSearch={(filtered, searchTerm) => {}} />
+        <Table columns={columns} dataSource={applications} rowKey="id" />
+    </>)
 }
 
 const mapDispatchToProps = {
