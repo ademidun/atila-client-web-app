@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import Loading from "../../components/Loading";
 import {Table} from "antd";
@@ -50,6 +50,9 @@ class UserProfileApplications extends React.Component {
 
 function ApplicationsTable({ applications }){
 
+    const [applicationsFiltered, filterApplications] = useState(applications);
+    const [searchTerm, setSearchTerm] = useState("");
+
     const columns = [
         {
             title: 'ID',
@@ -59,7 +62,7 @@ function ApplicationsTable({ applications }){
                 <>
                     <Link to={`/application/${application.id}`}>View Application <br/>({text})</Link>
                     <hr/>
-                    <ApplicationPreview application={application} searchTerm={""} />
+                    <ApplicationPreview application={application} searchTerm={searchTerm} />
                 </>
             ),
         },
@@ -84,8 +87,8 @@ function ApplicationsTable({ applications }){
 
     return (
     <>
-        <ApplicationsSearch applications={applications} updateSearch={(filtered, searchTerm) => {}} />
-        <Table columns={columns} dataSource={applications} rowKey="id" />
+        <ApplicationsSearch applications={applications} updateSearch={(filtered, searchTerm) => { filterApplications(filtered); setSearchTerm(searchTerm)}} />
+        <Table columns={columns} dataSource={applicationsFiltered} rowKey="id" />
     </>)
 }
 

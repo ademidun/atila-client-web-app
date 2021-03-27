@@ -72,6 +72,8 @@ export function ApplicationPreview({ application, searchTerm }){
 
     let applicationResponsePreview = Object.values(applicationResponses)[0];
 
+    // if check is needed here for backwards compatiblity with old application responses that were strings
+    // and not dictionaries so they didn't have .type attributes
     if (applicationResponsePreview && applicationResponsePreview.type) {
 
         applicationResponsePreview =  applicationResponsePreview.type === "long_answer" ? stripHtml(applicationResponsePreview.response) : applicationResponsePreview.response;
