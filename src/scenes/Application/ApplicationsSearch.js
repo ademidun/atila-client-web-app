@@ -70,16 +70,19 @@ export function ApplicationPreview({ application, searchTerm }){
         return null
     }
 
-
-
     let applicationResponsePreview = Object.values(applicationResponses)[0];
-    
-    applicationResponsePreview =  applicationResponsePreview.type === "long_answer" ? stripHtml(applicationResponsePreview.response) : applicationResponsePreview.response;
-    applicationResponsePreview = applicationResponsePreview.substring(0, 140) + "...";
+
+    // if check is needed here for backwards compatiblity with old application responses that were strings
+    // and not dictionaries so they didn't have .type attributes
+    if (applicationResponsePreview && applicationResponsePreview.type) {
+
+        applicationResponsePreview =  applicationResponsePreview.type === "long_answer" ? stripHtml(applicationResponsePreview.response) : applicationResponsePreview.response;
+        applicationResponsePreview = applicationResponsePreview.substring(0, 140) + "...";
+    } 
 
     if (searchTerm && searchTerm.length > 3) {
         let matcingSnippets = findOccurencesOfSearchTerm(application, searchTerm);
-        applicationResponsePreview = matcingSnippets.map(snippet => <p key= {snippet.value}>{snippet.value}</p>)
+        applicationResponsePreview = matcingSnippets.map(snippet => <p key= {snippet.value}>{snippet.html}</p>)
     }
 
     return (<div>
