@@ -3,6 +3,8 @@ import UserProfileAPI from "../../services/UserProfileAPI";
 import { Button, Drawer, message, Collapse } from "antd";
 import Loading from "../../components/Loading";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import {UserProfilePropType} from "../../models/UserProfile";
 
 const { Panel } = Collapse;
 
@@ -144,6 +146,11 @@ function copyToClipboard(html) {
 function executeCopy(text) {
     navigator.clipboard.writeText(text)
     message.success("Copied!")
+}
+
+ApplicationViewPreviousApplications.propTypes = {
+    currentApplicationID: PropTypes.string,
+    userProfile: UserProfilePropType.isRequired,
 }
 
 export default ApplicationViewPreviousApplications
