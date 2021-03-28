@@ -1,9 +1,10 @@
 import React from 'react';
 import ButtonModal from "./ButtonModal";
-import { Radio, Input } from 'antd';
+import { Radio, Input} from 'antd';
 import ScholarshipsAPI from "../services/ScholarshipsAPI";
 import { toastNotify } from "../models/Utils";
 
+const { TextArea } = Input;
 const incorrectInfoOptions = [
     "Wrong Deadline",
     "No longer available",
@@ -76,7 +77,7 @@ class ReportIncorrectInfo extends React.Component {
                 </Radio.Group>
                 <br /> <br />
                 Additional Info:
-                <Input value={additionalInfo} onChange={this.onAdditionalInfoChange} />
+                <TextArea value={additionalInfo} onChange={this.onAdditionalInfoChange} />
             </>
         )
 
