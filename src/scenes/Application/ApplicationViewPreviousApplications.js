@@ -2,6 +2,7 @@ import React from "react";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import { Button, Drawer, message, Collapse } from "antd";
 import Loading from "../../components/Loading";
+import { Link } from "react-router-dom";
 
 const { Panel } = Collapse;
 
@@ -68,6 +69,10 @@ class ApplicationViewPreviousApplications extends React.Component {
         } else {
             let collapseContent = applications.map((application, index) => (
                 <Panel header={<h4>{application.scholarship.name}</h4>} key={index}>
+                    <h5>
+                        <Link to={`/scholarship/${application.scholarship.slug}`}>View Scholarship</Link> <br />
+                        <Link to={`/application/${application.id}`}>View Application</Link> <br />
+                    </h5>
                     <ViewApplicationResponses application={application} />
                 </Panel>
             ))
