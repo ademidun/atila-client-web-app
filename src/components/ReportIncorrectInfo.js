@@ -19,6 +19,7 @@ class ReportIncorrectInfo extends React.Component {
         this.state = {
             infoOptionsIndex: 0,
             additionalInfo: "",
+            updatedDate: null,
         };
     }
 
@@ -56,17 +57,35 @@ class ReportIncorrectInfo extends React.Component {
         })
     }
 
+    onUpdatedDateChange = event => {
+        if (event.stopPropagation) {
+            event.stopPropagation(); // https://github.com/facebook/react/issues/3446#issuecomment-82751540
+        }
+        this.setState({updatedDate: event.target.value});
+    }
+
     render() {
-        const { infoOptionsIndex, additionalInfo } = this.state;
+        const { infoOptionsIndex, additionalInfo, updatedDate } = this.state;
         const radioStyle = {
             display: 'block',
-            height: '30px',
             lineHeight: '30px',
         };
 
         let radioOptions = incorrectInfoOptions.map((optionText, index) => (
             <Radio style={radioStyle} value={index}>
                 {optionText}
+                {infoOptionsIndex === 0 && index === 0 &&
+                <>
+                    <br />
+                    <input placeholder={"test"}
+                           className="col-12 form-control floating__input"
+                           name={"date"}
+                           type={"datetime-local"}
+                           onChange={this.onUpdatedDateChange}
+                           value={updatedDate}
+                    />
+                </>
+                }
             </Radio>
         ))
 
