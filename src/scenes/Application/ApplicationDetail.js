@@ -712,7 +712,8 @@ class ApplicationDetail extends  React.Component{
                                             <h6 className="text-muted">
                                                 As part of account verification and to
                                                 ensure a community of real students
-                                                you must upload a picture of yourself.
+                                                you must upload a picture of yourself. <br/>
+                                                This picture will also be displayed on your profile.
                                             </h6>
 
                                             {!isMissingProfilePicture &&

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import Loading from "../../components/Loading";
 import {Table} from "antd";
@@ -6,6 +6,7 @@ import {Link} from "react-router-dom";
 import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import {connect} from "react-redux";
 import ScholarshipDeadlineWithTags from "../../components/ScholarshipDeadlineWithTags";
+import { ApplicationPreview, ApplicationsSearch } from '../Application/ApplicationsSearch';
 
 class UserProfileApplications extends React.Component {
 
@@ -49,13 +50,20 @@ class UserProfileApplications extends React.Component {
 
 function ApplicationsTable({ applications }){
 
+    const [applicationsFiltered, filterApplications] = useState(applications);
+    const [searchTerm, setSearchTerm] = useState("");
+
     const columns = [
         {
             title: 'ID',
             dataIndex: 'id',
             key: 'applicationID',
             render: (text, application) => (
-                <Link to={`/application/${application.id}`}>View Application <br/>({text})</Link>
+                <>
+                    <Link to={`/application/${application.id}`}>View Application <br/>({text})</Link>
+                    <hr/>
+                    <ApplicationPreview application={application} searchTerm={searchTerm} />
+                </>
             ),
         },
         {
@@ -77,7 +85,11 @@ function ApplicationsTable({ applications }){
         }
     ];
 
-    return (<Table columns={columns} dataSource={applications} rowKey="id" />)
+    return (
+    <>
+        <ApplicationsSearch applications={applications} updateSearch={(filtered, searchTerm) => { filterApplications(filtered); setSearchTerm(searchTerm)}} />
+        <Table columns={columns} dataSource={applicationsFiltered} rowKey="id" />
+    </>)
 }
 
 const mapDispatchToProps = {
