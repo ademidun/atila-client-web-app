@@ -19,17 +19,23 @@ class ReportIncorrectInfo extends React.Component {
         this.state = {
             infoOptionsIndex: 0,
             additionalInfo: "",
-            updatedDate: null,
+            updatedDeadline: null,
         };
     }
 
     sendReport = () => {
-        const { infoOptionsIndex, additionalInfo } = this.state;
+        const { infoOptionsIndex, additionalInfo, updatedDeadline } = this.state;
         const { scholarship } = this.props;
+
+        let postAdditionalInfo = additionalInfo;
+
+        if (infoOptionsIndex === 0 && updatedDeadline) {
+            postAdditionalInfo = `New deadline suggested by user: ${updatedDeadline}. ${postAdditionalInfo}`
+        }
 
         const postData = {
             "incorrect_info": incorrectInfoOptions[infoOptionsIndex],
-            "additional_info": additionalInfo
+            "additional_info": postAdditionalInfo
         }
 
         ScholarshipsAPI
@@ -57,15 +63,15 @@ class ReportIncorrectInfo extends React.Component {
         })
     }
 
-    onUpdatedDateChange = event => {
+    onUpdatedDeadlineChange = event => {
         if (event.stopPropagation) {
             event.stopPropagation(); // https://github.com/facebook/react/issues/3446#issuecomment-82751540
         }
-        this.setState({updatedDate: event.target.value});
+        this.setState({updatedDeadline: event.target.value});
     }
 
     render() {
-        const { infoOptionsIndex, additionalInfo, updatedDate } = this.state;
+        const { infoOptionsIndex, additionalInfo, updatedDeadline } = this.state;
         const radioStyle = {
             display: 'block',
             lineHeight: '30px',
@@ -81,8 +87,8 @@ class ReportIncorrectInfo extends React.Component {
                            className="col-12 form-control floating__input"
                            name={"date"}
                            type={"datetime-local"}
-                           onChange={this.onUpdatedDateChange}
-                           value={updatedDate}
+                           onChange={this.onUpdatedDeadlineChange}
+                           value={updatedDeadline}
                     />
                 </>
                 }
