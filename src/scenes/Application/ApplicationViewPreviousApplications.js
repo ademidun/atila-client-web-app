@@ -132,7 +132,16 @@ function ViewApplicationResponses ({application}) {
     })
 }
 
-const copyToClipboard = text => {
+// see https://stackoverflow.com/a/25275151/14874841
+// Copy HTML as text (without HTML tags)
+function copyToClipboard(html) {
+    let doc = new DOMParser().parseFromString(html, 'text/html');
+    let text = doc.body.textContent;
+    return executeCopy(text);
+}
+
+// Copy text as text
+function executeCopy(text) {
     navigator.clipboard.writeText(text)
     message.success("Copied!")
 }
