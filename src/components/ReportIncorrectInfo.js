@@ -6,9 +6,9 @@ import { toastNotify } from "../models/Utils";
 
 const { TextArea } = Input;
 const incorrectInfoOptions = [
-    "Wrong Deadline",
-    "No longer available",
-    "Other",
+    {label: 'wrong_deadline', value: "Wrong deadline"},
+    {label: 'no_longer_available', value: "No longer available"},
+    {label: 'other', value: "Other"},
 ]
 
 class ReportIncorrectInfo extends React.Component {
@@ -17,24 +17,24 @@ class ReportIncorrectInfo extends React.Component {
         super(props);
 
         this.state = {
-            infoOptionsIndex: 0,
+            infoOptionsLabel: 'wrong_deadline',
             additionalInfo: "",
             updatedDeadline: null,
         };
     }
 
     sendReport = () => {
-        const { infoOptionsIndex, additionalInfo, updatedDeadline } = this.state;
+        const { infoOptionsLabel, additionalInfo, updatedDeadline } = this.state;
         const { scholarship } = this.props;
 
         let postAdditionalInfo = additionalInfo;
 
-        if (infoOptionsIndex === 0 && updatedDeadline) {
+        if (infoOptionsLabel === 'wrong_deadline' && updatedDeadline) {
             postAdditionalInfo = `New deadline suggested by user: ${updatedDeadline}. ${postAdditionalInfo}`
         }
 
         const postData = {
-            "incorrect_info": incorrectInfoOptions[infoOptionsIndex],
+            "incorrect_info": findValueWithLabel(infoOptionsLabel),
             "additional_info": postAdditionalInfo
         }
 
@@ -53,7 +53,7 @@ class ReportIncorrectInfo extends React.Component {
 
     onRadioSelect = e => {
         this.setState({
-            infoOptionsIndex: e.target.value,
+            infoOptionsLabel: e.target.value,
         });
     };
 
@@ -71,33 +71,38 @@ class ReportIncorrectInfo extends React.Component {
     }
 
     render() {
-        const { infoOptionsIndex, additionalInfo, updatedDeadline } = this.state;
+        const { infoOptionsLabel, additionalInfo, updatedDeadline } = this.state;
         const radioStyle = {
             display: 'block',
             lineHeight: '30px',
         };
 
-        let radioOptions = incorrectInfoOptions.map((optionText, index) => (
-            <Radio style={radioStyle} value={index}>
-                {optionText}
-                {infoOptionsIndex === 0 && index === 0 &&
-                <>
-                    <br />
-                    <input placeholder={"test"}
-                           className="col-12 form-control floating__input"
-                           name={"date"}
-                           type={"datetime-local"}
-                           onChange={this.onUpdatedDeadlineChange}
-                           value={updatedDeadline}
-                    />
-                </>
+        let wrongDeadlineExtraInfo = (
+            <>
+                <br />
+                Select corrected deadline
+                <input placeholder={"test"}
+                       className="col-12 form-control floating__input"
+                       name={"date"}
+                       type={"datetime-local"}
+                       onChange={this.onUpdatedDeadlineChange}
+                       value={updatedDeadline}
+                />
+            </>
+        )
+
+        let radioOptions = incorrectInfoOptions.map(optionDict => (
+            <Radio style={radioStyle} value={optionDict.label}>
+                {optionDict.value}
+                {infoOptionsLabel === 'wrong_deadline' && optionDict.label === infoOptionsLabel &&
+                    wrongDeadlineExtraInfo
                 }
             </Radio>
         ))
 
         let reportIncorrectInfoModalBody = (
             <>
-                <Radio.Group onChange={this.onRadioSelect} value={infoOptionsIndex}>
+                <Radio.Group onChange={this.onRadioSelect} value={infoOptionsLabel}>
                     {radioOptions}
                 </Radio.Group>
                 <br /> <br />
@@ -122,6 +127,14 @@ class ReportIncorrectInfo extends React.Component {
         )
     }
 
+}
+
+const findValueWithLabel = label => {
+    for (const item of incorrectInfoOptions) {
+        if (item.label === label) {
+            return item.value;
+        }
+    }
 }
 
 export default ReportIncorrectInfo
