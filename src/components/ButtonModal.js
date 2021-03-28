@@ -1,7 +1,6 @@
 import React from 'react';
-
 import {Button, Modal, Popconfirm} from "antd";
-
+import PropTypes from "prop-types";
 
 class ButtonModal extends React.Component {
     constructor(props) {
@@ -61,15 +60,11 @@ class ButtonModal extends React.Component {
         ]
 
         let footer = addPopConfirm ? modalFooterWithPopConfirm : modalFooter
-        let showModalButtonTypeProp = "primary"
-        if (showModalButtonType !== undefined) {
-            showModalButtonTypeProp = showModalButtonType
-        }
 
         return(
             <div>
                 <Button
-                    type={showModalButtonTypeProp}
+                    type={showModalButtonType}
                     danger={showModalButtonDanger}
                     size={showModalButtonSize} onClick={this.showModal}
                     disabled={disabled}
@@ -87,6 +82,36 @@ class ButtonModal extends React.Component {
             </div>
         )
     }
+}
+
+ButtonModal.defaultProps = {
+    showModalButtonType: "primary",
+    showModalButtonSize: "medium",
+    showModalButtonDanger: false,
+    showModalText: "Show Modal",
+    modalTitle: "Modal Title",
+    modalBody: "This is a modal",
+    submitText: "Close Modal",
+    addPopConfirm: false,
+    popConfirmText: "",
+    disabled: false,
+    onShowModal: null,
+    onSubmit: null,
+}
+
+ButtonModal.propTypes = {
+    showModalButtonType: PropTypes.string,
+    showModalButtonSize: PropTypes.string,
+    showModalButtonDanger: PropTypes.bool,
+    showModalText: PropTypes.string,
+    modalTitle: PropTypes.string,
+    modalBody: PropTypes.node,
+    submitText: PropTypes.string,
+    addPopConfirm: PropTypes.bool,
+    popConfirmText: PropTypes.string,
+    disabled: PropTypes.bool,
+    onShowModal: PropTypes.func,
+    onSubmit: PropTypes.func,
 }
 
 export default ButtonModal;
