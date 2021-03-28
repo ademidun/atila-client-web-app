@@ -3,6 +3,7 @@ import ButtonModal from "./ButtonModal";
 import { Radio, Input} from 'antd';
 import ScholarshipsAPI from "../services/ScholarshipsAPI";
 import { toastNotify } from "../models/Utils";
+import {ScholarshipPropType} from "../models/Scholarship";
 
 const { TextArea } = Input;
 const incorrectInfoOptions = [
@@ -135,6 +136,10 @@ const findValueWithLabel = label => {
             return item.value;
         }
     }
+}
+
+ReportIncorrectInfo.propTypes = {
+    scholarship: ScholarshipPropType.isRequired,
 }
 
 export default ReportIncorrectInfo
