@@ -70,11 +70,10 @@ class ApplicationViewPreviousApplications extends React.Component {
 
         } else {
             let collapseContent = applications.map((application, index) => (
-                <Panel header={<h4>{application.scholarship.name}</h4>} key={index}>
-                    <h5>
-                        <Link to={`/scholarship/${application.scholarship.slug}`}>View Scholarship</Link> <br />
-                        <Link to={`/application/${application.id}`}>View Application</Link> <br />
-                    </h5>
+                <Panel header={<h6>{application.scholarship.name}</h6>} key={index}>
+                    <Link to={`/scholarship/${application.scholarship.slug}`}>View Scholarship</Link> <br />
+                    <Link to={`/application/${application.id}`}>View Application</Link> <br />
+                    <hr/>
                     <ViewApplicationResponses application={application} />
                 </Panel>
             ))
