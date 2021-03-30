@@ -113,7 +113,7 @@ function ViewApplicationResponses ({application}) {
         const response = responses[key].response;
 
         return (
-            <>
+            <div key={key}>
                 <b>{question}</b>
                 <br/>
                 {type === "long_answer" ?
@@ -128,7 +128,7 @@ function ViewApplicationResponses ({application}) {
                 }}>Copy To Clipboard</Button>}
                 <br/>
                 <br/>
-            </>
+            </div>
         )
     })
 }
