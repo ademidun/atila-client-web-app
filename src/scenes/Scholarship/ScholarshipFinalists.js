@@ -30,7 +30,7 @@ class ScholarshipFinalists extends React.Component {
 
         if (search) {
             const parsed = queryString.parse(search);
-            const parsedScholarshipIds = parsed.scholarship_ids.split(",")
+            const parsedScholarshipIds = parsed.scholarship_id.split(",")
             scholarshipFinalistsPromise = ApplicationsAPI.filteredFinalists(parsedScholarshipIds)
         } else if (allFinalists) {
             scholarshipFinalistsPromise = ApplicationsAPI.allFinalists();
@@ -87,8 +87,17 @@ class ScholarshipFinalists extends React.Component {
 
 export function ScholarshipFinalistEssays({ title, scholarshipFinalistEssays, isFiltered }) {
     let displayTitle = `${title}' Essays`
-    console.log({scholarshipFinalistEssays})
-    if (isFiltered && scholarshipFinalistEssays.length !== 0) {
+
+    if (scholarshipFinalistEssays.length  === 0) {
+        return (
+            <React.Fragment>
+                <h3 className="text-center">No published essays to display</h3>
+            </React.Fragment>
+        )
+    }
+
+
+    if (isFiltered) {
         // Get all the scholarship titles in a list
         let scholarshipTitles = []
         for (const essay of scholarshipFinalistEssays) {
