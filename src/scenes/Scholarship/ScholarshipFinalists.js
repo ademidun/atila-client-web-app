@@ -7,6 +7,7 @@ import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
 import {formatCurrency, genericItemTransform} from "../../services/utils";
 import ApplicationsAPI from "../../services/ApplicationsAPI";
+const queryString = require('query-string');
 
 class ScholarshipFinalists extends React.Component {
 
@@ -21,16 +22,22 @@ class ScholarshipFinalists extends React.Component {
         }
     }
     componentDidMount() {
+        const { id, allFinalists, search } = this.props;
 
-        const { id, allFinalists } = this.props;
         this.setState({ isLoadingScholarshipFinalists: true });
 
         let scholarshipFinalistsPromise;
-        if (allFinalists) {
+
+        if (search) {
+            const parsed = queryString.parse(search);
+            const parsedScholarshipIds = parsed.scholarship_ids.split(",")
+            scholarshipFinalistsPromise = ApplicationsAPI.filteredFinalists(parsedScholarshipIds)
+        } else if (allFinalists) {
             scholarshipFinalistsPromise = ApplicationsAPI.allFinalists();
         } else {
             scholarshipFinalistsPromise = ScholarshipsAPI.getFinalists(`${id}`);
         }
+
         scholarshipFinalistsPromise
             .then(res => {
                 this.setState({
