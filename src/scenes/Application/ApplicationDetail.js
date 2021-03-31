@@ -163,7 +163,7 @@ class ApplicationDetail extends  React.Component{
         const { scholarship_responses, user_profile_responses } = addQuestionDetailToApplicationResponses(application, scholarship);
 
         if (userProfile) {
-            const verification_email = user_profile_responses.email.response
+            const verification_email = user_profile_responses.email ? user_profile_responses.email.response : userProfile.email;
             this.saveApplicationRemotely( {scholarship_responses, user_profile_responses, verification_email}, application.id);
         } else {
             this.saveApplicationLocally({scholarship_responses, user_profile_responses, scholarship }, scholarship);
