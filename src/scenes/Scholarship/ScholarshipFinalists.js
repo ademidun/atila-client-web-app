@@ -5,7 +5,7 @@ import {Row, Col, Tag} from "antd";
 import ContentCard from "../../components/ContentCard";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
-import {formatCurrency, genericItemTransform} from "../../services/utils";
+import {formatCurrency, genericItemTransform, joinListGrammatically} from "../../services/utils";
 import ApplicationsAPI from "../../services/ApplicationsAPI";
 const queryString = require('query-string');
 
@@ -58,7 +58,7 @@ class ScholarshipFinalists extends React.Component {
     render () {
 
         const { scholarshipFinalistEssays, scholarshipFinalistUserProfiles, isLoadingScholarshipFinalists  } = this.state;
-        const { className, title, showEssaysFirst  } = this.props;
+        const { className, title, showEssaysFirst, search } = this.props;
 
         if (isLoadingScholarshipFinalists) {
             return (
@@ -73,11 +73,11 @@ class ScholarshipFinalists extends React.Component {
             <div className={`${className}`}>
                 <h3 className="text-center">{title}</h3>
                 {showEssaysFirst &&
-                <ScholarshipFinalistEssays title={title} scholarshipFinalistEssays={scholarshipFinalistEssays} />
+                <ScholarshipFinalistEssays title={title} scholarshipFinalistEssays={scholarshipFinalistEssays} isFiltered={!!search} />
                 }
                 <UserProfilesCards userProfiles={scholarshipFinalistUserProfiles} />
                 {!showEssaysFirst &&
-                <ScholarshipFinalistEssays title={title} scholarshipFinalistEssays={scholarshipFinalistEssays} />
+                <ScholarshipFinalistEssays title={title} scholarshipFinalistEssays={scholarshipFinalistEssays} isFiltered={!!search} />
                 }
 
             </div>
@@ -85,11 +85,25 @@ class ScholarshipFinalists extends React.Component {
     }
 }
 
-export function ScholarshipFinalistEssays({ title, scholarshipFinalistEssays }) {
+export function ScholarshipFinalistEssays({ title, scholarshipFinalistEssays, isFiltered }) {
+    let displayTitle = `${title}' Essays`
+    console.log({scholarshipFinalistEssays})
+    if (isFiltered && scholarshipFinalistEssays.length !== 0) {
+        // Get all the scholarship titles in a list
+        let scholarshipTitles = []
+        for (const essay of scholarshipFinalistEssays) {
+            console.log({essay})
+            if (!scholarshipTitles.includes(essay.scholarship.name)) {
+                scholarshipTitles.push(essay.scholarship.name);
+            }
+        }
+
+        displayTitle += ' for ' + joinListGrammatically(scholarshipTitles);
+    }
 
     return (
         <React.Fragment>
-            <h3 className="text-center">{title}' Essays</h3>
+            <h3 className="text-center">{displayTitle}</h3>
             <Row gutter={[{ xs: 8, sm: 16}, 16]}>
                 {scholarshipFinalistEssays.map(item => {
                     // set this so getItemType() in genericItemTransform() returns an essay
