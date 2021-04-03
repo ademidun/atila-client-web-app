@@ -459,7 +459,7 @@ class ScholarshipManage extends React.Component {
                                             onChange={this.updateEmail} rows={6} placeholder={"Email body..."}/>
                 <br />
                 <br />
-                <b>Which applications would you like to send this email to?</b>
+                <b>Which applications should receive this email?</b>
                 <br />
                 <Radio.Group
                     options={applicationOptions}
