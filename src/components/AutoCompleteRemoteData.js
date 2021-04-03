@@ -68,8 +68,6 @@ class AutoCompleteRemoteData extends React.Component {
 
   onSelect = (data, selectedObject) => {
 
-    console.log({data, selectedObject});
-
     const { onSelect, type } = this.props;
 
     if (type === "user") {

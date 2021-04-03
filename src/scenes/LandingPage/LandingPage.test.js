@@ -16,7 +16,6 @@ const store = mockStore(initialReduxState);
 
 jest.mock('../../services/ScholarshipsAPI');
 ScholarshipsAPI.getDueSoon.mockImplementation(() => {
-    console.log('getDueSoon.mockImplementation');
     return Promise.resolve({ data: { results: scholarshipsListMockData } } );
 });
 jest.mock('rc-scroll-anim/lib/ScrollParallax', () => () => 'ScrollParallaxMock');

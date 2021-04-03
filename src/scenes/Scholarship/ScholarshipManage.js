@@ -10,6 +10,7 @@ import {UserProfilePreview} from "../../components/ReferredByInput";
 import HelmetSeo, {defaultSeoContent} from '../../components/HelmetSeo';
 import ApplicationsAPI from "../../services/ApplicationsAPI";
 import { ApplicationsTable } from './ApplicationsTable';
+import AutoCompleteRemoteData from '../../components/AutoCompleteRemoteData';
 
 
 class AssignReviewerRadioSelect extends React.Component {
@@ -69,7 +70,7 @@ class ScholarshipManage extends React.Component {
             unsubmittedApplications: null,
             isLoadingApplications: false,
             responseMessage: null,
-            inviteCollaboratorEmail: '',
+            inviteCollaboratorUsername: '',
             // This is called email, but currently it is for inviting using usernames. This is because
             //  eventually we might switch to using emails.
             applicationTypeToEmail: 'all', // This is only for the modal to email applicants
@@ -212,15 +213,15 @@ class ScholarshipManage extends React.Component {
     };
 
     inviteCollaborator = () => {
-        const { scholarship, inviteCollaboratorEmail } = this.state;
+        const { scholarship, inviteCollaboratorUsername } = this.state;
         this.setState({isLoadingMessage: "Inviting collaborators..."});
         ScholarshipsAPI
-            .inviteCollaborator(scholarship.id, inviteCollaboratorEmail)
+            .inviteCollaborator(scholarship.id, inviteCollaboratorUsername)
             .then(res => {
                 // invites_sent is also in res.data
                 const {scholarship} =  res.data;
                 this.setState({scholarship});
-                this.setState({responseMessage: `${inviteCollaboratorEmail} has been sent an invite email.`})
+                this.setState({responseMessage: `${inviteCollaboratorUsername} has been sent an invite email.`})
             })
             .catch(err => {
                 console.log({err});
@@ -228,7 +229,7 @@ class ScholarshipManage extends React.Component {
                 if (response_message) {
                     this.setState({responseMessage: response_message});
                 } else {
-                    this.setState({responseMessage: `There was an error inviting ${inviteCollaboratorEmail}.\n\n Please message us using the chat icon in the bottom right of your screen.`})
+                    this.setState({responseMessage: `There was an error inviting ${inviteCollaboratorUsername}.\n\n Please message us using the chat icon in the bottom right of your screen.`})
                 }
             })
             .then(() => {
@@ -423,10 +424,10 @@ class ScholarshipManage extends React.Component {
         ];
 
         let inviteCollaboratorModalBody = (
-                <Input
-                    placeholder={"Collaborator's Atila username..."}
-                    onChange={(e)=>{this.setState({inviteCollaboratorEmail: e.target.value})}}
-                />
+
+            <AutoCompleteRemoteData placeholder={"Collaborator's username or name..."}
+                                    onSelect={(userProfile)=>{this.setState({inviteCollaboratorUsername: userProfile.username})}}
+                                    type="user" />
         )
         let isScholarshipOwner = userProfile.user === scholarship.owner
 
