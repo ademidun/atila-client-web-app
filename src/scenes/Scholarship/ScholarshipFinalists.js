@@ -109,12 +109,29 @@ class ScholarshipFinalists extends React.Component {
 export function ScholarshipFinalistEssays({ title, scholarshipFinalistEssays, isFiltered, scholarshipsData }) {
     let displayTitle = `${title}' Essays`
 
+    let essayContent;
     if (scholarshipFinalistEssays.length  === 0) {
-        return (
+        essayContent = (
             <React.Fragment>
                 <h3 className="text-center">No published essays to display</h3>
             </React.Fragment>
         )
+    } else {
+        essayContent = (<Row gutter={[{ xs: 8, sm: 16}, 16]}>
+            {scholarshipFinalistEssays.map(item => {
+                // set this so getItemType() in genericItemTransform() returns an essay
+                item.essay_source_url="";
+                return (
+                    // Use zoom:0.8 as a temporary workaround so that that ScholarshipFinalists doesn't
+                    // take up too much space.
+                    <Col xs={24} md={12} lg={8} style={{zoom:0.9}} key={item.slug}>
+                        <ContentCard key={item.slug}
+                                     content={genericItemTransform(item)}
+                                     customStyle={{height: "850px"}}
+                                     className="mb-3" />
+                    </Col>)
+            })}
+        </Row>)
     }
 
 
@@ -135,22 +152,7 @@ export function ScholarshipFinalistEssays({ title, scholarshipFinalistEssays, is
     return (
         <React.Fragment>
             <h3 className="text-center">{displayTitle}</h3>
-            <Row gutter={[{ xs: 8, sm: 16}, 16]}>
-                {scholarshipFinalistEssays.map(item => {
-                    // set this so getItemType() in genericItemTransform() returns an essay
-                    item.essay_source_url="";
-                    return (
-                        // Use zoom:0.8 as a temporary workaround so that that ScholarshipFinalists doesn't
-                        // take up too much space.
-                        <Col xs={24} md={12} lg={8} style={{zoom:0.9}} key={item.slug}>
-                            <ContentCard key={item.slug}
-                                         content={genericItemTransform(item)}
-                                         customStyle={{height: "850px"}}
-                                         className="mb-3" />
-                        </Col>)
-                })}
-
-            </Row>
+            {essayContent}
         </React.Fragment>
     )
 
