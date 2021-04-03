@@ -5,7 +5,7 @@ import {Row, Col, Tag} from "antd";
 import ContentCard from "../../components/ContentCard";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
-import {formatCurrency, genericItemTransform, joinListGrammatically} from "../../services/utils";
+import {formatCurrency, genericItemTransform} from "../../services/utils";
 import ApplicationsAPI from "../../services/ApplicationsAPI";
 const queryString = require('query-string');
 
