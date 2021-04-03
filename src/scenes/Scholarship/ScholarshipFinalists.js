@@ -19,8 +19,7 @@ class ScholarshipFinalists extends React.Component {
             scholarshipFinalistUserProfiles: [],
             isLoadingScholarshipFinalists: false,
             errorLoadingScholarshipFinalists: false,
-            scholarshipsData: [],
-            // If we are filtering by scholarship id, this var stores the scholarships' info.
+            scholarships: [], // If we are filtering by scholarship id, this var stores the scholarships' info.
             isFilteredByScholarshipID: false,
         }
     }
@@ -56,7 +55,7 @@ class ScholarshipFinalists extends React.Component {
                 this.setState({
                         scholarshipFinalistEssays: res.data.finalist_essays,
                         scholarshipFinalistUserProfiles: res.data.finalist_user_profiles,
-                        scholarshipsData: res.data.scholarships_data,
+                        scholarships: res.data.scholarships,
                 });
             });
 
@@ -72,7 +71,7 @@ class ScholarshipFinalists extends React.Component {
     render () {
 
         const { scholarshipFinalistEssays, scholarshipFinalistUserProfiles, isLoadingScholarshipFinalists,
-            scholarshipsData, isFilteredByScholarshipID  } = this.state;
+            scholarships, isFilteredByScholarshipID  } = this.state;
         const { className, title, showEssaysFirst } = this.props;
 
         if (isLoadingScholarshipFinalists) {
@@ -91,14 +90,14 @@ class ScholarshipFinalists extends React.Component {
                 <ScholarshipFinalistEssays title={title}
                                            scholarshipFinalistEssays={scholarshipFinalistEssays}
                                            isFiltered={isFilteredByScholarshipID}
-                                           scholarshipsData={scholarshipsData} />
+                                           scholarships={scholarships} />
                 }
                 <UserProfilesCards userProfiles={scholarshipFinalistUserProfiles} />
                 {!showEssaysFirst &&
                 <ScholarshipFinalistEssays title={title}
                                            scholarshipFinalistEssays={scholarshipFinalistEssays}
                                            isFiltered={isFilteredByScholarshipID}
-                                           scholarshipsData={scholarshipsData} />
+                                           scholarships={scholarships} />
                 }
 
             </div>
@@ -106,7 +105,7 @@ class ScholarshipFinalists extends React.Component {
     }
 }
 
-export function ScholarshipFinalistEssays({ title, scholarshipFinalistEssays, isFiltered, scholarshipsData }) {
+export function ScholarshipFinalistEssays({ title, scholarshipFinalistEssays, isFiltered, scholarships }) {
     let displayTitle = `${title}' Essays`
 
     let essayContent;
@@ -135,14 +134,14 @@ export function ScholarshipFinalistEssays({ title, scholarshipFinalistEssays, is
     }
 
 
-    if (isFiltered && scholarshipsData.length > 0) {
+    if (isFiltered && scholarships.length > 0) {
         // Get all the scholarship titles as link components
-        let scholarshipTitles = scholarshipsData.map((scholarship, idx) => (
+        let scholarshipTitles = scholarships.map((scholarship, idx) => (
             <>
                 <Link to={`/scholarship/${scholarship.slug}`}>
                     {scholarship.name}
                 </Link>
-                {idx !== scholarshipsData.length-1 && ', '} {/* Don't put a separator on final title */}
+                {idx !== scholarships.length-1 && ', '} {/* Don't put a separator on final title */}
             </>
         ))
 
