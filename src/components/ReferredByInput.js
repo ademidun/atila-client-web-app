@@ -87,7 +87,7 @@ class ReferredByInput extends React.Component {
 
   onSelect = (selectedUserProfile) => {
 
-    const { onSelect, loggedInUserProfile } = this.props;
+    const { onSelect, loggedInUserProfile, updateLoggedInUserProfile } = this.props;
 
     if (loggedInUserProfile && selectedUserProfile) {
 
@@ -96,7 +96,6 @@ class ReferredByInput extends React.Component {
         .patch({referred_by: selectedUserProfile.username}, loggedInUserProfile.user)
         .then(res => {
 
-            // TODO: userProfile refereed_by_detail is not being properly being updated in Redux state
             const  userProfile = {
                 ...loggedInUserProfile,
                 referred_by_detail: selectedUserProfile,
