@@ -11,6 +11,7 @@ import HelmetSeo, {defaultSeoContent} from '../../components/HelmetSeo';
 import ApplicationsAPI from "../../services/ApplicationsAPI";
 import { ApplicationsTable } from './ApplicationsTable';
 import AutoCompleteRemoteData from '../../components/AutoCompleteRemoteData';
+import { MinusCircleOutlined } from '@ant-design/icons';
 
 
 class AssignReviewerRadioSelect extends React.Component {
@@ -70,7 +71,7 @@ class ScholarshipManage extends React.Component {
             unsubmittedApplications: null,
             isLoadingApplications: false,
             responseMessage: null,
-            inviteCollaboratorUsername: '',
+            invitedCollaborator: null,
             // This is called email, but currently it is for inviting using usernames. This is because
             //  eventually we might switch to using emails.
             applicationTypeToEmail: 'all', // This is only for the modal to email applicants
@@ -213,15 +214,16 @@ class ScholarshipManage extends React.Component {
     };
 
     inviteCollaborator = () => {
-        const { scholarship, inviteCollaboratorUsername } = this.state;
+        const { scholarship, invitedCollaborator } = this.state;
         this.setState({isLoadingMessage: "Inviting collaborators..."});
         ScholarshipsAPI
-            .inviteCollaborator(scholarship.id, inviteCollaboratorUsername)
+            .inviteCollaborator(scholarship.id, invitedCollaborator.username)
             .then(res => {
                 // invites_sent is also in res.data
                 const {scholarship} =  res.data;
                 this.setState({scholarship});
-                this.setState({responseMessage: `${inviteCollaboratorUsername} has been sent an invite email.`})
+                this.setState({responseMessage: `${invitedCollaborator.username} has been sent an invite email.`});
+                this.setState({invitedCollaborator: null});
             })
             .catch(err => {
                 console.log({err});
@@ -229,7 +231,7 @@ class ScholarshipManage extends React.Component {
                 if (response_message) {
                     this.setState({responseMessage: response_message});
                 } else {
-                    this.setState({responseMessage: `There was an error inviting ${inviteCollaboratorUsername}.\n\n Please message us using the chat icon in the bottom right of your screen.`})
+                    this.setState({responseMessage: `There was an error inviting ${invitedCollaborator}.\n\n Please message us using the chat icon in the bottom right of your screen.`})
                 }
             })
             .then(() => {
@@ -372,7 +374,7 @@ class ScholarshipManage extends React.Component {
         const { userProfile } = this.props;
         const { scholarship, applications, isLoadingApplications,
             unsubmittedApplications, responseMessage, applicationTypeToEmail,
-             reviewersPerApplication, isLoadingMessage, emailSubject, emailBody } = this.state;
+             reviewersPerApplication, isLoadingMessage, emailSubject, emailBody, invitedCollaborator } = this.state;
 
         const { location: { pathname } } = this.props;
         const todayDate = new Date().toISOString();
@@ -424,10 +426,27 @@ class ScholarshipManage extends React.Component {
         ];
 
         let inviteCollaboratorModalBody = (
-
+            <>
             <AutoCompleteRemoteData placeholder={"Collaborator's username or name..."}
-                                    onSelect={(userProfile)=>{this.setState({inviteCollaboratorUsername: userProfile.username})}}
+                                    onSelect={(userProfile)=>{this.setState({invitedCollaborator: userProfile})}}
                                     type="user" />
+
+                {invitedCollaborator && 
+                <div className="my-2">
+                    Pending invite: <br/>
+                    <UserProfilePreview userProfile={invitedCollaborator} />
+                    
+                    <MinusCircleOutlined
+                        style={{
+                            fontSize: "30px",
+                        }}
+                        onClick={()=>{
+                            this.setState({invitedCollaborator: null})
+                        }}
+                    />
+                </div>
+                }
+            </>
         )
         let isScholarshipOwner = userProfile.user === scholarship.owner
 
