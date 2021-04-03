@@ -77,7 +77,7 @@ class ApplicationsAPI {
 
         const apiCompletionPromise = request({
             method: 'post',
-            data: {"scholarship_ids": scholarshipIDs},
+            data: {"scholarship_id": scholarshipIDs},
             url: `${ApplicationsAPI.applicationsApiUrl}/all-finalists/`
         });
 
