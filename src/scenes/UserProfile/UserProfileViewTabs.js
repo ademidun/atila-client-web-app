@@ -96,7 +96,7 @@ class UserProfileViewTabs extends React.Component {
                     </Tab>
                     }
                     {isProfileEditable &&
-                    <Tab eventKey='sponsored-scholarships' title='My Scholarships'>
+                    <Tab eventKey='manage-scholarships' title='Manage Scholarships'>
                         <UserProfileCreatedScholarships />
                     </Tab>
                     }

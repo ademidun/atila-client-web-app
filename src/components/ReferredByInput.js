@@ -2,14 +2,13 @@ import React from 'react';
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {updateLoggedInUserProfile} from "../redux/actions/user";
-import { AutoComplete, Alert } from 'antd';
+import { Alert } from 'antd';
 import { MinusCircleOutlined } from "@ant-design/icons";
 import SearchApi from '../services/SearchAPI';
-import { Spin } from 'antd';
-import UserProfileAPI from '../services/UserProfileAPI';
 import { getErrorMessage } from '../services/utils';
 import { Link } from 'react-router-dom';
-const { Option } = AutoComplete;
+import AutoCompleteRemoteData from './AutoCompleteRemoteData';
+import UserProfileAPI from '../services/UserProfileAPI';
 
 export const UserProfilePreview  = ({userProfile, linkProfile=false}) => {
     
@@ -86,19 +85,23 @@ class ReferredByInput extends React.Component {
     })
   }
 
-  onSelect = (data, selectedUserProfile) => {
+  onSelect = (selectedUserProfile) => {
 
-    const { onSelect, loggedInUserProfile } = this.props;
+    const { onSelect, loggedInUserProfile, updateLoggedInUserProfile } = this.props;
 
-    if (loggedInUserProfile && selectedUserProfile.userprofile) {
+    if (loggedInUserProfile && selectedUserProfile) {
 
         this.setState({isLoading: true, referralError: null});
         UserProfileAPI
-        .patch({referred_by: selectedUserProfile.userprofile.username}, loggedInUserProfile.user)
+        .patch({referred_by: selectedUserProfile.username}, loggedInUserProfile.user)
         .then(res => {
-            const { data: userProfile } = res;
+
+            const  userProfile = {
+                ...loggedInUserProfile,
+                referred_by_detail: selectedUserProfile,
+            }
             updateLoggedInUserProfile(userProfile);
-            this.setState({referredByUserProfile: selectedUserProfile.userprofile});
+            this.setState({referredByUserProfile: selectedUserProfile});
         })
         .catch(err => {
             this.setState({referralError: getErrorMessage(err)});
@@ -107,12 +110,11 @@ class ReferredByInput extends React.Component {
             this.setState({isLoading: false});
         })
     } else {
-        this.setState({referredByUserProfile: selectedUserProfile.userprofile});
+        this.setState({referredByUserProfile: selectedUserProfile});
     }
-    
 
-    if (onSelect && selectedUserProfile.userprofile) {
-        onSelect(selectedUserProfile.userprofile);
+    if (onSelect && selectedUserProfile) {
+        onSelect(selectedUserProfile);
     }
   };
 
@@ -128,8 +130,7 @@ class ReferredByInput extends React.Component {
 
   render() {
 
-    const { referralOptions, referredBySearchValue, referredByUserProfile,
-         isLoading, referralError } = this.state;
+    const { referredBySearchValue, referredByUserProfile, referralError } = this.state;
 
     const { loggedInUserProfile } = this.props;
 
@@ -148,47 +149,17 @@ class ReferredByInput extends React.Component {
             || (loggedInUserProfile.created_scholarships_count && loggedInUserProfile.created_scholarships_count > 0));
     }
 
-    let notFoundContent;
-
-    if (!referredBySearchValue || referredBySearchValue.length < 3) {
-        notFoundContent = "Please enter at least 3 characters";
-    } else if (isLoading) {
-        notFoundContent = (
-            <div>
-                Loading <Spin />
-            </div>
-        )
-    } else {
-        notFoundContent = "No user found"
-    }
-
     return (
       <div>
         <div>
             <label>If they have an Atila account, you can enter their name or username here.</label> <br />
-                <AutoComplete
-                style={{
-                    width: "100%",
-                }}
-                disabled={!!referredByUserProfile||userProfileAlreadyActive}
-                value={referredBySearchValue}
-                defaultOpen={this.props.username}
-                onSelect={this.onSelect}
-                notFoundContent={notFoundContent}
-                onSearch={this.onSearch}
-                onChange={this.onChange}
-                placeholder="Enter name or username of person who referred you"
-                >
-                    {referralOptions.map((userProfile) => (
-                        <Option key={userProfile.username || userProfile } 
-                                value={userProfile.username || userProfile}
-                                // custom userprofile prop must be all lowercase
-                                userprofile={userProfile}>
-                            <UserProfilePreview userProfile={userProfile} />
-                        </Option>
-                    ))}
-            </AutoComplete>
-        </div>
+            <AutoCompleteRemoteData onSelect={this.onSelect} 
+                                    searchText={referredBySearchValue}
+                                    placeholder="Enter name or username of person who referred you" 
+                                    disabled={!!referredByUserProfile||userProfileAlreadyActive}
+                                    type="user" />
+                                    
+                                    </div>
       {userProfileAlreadyActive && 
       <div className="text-muted">
           {loggedInUserProfile.submitted_applications_count > 0 && <p>Referral cannot be changed after an application has been submitted.</p>}
