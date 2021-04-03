@@ -21,6 +21,7 @@ class ScholarshipFinalists extends React.Component {
             errorLoadingScholarshipFinalists: false,
             scholarshipsData: [],
             // If we are filtering by scholarship id, this var stores the scholarships' info.
+            isFilteredByScholarshipID: false,
         }
     }
     componentDidMount() {
@@ -29,10 +30,20 @@ class ScholarshipFinalists extends React.Component {
         this.setState({ isLoadingScholarshipFinalists: true });
 
         let scholarshipFinalistsPromise;
+        let isFilteredById = false;
 
+        let parsed;
         if (search) {
-            const parsed = queryString.parse(search);
-            const parsedScholarshipIds = parsed.scholarship_id?.split(",")
+            parsed = queryString.parse(search);
+            if (parsed.scholarship_id) {
+                isFilteredById = true;
+            }
+        }
+
+        this.setState({ isFilteredByScholarshipID: isFilteredById })
+
+        if (isFilteredById) {
+            const parsedScholarshipIds = parsed.scholarship_id.split(",")
             scholarshipFinalistsPromise = ApplicationsAPI.filteredFinalists(parsedScholarshipIds)
         } else if (allFinalists) {
             scholarshipFinalistsPromise = ApplicationsAPI.allFinalists();
@@ -60,8 +71,9 @@ class ScholarshipFinalists extends React.Component {
 
     render () {
 
-        const { scholarshipFinalistEssays, scholarshipFinalistUserProfiles, isLoadingScholarshipFinalists, scholarshipsData  } = this.state;
-        const { className, title, showEssaysFirst, search } = this.props;
+        const { scholarshipFinalistEssays, scholarshipFinalistUserProfiles, isLoadingScholarshipFinalists,
+            scholarshipsData, isFilteredByScholarshipID  } = this.state;
+        const { className, title, showEssaysFirst } = this.props;
 
         if (isLoadingScholarshipFinalists) {
             return (
@@ -78,14 +90,14 @@ class ScholarshipFinalists extends React.Component {
                 {showEssaysFirst &&
                 <ScholarshipFinalistEssays title={title}
                                            scholarshipFinalistEssays={scholarshipFinalistEssays}
-                                           isFiltered={!!search}
+                                           isFiltered={isFilteredByScholarshipID}
                                            scholarshipsData={scholarshipsData} />
                 }
                 <UserProfilesCards userProfiles={scholarshipFinalistUserProfiles} />
                 {!showEssaysFirst &&
                 <ScholarshipFinalistEssays title={title}
                                            scholarshipFinalistEssays={scholarshipFinalistEssays}
-                                           isFiltered={!!search}
+                                           isFiltered={isFilteredByScholarshipID}
                                            scholarshipsData={scholarshipsData} />
                 }
 
@@ -107,7 +119,7 @@ export function ScholarshipFinalistEssays({ title, scholarshipFinalistEssays, is
 
 
     if (isFiltered) {
-        // Get all the scholarship titles in a list
+        // Get all the scholarship titles as link components
         let scholarshipTitles = scholarshipsData.map((scholarship, idx) => (
             <>
                 <Link to={`/scholarship/${scholarship.slug}`}>
