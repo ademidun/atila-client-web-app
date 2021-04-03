@@ -135,7 +135,7 @@ export function ScholarshipFinalistEssays({ title, scholarshipFinalistEssays, is
     }
 
 
-    if (isFiltered) {
+    if (isFiltered && scholarshipsData.length > 0) {
         // Get all the scholarship titles as link components
         let scholarshipTitles = scholarshipsData.map((scholarship, idx) => (
             <>
