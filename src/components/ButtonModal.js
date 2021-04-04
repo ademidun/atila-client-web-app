@@ -1,7 +1,6 @@
 import React from 'react';
-
 import {Button, Modal, Popconfirm} from "antd";
-
+import PropTypes from "prop-types";
 
 class ButtonModal extends React.Component {
     constructor(props) {
@@ -33,7 +32,7 @@ class ButtonModal extends React.Component {
     }
 
     render() {
-        const { showModalButtonSize, showModalText, modalTitle, modalBody, submitText,
+        const { showModalButtonSize, showModalButtonDanger, showModalButtonType, showModalText, modalTitle, modalBody, submitText,
              addPopConfirm, popConfirmText, disabled } = this.props;
         const { isModalVisible } = this.state;
 
@@ -64,9 +63,12 @@ class ButtonModal extends React.Component {
 
         return(
             <div>
-                <Button type="primary" 
-                size={showModalButtonSize} onClick={this.showModal}
-                disabled={disabled}>
+                <Button
+                    type={showModalButtonType}
+                    danger={showModalButtonDanger}
+                    size={showModalButtonSize} onClick={this.showModal}
+                    disabled={disabled}
+                >
                     {showModalText}
                 </Button>
                 <Modal
@@ -80,6 +82,36 @@ class ButtonModal extends React.Component {
             </div>
         )
     }
+}
+
+ButtonModal.defaultProps = {
+    showModalButtonType: "primary",
+    showModalButtonSize: "medium",
+    showModalButtonDanger: false,
+    showModalText: "Show Modal",
+    modalTitle: "Modal Title",
+    modalBody: "This is a modal",
+    submitText: "Close Modal",
+    addPopConfirm: false,
+    popConfirmText: "",
+    disabled: false,
+    onShowModal: null,
+    onSubmit: null,
+}
+
+ButtonModal.propTypes = {
+    showModalButtonType: PropTypes.string,
+    showModalButtonSize: PropTypes.string,
+    showModalButtonDanger: PropTypes.bool,
+    showModalText: PropTypes.string,
+    modalTitle: PropTypes.string,
+    modalBody: PropTypes.node,
+    submitText: PropTypes.string,
+    addPopConfirm: PropTypes.bool,
+    popConfirmText: PropTypes.string,
+    disabled: PropTypes.bool,
+    onShowModal: PropTypes.func,
+    onSubmit: PropTypes.func,
 }
 
 export default ButtonModal;

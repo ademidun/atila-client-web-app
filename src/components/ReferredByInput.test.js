@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 import { initialReduxState, initialReduxStateLoggedIn } from '../models/Constants';
 import { MemoryRouter } from 'react-router-dom';
 import ReferredByInput from './ReferredByInput';
+import {Provider} from "react-redux";
 
 configure({ adapter: new Adapter() });
 const mockStore = configureStore();
@@ -19,10 +20,10 @@ describe('<ReferredByInput />', () => {
         const wrapper = shallow(
 
             <MemoryRouter>
-            <ReferredByInput 
-                store={store}
-                location={{ pathname: '/' }}/>
-
+                <Provider store={store}>
+                    <ReferredByInput 
+                        location={{ pathname: '/' }}/>
+                </Provider>
             </MemoryRouter>
             );
         expect(wrapper.html()).toBeTruthy();
@@ -33,10 +34,11 @@ describe('<ReferredByInput />', () => {
         const wrapper = shallow(
 
             <MemoryRouter>
-            <ReferredByInput 
-                store={loggedInStore}
-                location={{ pathname: '/' }}/>
-
+                <Provider store={store}>
+                <ReferredByInput 
+                    store={loggedInStore}
+                    location={{ pathname: '/' }}/>
+                    </Provider>
             </MemoryRouter>
             );
         expect(wrapper.html()).toBeTruthy();
