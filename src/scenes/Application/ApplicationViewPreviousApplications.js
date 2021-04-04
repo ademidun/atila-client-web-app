@@ -92,8 +92,8 @@ class ApplicationViewPreviousApplications extends React.Component {
 
                 <Drawer
                     title={<h2>Previous Applications</h2>}
-                    width={520}
-                    closable={false}
+                    width={Math.min(520, window.innerWidth)}
+                    closable={true}
                     onClose={this.onDrawerClose}
                     visible={isDrawerVisible}
                 >
