@@ -73,6 +73,17 @@ class ApplicationsAPI {
         return apiCompletionPromise;
     };
 
+    static filteredFinalists = (scholarshipIDs) => {
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: {"scholarship_id": scholarshipIDs},
+            url: `${ApplicationsAPI.applicationsApiUrl}/all-finalists/`
+        });
+
+        return apiCompletionPromise
+    }
+
     static getSlug = (slug) => {
 
         const apiCompletionPromise = request({

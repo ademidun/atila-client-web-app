@@ -553,4 +553,26 @@ export function stripHtml(html) {
     let tmp = document.createElement("DIV");
     tmp.innerHTML = html;
     return tmp.textContent || tmp.innerText || "";
- }
+}
+
+export function joinListGrammatically(lst) {
+    if (!lst) {
+        return "";
+    }
+
+    if (lst.length === 0) {
+        return "";
+    }
+
+    if (lst.length === 1) {
+        return  lst[0];
+    }
+
+    if (lst.length === 2) {
+        return lst.join(" and ");
+    }
+
+    const seperator = ", "
+    const commaSeperatedList = lst.slice(0, lst.length-2);
+    return commaSeperatedList.join(seperator) + seperator + lst[lst.length-2] + ', and ' + lst[lst.length -1]
+}
