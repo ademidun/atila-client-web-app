@@ -148,6 +148,8 @@ function copyToClipboard(str) {
     document.addEventListener("copy", listener);
     document.execCommand("copy");
     document.removeEventListener("copy", listener);
+
+    message.success("Copied!")
 }
 
 ApplicationViewPreviousApplications.propTypes = {
