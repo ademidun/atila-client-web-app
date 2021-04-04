@@ -137,18 +137,17 @@ function ViewApplicationResponses ({application}) {
     })
 }
 
-// see https://stackoverflow.com/a/25275151/14874841
-// Copy HTML as text (without HTML tags)
-function copyToClipboard(html) {
-    let doc = new DOMParser().parseFromString(html, 'text/html');
-    let text = doc.body.textContent;
-    return executeCopy(text);
-}
-
-// Copy text as text
-function executeCopy(text) {
-    navigator.clipboard.writeText(text)
-    message.success("Copied!")
+// see https://stackoverflow.com/a/50067769/14874841
+// Copies formatted html to clipboard
+function copyToClipboard(str) {
+    function listener(e) {
+        e.clipboardData.setData("text/html", str);
+        e.clipboardData.setData("text/plain", str);
+        e.preventDefault();
+    }
+    document.addEventListener("copy", listener);
+    document.execCommand("copy");
+    document.removeEventListener("copy", listener);
 }
 
 ApplicationViewPreviousApplications.propTypes = {
