@@ -17,10 +17,14 @@ class ReportIncorrectInfo extends React.Component {
     constructor(props) {
         super(props);
 
+        const { scholarship } = this.props;
+        const defaultDeadline = scholarship.deadline.substring(0,10);
+        // Since we're using an input date component, we only want the first 10 letters (ie yyyy-mm-dd).
+
         this.state = {
             infoOptionsLabel: 'wrong_deadline',
             additionalInfo: "",
-            updatedDeadline: null,
+            updatedDeadline: defaultDeadline,
         };
     }
 
@@ -85,7 +89,7 @@ class ReportIncorrectInfo extends React.Component {
                 <input placeholder={"test"}
                        className="col-12 form-control floating__input"
                        name={"date"}
-                       type={"datetime-local"}
+                       type={"date"}
                        onChange={this.onUpdatedDeadlineChange}
                        value={updatedDeadline}
                 />
