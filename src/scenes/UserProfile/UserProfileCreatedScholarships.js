@@ -81,15 +81,29 @@ function CreatedScholarshipsTable({ createdScholarships }){
 }
 
 const renderManageButton = (id, scholarship) => {
-    if (!scholarship.is_payment_accepted){
-        return (
-            <Link to={`/scholarship/${id}/manage`} className="btn btn-outline-primary">
-                Manage
+
+    let applicationsManagement = null;
+    if (scholarship.is_atila_direct_application){
+        applicationsManagement = (
+            <Link to={`/scholarship/${id}/manage`} className="btn btn-link">
+                Manage Applications
             </Link>
         )
-    } else {
-        return ('')
     }
+
+    return (
+        <div>
+        <Link to={`/scholarship/edit/${scholarship.slug}`} className="btn btn-link">
+            Edit Scholarship
+        </Link>
+            {applicationsManagement && 
+            <>
+            |
+            {applicationsManagement}
+            </>
+            }
+        </div>
+    )
 }
 
 
