@@ -26,23 +26,27 @@ class ApplicationViewPreviousApplications extends React.Component {
 
     getPreviousApplications() {
         const {user : userId}  = this.props.userProfile;
-        const { currentApplicationID } = this.props;
+        const { currentApplicationID, applications } = this.props;
 
-        this.setState({loading: "Loading previous applications"});
-        UserProfileAPI.getUserContent(userId, 'applications')
-            .then(res => {
-                let applications =  res.data.applications;
-                if (currentApplicationID) {
-                    function excludeDuplicate(application) {
-                        return application.id !== currentApplicationID
+        if (applications) {
+            this.setState({applications});
+        } else {
+            this.setState({loading: "Loading previous applications"});
+            UserProfileAPI.getUserContent(userId, 'applications')
+                .then(res => {
+                    let applications =  res.data.applications;
+                    if (currentApplicationID) {
+                        function excludeDuplicate(application) {
+                            return application.id !== currentApplicationID
+                        }
+                        applications = applications.filter(excludeDuplicate)
                     }
-                    applications = applications.filter(excludeDuplicate)
-                }
-                this.setState({applications});
-            })
-            .finally(() => {
-                this.setState({loading: null});
-            });
+                    this.setState({applications});
+                })
+                .finally(() => {
+                    this.setState({loading: null});
+                });
+        }
     }
 
     showDrawer = () => {
@@ -149,6 +153,7 @@ function executeCopy(text) {
 
 ApplicationViewPreviousApplications.propTypes = {
     currentApplicationID: PropTypes.string,
+    applications: PropTypes.array, // If previous applications have already been fetched you can pass them in as a prop.
     userProfile: UserProfilePropType.isRequired,
 }
 

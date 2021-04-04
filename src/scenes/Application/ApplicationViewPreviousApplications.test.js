@@ -15,6 +15,18 @@ describe('<ApplicationViewPreviousApplications />', () => {
                 userProfile={UserProfileTest1}/>
         );
         expect(wrapper.html()).toBeTruthy();
+        expect(wrapper.html()).toContain("View Previous Applications");
+    });
+
+    it('renders with no previous applications', () => {
+
+        const wrapper = shallow(
+            <ApplicationViewPreviousApplications
+                userProfile={UserProfileTest1}
+                applications={[]}
+            />
+        );
+        expect(wrapper.html()).toBeTruthy();
     });
 
 });
