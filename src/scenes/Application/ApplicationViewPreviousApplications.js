@@ -5,7 +5,6 @@ import Loading from "../../components/Loading";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import {UserProfilePropType} from "../../models/UserProfile";
-import ButtonModal from "../../components/ButtonModal";
 
 const { Panel } = Collapse;
 
