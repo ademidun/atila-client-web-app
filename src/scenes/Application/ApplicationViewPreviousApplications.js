@@ -143,7 +143,7 @@ class ViewQuestion extends React.Component {
         const response = questionDict.response;
 
         const previewResponseLength = 300;
-        let readMoreText = <Button type={"link"} onClick={this.onReadMoreClick}>...Read More</Button>
+        const readMoreText = <Button type={"link"} onClick={this.onReadMoreClick}>...Read More</Button>
 
         const copyToClipBoardButton = (
             <Button onClick={() => {
