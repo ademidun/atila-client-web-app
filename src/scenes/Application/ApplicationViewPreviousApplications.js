@@ -60,6 +60,7 @@ class ApplicationViewPreviousApplications extends React.Component {
     render() {
         const { applications, loading, isDrawerVisible } = this.state;
 
+        const drawerWidth = 520;
         let drawerContent;
 
         if (loading || !applications) {
@@ -96,7 +97,7 @@ class ApplicationViewPreviousApplications extends React.Component {
 
                 <Drawer
                     title={<h2>Previous Applications</h2>}
-                    width={Math.min(520, window.innerWidth)}
+                    width={Math.min(drawerWidth, window.innerWidth)}
                     closable={true}
                     onClose={this.onDrawerClose}
                     visible={isDrawerVisible}
@@ -111,31 +112,92 @@ class ApplicationViewPreviousApplications extends React.Component {
 function ViewApplicationResponses ({application}) {
     let responses = application.scholarship_responses;
 
-    return Object.keys(responses).map(key => {
-        const question = responses[key].question;
-        const type = responses[key].type;
-        const response = responses[key].response;
+    return Object.keys(responses).map(key => (
+            <div key={key}>
+                <ViewQuestion questionDict={responses[key]} />
+            </div>
+    ))
+}
+
+// Component to view a question with the read more option
+class ViewQuestion extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+          readMore: false,
+        };
+    }
+
+    onReadMoreClick = () => {
+        this.setState({readMore: true});
+    }
+
+    render() {
+        const { readMore } = this.state;
+        const { questionDict } = this.props;
+
+        const question = questionDict.question;
+        const type = questionDict.type;
+        const response = questionDict.response;
+
+        const previewResponseLength = 300;
+        const readMoreText = <p onClick={this.onReadMoreClick}>...Read More</p>
+
+        const copyToClipBoardButton = (
+            <Button onClick={() => {
+                copyToClipboard(response)
+            }}>Copy To Clipboard</Button>
+        )
+
+        let viewResponse;
+
+        switch (type) {
+            case "long_answer":
+                if (response.length > previewResponseLength && !readMore) {
+                    const previewText = response.substring(0, previewResponseLength);
+                    viewResponse = (<>
+                            <div className="my-1" dangerouslySetInnerHTML={{__html: previewText}}/>
+                            {readMoreText}
+                        </>);
+                } else {
+                    viewResponse = <div className="my-1" dangerouslySetInnerHTML={{__html: response}}/>
+                }
+                break;
+
+            case "checkbox":
+                if (response) {
+                    viewResponse = "Yes";
+                } else {
+                    viewResponse = "No";
+                }
+                break;
+
+            default:
+                if (response.length > previewResponseLength && !readMore) {
+                    const previewText = response.substring(0, previewResponseLength);
+                    viewResponse = <>{previewText}{readMoreText}</>
+                } else {
+                    viewResponse = response;
+                }
+                break;
+        }
 
         return (
-            <div key={key}>
+            <>
                 <b>{question}</b>
                 <br/>
-                {type === "long_answer" ?
-                    <div className="my-1" dangerouslySetInnerHTML={{__html: response}}/>
-                    : type === "checkbox" ?
-                        response ? "Yes" : "No"
-                        : response}
+                {viewResponse}
                 <br/>
-                {type.includes("answer") &&
-                <Button onClick={() => {
-                    copyToClipboard(response)
-                }}>Copy To Clipboard</Button>}
+                {type.includes("answer") && copyToClipBoardButton}
                 <br/>
                 <br/>
-            </div>
+            </>
         )
-    })
+    }
 }
+
+
 
 // see https://stackoverflow.com/a/50067769/14874841
 // Copies formatted html to clipboard
