@@ -25,12 +25,12 @@ class ApplicationViewPreviousApplications extends React.Component {
     }
 
     getPreviousApplications() {
-        const {user : userId}  = this.props.userProfile;
-        const { currentApplicationID, applications } = this.props;
+        const { applications } = this.props;
 
         if (applications) {
             this.setState({applications});
         } else {
+            const {currentApplicationID, user : userId}  = this.props.userProfile;
             this.setState({loading: "Loading previous applications"});
             UserProfileAPI.getUserContent(userId, 'applications')
                 .then(res => {
@@ -155,7 +155,7 @@ function copyToClipboard(str) {
 ApplicationViewPreviousApplications.propTypes = {
     currentApplicationID: PropTypes.string,
     applications: PropTypes.array, // If previous applications have already been fetched you can pass them in as a prop.
-    userProfile: UserProfilePropType.isRequired,
+    userProfile: UserProfilePropType, // Required if fetching previous applications.
 }
 
 export default ApplicationViewPreviousApplications
