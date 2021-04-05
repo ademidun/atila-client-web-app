@@ -5,6 +5,7 @@ import Loading from "../../components/Loading";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import {UserProfilePropType} from "../../models/UserProfile";
+import ButtonModal from "../../components/ButtonModal";
 
 const { Panel } = Collapse;
 
@@ -125,7 +126,7 @@ class ViewQuestion extends React.Component {
         super(props);
 
         this.state = {
-          readMore: false,
+            readMore: false,
         };
     }
 
@@ -142,7 +143,7 @@ class ViewQuestion extends React.Component {
         const response = questionDict.response;
 
         const previewResponseLength = 300;
-        const readMoreText = <p onClick={this.onReadMoreClick}>...Read More</p>
+        let readMoreText = <Button type={"link"} onClick={this.onReadMoreClick}>...Read More</Button>
 
         const copyToClipBoardButton = (
             <Button onClick={() => {
