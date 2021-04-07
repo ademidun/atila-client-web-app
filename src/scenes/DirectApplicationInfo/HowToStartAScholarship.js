@@ -6,6 +6,9 @@ import {howItWorksSponsorItems} from "../LandingPage/HowItWorks";
 import {createTableOfContents, scrollToElement} from "../../services/utils";
 import LandingPageLiveDemo from "../LandingPage/LandingPageLiveDemo";
 import InformationWithImage from '../../components/InformationWithImage';
+import UtilsAPI from '../../services/UtilsAPI';
+import Loading from '../../components/Loading';
+import { NotionRenderer } from "react-notion";
 
 export const howToStartAScholarshipInformationItems = [
     {
@@ -97,6 +100,8 @@ export const howToStartAScholarshipInformationItems = [
 
 ];
 
+// https://www.notion.so/How-to-Start-a-Scholarship-on-Atila-e412e194b70b46698133927e760dd294
+export const HOW_TO_START_A_SCHOLARSHIP_NOTION_PAGE_ID = "e412e194b70b46698133927e760dd294";
 
 
 export const startAScholarshipFeatures = [
@@ -115,22 +120,51 @@ export const startAScholarshipFeatures = [
 
 class HowToStartAScholarship extends React.Component {
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            loading: false,
+            notionPagedata: null,
+        }
+
+    }
     componentDidMount() {
 
-        createTableOfContents(".how-to-start-scholarship-questions");
+        this.loadNotionPage();
+    }
 
-        const { location } = this.props;
+    loadNotionPage() {
+        this.setState({loading: "Loading how to start a scholarship information"});
+        UtilsAPI
+        .loadNotionContent(HOW_TO_START_A_SCHOLARSHIP_NOTION_PAGE_ID)
+        .then(res => {
+            console.log({res});
+            this.setState({notionPagedata: res.data});
 
-        if (location && location.hash) {
-            // Pause for 300 milliseconds before scrolling to the hash element, without this setTimeout
-            // the element kept scrolling back to the top of the page.
-            setTimeout(() => {
-                scrollToElement(location.hash);
-            }, 300);
-        }
+
+            const { location } = this.props;
+
+            if (location && location.hash) {
+                createTableOfContents(".how-to-start-scholarship-questions");
+                // Pause for 300 milliseconds before scrolling to the hash element, without this setTimeout
+                // the element kept scrolling back to the top of the page.
+                setTimeout(() => {
+                    scrollToElement(location.hash);
+                }, 300);
+            }
+        })
+        .catch(err => {
+            console.log({err})
+        })
+        .finally( () => {
+            this.setState({loading: false});
+        })
     }
 
     render() {
+        const { loading, notionPagedata } = this.state;
+
         const presentationDescription = 'Easily start a scholarship with Atila. Enter scholarship details. Fund your scholarship. Pick a winner.';
         const seoContent = {
             title: 'How to Start a Scholarship',
@@ -158,29 +192,20 @@ class HowToStartAScholarship extends React.Component {
         return (
             <div className="HowToStartAScholarship">
                 <HelmetSeo content={seoContent} />
+                {loading && <Loading title={loading} /> }
                 <h1 className="col-sm-12 text-center">
                     How to Start a Scholarship
                 </h1>
                 <BackTop/>
+
                 <div className="container mt-5">
                     <div className="card shadow p-3 how-to-start-scholarship-questions">
-                        {ScholarshipCTA}
-                        <LandingPageLiveDemo />
-                        <hr/>
-                        <div>
-                            {howToStartAScholarshipInformationItems.map(item => (
-                                <InformationWithImage key={item.title} item={item} />
-                            ))}
+                        
+                        {notionPagedata && 
+                        <div style={{ maxWidth: 768 }}>
+                            <NotionRenderer blockMap={notionPagedata} />
                         </div>
-                        <hr/>
-                        <h1 className="col-sm-12 text-center">
-                            Features
-                        </h1>
-                        <div>
-                            {startAScholarshipFeatures.map(item => (
-                                <InformationWithImage key={item.title} item={item} />
-                            ))}
-                        </div>
+                        }
                     </div>
 
                     {ScholarshipCTA}
