@@ -32,6 +32,16 @@ class UtilsAPI {
             });
     };
 
+    static loadNotionContent = (pageId) => {
+
+        const apiCompletionPromise = request({
+            method: 'GET',
+            url: `https://notion-api.splitbee.io/v1/page/${pageId}`,
+        });
+
+        return apiCompletionPromise;
+    };
+
     static sendEbookPreviewEmail = (formData) => {
 
         const apiCompletionPromise = request({

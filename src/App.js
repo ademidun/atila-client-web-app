@@ -8,6 +8,8 @@ import Footer from "./components/Footer/Footer";
 import Loading from "./components/Loading";
 
 import { ToastContainer } from "react-toastify";
+import "react-notion/src/styles.css";
+import "prismjs/themes/prism-tomorrow.css";
 import "react-toastify/dist/ReactToastify.css";
 import Navbar from "./components/Navbar/Navbar";
 import GoogleAnalyticsTracker from "./services/GoogleAnalyticsTracker";
