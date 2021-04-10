@@ -241,11 +241,14 @@ export class ApplicationsTable extends  React.Component {
         }
     
         return (<>
-            <Button
-                onClick={() => this.setShowScores(!showScores)}
-                className="mb-3">
-                {showScores ? "Hide " : "Show "} Scores
-        </Button>
+            <Popconfirm onConfirm={() => this.setShowScores(!showScores)}
+                        title="Are you sure? You will be able to see the scores of each application."
+                        placement="right">
+                <Button
+                    className="mb-3">
+                    {showScores ? "Hide " : "Show "} Scores...
+                </Button>
+            </Popconfirm>
         <ApplicationsSearch applications={allApplications} updateSearch={(filtered, searchTerm) => this.filterApplications(filtered, searchTerm)} />
             <CSVLink data={applicationsAsCSV}
                 filename={`${slugify(scholarship.name)}-applications.csv`}
