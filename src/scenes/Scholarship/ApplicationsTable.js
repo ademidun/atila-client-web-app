@@ -44,6 +44,12 @@ export class ApplicationsTable extends  React.Component {
         this.setState({showScores});
     }
 
+    setButtonShowScores(showScores) {
+        if (!showScores) {
+            this.setState({showScores});
+        }
+    }
+
     filterApplications(filteredApplications, searchTerm){
         this.setState({filteredApplications, searchTerm});
     }
@@ -242,9 +248,11 @@ export class ApplicationsTable extends  React.Component {
     
         return (<>
             <Popconfirm onConfirm={() => this.setShowScores(!showScores)}
+                        disabled={showScores}
                         title="Are you sure? You will be able to see the scores of each application."
                         placement="right">
                 <Button
+                    onClick={() => this.setButtonShowScores(!showScores)}
                     className="mb-3">
                     {showScores ? "Hide " : "Show "} Scores...
                 </Button>
