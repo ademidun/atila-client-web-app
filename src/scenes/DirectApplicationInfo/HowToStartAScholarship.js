@@ -4,9 +4,10 @@ import { BackTop, Button } from "antd";
 import HelmetSeo from "../../components/HelmetSeo";
 import {howItWorksSponsorItems} from "../LandingPage/HowItWorks";
 import {createTableOfContents, scrollToElement} from "../../services/utils";
-import UtilsAPI from '../../services/UtilsAPI';
+// import UtilsAPI from '../../services/UtilsAPI';
 import Loading from '../../components/Loading';
 import { NotionRenderer } from "react-notion";
+import response from "./notionStartScholarshipsData.json";
 
 export const howToStartAScholarshipInformationItems = [
     {
@@ -133,13 +134,9 @@ class HowToStartAScholarship extends React.Component {
     }
 
     loadNotionPage() {
-
         const { location } = this.props;
-        this.setState({loading: "Loading how to start a scholarship information"});
-        UtilsAPI
-        .loadNotionContent(HOW_TO_START_A_SCHOLARSHIP_NOTION_PAGE_ID)
-        .then(res => {
-            this.setState({notionPagedata: res.data}, () => {
+
+        this.setState({notionPagedata: response}, () => {
 
             createTableOfContents(".how-to-start-scholarship-questions");
 
@@ -151,13 +148,30 @@ class HowToStartAScholarship extends React.Component {
                 }, 500);
             }
             });
-        })
-        .catch(err => {
-            console.log({err})
-        })
-        .finally( () => {
-            this.setState({loading: false});
-        })
+        // const { location } = this.props;
+        // this.setState({loading: "Loading how to start a scholarship information"});
+        // UtilsAPI
+        // .loadNotionContent(HOW_TO_START_A_SCHOLARSHIP_NOTION_PAGE_ID)
+        // .then(res => {
+        //     this.setState({notionPagedata: res.data}, () => {
+
+        //     createTableOfContents(".how-to-start-scholarship-questions");
+
+        //     if (location && location.hash) {
+        //         // Pause for 300 milliseconds before scrolling to the hash element, without this setTimeout
+        //         // the element kept scrolling back to the top of the page.
+        //         setTimeout(() => {
+        //             scrollToElement(location.hash);
+        //         }, 500);
+        //     }
+        //     });
+        // })
+        // .catch(err => {
+        //     console.log({err})
+        // })
+        // .finally( () => {
+        //     this.setState({loading: false});
+        // })
     }
 
     render() {
