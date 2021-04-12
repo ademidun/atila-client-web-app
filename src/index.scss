@@ -148,7 +148,7 @@ label {
 .btn-text {
   background-color: transparent;
   border: 1px solid transparent;
-  hover: #ffffff;
+  // hover: #ffffff;
 }
 
 .content-detail {
@@ -255,4 +255,11 @@ label {
 
 .ant-select-multiple .ant-select-selection-item {
   height: auto;
+}
+
+
+NOTION STYLES
+
+.notion-h1 {
+  text-align: left;
 }
