@@ -92,15 +92,12 @@ function TermsConditions() {
                     contact us via any of the ways described in the Footer of our home page.</p>
 
                 <p>Thank you for choosing Atila!</p>
-            </div>
-            <div className="container m-3">
-                <div className="card p-3">
-                    <h1>Credits</h1>
-                    <h3>Images</h3>
-                    <p><a href="https://unsplash.com/photos/uhnbTZC7N9k">Photo</a> by <a href="https://unsplash.com/@zoegayah">Zoë Gayah Jonker</a> on Unsplash</p>
-                    <p><a href="https://unsplash.com/photos/G8cB8hY3yvU">Photo</a> by <a href="https://unsplash.com/@ralu_gal"> Ralu Gal</a> on Unsplash</p>
-                    <p><a href="https://unsplash.com/photos/2s6ORaJY6gI">Photo</a> by <a href="https://unsplash.com/@celine_sayuri/likes">Celine Sayuri Tagami</a> on Unsplash</p>
-                </div>
+                <hr></hr>
+                <h1>Credits</h1>
+                <h3>Images</h3>
+                <p><a href="https://unsplash.com/photos/uhnbTZC7N9k">Photo</a> by <a href="https://unsplash.com/@zoegayah">Zoë Gayah Jonker</a> on Unsplash</p>
+                <p><a href="https://unsplash.com/photos/G8cB8hY3yvU">Photo</a> by <a href="https://unsplash.com/@ralu_gal"> Ralu Gal</a> on Unsplash</p>
+                <p><a href="https://unsplash.com/photos/2s6ORaJY6gI">Photo</a> by <a href="https://unsplash.com/@celine_sayuri/likes">Celine Sayuri Tagami</a> on Unsplash</p>
             </div>
         </div>
     );
