@@ -79,8 +79,11 @@ class Navbar extends React.Component {
                 <Menu.Item key="scholarships">
                     <Link to="/scholarship">Scholarships</Link>
                 </Menu.Item>
-                
-                {!userProfile && !isLoadingLoggedInUserProfile &&
+                {/* The check for isLoadingLoggedInUserProfile is needed because the user may already be logged in 
+                and we are just waiting to receive the user profile data from the API. Showing the Sign Up and Log In Button while waiting
+                to load the network data might be confusing to the user. So it's better to hide completely until the data
+                has received a network response. */}
+                {!isLoadingLoggedInUserProfile && !userProfile &&
                 <Menu.Item key="register" className="disable-ant-menu-item-active">
                     <Button type="primary" size="large">
                         <Link to={`/register?redirect=${pathname}${search}`}>
@@ -89,8 +92,8 @@ class Navbar extends React.Component {
                     </Button>
                 </Menu.Item>
                 }
-                {!userProfile && !isLoadingLoggedInUserProfile &&
-                <Menu.Item key="register" className="disable-ant-menu-item-active">
+                {!isLoadingLoggedInUserProfile && !userProfile &&
+                <Menu.Item key="demo" className="disable-ant-menu-item-active">
                     <Button type="primary" size="large">
                         <Link to={`/demo`}>
                             Book a Demo
@@ -98,7 +101,7 @@ class Navbar extends React.Component {
                     </Button>
                 </Menu.Item>
                 }
-                {!userProfile && !isLoadingLoggedInUserProfile &&
+                {!isLoadingLoggedInUserProfile && !userProfile &&
                 <Menu.Item key="login">
                     <Link to={`/login?redirect=${pathname}${search}`}
                           style={{color:'#007bff'}}
