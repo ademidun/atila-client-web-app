@@ -44,15 +44,19 @@ function Footer({location, history}) {
               <Col md={6} sm={12} xs={24}>
                 <div className="footer-center">
                   <div>
-                    <Link to="/start">
-                      Start a Scholarship{' '}
+                    <Link to={`/demo`}>
+                          Book a Demo{' '}
                       <Tag color="green">new</Tag>
                     </Link>
                   </div>
                   <div>
+                    <Link to="/start">
+                      Start a Scholarship
+                    </Link>
+                  </div>
+                  <div>
                     <Link to="/apply">
-                      Apply for a Scholarship{' '}
-                      <Tag color="green">new</Tag>
+                      Apply for a Scholarship
                     </Link>
                   </div>
                   <div>

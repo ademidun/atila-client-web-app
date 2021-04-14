@@ -73,26 +73,55 @@ class Navbar extends React.Component {
                   style={{float: "none"}}>
                 <Menu.Item key="start">
                     <Link to="/start">
-                        <Tag color="green">new</Tag>{' '}
-                        How to Start a Scholarship
+                        Start a Scholarship
                     </Link>
                 </Menu.Item>
                 <Menu.Item key="scholarships">
                     <Link to="/scholarship">Scholarships</Link>
                 </Menu.Item>
-                <Menu.Item key="rankings">
-                    <Link to="/rankings">
-                        <Tag color="green">new</Tag>{' '}
-                        Atila Points Rankings</Link>
+                {/* The check for isLoadingLoggedInUserProfile is needed because the user may already be logged in 
+                and we are just waiting to receive the user profile data from the API. Showing the Sign Up and Log In Button while waiting
+                to load the network data might be confusing to the user. So it's better to hide completely until the data
+                has received a network response. */}
+                {!isLoadingLoggedInUserProfile && !userProfile &&
+                <Menu.Item key="register" className="disable-ant-menu-item-active">
+                    <Button type="primary" size="large">
+                        <Link to={`/register?redirect=${pathname}${search}`}>
+                            Sign Up
+                        </Link>
+                    </Button>
                 </Menu.Item>
+                }
+                {!isLoadingLoggedInUserProfile && !userProfile &&
+                <Menu.Item key="demo" className="disable-ant-menu-item-active">
+                    <Button type="primary" size="large">
+                        <Link to={`/demo`}>
+                            Book a Demo
+                        </Link>
+                    </Button>
+                </Menu.Item>
+                }
+                {!isLoadingLoggedInUserProfile && !userProfile &&
+                <Menu.Item key="login">
+                    <Link to={`/login?redirect=${pathname}${search}`}
+                          style={{color:'#007bff'}}
+                          className="font-weight-bold">
+                        Login
+                    </Link>
+                </Menu.Item>
+                }
 
                 <SubMenu
                         key="more"
                         title="More"
                     >
+                    <Menu.Item key="rankings">
+                        <Link to="/rankings">
+                            <Tag color="green">new</Tag>{' '}
+                            Atila Points Rankings</Link>
+                    </Menu.Item>
                     <Menu.Item key="apply">
                         <Link to="/apply">
-                            <Tag color="green">new</Tag>{' '}
                             How to Apply for a Scholarship
                         </Link>
                     </Menu.Item>
@@ -112,27 +141,7 @@ class Navbar extends React.Component {
                         <Menu.Item key="about">
                             <Link to="/about">About</Link>
                         </Menu.Item>
-                    </SubMenu>
-                
-                
-                {!userProfile && !isLoadingLoggedInUserProfile &&
-                <Menu.Item key="login">
-                    <Link to={`/login?redirect=${pathname}${search}`}
-                          style={{color:'#007bff'}}
-                          className="font-weight-bold">
-                        Login
-                    </Link>
-                </Menu.Item>
-                }
-                {!userProfile && !isLoadingLoggedInUserProfile &&
-                <Menu.Item key="register" className="disable-ant-menu-item-active">
-                    <Button type="primary" size="large">
-                        <Link to={`/register?redirect=${pathname}${search}`}>
-                            Sign Up
-                        </Link>
-                    </Button>
-                </Menu.Item>
-                }
+                </SubMenu>
                 {
                     userProfile &&
                     <SubMenu
