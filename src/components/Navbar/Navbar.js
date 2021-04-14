@@ -73,26 +73,52 @@ class Navbar extends React.Component {
                   style={{float: "none"}}>
                 <Menu.Item key="start">
                     <Link to="/start">
-                        <Tag color="green">new</Tag>{' '}
-                        How to Start a Scholarship
+                        Start a Scholarship
                     </Link>
                 </Menu.Item>
                 <Menu.Item key="scholarships">
                     <Link to="/scholarship">Scholarships</Link>
                 </Menu.Item>
-                <Menu.Item key="rankings">
-                    <Link to="/rankings">
-                        <Tag color="green">new</Tag>{' '}
-                        Atila Points Rankings</Link>
+                
+                {!userProfile && !isLoadingLoggedInUserProfile &&
+                <Menu.Item key="register" className="disable-ant-menu-item-active">
+                    <Button type="primary" size="large">
+                        <Link to={`/register?redirect=${pathname}${search}`}>
+                            Sign Up
+                        </Link>
+                    </Button>
                 </Menu.Item>
+                }
+                {!userProfile && !isLoadingLoggedInUserProfile &&
+                <Menu.Item key="register" className="disable-ant-menu-item-active">
+                    <Button type="primary" size="large">
+                        <Link to={`/demo`}>
+                            Book a Demo
+                        </Link>
+                    </Button>
+                </Menu.Item>
+                }
+                {!userProfile && !isLoadingLoggedInUserProfile &&
+                <Menu.Item key="login">
+                    <Link to={`/login?redirect=${pathname}${search}`}
+                          style={{color:'#007bff'}}
+                          className="font-weight-bold">
+                        Login
+                    </Link>
+                </Menu.Item>
+                }
 
                 <SubMenu
                         key="more"
                         title="More"
                     >
+                    <Menu.Item key="rankings">
+                        <Link to="/rankings">
+                            <Tag color="green">new</Tag>{' '}
+                            Atila Points Rankings</Link>
+                    </Menu.Item>
                     <Menu.Item key="apply">
                         <Link to="/apply">
-                            <Tag color="green">new</Tag>{' '}
                             How to Apply for a Scholarship
                         </Link>
                     </Menu.Item>
@@ -112,27 +138,7 @@ class Navbar extends React.Component {
                         <Menu.Item key="about">
                             <Link to="/about">About</Link>
                         </Menu.Item>
-                    </SubMenu>
-                
-                
-                {!userProfile && !isLoadingLoggedInUserProfile &&
-                <Menu.Item key="login">
-                    <Link to={`/login?redirect=${pathname}${search}`}
-                          style={{color:'#007bff'}}
-                          className="font-weight-bold">
-                        Login
-                    </Link>
-                </Menu.Item>
-                }
-                {!userProfile && !isLoadingLoggedInUserProfile &&
-                <Menu.Item key="register" className="disable-ant-menu-item-active">
-                    <Button type="primary" size="large">
-                        <Link to={`/register?redirect=${pathname}${search}`}>
-                            Sign Up
-                        </Link>
-                    </Button>
-                </Menu.Item>
-                }
+                </SubMenu>
                 {
                     userProfile &&
                     <SubMenu
