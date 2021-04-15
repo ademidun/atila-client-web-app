@@ -8,7 +8,7 @@ import EbookVideoEmbed from "./EbookVideoEmbed";
 import PremiumDescription from "./PremiumDescription";
 import EbookPreview from "./EbookPreview";
 import {BackTop} from "antd";
-import {unSlugify} from "../../services/utils";
+import {scrollToElement, unSlugify} from "../../services/utils";
 import {EBOOK_AUDIENCE_IMAGES} from "../../models/Constants";
 import EbookFAQ from "./EbookFAQ";
 
@@ -28,6 +28,14 @@ class Ebook extends React.Component {
             audience,
         }
 
+    }
+
+    componentDidMount(){
+        const { location } = this.props;
+
+        if (location && location.hash) {
+            scrollToElement(location.hash);
+        }
     }
 
 
@@ -51,6 +59,8 @@ class Ebook extends React.Component {
                     <BackTop/>
                     <EbookLandingBanner audience={audience} />
                     <hr/>
+                    <EmailSignUp audience={audience} />
+                    <hr/>
                     <EbookPreview/>
                     <hr/>
                     <TableauGraphsEmbed/>
@@ -58,8 +68,6 @@ class Ebook extends React.Component {
                     <EbookInterviews/>
                     <hr/>
                     <EbookFAQ />
-                    <hr/>
-                    <EmailSignUp audience={audience} />
                     <hr/>
                     <PremiumDescription/>
                     <hr/>
