@@ -11,7 +11,7 @@ function EmailSignUp({audience}) {
     const extraFormQuestions = [
         {
             keyName: 'preferredIndustry',
-            placeholder: 'Industry you\'re interested in?',
+            placeholder: 'What Industry are you interested in?',
             type: 'select',
             options: [
                 'Tech',
@@ -33,7 +33,7 @@ function EmailSignUp({audience}) {
     </div>);
 
   return (
-    <Row className='row' style={{ width: '90%', left: '10%' }}>
+    <Row className='row' style={{ width: '90%', left: '10%' }} id="preview">
       <Col md={12}>
         <div>
             <img
