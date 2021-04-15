@@ -55,7 +55,7 @@ function EbookPreview () {
     });
 
     return (
-        <div className="EbookPreview" id="EbookPreview">
+        <div className="EbookPreview" id="inside">
             {/*lineHeight: '7.5vw' so title is not truncated when offset*/}
             <h1 className="text-center mt-3"
                 style={{lineHeight: '11vw'}}>
