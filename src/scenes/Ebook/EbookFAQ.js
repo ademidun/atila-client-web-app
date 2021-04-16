@@ -45,11 +45,6 @@ const faqAnswers = [
                 Our data also looks at a wide range of schools across the country and many different companies in a variety of industries, thus we believe this information
             will remain relevant for at least the next five years.</p>
         </span>)},
-    { question: "Why does the ebook cost $33?",
-        answer: (<span>
-            <p>The ebook is priced at $33 because individuals who purchase a copy will have access to updated editions for the rest of the year and exclusive access to special Atila content.
-            The level of detailed information we were able to collect is not available anywhere else.</p>
-        </span>)},
     { question: "What makes this different from other guides out there?",
         answer: (<span>
             <p>This ebook focuses on the consulting, investment banking, high tech, and biomedical industries with in-depth analysis and explanations as to why some schools have more graduates in some top companies. There are also interviews from students who attend some of Canada’s top undergraduate programs that may provide insight on each school and program.

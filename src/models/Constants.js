@@ -24,7 +24,7 @@ export const EBOOK_AUDIENCE_IMAGES = {
     '1': {
         name: 'default',
         ebookLandingImage: 'https://i.imgur.com/PMg68If.png',
-        ebookMultipleDevices: 'https://i.imgur.com/CwPiFjJ.png',
+        ebookMultipleDevices: 'https://i.imgur.com/RLc5YPU.png',
         bookCoverImage: 'https://i.imgur.com/kkV3Cra.png',
         seoImage: 'https://i.imgur.com/w7qc7gQ.png',
     },
