@@ -11,6 +11,7 @@ import {BackTop} from "antd";
 import {scrollToElement, unSlugify} from "../../services/utils";
 import {EBOOK_AUDIENCE_IMAGES} from "../../models/Constants";
 import EbookFAQ from "./EbookFAQ";
+import EbookChapter from './EbookChapter';
 
 class Ebook extends React.Component {
 
@@ -62,6 +63,8 @@ class Ebook extends React.Component {
                     <EmailSignUp audience={audience} />
                     <hr/>
                     <EbookPreview/>
+                    <hr/>
+                    <EbookChapter />
                     <hr/>
                     <TableauGraphsEmbed/>
                     <hr/>
