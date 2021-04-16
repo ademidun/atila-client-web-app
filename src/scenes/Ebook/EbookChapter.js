@@ -7,6 +7,7 @@ const chapters1 = [
   {
     number: 1,
     name: "Introduction",
+    link: "blog/tomiwa/the-best-canadian-universities-for-getting-a-job-at-tech-consulting-investment-banking-and-biomedical-companies",
     subchapters: [
       {
         name: "Methodology",
