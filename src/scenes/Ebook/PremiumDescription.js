@@ -13,7 +13,7 @@ export default function PremiumDescription() {
                 <div className="text-center">
                     <img
                         className="responsive-images"
-                        src='https://i.imgur.com/RLc5YPU.png' alt='Book cover' />
+                        src='https://i.imgur.com/CwPiFjJ.png' alt='Book cover' />
                 </div>
                 <div className="my-3">
                     <ol>
