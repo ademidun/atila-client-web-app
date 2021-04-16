@@ -10,7 +10,7 @@ import {Link} from "react-router-dom";
 
 class EbookLandingBanner extends Component {
   state = {
-    showBookChapters: false,
+    showBookChapters: true,
   };
 
   render() {
@@ -37,8 +37,8 @@ class EbookLandingBanner extends Component {
     const title = "Atila Schools and Jobs Guide";
 
     return (
-      <div className='vh-100-min EbookLandingBanner mx-sm-3' id="EbookLandingBanner">
-        <div>
+      <div className="EbookLandingBanner mx-sm-3" id="EbookLandingBanner">
+        <div className="vh-100-min">
           <br />
           <h1 className='col-sm-12 text-center my-md-5'>
               {showTitleCTA &&
