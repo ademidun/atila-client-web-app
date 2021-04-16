@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {Button, Col, Row, Tag} from "antd";
+import {Button, Col, Row} from "antd";
 import "./Ebook.scss";
 import {handleButtonClickEventFacebook} from "../../models/Utils";
 import {EBOOK_AUDIENCE_IMAGES} from "../../models/Constants";
@@ -11,24 +11,22 @@ class EbookLandingBanner extends Component {
 
   render() {
 
-    const { audience, showTitleCTA } = this.props;
+    const { audience, showLearnMoreCTA, heightClassName } = this.props;
 
 
     const title = "Atila Schools and Jobs Guide";
 
     return (
-      <div className="EbookLandingBanner mx-sm-3" id="EbookLandingBanner">
-        <div className="vh-100-min">
+      <div className={`EbookLandingBanner mx-sm-3 ${heightClassName}`} id="EbookLandingBanner">
+        <div>
           <br />
           <h1 className='col-sm-12 text-center my-md-5'>
-              {showTitleCTA &&
+              {showLearnMoreCTA &&
               <Link to="/schools">
                   {title}
-                  <br/>
-                  <Tag color="green">New</Tag>
               </Link>
               }
-              {!showTitleCTA &&
+              {!showLearnMoreCTA &&
                 <React.Fragment>
                     {title}
                 </React.Fragment>
@@ -69,6 +67,14 @@ class EbookLandingBanner extends Component {
                   Buy this Book
                 </a>
               </Button>
+              {showLearnMoreCTA && 
+              
+              <Button className='center-block mt-2' style={{fontSize: "30px"}}>
+                <Link to="schools">
+                  Learn More
+                </Link>
+              </Button>
+              }
               <br />
             </Col>
           </Row>
@@ -83,11 +89,12 @@ class EbookLandingBanner extends Component {
 
 ScholarshipsListFilter.defaultProps = {
     audience: '1',
-    showTitleCTA: false
+    heightClassName: "vh-100-min",
+    showLearnMoreCTA: false
 };
 
 EbookLandingBanner.propTypes = {
     audience: PropTypes.string,
-    showTitleCTA: PropTypes.bool,
+    showLearnMoreCTA: PropTypes.bool,
 };
 export default EbookLandingBanner;
