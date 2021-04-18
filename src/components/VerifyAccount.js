@@ -35,7 +35,6 @@ class VerifyAccount extends React.Component {
         const { username, token, verification_type } = this.state;
         if (username && token && verification_type !== 'reset_password') {
             this.verifyAccount(true);
-            this.setState({showForm: false});
         }
     }
 
@@ -70,6 +69,10 @@ class VerifyAccount extends React.Component {
                             'Log in again with new password'});
                 } else {
                     this.setState({ responseOkMessage: 'Verification successful 🙂!'});
+                }
+
+                if (verifyAccountOnPageLoad) {
+                    this.setState({showForm: false});
                 }
             })
             .catch(err => {
