@@ -35,7 +35,9 @@ class Ebook extends React.Component {
         const { location } = this.props;
 
         if (location && location.hash) {
-            scrollToElement(location.hash);
+            setTimeout(() => {
+                scrollToElement(location.hash);
+            }, 500);
         }
     }
 
