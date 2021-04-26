@@ -1,54 +1,32 @@
 import React, { Component } from "react";
-import {Button, Col, Row, Tag} from "antd";
+import {Button, Col, Row} from "antd";
 import "./Ebook.scss";
 import {handleButtonClickEventFacebook} from "../../models/Utils";
-import EbookChapter from "./EbookChapter";
 import {EBOOK_AUDIENCE_IMAGES} from "../../models/Constants";
 import PropTypes from "prop-types";
 import ScholarshipsListFilter from "../Scholarship/ScholarshipsListFilter";
 import {Link} from "react-router-dom";
 
 class EbookLandingBanner extends Component {
-  state = {
-    showBookChapters: false,
-  };
 
   render() {
-    const { showBookChapters } = this.state;
 
-    const { audience, showTitleCTA } = this.props;
+    const { audience, showLearnMoreCTA, heightClassName } = this.props;
 
-    const showBookChaptersButton = (
-        <Button
-            className='center-block'
-            type='info'
-            name="PreviewBook"
-            style={{ fontSize: "larger" }}
-            onClick={(event) => {
-                const { showBookChapters } = this.state;
-                this.setState({ showBookChapters: !showBookChapters });
-                handleButtonClickEventFacebook(event);
-            }}
-        >
-            {showBookChapters ? 'Hide' : 'Show'} Book Chapters
-        </Button>
-    );
 
     const title = "Atila Schools and Jobs Guide";
 
     return (
-      <div className='vh-100-min EbookLandingBanner mx-sm-3' id="EbookLandingBanner">
+      <div className={`EbookLandingBanner mx-sm-3 ${heightClassName}`} id="EbookLandingBanner">
         <div>
           <br />
           <h1 className='col-sm-12 text-center my-md-5'>
-              {showTitleCTA &&
+              {showLearnMoreCTA &&
               <Link to="/schools">
                   {title}
-                  <br/>
-                  <Tag color="green">New</Tag>
               </Link>
               }
-              {!showTitleCTA &&
+              {!showLearnMoreCTA &&
                 <React.Fragment>
                     {title}
                 </React.Fragment>
@@ -89,20 +67,18 @@ class EbookLandingBanner extends Component {
                   Buy this Book
                 </a>
               </Button>
+              {showLearnMoreCTA && 
+              
+              <Button className='center-block mt-2' style={{fontSize: "30px"}}>
+                <Link to="schools">
+                  Learn More
+                </Link>
+              </Button>
+              }
               <br />
-                {showBookChaptersButton}
             </Col>
           </Row>
         </div>
-
-          {showBookChapters &&
-            <React.Fragment>
-                <hr/>
-                <EbookChapter />
-                {showBookChaptersButton}
-            </React.Fragment>
-
-          }
 
         <link rel="preload" href="https://gum.co/BbFon" as="document" />
         <link rel="preload" href="https://gumroad.com/l/BbFon" as="document" />
@@ -113,11 +89,12 @@ class EbookLandingBanner extends Component {
 
 ScholarshipsListFilter.defaultProps = {
     audience: '1',
-    showTitleCTA: false
+    heightClassName: "vh-100-min",
+    showLearnMoreCTA: false
 };
 
 EbookLandingBanner.propTypes = {
     audience: PropTypes.string,
-    showTitleCTA: PropTypes.bool,
+    showLearnMoreCTA: PropTypes.bool,
 };
 export default EbookLandingBanner;

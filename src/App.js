@@ -8,6 +8,8 @@ import Footer from "./components/Footer/Footer";
 import Loading from "./components/Loading";
 
 import { ToastContainer } from "react-toastify";
+import "react-notion/src/styles.css";
+import "prismjs/themes/prism-tomorrow.css";
 import "react-toastify/dist/ReactToastify.css";
 import Navbar from "./components/Navbar/Navbar";
 import GoogleAnalyticsTracker from "./services/GoogleAnalyticsTracker";
@@ -54,6 +56,9 @@ const Testimonials = loadable(() => import("./components/Testimonials"), {
   fallback: <Loading />,
 });
 const FinalistsList = loadable(() => import("./components/FinalistsList"), {
+  fallback: <Loading />,
+});
+const BookDemo = loadable(() => import("./components/BookDemo"), {
   fallback: <Loading />,
 });
 const AtilaPointsRankings = loadable(() => import("./components/AtilaPointsRankings"), {
@@ -201,6 +206,10 @@ class App extends React.Component {
               <Route
                   path='/highschool'
                   component={GoogleAnalyticsTracker(HighSchool)}
+              />
+              <Route
+                  path='/demo'
+                  component={GoogleAnalyticsTracker(BookDemo)}
               />
               <Route
                   path='/schools/premium'
