@@ -517,7 +517,7 @@ class ScholarshipManage extends React.Component {
                     Un-Submitted applications (under draft): {unsubmittedApplications.length}
                 </h2>
 
-                {isScholarshipOwner &&
+                {isScholarshipOwner || userProfile.is_atila_admin &&
                 <>
 
                     <br />
