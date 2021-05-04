@@ -34,8 +34,8 @@ const howItWorksStudent = [
             with the right scholarships for you.
 
         </React.Fragment>,
-        image: "https://imgur.com/QSmRBwv.jpg",
-        gif: "https://media.tenor.com/images/223e03b12c6ab460cea1e485cac4ff4a/tenor.gif"
+        image: "https://imgur.com/JqjjyCm.jpg",
+        gif: "https://s3.gifyu.com/images/create-account.gif"
     },
     {
         title: "Apply for Scholarships",
@@ -44,7 +44,8 @@ const howItWorksStudent = [
             {/* TODO uncomment this line when we add this feature */}
             {/* Autofill similar responses used in past scholarships to save time. */}
         </React.Fragment>,
-        image: "https://imgur.com/a49KkBZ.jpg"
+        image: "https://imgur.com/EG5zKAT.jpg",
+        gif: "https://s3.gifyu.com/images/My-Movie-4.gif"
 
     },
     {
