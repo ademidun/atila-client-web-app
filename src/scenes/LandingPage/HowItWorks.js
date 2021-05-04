@@ -7,6 +7,7 @@ import {
     ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_START_SCHOLARSHIP
 } from "../../models/Constants";
 import { SocialProof } from './SocialProof';
+import {ImageGif} from "../../components/ImageGif";
 
 function HowItWorks({accountType}) {
 
@@ -33,7 +34,8 @@ const howItWorksStudent = [
             with the right scholarships for you.
 
         </React.Fragment>,
-        image: "https://imgur.com/QSmRBwv.jpg"
+        image: "https://imgur.com/QSmRBwv.jpg",
+        gif: "https://media.tenor.com/images/223e03b12c6ab460cea1e485cac4ff4a/tenor.gif"
     },
     {
         title: "Apply for Scholarships",
@@ -221,11 +223,16 @@ export function DescriptionWithScreenshot({item, index=null})   {
 
                 {/*Note: TO get the image to size responsively.
                             I just had to put it inside a parent div and add 'col-12' class.*/}
-                <img src={item.image}
+                {/*<img src={item.image}
                      alt={item.title}
                      title={item.title}
                      className="col-12"
-                />
+                />*/}
+                <ImageGif
+                    imageUrl={item.image}
+                    gifUrl={item.gif}
+                    title={item.title}/>
+
                 {item.imageCaption &&
                 <p className="col-12 text-center text-muted">
                     {item.imageCaption}
