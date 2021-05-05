@@ -241,11 +241,22 @@ export class ApplicationsTable extends  React.Component {
         }
     
         return (<>
-            <Button
-                onClick={() => this.setShowScores(!showScores)}
-                className="mb-3">
-                {showScores ? "Hide " : "Show "} Scores
-        </Button>
+            {/* When the scores are hidden: Popconfirm.onConfirm() will be called.
+                When the scores are shown Button.onClick() will be called. Hence the reason we have both  */}
+            <Popconfirm onConfirm={() => this.setShowScores(!showScores)}
+                        disabled={showScores}
+                        title="Are you sure? You will be able to see the scores of each application."
+                        placement="right">
+                <Button
+                    onClick={() => {
+                        if(showScores) {
+                            this.setShowScores(!showScores)
+                        }
+                    }}
+                    className="mb-3">
+                    {showScores ? "Hide " : "Show "} Scores...
+                </Button>
+            </Popconfirm>
         <ApplicationsSearch applications={allApplications} updateSearch={(filtered, searchTerm) => this.filterApplications(filtered, searchTerm)} />
             <CSVLink data={applicationsAsCSV}
                 filename={`${slugify(scholarship.name)}-applications.csv`}
