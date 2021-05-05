@@ -27,12 +27,13 @@ class VerifyAccount extends React.Component {
             isLoadingResponse: null,
             responseOkMessage: null,
             responseError: null,
+            showForm: true,
         };
     }
 
     componentDidMount() {
-        const { username, token } = this.state;
-        if (username && token) {
+        const { username, token, verification_type } = this.state;
+        if (username && token && verification_type !== 'reset_password') {
             this.verifyAccount(true);
         }
     }
@@ -69,6 +70,10 @@ class VerifyAccount extends React.Component {
                 } else {
                     this.setState({ responseOkMessage: 'Verification successful 🙂!'});
                 }
+
+                if (verifyAccountOnPageLoad) {
+                    this.setState({showForm: false});
+                }
             })
             .catch(err => {
                 console.log({err});
@@ -85,12 +90,13 @@ class VerifyAccount extends React.Component {
     render () {
         const { username, token, password,
             isLoadingResponse, verification_type,
-            responseOkMessage, responseError} = this.state;
+            responseOkMessage, responseError, showForm} = this.state;
         return (
             <div className="container mt-5">
                 <div className="card shadow p-3">
                     <div>
                         <h1>Verify Your Account</h1>
+                        {showForm &&
                         <form className="row p-3" onSubmit={this.submitVerifyForm}>
                             <input placeholder="Username or Email"
                                    className="col-12 mb-3 form-control"
@@ -110,7 +116,7 @@ class VerifyAccount extends React.Component {
                                 verification_type === 'reset_password' &&
                                 <PasswordShowHide password={password}
                                                   updateForm={this.updateForm}
-                                                  placeholder="Enter a new password" />
+                                                  placeholder="Enter a new password"/>
                             }
                             <div className="w-100">
                                 <button className="btn btn-primary col-sm-12 col-md-5 float-left mb-1"
@@ -118,9 +124,9 @@ class VerifyAccount extends React.Component {
                                         disabled={isLoadingResponse}>
                                     Submit
                                 </button>
-                                { verification_type !== 'reset_password' &&
+                                {verification_type !== 'reset_password' &&
                                 <button className="btn btn-link max-width-fit-content"
-                                        onClick={event=> {
+                                        onClick={event => {
                                             event.preventDefault();
                                             this.setState({verification_type: 'reset_password'});
                                         }}>
@@ -129,6 +135,7 @@ class VerifyAccount extends React.Component {
                                 }
                             </div>
                         </form>
+                        }
                         <ResponseDisplay isLoadingResponse={isLoadingResponse}
                                          responseError={responseError}
                                          responseOkMessage={responseOkMessage} />
