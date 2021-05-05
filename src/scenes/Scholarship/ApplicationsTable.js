@@ -44,12 +44,6 @@ export class ApplicationsTable extends  React.Component {
         this.setState({showScores});
     }
 
-    setButtonShowScores(showScores) {
-        if (!showScores) {
-            this.setState({showScores});
-        }
-    }
-
     filterApplications(filteredApplications, searchTerm){
         this.setState({filteredApplications, searchTerm});
     }
@@ -247,12 +241,18 @@ export class ApplicationsTable extends  React.Component {
         }
     
         return (<>
+            {/* When the scores are hidden: Popconfirm.onConfirm() will be called.
+                When the scores are shown Button.onClick() will be called. Hence the reason we have both  */}
             <Popconfirm onConfirm={() => this.setShowScores(!showScores)}
                         disabled={showScores}
                         title="Are you sure? You will be able to see the scores of each application."
                         placement="right">
                 <Button
-                    onClick={() => this.setButtonShowScores(!showScores)}
+                    onClick={() => {
+                        if(showScores) {
+                            this.setShowScores(!showScores)
+                        }
+                    }}
                     className="mb-3">
                     {showScores ? "Hide " : "Show "} Scores...
                 </Button>
