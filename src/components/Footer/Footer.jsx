@@ -150,6 +150,11 @@ function Footer({location, history}) {
                       Atila's Values
                     </Link>
                   </div>
+                  <div>
+                    <Link to="/subscribe">
+                      Subscribe to our Scholarship Newsletter
+                    </Link>
+                  </div>
                 </div>
               </Col>
               <Col md={6} sm={12} xs={24}>
