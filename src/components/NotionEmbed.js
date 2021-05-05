@@ -1,10 +1,10 @@
 import React from "react";
-import UtilsAPI from "./src/services/UtilsAPI";
+import UtilsAPI from "../services/UtilsAPI";
 import { NotionRenderer} from "react-notion";
-import {createTableOfContents, scrollToElement} from "./src/services/utils";
+import {createTableOfContents, scrollToElement} from "../services/utils";
 import "react-notion/src/styles.css";
 import "prismjs/themes/prism-tomorrow.css";
-import Loading from "./src/components/Loading";
+import Loading from "./Loading";
 
 export class NotionEmbed extends React.Component {
 
@@ -33,7 +33,7 @@ export class NotionEmbed extends React.Component {
         this.setState({loading: this.state.loadingMessage});    // set loading message to an input by the constructor
 
         UtilsAPI.loadNotionContent(this.state.pageID)
-        this.then(res=> {
+        .then(res=> {
 
             this.setState({notionPageData: res.data});
 
@@ -63,7 +63,7 @@ export class NotionEmbed extends React.Component {
             <div>
                 {loading && <Loading title={loading} /> }
                 <div className="container mt-5">
-                    <div className="card shadow p-3 embedded-place">        //createTableOfContents function will start here
+                    <div className="card shadow p-3 embedded-place">
                         {notionPagedata &&
                         <div style={{ maxWidth: 768 }}>
                             <NotionRenderer blockMap={notionPagedata} />
