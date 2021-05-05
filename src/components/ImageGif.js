@@ -14,8 +14,10 @@ export class ImageGif extends React.Component{
     handleClick = () => {
         const currentActiveImage = this.state.activeImage;
         if(this.state.imageUrl) {
-            let nextActiveImage = currentActiveImage === this.state.imageUrl ? this.state.gifUrl : this.state.imageUrl;
-            this.setState({activeImage: nextActiveImage})
+            if(this.state.gifUrl) {
+                let nextActiveImage = currentActiveImage === this.state.imageUrl ? this.state.gifUrl : this.state.imageUrl;
+                this.setState({activeImage: nextActiveImage})
+            }
         }
 
     }
