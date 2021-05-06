@@ -49,6 +49,9 @@ const Blog = loadable(() => import("./scenes/Blog/Blog"), {
 const Essay = loadable(() => import("./scenes/Essay/Essay"), {
   fallback: <Loading />,
 });
+const Subscribe = loadable(() => import("./components/Subscribe"), {
+  fallback: <Loading />,
+});
 const Team = loadable(() => import("./components/Team/Team"), {
   fallback: <Loading />,
 });
@@ -219,6 +222,7 @@ class App extends React.Component {
                 path='/schools'
                 component={GoogleAnalyticsTracker(Ebook)}
               />
+              <Route path='/subscribe' component={GoogleAnalyticsTracker(Subscribe)} />
               <Route path='/team' component={GoogleAnalyticsTracker(Team)} />
               <Route path='/testimonials' component={GoogleAnalyticsTracker(Testimonials)} />
               <Route path='/about' component={GoogleAnalyticsTracker(About)} />
