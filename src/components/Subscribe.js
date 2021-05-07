@@ -23,7 +23,7 @@ function Subscribe() {
                 <div className="center-block mb-3">
                     <iframe class="airtable-embed"
                         src="https://airtable.com/embed/shrgszV8oKhg0nbHr"
-                        width="720" height="405" frameBorder="0" title="Scholarship Newsletter Airtable Form" />
+                        width="100%" height="405" frameBorder="solid" title="Scholarship Newsletter Airtable Form" />
                 </div>
 
             </div>
