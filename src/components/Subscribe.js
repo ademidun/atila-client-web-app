@@ -21,9 +21,9 @@ function Subscribe() {
                 </div>
 
                 <div className="center-block mb-3">
-                    <iframe
-                        src="https://airtable.com/shrgszV8oKhg0nbHr"
-                        width="720" height="405" frameBorder="0" allowFullScreen="allowfullscreen" title="Scholarship Newsletter Airtable Form" />
+                    <iframe class="airtable-embed"
+                        src="https://airtable.com/embed/shrgszV8oKhg0nbHr"
+                        width="720" height="405" frameBorder="0" title="Scholarship Newsletter Airtable Form" />
                 </div>
 
             </div>
