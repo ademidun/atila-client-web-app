@@ -75,7 +75,8 @@ export const howItWorksSponsorItems = [
             Who's eligible?{' '}
             Any short answer or essay questions?{' '} etc.
         </React.Fragment>,
-        image: "https://imgur.com/HgIoMJ9.jpg"
+        image: "https://imgur.com/HgIoMJ9.jpg",
+        gif: "https://s3.gifyu.com/images/Add-A-Scholarship-Final-Gif.gif"
     },
     {
         title: "Fund Scholarship",
@@ -85,6 +86,7 @@ export const howItWorksSponsorItems = [
             The minimum funding amount for additional contributions is ${ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP}.
         </p>,
         image: "https://i.imgur.com/kgpSskJ.png",
+        gif: "https://s3.gifyu.com/images/Add-Scholarship_-Michael-Scott-Scotts-Tots-Scholarship-2021---Atila--Mozilla-Firefox-2021-05-04-10-15-30.gif"
     },
     {
         title: "Promote Scholarship",
@@ -97,6 +99,7 @@ export const howItWorksSponsorItems = [
         body: "Review student applications and select winner. Funds directly transferred to winner's bank " +
             "account within 24 hours. All sponsors receive a thank you letter from winner.",
         image: "https://imgur.com/HDecTqt.jpg",
+        gif: "https://s3.gifyu.com/images/The-Office-Fund-2021-application-management---Atila--Mozilla-Firefox-2021-05-04-11-07-47.gif"
     },
     {
         title: <React.Fragment>The Big Cheque Special! <Tag color="green">Bonus</Tag></React.Fragment>,
