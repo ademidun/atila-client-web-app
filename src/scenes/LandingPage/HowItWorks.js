@@ -59,7 +59,8 @@ const howItWorksStudent = [
             Only currently available for students with Canadian or American Bank Accounts.
             </small>
         </React.Fragment>,
-        image: "https://imgur.com/1HufdyP.jpg"
+        image: "https://imgur.com/1HufdyP.jpg",
+        gif: "https://cdn.dribbble.com/users/246068/screenshots/6697423/waving_flag_gif.gif" 
     }
  ];
 
