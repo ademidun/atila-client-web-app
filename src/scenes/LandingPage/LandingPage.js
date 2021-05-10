@@ -79,7 +79,6 @@ class LandingPage extends React.Component {
                                 link="scholarship/direct"
                                 contentList={scholarshipsDirectApplication}
                                 contentType="scholarship" />
-                                <hr/>
             </>
             }
             
@@ -96,12 +95,9 @@ class LandingPage extends React.Component {
         </React.Fragment>);
         const scholarshipsContentRecentlyAdded = (<React.Fragment>
             {scholarshipsRecentlyAdded &&
-            <React.Fragment>
-            <hr/>
             <LandingPageContent title={`Scholarships Recently Added`}
-                                contentList={scholarshipsRecentlyAdded}
-                                contentType="scholarship" />
-            </React.Fragment>
+            contentList={scholarshipsRecentlyAdded}
+            contentType="scholarship" />
             }
         </React.Fragment>);
         return (
@@ -114,20 +110,16 @@ class LandingPage extends React.Component {
                         <hr/>
                         <HowItWorks accountType={"Student"}/>
                         <hr/>
-                        <Testimonials showSeo={false} filterArray={['Jasleen', 'Natalie', 'Grace', 'Chris', 'Hania', 'Oluwatofunmi']} />
+                        <HowItWorks accountType={"Sponsor"}/>
                         <hr/>
                         {scholarshipsContentDirectApplication}
-                        <div className="p-5">
-                            <Link to="/register" className="btn btn-primary center-block font-size-xl">
-                                Register for Free
-                            </Link>
-                        </div>
                         <hr/>
-                        <HowItWorks accountType={"Sponsor"}/>
+                        <Testimonials showSeo={false} filterArray={['Jasleen', 'Natalie', 'Grace', 'Chris', 'Hania', 'Oluwatofunmi']} />
+                        <hr/>
                         {/*<hr/>*/}
                         {/*<MoreFeatures/>*/}
-                        <hr/>
                         {scholarshipsContentRecentlyAdded}
+                        <hr/>
                         {scholarshipsContentDueSoon}
                     </React.Fragment>
                         }
@@ -140,7 +132,6 @@ class LandingPage extends React.Component {
                         <hr />
                     </React.Fragment>
                     }
-                    <hr />
                     <SubscribeMailingList />
                     {!userProfile &&
                     <div className="p-5">

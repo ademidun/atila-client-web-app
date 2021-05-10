@@ -34,7 +34,8 @@ const howItWorksStudent = [
             with the right scholarships for you.
 
         </React.Fragment>,
-        image: "https://imgur.com/JqjjyCm.jpg",
+        // commenting out instead of deleting images because might use them again soon
+        // image: "https://imgur.com/JqjjyCm.jpg",
         gif: "https://s3.gifyu.com/images/create-account.gif"
     },
     {
@@ -44,7 +45,7 @@ const howItWorksStudent = [
             {/* TODO uncomment this line when we add this feature */}
             {/* Autofill similar responses used in past scholarships to save time. */}
         </React.Fragment>,
-        image: "https://imgur.com/EG5zKAT.jpg",
+        // image: "https://imgur.com/EG5zKAT.jpg",
         gif: "https://s3.gifyu.com/images/My-Movie-4.gif"
 
     },
@@ -59,8 +60,7 @@ const howItWorksStudent = [
             Only currently available for students with Canadian or American Bank Accounts.
             </small>
         </React.Fragment>,
-        image: "https://imgur.com/1HufdyP.jpg",
-        gif: "https://cdn.dribbble.com/users/246068/screenshots/6697423/waving_flag_gif.gif" 
+        image: "https://imgur.com/1HufdyP.jpg"
     }
  ];
 
@@ -75,7 +75,7 @@ export const howItWorksSponsorItems = [
             Who's eligible?{' '}
             Any short answer or essay questions?{' '} etc.
         </React.Fragment>,
-        image: "https://imgur.com/HgIoMJ9.jpg",
+        // image: "https://imgur.com/HgIoMJ9.jpg",
         gif: "https://s3.gifyu.com/images/Add-A-Scholarship-Final-Gif.gif"
     },
     {
@@ -131,18 +131,18 @@ export function HowItWorksStudent() {
                 Get Funded.
             </h2>
             <h5 className="col-sm-12 text-center text-muted">Atila is 100% free for students</h5>
-            <SocialProof />
             <div className="offset-lg-1">
 
                 <DescriptionsWithScreenshotsList items={howItWorksStudent} />
-
-
-                <LandingPageLiveDemo youtubeVideoId="iLIHhuY9b0k" title="How to Start a Scholarship on Atila" />
-
-                <h1 className="col-sm-12 text-center">
-                    <Link to="/apply"> Learn More </Link>
-                </h1>
             </div>
+            <SocialProof />
+
+
+            <LandingPageLiveDemo youtubeVideoId="iLIHhuY9b0k" title="How to Start a Scholarship on Atila" />
+
+            <h1 className="col-sm-12 text-center">
+                <Link to="/apply"> Learn More </Link>
+            </h1>
         </div>
     )
 }
