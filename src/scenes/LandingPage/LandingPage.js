@@ -13,6 +13,7 @@ import BannerLoggedIn from "./BannerLoggedIn";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
 import Testimonials from "../../components/Testimonials";
+import { SocialProof } from './SocialProof';
 
 class LandingPage extends React.Component {
 
@@ -109,6 +110,8 @@ class LandingPage extends React.Component {
                         <Banner/>
                         <hr/>
                         <HowItWorks accountType={"Student"}/>
+                        <hr/>
+                        <SocialProof />
                         <hr/>
                         <HowItWorks accountType={"Sponsor"}/>
                         <hr/>

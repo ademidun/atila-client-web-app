@@ -6,7 +6,6 @@ import {
     ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP,
     ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_START_SCHOLARSHIP
 } from "../../models/Constants";
-import { SocialProof } from './SocialProof';
 import {ImageGif} from "../../components/ImageGif";
 
 function HowItWorks({accountType}) {
@@ -135,8 +134,6 @@ export function HowItWorksStudent() {
 
                 <DescriptionsWithScreenshotsList items={howItWorksStudent} />
             </div>
-            <SocialProof />
-
 
             <LandingPageLiveDemo youtubeVideoId="iLIHhuY9b0k" title="How to Start a Scholarship on Atila" />
 
