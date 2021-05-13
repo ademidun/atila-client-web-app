@@ -111,9 +111,9 @@ class LandingPage extends React.Component {
                         <hr/>
                         <HowItWorks accountType={"Student"}/>
                         <hr/>
-                        <SocialProof />
-                        <hr/>
                         <HowItWorks accountType={"Sponsor"}/>
+                        <hr/>
+                        <SocialProof />
                         <hr/>
                         {scholarshipsContentDirectApplication}
                         <hr/>
