@@ -24,7 +24,7 @@ const faqAnswers = [
     { question: "Where is this data coming from?",
         answer: (<div>
             <h3>LinkedIn</h3>
-            <p>We used LinkedIn to estimate how many people worked at a company from a certain school and working in a certain position. We use the term estimate because the data is not perfectly precise. For example, not everyone who works at a certain company may have a LinkedIn account or they may not update it frequently. However, we also interviewed people who work at these companies to help us refine our data and make it more accurate. All data was collected between January - April, 2020.</p>
+            <p>LinkedIn people search was used to get the number of people that work at a certain company and attended a certain school. All data was collected between January - April 2020.</p>
             <h3>Glassdoor</h3>
             <p>We used Glassdoor to estimate the salaries for various positions, companies, and locations. We included the number of reported salaries in our data set and the Glassdoor confidence interval for each company and position.</p>
             <h3>h1bdata.info</h3>
@@ -44,11 +44,6 @@ const faqAnswers = [
                 Once you purchase the ebook, you will have access to all past and future versions of the Atila Schools and Jobs Guide ebook.
                 Our data also looks at a wide range of schools across the country and many different companies in a variety of industries, thus we believe this information
             will remain relevant for at least the next five years.</p>
-        </span>)},
-    { question: "Why does the ebook cost $33?",
-        answer: (<span>
-            <p>The ebook is priced at $33 because individuals who purchase a copy will have access to updated editions for the rest of the year and exclusive access to special Atila content.
-            The level of detailed information we were able to collect is not available anywhere else.</p>
         </span>)},
     { question: "What makes this different from other guides out there?",
         answer: (<span>

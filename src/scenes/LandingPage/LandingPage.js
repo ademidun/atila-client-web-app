@@ -14,6 +14,7 @@ import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
 import Testimonials from "../../components/Testimonials";
 import { SocialProof } from './SocialProof';
+import EbookLandingBanner from '../Ebook/EbookLandingBanner';
 
 class LandingPage extends React.Component {
 
@@ -135,6 +136,8 @@ class LandingPage extends React.Component {
                         <hr />
                     </React.Fragment>
                     }
+                    <EbookLandingBanner showLearnMoreCTA={true} />
+                    <hr />
                     <SubscribeMailingList />
                     {!userProfile &&
                     <div className="p-5">

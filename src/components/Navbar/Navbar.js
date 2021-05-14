@@ -125,6 +125,11 @@ class Navbar extends React.Component {
                             How to Apply for a Scholarship
                         </Link>
                     </Menu.Item>
+                    <Menu.Item>
+                        <Link to="/schools">
+                        The Best Universities for Getting a Job
+                        </Link>
+                    </Menu.Item>
                     <Menu.Item key="finalists">
                         <Tag color="green">new</Tag>{' '}
                         <Link to="/finalists">Finalists</Link>
