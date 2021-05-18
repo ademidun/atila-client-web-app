@@ -121,7 +121,8 @@ export function HowItWorksStudent() {
             <h2 className="col-sm-12 text-center">
                 <Link to="/register">Create Profile.</Link>{' '}
                 <Link to="/scholarship">Apply for Scholarships.</Link>{' '}
-                Get Funded.
+                <Link to="/finalists">Get Funded.</Link>{' '}
+            
             </h2>
             <h5 className="col-sm-12 text-center text-muted">Atila is 100% free for students</h5>
             <SocialProof />
