@@ -92,8 +92,13 @@ export class ApplicationsTable extends  React.Component {
                 key: '1',
                 render: (userProfile, application) => {
     
-                    return application.user ? `${application.user.first_name} ${application.user.last_name}` :
-                        `${application.first_name_code} ${application.last_name_code}`;
+                    return (
+                        <>
+                        {application.user ? `${application.user.first_name} ${application.user.last_name}` :
+                        `${application.first_name_code} ${application.last_name_code}`} 
+                        
+                        <Button type="primary">Message Applicant</Button>
+                        </>);
                 },
                 sorter: (a, b) => {
     
