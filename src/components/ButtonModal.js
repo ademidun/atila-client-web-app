@@ -25,10 +25,12 @@ class ButtonModal extends React.Component {
 
     onSubmit = (event) => {
         const { onSubmit } = this.props;
-        this.handleModalCancel();
+
         if (onSubmit) {
             onSubmit(event);
         }
+
+        this.handleModalCancel();
     }
 
     render() {

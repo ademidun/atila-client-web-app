@@ -6,6 +6,7 @@ import { slugify } from '../../services/utils';
 import { CSVLink } from 'react-csv';
 import { convertApplicationsToCSVFormat, maxApplicationScoreDifference } from '../Application/ApplicationUtils';
 import { ApplicationsSearch, ApplicationPreview } from '../Application/ApplicationsSearch';
+import EmailModal from "../../components/EmailModal";
 
 
 // Show a warning
@@ -97,8 +98,13 @@ export class ApplicationsTable extends  React.Component {
                         {application.user ? `${application.user.first_name} ${application.user.last_name}` :
                         `${application.first_name_code} ${application.last_name_code}`} 
                         
-                        <Button type="primary">Message Applicant</Button>
-                        </>);
+                        <EmailModal scholarship={scholarship}
+                                    application={application}
+                                    showModalText={"Message Applicant..."}
+                                    modalTitle={"Draft Message"}
+                        />
+                        </>
+                        );
                 },
                 sorter: (a, b) => {
     
