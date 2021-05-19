@@ -3,6 +3,8 @@ import ButtonModal from "./ButtonModal";
 import ScholarshipsAPI from "../services/ScholarshipsAPI";
 import { Input } from "antd";
 import Loading from "./Loading";
+import PropTypes from "prop-types";
+import {ScholarshipPropType} from "../models/Scholarship";
 
 const { TextArea } = Input;
 
@@ -98,5 +100,20 @@ class EmailModal extends React.Component {
     }
 }
 
+EmailModal.proptypes = {
+    showModalButtonSize: PropTypes.string,
+    showModalText: PropTypes.string,
+    modalTitle: PropTypes.string,
+    application: PropTypes.any, // An Application
+    scholarship: ScholarshipPropType,
+}
+
+EmailModal.defaultProps = {
+    showModalButtonSize: "medium",
+    showModalText: "Show Modal",
+    modalTitle: "Modal Title",
+    application: null,
+    scholarship: null,
+}
 
 export default EmailModal;
