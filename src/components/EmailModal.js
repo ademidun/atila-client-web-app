@@ -1,7 +1,7 @@
 import React from 'react';
 import ButtonModal from "./ButtonModal";
 import ScholarshipsAPI from "../services/ScholarshipsAPI";
-import { Input } from "antd";
+import {Alert, Input} from "antd";
 import Loading from "./Loading";
 import PropTypes from "prop-types";
 import {ScholarshipPropType} from "../models/Scholarship";
@@ -15,7 +15,8 @@ class EmailModal extends React.Component {
         this.state = {
             emailSubject: "",
             emailBody: "",
-            loading: null
+            loading: null,
+            responseMessage: null,
         }
     }
 
@@ -41,13 +42,12 @@ class EmailModal extends React.Component {
                 // response returns these if they're needed in the future.
                 // const {scholarship, applications, unsubmitted_applications: unsubmittedApplications} =  res.data;
 
-                // toastNotify
-                // this.setState({responseMessage: "All applicants have been emailed!"});
+                this.setState({responseMessage: "Email has been sent!"});
             })
             .catch(err=>{
                 console.log({err});
-                // toastNotify
-                // this.setState({responseMessage: "There was an error emailing the applicants.\n\n Please message us using the chat icon in the bottom right of your screen."});
+
+                this.setState({responseMessage: "There was an error sending the email.\n\n Please message us using the chat icon in the bottom right of your screen."});
             })
             .finally(() => {
                 this.setState({loading: null});
@@ -55,7 +55,7 @@ class EmailModal extends React.Component {
     }
 
     render() {
-        const { emailSubject, emailBody, loading } = this.state;
+        const { emailSubject, emailBody, loading, responseMessage } = this.state;
         const { showModalButtonSize, showModalText, modalTitle } = this.props;
 
         let emailModalBody = (
@@ -95,6 +95,12 @@ class EmailModal extends React.Component {
                         disabled={loading}
                         popConfirmText={"Are you sure you want to send the email?"}
                 />
+                {responseMessage &&
+                <>
+                    <br />
+                    <Alert message={responseMessage} />
+                </>
+                }
             </div>
         )
     }
