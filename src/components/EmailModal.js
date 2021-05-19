@@ -100,7 +100,7 @@ class EmailModal extends React.Component {
     }
 }
 
-EmailModal.proptypes = {
+EmailModal.propTypes = {
     showModalButtonSize: PropTypes.string,
     showModalText: PropTypes.string,
     modalTitle: PropTypes.string,
