@@ -92,16 +92,17 @@ export class ApplicationsTable extends  React.Component {
                 dataIndex: 'user',
                 key: '1',
                 render: (userProfile, application) => {
+                    let displayName = application.user ? `${application.user.first_name} ${application.user.last_name}` :
+                        `${application.first_name_code} ${application.last_name_code}`
     
                     return (
                         <>
-                        {application.user ? `${application.user.first_name} ${application.user.last_name}` :
-                        `${application.first_name_code} ${application.last_name_code}`} 
+                        {displayName}
                         
                         <EmailModal scholarship={scholarship}
                                     application={application}
                                     showModalText={"Message Applicant..."}
-                                    modalTitle={"Draft Message"}
+                                    modalTitle={`Draft Message for ${displayName}`}
                         />
                         </>
                         );
