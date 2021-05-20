@@ -1,6 +1,6 @@
 import React from "react";
 import { configure, shallow } from "enzyme";
-import ButtonModal from "../ButtonModal";
+import ButtonModal from "./ButtonModal";
 import Adapter from "enzyme-adapter-react-16";
 
 configure({ adapter: new Adapter() });
