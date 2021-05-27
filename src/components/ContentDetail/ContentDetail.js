@@ -143,7 +143,7 @@ class ContentDetail extends React.Component {
 
         let authors = [user]
         if (contributors) {
-         authors = [...authors, ...contributors]
+         authors.push(...contributors)
         }
 
         let authorsReact = authors.map(userProfile => 
