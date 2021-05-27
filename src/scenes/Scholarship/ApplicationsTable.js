@@ -314,7 +314,7 @@ export const renderFinalistOrWinnerButton = (application, scholarship, selectFin
                 <p>
                     This finalist has been selected. Confirm finalists before you select a winner.
                 </p>
-                <Popconfirm placement="topLeft" title={"Confirm de-selecting of finalist?"} onConfirm={() => selectFinalistOrWinner(application, scholarship, false)} okText="Yes" cancelText="No">
+                <Popconfirm placement="topLeft" title={"Confirm de-selecting of finalist?"} onConfirm={() => selectFinalistOrWinner(application, scholarship)} okText="Yes" cancelText="No">
                     <Button danger>
                         Unselect Finalist...
                     </Button>

@@ -108,12 +108,12 @@ class ScholarshipManage extends React.Component {
             });
     };
 
-    selectFinalistOrWinner = (application, scholarship, isFinalist=true) => {
+    selectFinalistOrWinner = (application, scholarship) => {
 
         if (scholarship.is_finalists_notified) {
             this.selectWinner(application, scholarship);
         } else {
-            this.selectFinalist(application, scholarship, isFinalist);
+            this.toggleFinalist(application, scholarship);
         }
         
     };
@@ -139,11 +139,11 @@ class ScholarshipManage extends React.Component {
             })
     }
 
-    selectFinalist = (application, scholarship, isFinalist=true) => {
+    toggleFinalist = (application, scholarship) => {
         this.setState({isLoadingMessage: "Updating application..."});
 
         ApplicationsAPI
-            .selectFinalist(application.id, {is_finalist: isFinalist})
+            .selectFinalist(application.id, {is_finalist: !application.is_finalist})
             .then((res)=>{
                 console.log({res});
                 const {scholarship, applications, unsubmitted_applications: unsubmittedApplications} =  res.data;
