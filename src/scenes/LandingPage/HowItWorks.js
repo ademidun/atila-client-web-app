@@ -6,7 +6,7 @@ import {
     ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP,
     ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_START_SCHOLARSHIP
 } from "../../models/Constants";
-import { SocialProof } from './SocialProof';
+import {ImageGif} from "../../components/ImageGif";
 
 function HowItWorks({accountType}) {
 
@@ -33,7 +33,9 @@ const howItWorksStudent = [
             with the right scholarships for you.
 
         </React.Fragment>,
-        image: "https://imgur.com/QSmRBwv.jpg"
+        // commenting out instead of deleting images because might use them again soon
+        // image: "https://imgur.com/JqjjyCm.jpg",
+        gif: "https://s3.gifyu.com/images/create-account.gif"
     },
     {
         title: "Apply for Scholarships",
@@ -42,7 +44,8 @@ const howItWorksStudent = [
             {/* TODO uncomment this line when we add this feature */}
             {/* Autofill similar responses used in past scholarships to save time. */}
         </React.Fragment>,
-        image: "https://imgur.com/a49KkBZ.jpg"
+        // image: "https://imgur.com/EG5zKAT.jpg",
+        gif: "https://s3.gifyu.com/images/My-Movie-4.gif"
 
     },
     {
@@ -71,7 +74,8 @@ export const howItWorksSponsorItems = [
             Who's eligible?{' '}
             Any short answer or essay questions?{' '} etc.
         </React.Fragment>,
-        image: "https://imgur.com/HgIoMJ9.jpg"
+        // image: "https://imgur.com/HgIoMJ9.jpg",
+        gif: "https://s3.gifyu.com/images/Add-A-Scholarship-Final-Gif.gif"
     },
     {
         title: "Fund Scholarship",
@@ -81,6 +85,7 @@ export const howItWorksSponsorItems = [
             The minimum funding amount for additional contributions is ${ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP}.
         </p>,
         image: "https://i.imgur.com/kgpSskJ.png",
+        gif: "https://s3.gifyu.com/images/Add-Scholarship_-Michael-Scott-Scotts-Tots-Scholarship-2021---Atila--Mozilla-Firefox-2021-05-04-10-15-30.gif"
     },
     {
         title: "Promote Scholarship",
@@ -93,6 +98,7 @@ export const howItWorksSponsorItems = [
         body: "Review student applications and select winner. Funds directly transferred to winner's bank " +
             "account within 24 hours. All sponsors receive a thank you letter from winner.",
         image: "https://imgur.com/HDecTqt.jpg",
+        gif: "https://s3.gifyu.com/images/The-Office-Fund-2021-application-management---Atila--Mozilla-Firefox-2021-05-04-11-07-47.gif"
     },
     {
         title: <React.Fragment>The Big Cheque Special! <Tag color="green">Bonus</Tag></React.Fragment>,
@@ -125,18 +131,16 @@ export function HowItWorksStudent() {
             
             </h2>
             <h5 className="col-sm-12 text-center text-muted">Atila is 100% free for students</h5>
-            <SocialProof />
             <div className="offset-lg-1">
 
                 <DescriptionsWithScreenshotsList items={howItWorksStudent} />
-
-
-                <LandingPageLiveDemo youtubeVideoId="iLIHhuY9b0k" title="How to Start a Scholarship on Atila" />
-
-                <h1 className="col-sm-12 text-center">
-                    <Link to="/apply"> Learn More </Link>
-                </h1>
             </div>
+
+            <LandingPageLiveDemo youtubeVideoId="iLIHhuY9b0k" title="How to Start a Scholarship on Atila" />
+
+            <h1 className="col-sm-12 text-center">
+                <Link to="/apply"> Learn More </Link>
+            </h1>
         </div>
     )
 }
@@ -222,11 +226,16 @@ export function DescriptionWithScreenshot({item, index=null})   {
 
                 {/*Note: TO get the image to size responsively.
                             I just had to put it inside a parent div and add 'col-12' class.*/}
-                <img src={item.image}
+                {/*<img src={item.image}
                      alt={item.title}
                      title={item.title}
                      className="col-12"
-                />
+                />*/}
+                <ImageGif
+                    imageUrl={item.image}
+                    gifUrl={item.gif}
+                    title={item.title}/>
+
                 {item.imageCaption &&
                 <p className="col-12 text-center text-muted">
                     {item.imageCaption}

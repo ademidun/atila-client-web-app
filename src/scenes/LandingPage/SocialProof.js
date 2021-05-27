@@ -108,7 +108,7 @@ const schoolImages = [
 
 export function SocialProof() {
     return (
-        <div className="card w-150 text-center">
+        <div className="container w-150 text-center">
             <div className="shadow p-3">
                 <h3 className="col-sm-12 text-center">
                     Used by over 1,000 students across Canada at universities, colleges, and high schools
