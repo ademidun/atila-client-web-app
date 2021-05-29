@@ -310,9 +310,16 @@ export const renderFinalistOrWinnerButton = (application, scholarship, selectFin
 
     if (application.is_finalist && !scholarship.is_finalists_notified) {
         return (
-            <p>
-                This finalist has been selected. Confirm finalists before you select a winner.
-            </p>
+            <>
+                <p>
+                    This finalist has been selected. Confirm finalists before you select a winner.
+                </p>
+                <Popconfirm placement="topLeft" title={"Confirm de-selecting of finalist?"} onConfirm={() => selectFinalistOrWinner(application, scholarship)} okText="Yes" cancelText="No">
+                    <Button danger>
+                        Unselect Finalist...
+                    </Button>
+                </Popconfirm>
+            </>
         )
     }
     if (!application.is_finalist && scholarship.is_finalists_notified) {
