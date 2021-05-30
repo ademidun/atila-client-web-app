@@ -238,7 +238,7 @@ class ContentAddEdit extends React.Component {
         const elementTitle = isAddContentMode ? `Add ${contentType}` : `Edit ${contentType}`;
 
         const { content : {
-            title, description, published, header_image_url, body, essay_source_url
+            title, description, published, header_image_url, body, essay_source_url, user
         } } = this.state;
 
         if (!isAddContentMode && isLoading) {
@@ -279,6 +279,8 @@ class ContentAddEdit extends React.Component {
         </div>
     
         )
+
+        let isOwner = username === user.username
 
         let inviteContributorModalBody = (
             <>
@@ -363,7 +365,7 @@ class ContentAddEdit extends React.Component {
                                onChange={this.updateForm}
                                value={header_image_url} />
 
-                            {
+                            {isOwner &&
                                 <>
                                 <ButtonModal
                                     showModalButtonSize={"medium"}
