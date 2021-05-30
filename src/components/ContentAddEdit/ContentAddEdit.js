@@ -232,7 +232,7 @@ class ContentAddEdit extends React.Component {
 
     render() {
 
-        const { contentType, match : { params : { slug, username }}  } = this.props;
+        const { userProfile, contentType, match : { params : { slug, username }}  } = this.props;
         const { isAddContentMode, contentPostError, showContentAddOptions, isLoading, invitedContributor } = this.state;
 
         const elementTitle = isAddContentMode ? `Add ${contentType}` : `Edit ${contentType}`;
@@ -280,7 +280,7 @@ class ContentAddEdit extends React.Component {
     
         )
 
-        let isOwner = username === user.username
+        let isOwner = userProfile.username === user.username
 
         let inviteContributorModalBody = (
             <>
