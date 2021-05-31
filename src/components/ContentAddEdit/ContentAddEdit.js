@@ -16,7 +16,6 @@ import AutoCompleteRemoteData from "../AutoCompleteRemoteData";
 import {UserProfilePreview} from "../ReferredByInput";
 import {MinusCircleOutlined} from "@ant-design/icons";
 import ButtonModal from "../ButtonModal";
-import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 
 const defaultContent = {
     title: '',
