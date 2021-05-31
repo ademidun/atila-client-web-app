@@ -113,7 +113,7 @@ class ContentDetail extends React.Component {
         const { title, body, header_image_url, user, id, published, contributors } = content;
 
         let isContributor = false;
-        if (contributors) {
+        if (userProfile && contributors) {
             for (const contribUser of contributors) {
                 if (userProfile.user === contribUser.user) {
                     isContributor = true;

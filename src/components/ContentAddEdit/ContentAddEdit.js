@@ -279,7 +279,7 @@ class ContentAddEdit extends React.Component {
     
         )
 
-        let isOwner = userProfile.username === user.username
+        let isOwner = userProfile?.username === user.username
 
         let inviteContributorModalBody = (
             <>
