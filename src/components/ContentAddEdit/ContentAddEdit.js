@@ -237,7 +237,7 @@ class ContentAddEdit extends React.Component {
         const elementTitle = isAddContentMode ? `Add ${contentType}` : `Edit ${contentType}`;
 
         const { content : {
-            title, description, published, header_image_url, body, essay_source_url, user
+            title, description, published, header_image_url, body, essay_source_url, user, contributors
         } } = this.state;
 
         if (!isAddContentMode && isLoading) {
@@ -304,6 +304,15 @@ class ContentAddEdit extends React.Component {
                 }
             </>
         )
+
+        let authors = [user];
+        if (contributors) {
+            authors.push(...contributors)
+        }
+        let authorsReact = authors.map(userProfile =>
+            <div className="bg-light my-3" style={{display: 'inline-block', padding: '10px'}}>
+                <UserProfilePreview userProfile={userProfile} linkProfile={true} />
+            </div>);
 
         return (
             <div className="mt-3">
@@ -387,6 +396,8 @@ class ContentAddEdit extends React.Component {
                                className="col-12 mb-3 form-control"
                                onChange={this.updateForm}
                                value={essay_source_url} />}
+
+                        {authorsReact}
                     </div>
                     }
                     {header_image_url &&
