@@ -10,6 +10,15 @@ import { Link } from 'react-router-dom';
 import AutoCompleteRemoteData from './AutoCompleteRemoteData';
 import UserProfileAPI from '../services/UserProfileAPI';
 
+export const ProfilePicPreview = ({userProfile}) => {
+    return (
+        <img src={userProfile.profile_pic_url}
+             className="rounded-circle m-1"
+             alt={userProfile.first_name}
+             style={{width: "30px"}} />
+    )
+}
+
 export const UserProfilePreview  = ({userProfile, linkProfile=false}) => {
     
     let nameDisplay= `${userProfile.first_name} ${userProfile.last_name} (${userProfile.username})`;
@@ -23,10 +32,7 @@ export const UserProfilePreview  = ({userProfile, linkProfile=false}) => {
     }
     return (
         <div style={{display: "inline"}} className="mr-1">
-        <img src={userProfile.profile_pic_url}
-                className="rounded-circle m-1"
-                alt={nameDisplay} 
-                style={{width: "30px"}} />
+        <ProfilePicPreview userProfile={userProfile} />
             {nameDisplay}
         </div>
     )

@@ -59,6 +59,7 @@ export function genericItemTransform (item) {
                 type: item.type,
                 user: item.user,
                 published: item.published,
+                contributors: item.contributors,
             };
             break;
         case 'blog':
@@ -71,6 +72,7 @@ export function genericItemTransform (item) {
                 type: item.type,
                 user: item.user,
                 published: item.published,
+                contributors: item.contributors,
             };
             break;
         case 'forum':
