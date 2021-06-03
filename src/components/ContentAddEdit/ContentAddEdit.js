@@ -50,6 +50,7 @@ class ContentAddEdit extends React.Component {
             // this way the CkEditor only gets rendered when the data has been loaded
             // (when content.body has been loaded).
             isLoading: `Loading ${props.contentType}`,
+            isLoadingContributorInvite: false,
             invitedContributor: null,
         }
     }
@@ -220,7 +221,7 @@ class ContentAddEdit extends React.Component {
             return;
         }
 
-        this.setState({isLoading: "Inviting contributor..."});
+        this.setState({isLoadingContributorInvite: "Inviting contributor..."});
         ContentAPI
             .inviteContributor(content.id, invitedContributor.username)
             .then(res => {
@@ -239,20 +240,20 @@ class ContentAddEdit extends React.Component {
                 const { response_message } = err.response.data;
                 if (response_message) {
                     toastNotify(response_message, "error")
-                } else {
+            } else {
                     toastNotify(`There was an error inviting ${invitedContributor.first_name}.\n\n 
                     Please message us using the chat icon in the bottom right of your screen.`, "error")
                 }
             })
             .then(() => {
-                this.setState({isLoading: null});
+                this.setState({isLoadingContributorInvite: null});
             });
     }
 
     removeContributor = (contributorUserProfile) => {
         const { ContentAPI } = this.props;
         const { content } = this.state;
-        this.setState({isLoading: "Removing contributor..."});
+        this.setState({isLoadingContributorInvite: "Removing contributor..."});
         ContentAPI
             .removeContributor(content.id, contributorUserProfile.username)
             .then(res => {
@@ -276,14 +277,14 @@ class ContentAddEdit extends React.Component {
                 }
             })
             .then(() => {
-                this.setState({isLoading: null});
+                this.setState({isLoadingContributorInvite: null});
             });
     }
 
     render() {
 
         const { userProfile, contentType, match : { params : { slug, username }}  } = this.props;
-        const { isAddContentMode, contentPostError, showContentAddOptions, isLoading, invitedContributor } = this.state;
+        const { isAddContentMode, contentPostError, showContentAddOptions, isLoading, isLoadingContributorInvite, invitedContributor } = this.state;
 
         const elementTitle = isAddContentMode ? `Add ${contentType}` : `Edit ${contentType}`;
         const descriptionLabel = `Description: Write a short summary of what your ${contentType.toLowerCase()} post is about (400 characters max.).`;
@@ -360,7 +361,7 @@ class ContentAddEdit extends React.Component {
         let authors = [];
         // The first time you are creating a blog post (for example), there might be no user object with username, first_name etc. properties
         // The user might just be a user_id integer. So check to make sure that there is data to display.
-        if (user && user.usersname) {
+        if (user && user.username) {
             authors.push(user);
         }
         if (contributors) {
@@ -458,9 +459,14 @@ class ContentAddEdit extends React.Component {
                                     modalBody={inviteContributorModalBody}
                                     submitText={"Send Invite"}
                                     onSubmit={this.inviteContributor}
-                                    disabled={isLoading}
+                                    disabled={!!isLoadingContributorInvite}
                                 />
                                 <br />
+                                {isLoadingContributorInvite && 
+                                <div>
+                                    <Loading title={isLoadingContributorInvite}/>
+                                </div>
+                                }
                                 </>
                             }
                          </>
