@@ -7,7 +7,7 @@ import { Button, Popconfirm } from 'antd';
 import {Link, withRouter} from "react-router-dom";
 import TextareaAutosize from 'react-autosize-textarea';
 import {connect} from "react-redux";
-import {slugify} from "../../services/utils";
+import {getErrorMessage, slugify} from "../../services/utils";
 import UtilsAPI from "../../services/UtilsAPI";
 import {toastNotify} from "../../models/Utils";
 import Loading from "../Loading";
@@ -192,7 +192,8 @@ class ContentAddEdit extends React.Component {
             })
             .catch(err=> {
                 console.log({err});
-                this.setState({contentPostError: err.response && err.response.data})
+                this.setState({contentPostError: getErrorMessage(err, false)});
+                toastNotify(getErrorMessage(err), 'error');
             })
             .finally(()=>{});
 
