@@ -158,7 +158,7 @@ class ContentDetail extends React.Component {
         }
 
         let authorsReact = authors.map(userProfile => 
-            <div className="bg-light my-3" style={{display: 'inline-block', padding: '10px'}}>
+            <div key={userProfile.username} className="bg-light my-3" style={{display: 'inline-block', padding: '10px'}}>
                 <UserProfilePreview userProfile={userProfile} linkProfile={true} />
             </div>);
 

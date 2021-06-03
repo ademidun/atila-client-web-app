@@ -45,7 +45,7 @@ class ContentCard extends React.Component {
             <div className="bg-light my-3">
                 <UserProfilePreview userProfile={user} linkProfile={true} />
                 {contributors && contributors.map(userProfile =>
-                    <ProfilePicPreview userProfile={userProfile} linkProfile={true} />)}
+                    <ProfilePicPreview userProfile={userProfile} key={userProfile.username} linkProfile={true} />)}
             </div>
         )
 

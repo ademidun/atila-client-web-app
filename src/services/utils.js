@@ -294,7 +294,7 @@ export function scrollToElement(elementSelector) {
  * @param error
  * @returns {string|{response}|*}
  */
-export function getErrorMessage(error) {
+export function getErrorMessage(error, stringifyError=true) {
 
     let formattedMessage = "";
     if (error.response && error.response.status === 500) {
@@ -310,8 +310,12 @@ export function getErrorMessage(error) {
     } else {
         formattedMessage = error.message ? error.message : error;
     }
+
+    if (stringifyError) {
+        formattedMessage = JSON.stringify(formattedMessage);
+    }
     
-    return JSON.stringify(formattedMessage);
+    return formattedMessage;
 }
 
 export function getPageViewLimit(pageViews, pathname) {

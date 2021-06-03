@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import CKEditor from "@ckeditor/ckeditor5-react";
 import InlineEditor from "@ckeditor/ckeditor5-build-inline";
 import {Helmet} from "react-helmet";
-import { Button, Popconfirm } from 'antd';
+import { Alert, Button, Popconfirm } from 'antd';
 import {Link, withRouter} from "react-router-dom";
 import TextareaAutosize from 'react-autosize-textarea';
 import {connect} from "react-redux";
-import {slugify} from "../../services/utils";
+import {getErrorMessage, slugify} from "../../services/utils";
 import UtilsAPI from "../../services/UtilsAPI";
 import {toastNotify} from "../../models/Utils";
 import Loading from "../Loading";
@@ -28,6 +28,11 @@ const defaultContent = {
     published: false,
 };
 
+
+// TODO use dynamic max character limit based on the type of content
+// TODO All content should have the same character legnth maximum (that change needs to be made in the backend)
+const descriptionCharacterLengthMax = 400;
+
 class ContentAddEdit extends React.Component {
 
     constructor(props) {
@@ -39,12 +44,13 @@ class ContentAddEdit extends React.Component {
             contentPostError: null,
             contentGetError: null,
             isAddContentMode: false,
-            showContentAddOptions: false,
+            showContentAddOptions: true,
             // CKEditor doesn't get updated when the state changes,
             // so we hve to set isLoading to true by default.
             // this way the CkEditor only gets rendered when the data has been loaded
             // (when content.body has been loaded).
             isLoading: `Loading ${props.contentType}`,
+            isLoadingContributorInvite: false,
             invitedContributor: null,
         }
     }
@@ -82,10 +88,17 @@ class ContentAddEdit extends React.Component {
     updateForm = (event) => {
         event.preventDefault();
         const content = this.state.content;
-        if(event.target.name==='title') {
-            content.slug = slugify(event.target.value);
+        let eventValue = event.target.value;
+        let eventName = event.target.name;
+        if(eventName==='title') {
+            content.slug = slugify(eventValue);
         }
-        content[event.target.name] = event.target.value;
+        if(eventName==='description'){
+            if(eventValue && eventValue.length >= 400) {
+                eventValue = eventValue.substring(0, 400);
+            }
+        }
+        content[eventName] = eventValue;
         this.setState({content});
     };
 
@@ -192,7 +205,8 @@ class ContentAddEdit extends React.Component {
             })
             .catch(err=> {
                 console.log({err});
-                this.setState({contentPostError: err.response && err.response.data})
+                this.setState({contentPostError: getErrorMessage(err, false)});
+                toastNotify(getErrorMessage(err), 'error');
             })
             .finally(()=>{});
 
@@ -207,7 +221,7 @@ class ContentAddEdit extends React.Component {
             return;
         }
 
-        this.setState({isLoading: "Inviting contributor..."});
+        this.setState({isLoadingContributorInvite: "Inviting contributor..."});
         ContentAPI
             .inviteContributor(content.id, invitedContributor.username)
             .then(res => {
@@ -226,20 +240,20 @@ class ContentAddEdit extends React.Component {
                 const { response_message } = err.response.data;
                 if (response_message) {
                     toastNotify(response_message, "error")
-                } else {
+            } else {
                     toastNotify(`There was an error inviting ${invitedContributor.first_name}.\n\n 
                     Please message us using the chat icon in the bottom right of your screen.`, "error")
                 }
             })
             .then(() => {
-                this.setState({isLoading: null});
+                this.setState({isLoadingContributorInvite: null});
             });
     }
 
     removeContributor = (contributorUserProfile) => {
         const { ContentAPI } = this.props;
         const { content } = this.state;
-        this.setState({isLoading: "Removing contributor..."});
+        this.setState({isLoadingContributorInvite: "Removing contributor..."});
         ContentAPI
             .removeContributor(content.id, contributorUserProfile.username)
             .then(res => {
@@ -263,16 +277,17 @@ class ContentAddEdit extends React.Component {
                 }
             })
             .then(() => {
-                this.setState({isLoading: null});
+                this.setState({isLoadingContributorInvite: null});
             });
     }
 
     render() {
 
         const { userProfile, contentType, match : { params : { slug, username }}  } = this.props;
-        const { isAddContentMode, contentPostError, showContentAddOptions, isLoading, invitedContributor } = this.state;
+        const { isAddContentMode, contentPostError, showContentAddOptions, isLoading, isLoadingContributorInvite, invitedContributor } = this.state;
 
         const elementTitle = isAddContentMode ? `Add ${contentType}` : `Edit ${contentType}`;
+        const descriptionLabel = `Description: Write a short summary of what your ${contentType.toLowerCase()} post is about (400 characters max.).`;
 
         const { content : {
             title, description, published, header_image_url, body, essay_source_url, user, contributors
@@ -317,7 +332,7 @@ class ContentAddEdit extends React.Component {
     
         )
 
-        let isOwner = userProfile?.username === user.username
+        let isOwner = userProfile?.username === user?.username
 
         let inviteContributorModalBody = (
             <>
@@ -343,12 +358,17 @@ class ContentAddEdit extends React.Component {
             </>
         )
 
-        let authors = [user];
+        let authors = [];
+        // The first time you are creating a blog post (for example), there might be no user object with username, first_name etc. properties
+        // The user might just be a user_id integer. So check to make sure that there is data to display.
+        if (user && user.username) {
+            authors.push(user);
+        }
         if (contributors) {
             authors.push(...contributors)
         }
         let authorsReact = authors.map((userProfile, index) =>
-            <div className="bg-light my-3" style={{display: 'inline-block', padding: '10px'}}>
+            <div key={userProfile.username} className="bg-light my-3" style={{display: 'inline-block', padding: '10px'}}>
                 <UserProfilePreview userProfile={userProfile} linkProfile={true} />
                 {isOwner && index !== 0 &&
                 <Popconfirm placement="topLeft" title={`Confirm removing ${userProfile.first_name} as a contributor?`}
@@ -364,6 +384,9 @@ class ContentAddEdit extends React.Component {
                     <meta charSet="utf-8" />
                     <title>{title && `${title} - `}{elementTitle} - Atila</title>
                 </Helmet>
+                {!userProfile && 
+                    <Alert message={`⚠️ Warning, you must be logged in to add or edit ${contentType}s`} />
+                }
                 <form className="row p-3 form-group" onSubmit={this.submitForm}>
                     <TextareaAutosize placeholder="Title"
                                       className="border-0 center-block text-center col-12"
@@ -398,21 +421,31 @@ class ContentAddEdit extends React.Component {
                     {showContentAddOptions &&
                     <div className="col-12">
                         {/*
-                            If there is already a description, we will include a <p> element
-                            that allows the user to see the application.
+                            If there is already a description, the placeholder will be overwritten
+                            so we include a <p> element
+                            that allows the user to see the label in the absence of a placeholder.
                         */}
-                        {description && <p className="text-muted">Description</p>}
-                    <textarea placeholder="Description"
+                        {description && <p className="text-muted">
+                            {descriptionLabel}
+                             {description.length > 300 && 
+                            <> <br/>
+                            Character Count: {description.length} / {descriptionCharacterLengthMax}
+                            </>
+                            }
+                            
+                            </p>}
+                    <textarea placeholder={descriptionLabel}
                               className="col-12 mb-3 form-control"
                               name="description"
                               value={description}
                               onChange={this.updateForm}
                     />
+
                         {contentType === 'Blog' &&
                         <>
                             <input type="url"
                                name="header_image_url"
-                               placeholder="Header Image Url"
+                               placeholder={`Paste the url of a cover image for your ${contentType.toLowerCase()} post`}
                                className="col-12 mb-3 form-control"
                                onChange={this.updateForm}
                                value={header_image_url} />
@@ -426,9 +459,14 @@ class ContentAddEdit extends React.Component {
                                     modalBody={inviteContributorModalBody}
                                     submitText={"Send Invite"}
                                     onSubmit={this.inviteContributor}
-                                    disabled={isLoading}
+                                    disabled={!!isLoadingContributorInvite}
                                 />
                                 <br />
+                                {isLoadingContributorInvite && 
+                                <div>
+                                    <Loading title={isLoadingContributorInvite}/>
+                                </div>
+                                }
                                 </>
                             }
                          </>

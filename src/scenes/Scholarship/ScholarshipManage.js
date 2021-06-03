@@ -46,7 +46,7 @@ class AssignReviewerRadioSelect extends React.Component {
 
         let reviewerRadioOptions = reviewerOptions.map((reviewer, index) => {
             return (
-                <Radio style={radioStyle} value={index}>
+                <Radio style={radioStyle} value={index} key={reviewer.username}>
                     <UserProfilePreview userProfile={reviewer} />
                 </Radio>
             )
