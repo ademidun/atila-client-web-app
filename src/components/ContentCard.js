@@ -44,11 +44,7 @@ class ContentCard extends React.Component {
         let authorsReact = (
             <div className="bg-light my-3">
                 <UserProfilePreview userProfile={user} linkProfile={true} />
-                {contributors && (
-                    <div style={{float: 'right'}}>
-                        {contributors.map(userProfile => <ProfilePicPreview userProfile={userProfile} />)}
-                    </div>
-                )}
+                {contributors && contributors.map(userProfile => <ProfilePicPreview userProfile={userProfile} />)}
             </div>
         )
 
