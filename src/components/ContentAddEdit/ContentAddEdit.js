@@ -12,6 +12,11 @@ import UtilsAPI from "../../services/UtilsAPI";
 import {toastNotify} from "../../models/Utils";
 import Loading from "../Loading";
 import ApplicationsAPI from '../../services/ApplicationsAPI';
+import AutoCompleteRemoteData from "../AutoCompleteRemoteData";
+import {UserProfilePreview} from "../ReferredByInput";
+import {MinusCircleOutlined} from "@ant-design/icons";
+import ButtonModal from "../ButtonModal";
+import CloseCircleOutlined from "@ant-design/icons/lib/icons/CloseCircleOutlined";
 
 const defaultContent = {
     title: '',
@@ -40,6 +45,7 @@ class ContentAddEdit extends React.Component {
             // this way the CkEditor only gets rendered when the data has been loaded
             // (when content.body has been loaded).
             isLoading: `Loading ${props.contentType}`,
+            invitedContributor: null,
         }
     }
 
@@ -192,15 +198,84 @@ class ContentAddEdit extends React.Component {
 
     };
 
+    inviteContributor = () => {
+        const { ContentAPI } = this.props;
+        const { content, invitedContributor } = this.state;
+
+        if (!invitedContributor) {
+            toastNotify("Failed to invite contributor. Please select a user.", "error");
+            return;
+        }
+
+        this.setState({isLoading: "Inviting contributor..."});
+        ContentAPI
+            .inviteContributor(content.id, invitedContributor.username)
+            .then(res => {
+                // invites_sent is also in res.data
+                toastNotify(`${invitedContributor.first_name} has been sent an invite email.`)
+
+                this.setState({invitedContributor: null});
+                if (res.data.blog) {
+                    this.setState({content: res.data.blog});
+                } else if( res.data.essay) {
+                    this.setState({content: res.data.essay});
+                }
+            })
+            .catch(err => {
+                console.log({err});
+                const { response_message } = err.response.data;
+                if (response_message) {
+                    toastNotify(response_message, "error")
+                } else {
+                    toastNotify(`There was an error inviting ${invitedContributor.first_name}.\n\n 
+                    Please message us using the chat icon in the bottom right of your screen.`, "error")
+                }
+            })
+            .then(() => {
+                this.setState({isLoading: null});
+            });
+    }
+
+    removeContributor = (contributorUserProfile) => {
+        const { ContentAPI } = this.props;
+        const { content } = this.state;
+        this.setState({isLoading: "Removing contributor..."});
+        ContentAPI
+            .removeContributor(content.id, contributorUserProfile.username)
+            .then(res => {
+                // invites_sent is also in res.data
+                toastNotify(`${contributorUserProfile.first_name} has been removed as a contributor.`)
+
+                if (res.data.blog) {
+                    this.setState({content: res.data.blog});
+                } else if( res.data.essay) {
+                    this.setState({content: res.data.essay});
+                }
+            })
+            .catch(err => {
+                console.log({err});
+                const { response_message } = err.response.data;
+                if (response_message) {
+                    toastNotify(response_message, "error")
+                } else {
+                    toastNotify(`There was an error removing ${contributorUserProfile.first_name}.\n\n 
+                    Please message us using the chat icon in the bottom right of your screen.`, "error")
+                }
+            })
+            .then(() => {
+                this.setState({isLoading: null});
+            });
+    }
+
     render() {
 
-        const { contentType, match : { params : { slug, username }}  } = this.props;
-        const { isAddContentMode, contentPostError, showContentAddOptions, isLoading} = this.state;
+        const { userProfile, contentType, match : { params : { slug, username }}  } = this.props;
+        const { isAddContentMode, contentPostError, showContentAddOptions, isLoading, invitedContributor } = this.state;
 
         const elementTitle = isAddContentMode ? `Add ${contentType}` : `Edit ${contentType}`;
 
         const { content : {
-            title, description, published, header_image_url, body, essay_source_url
+            title, description, published, header_image_url, body, essay_source_url, user, contributors
         } } = this.state;
 
         if (!isAddContentMode && isLoading) {
@@ -241,6 +316,47 @@ class ContentAddEdit extends React.Component {
         </div>
     
         )
+
+        let isOwner = userProfile?.username === user.username
+
+        let inviteContributorModalBody = (
+            <>
+                <AutoCompleteRemoteData placeholder={"Contributor's username or name..."}
+                                        onSelect={(userProfile)=>{this.setState({invitedContributor: userProfile})}}
+                                        type="user" />
+
+                {invitedContributor &&
+                <div className="my-2">
+                    Pending invite: <br/>
+                    <UserProfilePreview userProfile={invitedContributor} />
+
+                    <MinusCircleOutlined
+                        style={{
+                            fontSize: "30px",
+                        }}
+                        onClick={()=>{
+                            this.setState({invitedContributor: null})
+                        }}
+                    />
+                </div>
+                }
+            </>
+        )
+
+        let authors = [user];
+        if (contributors) {
+            authors.push(...contributors)
+        }
+        let authorsReact = authors.map((userProfile, index) =>
+            <div className="bg-light my-3" style={{display: 'inline-block', padding: '10px'}}>
+                <UserProfilePreview userProfile={userProfile} linkProfile={true} />
+                {isOwner && index !== 0 &&
+                <Popconfirm placement="topLeft" title={`Confirm removing ${userProfile.first_name} as a contributor?`}
+                            onConfirm={()=>{this.removeContributor(userProfile)}} okText="Yes" cancelText="No">
+                    <CloseCircleOutlined />
+                </Popconfirm>
+                }
+            </div>);
 
         return (
             <div className="mt-3">
@@ -293,12 +409,30 @@ class ContentAddEdit extends React.Component {
                               onChange={this.updateForm}
                     />
                         {contentType === 'Blog' &&
-                        <input type="url"
+                        <>
+                            <input type="url"
                                name="header_image_url"
                                placeholder="Header Image Url"
                                className="col-12 mb-3 form-control"
                                onChange={this.updateForm}
-                               value={header_image_url} />}
+                               value={header_image_url} />
+
+                            {isOwner &&
+                                <>
+                                <ButtonModal
+                                    showModalButtonSize={"medium"}
+                                    showModalText={"Invite Contributor..."}
+                                    modalTitle={"Invite Contributor"}
+                                    modalBody={inviteContributorModalBody}
+                                    submitText={"Send Invite"}
+                                    onSubmit={this.inviteContributor}
+                                    disabled={isLoading}
+                                />
+                                <br />
+                                </>
+                            }
+                         </>
+                         }
                         {contentType === 'Essay' &&
                         <input type="url"
                                name="essay_source_url"
@@ -306,6 +440,8 @@ class ContentAddEdit extends React.Component {
                                className="col-12 mb-3 form-control"
                                onChange={this.updateForm}
                                value={essay_source_url} />}
+
+                        {authorsReact}
                     </div>
                     }
                     {header_image_url &&

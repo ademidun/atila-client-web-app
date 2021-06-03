@@ -59,6 +59,30 @@ class BlogsApi {
 
         return apiCompletionPromise;
     };
+
+    static inviteContributor = (id, username) => {
+        let data = {'username': username};
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: data,
+            url: `${BlogsApi.blogsApiUrl}/${id}/invite-contributor/`,
+        });
+
+        return apiCompletionPromise;
+    };
+
+    static removeContributor = (id, username) => {
+        let data = {'username': username};
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: data,
+            url: `${BlogsApi.blogsApiUrl}/${id}/remove-contributor/`,
+        });
+
+        return apiCompletionPromise;
+    };
 }
 
 export default BlogsApi;

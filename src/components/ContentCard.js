@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 
 import './Footer/Footer.scss';
 import {truncate} from "../services/utils";
+import {ProfilePicPreview, UserProfilePreview} from "./ReferredByInput";
 
 class ContentCard extends React.Component {
 
@@ -29,7 +30,7 @@ class ContentCard extends React.Component {
 
         const { className, content, hideImage, customStyle } = this.props;
         const { showPreview } = this.state;
-        const { title, description, image, slug, type, user, published } = content;
+        const { title, description, image, slug, type, user, published, contributors } = content;
 
         let descriptionText = description;
 
@@ -39,6 +40,16 @@ class ContentCard extends React.Component {
                 descriptionText +='...'
             }
         }
+
+        let authorsReact = (
+            <div className="bg-light my-3">
+                <UserProfilePreview userProfile={user} linkProfile={true} />
+                {contributors && contributors.map(userProfile =>
+                    <ProfilePicPreview userProfile={userProfile} linkProfile={true} />)}
+            </div>
+        )
+
+
         return (
             <div className={`${className} card shadow p-3`} style={customStyle}>
                 <div  className="card-title">
@@ -58,16 +69,7 @@ class ContentCard extends React.Component {
                         Unpublished
                     </p>}
                 </div>
-                {user && <div className="bg-light mb-3 p-1">
-                    <Link to={`/profile/${user.username}`} >
-                        <img
-                            alt="user profile"
-                            style={{ height: '50px', maxWidth: 'auto' }}
-                            className="rounded-circle py-1 pr-1"
-                            src={user.profile_pic_url} />
-                        {user.first_name} {user.last_name}
-                    </Link>
-                </div>}
+                {user && authorsReact}
                 <div  className="card-image mb-3">
                     {
                     !hideImage && image &&

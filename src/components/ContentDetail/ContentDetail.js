@@ -110,9 +110,20 @@ class ContentDetail extends React.Component {
                 title={'Loading...'} />)
         }
 
-        const canEditContent = userProfile && (userProfile.user === content.user.id || userProfile.is_atila_admin);
-
         const { title, body, header_image_url, user, id, published, contributors } = content;
+
+        let isContributor = false;
+        if (userProfile && contributors) {
+            for (const contribUser of contributors) {
+                if (userProfile.user === contribUser.user) {
+                    isContributor = true;
+                    break;
+                }
+            }
+        }
+
+        const canEditContent = userProfile && (userProfile.user === content.user.id ||
+            userProfile.is_atila_admin || isContributor);
 
         let contentToDisplay = null;
 
