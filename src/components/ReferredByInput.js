@@ -15,7 +15,7 @@ export const ProfilePicPreview = ({userProfile}) => {
         <img src={userProfile.profile_pic_url}
              className="rounded-circle m-1"
              alt={userProfile.first_name}
-             style={{width: "30px"}} />
+             style={{width: "30px", height: "30px"}} />
     )
 }
 
