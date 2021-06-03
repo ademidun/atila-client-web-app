@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import CKEditor from "@ckeditor/ckeditor5-react";
 import InlineEditor from "@ckeditor/ckeditor5-build-inline";
 import {Helmet} from "react-helmet";
-import { Button, Popconfirm } from 'antd';
+import { Alert, Button, Popconfirm } from 'antd';
 import {Link, withRouter} from "react-router-dom";
 import TextareaAutosize from 'react-autosize-textarea';
 import {connect} from "react-redux";
@@ -331,7 +331,7 @@ class ContentAddEdit extends React.Component {
     
         )
 
-        let isOwner = userProfile?.username === user.username
+        let isOwner = userProfile?.username === user?.username
 
         let inviteContributorModalBody = (
             <>
@@ -383,6 +383,9 @@ class ContentAddEdit extends React.Component {
                     <meta charSet="utf-8" />
                     <title>{title && `${title} - `}{elementTitle} - Atila</title>
                 </Helmet>
+                {!userProfile && 
+                    <Alert message={`⚠️ Warning, you must be logged in to add or edit ${contentType}s`} />
+                }
                 <form className="row p-3 form-group" onSubmit={this.submitForm}>
                     <TextareaAutosize placeholder="Title"
                                       className="border-0 center-block text-center col-12"
