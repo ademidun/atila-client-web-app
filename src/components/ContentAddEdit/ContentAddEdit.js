@@ -201,6 +201,12 @@ class ContentAddEdit extends React.Component {
     inviteContributor = () => {
         const { ContentAPI } = this.props;
         const { content, invitedContributor } = this.state;
+
+        if (!invitedContributor) {
+            toastNotify("Failed to invite contributor. Please select a user.", "error");
+            return;
+        }
+
         this.setState({isLoading: "Inviting contributor..."});
         ContentAPI
             .inviteContributor(content.id, invitedContributor.username)
