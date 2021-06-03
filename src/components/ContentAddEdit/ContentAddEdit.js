@@ -357,13 +357,18 @@ class ContentAddEdit extends React.Component {
             </>
         )
 
-        let authors = [user];
+        let authors = [];
+        // The first time you are creating a blog post (for example), there might be no user object with username, first_name etc. properties
+        // The user might just be a user_id integer. So check to make sure that there is data to display.
+        if (user && user.usersname) {
+            authors.push(user);
+        }
         if (contributors) {
             authors.push(...contributors)
         }
         let authorsReact = authors.map((userProfile, index) =>
             <div className="bg-light my-3" style={{display: 'inline-block', padding: '10px'}}>
-                <UserProfilePreview userProfile={userProfile} linkProfile={true} />
+                <UserProfilePreview userProfile={userProfile} linkProfile={true} key={userProfile.username} />
                 {isOwner && index !== 0 &&
                 <Popconfirm placement="topLeft" title={`Confirm removing ${userProfile.first_name} as a contributor?`}
                             onConfirm={()=>{this.removeContributor(userProfile)}} okText="Yes" cancelText="No">
