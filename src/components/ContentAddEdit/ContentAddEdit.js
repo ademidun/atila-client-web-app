@@ -28,6 +28,11 @@ const defaultContent = {
     published: false,
 };
 
+
+// TODO use dynamic max character limit based on the type of content
+// TODO All content should have the same character legnth maximum (that change needs to be made in the backend)
+const descriptionCharacterLengthMax = 400;
+
 class ContentAddEdit extends React.Component {
 
     constructor(props) {
@@ -39,7 +44,7 @@ class ContentAddEdit extends React.Component {
             contentPostError: null,
             contentGetError: null,
             isAddContentMode: false,
-            showContentAddOptions: false,
+            showContentAddOptions: true,
             // CKEditor doesn't get updated when the state changes,
             // so we hve to set isLoading to true by default.
             // this way the CkEditor only gets rendered when the data has been loaded
@@ -82,10 +87,17 @@ class ContentAddEdit extends React.Component {
     updateForm = (event) => {
         event.preventDefault();
         const content = this.state.content;
-        if(event.target.name==='title') {
-            content.slug = slugify(event.target.value);
+        let eventValue = event.target.value;
+        let eventName = event.target.name;
+        if(eventName==='title') {
+            content.slug = slugify(eventValue);
         }
-        content[event.target.name] = event.target.value;
+        if(eventName==='description'){
+            if(eventValue && eventValue.length >= 400) {
+                eventValue = eventValue.substring(0, 400);
+            }
+        }
+        content[eventName] = eventValue;
         this.setState({content});
     };
 
@@ -274,6 +286,7 @@ class ContentAddEdit extends React.Component {
         const { isAddContentMode, contentPostError, showContentAddOptions, isLoading, invitedContributor } = this.state;
 
         const elementTitle = isAddContentMode ? `Add ${contentType}` : `Edit ${contentType}`;
+        const descriptionLabel = `Description: Write a short summary of what your ${contentType.toLowerCase()} post is about (400 characters max.).`;
 
         const { content : {
             title, description, published, header_image_url, body, essay_source_url, user, contributors
@@ -399,21 +412,31 @@ class ContentAddEdit extends React.Component {
                     {showContentAddOptions &&
                     <div className="col-12">
                         {/*
-                            If there is already a description, we will include a <p> element
-                            that allows the user to see the application.
+                            If there is already a description, the placeholder will be overwritten
+                            so we include a <p> element
+                            that allows the user to see the label in the absence of a placeholder.
                         */}
-                        {description && <p className="text-muted">Description</p>}
-                    <textarea placeholder="Description"
+                        {description && <p className="text-muted">
+                            {descriptionLabel}
+                             {description.length > 300 && 
+                            <> <br/>
+                            Character Count: {description.length} / {descriptionCharacterLengthMax}
+                            </>
+                            }
+                            
+                            </p>}
+                    <textarea placeholder={descriptionLabel}
                               className="col-12 mb-3 form-control"
                               name="description"
                               value={description}
                               onChange={this.updateForm}
                     />
+
                         {contentType === 'Blog' &&
                         <>
                             <input type="url"
                                name="header_image_url"
-                               placeholder="Header Image Url"
+                               placeholder={`Paste the url of a cover image for your ${contentType.toLowerCase()} post`}
                                className="col-12 mb-3 form-control"
                                onChange={this.updateForm}
                                value={header_image_url} />
