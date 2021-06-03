@@ -367,8 +367,8 @@ class ContentAddEdit extends React.Component {
             authors.push(...contributors)
         }
         let authorsReact = authors.map((userProfile, index) =>
-            <div className="bg-light my-3" style={{display: 'inline-block', padding: '10px'}}>
-                <UserProfilePreview userProfile={userProfile} linkProfile={true} key={userProfile.username} />
+            <div key={userProfile.username} className="bg-light my-3" style={{display: 'inline-block', padding: '10px'}}>
+                <UserProfilePreview userProfile={userProfile} linkProfile={true} />
                 {isOwner && index !== 0 &&
                 <Popconfirm placement="topLeft" title={`Confirm removing ${userProfile.first_name} as a contributor?`}
                             onConfirm={()=>{this.removeContributor(userProfile)}} okText="Yes" cancelText="No">
