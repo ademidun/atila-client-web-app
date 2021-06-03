@@ -16,6 +16,7 @@ import AutoCompleteRemoteData from "../AutoCompleteRemoteData";
 import {UserProfilePreview} from "../ReferredByInput";
 import {MinusCircleOutlined} from "@ant-design/icons";
 import ButtonModal from "../ButtonModal";
+import CloseCircleOutlined from "@ant-design/icons/lib/icons/CloseCircleOutlined";
 
 const defaultContent = {
     title: '',
@@ -205,7 +206,7 @@ class ContentAddEdit extends React.Component {
             .inviteContributor(content.id, invitedContributor.username)
             .then(res => {
                 // invites_sent is also in res.data
-                toastNotify(`${invitedContributor.username} has been sent an invite email.`)
+                toastNotify(`${invitedContributor.first_name} has been sent an invite email.`)
 
                 this.setState({invitedContributor: null});
                 if (res.data.blog) {
@@ -220,7 +221,38 @@ class ContentAddEdit extends React.Component {
                 if (response_message) {
                     toastNotify(response_message, "error")
                 } else {
-                    toastNotify(`There was an error inviting ${invitedContributor}.\n\n 
+                    toastNotify(`There was an error inviting ${invitedContributor.first_name}.\n\n 
+                    Please message us using the chat icon in the bottom right of your screen.`, "error")
+                }
+            })
+            .then(() => {
+                this.setState({isLoading: null});
+            });
+    }
+
+    removeContributor = (contributorUserProfile) => {
+        const { ContentAPI } = this.props;
+        const { content } = this.state;
+        this.setState({isLoading: "Removing contributor..."});
+        ContentAPI
+            .removeContributor(content.id, contributorUserProfile.username)
+            .then(res => {
+                // invites_sent is also in res.data
+                toastNotify(`${contributorUserProfile.first_name} has been removed as a contributor.`)
+
+                if (res.data.blog) {
+                    this.setState({content: res.data.blog});
+                } else if( res.data.essay) {
+                    this.setState({content: res.data.essay});
+                }
+            })
+            .catch(err => {
+                console.log({err});
+                const { response_message } = err.response.data;
+                if (response_message) {
+                    toastNotify(response_message, "error")
+                } else {
+                    toastNotify(`There was an error removing ${contributorUserProfile.first_name}.\n\n 
                     Please message us using the chat icon in the bottom right of your screen.`, "error")
                 }
             })
@@ -309,9 +341,15 @@ class ContentAddEdit extends React.Component {
         if (contributors) {
             authors.push(...contributors)
         }
-        let authorsReact = authors.map(userProfile =>
+        let authorsReact = authors.map((userProfile, index) =>
             <div className="bg-light my-3" style={{display: 'inline-block', padding: '10px'}}>
                 <UserProfilePreview userProfile={userProfile} linkProfile={true} />
+                {isOwner && index !== 0 &&
+                <Popconfirm placement="topLeft" title={`Confirm removing ${userProfile.first_name} as a contributor?`}
+                            onConfirm={()=>{this.removeContributor(userProfile)}} okText="Yes" cancelText="No">
+                    <CloseCircleOutlined />
+                </Popconfirm>
+                }
             </div>);
 
         return (
