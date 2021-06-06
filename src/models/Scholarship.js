@@ -129,6 +129,7 @@ export let DEFAULT_SCHOLARSHIP = {
     sports: [],
     disability: [],
     language: [],
+    reddit_url: null,
 };
 
 export const SCHOLARSHIP_CONTRIBUTION_EXAMPLE_IMAGE = "https://hcti.io/v1/image/45ca4aac-0a18-4f52-bac3-07d98648a75d";
