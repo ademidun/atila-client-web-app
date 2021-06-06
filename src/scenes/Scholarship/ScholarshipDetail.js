@@ -261,6 +261,8 @@ class ScholarshipDetail extends React.Component {
         }
 
         let redditUrlComponent = (
+        <div>
+        <hr />
         <p>
             Questions about this scholarship? Ask on the{' '}
             <Link to={scholarship.reddit_url}>
@@ -271,6 +273,7 @@ class ScholarshipDetail extends React.Component {
                 r/atila.
             </Link>
         </p>
+        </div>
         )
 
         return (
@@ -440,7 +443,6 @@ class ScholarshipDetail extends React.Component {
                             {/*todo find a way to secure against XSS: https://stackoverflow.com/a/19277723*/}
                             <hr />
                             <div dangerouslySetInnerHTML={{__html: criteria_info}} />
-                            <hr />
                             {scholarship.reddit_url && redditUrlComponent}
                         </div>
                         <RelatedItems
