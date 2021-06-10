@@ -33,15 +33,15 @@ const selectChange = ( name, value, updateForm ) => {
     updateForm(newEvent);
 };
 
-function FormDynamicInput({model, onUpdateForm, inputConfig}) {
+function FormDynamicInput({model, onUpdateForm, inputConfig, loggedInUserProfile}) {
 
     const { type, keyName, html, suggestions, className,
         options, valueDisplay, isHidden, hideLabel, label, disabled } = inputConfig;
     let {placeholder} = inputConfig;
     let inputForm = null;
 
-    if(isHidden && isHidden(model)) {
-        return null
+    if(isHidden && isHidden(model, loggedInUserProfile)) {
+        return null;
     }
 
     if (!placeholder) {

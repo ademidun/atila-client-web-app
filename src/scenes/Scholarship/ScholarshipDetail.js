@@ -260,6 +260,22 @@ class ScholarshipDetail extends React.Component {
             }
         }
 
+        let redditUrlComponent = (
+        <div>
+        <hr />
+        <p>
+            Questions about this scholarship? Ask on the{' '}
+            <Link to={scholarship.reddit_url}>
+                reddit post for this scholarship
+            </Link>
+            {' '}on{' '}
+            <Link to={`https://reddit.com/r/atila`}>
+                r/atila.
+            </Link>
+        </p>
+        </div>
+        )
+
         return (
             <React.Fragment>
                 <HelmetSeo content={genericItemTransform(scholarship)} />
@@ -427,6 +443,7 @@ class ScholarshipDetail extends React.Component {
                             {/*todo find a way to secure against XSS: https://stackoverflow.com/a/19277723*/}
                             <hr />
                             <div dangerouslySetInnerHTML={{__html: criteria_info}} />
+                            {scholarship.reddit_url && redditUrlComponent}
                         </div>
                         <RelatedItems
                             className="col-md-4"

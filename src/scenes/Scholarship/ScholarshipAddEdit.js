@@ -142,6 +142,12 @@ let scholarshipFormConfigsPage1 = [
          placeholder: 'Is not available?',
          type: 'checkbox',
      },
+     {
+         keyName: 'reddit_url',
+         placeholder: 'Reddit Help Thread URL',
+         type: 'url',
+         isHidden: (scholarship, userProfile) => (!userProfile.is_atila_admin),
+     },
 ];
 
 let additionalQuestions = [
@@ -587,6 +593,7 @@ class ScholarshipAddEdit extends React.Component{
                         {pageNumber === 1 &&
                         <div className="my-3">
                             <FormDynamic model={scholarship}
+                                         loggedInUserProfile={userProfile}
                                          inputConfigs={scholarshipFormConfigsPage1}
                                          onUpdateForm={this.updateForm}
                                          formError={scholarshipPostError}
