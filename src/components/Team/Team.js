@@ -79,7 +79,7 @@ const teamMembers = [
     last_name: "Wu",
     position: "Software/Design",
     username: "alona",
-    img_url: "https://imgur.com/9lLaogu.jpg",
+    img_url: "https://imgur.com/eixxWtw.jpg",
     description_1:
         "Angelina will be studying Software Engineering at the University of Waterloo.",
     link_type: "LinkedIn",
