@@ -75,15 +75,15 @@ const teamMembers = [
     link_url: "https://www.linkedin.com/in/linda-zhang-21a2b9179/",
   },
   {
-    first_name: "Reesa",
-    last_name: "Dayani",
-    position: "Marketing",
-    username: "reesadayani",
-    img_url: "https://i.imgur.com/uMcBG2o.jpg",
+    first_name: "Angelina",
+    last_name: "Wu",
+    position: "Software/Design",
+    username: "alona",
+    img_url: "https://imgur.com/9lLaogu.jpg",
     description_1:
-        "Reesa is currently studying Computer Science at Western University.",
+        "Angelina will be studying Software Engineering at the University of Waterloo.",
     link_type: "LinkedIn",
-    link_url: "https://www.linkedin.com/in/reesa-dayani-ab7697172/",
+    link_url: "https://www.linkedin.com/in/angelina-wu-60643a209/",
   },
 ];
 
