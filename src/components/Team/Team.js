@@ -31,7 +31,7 @@ const teamMembers = [
     username: "aarondoerfler",
     img_url: aaronImage,
     description_1:
-      "Aaron is a Media Information and Techno-culture (MIT) student at Western university.",
+      "Aaron is a Media Information and Techno-culture (MIT) student at Western University.",
     link_type: "LinkedIn",
     link_url: "https://www.linkedin.com/in/aaron-doerfler-3a2144197/",
     link2_type: "Website",
@@ -64,15 +64,15 @@ const teamMembers = [
     link2_url: "https://ericwang451.github.io/",
   },
   {
-    first_name: "Linda",
-    last_name: "Zhang",
+    first_name: "Lauren",
+    last_name: "Mercer",
     position: "Marketing",
-    username: "lindazhang1",
-    img_url: "https://i.imgur.com/gjaPQIe.jpg",
+    username: "llmercer",
+    img_url: "https://i.imgur.com/rNT1DG5.jpg",
     description_1:
-        "Linda is currently studying Business Management and Organizational Studies at Western University.",
+        "Lauren is currently studying Civil Engineering at the University of Alberta.",
     link_type: "LinkedIn",
-    link_url: "https://www.linkedin.com/in/linda-zhang-21a2b9179/",
+    link_url: "https://www.linkedin.com/in/lauren-mercer-150a3a181/",
   },
   {
     first_name: "Angelina",
