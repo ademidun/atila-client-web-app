@@ -22,7 +22,7 @@ class ScholarshipShareSaveButtons extends React.Component {
         const { userProfile, scholarship } = props;
 
         let isSavedScholarship = false;
-        if (userProfile && userProfile.saved_scholarships.includes(scholarship.id)) {
+        if (userProfile && userProfile.saved_scholarships && userProfile.saved_scholarships.includes(scholarship.id)) {
             isSavedScholarship = true;
         }
 
