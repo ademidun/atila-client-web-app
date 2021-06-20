@@ -5,13 +5,26 @@ class Admin extends React.Component {
     constructor(props){
         super()
         this.state = {
-            contacts: {}
+            firstName: '',
+            lastName: '',
+            email: '',
+            instagramUsername: '',
+            organizationName: '',
         }
+        this.handleChange = this.handleChange.bind(this)
+    }
+
+    handleChange(event) {
+        const {name, value} = event.target
+        this.setState({
+             [name]: value
+        })
     }
 
     save_as_contact(){
 
-        console.log("button is clicked")
+        const createdContact = this.state
+            
     }
    
     render(){
@@ -22,23 +35,43 @@ class Admin extends React.Component {
                 <form style={{padding: "30px"}} onSubmit={this.save_as_contact}>
                     <label>
                         First Name:
-                        <input type="text" name="name" />
+                        <input 
+                            type="text" 
+                            value={this.state.firstName} 
+                            name="firstName" 
+                            onChange={this.handleChange}/>
                     </label><br/>
                     <label>
                         Last Name:
-                        <input type="text" name="name" />
+                        <input 
+                            type="text" 
+                            value={this.state.lastName} 
+                            name="lastName" 
+                            onChange={this.handleChange}/>
                     </label><br/>
                     <label>
                         Organization Name:
-                        <input type="text" name="name" />
+                        <input 
+                            type="text" 
+                            value={this.state.organizationName} 
+                            name="organizationName"
+                            onChange={this.handleChange} />
                     </label><br/>
                     <label>
                         Email:
-                        <input type="text" name="name" />
+                        <input 
+                            type="text" 
+                            value={this.state.email} 
+                            name="email"
+                            onChange={this.handleChange} />
                     </label><br/>
                     <label>
                         Instagram Username:
-                        <input type="text" name="name" />
+                        <input 
+                            type="text" 
+                            value={this.state.instagramUsername} 
+                            name="instagramUsername"
+                            onChange={this.handleChange} />
                     </label><br/>
                     
                     <input type="submit" value="Submit" />
