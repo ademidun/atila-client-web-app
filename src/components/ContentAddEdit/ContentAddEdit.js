@@ -286,6 +286,12 @@ class ContentAddEdit extends React.Component {
         const { userProfile, contentType, match : { params : { slug, username }}  } = this.props;
         const { isAddContentMode, contentPostError, showContentAddOptions, isLoading, isLoadingContributorInvite, invitedContributor } = this.state;
 
+        const editorConfig = {
+            mediaEmbed: {
+                previewsInData: true
+            }
+        }
+
         const elementTitle = isAddContentMode ? `Add ${contentType}` : `Edit ${contentType}`;
         const descriptionLabel = `Description: Write a short summary of what your ${contentType.toLowerCase()} post is about (400 characters max.).`;
 
@@ -491,6 +497,7 @@ class ContentAddEdit extends React.Component {
                         editor={ InlineEditor }
                         data={body}
                         onChange={ this.editorChange }
+                        config={editorConfig}
                     />
                     {contentPostError &&
                     <pre className="text-danger" style={{ whiteSpace: 'pre-wrap' }}>
