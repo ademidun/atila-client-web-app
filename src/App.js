@@ -85,6 +85,9 @@ const SiteMap = loadable(() => import("./components/SiteMap"), {
 const ContactUs = loadable(() => import("./components/ContactUs"), {
   fallback: <Loading />,
 });
+const ContactsNetwork = loadable(() => import("./scenes/Contact/ContactsNetwork"), {
+  fallback: <Loading />,
+});
 const Login = loadable(() => import("./components/Login"), {
   fallback: <Loading />,
 });
@@ -234,6 +237,10 @@ class App extends React.Component {
               <Route
                 path='/contact'
                 component={GoogleAnalyticsTracker(ContactUs)}
+              />
+              <Route
+                path='/network'
+                component={GoogleAnalyticsTracker(ContactsNetwork)}
               />
               <Route
                 path='/siteMap'
