@@ -30,7 +30,7 @@ const drag = simulation => {
 }
 
 
-export function graph(contacts){
+export function graph(contacts, onNodeClick){
     let data = getFormattedDataFromContacts(contacts);
 
     const links = data.links;
@@ -66,20 +66,26 @@ export function graph(contacts){
     // TODO replace with d.profile_pic_url later 
     // https://stackoverflow.com/a/11109803/5405197
     // https://bl.ocks.org/mbostock/950642
+    /*
     node.append("image")
         .attr("xlink:href", "https://github.com/favicon.ico")
         .attr("x", -8)
         .attr("y", -8)
         .attr("width", 16)
         .attr("height", 16);
-
+    */
     node.append("text")
-        .attr("dx", 12)
-        .attr("dy", ".35em")
+        .attr("x", 12)
+        .attr("y", 12)
         .text(d => d.id);
+
 
     node.append("title")
         .text(d => d.id);
+
+    node.on("click", (event, node) => {
+        onNodeClick(node)
+    })
 
     node.call(drag(simulation));
 

@@ -5,6 +5,7 @@ const getNodesFromContacts = contacts => {
             group: 1,
             followers_count: contact.instagram_followers_count,
             following_count: contact.instagram_following_count,
+            profile_pic_url: contact.profile_pic_url,
         }
     })
 }
