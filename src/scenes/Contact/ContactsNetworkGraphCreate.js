@@ -62,7 +62,6 @@ export function graph(contacts){
         .join("circle")
         .attr("fill", '#ff0000')
         .attr("r", (d) => getCirlcleSize(d))
-        .call(drag(simulation));
 
     // TODO replace with d.profile_pic_url later 
     // https://stackoverflow.com/a/11109803/5405197
@@ -81,6 +80,8 @@ export function graph(contacts){
 
     node.append("title")
         .text(d => d.id);
+
+    node.call(drag(simulation));
 
     simulation.on("tick", () => {
         link
