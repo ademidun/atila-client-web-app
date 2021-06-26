@@ -1,4 +1,4 @@
-import {getCirlcleSize, getFormattedDataFromContacts} from "./ContactsNetworkUtil";
+import {getFormattedDataFromContacts} from "./ContactsNetworkUtil";
 import * as d3 from "d3";
 
 let height = 1000;
