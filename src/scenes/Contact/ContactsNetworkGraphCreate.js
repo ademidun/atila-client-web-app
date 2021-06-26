@@ -33,8 +33,8 @@ const drag = simulation => {
 export function graph(contacts){
     let data = getFormattedDataFromContacts(contacts);
 
-    const links = data.links.map(d => Object.create(d));
-    const nodes = data.nodes.map(d => Object.create(d));
+    const links = data.links;
+    const nodes = data.nodes;
 
     console.log({data, links, nodes});
 
@@ -63,6 +63,21 @@ export function graph(contacts){
         .attr("fill", '#ff0000')
         .attr("r", (d) => getCirlcleSize(d))
         .call(drag(simulation));
+
+    // TODO replace with d.profile_pic_url later 
+    // https://stackoverflow.com/a/11109803/5405197
+    // https://bl.ocks.org/mbostock/950642
+    node.append("image")
+        .attr("xlink:href", "https://github.com/favicon.ico")
+        .attr("x", -8)
+        .attr("y", -8)
+        .attr("width", 16)
+        .attr("height", 16);
+
+    node.append("text")
+        .attr("dx", 12)
+        .attr("dy", ".35em")
+        .text(function(d) { return d.id });
 
     node.append("title")
         .text(d => d.id);
