@@ -7,15 +7,34 @@ class ContactsNetworkForm extends React.Component {
         super(props);
 
         this.state = {
-            contacts: props.contacts,
+            value: '',
+            contacts: []
         };
+
     }
 
-    render() {
+    handleChange = (event) => {
+        const { name, value } = event.target;
+        this.setState({
+             [name]: value
+        })
 
+    }
+
+
+    render() {
         return (
             <div>
-                ContactsNetworkForm
+                <form style={{padding: "30px"}}>
+                    <label>
+                        Contacts:
+                        <input 
+                            type="text" 
+                            value={this.state.value} 
+                            name="value" 
+                            onChange={this.handleChange}/>
+                    </label><br/>
+                </form>
             </div>
         );
     }
