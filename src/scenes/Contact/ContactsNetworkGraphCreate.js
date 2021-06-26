@@ -77,7 +77,7 @@ export function graph(contacts){
     node.append("text")
         .attr("dx", 12)
         .attr("dy", ".35em")
-        .text(function(d) { return d.id });
+        .text(d => d.id);
 
     node.append("title")
         .text(d => d.id);
