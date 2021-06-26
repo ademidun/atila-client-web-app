@@ -12,6 +12,9 @@ class ContactsNetwork extends React.Component {
         };
     }
 
+    componentDidMount() {
+
+    }
 
 
     render() {
