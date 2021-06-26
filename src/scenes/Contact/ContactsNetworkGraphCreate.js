@@ -1,4 +1,4 @@
-import {getFormattedDataFromContacts} from "./ContactsNetworkUtil";
+import {getCirlcleSize, getFormattedDataFromContacts} from "./ContactsNetworkUtil";
 import * as d3 from "d3";
 
 let height = 1000;
@@ -31,10 +31,12 @@ const drag = simulation => {
 
 
 export function graph(contacts){
-    let data = getFormattedDataFromContacts(contacts)
+    let data = getFormattedDataFromContacts(contacts);
 
     const links = data.links.map(d => Object.create(d));
     const nodes = data.nodes.map(d => Object.create(d));
+
+    console.log({data, links, nodes});
 
     const simulation = d3.forceSimulation(nodes)
         .force("link", d3.forceLink(links).id(d => d.id))
@@ -59,6 +61,7 @@ export function graph(contacts){
         .data(nodes)
         .join("circle")
         .attr("fill", '#ff0000')
+        .attr("r", (d) => getCirlcleSize(d))
         .call(drag(simulation));
 
     node.append("title")
