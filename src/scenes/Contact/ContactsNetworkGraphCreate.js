@@ -33,8 +33,8 @@ const drag = simulation => {
 export function graph(contacts){
     let data = getFormattedDataFromContacts(contacts);
 
-    const links = data.links;
-    const nodes = data.nodes;
+    const links = data.links.map(d => Object.create(d));
+    const nodes = data.nodes.map(d => Object.create(d));
 
     console.log({data, links, nodes});
 
@@ -54,32 +54,18 @@ export function graph(contacts){
         .join("line")
         .attr("stroke-width", d => Math.sqrt(d.value));
 
-    const node = svg
-        .selectAll(".node")
-        .data(nodes)
-        .enter()
-        .append("g")
-        .attr("class", "node")
+    const node = svg.append("g")
         .attr("stroke", "#fff")
         .attr("stroke-width", 1.5)
+        .selectAll("circle")
+        .data(nodes)
+        .join("circle")
+        .attr("fill", '#ff0000')
         .attr("r", (d) => getCirlcleSize(d))
         .call(drag(simulation));
 
-    node.append("circle")
-    .attr("fill", '#ff0000')
-    .attr("r", (d) => getCirlcleSize(d));
-
-    node.append("image")
-    .attr("xlink:href", "https://github.com/favicon.ico")
-    .attr("x", -8)
-    .attr("y", -8)
-    .attr("width", 16)
-    .attr("height", 16);
-  
-    node.append("text")
-        .attr("dx", 12)
-        .attr("dy", ".35em")
-        .text(function(d) { return d.id });
+    node.append("title")
+        .text(d => d.id);
 
     simulation.on("tick", () => {
         link
