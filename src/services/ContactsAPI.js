@@ -9,11 +9,21 @@ class ContactsAPI {
         const apiCompletionPromise = request({
             method: 'post',
             data: {contact},
-            url: `${ContactAPI.contactsApiUrl}/`,
+            url: `${ContactsAPI.contactsApiUrl}/`,
         });
 
         return apiCompletionPromise;
     };
+
+    static getAllContacts = () => {
+
+        const apiCompletionPromise = request({
+            method: 'get',
+            url: `${ContactsAPI.contactsApiUrl}/contacts/query/`,
+        });
+
+        return apiCompletionPromise
+    }
 }
 
 export default ContactsAPI

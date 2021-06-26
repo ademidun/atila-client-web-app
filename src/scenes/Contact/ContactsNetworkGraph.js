@@ -13,10 +13,17 @@ class ContactsNetworkGraph extends React.Component {
         this.drawGraph()
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.props.contacts.length !== prevProps.contacts.length) {
+            this.drawGraph()
+        }
+    }
+
     drawGraph = () => {
         const { contacts } = this.props;
-
-        this.graphRef.current.appendChild(graph(contacts))
+        if (contacts.length > 0) {
+            this.graphRef.current.appendChild(graph(contacts))
+        }
     }
 
     render() {
