@@ -1,6 +1,7 @@
 import React from 'react';
 import ContactsNetworkForm from './ContactsNetworkForm';
 import ContactsNetworkGraph from './ContactsNetworkGraph';
+import ContactsAPI from "../../services/ContactsAPI";
 
 class ContactsNetwork extends React.Component {
 
@@ -9,10 +10,23 @@ class ContactsNetwork extends React.Component {
 
         this.state = {
             contacts: [],
+            loading: null,
         };
     }
 
+    componentDidMount() {
+        this.setState({loading: "Loading All Contacts..."})
 
+        ContactsAPI
+            .getAllContacts()
+            .then(res => {
+                const { contacts } = res.data;
+                this.setState({contacts})
+            })
+            .finally(()=>{
+                this.setState({loading: null})
+            })
+    }
 
     render() {
 
