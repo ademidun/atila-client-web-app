@@ -1,13 +1,8 @@
-import {getFormattedDataFromContacts} from "./ContactsNetworkUtil";
+import {getCirlcleSize, getFormattedDataFromContacts} from "./ContactsNetworkUtil";
 import * as d3 from "d3";
 
 let height = 1000;
 let width = 1000;
-
-const color = (node) => {
-    const scale = d3.scaleOrdinal(d3.schemeCategory10);
-    return scale(node.group);
-}
 
 const drag = simulation => {
 
@@ -63,8 +58,7 @@ export function graph(contacts){
         .selectAll("circle")
         .data(nodes)
         .join("circle")
-        .attr("r", 7)
-        .attr("fill", color)
+        .attr("fill", '#ff0000')
         .call(drag(simulation));
 
     node.append("title")

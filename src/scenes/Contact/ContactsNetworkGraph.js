@@ -7,10 +7,16 @@ class ContactsNetworkGraph extends React.Component {
         super(props);
 
         this.graphRef = React.createRef();
+
+        this.state = {
+            currentGraph: null,
+        }
     }
 
     componentDidMount() {
-        this.drawGraph()
+        if (this.props.contacts?.length > 0) {
+            this.drawGraph()
+        }
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
