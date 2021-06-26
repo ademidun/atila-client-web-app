@@ -52,7 +52,8 @@ class ContactsNetworkGraph extends React.Component {
             console.log(selectedNode)
             nodeModalTitle = (
                 <div>
-                    <img src={"https://image.flaticon.com/icons/png/512/38/38401.png"}
+                    <img src={selectedNode.profile_pic_url}
+                        // Test with https://image.flaticon.com/icons/png/512/38/38401.png
                          className="rounded-circle m-1"
                          alt={selectedNode.id}
                          style={{width: "30px", height: "30px"}} />
