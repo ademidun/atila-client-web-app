@@ -9,7 +9,7 @@ class ContactsAPI {
         const apiCompletionPromise = request({
             method: 'post',
             data: {contact},
-            url: `${ContactsAPI.contactsApiUrl}/`,
+            url: `${ContactsAPI.contactsApiUrl}/contacts/`,
         });
 
         return apiCompletionPromise;
