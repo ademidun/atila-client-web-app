@@ -3,6 +3,7 @@ import {  MASTER_LIST_WITH_CATEGORY_LABEL } from '../../models/ConstantsForm';
 import AutoComplete from '../../components/AutoComplete';
 import { Tag } from 'antd';
 import ContactsAPI from '../../services/ContactsAPI';
+import PropTypes from "prop-types";
 
 
 class ContactsNetworkForm extends React.Component {
@@ -39,7 +40,8 @@ class ContactsNetworkForm extends React.Component {
 
         ContactsAPI.query(queryData)
             .then(res => {
-                console.log({res});
+                const { contacts } = res.data;
+                this.props.onUpdateContacts(contacts);
             })
             .catch(err=> {
                 console.log({err});
@@ -77,5 +79,12 @@ class ContactsNetworkForm extends React.Component {
         );
     }
 }
+ContactsNetworkForm.defaultProps = {
+    onUpdateContacts: (contacts) => {},
+};
+
+ContactsNetworkForm.propTypes = {
+    onUpdateContacts: PropTypes.func,
+};
 
 export default ContactsNetworkForm;
