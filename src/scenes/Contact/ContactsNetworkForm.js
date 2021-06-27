@@ -67,7 +67,7 @@ class ContactsNetworkForm extends React.Component {
         const { searchQuery } = this.state;
 
         return (
-            <div style={{"height": "250px"}}>
+            <div>
                 <AutoComplete   suggestions={MASTER_LIST_WITH_CATEGORY_LABEL}
                                 placeholder={"Search by school, city, program, ethnicity or more"}
                                 value={searchQuery}

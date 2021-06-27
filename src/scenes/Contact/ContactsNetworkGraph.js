@@ -67,8 +67,7 @@ class ContactsNetworkGraph extends React.Component {
         }
 
         return (
-            <div>
-                ContactsNetworkGraph
+            <div style={{"border": "1px solid #40a9ff"}}>
                 <div ref={this.graphRef} />
                 <Modal
                     visible={isNodeModalVisible}
