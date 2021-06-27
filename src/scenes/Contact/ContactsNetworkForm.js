@@ -1,4 +1,6 @@
 import React from 'react';
+import { MASTER_LIST_EVERYTHING_UNDERSCORE } from '../../models/ConstantsForm';
+import AutoComplete from '../../components/AutoComplete';
 
 
 class ContactsNetworkForm extends React.Component {
@@ -7,7 +9,7 @@ class ContactsNetworkForm extends React.Component {
         super(props);
 
         this.state = {
-            value: '',
+            handleChange: '',
             contacts: []
         };
 
@@ -15,26 +17,25 @@ class ContactsNetworkForm extends React.Component {
 
     handleChange = (event) => {
         const { name, value } = event.target;
+        console.log({ name, value });
+
         this.setState({
-             [name]: value
+            searchQuery: value
         })
 
     }
 
 
     render() {
+        const { searchQuery } = this.state;
+
         return (
-            <div>
-                <form style={{padding: "30px"}}>
-                    <label>
-                        Contacts:
-                        <input 
-                            type="text" 
-                            value={this.state.value} 
-                            name="value" 
-                            onChange={this.handleChange}/>
-                    </label><br/>
-                </form>
+            <div style={{"height": "250px"}}>
+                <AutoComplete   suggestions={MASTER_LIST_EVERYTHING_UNDERSCORE}
+                                placeholder={"Search by school, city, program, ethnicity or more"}
+                                onSelected={this.handleChange}
+                                value={searchQuery}
+                                keyName={'searchString'}/>
             </div>
         );
     }

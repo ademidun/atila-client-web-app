@@ -1,4 +1,5 @@
 // If you make any changes here, notify in the Github repo and update backend as well
+import { INDUSTRIES } from './Industries';
 // https://github.com/ademidun/atila-django/blob/master/helpers/constants.py
 export const AUTOCOMPLETE_KEY_LIST = [
     'eligible_schools',
@@ -1661,3 +1662,20 @@ export let MASTER_LIST_EVERYTHING = MAJORS_LIST.concat(SCHOOLS_LIST).concat(MAJO
 
 MASTER_LIST_EVERYTHING = [...new Set(MASTER_LIST_EVERYTHING)];
 export const MASTER_LIST_EVERYTHING_UNDERSCORE = MASTER_LIST_EVERYTHING.map(item => item.toLowerCase());
+
+export const MASTER_LIST_WITH_CATEGORY_LABEL = [];
+// TODO use ALL_DEMOGRAPHICS to populate MASTER_LIST_EVERYTHING
+export const ALL_DEMOGRAPHICS = {
+    "ethnicity": ETHNICITIES,
+    "programs": MAJORS_LIST,
+    "schools": SCHOOLS_LIST,
+    "industry": INDUSTRIES,
+}
+
+for (const [demographic_type, demographic_list] of Object.entries(ALL_DEMOGRAPHICS)) {
+    MASTER_LIST_WITH_CATEGORY_LABEL.push(...demographic_list.map(item => (
+        {value: item, label: demographic_type}
+    )))
+}
+
+console.log({MASTER_LIST_WITH_CATEGORY_LABEL})
