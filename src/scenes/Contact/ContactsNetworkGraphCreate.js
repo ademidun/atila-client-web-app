@@ -3,6 +3,7 @@ import * as d3 from "d3";
 
 let height = 1000;
 let width = 1000;
+let maxRadius = 20;
 
 const drag = simulation => {
 
@@ -100,8 +101,8 @@ export function graph(contacts, onNodeClick){
             .attr("y2", d => d.target.y);
 
         node
-            .attr("cx", d => Math.max(15, Math.min(width - 15, d.x)))
-            .attr("cy", d => Math.max(15, Math.min(height - 15, d.y)));
+            .attr("cx", d => Math.max(maxRadius, Math.min(width - maxRadius, d.x)))
+            .attr("cy", d => Math.max(maxRadius, Math.min(height - maxRadius, d.y)));
     });
 
     // d3.invalidation.then(() => simulation.stop());
