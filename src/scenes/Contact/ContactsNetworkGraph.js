@@ -19,7 +19,12 @@ class ContactsNetworkGraph extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        this.drawGraph()
+        // Only redraw graph when props change,
+        // Consider using something like fast-deep-equal (https://www.npmjs.com/package/fast-deep-equal) to compare arrays
+        // instead of naively checking array length
+        if (prevProps.contacts.length !== this.props.contacts.length) {
+            this.drawGraph()
+        }
     }
 
     clearGraph = () => {
