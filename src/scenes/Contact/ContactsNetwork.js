@@ -28,6 +28,10 @@ class ContactsNetwork extends React.Component {
             })
     }
 
+    updateContacts = (contacts) => {
+        this.setState({ contacts });
+    }
+
     render() {
 
         const { contacts } = this.state;
@@ -37,7 +41,7 @@ class ContactsNetwork extends React.Component {
                 <div className="card shadow p-3">
                     <h1>Visualize Contacts Network</h1>
 
-                    <ContactsNetworkForm contacts={contacts} />
+                    <ContactsNetworkForm onUpdateContacts={this.updateContacts} />
                     <ContactsNetworkGraph contacts={contacts} />
                     
                     </div>

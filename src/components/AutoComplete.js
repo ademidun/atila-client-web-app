@@ -21,6 +21,19 @@ const defaultTheme = {
     sectionTitle: 'react-autosuggest__section-title'
 };
 
+class AutoCompleteHelper {
+    // When suggestion is clicked, Autosuggest needs to populate the input
+    // based on the clicked suggestion. Teach Autosuggest how to calculate the
+    // input value for every given suggestion.
+    getSuggestionValue = suggestion => suggestion;
+
+    renderSuggestion = suggestion => (
+        <p className="suggestion-item cursor-pointer">
+            <span>{emojiDictionary[suggestion.toLowerCase()] && emojiDictionary[suggestion.toLowerCase()]} </span>
+            {suggestion}
+        </p>
+    );
+}
 class AutoComplete extends React.Component {
     constructor(props) {
         super(props);
@@ -78,7 +91,11 @@ class AutoComplete extends React.Component {
         });
     };
 
-    onSuggestionSelected = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
+    onSuggestionSelected = ( event, suggestionArguments ) => {
+        // leaving this comment so you can easily see the available properties of suggestionArguments
+        // const { suggestion, suggestionValue, suggestionIndex, sectionIndex, method } = suggestionArguments;
+
+        const { suggestionValue, method } = suggestionArguments;
         event.preventDefault();
 
         const { onSelected, keyName } = this.props;
@@ -87,6 +104,8 @@ class AutoComplete extends React.Component {
             event.target.name = keyName;
         }
         onSelected(event);
+        this.props.onSuggestionSelected(event, suggestionArguments);
+
         this.setState({
             value: ''
         });
@@ -94,33 +113,23 @@ class AutoComplete extends React.Component {
 
     getSuggestions = value => {
 
-        const {suggestions} = this.props;
-            const inputValue = value.trim().toLowerCase();
-            const inputLength = inputValue.length;
+        const { suggestions, getSuggestionValue} = this.props;
+        const inputValue = value.trim().toLowerCase();
+        const inputLength = inputValue.length;
 
-            const filteredSuggestions = inputLength === 0 ? [] : suggestions.filter(lang =>
-                lang.toLowerCase().includes(inputValue));
+        const filteredSuggestions = inputLength === 0 ? [] : suggestions.filter(suggestion => {
+            suggestion = getSuggestionValue(suggestion)
+            return suggestion.toLowerCase().includes(inputValue)
+        })
 
-            filteredSuggestions.unshift(value.trim());
+        filteredSuggestions.unshift(value.trim());
 
-            return filteredSuggestions;
-        };
-
-    // When suggestion is clicked, Autosuggest needs to populate the input
-    // based on the clicked suggestion. Teach Autosuggest how to calculate the
-    // input value for every given suggestion.
-    getSuggestionValue = suggestion => suggestion;
-
-    renderSuggestion = suggestion => (
-        <p className="suggestion-item cursor-pointer">
-            <span>{emojiDictionary[suggestion.toLowerCase()] && emojiDictionary[suggestion.toLowerCase()]} </span>
-            {suggestion}
-        </p>
-    );
+        return filteredSuggestions;
+    };
 
     render() {
         const { value, suggestions } = this.state;
-        const { keyName, placeholder, customTheme } = this.props;
+        const { keyName, placeholder, customTheme, getSuggestionValue, renderSuggestion } = this.props;
 
         // Autosuggest will pass through all these props to the input.
         const inputProps = {
@@ -139,8 +148,8 @@ class AutoComplete extends React.Component {
                 suggestions={suggestions}
                 onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
                 onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-                getSuggestionValue={this.getSuggestionValue}
-                renderSuggestion={this.renderSuggestion}
+                getSuggestionValue={getSuggestionValue}
+                renderSuggestion={renderSuggestion}
                 inputProps={inputProps}
                 renderInputComponent={this.renderInputComponent}
                 onSuggestionSelected={this.onSuggestionSelected}
@@ -153,8 +162,11 @@ AutoComplete.defaultProps = {
     value: '',
     onChange: (event) => event.preventDefault(),
     onSelected: (event) => event.preventDefault(),
+    onSuggestionSelected: (event, suggestionArguments) => {},
     placeholder: '',
     customTheme: {},
+    getSuggestionValue: AutoCompleteHelper.getSuggestionValue,
+    renderSuggestion: AutoCompleteHelper.renderSuggestion,
 };
 
 AutoComplete.propTypes = {
@@ -165,6 +177,9 @@ AutoComplete.propTypes = {
     keyName: PropTypes.string.isRequired,
     placeholder: PropTypes.string,
     customTheme: PropTypes.shape({}),
+    getSuggestionValue: PropTypes.func,
+    renderSuggestion: PropTypes.func,
+    onSuggestionSelected: PropTypes.func,
 };
 
 export default AutoComplete
