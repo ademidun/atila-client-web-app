@@ -52,7 +52,10 @@ export function graph(contacts, onNodeClick){
         .selectAll("line")
         .data(links)
         .join("line")
-        .attr("stroke-width", d => Math.sqrt(d.value));
+        .attr("stroke-width", d => Math.sqrt(d.value))
+        .attr("markerWidth", 6)
+        .attr("markerHeight", 6)
+        .attr("marker-end", "url(#arrow)")
 
     const node = svg.append("g")
         .attr("stroke", "#fff")
@@ -97,8 +100,8 @@ export function graph(contacts, onNodeClick){
             .attr("y2", d => d.target.y);
 
         node
-            .attr("cx", d => d.x)
-            .attr("cy", d => d.y);
+            .attr("cx", d => Math.max(15, Math.min(width - 15, d.x)))
+            .attr("cy", d => Math.max(15, Math.min(height - 15, d.y)));
     });
 
     // d3.invalidation.then(() => simulation.stop());
