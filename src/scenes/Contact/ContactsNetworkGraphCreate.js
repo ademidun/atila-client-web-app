@@ -32,10 +32,10 @@ const drag = simulation => {
 
 
 const keepInBound = node => {
-    let x = Math.max(maxRadius, Math.min(width - maxRadius, node.x))
-    let y = Math.max(maxRadius, Math.min(height - maxRadius, node.y))
+    node.x = Math.max(maxRadius, Math.min(width - maxRadius, node.x))
+    node.y = Math.max(maxRadius, Math.min(height - maxRadius, node.y))
 
-    return `translate(${x},${y})`
+    return `translate(${node.x},${node.y})`
 }
 
 export function graph(contacts, onNodeClick){
@@ -47,8 +47,8 @@ export function graph(contacts, onNodeClick){
     console.log({data, links, nodes});
 
     const simulation = d3.forceSimulation(nodes)
-        .force("link", d3.forceLink(links).id(d => d.id))
-        .force("charge", d3.forceManyBody())
+        .force("link", d3.forceLink(links).id(d => d.id).distance(30)) //default is 30
+        .force("charge", d3.forceManyBody().strength(-20)) // default is -30
         .force("center", d3.forceCenter(width / 2, height / 2));
 
     const svg = d3.create("svg")
