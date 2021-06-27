@@ -24,6 +24,17 @@ class ContactsAPI {
 
         return apiCompletionPromise
     }
+
+    static query = (queryData) => {
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: queryData,
+            url: `${ContactsAPI.contactsApiUrl}/contacts/query/`,
+        });
+
+        return apiCompletionPromise
+    }
 }
 
 export default ContactsAPI
