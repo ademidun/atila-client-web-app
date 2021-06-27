@@ -2,6 +2,8 @@ import React from 'react';
 import ContactsNetworkForm from './ContactsNetworkForm';
 import ContactsNetworkGraph from './ContactsNetworkGraph';
 import ContactsAPI from "../../services/ContactsAPI";
+import { Button } from 'antd';
+import ContactAddEdit from './ContactsAddEdit';
 
 class ContactsNetwork extends React.Component {
 
@@ -11,6 +13,7 @@ class ContactsNetwork extends React.Component {
         this.state = {
             contacts: [],
             loading: null,
+            addContactMode: false,
         };
     }
 
@@ -32,14 +35,25 @@ class ContactsNetwork extends React.Component {
         this.setState({ contacts });
     }
 
+    toggleAddContacts = () => {
+        this.setState({addContactMode: !this.state.addContactMode})
+    }
+
     render() {
 
-        const { contacts } = this.state;
+        const { contacts, addContactMode } = this.state;
 
         return (
             <div className="container mt-5">
                 <div className="card shadow p-3">
                     <h1>Visualize Contacts Network</h1>
+                    <Button onClick={this.toggleAddContacts}>
+                        Add contact
+                    </Button>
+
+                    {addContactMode && 
+                        <ContactAddEdit />
+                    }
 
                     <ContactsNetworkForm onUpdateContacts={this.updateContacts} />
                     <ContactsNetworkGraph contacts={contacts} />
