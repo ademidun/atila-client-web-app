@@ -62,7 +62,7 @@ const normalizeNumberBetweenBounds = (num, actual_bounds, desired_bounds) => {
 
 const getImageSize = following_count => {
     let actual_bounds = [0, 2000]
-    let desired_bounds = [5, 20]
+    let desired_bounds = [20, 40]
 
     return normalizeNumberBetweenBounds(following_count, actual_bounds, desired_bounds)
 }

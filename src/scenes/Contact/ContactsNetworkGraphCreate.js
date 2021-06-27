@@ -3,7 +3,7 @@ import * as d3 from "d3";
 
 let height = 1000;
 let width = 1000;
-let maxRadius = 20;
+let maxRadius = 40;
 
 const drag = simulation => {
 
@@ -30,6 +30,13 @@ const drag = simulation => {
         .on("end", dragended);
 }
 
+
+const keepInBound = node => {
+    let x = Math.max(maxRadius, Math.min(width - maxRadius, node.x))
+    let y = Math.max(maxRadius, Math.min(height - maxRadius, node.y))
+
+    return `translate(${x},${y})`
+}
 
 export function graph(contacts, onNodeClick){
     let data = getFormattedDataFromContacts(contacts);
@@ -66,14 +73,6 @@ export function graph(contacts, onNodeClick){
         .attr("stroke", "#fff")
         .attr("stroke-width", 1.5)
 
-
-
-    /*
-    const circle = node.append("circle")
-        .attr("fill", '#ff0000')
-        .attr("r", (d) => getCirlcleSize(d))
-    */
-
     const image = node.append("image")
         .attr("xlink:href", d => d.profile_pic_url)
         .attr("width", d => d.image_size)
@@ -103,15 +102,18 @@ export function graph(contacts, onNodeClick){
             .attr("y2", d => d.target.y);
 
         node
-            .attr("cx", d => Math.max(maxRadius, Math.min(width - maxRadius, d.x)))
-            .attr("cy", d => Math.max(maxRadius, Math.min(height - maxRadius, d.y)));
+            .attr("transform", d => keepInBound(d))
 
+        // Centers image so that edge comes out from the middle
         image
-            .attr("x", d => (d.x - d.image_size / 2))
-            .attr("y", d => (d.y - d.image_size / 2))
+            .attr("x", d => - d.image_size/2)
+            .attr("y", d => - d.image_size/2)
+
     });
 
     // d3.invalidation.then(() => simulation.stop());
 
     return svg.node()
 }
+
+
