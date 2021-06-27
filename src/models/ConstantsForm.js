@@ -274,7 +274,7 @@ export const SCHOOLS_LIST = [
     'Rotman Commerce',
     'Royal Military College of Canada',
     'Royal Roads University',
-    'Ryerson Polytechnic University',
+    'Ryerson University',
     'Saskatchewan Indian Federated College',
     'Sauder School of Business',
     'Sauder School of Business',
