@@ -33,9 +33,6 @@ class ContactsNetworkForm extends React.Component {
         } if(queryData.program) {
             queryData.eligible_programs = queryData.program;
             delete queryData.program;
-        } if(queryData.other_demographic) {
-            queryData.other_demographics = queryData.other_demographic;
-            delete queryData.other_demographic;
         }
 
         ContactsAPI.query(queryData)
