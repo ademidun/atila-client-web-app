@@ -84,11 +84,10 @@ export function graph(contacts, onNodeClick){
         .attr("x", d => d.x)
         .attr("y", d => d.y)
         .text(d => d.id);
-
+    */
 
     const title = node.append("title")
         .text(d => d.id);
-     */
 
     node.on("click", (event, node) => {
         onNodeClick(node)
