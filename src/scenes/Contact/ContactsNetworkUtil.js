@@ -6,6 +6,7 @@ const getNodesFromContacts = contacts => {
             followers_count: contact.instagram_followers_count,
             following_count: contact.instagram_following_count,
             profile_pic_url: contact.profile_pic_url,
+            image_size: getImageSize(contact.instagram_following_count),
         }
     })
 }
@@ -21,6 +22,7 @@ const getLinksFromContacts = contacts => {
                 let newLink = {
                     source: contact.instagram_username,
                     target: following_username,
+                    type: "licensing",
                     value: 2
                 }
                 links.push(newLink)
@@ -58,9 +60,9 @@ const normalizeNumberBetweenBounds = (num, actual_bounds, desired_bounds) => {
     return Math.round(desired_bounds[0] + ((num - actual_bounds[0]) * (desired_bounds[1] - desired_bounds[0]) / (actual_bounds[1] - actual_bounds[0])))
 }
 
-export const getCirlcleSize = node => {
+const getImageSize = following_count => {
     let actual_bounds = [0, 2000]
-    let desired_bounds = [5, 15]
+    let desired_bounds = [5, 20]
 
-    return normalizeNumberBetweenBounds(node.following_count, actual_bounds, desired_bounds)
+    return normalizeNumberBetweenBounds(following_count, actual_bounds, desired_bounds)
 }

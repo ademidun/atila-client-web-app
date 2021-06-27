@@ -1,8 +1,9 @@
-import {getCirlcleSize, getFormattedDataFromContacts} from "./ContactsNetworkUtil";
+import { getFormattedDataFromContacts } from "./ContactsNetworkUtil";
 import * as d3 from "d3";
 
 let height = 1000;
 let width = 1000;
+let maxRadius = 20;
 
 const drag = simulation => {
 
@@ -58,30 +59,32 @@ export function graph(contacts, onNodeClick){
         .attr("marker-end", "url(#arrow)")
 
     const node = svg.append("g")
+        .selectAll("g-nodes")
+        .data(nodes)
+        .join("g")
+        .attr("class", "g-nodes")
         .attr("stroke", "#fff")
         .attr("stroke-width", 1.5)
-        .selectAll("circle")
-        .data(nodes)
-        .join("circle")
+
+
+
+    /*
+    const circle = node.append("circle")
         .attr("fill", '#ff0000')
         .attr("r", (d) => getCirlcleSize(d))
-
-    // TODO replace with d.profile_pic_url later 
-    // https://stackoverflow.com/a/11109803/5405197
-    // https://bl.ocks.org/mbostock/950642
-    /*
-    node.append("image")
-        .attr("xlink:href", "https://github.com/favicon.ico")
-        .attr("x", -8)
-        .attr("y", -8)
-        .attr("width", 16)
-        .attr("height", 16);
     */
-    node.append("text")
-        .attr("x", 12)
-        .attr("y", 12)
-        .text(d => d.id);
 
+    const image = node.append("image")
+        .attr("xlink:href", d => d.profile_pic_url)
+        .attr("width", d => d.image_size)
+        .attr("height", d => d.image_size);
+
+    /*
+    const text = node.append("text")
+        .attr("x", d => d.x)
+        .attr("y", d => d.y)
+        .text(d => d.id);
+    */
 
     node.append("title")
         .text(d => d.id);
@@ -100,8 +103,12 @@ export function graph(contacts, onNodeClick){
             .attr("y2", d => d.target.y);
 
         node
-            .attr("cx", d => Math.max(15, Math.min(width - 15, d.x)))
-            .attr("cy", d => Math.max(15, Math.min(height - 15, d.y)));
+            .attr("cx", d => Math.max(maxRadius, Math.min(width - maxRadius, d.x)))
+            .attr("cy", d => Math.max(maxRadius, Math.min(height - maxRadius, d.y)));
+
+        image
+            .attr("x", d => (d.x - d.image_size / 2))
+            .attr("y", d => (d.y - d.image_size / 2))
     });
 
     // d3.invalidation.then(() => simulation.stop());
