@@ -48,7 +48,7 @@ export function graph(contacts, onNodeClick){
 
     const simulation = d3.forceSimulation(nodes)
         .force("link", d3.forceLink(links).id(d => d.id).distance(30)) //default is 30
-        .force("charge", d3.forceManyBody().strength(-20)) // default is -30
+        .force("charge", d3.forceManyBody().strength(-30)) // default is -30
         .force("center", d3.forceCenter(width / 2, height / 2));
 
     const svg = d3.create("svg")
@@ -73,12 +73,16 @@ export function graph(contacts, onNodeClick){
         .attr("stroke", "#fff")
         .attr("stroke-width", 1.5)
 
-    const image = node.append("image")
+    // Add image
+    node.append("image")
         .attr("xlink:href", d => d.profile_pic_url)
         .attr("width", d => d.image_size)
-        .attr("height", d => d.image_size);
+        .attr("height", d => d.image_size)
+        // Centers image so that edge comes out from the middle
+        .attr("x", d => - d.image_size/2)
+        .attr("y", d => - d.image_size/2);
 
-    /*
+    /* Add label text
     const text = node.append("text")
         .attr("x", d => d.x)
         .attr("y", d => d.y)
@@ -86,7 +90,7 @@ export function graph(contacts, onNodeClick){
     */
 
     node.append("title")
-        .text(d => d.id);
+        .text(d => d.organization_name);
 
     node.on("click", (event, node) => {
         onNodeClick(node)
@@ -103,15 +107,7 @@ export function graph(contacts, onNodeClick){
 
         node
             .attr("transform", d => keepInBound(d))
-
-        // Centers image so that edge comes out from the middle
-        image
-            .attr("x", d => - d.image_size/2)
-            .attr("y", d => - d.image_size/2)
-
     });
-
-    // d3.invalidation.then(() => simulation.stop());
 
     return svg.node()
 }
