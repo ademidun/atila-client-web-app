@@ -1,5 +1,6 @@
 // If you make any changes here, notify in the Github repo and update backend as well
 import { INDUSTRIES } from './Industries';
+import { OCCUPATIONS } from './Occupations';
 // https://github.com/ademidun/atila-django/blob/master/helpers/constants.py
 export const AUTOCOMPLETE_KEY_LIST = [
     'eligible_schools',
@@ -1678,10 +1679,15 @@ export const MASTER_LIST_EVERYTHING_UNDERSCORE = MASTER_LIST_EVERYTHING.map(item
 export const MASTER_LIST_WITH_CATEGORY_LABEL = [];
 // TODO use ALL_DEMOGRAPHICS to populate MASTER_LIST_EVERYTHING
 export const ALL_DEMOGRAPHICS = {
-    "ethnicity": ETHNICITIES,
-    "program": MAJORS_LIST,
     "school": SCHOOLS_LIST,
-    "industry": INDUSTRIES,
+    "program": MAJORS_LIST,
+    "ethnicity": ETHNICITIES,
+    "disabilities": DISABILITIES,
+    "sports": SPORTS,
+    "religion": RELIGIONS,
+    "languages": LANGUAGES,
+    "industries": INDUSTRIES,
+    "occupations": OCCUPATIONS,
     "other_demographic": OTHER_DEMOGRAPHICS,
 }
 
