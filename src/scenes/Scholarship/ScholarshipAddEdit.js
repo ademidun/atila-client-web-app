@@ -146,7 +146,7 @@ let scholarshipFormConfigsPage1 = [
          keyName: 'reddit_url',
          placeholder: 'Reddit Help Thread URL',
          type: 'url',
-         isHidden: (scholarship, userProfile) => (!userProfile.is_atila_admin),
+         isHidden: (scholarship, userProfile) => (userProfile && !userProfile.is_atila_admin),
      },
 ];
 
