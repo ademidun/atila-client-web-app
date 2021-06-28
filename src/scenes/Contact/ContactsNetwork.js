@@ -4,6 +4,7 @@ import ContactsNetworkGraph from './ContactsNetworkGraph';
 import ContactsAPI from "../../services/ContactsAPI";
 import { Button } from 'antd';
 import ContactAddEdit from './ContactsAddEdit';
+import ContactsNetworkInformation from './ContactsNetworkInformation';
 
 class ContactsNetwork extends React.Component {
 
@@ -57,6 +58,7 @@ class ContactsNetwork extends React.Component {
 
                     <ContactsNetworkForm onUpdateContacts={this.updateContacts} />
                     <ContactsNetworkGraph contacts={contacts} />
+                    <ContactsNetworkInformation />
                     
                     </div>
             </div>
