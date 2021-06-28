@@ -46,7 +46,7 @@ class ContactsNetwork extends React.Component {
         return (
             <div className="container mt-5">
                 <div className="card shadow p-3">
-                    <h1>Visualize Contacts Network</h1>
+                    <h1>Visualize the Student Clubs Network</h1>
                     <Button onClick={this.toggleAddContacts}>
                         Add contact
                     </Button>
