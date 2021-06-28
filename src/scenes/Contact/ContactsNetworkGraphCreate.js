@@ -86,7 +86,7 @@ export function graph(contacts, onNodeClick){
     */
 
     node.append("title")
-        .text(d => d.id);
+        .text(d => d.organization_name);
 
     node.on("click", (event, node) => {
         onNodeClick(node)

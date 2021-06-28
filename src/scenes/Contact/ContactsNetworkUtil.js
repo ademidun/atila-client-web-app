@@ -7,6 +7,7 @@ const getNodesFromContacts = contacts => {
             following_count: contact.instagram_following_count,
             profile_pic_url: contact.profile_pic_url,
             image_size: getImageSize(contact.instagram_following_count),
+            organization_name: contact.organization_name
         }
     })
 }

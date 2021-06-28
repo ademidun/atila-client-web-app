@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal } from "antd";
 import { graph } from "./ContactsNetworkGraphCreate";
+import { Link } from "react-router-dom";
 
 class ContactsNetworkGraph extends React.Component {
 
@@ -61,7 +62,9 @@ class ContactsNetworkGraph extends React.Component {
                          className="rounded-circle m-1"
                          alt={selectedNode.id}
                          style={{width: "30px", height: "30px"}} />
-                    {selectedNode.id}
+                    <Link to={{ pathname: `https://instagram.com/${selectedNode.id}/` }} target="_blank">
+                        {selectedNode.organization_name}
+                    </Link>
                 </div>
             )
         }
