@@ -14,9 +14,10 @@ let contactFormConfigsPage1 = [
     {
         keyName: 'instagram_username',
     },
-    {
-        keyName: 'profile_pic_url',
-    },
+    // TODO only show if no profile_pic_url exists or it's an admin user
+    // {
+    //     keyName: 'profile_pic_url',
+    // },
 ]
 
 for (const [demographicKey, demographicOptions] of Object.entries(ALL_DEMOGRAPHICS)) {

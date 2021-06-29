@@ -3,7 +3,7 @@ import ContactsNetworkForm from './ContactsNetworkForm';
 import ContactsNetworkGraph from './ContactsNetworkGraph';
 import ContactsAPI from "../../services/ContactsAPI";
 import { Button } from 'antd';
-import ContactAddEdit from './ContactsAddEdit';
+import ContactAddEdit from './ContactAddEdit';
 import ContactsNetworkInformation from './ContactsNetworkInformation';
 
 class ContactsNetwork extends React.Component {

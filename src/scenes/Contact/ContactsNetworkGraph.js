@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Modal } from "antd";
 import { graph } from "./ContactsNetworkGraphCreate";
-import ContactAddEdit from './ContactsAddEdit';
+import ContactAddEdit from './ContactAddEdit';
 
 class ContactsNetworkGraph extends React.Component {
 

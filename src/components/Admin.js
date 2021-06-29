@@ -1,5 +1,5 @@
 import React from 'react';
-import ContactAddEdit from '../scenes/Contact/ContactsAddEdit';
+import ContactAddEdit from '../scenes/Contact/ContactAddEdit';
 
 class Admin extends React.Component {
 
