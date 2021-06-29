@@ -113,7 +113,7 @@ class AutoComplete extends React.Component {
 
     getSuggestions = value => {
 
-        const { suggestions, getSuggestionValue} = this.props;
+        const { suggestions, getSuggestionValue, inputToSuggestion} = this.props;
         const inputValue = value.trim().toLowerCase();
         const inputLength = inputValue.length;
 
@@ -122,7 +122,9 @@ class AutoComplete extends React.Component {
             return suggestion.toLowerCase().includes(inputValue)
         })
 
-        filteredSuggestions.unshift(value.trim());
+        // Value is a string but the items in the suggestions might be objects.
+        const inputSuggestion = inputToSuggestion(value.trim());
+        filteredSuggestions.unshift(inputSuggestion);
 
         return filteredSuggestions;
     };
@@ -167,6 +169,7 @@ AutoComplete.defaultProps = {
     customTheme: {},
     getSuggestionValue: (suggestion) => (AutoCompleteHelper.getSuggestionValue(suggestion)),
     renderSuggestion: (suggestion) => (AutoCompleteHelper.renderSuggestion(suggestion)),
+    inputToSuggestion: value => value,
 };
 
 AutoComplete.propTypes = {
@@ -180,6 +183,7 @@ AutoComplete.propTypes = {
     getSuggestionValue: PropTypes.func.isRequired,
     renderSuggestion: PropTypes.func.isRequired,
     onSuggestionSelected: PropTypes.func.isRequired,
+    inputToSuggestion: PropTypes.func.isRequired,
 };
 
 export default AutoComplete

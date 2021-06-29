@@ -4,6 +4,7 @@ import AutoComplete from '../../components/AutoComplete';
 import { Tag } from 'antd';
 import ContactsAPI from '../../services/ContactsAPI';
 import PropTypes from "prop-types";
+import { prettifyKeys } from '../../services/utils';
 
 
 class ContactsNetworkForm extends React.Component {
@@ -56,9 +57,22 @@ class ContactsNetworkForm extends React.Component {
     renderSuggestion = suggestion => (
         <p className="suggestion-item cursor-pointer">
             {suggestion.value}{' '}
-            <Tag>{suggestion.category}</Tag>
+            <Tag>{prettifyKeys(suggestion.category)}</Tag>
         </p>
     );
+
+    /**
+     * If the user passes in an input string that is not one of the autocomplete options, save it as all_fields
+     * option that will search all fields in the database.
+     * @param {*} input 
+     * @returns 
+     */
+    inputToSuggestion = input => (
+        {
+            category: "all_fields",
+            value: input
+        }
+    )
 
     render() {
         const { searchQuery } = this.state;
@@ -71,6 +85,7 @@ class ContactsNetworkForm extends React.Component {
                                 getSuggestionValue={suggestion => suggestion.value}
                                 renderSuggestion={this.renderSuggestion}
                                 onSuggestionSelected={this.onSuggestionSelected}
+                                inputToSuggestion={this.inputToSuggestion}
                                 keyName={'searchString'}/>
             </div>
         );
