@@ -75,7 +75,7 @@ export function graph(contacts, onNodeClick){
 
     // Add image
     node.append("image")
-        .attr("xlink:href", d => d.profile_pic_url)
+        .attr("xlink:href", d => d.data.profile_pic_url)
         .attr("width", d => d.image_size)
         .attr("height", d => d.image_size)
         // Centers image so that edge comes out from the middle
@@ -90,7 +90,7 @@ export function graph(contacts, onNodeClick){
     */
 
     node.append("title")
-        .text(d => d.organization_name);
+        .text(d => d.data.organization_name);
 
     node.on("click", (event, node) => {
         onNodeClick(node)

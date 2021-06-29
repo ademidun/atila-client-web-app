@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button, Modal } from "antd";
 import { graph } from "./ContactsNetworkGraphCreate";
-import { Link } from "react-router-dom";
 import ContactAddEdit from './ContactsAddEdit';
 
 class ContactsNetworkGraph extends React.Component {
@@ -13,7 +12,7 @@ class ContactsNetworkGraph extends React.Component {
         this.state = {
             isNodeModalVisible: false,
             selectedNode: null,
-            isEditNodeFormVisible: false,
+            isEditNodeFormVisible: true,
         }
     }
 
@@ -64,13 +63,16 @@ class ContactsNetworkGraph extends React.Component {
             console.log(selectedNode)
             nodeModalTitle = (
                 <div>
-                    <img src={selectedNode.profile_pic_url}
+                    <img src={selectedNode.data.profile_pic_url}
                          className="rounded-circle m-1"
-                         alt={selectedNode.id}
+                         alt={selectedNode.data.organization_name}
                          style={{width: "30px", height: "30px"}} />
-                    <Link to={{ pathname: `https://instagram.com/${selectedNode.id}/` }} target="_blank">
-                        {selectedNode.organization_name}
-                    </Link>
+                    <h2>
+                    {selectedNode.data.organization_name}
+                    </h2><br/>
+                    <a  target="_blank" rel="noopener noreferrer" href={`https://instagram.com/${selectedNode.data.instagram_username}/`}>
+                      View Instagram
+                    </a>
                 </div>
             )
         }
@@ -82,21 +84,23 @@ class ContactsNetworkGraph extends React.Component {
                     </p>
                 <div style={{"border": "1px solid #40a9ff"}}>
                     <div ref={this.graphRef} />
-                    <Modal
-                        visible={isNodeModalVisible}
-                        title={nodeModalTitle}
-                        footer={null}
-                        onCancel={this.closeModal}
-                    >
-                        <p>Follower count: {selectedNode?.followers_count}</p>
-                        <p>Following count: {selectedNode?.following_count}</p>
-                        <p>Incorrect Information? 
-                            <Button onClick={this.toggleEditNode} type="link">
-                            {isEditNodeFormVisible ? "Hide ": ""}Edit Contact
-                            </Button>
-                        </p>
-                        {isEditNodeFormVisible && <ContactAddEdit contact={selectedNode} isAddContactMode={false} />}
-                    </Modal>
+                    {selectedNode && 
+                        <Modal
+                            visible={isNodeModalVisible}
+                            title={nodeModalTitle}
+                            footer={null}
+                            onCancel={this.closeModal}
+                        >
+                            <p>Follower count: {selectedNode?.data.followers_count}</p>
+                            <p>Following count: {selectedNode?.data.following_count}</p>
+                            <p>Incorrect or Missing Information? 
+                                <Button onClick={this.toggleEditNode} type="link">
+                                {isEditNodeFormVisible ? "Hide ": ""}Edit Contact
+                                </Button>
+                            </p>
+                            {isEditNodeFormVisible && <ContactAddEdit contact={selectedNode?.data} isAddContactMode={false} />}
+                        </Modal>
+                    }
                 </div>
             </div>
         );
