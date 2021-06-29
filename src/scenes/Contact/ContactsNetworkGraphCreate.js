@@ -38,7 +38,7 @@ const keepInBound = node => {
     return `translate(${node.x},${node.y})`
 }
 
-export function graph(contacts, onNodeClick){
+export function graph(contacts, onNodeClick, showArrows=true){
     let data = getFormattedDataFromContacts(contacts);
 
     const links = data.links;
@@ -57,14 +57,14 @@ export function graph(contacts, onNodeClick){
         .append("marker")
         .attr("id", "arrow")
         .attr("viewBox", "0 -5 10 10")
-        .attr("refX", 25)
+        .attr("refX", 22)
         .attr("refY", 0)
         .attr("markerWidth", 6)
         .attr("markerHeight", 6)
         .attr("orient", "auto")
         .append("path")
         .attr("fill", '#000')
-        .attr("d", d =>'M0,-5L10,0L0,5');
+        .attr("d", 'M0,-5L10,0L0,5');
 
     const link = svg.append("g")
         .attr("stroke", "#999")
@@ -73,7 +73,10 @@ export function graph(contacts, onNodeClick){
         .data(links)
         .join("line")
         .attr("stroke-width", d => Math.sqrt(d.value))
-        .attr("marker-end", "url(#arrow)")
+
+     if (showArrows) {
+         link.attr("marker-end", "url(#arrow)")
+     }
 
     const node = svg.append("g")
         .selectAll("g-nodes")
