@@ -5,6 +5,7 @@ import ContactsAPI from "../../services/ContactsAPI";
 import { Button } from 'antd';
 import ContactAddEdit from './ContactAddEdit';
 import ContactsNetworkInformation from './ContactsNetworkInformation';
+import {toastNotify} from "../../models/Utils";
 
 class ContactsNetwork extends React.Component {
 
@@ -34,6 +35,9 @@ class ContactsNetwork extends React.Component {
 
     updateContacts = (contacts) => {
         this.setState({ contacts });
+        if (contacts.length === 0) {
+            toastNotify("No clubs found matching selected query.")
+        }
     }
 
     toggleAddContacts = () => {
