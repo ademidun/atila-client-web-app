@@ -76,7 +76,6 @@ class ContactAddEdit extends React.Component{
 
         contactsSubscription
         .then(res => {
-            console.log({res});
         })
         .catch(err=> {
             console.log({err});

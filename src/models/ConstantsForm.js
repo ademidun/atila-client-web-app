@@ -1688,6 +1688,8 @@ export const ALL_DEMOGRAPHICS = {
     "industries": INDUSTRIES,
     "occupations": OCCUPATIONS,
     "other_demographic": OTHER_DEMOGRAPHICS,
+    "heritage": COUNTRIES,
+    "activities": ACTIVITIES,
 }
 
 for (const [demographic_type, demographic_list] of Object.entries(ALL_DEMOGRAPHICS)) {
