@@ -25,9 +25,9 @@ class AutoCompleteHelper {
     // When suggestion is clicked, Autosuggest needs to populate the input
     // based on the clicked suggestion. Teach Autosuggest how to calculate the
     // input value for every given suggestion.
-    getSuggestionValue = suggestion => suggestion;
+    static getSuggestionValue = suggestion => suggestion;
 
-    renderSuggestion = suggestion => (
+    static renderSuggestion = suggestion => (
         <p className="suggestion-item cursor-pointer">
             <span>{emojiDictionary[suggestion.toLowerCase()] && emojiDictionary[suggestion.toLowerCase()]} </span>
             {suggestion}
@@ -165,8 +165,8 @@ AutoComplete.defaultProps = {
     onSuggestionSelected: (event, suggestionArguments) => {},
     placeholder: '',
     customTheme: {},
-    getSuggestionValue: AutoCompleteHelper.getSuggestionValue,
-    renderSuggestion: AutoCompleteHelper.renderSuggestion,
+    getSuggestionValue: (suggestion) => (AutoCompleteHelper.getSuggestionValue(suggestion)),
+    renderSuggestion: (suggestion) => (AutoCompleteHelper.renderSuggestion(suggestion)),
 };
 
 AutoComplete.propTypes = {
@@ -177,9 +177,9 @@ AutoComplete.propTypes = {
     keyName: PropTypes.string.isRequired,
     placeholder: PropTypes.string,
     customTheme: PropTypes.shape({}),
-    getSuggestionValue: PropTypes.func,
-    renderSuggestion: PropTypes.func,
-    onSuggestionSelected: PropTypes.func,
+    getSuggestionValue: PropTypes.func.isRequired,
+    renderSuggestion: PropTypes.func.isRequired,
+    onSuggestionSelected: PropTypes.func.isRequired,
 };
 
 export default AutoComplete
