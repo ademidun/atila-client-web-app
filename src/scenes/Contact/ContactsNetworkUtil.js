@@ -20,8 +20,7 @@ const getLinksFromContacts = contacts => {
                 let newLink = {
                     source: contact.instagram_username,
                     target: following_username,
-                    type: "licensing",
-                    value: 2
+                    value: 4
                 }
                 links.push(newLink)
             }

@@ -45,6 +45,7 @@ export function graph(contacts, onNodeClick){
     const nodes = data.nodes;
 
     const simulation = d3.forceSimulation(nodes)
+        // Read https://www.d3indepth.com/force-layout/ for more info about force
         .force("link", d3.forceLink(links).id(d => d.id).distance(30)) //default is 30
         .force("charge", d3.forceManyBody().strength(-30)) // default is -30
         .force("center", d3.forceCenter(width / 2, height / 2));
@@ -52,15 +53,26 @@ export function graph(contacts, onNodeClick){
     const svg = d3.create("svg")
         .attr("viewBox", [0, 0, width, height]);
 
+    svg.append("defs")
+        .append("marker")
+        .attr("id", "arrow")
+        .attr("viewBox", "0 -5 10 10")
+        .attr("refX", 25)
+        .attr("refY", 0)
+        .attr("markerWidth", 6)
+        .attr("markerHeight", 6)
+        .attr("orient", "auto")
+        .append("path")
+        .attr("fill", '#000')
+        .attr("d", d =>'M0,-5L10,0L0,5');
+
     const link = svg.append("g")
         .attr("stroke", "#999")
-        .attr("stroke-opacity", 0.6)
+        .attr("stroke-opacity", 0.8)
         .selectAll("line")
         .data(links)
         .join("line")
         .attr("stroke-width", d => Math.sqrt(d.value))
-        .attr("markerWidth", 6)
-        .attr("markerHeight", 6)
         .attr("marker-end", "url(#arrow)")
 
     const node = svg.append("g")
@@ -80,12 +92,17 @@ export function graph(contacts, onNodeClick){
         .attr("x", d => - d.image_size/2)
         .attr("y", d => - d.image_size/2);
 
-    /* Add label text
-    const text = node.append("text")
-        .attr("x", d => d.x)
-        .attr("y", d => d.y)
-        .text(d => d.id);
-    */
+    // Add circle
+    // node.append("circle")
+    //     .attr("r", d => d.image_size/2)
+    //     .attr('fill', '#6baed6');
+
+
+    // const text = node.append("text")
+    //     .attr("x", d => d.x)
+    //     .attr("y", d => d.y)
+    //     .text(d => d.data.organization_name);
+
 
     node.append("title")
         .text(d => d.data.organization_name);
