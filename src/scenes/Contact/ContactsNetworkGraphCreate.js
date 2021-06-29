@@ -44,8 +44,6 @@ export function graph(contacts, onNodeClick){
     const links = data.links;
     const nodes = data.nodes;
 
-    console.log({data, links, nodes});
-
     const simulation = d3.forceSimulation(nodes)
         .force("link", d3.forceLink(links).id(d => d.id).distance(30)) //default is 30
         .force("charge", d3.forceManyBody().strength(-30)) // default is -30

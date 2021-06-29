@@ -60,7 +60,6 @@ class ContactsNetworkGraph extends React.Component {
 
         let nodeModalTitle = null;
         if (isNodeModalVisible) {
-            console.log(selectedNode)
             nodeModalTitle = (
                 <div>
                     <img src={selectedNode.data.profile_pic_url}
