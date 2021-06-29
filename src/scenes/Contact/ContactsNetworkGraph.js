@@ -98,7 +98,7 @@ class ContactsNetworkGraph extends React.Component {
                                 {isEditNodeFormVisible ? "Hide ": ""}Suggest Edit
                                 </Button>
                             </p>
-                            {isEditNodeFormVisible && <ContactAddEdit contact={selectedNode?.data} isAddContactMode={false} />}
+                            {isEditNodeFormVisible && <ContactAddEdit contact={selectedNode?.data} editMode="edit" />}
                         </Modal>
                     }
                 </div>
