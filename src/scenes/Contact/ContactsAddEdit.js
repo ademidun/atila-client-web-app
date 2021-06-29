@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from "prop-types";
 import FormDynamic from "../../components/Form/FormDynamic";
 import { ALL_DEMOGRAPHICS } from "../../models/ConstantsForm";
 import { DEFAULT_CONTACT } from '../../models/Contact';
@@ -34,18 +35,23 @@ class ContactAddEdit extends React.Component{
         super(props);
 
         this.state = {
-            contact: Object.assign({}, DEFAULT_CONTACT),
+            contact: props.contact || Object.assign({}, DEFAULT_CONTACT),
+            isAddContactMode: props.isAddContactMode,
         };
     }
 
     handleSubmit = (event) => {
         event.preventDefault();
 
-        const { contact } = this.state;
+        const { contact,isAddContactMode } = this.state;
         contact.source_url = window.location.href;
 
-
-        ContactsAPI.create(contact)
+        if (isAddContactMode) {
+            ContactsAPI.create(contact)
+        } else {
+            ContactsAPI.update(contact, contact.id)
+        }
+        
     }
 
     updateForm = (event) => {
@@ -70,7 +76,15 @@ class ContactAddEdit extends React.Component{
         );
 
     }
-}
+};
 
+ContactAddEdit.defaultProps = {
+    isAddContactMode: true,
+};
+
+ContactAddEdit.propTypes = {
+    isAddContactMode: PropTypes.bool.isRequired,
+    contact: PropTypes.shape({}),
+};
 
 export default ContactAddEdit;

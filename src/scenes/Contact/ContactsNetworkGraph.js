@@ -1,7 +1,8 @@
 import React from 'react';
-import { Modal } from "antd";
+import { Button, Modal } from "antd";
 import { graph } from "./ContactsNetworkGraphCreate";
 import { Link } from "react-router-dom";
+import ContactAddEdit from './ContactsAddEdit';
 
 class ContactsNetworkGraph extends React.Component {
 
@@ -12,6 +13,7 @@ class ContactsNetworkGraph extends React.Component {
         this.state = {
             isNodeModalVisible: false,
             selectedNode: null,
+            isEditNodeFormVisible: false,
         }
     }
 
@@ -43,7 +45,11 @@ class ContactsNetworkGraph extends React.Component {
     }
 
     onNodeClick = (node) => {
-        this.setState({isNodeModalVisible: true, selectedNode: node})
+        this.setState({isNodeModalVisible: true, selectedNode: node, isEditNodeFormVisible: false})
+    }
+
+    toggleEditNode = () => {
+        this.setState({isEditNodeFormVisible: !this.state.isEditNodeFormVisible})
     }
 
     closeModal = () => {
@@ -51,7 +57,7 @@ class ContactsNetworkGraph extends React.Component {
     }
 
     render() {
-        const { isNodeModalVisible, selectedNode } = this.state;
+        const { isNodeModalVisible, selectedNode, isEditNodeFormVisible } = this.state;
 
         let nodeModalTitle = null;
         if (isNodeModalVisible) {
@@ -70,17 +76,28 @@ class ContactsNetworkGraph extends React.Component {
         }
 
         return (
-            <div style={{"border": "1px solid #40a9ff"}}>
-                <div ref={this.graphRef} />
-                <Modal
-                    visible={isNodeModalVisible}
-                    title={nodeModalTitle}
-                    footer={null}
-                    onCancel={this.closeModal}
-                >
-                    <p>Follower count: {selectedNode?.followers_count}</p>
-                    <p>Following count: {selectedNode?.following_count}</p>
-                </Modal>
+                <div className="p-3">
+                    <p>
+                        Hint: Try dragging the club pictures around!
+                    </p>
+                <div style={{"border": "1px solid #40a9ff"}}>
+                    <div ref={this.graphRef} />
+                    <Modal
+                        visible={isNodeModalVisible}
+                        title={nodeModalTitle}
+                        footer={null}
+                        onCancel={this.closeModal}
+                    >
+                        <p>Follower count: {selectedNode?.followers_count}</p>
+                        <p>Following count: {selectedNode?.following_count}</p>
+                        <p>Incorrect Information? 
+                            <Button onClick={this.toggleEditNode} type="link">
+                            {isEditNodeFormVisible ? "Hide ": ""}Edit Contact
+                            </Button>
+                        </p>
+                        {isEditNodeFormVisible && <ContactAddEdit contact={selectedNode} isAddContactMode={false} />}
+                    </Modal>
+                </div>
             </div>
         );
     }

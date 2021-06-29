@@ -15,6 +15,17 @@ class ContactsAPI {
         return apiCompletionPromise;
     };
 
+    static update = (contact, id) => {
+
+        const apiCompletionPromise = request({
+            method: 'patch',
+            data: contact,
+            url: `${ContactsAPI.contactsApiUrl}/contacts/${id}/`,
+        });
+
+        return apiCompletionPromise;
+    };
+
     static getAllContacts = () => {
 
         const apiCompletionPromise = request({
