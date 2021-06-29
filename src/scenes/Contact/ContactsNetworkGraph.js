@@ -44,7 +44,7 @@ class ContactsNetworkGraph extends React.Component {
     }
 
     onNodeClick = (node) => {
-        this.setState({isNodeModalVisible: true, selectedNode: node, isEditNodeFormVisible: false})
+        this.setState({isNodeModalVisible: true, selectedNode: node})
     }
 
     toggleEditNode = () => {
@@ -66,7 +66,7 @@ class ContactsNetworkGraph extends React.Component {
                     <img src={selectedNode.data.profile_pic_url}
                          className="rounded-circle m-1"
                          alt={selectedNode.data.organization_name}
-                         style={{width: "30px", height: "30px"}} />
+                         style={{width: "50px", height: "50px"}} />
                     <h2>
                     {selectedNode.data.organization_name}
                     </h2><br/>
@@ -91,8 +91,9 @@ class ContactsNetworkGraph extends React.Component {
                             footer={null}
                             onCancel={this.closeModal}
                         >
-                            <p>Follower count: {selectedNode?.data.followers_count}</p>
-                            <p>Following count: {selectedNode?.data.following_count}</p>
+                            <p>About this club: <br/> {selectedNode?.data.instagram_bio}</p>
+                            <p>Follower count: {selectedNode?.data.instagram_followers_count}</p>
+                            <p>Following count: {selectedNode?.data.instagram_following_count}</p>
                             <p>Incorrect or Missing Information? 
                                 <Button onClick={this.toggleEditNode} type="link">
                                 {isEditNodeFormVisible ? "Hide ": ""}Edit Contact
