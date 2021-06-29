@@ -45,9 +45,9 @@ class ContactAddEdit extends React.Component{
         event.preventDefault();
 
         const { contact,isAddContactMode } = this.state;
-        contact.source_url = window.location.href;
 
         if (isAddContactMode) {
+            contact.source_url = window.location.href;
             ContactsAPI.create(contact)
         } else {
             ContactsAPI.update(contact, contact.id)
