@@ -22,14 +22,14 @@ class ContactsNetworkForm extends React.Component {
     onSuggestionSelected = (event, suggestionArguments ) => {
         console.log({ suggestionArguments });
         
-        const { suggestion } = suggestionArguments;
+        const { suggestion, suggestionValue } = suggestionArguments;
 
         let queryData = {};
-        if (typeof suggestion === 'string' || suggestion instanceof String) {
+        if (!suggestion) {
             // TODO for some reason sometime suggestion is being passed as a string, isntead of an object
             // likely a bug elsewhere, so we should find the underlying cause isntead of relying on this hotfix
             queryData = {
-                "all_fields": suggestion,
+                "all_fields": suggestionValue,
             };
         } else {
             queryData = {
