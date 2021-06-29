@@ -6,6 +6,7 @@ import { Button } from 'antd';
 import ContactAddEdit from './ContactAddEdit';
 import ContactsNetworkInformation from './ContactsNetworkInformation';
 import {toastNotify} from "../../models/Utils";
+import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 
 class ContactsNetwork extends React.Component {
 
@@ -47,9 +48,14 @@ class ContactsNetwork extends React.Component {
     render() {
 
         const { contacts, addContactMode } = this.state;
+        const seoContent = {
+            ...defaultSeoContent,
+            title: "Atila - Student Clubs Network Visualizer"
+        };
 
         return (
             <div className="container mt-5">
+                <HelmetSeo content={seoContent}/>
                 <div className="card shadow p-3">
                     <h1>Visualize the Student Clubs Network</h1>
 
