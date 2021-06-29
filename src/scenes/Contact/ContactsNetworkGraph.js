@@ -93,9 +93,9 @@ class ContactsNetworkGraph extends React.Component {
                             <p>About this club: <br/> {selectedNode?.data.instagram_bio}</p>
                             <p>Follower count: {selectedNode?.data.instagram_followers_count}</p>
                             <p>Following count: {selectedNode?.data.instagram_following_count}</p>
-                            <p>Incorrect or Missing Information? 
+                            <p>Incorrect or Missing Information? You can suggest an edit. <br/>
                                 <Button onClick={this.toggleEditNode} type="link">
-                                {isEditNodeFormVisible ? "Hide ": ""}Edit Contact
+                                {isEditNodeFormVisible ? "Hide ": ""}Suggest Edit
                                 </Button>
                             </p>
                             {isEditNodeFormVisible && <ContactAddEdit contact={selectedNode?.data} isAddContactMode={false} />}
