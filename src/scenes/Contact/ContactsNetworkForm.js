@@ -24,9 +24,18 @@ class ContactsNetworkForm extends React.Component {
         
         const { suggestion } = suggestionArguments;
 
-        const queryData = {
-            [suggestion.category]: suggestion.value,
-        };
+        let queryData = {};
+        if (typeof suggestion === 'string' || suggestion instanceof String) {
+            // TODO for some reason sometime suggestion is being passed as a string, isntead of an object
+            // likely a bug elsewhere, so we should find the underlying cause isntead of relying on this hotfix
+            queryData = {
+                "all_fields": suggestion,
+            };
+        } else {
+            queryData = {
+                [suggestion.category]: suggestion.value,
+            };
+        }
 
         if(queryData.school) {
             queryData.eligible_schools = queryData.school;
