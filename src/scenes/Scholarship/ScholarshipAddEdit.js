@@ -369,7 +369,10 @@ class ScholarshipAddEdit extends React.Component{
             value = event.target.checked
         }
         if (event.stopPropagation) {
-            event.stopPropagation(); // https://github.com/facebook/react/issues/3446#issuecomment-82751540
+            // Radio button needed to be clicked twice for change to be reflected in the DOM
+            // https://github.com/facebook/react/issues/3446#issuecomment-82751540
+            // https://stackoverflow.com/a/48425083/5405197
+            event.stopPropagation(); 
         }
 
 

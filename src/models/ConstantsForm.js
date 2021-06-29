@@ -1480,7 +1480,6 @@ export const SPORTS = [
     'Archery',
     'Arm Wrestling',
     'Athletics',
-    'Athletics',
     'Australian Rules Football',
     'Auto Racing',
     'Badminton',
@@ -1679,8 +1678,8 @@ export const MASTER_LIST_EVERYTHING_UNDERSCORE = MASTER_LIST_EVERYTHING.map(item
 export const MASTER_LIST_WITH_CATEGORY_LABEL = [];
 // TODO use ALL_DEMOGRAPHICS to populate MASTER_LIST_EVERYTHING
 export const ALL_DEMOGRAPHICS = {
-    "school": SCHOOLS_LIST,
-    "program": MAJORS_LIST,
+    "eligible_schools": SCHOOLS_LIST,
+    "eligible_programs": MAJORS_LIST,
     "ethnicity": ETHNICITIES,
     "disabilities": DISABILITIES,
     "sports": SPORTS,

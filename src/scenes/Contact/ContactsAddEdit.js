@@ -1,9 +1,10 @@
 import React from 'react';
 import FormDynamic from "../../components/Form/FormDynamic";
-import {MAJORS_LIST, SCHOOLS_LIST} from "../../models/ConstantsForm";
+import { ALL_DEMOGRAPHICS } from "../../models/ConstantsForm";
 import { DEFAULT_CONTACT } from '../../models/Contact';
 import { Button } from "antd";
 import ContactsAPI from "../../services/ContactsAPI";
+import { FormUtils } from '../../services/FormUtils';
 
 let contactFormConfigsPage1 = [
     {
@@ -13,25 +14,19 @@ let contactFormConfigsPage1 = [
         keyName: 'instagram_username',
     },
     {
-        keyName: 'eligible_programs',
-        placeholder: 'Eligible Programs (leave blank for any) 📚',
-        type: 'autocomplete',
-        suggestions: MAJORS_LIST
+        keyName: 'profile_pic_url',
     },
-    {
-        keyName: 'eligible_schools',
-        placeholder: 'Eligible Schools (leave blank for any) 🏫',
-        type: 'autocomplete',
-        suggestions: SCHOOLS_LIST
-    },
-    {
-        keyName: 'ethnicity',
-    },
-    {
-        keyName: 'industries',
-    },
-    
 ]
+
+for (const [demographicKey, demographicOptions] of Object.entries(ALL_DEMOGRAPHICS)) {
+    const inputConfig = {
+        keyName: demographicKey,
+        type: 'autocomplete',
+        suggestions: demographicOptions,
+        skipPrettifyKeys: true,
+    }
+    contactFormConfigsPage1.push(inputConfig);
+  }
 
 class ContactAddEdit extends React.Component{
 
@@ -47,21 +42,18 @@ class ContactAddEdit extends React.Component{
         event.preventDefault();
 
         const { contact } = this.state;
+        contact.source_url = window.location.href;
 
 
         ContactsAPI.create(contact)
     }
 
     updateForm = (event) => {
-        event.preventDefault();
         const { contact } = this.state;
 
-        const newFormData = {
-            ...contact,
-            [event.target.name]: event.target.value
-        };
+        const updateContact = FormUtils.updateModelUsingForm(contact, event);
 
-        this.setState({contact: newFormData });
+        this.setState({contact: updateContact });
     }
 
     render() {

@@ -48,15 +48,17 @@ class ContactsNetwork extends React.Component {
             <div className="container mt-5">
                 <div className="card shadow p-3">
                     <h1>Visualize the Student Clubs Network</h1>
-                    <Button onClick={this.toggleAddContacts}>
-                        Add contact
-                    </Button>
+
+                    <ContactsNetworkForm onUpdateContacts={this.updateContacts} />
+                    <div style={{with: "150px"}} className="mb-3">
+                        <Button className="float-right" onClick={this.toggleAddContacts}>
+                            {addContactMode ? "Hide ": ""}Add contact
+                        </Button>
+                    </div>
 
                     {addContactMode && 
                         <ContactAddEdit />
                     }
-
-                    <ContactsNetworkForm onUpdateContacts={this.updateContacts} />
                     <ContactsNetworkGraph contacts={contacts} />
                     <ContactsNetworkInformation />
                     

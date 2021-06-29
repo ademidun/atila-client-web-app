@@ -24,6 +24,7 @@ export const InputConfigPropType = PropTypes.shape({
     isHidden: PropTypes.func,
     suggestions: PropTypes.array,
     className: PropTypes.string,
+    skipPrettifyKeys: PropTypes.bool,
 });
 
 export const toastNotify = (message, messageType='info', customOptions={}) => {

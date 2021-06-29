@@ -36,7 +36,7 @@ const selectChange = ( name, value, updateForm ) => {
 function FormDynamicInput({model, onUpdateForm, inputConfig, loggedInUserProfile}) {
 
     const { type, keyName, html, suggestions, className,
-        options, valueDisplay, isHidden, hideLabel, label, disabled } = inputConfig;
+        options, valueDisplay, isHidden, hideLabel, label, disabled, skipPrettifyKeys } = inputConfig;
     let {placeholder} = inputConfig;
     let inputForm = null;
 
@@ -134,7 +134,7 @@ function FormDynamicInput({model, onUpdateForm, inputConfig, loggedInUserProfile
                         {suggestions.map(suggestion => (
                             <Option key={suggestion}
                                     value={suggestion}>
-                                {prettifyKeys(suggestion)}{' '}
+                                {skipPrettifyKeys ? suggestion : prettifyKeys(suggestion)}{' '}
 
                                 {emojiDictionary[suggestion.toLowerCase()] && emojiDictionary[suggestion.toLowerCase()]}
                             </Option>
