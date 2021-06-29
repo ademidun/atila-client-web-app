@@ -1681,15 +1681,16 @@ export const ALL_DEMOGRAPHICS = {
     "eligible_schools": SCHOOLS_LIST,
     "eligible_programs": MAJORS_LIST,
     "ethnicity": ETHNICITIES,
-    "disabilities": DISABILITIES,
     "sports": SPORTS,
     "religion": RELIGIONS,
-    "languages": LANGUAGES,
     "industries": INDUSTRIES,
     "occupations": OCCUPATIONS,
     "other_demographic": OTHER_DEMOGRAPHICS,
-    "heritage": COUNTRIES,
     "activities": ACTIVITIES,
+    "heritage": COUNTRIES,
+    "languages": LANGUAGES,
+    "disability": DISABILITIES,
+    // "citizenship": COUNTRIES,
 }
 
 for (const [demographic_type, demographic_list] of Object.entries(ALL_DEMOGRAPHICS)) {
