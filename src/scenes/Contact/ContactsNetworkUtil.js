@@ -3,7 +3,7 @@ const getNodesFromContacts = contacts => {
         return {
             id: contact.instagram_username,
             group: 1,
-            image_size: getImageSize(contact.instagram_following_count),
+            node_size: getNodeSize(contact.instagram_follower_count - contact.instagram_following_count),
             data: contact,
         }
     })
@@ -47,19 +47,23 @@ const normalizeNumberBetweenBounds = (num, actual_bounds, desired_bounds) => {
      */
 
     if (!num) {
-        return (desired_bounds[0] + desired_bounds[1])/2;
+        return desired_bounds[0];
     }
 
     if (num >= actual_bounds[1]) {
         return desired_bounds[1]
     }
 
+    if (num <= actual_bounds[0]) {
+        return desired_bounds[0]
+    }
+
     return Math.round(desired_bounds[0] + ((num - actual_bounds[0]) * (desired_bounds[1] - desired_bounds[0]) / (actual_bounds[1] - actual_bounds[0])))
 }
 
-const getImageSize = following_count => {
+const getNodeSize = net_followers => {
     let actual_bounds = [0, 2000]
     let desired_bounds = [20, 40]
 
-    return normalizeNumberBetweenBounds(following_count, actual_bounds, desired_bounds)
+    return normalizeNumberBetweenBounds(net_followers, actual_bounds, desired_bounds)
 }

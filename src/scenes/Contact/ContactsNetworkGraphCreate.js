@@ -89,15 +89,15 @@ export function graph(contacts, onNodeClick, showArrows=true){
     // Add image
     node.append("image")
         .attr("xlink:href", d => d.data.profile_pic_url)
-        .attr("width", d => d.image_size)
-        .attr("height", d => d.image_size)
+        .attr("width", d => d.node_size)
+        .attr("height", d => d.node_size)
         // Centers image so that edge comes out from the middle
-        .attr("x", d => - d.image_size/2)
-        .attr("y", d => - d.image_size/2);
+        .attr("x", d => - d.node_size/2)
+        .attr("y", d => - d.node_size/2);
 
     // Add circle
     // node.append("circle")
-    //     .attr("r", d => d.image_size/2)
+    //     .attr("r", d => d.node_size/2)
     //     .attr('fill', '#6baed6');
 
 
