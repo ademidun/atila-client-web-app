@@ -2,7 +2,7 @@ import React, {Fragment} from 'react';
 import { Button, Tag } from 'antd';
 import PropTypes from "prop-types";
 import { QueryItem } from './QueryItem';
-import { prettifyKeys } from '../../services/utils';
+import { getRandomString, prettifyKeys } from '../../services/utils';
 
 
 /**
@@ -18,6 +18,10 @@ import { prettifyKeys } from '../../services/utils';
         this.state = {
             allQueries: [
                 {
+                    // useful for setting the queryBuilderKey without having to use index which breaks when the question order changes
+                    // e.g. when we remove a QuestionItem that isn't the last question
+                    // TODO use this same logic in the Scholarship Question Builder?
+                    id: getRandomString(8),
                     queryType: "and",
                     queryData: {},
                 }
@@ -31,6 +35,7 @@ import { prettifyKeys } from '../../services/utils';
         const { allQueries } = this.state;
 
         allQueries.push({
+            id: getRandomString(8),
             queryType,
             queryData: {},
         });
@@ -60,22 +65,29 @@ import { prettifyKeys } from '../../services/utils';
 
     render() {
         const { allQueries } = this.state;
+        const mostRecentQuery = allQueries[allQueries.length - 1];
+        const mostRecentQueryHasValue =  Object.keys(mostRecentQuery.queryData).length > 0; 
 
         return (
             <div>
-                {allQueries.map((query, index) => (
-                    <div key={index}>
-                    <QueryItem  onUpdateQuery={(queryData) => {this.onUpdateQuery(queryData, index)}} />
-                    {allQueries.length > 1 && 
-                    <div className="mb-3">
-                    <Button onClick={() => {this.removeQuery(index)}} type="link">
-                        Remove Query
-                    </Button>
-                    <br/>
+                {allQueries.map((query, index) => {
+
+                    return (
+
+                    <div key={query.id}>
+                        <QueryItem  onUpdateQuery={(queryData) => {this.onUpdateQuery(queryData, index)}} />
+                        {allQueries.length > 1 && 
+                        <div className="mb-3">
+                        <Button onClick={() => {this.removeQuery(index)}} type="link">
+                            Remove Query
+                        </Button>
+                        <br/>
+                        </div>
+                        }
                     </div>
-                    }
-                    </div>
-                ))}
+                
+                    )
+                })}
                 <div>
                 {allQueries.map((query, index) => (
                     <Fragment key={index}>
@@ -96,11 +108,11 @@ import { prettifyKeys } from '../../services/utils';
 
                     
 
-                <Button onClick={() => {this.addQuery("and")}}>
+                <Button onClick={() => {this.addQuery("and")}} disabled={!mostRecentQueryHasValue}>
                     And
                 </Button>
 
-                <Button onClick={() => {this.addQuery("or")}}>
+                <Button onClick={() => {this.addQuery("or")}} disabled={!mostRecentQueryHasValue}>
                     Or
                 </Button>
                                 
