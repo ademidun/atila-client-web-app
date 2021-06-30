@@ -83,7 +83,7 @@ class ContactsNetwork extends React.Component {
                 <div className="card shadow p-3">
                     <h1>The {pageTitle}</h1>
                     <h5 className="text-muted text-center">
-                        Visually explore the relationship between every student club in Canada
+                        Visually explore the relationships between every student club in Canada
                     </h5>
 
                     <QueryBuilder onUpdateQuery={this.onUpdateQuery} />
