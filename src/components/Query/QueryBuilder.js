@@ -86,7 +86,7 @@ import { prettifyKeys } from '../../services/utils';
                     }
                     {Object.keys(query.queryData).length > 0 &&
                         <>
-                        <strong>{prettifyKeys(Object.keys(query.queryData)[0])}</strong> = {query.queryData[Object.keys(query.queryData)[0]]}
+                        <strong>{prettifyKeys(Object.keys(query.queryData)[0])}</strong> is {query.queryData[Object.keys(query.queryData)[0]]}
                         </>
                     }
                     </Fragment>
