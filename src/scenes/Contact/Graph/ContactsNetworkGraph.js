@@ -84,7 +84,7 @@ class ContactsNetworkGraph extends React.Component {
                     {selectedNode.data.organization_name}
                     </h2><br/>
                     <a  target="_blank" rel="noopener noreferrer" href={`https://instagram.com/${selectedNode.data.instagram_username}/`}>
-                      View Instagram
+                      View Instagram (@{selectedNode.data.instagram_username})
                     </a>
                 </div>
             )
