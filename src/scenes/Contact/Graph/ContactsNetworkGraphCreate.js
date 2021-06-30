@@ -122,14 +122,14 @@ export function graph(contacts, settings, onNodeClick){
     node.call(drag(simulation));
 
     simulation.on("tick", () => {
+        node
+            .attr("transform", d => keepInBound(d))
+
         link
             .attr("x1", d => d.source.x)
             .attr("y1", d => d.source.y)
             .attr("x2", d => d.target.x)
             .attr("y2", d => d.target.y);
-
-        node
-            .attr("transform", d => keepInBound(d))
     });
 
     return svg.node()
