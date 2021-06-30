@@ -243,7 +243,7 @@ class App extends React.Component {
                 component={GoogleAnalyticsTracker(ContactUs)}
               />
               <Route
-                path='/network'
+                path='/clubs'
                 component={GoogleAnalyticsTracker(ContactsNetwork)}
               />
               <Route

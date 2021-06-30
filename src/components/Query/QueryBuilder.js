@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import { Button, Tag } from 'antd';
 import PropTypes from "prop-types";
 import { QueryItem } from './QueryItem';
@@ -46,9 +46,16 @@ import { prettifyKeys } from '../../services/utils';
         this.setState({allQueries});
     }
 
-    onUpdateQuery = (query) => {
+    onUpdateQuery = (query, index) => {
 
-        this.props.onUpdateQuery(query)
+
+        const { allQueries } = this.state;
+
+        allQueries[index].queryData = query;
+        this.setState({allQueries});
+
+        this.props.onUpdateQuery(query);
+        console.log({allQueries});
     }
 
     render() {
@@ -57,19 +64,37 @@ import { prettifyKeys } from '../../services/utils';
         return (
             <div>
                 {allQueries.map((query, index) => (
-                    <>
-                    <QueryItem key={index} onUpdateQuery={this.onUpdateQuery} /> 
+                    <div key={index}>
+                    <QueryItem  onUpdateQuery={(queryData) => {this.onUpdateQuery(queryData, index)}} />
                     {allQueries.length > 1 && 
                     <div className="mb-3">
                     <Button onClick={() => {this.removeQuery(index)}} type="link">
                         Remove Query
                     </Button>
-                    <Tag color="blue">{prettifyKeys(query.queryType)}</Tag>
                     <br/>
                     </div>
                     }
-                    </>
+                    </div>
                 ))}
+                <div>
+                {allQueries.map((query, index) => (
+                    <Fragment key={index}>
+                    {index !==0 && 
+                    <>{' '}
+                    <Tag color="blue">{prettifyKeys(query.queryType)}</Tag>
+                    </>
+                    }
+                    {Object.keys(query.queryData).length > 0 &&
+                        <>
+                        <strong>{prettifyKeys(Object.keys(query.queryData)[0])}</strong> = {query.queryData[Object.keys(query.queryData)[0]]}
+                        </>
+                    }
+                    </Fragment>
+                ))}
+
+                </div>
+
+                    
 
                 <Button onClick={() => {this.addQuery("and")}}>
                     And
