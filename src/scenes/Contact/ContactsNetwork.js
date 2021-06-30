@@ -79,12 +79,6 @@ class ContactsNetwork extends React.Component {
             title: pageTitle
         };
 
-        if (loading) {
-            return (
-                <Loading title={loading} />
-            )
-        }
-
         return (
             <div className="container mt-5">
                 <HelmetSeo content={seoContent}/>
@@ -95,6 +89,7 @@ class ContactsNetwork extends React.Component {
                     </h5>
 
                     <QueryBuilder onUpdateQuery={this.onUpdateQuery} />
+                    {loading && <Loading title={loading} />}
                     <div style={{with: "150px"}} className="mb-3">
                         <div className="float-right">
 
