@@ -1,7 +1,14 @@
 import React from 'react';
 import { Button, Modal } from "antd";
 import { graph } from "./ContactsNetworkGraphCreate";
-import ContactAddEdit from './ContactAddEdit';
+import ContactAddEdit from '../ContactAddEdit';
+import equal from "fast-deep-equal"
+import ContactsNetworkGraphSettings from "./ContactsNetworkGraphSettings";
+
+const DEFAULT_GRAPH_SETTINGS = {
+    isNodeImage: true,
+    showArrows: true,
+}
 
 class ContactsNetworkGraph extends React.Component {
 
@@ -13,6 +20,7 @@ class ContactsNetworkGraph extends React.Component {
             isNodeModalVisible: false,
             selectedNode: null,
             isEditNodeFormVisible: true,
+            graphSettings: Object.assign({}, DEFAULT_GRAPH_SETTINGS),
         }
     }
 
@@ -22,9 +30,8 @@ class ContactsNetworkGraph extends React.Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         // Only redraw graph when props change,
-        // Consider using something like fast-deep-equal (https://www.npmjs.com/package/fast-deep-equal) to compare arrays
-        // instead of naively checking array length
-        if (prevProps.contacts.length !== this.props.contacts.length) {
+        if ((!equal(prevProps.contacts, this.props.contacts)) ||
+            (!equal(prevState.graphSettings, this.state.graphSettings))) {
             this.drawGraph()
         }
     }
@@ -38,8 +45,9 @@ class ContactsNetworkGraph extends React.Component {
     drawGraph = () => {
         this.clearGraph()
         const { contacts } = this.props;
+        const { graphSettings } = this.state;
         if (contacts?.length > 0) {
-            this.graphRef.current.appendChild(graph(contacts, this.onNodeClick))
+            this.graphRef.current.appendChild(graph(contacts, graphSettings, this.onNodeClick))
         }
     }
 
@@ -55,8 +63,16 @@ class ContactsNetworkGraph extends React.Component {
         this.setState({isNodeModalVisible: false, selectedNode: null})
     }
 
+
+    onGraphSettingsChange = (key, value) => {
+        let newGraphSettings = {...this.state.graphSettings}
+        newGraphSettings[key] = value
+
+        this.setState({graphSettings: newGraphSettings})
+    }
+
     render() {
-        const { isNodeModalVisible, selectedNode, isEditNodeFormVisible } = this.state;
+        const { isNodeModalVisible, selectedNode, isEditNodeFormVisible, graphSettings } = this.state;
 
         let nodeModalTitle = null;
         if (isNodeModalVisible) {
@@ -77,10 +93,13 @@ class ContactsNetworkGraph extends React.Component {
         }
 
         return (
-                <div className="p-3">
-                    <p>
-                        Hint: Try dragging the club pictures around!
-                    </p>
+            <div className="p-3">
+                <p>
+                    Hint: Try dragging the club pictures around!
+                </p>
+
+                <ContactsNetworkGraphSettings onSettingsChange={this.onGraphSettingsChange} settings={graphSettings} />
+                <br />
                 <div style={{"border": "1px solid #40a9ff"}}>
                     <div ref={this.graphRef} />
                     {selectedNode && 

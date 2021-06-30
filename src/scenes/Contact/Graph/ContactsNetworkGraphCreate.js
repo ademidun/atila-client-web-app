@@ -38,7 +38,9 @@ const keepInBound = node => {
     return `translate(${node.x},${node.y})`
 }
 
-export function graph(contacts, onNodeClick, showArrows=true){
+export function graph(contacts, settings, onNodeClick){
+    const { isNodeImage, showArrows } = settings;
+
     let data = getFormattedDataFromContacts(contacts);
 
     const links = data.links;
@@ -63,7 +65,7 @@ export function graph(contacts, onNodeClick, showArrows=true){
         .attr("markerHeight", 6)
         .attr("orient", "auto")
         .append("path")
-        .attr("fill", '#000')
+        .attr("fill", '#999')
         .attr("d", 'M0,-5L10,0L0,5');
 
     const link = svg.append("g")
@@ -86,20 +88,22 @@ export function graph(contacts, onNodeClick, showArrows=true){
         .attr("stroke", "#fff")
         .attr("stroke-width", 1.5)
 
-    // Add image
-    node.append("image")
-        .attr("xlink:href", d => d.data.profile_pic_url)
-        .attr("width", d => d.node_size)
-        .attr("height", d => d.node_size)
-        // Centers image so that edge comes out from the middle
-        .attr("x", d => - d.node_size/2)
-        .attr("y", d => - d.node_size/2);
-
-    // Add circle
-    // node.append("circle")
-    //     .attr("r", d => d.node_size/2)
-    //     .attr('fill', '#6baed6');
-
+    if (isNodeImage) {
+        // Add image
+        node.append("image")
+            .attr("xlink:href", d => d.data.profile_pic_url)
+            .attr("width", d => d.node_size)
+            .attr("height", d => d.node_size)
+            .attr("style", "border-radius: 50%;") // should make image become circular
+            // Centers image so that edge comes out from the middle
+            .attr("x", d => - d.node_size/2)
+            .attr("y", d => - d.node_size/2);
+    } else {
+        // Add circle
+        node.append("circle")
+            .attr("r", d => d.node_size/2)
+            .attr('fill', '#6baed6');
+    }
 
     // const text = node.append("text")
     //     .attr("x", d => d.x)

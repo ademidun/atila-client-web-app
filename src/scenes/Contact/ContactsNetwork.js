@@ -1,5 +1,5 @@
 import React from 'react';
-import ContactsNetworkGraph from './ContactsNetworkGraph';
+import ContactsNetworkGraph from './Graph/ContactsNetworkGraph';
 import ContactsAPI from "../../services/ContactsAPI";
 import { Button } from 'antd';
 import ContactAddEdit from './ContactAddEdit';
