@@ -61,7 +61,7 @@ export const SampleSearches = ({sampleSearches, allQueries, onSearchSelected, cl
                 {category: 'eligible_programs', value: 'Nursing'},
                 {category: 'eligible_programs', value: 'Finance'},
                 {category: 'occupations', value: 'Software Engineer'},
-                {category: 'religion', value: 'Christanity'},
+                {category: 'religion', value: 'Christianity'},
                 {category: 'religion', value: 'Judaism'},
                 {category: 'religion', value: 'Islam'},
                 {category: 'ethnicity', value: 'East-Asian'},
