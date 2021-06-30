@@ -9,6 +9,7 @@ import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import QueryBuilder from '../../components/Query/QueryBuilder';
 import { CONTACTS_QUERY_RESPONSE_1 } from '../../mock_data/ContactsQuery';
 import Environment from '../../services/Environment';
+import Loading from "../../components/Loading";
 
 const TEMP_HACK_LOCAL_DATA = true;
 
@@ -47,7 +48,7 @@ class ContactsNetwork extends React.Component {
     }
 
     onUpdateQuery = (queryData) => {
-
+        this.setState({loading: "Loading query..."});
         ContactsAPI.query(queryData)
             .then(res => {
                 const { contacts } = res.data;
@@ -60,8 +61,9 @@ class ContactsNetwork extends React.Component {
             .catch(err=> {
                 console.log({err});
             })
-
-        
+            .finally(()=>{
+                this.setState({loading: null})
+            })
     }
 
     toggleAddContacts = () => {
@@ -70,12 +72,18 @@ class ContactsNetwork extends React.Component {
 
     render() {
 
-        const { contacts, addContactMode } = this.state;
+        const { contacts, addContactMode, loading } = this.state;
         const pageTitle = "Student Clubs Network Visualizer"
         const seoContent = {
             ...defaultSeoContent,
             title: pageTitle
         };
+
+        if (loading) {
+            return (
+                <Loading title={loading} />
+            )
+        }
 
         return (
             <div className="container mt-5">

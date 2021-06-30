@@ -62,7 +62,6 @@ class ContactsNetworkGraph extends React.Component {
         this.setState({isNodeModalVisible: false, selectedNode: null})
     }
 
-
     onGraphSettingsChange = (key, value) => {
         let newGraphSettings = {...this.state.graphSettings}
         newGraphSettings[key] = value
@@ -71,7 +70,7 @@ class ContactsNetworkGraph extends React.Component {
     }
 
     render() {
-        const { isNodeModalVisible, selectedNode, isEditNodeFormVisible, graphSettings } = this.state;
+        const { isNodeModalVisible, selectedNode, isEditNodeFormVisible } = this.state;
 
         let nodeModalTitle = null;
         if (isNodeModalVisible) {
