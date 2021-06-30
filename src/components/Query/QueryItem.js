@@ -77,15 +77,15 @@ export class QueryItem extends React.Component {
 
     render() {
         const { searchQuery } = this.state;
-        const { value } = this.props;
+        const { placeHolder } = this.props;
 
-        console.log({searchQuery, value });
+        console.log({searchQuery, placeHolder });
 
         return (
             <>
                 <AutoComplete   suggestions={MASTER_LIST_WITH_CATEGORY_LABEL}
-                                placeholder={"Search by school, program, ethnicity, activity, or more"}
-                                value={searchQuery||value}
+                                placeholder={placeHolder||"Search by school, program, ethnicity, activity, or more"}
+                                value={searchQuery}
                                 getSuggestionValue={suggestion => suggestion.value}
                                 renderSuggestion={this.renderSuggestion}
                                 onSuggestionSelected={this.onSuggestionSelected}
@@ -103,5 +103,5 @@ QueryItem.defaultProps = {
 
 QueryItem.propTypes = {
     onUpdateQuery: PropTypes.func,
-    value: PropTypes.string,
+    placeHolder: PropTypes.string,
 };

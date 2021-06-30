@@ -54,13 +54,14 @@ export const SampleSearches = ({sampleSearches, allQueries, onSearchSelected, cl
                 }
             ],
             sampleSearches: [
+                {category: 'eligible_schools', value: 'University of Toronto'},
                 {category: 'eligible_schools', value: 'University of Alberta'},
                 {category: 'eligible_schools', value: 'Dalhouse University'},
-                {category: 'eligible_schools', value: 'McMaster University'},
                 {category: 'eligible_schools', value: 'Douglas College'},
                 {category: 'eligible_programs', value: 'Nursing'},
+                {category: 'eligible_programs', value: 'Finance'},
                 {category: 'occupations', value: 'Software Engineer'},
-                {category: 'religion', value: 'Christanity'},
+                {category: 'religion', value: 'Christianity'},
                 {category: 'religion', value: 'Judaism'},
                 {category: 'religion', value: 'Islam'},
                 {category: 'ethnicity', value: 'East-Asian'},
@@ -160,7 +161,7 @@ export const SampleSearches = ({sampleSearches, allQueries, onSearchSelected, cl
                     return (
 
                     <div key={query.id}>
-                        <QueryItem  onUpdateQuery={(queryData) => {this.onUpdateQuery(queryData, index)}} value={queryValue} />
+                        <QueryItem  onUpdateQuery={(queryData) => {this.onUpdateQuery(queryData, index)}} placeHolder={queryValue} />
                         {allQueries.length > 1 && 
                         <div className="mb-3">
                         <Button onClick={() => {this.removeQuery(index)}} type="link">
