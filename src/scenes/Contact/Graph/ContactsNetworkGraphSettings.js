@@ -28,9 +28,9 @@ class ContactsNetworkGraphSettings extends React.Component {
                 <Button onClick={this.toggleSettingsForm}>
                     {showSettingsForm ? "Hide Options": "Options"}
                 </Button>
+                <br />
                 {showSettingsForm &&
-                    <div>
-                        <br />
+                    <div className="shadow p-3">
                         <p>Enable Node Images: </p><Switch checked={settings.isNodeImage} onChange={this.onSwitchChange}/>
                     </div>
                 }
