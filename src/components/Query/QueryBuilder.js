@@ -57,6 +57,7 @@ export const SampleSearches = ({sampleSearches, allQueries, onSearchSelected, cl
                 {category: 'eligible_schools', value: 'University of Alberta'},
                 {category: 'eligible_schools', value: 'Dalhouse University'},
                 {category: 'eligible_schools', value: 'McMaster University'},
+                {category: 'eligible_schools', value: 'Douglas College'},
                 {category: 'eligible_programs', value: 'Nursing'},
                 {category: 'occupations', value: 'Software Engineer'},
                 {category: 'religion', value: 'Christanity'},
@@ -153,11 +154,13 @@ export const SampleSearches = ({sampleSearches, allQueries, onSearchSelected, cl
         return (
             <div>
                 {allQueries.map((query, index) => {
+                    const queryValue =  Object.keys(query.queryData).length > 0 ? query.queryData[Object.keys(query.queryData)[0]] : ""; 
 
+                    console.log({query, queryValue});
                     return (
 
                     <div key={query.id}>
-                        <QueryItem  onUpdateQuery={(queryData) => {this.onUpdateQuery(queryData, index)}} />
+                        <QueryItem  onUpdateQuery={(queryData) => {this.onUpdateQuery(queryData, index)}} value={queryValue} />
                         {allQueries.length > 1 && 
                         <div className="mb-3">
                         <Button onClick={() => {this.removeQuery(index)}} type="link">
