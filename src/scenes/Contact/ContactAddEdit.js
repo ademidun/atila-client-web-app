@@ -9,6 +9,7 @@ import { FormUtils } from '../../services/FormUtils';
 import {connect} from "react-redux";
 import EditsAPI from '../../services/EditsApi';
 import { prettifyKeys } from '../../services/utils';
+import {toastNotify} from "../../models/Utils";
 
 const EDIT_MODES = ['add', 'edit', 'suggest'];
 const EDIT_MODES_HELPER_TEXT = {
@@ -80,11 +81,19 @@ class ContactAddEdit extends React.Component{
                 return;
         }
 
+        const placeBottomOption = {
+            position: "bottom-left",
+        }
+
         contactsSubscription
         .then(res => {
+            toastNotify(`${editMode} request was successful!`, "success", placeBottomOption)
         })
         .catch(err=> {
             console.log({err});
+            const errorMessage = `Error submitting ${editMode} request.
+                          Please message us using the chat in the bottom right corner.`
+            toastNotify(errorMessage, "error", placeBottomOption)
         })
         
     }
@@ -114,8 +123,8 @@ class ContactAddEdit extends React.Component{
             <div>
                 {editModeTag}
                 <FormDynamic model={contact}
-                                         inputConfigs={contactFormConfigsPage1}
-                                         onUpdateForm={this.updateForm}/>
+                             inputConfigs={contactFormConfigsPage1}
+                             onUpdateForm={this.updateForm}/>
                     <Button type="submit"
                                 className="btn btn-primary col-12 mt-2"
                                 onClick={this.handleSubmit}>Save</Button>
