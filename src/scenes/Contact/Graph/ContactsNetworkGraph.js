@@ -3,7 +3,6 @@ import { Button, Modal } from "antd";
 import { graph } from "./ContactsNetworkGraphCreate";
 import ContactAddEdit from '../ContactAddEdit';
 import equal from "fast-deep-equal"
-import ContactsNetworkGraphSettings from "./ContactsNetworkGraphSettings";
 
 const DEFAULT_GRAPH_SETTINGS = {
     isNodeImage: true,
@@ -98,7 +97,7 @@ class ContactsNetworkGraph extends React.Component {
                     Hint: Try dragging the club pictures around!
                 </p>
 
-                <ContactsNetworkGraphSettings onSettingsChange={this.onGraphSettingsChange} settings={graphSettings} />
+                {/*<ContactsNetworkGraphSettings onSettingsChange={this.onGraphSettingsChange} settings={graphSettings} />*/}
                 <br />
                 <div style={{"border": "1px solid #40a9ff"}}>
                     <div ref={this.graphRef} />
