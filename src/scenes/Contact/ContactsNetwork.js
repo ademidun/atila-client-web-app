@@ -50,7 +50,7 @@ class ContactsNetwork extends React.Component {
 
         ContactsAPI.query(queryData)
             .then(res => {
-                const { contacts } = res.data.contacts;
+                const { contacts } = res.data;
                 
                 this.setState({ contacts });
                 if (contacts.length === 0) {
