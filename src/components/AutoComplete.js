@@ -105,10 +105,6 @@ class AutoComplete extends React.Component {
         }
         onSelected(event);
         this.props.onSuggestionSelected(event, suggestionArguments);
-
-        this.setState({
-            value: ''
-        });
     };
 
     getSuggestions = value => {
