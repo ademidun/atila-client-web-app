@@ -21,7 +21,30 @@ let contactFormConfigsPage1 = [
         keyName: 'organization_name',
     },
     {
+        keyName: 'profile_description',
+        type: 'textarea',
+    },
+    {
+        keyName: 'profile_pic_url',
+        isHidden: (contact) => (contact.profile_pic_url),
+    },
+    {
         keyName: 'instagram_username',
+    },
+    {
+        keyName: 'tiktok_username',
+    },
+    {
+        keyName: 'twitter_username',
+    },
+    {
+        keyName: 'facebook_username',
+    },
+    {
+        keyName: 'linkedin_url',
+    },
+    {
+        keyName: 'website_url',
     },
     {
         keyName: 'account_type',
