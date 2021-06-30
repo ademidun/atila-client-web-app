@@ -7,6 +7,10 @@ import ContactsNetworkInformation from './ContactsNetworkInformation';
 import {toastNotify} from "../../models/Utils";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import QueryBuilder from '../../components/Query/QueryBuilder';
+import { CONTACTS_QUERY_RESPONSE_1 } from '../../mock_data/ContactsQuery';
+import Environment from '../../services/Environment';
+
+const TEMP_HACK_LOCAL_DATA = false;
 
 class ContactsNetwork extends React.Component {
 
@@ -38,7 +42,11 @@ class ContactsNetwork extends React.Component {
 
         ContactsAPI.query(queryData)
             .then(res => {
-                const { contacts } = res.data;
+                let { contacts } = res.data;
+
+                if (TEMP_HACK_LOCAL_DATA && Environment.name === "dev") {
+                    contacts = CONTACTS_QUERY_RESPONSE_1.contacts;
+                }
                 this.setState({ contacts });
                 if (contacts.length === 0) {
                     toastNotify("No clubs found matching selected query.")
