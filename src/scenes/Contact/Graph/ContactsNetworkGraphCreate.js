@@ -87,6 +87,7 @@ export function graph(contacts, settings, onNodeClick){
         .attr("class", "g-nodes")
         .attr("stroke", "#fff")
         .attr("stroke-width", 1.5)
+        .attr("style", "cursor: hand;")
 
     if (isNodeImage) {
         // Add image
