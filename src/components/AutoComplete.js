@@ -127,12 +127,12 @@ class AutoComplete extends React.Component {
 
     render() {
         const { value, suggestions } = this.state;
-        const { keyName, placeholder, customTheme, getSuggestionValue, renderSuggestion, value: propvalue } = this.props;
+        const { keyName, placeholder, customTheme, getSuggestionValue, renderSuggestion } = this.props;
 
         // Autosuggest will pass through all these props to the input.
         const inputProps = {
             placeholder,
-            value: value||propvalue,
+            value,
             name:keyName,
             onChange: this.onChange,
             onKeyPress: this.onKeyPress,
