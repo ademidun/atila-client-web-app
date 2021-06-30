@@ -20,7 +20,6 @@ class ContactsNetworkForm extends React.Component {
     }
 
     onSuggestionSelected = (event, suggestionArguments ) => {
-        console.log({ suggestionArguments });
         
         const { suggestion, suggestionValue } = suggestionArguments;
 
