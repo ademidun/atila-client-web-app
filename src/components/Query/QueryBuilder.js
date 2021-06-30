@@ -54,9 +54,9 @@ export const SampleSearches = ({sampleSearches, allQueries, onSearchSelected, cl
                 }
             ],
             sampleSearches: [
+                {category: 'eligible_schools', value: 'University of Toronto'},
                 {category: 'eligible_schools', value: 'University of Alberta'},
                 {category: 'eligible_schools', value: 'Dalhouse University'},
-                {category: 'eligible_schools', value: 'McMaster University'},
                 {category: 'eligible_schools', value: 'Douglas College'},
                 {category: 'eligible_programs', value: 'Nursing'},
                 {category: 'eligible_programs', value: 'Finance'},
