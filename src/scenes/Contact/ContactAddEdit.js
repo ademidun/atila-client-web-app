@@ -10,6 +10,7 @@ import {connect} from "react-redux";
 import EditsAPI from '../../services/EditsApi';
 import { prettifyKeys } from '../../services/utils';
 import {toastNotify} from "../../models/Utils";
+import Loading from "../../components/Loading";
 
 const EDIT_MODES = ['add', 'edit', 'suggest'];
 const EDIT_MODES_HELPER_TEXT = {
@@ -58,11 +59,13 @@ class ContactAddEdit extends React.Component{
         this.state = {
             contact: props.contact || Object.assign({}, DEFAULT_CONTACT),
             editMode,
+            loading: null,
         };
     }
 
     handleSubmit = (event) => {
         event.preventDefault();
+        this.setState({loading: "Submitting..."})
 
         const { contact, editMode } = this.state;
         let contactsSubscription;
@@ -95,6 +98,9 @@ class ContactAddEdit extends React.Component{
                           Please message us using the chat in the bottom right corner.`
             toastNotify(errorMessage, "error", placeBottomOption)
         })
+        .finally(()=>{
+                this.setState({loading: null})
+        })
         
     }
 
@@ -107,7 +113,7 @@ class ContactAddEdit extends React.Component{
     }
 
     render() {
-        const { contact, editMode } = this.state;
+        const { contact, editMode, loading } = this.state;
 
         let editModeTag = <Tag color="blue">{prettifyKeys(editMode)} Mode</Tag>;
 
@@ -125,9 +131,11 @@ class ContactAddEdit extends React.Component{
                 <FormDynamic model={contact}
                              inputConfigs={contactFormConfigsPage1}
                              onUpdateForm={this.updateForm}/>
-                    <Button type="submit"
-                                className="btn btn-primary col-12 mt-2"
-                                onClick={this.handleSubmit}>Save</Button>
+                {loading && <Loading title={loading} />}
+                <Button type="submit"
+                        className="btn btn-primary col-12 mt-2"
+                        onClick={this.handleSubmit}
+                        disabled={loading}>Save</Button>
             </div>
         );
 
