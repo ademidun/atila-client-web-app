@@ -71,16 +71,17 @@ class ContactsNetwork extends React.Component {
     render() {
 
         const { contacts, addContactMode } = this.state;
+        const pageTitle = "Student Clubs Network Visualizer"
         const seoContent = {
             ...defaultSeoContent,
-            title: "Atila - Student Clubs Network Visualizer"
+            title: pageTitle
         };
 
         return (
             <div className="container mt-5">
                 <HelmetSeo content={seoContent}/>
                 <div className="card shadow p-3">
-                    <h1>The Student Clubs Network Visualizer</h1>
+                    <h1>The {pageTitle}</h1>
                     <h5 className="text-muted text-center">
                         Visually explore the relationship between every student club in Canada
                     </h5>
