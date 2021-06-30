@@ -10,7 +10,7 @@ import QueryBuilder from '../../components/Query/QueryBuilder';
 import { CONTACTS_QUERY_RESPONSE_1 } from '../../mock_data/ContactsQuery';
 import Environment from '../../services/Environment';
 
-const TEMP_HACK_LOCAL_DATA = false;
+const TEMP_HACK_LOCAL_DATA = true;
 
 class ContactsNetwork extends React.Component {
 
@@ -39,14 +39,17 @@ class ContactsNetwork extends React.Component {
     }
 
     onUpdateQuery = (queryData) => {
+        
+        let contacts;
+        if (TEMP_HACK_LOCAL_DATA && Environment.name === "dev") {
+            contacts = CONTACTS_QUERY_RESPONSE_1.contacts;
+            this.setState({ contacts });
+        }
 
         ContactsAPI.query(queryData)
             .then(res => {
-                let { contacts } = res.data;
-
-                if (TEMP_HACK_LOCAL_DATA && Environment.name === "dev") {
-                    contacts = CONTACTS_QUERY_RESPONSE_1.contacts;
-                }
+                contacts = res.data.contacts;
+                
                 this.setState({ contacts });
                 if (contacts.length === 0) {
                     toastNotify("No clubs found matching selected query.")
