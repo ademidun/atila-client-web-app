@@ -1,5 +1,4 @@
 import React from 'react';
-import ContactsNetworkForm from './ContactsNetworkForm';
 import ContactsNetworkGraph from './ContactsNetworkGraph';
 import ContactsAPI from "../../services/ContactsAPI";
 import { Button } from 'antd';
@@ -7,6 +6,7 @@ import ContactAddEdit from './ContactAddEdit';
 import ContactsNetworkInformation from './ContactsNetworkInformation';
 import {toastNotify} from "../../models/Utils";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
+import QueryBuilder from '../../components/Query/QueryBuilder';
 
 class ContactsNetwork extends React.Component {
 
@@ -34,11 +34,21 @@ class ContactsNetwork extends React.Component {
             })
     }
 
-    updateContacts = (contacts) => {
-        this.setState({ contacts });
-        if (contacts.length === 0) {
-            toastNotify("No clubs found matching selected query.")
-        }
+    onUpdateQuery = (queryData) => {
+
+        ContactsAPI.query(queryData)
+            .then(res => {
+                const { contacts } = res.data;
+                this.setState({ contacts });
+                if (contacts.length === 0) {
+                    toastNotify("No clubs found matching selected query.")
+                }
+            })
+            .catch(err=> {
+                console.log({err});
+            })
+
+        
     }
 
     toggleAddContacts = () => {
@@ -57,13 +67,21 @@ class ContactsNetwork extends React.Component {
             <div className="container mt-5">
                 <HelmetSeo content={seoContent}/>
                 <div className="card shadow p-3">
-                    <h1>Visualize the Student Clubs Network</h1>
+                    <h1>The Student Clubs Network Visualizer</h1>
+                    <h5 className="text-muted text-center">
+                        Visually explore the relationship between every student club in Canada
+                    </h5>
 
-                    <ContactsNetworkForm onUpdateContacts={this.updateContacts} />
+                    <QueryBuilder onUpdateQuery={this.onUpdateQuery} />
                     <div style={{with: "150px"}} className="mb-3">
-                        <Button className="float-right" onClick={this.toggleAddContacts}>
-                            {addContactMode ? "Hide ": ""}Add contact
-                        </Button>
+                        <div className="float-right">
+
+                            Are we missing a club?{' '}
+                            <Button onClick={this.toggleAddContacts}>
+                                {addContactMode ? "Hide ": ""}Add club
+                            </Button>
+                        </div>
+
                     </div>
 
                     {addContactMode && 
