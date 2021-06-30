@@ -7,6 +7,10 @@ import ContactsNetworkInformation from './ContactsNetworkInformation';
 import {toastNotify} from "../../models/Utils";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import QueryBuilder from '../../components/Query/QueryBuilder';
+import { CONTACTS_QUERY_RESPONSE_1 } from '../../mock_data/ContactsQuery';
+import Environment from '../../services/Environment';
+
+const TEMP_HACK_LOCAL_DATA = true;
 
 class ContactsNetwork extends React.Component {
 
@@ -21,12 +25,20 @@ class ContactsNetwork extends React.Component {
     }
 
     componentDidMount() {
-        this.setState({loading: "Loading All Contacts..."})
+        this.setState({loading: "Loading All Contacts..."});
+        let contacts;
+
+        // TODO change this value to be read from localhost instead of setting it to true for all users
+        // and rename it to MOCK_LOCAL_DATA
+        if (TEMP_HACK_LOCAL_DATA && Environment.name === "dev") {
+            contacts = CONTACTS_QUERY_RESPONSE_1.contacts;
+            this.setState({ contacts });
+        }
 
         ContactsAPI
             .getAllContacts()
             .then(res => {
-                const { contacts } = res.data;
+                contacts = res.data.contacts;
                 this.setState({contacts})
             })
             .finally(()=>{
@@ -39,6 +51,7 @@ class ContactsNetwork extends React.Component {
         ContactsAPI.query(queryData)
             .then(res => {
                 const { contacts } = res.data;
+                
                 this.setState({ contacts });
                 if (contacts.length === 0) {
                     toastNotify("No clubs found matching selected query.")
@@ -58,16 +71,17 @@ class ContactsNetwork extends React.Component {
     render() {
 
         const { contacts, addContactMode } = this.state;
+        const pageTitle = "Student Clubs Network Visualizer"
         const seoContent = {
             ...defaultSeoContent,
-            title: "Atila - Student Clubs Network Visualizer"
+            title: pageTitle
         };
 
         return (
             <div className="container mt-5">
                 <HelmetSeo content={seoContent}/>
                 <div className="card shadow p-3">
-                    <h1>The Student Clubs Network Visualizer</h1>
+                    <h1>The {pageTitle}</h1>
                     <h5 className="text-muted text-center">
                         Visually explore the relationship between every student club in Canada
                     </h5>

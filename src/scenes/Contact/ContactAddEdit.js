@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from "prop-types";
 import FormDynamic from "../../components/Form/FormDynamic";
 import { ALL_DEMOGRAPHICS } from "../../models/ConstantsForm";
-import { DEFAULT_CONTACT } from '../../models/Contact';
+import { CONTACT_TYPES, DEFAULT_CONTACT } from '../../models/Contact';
 import { Button, Tag } from "antd";
 import ContactsAPI from "../../services/ContactsAPI";
 import { FormUtils } from '../../services/FormUtils';
@@ -20,6 +20,12 @@ let contactFormConfigsPage1 = [
     },
     {
         keyName: 'instagram_username',
+    },
+    {
+        keyName: 'account_type',
+        type: 'select',
+        options: CONTACT_TYPES,
+        renderOption: (option) => prettifyKeys(option)
     },
     // TODO only show if no profile_pic_url exists or it's an admin user
     // {

@@ -34,6 +34,11 @@ import { getRandomString, prettifyKeys } from '../../services/utils';
 
         const { allQueries } = this.state;
 
+        // If this is the second query, then set the first query to be relative to the current query
+        // E.g. if the first query is AND by default but the second query is OR, then the first query should also be OR
+        if (allQueries.length === 1) {
+            allQueries[0].queryType = queryType;
+        }
         allQueries.push({
             id: getRandomString(8),
             queryType,
@@ -49,18 +54,53 @@ import { getRandomString, prettifyKeys } from '../../services/utils';
 
         allQueries.splice(index, 1);
         this.setState({allQueries});
+
+        this.updateQueryProps(allQueries);
     }
 
     onUpdateQuery = (query, index) => {
-
 
         const { allQueries } = this.state;
 
         allQueries[index].queryData = query;
         this.setState({allQueries});
 
-        this.props.onUpdateQuery(query);
+        this.updateQueryProps(allQueries);
+
+    }
+
+    updateQueryProps = (allQueries) => {
+        const dynamicQuery = this.convertQueryListToDynamicQuery(allQueries);
+
+        this.props.onUpdateQuery(dynamicQuery);
         console.log({allQueries});
+    }
+    /**
+     * Convert a list of query items to a dynamic query object in Mongodb style querying.
+     * https://github.com/ademidun/atila-django/issues/328
+     * @param {*} queryList 
+     */
+    convertQueryListToDynamicQuery = (queryList) => {
+        let dynamicQuery = {};
+        queryList.forEach(query => {
+
+            const { queryType, queryData } = query;
+            if (queryType === "or") {
+                if (!dynamicQuery["$or"]) {
+                    dynamicQuery["$or"] = []
+                }
+                dynamicQuery["$or"].push(queryData)
+            } else {
+                dynamicQuery = {
+                    ...dynamicQuery,
+                    ...queryData
+                }
+            }
+        });
+
+        console.log({dynamicQuery});
+        return dynamicQuery;
+
     }
 
     render() {
