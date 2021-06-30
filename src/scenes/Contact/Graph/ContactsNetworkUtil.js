@@ -3,7 +3,7 @@ const getNodesFromContacts = contacts => {
         return {
             id: contact.instagram_username,
             group: 1,
-            node_size: getNodeSize(contact.instagram_follower_count - contact.instagram_following_count),
+            node_size: getNodeSize(contact.instagram_followers_count - contact.instagram_following_count),
             data: contact,
         }
     })
