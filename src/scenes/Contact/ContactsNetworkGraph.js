@@ -91,8 +91,8 @@ class ContactsNetworkGraph extends React.Component {
                             onCancel={this.closeModal}
                         >
                             <p>About this club: <br/> {selectedNode?.data.instagram_bio}</p>
-                            <p>Follower count: {selectedNode?.data.instagram_followers_count}</p>
-                            <p>Following count: {selectedNode?.data.instagram_following_count}</p>
+                            <p>Follower count: {selectedNode?.data.instagram_followers_count.toLocaleString()}</p>
+                            <p>Following count: {selectedNode?.data.instagram_following_count.toLocaleString()}</p>
                             <p>Incorrect or Missing Information? You can suggest an edit. <br/>
                                 <Button onClick={this.toggleEditNode} type="link">
                                 {isEditNodeFormVisible ? "Hide ": ""}Suggest Edit
