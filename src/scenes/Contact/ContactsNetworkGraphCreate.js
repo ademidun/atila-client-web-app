@@ -20,8 +20,8 @@ const drag = simulation => {
 
     function dragended(event) {
         if (!event.active) simulation.alphaTarget(0);
-        event.subject.fx = null;
-        event.subject.fy = null;
+        event.subject.fx = event.x;
+        event.subject.fy = event.y;
     }
 
     return d3.drag()
