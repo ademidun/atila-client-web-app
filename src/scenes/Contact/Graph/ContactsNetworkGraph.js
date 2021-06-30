@@ -72,6 +72,7 @@ class ContactsNetworkGraph extends React.Component {
     render() {
         const { isNodeModalVisible, selectedNode, isEditNodeFormVisible } = this.state;
 
+
         let nodeModalTitle = null;
         if (isNodeModalVisible) {
             nodeModalTitle = (
@@ -107,7 +108,11 @@ class ContactsNetworkGraph extends React.Component {
                             footer={null}
                             onCancel={this.closeModal}
                         >
-                            <p>About this club: <br/> {selectedNode?.data.instagram_bio}</p>
+                            <p>About this club: 
+                                <br/> {selectedNode?.data.instagram_bio} 
+                                <br/> <a  target="_blank" rel="noopener noreferrer" href={selectedNode.data.instagram_external_url}>
+                                        {selectedNode.data.instagram_external_url} </a>
+                            </p>
                             <p>Follower count: {selectedNode?.data.instagram_followers_count.toLocaleString()}</p>
                             <p>Following count: {selectedNode?.data.instagram_following_count.toLocaleString()}</p>
                             <p>Incorrect or Missing Information? You can suggest an edit. <br/>
