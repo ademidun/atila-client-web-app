@@ -81,7 +81,7 @@ export class QueryItem extends React.Component {
         return (
             <>
                 <AutoComplete   suggestions={MASTER_LIST_WITH_CATEGORY_LABEL}
-                                placeholder={"Search by school, city, program, ethnicity or more"}
+                                placeholder={"Search by school, program, ethnicity, activity, or more"}
                                 value={searchQuery}
                                 getSuggestionValue={suggestion => suggestion.value}
                                 renderSuggestion={this.renderSuggestion}

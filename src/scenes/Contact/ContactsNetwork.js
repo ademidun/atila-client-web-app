@@ -11,7 +11,7 @@ import { CONTACTS_QUERY_RESPONSE_1 } from '../../mock_data/ContactsQuery';
 import Environment from '../../services/Environment';
 import Loading from "../../components/Loading";
 
-const TEMP_HACK_LOCAL_DATA = true;
+const TEMP_HACK_LOCAL_DATA = false;
 
 class ContactsNetwork extends React.Component {
 
