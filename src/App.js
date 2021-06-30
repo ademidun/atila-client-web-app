@@ -70,6 +70,9 @@ const About = loadable(() => import("./components/About"), {
 const Rubric = loadable(() => import("./components/Rubric"), {
   fallback: <Loading />,
 });
+const Admin = loadable(() => import("./components/Admin"), {
+  fallback: <Loading />,
+});
 const Referral = loadable(() => import("./components/Referral"), {
   fallback: <Loading />,
 });
@@ -83,6 +86,9 @@ const SiteMap = loadable(() => import("./components/SiteMap"), {
   fallback: <Loading />,
 });
 const ContactUs = loadable(() => import("./components/ContactUs"), {
+  fallback: <Loading />,
+});
+const ContactsNetwork = loadable(() => import("./scenes/Contact/ContactsNetwork"), {
   fallback: <Loading />,
 });
 const Login = loadable(() => import("./components/Login"), {
@@ -223,6 +229,7 @@ class App extends React.Component {
               <Route path='/testimonials' component={GoogleAnalyticsTracker(Testimonials)} />
               <Route path='/about' component={GoogleAnalyticsTracker(About)} />
               <Route path='/rubric' component={GoogleAnalyticsTracker(Rubric)} />
+              <Route path='/admin' component={GoogleAnalyticsTracker(Admin)} />
               <Route path='/values' component={GoogleAnalyticsTracker(Values)} />
               <Route path='/finalists' component={GoogleAnalyticsTracker(FinalistsList)} />
               <Route path='/rankings' component={GoogleAnalyticsTracker(AtilaPointsRankings)} />
@@ -234,6 +241,10 @@ class App extends React.Component {
               <Route
                 path='/contact'
                 component={GoogleAnalyticsTracker(ContactUs)}
+              />
+              <Route
+                path='/clubs'
+                component={GoogleAnalyticsTracker(ContactsNetwork)}
               />
               <Route
                 path='/siteMap'
