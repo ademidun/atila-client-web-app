@@ -36,7 +36,7 @@ const selectChange = ( name, value, updateForm ) => {
 function FormDynamicInput({model, onUpdateForm, inputConfig, loggedInUserProfile}) {
 
     const { type, keyName, html, suggestions, className,
-        options, valueDisplay, isHidden, hideLabel, label, disabled, skipPrettifyKeys } = inputConfig;
+        options, valueDisplay, isHidden, hideLabel, label, disabled, skipPrettifyKeys, renderOption } = inputConfig;
     let {placeholder} = inputConfig;
     let inputForm = null;
 
@@ -109,7 +109,7 @@ function FormDynamicInput({model, onUpdateForm, inputConfig, loggedInUserProfile
                         disabled={disabled}
                     >
                         <option key={placeholder} disabled hidden>{placeholder}</option>
-                        {options.map(option => (<option key={option}>{option}</option>))}
+                        {options.map(option => (<option key={option} value={option}>{renderOption ? renderOption(option) : option}</option>))}
                     </select>
                 </div>
             );

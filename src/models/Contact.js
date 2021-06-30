@@ -7,3 +7,6 @@ export let DEFAULT_CONTACT = {
     industries: [],
     eligible_schools: []
 };
+
+export const CONTACT_TYPES = ["student_club", "non_profit_company", "for_profit_company",
+"government_organization", "individual"];
