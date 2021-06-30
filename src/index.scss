@@ -274,8 +274,17 @@ label {
 }
 
 
-NOTION STYLES
+// NOTION STYLES
 
 .notion-h1 {
   text-align: left;
+}
+
+// CONTACT NETWORK GRAPH STYLES
+
+.g-nodes:hover {
+  image{
+    width: 50px;
+    height: 50px
+  }
 }
