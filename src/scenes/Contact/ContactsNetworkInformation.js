@@ -24,9 +24,9 @@ class ContactsNetworkInformation extends React.Component {
                 <h3>What are some Potential Use Cases?</h3>
                 <ol>
                 <li><strong>Prospective students</strong> deciding on schools to attend would be interested to know all the different clubs that exist for their interests and demographics<br /></li>
-                <li><strong>Current students</strong> would be interested to know what clubs they can join in their school or in other schools</li>
-                <li><strong>Student club executives</strong> might want to know what other clubs exist in their space in case they want to collaborate</li>
-                <li><strong>Employers and Non-Profit</strong> would want to know what clubs they should sponsor for campus outreach events</li>
+                <li><strong>Current students</strong> interested to know what clubs they can join in their school or in other schools</li>
+                <li><strong>Student club executives</strong> lookinf for other clubs that exist in their space in case they want to collaborate</li>
+                <li><strong>For Profit or Non-Profit companies or organizations</strong> looking for clubs they might want to partner with for campus outreach or hiring opportunities</li>
                 </ol>
                 </div>
             </div>
