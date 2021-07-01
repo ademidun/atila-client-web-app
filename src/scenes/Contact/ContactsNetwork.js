@@ -23,7 +23,7 @@ class ContactsNetwork extends React.Component {
     }
 
     componentDidMount() {
-        this.setState({loading: "Loading All Contacts..."});
+        this.setState({loading: "Loading clubs..."});
 
         ContactsAPI
             .getAllContacts()
@@ -39,7 +39,7 @@ class ContactsNetwork extends React.Component {
     }
 
     onUpdateQuery = (queryData) => {
-        this.setState({loading: "Loading query..."});
+        this.setState({loading: "Loading clubs..."});
         ContactsAPI.query(queryData)
             .then(res => {
                 const { contacts } = res.data;
