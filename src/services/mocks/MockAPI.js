@@ -10,8 +10,6 @@ var MockAdapter = require("axios-mock-adapter");
 export class MockAPI {
 
     static initializeMocks = () => {
-        console.log("localStorage.getItem('ATILA_MOCK_API_CALLS'", localStorage.getItem('ATILA_MOCK_API_CALLS'));
-        console.log("ContactsAPI.ContactsQuery", ContactsQuery1);
 
         if (localStorage.getItem('ATILA_MOCK_API_CALLS') !== "true" || Environment.name !== "dev") {
             if (localStorage.getItem('MOCK_API_CALLS') === "true") {
@@ -22,9 +20,9 @@ export class MockAPI {
         }
         var mock = new MockAdapter(axios);
         
-        mock.onGet(ContactsAPI.contactsApiQueryUrl).reply(200, ContactsQuery1);
+        mock.onAny(ContactsAPI.contactsApiQueryUrl).reply(200, ContactsQuery1);
 
-        mock.onPost(`${Environment.apiUrl}/scholarship-preview/?page=1`).reply(function (config) {
+        mock.onAny(`${Environment.apiUrl}/scholarship-preview/?page=1`).reply(function (config) {
             // `config` is the axios config and contains things like the url
           
             // return an array in the form of [status, data, headers]

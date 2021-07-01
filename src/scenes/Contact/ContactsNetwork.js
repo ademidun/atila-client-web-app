@@ -22,20 +22,6 @@ class ContactsNetwork extends React.Component {
         };
     }
 
-    componentDidMount() {
-        this.setState({loading: "Loading clubs..."});
-
-        ContactsAPI
-            .getAllContacts()
-            .then(res => {
-                const { contacts } = res.data;
-                this.setState({contacts})
-            })
-            .finally(()=>{
-                this.setState({loading: null})
-            })
-    }
-
     onUpdateQuery = (queryData) => {
         this.setState({loading: "Loading clubs..."});
         ContactsAPI.query(queryData)

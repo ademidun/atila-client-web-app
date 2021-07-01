@@ -98,14 +98,14 @@ class ContactsNetworkGraph extends React.Component {
 
         return (
             <div className="p-3">
-                <p>
+                <div>
                     Hint:<br/>
                     <ol>
                         <li>Hover to see the club name</li>
                         <li>Click to see club details</li>
                         <li>Try dragging the club pictures around!</li>
                     </ol>
-                </p>
+                </div>
 
                 {/*<ContactsNetworkGraphSettings onSettingsChange={this.onGraphSettingsChange} settings={graphSettings} />*/}
                 <br />

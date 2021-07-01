@@ -1,15 +1,29 @@
 import React, {Fragment} from 'react';
+import { withRouter } from "react-router-dom";
 import { Button, Tag } from 'antd';
 import PropTypes from "prop-types";
 import { QueryItem } from './QueryItem';
 import { getRandomString, prettifyKeys } from '../../services/utils';
+import { ALL_DEMOGRAPHICS } from '../../models/ConstantsForm';
 
 /**
     * Render a list of example searches and when a search item is clicked, 
     * set the queryData of most recent search item in the list of queries to the selected searchItem
     * @param {*} searchItem 
 */
-    
+
+// Usages of DEFAULT_QUERY_ITEM need to be passed as a shallow copy using Object.assign() to avoid multiple array items sharing the same reference.
+// It also has to be used as a function so that getRandomString(8) is new each time
+const getDefaultQueryItem = () => ({
+    // useful for setting the queryBuilderKey without having to use index which breaks when the question order changes
+    // e.g. when we remove a QuestionItem that isn't the last question
+    // TODO use this same logic in the Scholarship Question Builder?
+    id: getRandomString(8),
+    queryType: "and",
+    // TODO change queryData to have a category and value key so we no longer have to use Object.keys(queryData)[0] to get the key names.
+    queryData: {},
+});
+
 export const SampleSearches = ({sampleSearches, allQueries, onSearchSelected, className="my-3"}) => {
 
     
@@ -41,17 +55,7 @@ export const SampleSearches = ({sampleSearches, allQueries, onSearchSelected, cl
         super(props);
 
         this.state = {
-            allQueries: [
-                {
-                    // useful for setting the queryBuilderKey without having to use index which breaks when the question order changes
-                    // e.g. when we remove a QuestionItem that isn't the last question
-                    // TODO use this same logic in the Scholarship Question Builder?
-                    id: getRandomString(8),
-                    queryType: "and",
-                    // TODO change queryData to have a category and value key so we no longer have to use Object.keys(queryData)[0] to get the key names.
-                    queryData: {},
-                }
-            ],
+            allQueries: [getDefaultQueryItem()],
             sampleSearches: [
                 {category: 'eligible_schools', value: 'University of Toronto'},
                 {category: 'eligible_schools', value: 'University of Alberta'},
@@ -78,6 +82,55 @@ export const SampleSearches = ({sampleSearches, allQueries, onSearchSelected, cl
 
     }
 
+    /**
+     * Given a URL string such as:
+     * /clubs?eligible_schools=university%20of%20Toronto&eligible_programs=Engineering&__or__eligible_schools=university%20of%20alberta&&__or__eligible_schools=humber%20college
+     * Generate a list of all queries.
+     * Queryies can be prefixed with __or__[attribute_name] to indicate that it is an OR query
+     */
+    intializeQueryFromUrlString = () => {
+        const allQueries = [];
+        const {
+            location : { search },
+        } = this.props;
+
+        const params = new URLSearchParams(search);
+
+        const validFields = ["all_fields", ...Object.keys(ALL_DEMOGRAPHICS)];
+
+        for (let [key, value] of params) {
+            const queryItem = Object.assign({}, getDefaultQueryItem());
+            const queryTypes = ["and", "or"];
+            for (const queryType of queryTypes) {
+                const queryPrefix = `__${queryType}__`;
+                if (key.startsWith(queryPrefix)) {
+                    queryItem.queryType = queryType;
+                    key = key.replace(queryPrefix, "")
+                }
+            }
+
+            if (validFields.includes(key)) {
+                queryItem.queryData[key] = value;
+                allQueries.push(queryItem);
+            }
+        }
+
+        return allQueries;
+    }
+
+    componentDidMount() {
+        const { updateQueryPropsOnLoad } = this.props;
+        const allQueries = this.intializeQueryFromUrlString();
+        
+        if(allQueries.length > 0 && Object.keys(allQueries[0].queryData).length > 0) {
+            this.setState({allQueries});
+        }
+        if (updateQueryPropsOnLoad) {
+            this.updateQueryProps(allQueries);
+        }
+
+    }
+
     addQuery = (queryType) => {
 
         const { allQueries } = this.state;
@@ -93,7 +146,7 @@ export const SampleSearches = ({sampleSearches, allQueries, onSearchSelected, cl
             queryData: {},
         });
         this.setState({allQueries});
-            }
+    }
 
     removeQuery = (index) => {
 
@@ -211,11 +264,12 @@ export const SampleSearches = ({sampleSearches, allQueries, onSearchSelected, cl
 
 QueryBuilder.defaultProps = {
     onUpdateQuery: (query) => {},
+    updateQueryPropsOnLoad: true,
 };
 
 QueryBuilder.propTypes = {
-    onUpdateQuery: PropTypes.func,
+    onUpdateQuery: PropTypes.func.isRequired,
+    updateQueryPropsOnLoad: PropTypes.bool.isRequired,
 };
 
-export default QueryBuilder;
-
+export default withRouter(QueryBuilder);
