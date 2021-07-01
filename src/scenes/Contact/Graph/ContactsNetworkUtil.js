@@ -3,7 +3,7 @@ const getNodesFromContacts = contacts => {
         return {
             id: contact.instagram_username,
             group: 1,
-            node_size: getNodeSize(contact.instagram_followers_count - contact.instagram_following_count),
+            node_size: getNodeSize(!contact.instagram_followers_count || ! contact.instagram_following_count ? 0 : contact.instagram_followers_count - contact.instagram_following_count),
             data: contact,
         }
     })
@@ -14,7 +14,7 @@ const getLinksFromContacts = contacts => {
     let allUsernames = contacts.map(contact => contact.instagram_username);
 
     contacts.forEach(contact => {
-        let following = contact.instagram_following;
+        let following = contact.instagram_following || [];
         for (const following_username of following) {
             if (allUsernames.includes(following_username)) {
                 let newLink = {

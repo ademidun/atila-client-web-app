@@ -1,5 +1,11 @@
 {"contacts": [
     {
+        "id": "FOO_BAR",
+        "organization_name": "Test Account with Incomplete Attributes",
+        "instagram_username": "test_account",
+        "profile_pic_url": "https://via.placeholder.com/150"
+    },
+    {
         "id": "urv5lgpie5dv3fkk",
         "organization_name": "Acadia Black Students' Association",
         "instagram_username": "acadia_bsa",
