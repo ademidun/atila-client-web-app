@@ -104,8 +104,8 @@ class ContactAddEdit extends React.Component{
                              inputConfigs={CONTACT_FORM_CONFIG_PAGE_1}
                              onUpdateForm={this.updateForm}/>
                 {loading && <Loading title={loading} />}
-                <Button type="submit"
-                        className="btn btn-primary col-12 mt-2"
+                <Button type="primary"
+                        className="col-12 mt-2"
                         onClick={this.handleSubmit}
                         disabled={loading}>Save</Button>
             </div>
