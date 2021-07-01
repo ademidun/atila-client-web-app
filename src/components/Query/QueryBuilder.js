@@ -57,7 +57,7 @@ export const SampleSearches = ({sampleSearches, allQueries, onSearchSelected, cl
                 {category: 'eligible_schools', value: 'University of Toronto'},
                 {category: 'eligible_schools', value: 'University of Alberta'},
                 {category: 'eligible_schools', value: 'Dalhouse University'},
-                {category: 'eligible_schools', value: 'Douglas College'},
+                {category: 'eligible_schools', value: 'Humber College'},
                 {category: 'eligible_programs', value: 'Nursing'},
                 {category: 'eligible_programs', value: 'Medicine'},
                 {category: 'occupations', value: 'Software Engineer'},
@@ -69,9 +69,11 @@ export const SampleSearches = ({sampleSearches, allQueries, onSearchSelected, cl
                 {category: 'ethnicity', value: 'East-Asian'},
                 {category: 'ethnicity', value: 'South-Asian'},
                 {category: 'ethnicity', value: 'Black'},
+                {category: 'other_demographic', value: 'STEM'},
                 {category: 'other_demographic', value: 'Women'},
                 {category: 'other_demographic', value: 'LGBTQ'},
                 {category: 'sports', value: 'Weightlifting'},
+                {category: 'sports', value: 'Basketball'},
             ]
         };
 
