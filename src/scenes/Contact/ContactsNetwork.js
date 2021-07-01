@@ -64,10 +64,12 @@ class ContactsNetwork extends React.Component {
     render() {
 
         const { contacts, addContactMode, loading } = this.state;
-        const pageTitle = "Student Clubs Network Visualizer"
+        const pageTitle = "Student Clubs Network Visualizer";
+        const pageSubTitle = "Visually explore every student club in Canada";
+
         const seoContent = {
             ...defaultSeoContent,
-            title: pageTitle
+            title: `${pageTitle} ${pageSubTitle}`
         };
 
         return (
@@ -76,7 +78,7 @@ class ContactsNetwork extends React.Component {
                 <div className="card shadow p-3">
                     <h1>The {pageTitle}</h1>
                     <h5 className="text-muted text-center">
-                        Visually explore the relationships between every student club in Canada
+                        {pageSubTitle}
                     </h5>
 
                     <QueryBuilder onUpdateQuery={this.onUpdateQuery} />

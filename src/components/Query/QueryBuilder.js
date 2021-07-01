@@ -59,8 +59,10 @@ export const SampleSearches = ({sampleSearches, allQueries, onSearchSelected, cl
                 {category: 'eligible_schools', value: 'Dalhouse University'},
                 {category: 'eligible_schools', value: 'Douglas College'},
                 {category: 'eligible_programs', value: 'Nursing'},
-                {category: 'eligible_programs', value: 'Finance'},
+                {category: 'eligible_programs', value: 'Medicine'},
                 {category: 'occupations', value: 'Software Engineer'},
+                {category: 'industries', value: 'Investment Banking'},
+                {category: 'industries', value: 'Management Consulting'},
                 {category: 'religion', value: 'Christianity'},
                 {category: 'religion', value: 'Judaism'},
                 {category: 'religion', value: 'Islam'},
@@ -69,7 +71,7 @@ export const SampleSearches = ({sampleSearches, allQueries, onSearchSelected, cl
                 {category: 'ethnicity', value: 'Black'},
                 {category: 'other_demographic', value: 'Women'},
                 {category: 'other_demographic', value: 'LGBTQ'},
-                {category: 'sports', value: 'Ice Hockey'},
+                {category: 'sports', value: 'Weightlifting'},
             ]
         };
 
