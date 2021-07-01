@@ -34,15 +34,15 @@ Taken from [PR #8](https://github.com/ademidun/atila-client-web-app/pull/8/files
 
 To test a specific file: `npm test -- SomeTestFileToRun` for example: `npm test -- Register`
 
-## Mocking API Data
+# Mocking API Data
 
-If you can't or don't want to use the actual backend API you can mock the responses, here's how:
+If you can't or don't want to use the actual backend API you can mock the responses.
 
-Note: Here are two video tutorials we made specifically on how to Mock API Data in this project.
+Here are two video tutorials we made specifically on how to Mock API Data in this project.
 1. [How to Mock API Data in atila-client-web-app](https://www.loom.com/share/8405abef5585401ab0924e742fcb1fd9) 
 1. [How to Mock API Data in atila-client-web-app based on the request](https://www.loom.com/share/367fe555b0584c28b6e68d1f0e5d121f)
 
-<!-- Seperate the top list and the bottom list -->
+**Steps:**
 
 1. Set `ATILA_MOCK_API_CALLS` to true in local storage.
     1. Right click in your browser > Inspect > Application.
