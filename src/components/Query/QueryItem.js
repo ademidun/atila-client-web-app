@@ -18,8 +18,7 @@ export class QueryItem extends React.Component {
     }
 
     onSuggestionSelected = (event, suggestionArguments ) => {
-        console.log({ suggestionArguments });
-        
+                
         const { suggestion, suggestionValue } = suggestionArguments;
         const { onUpdateQuery } = this.props;
 
@@ -78,8 +77,6 @@ export class QueryItem extends React.Component {
     render() {
         const { searchQuery } = this.state;
         const { placeHolder } = this.props;
-
-        console.log({searchQuery, placeHolder });
 
         return (
             <>

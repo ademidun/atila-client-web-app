@@ -29,8 +29,6 @@ class ContactsNetwork extends React.Component {
             .getAllContacts()
             .then(res => {
                 const { contacts } = res.data;
-
-                console.log({res});
                 this.setState({contacts})
             })
             .finally(()=>{

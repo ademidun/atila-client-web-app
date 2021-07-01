@@ -12,8 +12,7 @@ import { getRandomString, prettifyKeys } from '../../services/utils';
     
 export const SampleSearches = ({sampleSearches, allQueries, onSearchSelected, className="my-3"}) => {
 
-    console.log({sampleSearches, allQueries, onSearchSelected});
-
+    
     return (<div className={className}>
         <strong>Sample Searches: </strong>
         {
@@ -94,8 +93,7 @@ export const SampleSearches = ({sampleSearches, allQueries, onSearchSelected, cl
             queryData: {},
         });
         this.setState({allQueries});
-        console.log({allQueries});
-    }
+            }
 
     removeQuery = (index) => {
 
@@ -146,8 +144,7 @@ export const SampleSearches = ({sampleSearches, allQueries, onSearchSelected, cl
             }
         });
 
-        console.log({dynamicQuery});
-        return dynamicQuery;
+                return dynamicQuery;
 
     }
 
@@ -161,7 +158,6 @@ export const SampleSearches = ({sampleSearches, allQueries, onSearchSelected, cl
                 {allQueries.map((query, index) => {
                     const queryValue =  Object.keys(query.queryData).length > 0 ? query.queryData[Object.keys(query.queryData)[0]] : ""; 
 
-                    console.log({query, queryValue});
                     return (
 
                     <div key={query.id}>
