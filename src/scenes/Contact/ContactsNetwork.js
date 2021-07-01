@@ -7,11 +7,8 @@ import ContactsNetworkInformation from './ContactsNetworkInformation';
 import {toastNotify} from "../../models/Utils";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import QueryBuilder from '../../components/Query/QueryBuilder';
-import { CONTACTS_QUERY_RESPONSE_1 } from '../../mock_data/ContactsQuery';
-import Environment from '../../services/Environment';
 import Loading from "../../components/Loading";
 
-const TEMP_HACK_LOCAL_DATA = false;
 
 class ContactsNetwork extends React.Component {
 
@@ -27,19 +24,13 @@ class ContactsNetwork extends React.Component {
 
     componentDidMount() {
         this.setState({loading: "Loading All Contacts..."});
-        let contacts;
-
-        // TODO change this value to be read from localhost instead of setting it to true for all users
-        // and rename it to MOCK_LOCAL_DATA
-        if (TEMP_HACK_LOCAL_DATA && Environment.name === "dev") {
-            contacts = CONTACTS_QUERY_RESPONSE_1.contacts;
-            this.setState({ contacts });
-        }
 
         ContactsAPI
             .getAllContacts()
             .then(res => {
-                contacts = res.data.contacts;
+                const { contacts } = res.data;
+
+                console.log({res});
                 this.setState({contacts})
             })
             .finally(()=>{

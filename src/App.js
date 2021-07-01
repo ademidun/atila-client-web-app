@@ -18,6 +18,7 @@ import LogRocket from "logrocket";
 import LogrocketFuzzySanitizer from 'logrocket-fuzzy-search-sanitizer';
 import setupLogRocketReact from "logrocket-react";
 import Environment from "./services/Environment";
+import { MockAPI } from './services/mocks/MockAPI';
 
 const Payment = loadable(() => import("./scenes/Payment/Payment"), {
   fallback: <Loading />,
@@ -109,6 +110,7 @@ const Ebook = loadable(() => import("./scenes/Ebook/Ebook"), {
 });
 const EbookPremium = loadable(() => import("./scenes/EbookPremium/EbookPremium"), {
   fallback: <Loading />,
+
 });
 
 const privateFieldNames = [
@@ -120,7 +122,13 @@ const { requestSanitizer, responseSanitizer } = LogrocketFuzzySanitizer.setup(pr
 class App extends React.Component {
   constructor(props) {
     super(props);
-
+    /**
+     * The logic to only allow mocks in dev is alreay handled inside the function initializeMocks()
+     * Having it here is redundant but it makes it clearer to the user that we only call the mock in dev environments.
+     */
+    if (Environment.name === "dev") {
+      MockAPI.initializeMocks();
+    }
     if (process.env.NODE_ENV !== "test" &&
         !navigator.userAgent.includes('https://github.com/prerender/prerender')) {
       // TODO: mock LogRocket.init and setupLogRocketReact and all uses of LogRocket in Navbar.js and Register.js

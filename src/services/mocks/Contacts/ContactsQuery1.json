@@ -1,4 +1,4 @@
-export const CONTACTS_QUERY_RESPONSE_1 = {contacts: [
+{"contacts": [
     {
         "id": "urv5lgpie5dv3fkk",
         "organization_name": "Acadia Black Students' Association",
