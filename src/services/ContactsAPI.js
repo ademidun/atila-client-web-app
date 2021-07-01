@@ -3,6 +3,7 @@ import Environment from './Environment'
 
 class ContactsAPI {
     static contactsApiUrl = `${Environment.apiUrl}/contact`;
+    static contactsApiQueryUrl = `${Environment.apiUrl}/contact/contacts/query/`;
 
     static create = (contact) => {
 
@@ -30,7 +31,7 @@ class ContactsAPI {
 
         const apiCompletionPromise = request({
             method: 'get',
-            url: `${ContactsAPI.contactsApiUrl}/contacts/query/`,
+            url: ContactsAPI.contactsApiQueryUrl,
         });
 
         return apiCompletionPromise
@@ -41,7 +42,7 @@ class ContactsAPI {
         const apiCompletionPromise = request({
             method: 'post',
             data: queryData,
-            url: `${ContactsAPI.contactsApiUrl}/contacts/query/`,
+            url: ContactsAPI.contactsApiQueryUrl,
         });
 
         return apiCompletionPromise
