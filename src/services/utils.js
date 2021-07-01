@@ -2,6 +2,7 @@ import $ from 'jquery';
 import {toastNotify} from "../models/Utils";
 import {MAX_BLOG_PAGE_VIEWS, MAX_ESSAY_PAGE_VIEWS, MAX_SCHOLARSHIP_PAGE_VIEWS} from "../models/Constants";
 import moment from "moment";
+import { message } from 'antd';
 
 export function makeXHRRequestAsPromise (method, url, data) {
     return new Promise(function (resolve, reject) {
@@ -581,4 +582,19 @@ export function joinListGrammatically(lst) {
     const seperator = ", "
     const commaSeperatedList = lst.slice(0, lst.length-2);
     return commaSeperatedList.join(seperator) + seperator + lst[lst.length-2] + ', and ' + lst[lst.length -1]
+}
+
+// see https://stackoverflow.com/a/50067769/14874841
+// Copies formatted html to clipboard
+export function copyToClipboard(str) {
+    function listener(e) {
+        e.clipboardData.setData("text/html", str);
+        e.clipboardData.setData("text/plain", str);
+        e.preventDefault();
+    }
+    document.addEventListener("copy", listener);
+    document.execCommand("copy");
+    document.removeEventListener("copy", listener);
+
+    message.success("Copied!")
 }

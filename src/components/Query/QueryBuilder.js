@@ -3,7 +3,8 @@ import { withRouter } from "react-router-dom";
 import { Button, Tag } from 'antd';
 import PropTypes from "prop-types";
 import { QueryItem } from './QueryItem';
-import { getRandomString, prettifyKeys } from '../../services/utils';
+import { CopyOutlined } from "@ant-design/icons";
+import { getRandomString, prettifyKeys, copyToClipboard } from '../../services/utils';
 import { ALL_DEMOGRAPHICS } from '../../models/ConstantsForm';
 
 /**
@@ -116,6 +117,37 @@ export const SampleSearches = ({sampleSearches, allQueries, onSearchSelected, cl
         }
 
         return allQueries;
+    }
+
+    convertQueryListToUrl = () => {
+        let queryUrl = `${window.location.origin}${window.location.pathname}`;
+        console.log({queryUrl});
+
+        const { allQueries } = this.state;
+        
+        allQueries.forEach((query, index) => {
+
+            let queryKey = Object.keys(query.queryData)[0];
+            const queryValue = query.queryData[queryKey];
+            queryKey = query.queryType === "or" ? `__or__${queryKey}` : queryKey;
+
+
+            let queryAsParam = `${queryKey}=${queryValue}`
+
+            queryAsParam = index === 0 ? `?${queryAsParam}` : `&${queryAsParam}`;
+            queryUrl = `${queryUrl}${queryAsParam}`;
+        });
+        console.log({queryUrl, window});
+
+        return queryUrl
+
+
+    }
+
+    copyQueryUrlToClipboard = () => {
+
+        let queryUrl = this.convertQueryListToUrl();
+        copyToClipboard(queryUrl);
     }
 
     componentDidMount() {
@@ -256,6 +288,15 @@ export const SampleSearches = ({sampleSearches, allQueries, onSearchSelected, cl
 
                 </div>
                 
+                {mostRecentQueryHasValue && 
+                <div className="float-left mt-3">
+
+                
+                <Button onClick={this.copyQueryUrlToClipboard}>
+                Save the Link to this query to clipboard{' '}<CopyOutlined />
+                </Button>
+            </div>
+                }
                                 
             </div>
         );
