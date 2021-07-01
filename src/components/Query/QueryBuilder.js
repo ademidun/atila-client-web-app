@@ -111,7 +111,7 @@ export const SampleSearches = ({sampleSearches, allQueries, onSearchSelected, cl
             }
 
             if (validFields.includes(key)) {
-                queryItem.queryData[key] = value;
+                queryItem.queryData[key] = prettifyKeys(value);
                 allQueries.push(queryItem);
             }
         }
