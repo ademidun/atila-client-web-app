@@ -64,6 +64,6 @@ const normalizeNumberBetweenBounds = (num, actual_bounds, desired_bounds) => {
 const getNodeSize = net_followers => {
     let actual_bounds = [0, 2000]
     let desired_bounds = [20, 40]
-
-    return normalizeNumberBetweenBounds(net_followers, actual_bounds, desired_bounds)
+    // TODO temp, set Nodesize to be 100 for all Nodes
+    return normalizeNumberBetweenBounds(1500, actual_bounds, desired_bounds)
 }
