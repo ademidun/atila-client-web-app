@@ -30,11 +30,12 @@ class ContactsNetwork extends React.Component {
                 
                 this.setState({ contacts });
                 if (contacts.length === 0) {
-                    toastNotify("No clubs found matching selected query.")
+                    toastNotify("No clubs found matching selected query.");
                 }
             })
             .catch(err=> {
                 console.log({err});
+                toastNotify("There was problem with your search, please try another one.", "error");
             })
             .finally(()=>{
                 this.setState({loading: null})

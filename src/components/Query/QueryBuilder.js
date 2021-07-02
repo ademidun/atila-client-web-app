@@ -73,6 +73,7 @@ export const SampleSearches = ({sampleSearches, allQueries, onSearchSelected, cl
                 {category: 'ethnicity', value: 'East-Asian'},
                 {category: 'ethnicity', value: 'South-Asian'},
                 {category: 'ethnicity', value: 'Black'},
+                {category: 'ethnicity', value: 'Indigenous'},
                 {category: 'other_demographic', value: 'STEM'},
                 {category: 'other_demographic', value: 'Women'},
                 {category: 'other_demographic', value: 'LGBTQ'},
@@ -216,17 +217,24 @@ export const SampleSearches = ({sampleSearches, allQueries, onSearchSelected, cl
         queryList.forEach(query => {
 
             const { queryType, queryData } = query;
+            const queryKey = Object.keys(queryData).length > 0 ? Object.keys(queryData)[0] : "";
             if (queryType === "or") {
                 if (!dynamicQuery["$or"]) {
                     dynamicQuery["$or"] = []
                 }
-                dynamicQuery["$or"].push(queryData)
+                dynamicQuery["$or"].push(queryData);
+            } else if (queryKey && dynamicQuery[queryKey]) { //if the dynamicQuery already has this attribute, add it to the $and array
+                if (!dynamicQuery["$and"]) {
+                    dynamicQuery["$and"] = []
+                }
+                dynamicQuery["$and"].push(queryData);
             } else {
                 dynamicQuery = {
                     ...dynamicQuery,
                     ...queryData
                 }
             }
+            
         });
 
                 return dynamicQuery;
