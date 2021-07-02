@@ -111,9 +111,18 @@ export function graph(contacts, settings, onNodeClick){
     //     .attr("y", d => d.y)
     //     .text(d => d.data.organization_name);
 
+    // Set dx and dy to be (1/2)*width and  (width + 5) respectively of the node image on hover 
+    node.append("text")
+    .style('text-anchor', 'middle')
+    .attr("dx", 25)
+    .attr("dy", 55)
+    .style('stroke', 'black')
+    .style('stroke-width', 0)
+    .style('font-size', '14px')
+    .text((d) => d.data.organization_name);
 
     node.append("title")
-        .text(d => d.data.organization_name);
+        .text(d => `@${d.data.instagram_username}`);
 
     node.on("click", (event, node) => {
         onNodeClick(node)

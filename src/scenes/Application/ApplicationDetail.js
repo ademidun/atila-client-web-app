@@ -122,8 +122,7 @@ class ApplicationDetail extends  React.Component{
                 this.makeScholarshipQuestionsForm(application, scholarship)
             })
             .catch(err => {
-                console.log({err});
-            })
+                            })
             .finally(() => {
                 this.setState({isLoadingApplication: false});
             })

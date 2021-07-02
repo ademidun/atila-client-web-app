@@ -27,16 +27,6 @@ class ContactsAPI {
         return apiCompletionPromise;
     };
 
-    static getAllContacts = () => {
-
-        const apiCompletionPromise = request({
-            method: 'get',
-            url: ContactsAPI.contactsApiQueryUrl,
-        });
-
-        return apiCompletionPromise
-    }
-
     static query = (queryData) => {
 
         const apiCompletionPromise = request({

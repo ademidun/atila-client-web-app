@@ -1,10 +1,11 @@
 import React from "react";
 import UserProfileAPI from "../../services/UserProfileAPI";
-import { Button, Drawer, message, Collapse } from "antd";
+import { Button, Drawer, Collapse } from "antd";
 import Loading from "../../components/Loading";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import {UserProfilePropType} from "../../models/UserProfile";
+import { copyToClipboard } from '../../services/utils';
 
 const { Panel } = Collapse;
 
@@ -195,23 +196,6 @@ class ViewQuestion extends React.Component {
             </>
         )
     }
-}
-
-
-
-// see https://stackoverflow.com/a/50067769/14874841
-// Copies formatted html to clipboard
-function copyToClipboard(str) {
-    function listener(e) {
-        e.clipboardData.setData("text/html", str);
-        e.clipboardData.setData("text/plain", str);
-        e.preventDefault();
-    }
-    document.addEventListener("copy", listener);
-    document.execCommand("copy");
-    document.removeEventListener("copy", listener);
-
-    message.success("Copied!")
 }
 
 ApplicationViewPreviousApplications.propTypes = {

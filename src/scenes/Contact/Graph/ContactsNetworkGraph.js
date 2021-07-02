@@ -74,18 +74,23 @@ class ContactsNetworkGraph extends React.Component {
 
 
         let nodeModalTitle = null;
-        if (isNodeModalVisible) {
+        let selectedContact = null;
+        if (selectedNode && selectedNode.data) {
+            selectedContact = selectedNode.data;
+        }
+
+        if (isNodeModalVisible && selectedContact) {
             nodeModalTitle = (
                 <div>
-                    <img src={selectedNode.data.profile_pic_url}
+                    <img src={selectedContact.profile_pic_url}
                          className="rounded-circle m-1"
-                         alt={selectedNode.data.organization_name}
+                         alt={selectedContact.organization_name}
                          style={{width: "50px", height: "50px"}} />
                     <h2>
-                    {selectedNode.data.organization_name}
+                    {selectedContact.organization_name}
                     </h2><br/>
-                    <a  target="_blank" rel="noopener noreferrer" href={`https://instagram.com/${selectedNode.data.instagram_username}/`}>
-                      View Instagram (@{selectedNode.data.instagram_username})
+                    <a  target="_blank" rel="noopener noreferrer" href={`https://instagram.com/${selectedContact.instagram_username}/`}>
+                      View Instagram (@{selectedContact.instagram_username})
                     </a>
                 </div>
             )
@@ -93,20 +98,20 @@ class ContactsNetworkGraph extends React.Component {
 
         return (
             <div className="p-3">
-                <p>
+                <div>
                     Hint:<br/>
                     <ol>
                         <li>Hover to see the club name</li>
                         <li>Click to see club details</li>
                         <li>Try dragging the club pictures around!</li>
                     </ol>
-                </p>
+                </div>
 
                 {/*<ContactsNetworkGraphSettings onSettingsChange={this.onGraphSettingsChange} settings={graphSettings} />*/}
                 <br />
                 <div style={{"border": "1px solid #40a9ff"}}>
                     <div ref={this.graphRef} />
-                    {selectedNode && 
+                    {selectedContact && 
                         <Modal
                             visible={isNodeModalVisible}
                             title={nodeModalTitle}
@@ -114,18 +119,18 @@ class ContactsNetworkGraph extends React.Component {
                             onCancel={this.closeModal}
                         >
                             <p>About this club: 
-                                <br/> {selectedNode?.data.instagram_bio} 
-                                <br/> <a  target="_blank" rel="noopener noreferrer" href={selectedNode.data.instagram_external_url}>
-                                        {selectedNode.data.instagram_external_url} </a>
+                                <br/> {selectedContact.instagram_bio} 
+                                <br/> <a  target="_blank" rel="noopener noreferrer" href={selectedContact.instagram_external_url}>
+                                        {selectedContact.instagram_external_url} </a>
                             </p>
-                            <p>Follower count: {selectedNode?.data.instagram_followers_count.toLocaleString()}</p>
-                            <p>Following count: {selectedNode?.data.instagram_following_count.toLocaleString()}</p>
+                            <p>Follower count: {selectedContact.instagram_followers_count?.toLocaleString()}</p>
+                            <p>Following count: {selectedContact.instagram_following_count?.toLocaleString()}</p>
                             <p>Incorrect or Missing Information? You can suggest an edit. <br/>
                                 <Button onClick={this.toggleEditNode} type="link">
                                 {isEditNodeFormVisible ? "Hide ": ""}Suggest Edit
                                 </Button>
                             </p>
-                            {isEditNodeFormVisible && <ContactAddEdit contact={selectedNode?.data} editMode="edit" />}
+                            {isEditNodeFormVisible && <ContactAddEdit contact={selectedContact} editMode="edit" />}
                         </Modal>
                     }
                 </div>

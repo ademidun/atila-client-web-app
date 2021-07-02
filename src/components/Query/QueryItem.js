@@ -18,8 +18,7 @@ export class QueryItem extends React.Component {
     }
 
     onSuggestionSelected = (event, suggestionArguments ) => {
-        console.log({ suggestionArguments });
-        
+                
         const { suggestion, suggestionValue } = suggestionArguments;
         const { onUpdateQuery } = this.props;
 
@@ -79,12 +78,10 @@ export class QueryItem extends React.Component {
         const { searchQuery } = this.state;
         const { placeHolder } = this.props;
 
-        console.log({searchQuery, placeHolder });
-
         return (
             <>
                 <AutoComplete   suggestions={MASTER_LIST_WITH_CATEGORY_LABEL}
-                                placeholder={placeHolder||"Search by school, program, ethnicity, activity, or more"}
+                                placeholder={placeHolder||"Search by school, program, ethnicity, activity, industry, or more"}
                                 value={searchQuery}
                                 getSuggestionValue={suggestion => suggestion.value}
                                 renderSuggestion={this.renderSuggestion}

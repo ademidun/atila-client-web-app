@@ -13,6 +13,8 @@ class UserProfileReferralCode extends React.Component {
             copySuccess: '' 
         }
       }
+
+    //   TODO use the copyToClipboard function in utils
     
       copyToClipboard = (e) => {
         this.textArea.select();

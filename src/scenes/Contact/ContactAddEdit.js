@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from "prop-types";
 import FormDynamic from "../../components/Form/FormDynamic";
-import { ALL_DEMOGRAPHICS } from "../../models/ConstantsForm";
-import { CONTACT_TYPES, DEFAULT_CONTACT } from '../../models/Contact';
+import { DEFAULT_CONTACT, CONTACT_FORM_CONFIG_PAGE_1 } from '../../models/Contact';
 import { Button, Tag } from "antd";
 import ContactsAPI from "../../services/ContactsAPI";
 import { FormUtils } from '../../services/FormUtils';
@@ -16,57 +15,7 @@ const EDIT_MODES = ['add', 'edit', 'suggest'];
 const EDIT_MODES_HELPER_TEXT = {
     suggest: 'Your changes will be saved as suggestions and added to this club if accepted'
 }
-let contactFormConfigsPage1 = [
-    {
-        keyName: 'organization_name',
-    },
-    {
-        keyName: 'profile_description',
-        type: 'textarea',
-    },
-    {
-        keyName: 'profile_pic_url',
-        isHidden: (contact) => (contact.profile_pic_url),
-    },
-    {
-        keyName: 'instagram_username',
-    },
-    {
-        keyName: 'tiktok_username',
-    },
-    {
-        keyName: 'twitter_username',
-    },
-    {
-        keyName: 'facebook_username',
-    },
-    {
-        keyName: 'linkedin_url',
-    },
-    {
-        keyName: 'website_url',
-    },
-    {
-        keyName: 'account_type',
-        type: 'select',
-        options: CONTACT_TYPES,
-        renderOption: (option) => prettifyKeys(option)
-    },
-    // TODO only show if no profile_pic_url exists or it's an admin user
-    // {
-    //     keyName: 'profile_pic_url',
-    // },
-]
 
-for (const [demographicKey, demographicOptions] of Object.entries(ALL_DEMOGRAPHICS)) {
-    const inputConfig = {
-        keyName: demographicKey,
-        type: 'autocomplete',
-        suggestions: demographicOptions,
-        skipPrettifyKeys: true,
-    }
-    contactFormConfigsPage1.push(inputConfig);
-  }
 
 class ContactAddEdit extends React.Component{
 
@@ -152,11 +101,11 @@ class ContactAddEdit extends React.Component{
             <div>
                 {editModeTag}
                 <FormDynamic model={contact}
-                             inputConfigs={contactFormConfigsPage1}
+                             inputConfigs={CONTACT_FORM_CONFIG_PAGE_1}
                              onUpdateForm={this.updateForm}/>
                 {loading && <Loading title={loading} />}
-                <Button type="submit"
-                        className="btn btn-primary col-12 mt-2"
+                <Button type="primary"
+                        className="col-12 mt-2"
                         onClick={this.handleSubmit}
                         disabled={loading}>Save</Button>
             </div>
