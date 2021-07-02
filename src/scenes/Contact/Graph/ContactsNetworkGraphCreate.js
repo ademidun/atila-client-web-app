@@ -1,8 +1,8 @@
 import { getFormattedDataFromContacts } from "./ContactsNetworkUtil";
 import * as d3 from "d3";
 
-let height = 750;
-let width = 750;
+let height = 1000;
+let width = 1000;
 let maxRadius = 40;
 
 const drag = simulation => {
