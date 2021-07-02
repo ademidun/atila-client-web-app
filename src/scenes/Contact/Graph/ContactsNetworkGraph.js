@@ -134,6 +134,9 @@ class ContactsNetworkGraph extends React.Component {
                         </Modal>
                     }
                 </div>
+                <p>
+                    Note: Only a random sample of clubs are shown initially. To see more clubs, enter a search term.
+                </p>
             </div>
         );
     }
