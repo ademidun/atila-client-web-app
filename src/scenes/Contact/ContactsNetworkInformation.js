@@ -16,9 +16,9 @@ class ContactsNetworkInformation extends React.Component {
                 <p>Users can search and filter by different clubs using categories such as school, program, career, activity, location, ethnicity, gender, religion etc.</p>
                 <p>For Example:</p>
                 <ul>
-                <li>Get me all the software engineering clubs for schools in Mcgill University</li>
-                <li>Get me all the nursing or indigenous clubs for Humber College</li>
-                <li>Get me all the women in business clubs in University of British Columbia or University of Alberta</li>
+                <li>Get me all the software engineering clubs from Mcgill University</li>
+                <li>Get me all the nursing or indigenous clubs from Humber College</li>
+                <li>Get me all the women in business clubs from the University of British Columbia or University of Alberta</li>
                 <li>Get me all the clubs for black students interested in Law</li>
                 </ul>
                 <h3>What are some Potential Use Cases?</h3>
