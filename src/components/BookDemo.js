@@ -38,7 +38,7 @@ class BookDemo extends React.Component {
                     <div id="schedule_form">
                     <div 
                         className="calendly-inline-widget"
-                        data-url="https://calendly.com/atilatech/meeting"
+                        data-url="https://calendly.com/tomiwa1a/meeting"
                         style={{ minWidth: '320px', height: '1250px' }} />
                     </div>
                 </div>
