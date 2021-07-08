@@ -25,7 +25,7 @@ export class ImageGif extends React.Component{
         const { activeImage, title } = this.state;
         return (
             <div style={{border: "none"}} className="cursor-pointer" onClick={this.handleClick}>
-                <img src={activeImage} width="560px" alt={title}/>
+                <img src={activeImage} width="100%" alt={title}/>
             </div>
         )
     }
