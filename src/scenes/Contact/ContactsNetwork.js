@@ -60,11 +60,7 @@ class ContactsNetwork extends React.Component {
             ...defaultSeoContent,
             title: `${pageTitle} ${pageSubTitle}`
         };
-
-        const styleObject = {
-            "justify-content": "center"
-        }
-
+        
         return (
             <div className="container mt-5">
                 <HelmetSeo content={seoContent}/>
