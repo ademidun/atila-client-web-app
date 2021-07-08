@@ -87,7 +87,6 @@ export function graph(contacts, settings, onNodeClick){
         .attr("class", "g-nodes")
         .attr("stroke", "#fff")
         .attr("stroke-width", 1.5)
-        .attr("style", "cursor: hand;")
 
     if (isNodeImage) {
         // Add image
@@ -95,7 +94,6 @@ export function graph(contacts, settings, onNodeClick){
             .attr("xlink:href", d => d.data.profile_pic_url)
             .attr("width", d => d.node_size)
             .attr("height", d => d.node_size)
-            .attr("style", "border-radius: 50%;") // should make image become circular
             // Centers image so that edge comes out from the middle
             .attr("x", d => - d.node_size/2)
             .attr("y", d => - d.node_size/2);
