@@ -1662,6 +1662,7 @@ export const OTHER_DEMOGRAPHICS = [
     "Women",
     "Men",
     "LGBTQ",
+    "International Student",
     "STEM",
     "Low Income",
     "Single Parent",
