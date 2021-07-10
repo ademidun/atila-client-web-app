@@ -16,10 +16,10 @@ class ContactsNetworkInformation extends React.Component {
                 <p>Users can search and filter by different clubs using categories such as school, program, career, activity, location, ethnicity, gender, religion etc.</p>
                 <p>For Example:</p>
                 <ul>
-                <li>Get me all the software engineering clubs from Mcgill University</li>
-                <li>Get me all the nursing or indigenous clubs from Humber College</li>
-                <li>Get me all the women in business clubs from the University of British Columbia or University of Alberta</li>
-                <li>Get me all the clubs for black students interested in Law</li>
+                <li><a href="https://atila.ca/clubs?__or__eligible_schools=University of Toronto&__or__eligible_schools=University of Alberta">Get me all the clubs for students at the University of Toronto or University of Alberta</a></li>
+                <li><a href="https://atila.ca/clubs?other_demographic=STEM&other_demographic=Women">Get me all the clubs for Women in STEM</a></li>
+                <li><a href="https://atila.ca/clubs?__or__ethnicity=Black&__or__ethnicity=Indigenous">Get me all the clubs for Black, East-Asian, South-Asian or Indigenous students</a></li>
+                <li><a href="https://atila.ca/clubs?eligible_programs=Medicine">Get me all the clubs for students interested in Medicine or Nursing at Humber College or Dalhousie University</a></li>
                 </ul>
                 <h3>What are some Potential Use Cases?</h3>
                 <ol>
