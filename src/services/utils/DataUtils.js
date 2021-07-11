@@ -36,6 +36,13 @@ class DataUtils {
                         return mailtoAnchorTag;
                     } 
                 }
+                if (itemProperty === "instagram_following"){
+                    
+                    columnSetting.render = (instagram_following, item) => (
+                        instagram_following ? instagram_following.slice(0, 5) : ""
+                    )
+                    columnSetting.title = `${itemProperty} (first 5 elements)`
+                }
 
                 return columnSetting
             })
