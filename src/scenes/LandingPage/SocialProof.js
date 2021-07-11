@@ -116,7 +116,7 @@ export function SocialProof() {
                 </h3>
                 <div>
                     {schoolImages.map (schoolImage => (
-                    <img src={schoolImage.url} width={schoolImage.width} height={schoolImage.height} alt={schoolImage.alt}/>
+                    <img src={schoolImage.url} width={schoolImage.width} height={schoolImage.height} alt={schoolImage.alt} key={schoolImage.url}/>
                     ))}
                 </div>
             </div>
