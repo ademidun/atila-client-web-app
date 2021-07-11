@@ -20,6 +20,10 @@ class ContactsNetworkInformation extends React.Component {
                 <li><a href="https://atila.ca/clubs?other_demographic=STEM&other_demographic=Women">Get me all the clubs for Women in STEM</a></li>
                 <li><a href="https://atila.ca/clubs?__or__ethnicity=Black&__or__ethnicity=Indigenous">Get me all the clubs for Black, East-Asian, South-Asian or Indigenous students</a></li>
                 <li><a href="https://atila.ca/clubs?eligible_programs=Medicine">Get me all the clubs for students interested in Medicine or Nursing at Humber College or Dalhousie University</a></li>
+                <li><a href="https://atila.ca/clubs?__or__religion=Christianity&__or__religion=Judaism&__or__religion=Islam">Clubs for Christian, Jewish or Muslim students</a></li>
+                <li><a href="https://atila.ca/clubs?__or__sports=Weightlifting&__or__sports=Basketball">Clubs for students interested weightlifting or basketball</a></li>
+                <li><a href="https://atila.ca/clubs?__or__other_demographic=LGBTQ">Clubs for LGBTQ students</a></li>
+                <li><a href="https://atila.ca/clubs?__or__eligible_programs=Software Engineering&__or__industries=Investment Banking&__or__industries=Management Consulting">Clubs for Software Engineering, Investment Banking or Consulting</a></li>
                 </ul>
                 <h3>What are some Potential Use Cases?</h3>
                 <ol>
