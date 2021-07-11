@@ -1,6 +1,8 @@
 // If you make any changes here, notify in the Github repo and update backend as well
+import { CONTACT_TAGS } from './Contact';
 import { INDUSTRIES } from './Industries';
 import { OCCUPATIONS } from './Occupations';
+import { CONTACT_TYPES } from './Contact';
 // https://github.com/ademidun/atila-django/blob/master/helpers/constants.py
 export const AUTOCOMPLETE_KEY_LIST = [
     'eligible_schools',
@@ -1691,11 +1693,30 @@ export const ALL_DEMOGRAPHICS = {
     "heritage": COUNTRIES,
     "languages": LANGUAGES,
     "disability": DISABILITIES,
-    // "citizenship": COUNTRIES,
+    "citizenship": COUNTRIES,
 }
 
 for (const [demographic_type, demographic_list] of Object.entries(ALL_DEMOGRAPHICS)) {
     MASTER_LIST_WITH_CATEGORY_LABEL.push(...demographic_list.map(item => (
+        {value: item, category: demographic_type}
+    )))
+}
+
+/**
+ * This list of category labels, has additional options that are only visible to atila admins
+ */
+ export const ALL_DEMOGRAPHICS_ADMIN = {
+    ...ALL_DEMOGRAPHICS,
+    // TODO, this can be moved back to all_demographic later, when we use this for scholarship and user profile filtering
+    "citizenship": COUNTRIES,
+    'tags': CONTACT_TAGS,
+    'account_type': CONTACT_TYPES,
+}
+
+export const MASTER_LIST_WITH_CATEGORY_LABEL_ADMIN = [];
+
+for (const [demographic_type, demographic_list] of Object.entries(ALL_DEMOGRAPHICS_ADMIN)) {
+    MASTER_LIST_WITH_CATEGORY_LABEL_ADMIN.push(...demographic_list.map(item => (
         {value: item, category: demographic_type}
     )))
 }

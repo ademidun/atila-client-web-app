@@ -41,7 +41,6 @@ class DataUtils {
             })
         }
 
-        console.log({columns})
         return columns;
     };
 }

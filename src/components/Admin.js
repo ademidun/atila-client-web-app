@@ -30,8 +30,10 @@ class Admin extends React.Component {
             <div className="container mt-5">
                 <HelmetSeo content={seoContent}/>
                 <div className="card shadow p-3">
-                    <h1>{title}</h1> 
-                    <ContactsTable />
+                    <h1>{title}</h1>
+                    <div style={{width: "100%"}}>
+                        <ContactsTable />
+                    </div>
                     <ContactAddEdit />    
                 </div>
             </div>
