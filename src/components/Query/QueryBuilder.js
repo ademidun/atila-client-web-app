@@ -146,22 +146,31 @@ export const SampleSearches = ({sampleSearches, allQueries, onSearchSelected, cl
     }
 
     copyQueryUrlToClipboard = () => {
-
         let queryUrl = this.convertQueryListToUrl();
         copyToClipboard(queryUrl);
     }
 
     componentDidMount() {
+        this.refreshQuery()
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.location.search !== this.props.location.search) {
+            this.refreshQuery()
+            window.scrollTo(0,0)
+        }
+    }
+
+    refreshQuery = () => {
         const { updateQueryPropsOnLoad } = this.props;
         const allQueries = this.intializeQueryFromUrlString();
-        
+
         if(allQueries.length > 0 && Object.keys(allQueries[0].queryData).length > 0) {
             this.setState({allQueries});
         }
         if (updateQueryPropsOnLoad) {
             this.updateQueryProps(allQueries);
         }
-
     }
 
     addQuery = (queryType) => {

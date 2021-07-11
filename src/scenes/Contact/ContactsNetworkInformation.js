@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from "react-router-dom";
 
 
 class ContactsNetworkInformation extends React.Component {
@@ -16,14 +17,14 @@ class ContactsNetworkInformation extends React.Component {
                 <p>Users can search and filter by different clubs using categories such as school, program, career, activity, location, ethnicity, gender, religion etc.</p>
                 <p>For Example:</p>
                 <ul>
-                <li><a href="clubs?__or__eligible_schools=University of Toronto&__or__eligible_schools=University of Alberta">Get me all the clubs for students at the University of Toronto or University of Alberta</a></li>
-                <li><a href="clubs?other_demographic=STEM&other_demographic=Women">Get me all the clubs for Women in STEM</a></li>
-                <li><a href="clubs?__or__ethnicity=Black&__or__ethnicity=Indigenous">Get me all the clubs for Black, East-Asian, South-Asian or Indigenous students</a></li>
-                <li><a href="clubs?eligible_programs=Medicine">Get me all the clubs for students interested in Medicine or Nursing at Humber College or Dalhousie University</a></li>
-                <li><a href="clubs?__or__religion=Christianity&__or__religion=Judaism&__or__religion=Islam">Clubs for Christian, Jewish or Muslim students</a></li>
-                <li><a href="clubs?__or__sports=Weightlifting&__or__sports=Basketball">Clubs for students interested weightlifting or basketball</a></li>
-                <li><a href="clubs?__or__other_demographic=LGBTQ">Clubs for LGBTQ students</a></li>
-                <li><a href="clubs?__or__eligible_programs=Software Engineering&__or__industries=Investment Banking&__or__industries=Management Consulting">Clubs for Software Engineering, Investment Banking or Consulting</a></li>
+                <li><Link to="clubs?__or__eligible_schools=University of Toronto&__or__eligible_schools=University of Alberta">Get me all the clubs for students at the University of Toronto or University of Alberta</Link></li>
+                <li><Link to="clubs?other_demographic=STEM&other_demographic=Women">Get me all the clubs for Women in STEM</Link></li>
+                <li><Link to="clubs?__or__ethnicity=Black&__or__ethnicity=Indigenous">Get me all the clubs for Black, East-Asian, South-Asian or Indigenous students</Link></li>
+                <li><Link to="clubs?eligible_programs=Medicine">Get me all the clubs for students interested in Medicine or Nursing at Humber College or Dalhousie University</Link></li>
+                <li><Link to="clubs?__or__religion=Christianity&__or__religion=Judaism&__or__religion=Islam">Clubs for Christian, Jewish or Muslim students</Link></li>
+                <li><Link to="clubs?__or__sports=Weightlifting&__or__sports=Basketball">Clubs for students interested weightlifting or basketball</Link></li>
+                <li><Link to="clubs?__or__other_demographic=LGBTQ">Clubs for LGBTQ students</Link></li>
+                <li><Link to="clubs?__or__eligible_programs=Software Engineering&__or__industries=Investment Banking&__or__industries=Management Consulting">Clubs for Software Engineering, Investment Banking or Consulting</Link></li>
                 </ul>
                 <h3>What are some Potential Use Cases?</h3>
                 <ol>
