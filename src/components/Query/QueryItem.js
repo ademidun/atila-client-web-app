@@ -1,8 +1,10 @@
 import React from 'react';
-import {  MASTER_LIST_WITH_CATEGORY_LABEL } from '../../models/ConstantsForm';
+import PropTypes from "prop-types";
+import {withRouter} from "react-router-dom";
+import {connect} from "react-redux";
+import {  MASTER_LIST_WITH_CATEGORY_LABEL, MASTER_LIST_WITH_CATEGORY_LABEL_ADMIN } from '../../models/ConstantsForm';
 import AutoComplete from '../AutoComplete';
 import { Tag } from 'antd';
-import PropTypes from "prop-types";
 import { prettifyKeys } from '../../services/utils';
 
 
@@ -10,6 +12,8 @@ export class QueryItem extends React.Component {
 
     constructor(props){
         super(props);
+
+        console.log({props});
 
         this.state = {
             searchQuery: props.value,
@@ -76,11 +80,18 @@ export class QueryItem extends React.Component {
 
     render() {
         const { searchQuery } = this.state;
-        const { placeHolder } = this.props;
+        const { placeHolder,loggedInUserProfile } = this.props;
+
+        let suggestions = MASTER_LIST_WITH_CATEGORY_LABEL;
+        if (loggedInUserProfile && loggedInUserProfile.is_atila_admin) {
+            suggestions = MASTER_LIST_WITH_CATEGORY_LABEL_ADMIN;
+        }
+
+        console.log({loggedInUserProfile, suggestions});
 
         return (
             <>
-                <AutoComplete   suggestions={MASTER_LIST_WITH_CATEGORY_LABEL}
+                <AutoComplete   suggestions={suggestions}
                                 placeholder={placeHolder||"Search by school, program, ethnicity, activity, industry, or more"}
                                 value={searchQuery}
                                 getSuggestionValue={suggestion => suggestion.value}
@@ -93,6 +104,10 @@ export class QueryItem extends React.Component {
     }
 }
 
+const mapStateToProps = state => {
+    return { loggedInUserProfile: state.data.user.loggedInUserProfile };
+};
+
 QueryItem.defaultProps = {
     onUpdateQuery: (query) => {},
     value: "",
@@ -101,4 +116,7 @@ QueryItem.defaultProps = {
 QueryItem.propTypes = {
     onUpdateQuery: PropTypes.func,
     placeHolder: PropTypes.string,
+    loggedInUserProfile: PropTypes.shape({}).isRequired,
 };
+
+export default withRouter(connect(mapStateToProps)(QueryItem));

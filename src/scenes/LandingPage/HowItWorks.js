@@ -204,7 +204,7 @@ export function DescriptionsWithScreenshotsList({items})   {
     return (
         <div className="row">
             {items.map( (item, index) => (
-                <DescriptionWithScreenshot item={item} index={index} />
+                <DescriptionWithScreenshot item={item} index={index} key={index} />
             ))}
         </div>
     )
