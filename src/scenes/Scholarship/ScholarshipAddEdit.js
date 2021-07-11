@@ -4,7 +4,7 @@ import $ from 'jquery';
 import FormDynamic from "../../components/Form/FormDynamic";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import {connect} from "react-redux";
-import {nestedFieldUpdate, prettifyKeys, slugify, transformLocation} from "../../services/utils";
+import {displayLocalTimeZone, nestedFieldUpdate, prettifyKeys, slugify, transformLocation} from "../../services/utils";
 import Loading from "../../components/Loading";
 import {MAJORS_LIST, SCHOOLS_LIST} from "../../models/ConstantsForm";
 import {scholarshipUserProfileSharedFormConfigs, toastNotify} from "../../models/Utils";
@@ -120,7 +120,9 @@ let scholarshipFormConfigsPage1 = [
         type: 'datetime-local',
         html: (scholarship) =>(<label htmlFor="deadline">
             Deadline <span role="img" aria-label="clock emoji">🕐</span>
-            {scholarship.deadline && <small>We recommend picking a deadline within the next two months</small>}
+            {scholarship.deadline && <small>We recommend picking a deadline within the next two months.
+            Using local timezone ({displayLocalTimeZone()}).
+            </small>}
         </label>),
     },
 

@@ -598,3 +598,8 @@ export function copyToClipboard(str) {
 
     message.success("Copied!")
 }
+
+// See https://stackoverflow.com/a/34602679/14874841 for where this code snippet comes from
+export function displayLocalTimeZone() {
+    return Intl.DateTimeFormat().resolvedOptions().timeZone
+}

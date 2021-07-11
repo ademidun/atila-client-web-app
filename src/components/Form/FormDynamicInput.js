@@ -76,6 +76,15 @@ function FormDynamicInput({model, onUpdateForm, inputConfig, loggedInUserProfile
                 />
             );
             break;
+
+        case 'react-datepicker':
+            inputForm = (
+                <div>
+
+                </div>
+            )
+            break;
+
         case 'checkbox':
             inputForm = (
                 <div>
