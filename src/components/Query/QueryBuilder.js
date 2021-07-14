@@ -139,10 +139,9 @@ export const SampleSearches = ({sampleSearches, allQueries, onSearchSelected, cl
             queryUrl = `${queryUrl}${queryAsParam}`;
         });
         console.log({queryUrl, window});
-
+        // replaces all instances of " " with "+"
+        queryUrl = queryUrl.replace(/ /g, "+")
         return queryUrl
-
-
     }
 
     copyQueryUrlToClipboard = () => {
