@@ -97,6 +97,7 @@ function FormDynamicInput({model, onUpdateForm, inputConfig, loggedInUserProfile
                                 placeholder={placeholder}
                                 value={moment(modelValue)}
                                 size={"large"}
+                                allowClear={false}
                     />
                 </div>
             )
