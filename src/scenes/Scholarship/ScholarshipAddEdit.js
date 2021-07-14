@@ -117,10 +117,10 @@ let scholarshipFormConfigsPage1 = [
 
     {
         keyName: 'deadline',
-        type: 'datetime-local',
+        type: 'datepicker',
         html: (scholarship) =>(<label htmlFor="deadline">
             Deadline <span role="img" aria-label="clock emoji">🕐</span>
-            {scholarship.deadline && <small>We recommend picking a deadline within the next two months.
+            {scholarship.deadline && <small> We recommend picking a deadline within the next two months.
             Using local timezone ({displayLocalTimeZone()}).
             </small>}
         </label>),
