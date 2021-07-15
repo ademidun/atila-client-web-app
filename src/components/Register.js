@@ -6,7 +6,7 @@ import './LoginRegister.scss';
 import {setLoggedInUserProfile} from "../redux/actions/user";
 import {connect} from "react-redux";
 import TermsConditions from "./TermsConditions";
-import { Modal, Radio, Button } from "antd";
+import { Alert, Select, Modal, Button } from "antd";
 import {Link} from "react-router-dom";
 import {forbiddenCharacters, hasForbiddenCharacters} from "../models/Utils";
 import ReferredByInput from './ReferredByInput';
@@ -70,10 +70,18 @@ PasswordShowHide.propTypes = {
 };
 
 const accountTypes = [
-    { label: 'Apply for Scholarships', value: 'student' },
-    { label: 'Fund Scholarships', value: 'sponsor' },
+    { label: 'Student (Apply for Scholarships)', value: 'student' },
+    { label: 'Sponsor (Create Scholarships)', value: 'sponsor' },
+    { label: 'Reviewer (Review Scholarsips)', value: 'placeholder1' },
+    { label: 'Educator (Help my students get scholarships)', value: 'placeholder2' },
 ];
 
+const { Option } = Select;
+
+function handleChange(value) {
+    console.log(`selected ${value}`);
+    
+}
 
 class Register extends React.Component {
 
@@ -151,6 +159,60 @@ class Register extends React.Component {
                 delete formErrors['username'];
             }
             this.setState({ formErrors });
+        }
+        
+        
+        if (event.target.type === 'email') {
+            value = value.replace(/\s/g, '');
+            
+            if (value.endsWith('.ca')) {
+                formErrors['email'] = (
+                    <div>
+                        <Alert
+                            message="Warning"
+                            description="We recommend using your personal email instead of your 
+                                school emails as users have reported issues with their school emails 
+                                blocking Atila emails."
+                                    
+                            type="warning"
+                            showIcon
+                            closable
+                        />
+                        <br/>
+                    </div>
+                );
+                
+            
+            } else if (value.includes('@hotmail') || value.includes('@outlook') || value.includes('@live')) {
+
+                formErrors['email'] = (
+                    <div>
+                        <Alert
+                            message = "Warning"
+                            description={"We recommend using gmail because users have noticed that users with the following domain name getting their emails from Atila blocked."}
+                            type="warning"
+                            showIcon 
+                            action={
+                                <div>
+                                <Button type="link">Click here</Button> to learn more
+                                </div>
+                            }
+                            closable
+                        />
+                        <Link to="/blog">Click here to learn more</Link>
+                        <br/>
+                        <br/>
+                    </div>
+                );
+
+            } else {
+                delete formErrors['email'];
+            }
+            this.setState({ formErrors });   
+        }
+        if (event.target.type === 'accountTypes'){
+            value = event.target.account_type
+            console.log(`selected ${accountTypes.value}`);
         }
 
         if (event.target.type==='checkbox'){
@@ -377,16 +439,15 @@ class Register extends React.Component {
                             }
                             <div className="w-100 my-1">
                             <label>
-                                I want to
+                                I am a(n):
                             </label><br/>
-                                <Radio.Group
-                                    options={accountTypes}
-                                    onChange={this.updateForm}
-                                    name="account_type"
-                                    value={account_type}
-                                    optionType="button"
-                                    buttonStyle="solid"
-                                />
+                                <Select 
+                                    defaultValue={accountTypes[0].label} 
+                                    style={{ width: 350 }} 
+                                    onChange={handleChange}
+                                    options={accountTypes}>
+                                    <Option value={account_type}>{accountTypes.label}</Option>
+                                </Select>
                             </div>
 
                             <div className="mb-3">
