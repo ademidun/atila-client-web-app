@@ -289,6 +289,7 @@ export function PricingExample() {
                     </tr>
                     </tbody>
                 </table>
+                <img src="https://i.imgur.com/qeovalb.png" alt="" className="pricing-img"/>
             </div>
         </div>
     )
