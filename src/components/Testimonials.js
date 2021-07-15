@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { Col, Row } from "antd";
 import HelmetSeo from "./HelmetSeo";
 import {Link} from "react-router-dom";
+import ContentCard from "./ContentCard";
 
 let testimonials = [
   {
@@ -174,7 +175,7 @@ const Testimonials = ({ showSeo = true, filterArray=null }) => {
       <TestimonialCard testimonial={testimonial} />
     </Col>
   ));
-  let title = (<h1>Atila Testimonials and Reviews</h1>);
+  let title = (<h1>Atila Testimonials and Case Studies</h1>);
 
   if (!showSeo) {
     title = <Link to={"/testimonials"}>
@@ -201,6 +202,10 @@ const Testimonials = ({ showSeo = true, filterArray=null }) => {
               </Link>
             </h3>
         }
+        <h3 className="col-sm-12 text-center text-muted">
+          Case Studies
+        </h3>
+        
       </div>
     </React.Fragment>
   );
