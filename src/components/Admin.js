@@ -17,7 +17,11 @@ class Admin extends React.Component {
         const { loggedInUserProfile } = this.props;
 
         if (!loggedInUserProfile || !loggedInUserProfile.is_atila_admin) {
-            return null
+            return (
+                <div className="card shadow p-3">
+                    <h1>Only Admin users can view this page</h1>
+                </div>
+            )
         }
         const title = "Admin Dashboard";
 
