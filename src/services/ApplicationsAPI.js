@@ -73,6 +73,17 @@ class ApplicationsAPI {
         return apiCompletionPromise;
     };
 
+    static filteredFinalists = (scholarshipIDs) => {
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: {"scholarship_id": scholarshipIDs},
+            url: `${ApplicationsAPI.applicationsApiUrl}/all-finalists/`
+        });
+
+        return apiCompletionPromise
+    }
+
     static getSlug = (slug) => {
 
         const apiCompletionPromise = request({
@@ -100,6 +111,28 @@ class ApplicationsAPI {
             method,
             data: application,
             url: `${this.applicationsApiUrl}/${id}/`,
+        });
+
+        return apiCompletionPromise;
+    };
+
+    static convertApplicationToEssay = (id, questions, published) => {
+        const apiCompletionPromise = request({
+            method: "post",
+            data: { questions, published },
+            url: `${this.applicationsApiUrl}/${id}/convert-application-to-essay/`,
+        });
+
+        return apiCompletionPromise;
+    }
+
+
+    static selectFinalist = (id, application) => {
+
+        const apiCompletionPromise = request({
+            method: "post",
+            data: application,
+            url: `${this.applicationsApiUrl}/${id}/set-finalist/`,
         });
 
         return apiCompletionPromise;
@@ -156,11 +189,11 @@ class ApplicationsAPI {
         return apiCompletionPromise
     };
 
-    static scoreApplication = (applicationId, scorerUserId, score) => {
+    static scoreApplication = (applicationId, scorerUserId, updateData) => {
 
         const apiCompletionPromise = request({
             method: 'post',
-            data: {user_id: scorerUserId, score},
+            data: {user_id: scorerUserId, ...updateData},
             url: `${this.applicationsApiUrl}/${applicationId}/score-application/`
         });
 
@@ -188,6 +221,18 @@ class ApplicationsAPI {
 
         return apiCompletionPromise
     };
+
+    static assignReviewer = (id, reviewerID) => {
+        let data = {'user_id': reviewerID}
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: data,
+            url: `${this.applicationsApiUrl}/${id}/assign-reviewer/`
+        });
+
+        return apiCompletionPromise
+    }
 }
 
 export default ApplicationsAPI;

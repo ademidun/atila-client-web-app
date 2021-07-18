@@ -1,6 +1,8 @@
 import {SCHOLARSHIP_QUESTIONS_TYPES_TO_FORM_TYPES} from "../../models/Scholarship";
 import {userProfileFormConfig} from "../../models/UserProfile";
 import {scholarshipUserProfileSharedFormConfigs} from "../../models/Utils";
+import { stripHtml } from '../../services/utils';
+import React from 'react';
 
 /**
  * Transform array of questions of the form:
@@ -99,5 +101,199 @@ export function addQuestionDetailToApplicationResponses(application, scholarship
         scholarship_responses: scholarshipResponses,
         user_profile_responses: userProfileResponses,
     };
+
+}
+
+/**
+ * Convert a list of application objects with nested attributes
+ * and return as a list of flat dictionaries that can be exported as a csv.
+ * @param {Array} applications
+ * @returns {Array(Object)} applicationsCSV
+ */
+export function convertApplicationsToCSVFormat(applications) {
+
+    const allApplicationsCSV = [];
+
+    applications.forEach(application => {
+        /**
+         * Create the applicationCSV object in this order:
+         * 1. Add user profile attributes
+         * 2. Add user profile detail
+         * 3. Add application details
+         * 4. Add scholarship response details
+         */
+
+        let applicationCSV = {
+            application_id: application.id,
+        };
+        if (application.is_submitted) {
+            if (application.user) {
+                const { user: { user: user_id, first_name, last_name } } = application;
+
+                applicationCSV = {
+                    ...applicationCSV,
+                    user_id, first_name, last_name
+                };
+
+                for (const questionResponse of Object.values(application.user_profile_responses)) {
+                    applicationCSV[questionResponse.key] = questionResponse.response;
+                }
+            } else {//if scholarship.is_blind_application is True, user attribute is not available
+                const { first_name_code, last_name_code } = application;
+
+                applicationCSV = {
+                    ...applicationCSV,
+                    first_name_code, last_name_code,
+                };
+            }
+            
+
+        }
+        const { is_submitted, date_submitted, average_user_score } = application;
+
+
+
+        applicationCSV = {
+            ...applicationCSV,
+            is_submitted, date_submitted, average_user_score
+        };
+
+        if (application.is_submitted) {
+            for (const questionResponse of Object.values(application.scholarship_responses)) {
+                applicationCSV[questionResponse.question] = questionResponse.type === "long_answer" ? stripHtml(questionResponse.response) : questionResponse.response;
+            }
+        }
+
+        allApplicationsCSV.push(applicationCSV);
+
+    });
+
+    return allApplicationsCSV;
+}
+
+export const maxApplicationScoreDifference = userScores => {
+    // Takes in application.user_scores as input and returns the max score difference
+
+    if (!userScores || Object.keys(userScores).length === 0) {
+        return 0;
+    }
+
+    let userScoresList = Object.keys(userScores).map(key => {
+        let scoresInfo = userScores[key];
+        return Number(scoresInfo['score']);
+    });
+
+    if (userScoresList.length === 0) {
+        return  0;
+    }
+
+    let minNum = userScoresList[0];
+    let maxNum = userScoresList[0];
+
+    for (let i = 0; i < userScoresList.length; i++) {
+        minNum = Math.min(minNum, userScoresList[i]);
+        maxNum = Math.max(maxNum, userScoresList[i]);
+    }
+
+    return maxNum - minNum ? (maxNum - minNum).toFixed(2) : maxNum - minNum;
+}
+
+/**
+ * Given a list of applications. Return all the applications that have a scholarship response that matches the searchTerm.
+ * @param {Array} applications 
+ * @param {String} searchTerm 
+ */
+export const searchApplications = (applications, searchTerm) => {
+
+    const matchingApplications = [];
+
+    applications.forEach(application => { 
+
+        if (!application.scholarship_responses) {
+            return;
+        }
+
+        const matches = findOccurencesOfSearchTerm(application, searchTerm);
+
+        if (matches.length > 0) {
+            matchingApplications.push(application);
+            return;
+
+        }
+        
+    })
+
+    return matchingApplications;
+}
+
+/**
+ * Given an application and a searchTerm, return all the matches of that word with context.
+ * If contextSize is given Include N characters before the match and N characters after the match.
+ * @param {Object} application 
+ * @param {String} searchTerm 
+ */
+
+export const findOccurencesOfSearchTerm = ( application, searchTerm, contextSize=50 ) => {
+    
+    const occurencesOfSearchTerm = [];
+
+    for (const questionResponse of Object.values(application.scholarship_responses)) {
+        const responseText = questionResponse.type === "long_answer" ? stripHtml(questionResponse.response) : questionResponse.response;
+
+        let searchTermRegex = new RegExp(searchTerm, 'gi');
+        let matches;
+
+
+        while ((matches = searchTermRegex.exec(responseText)) !== null) {
+            
+            let context;
+            let contextHtml;
+            if (contextSize === 0) {
+                context = contextHtml = matches[0]
+            } else {
+                /**
+                 * Get the surrounding snippet that matches a search term.
+                 */
+
+                const fullTextStart = 0;
+                const fulTextEnd = responseText.length - 1;
+
+                let contextStart = matches.index - contextSize;
+                contextStart = Math.max( matches.index - contextSize, fullTextStart);
+
+                let contextEnd = Math.min(matches.index +  searchTerm.length + contextSize, fulTextEnd);
+                context = matches.input.substring(contextStart, contextEnd);
+                contextHtml = (
+                    <>
+                    {contextStart > fullTextStart ? "..." : ""} {matches.input.substring(contextStart, matches.index)}
+                    <span  style={{backgroundColor: "yellow"}}>
+                        {matches.input.substring(matches.index, matches.index + searchTerm.length)}
+                    </span>
+                    {matches.input.substring(matches.index + searchTerm.length, contextEnd)} {contextEnd < fulTextEnd ? "..." : ""}
+                    </>
+                )
+
+                // If context does not start at the beginning of the full text, prefix with an elipsis.
+                // Add an elipsis suffix if context ends before the end of the full text.
+                if (contextStart > fullTextStart) {
+                    context = `...${context}`
+                } if (contextEnd < fulTextEnd) {
+                    context = `${context}...`
+                }
+                
+
+            }
+
+            occurencesOfSearchTerm.push({
+                "key": questionResponse.key,
+                "value": context,
+                "html": contextHtml,
+            })
+        }
+
+
+    }
+
+    return occurencesOfSearchTerm;
 
 }

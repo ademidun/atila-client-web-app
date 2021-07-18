@@ -32,6 +32,8 @@ import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import ApplicationDetailHeader from "./ApplicationDetailHeader";
 import {BlindApplicationsExplanationMessage} from "../../models/Scholarship";
 import ApplicationsLocal from './ApplicationsLocal';
+import { Alert } from 'antd';
+import ApplicationViewPreviousApplications from "./ApplicationViewPreviousApplications";
 
 const { Step } = Steps;
 
@@ -48,6 +50,7 @@ let applicationPages = [
 ];
 
 let autoSaveTimeoutId;
+let scoreApplicationAutoSaveTimeoutId;
 class ApplicationDetail extends  React.Component{
 
     constructor(props) {
@@ -58,6 +61,7 @@ class ApplicationDetail extends  React.Component{
         this.state = {
             application: {},
             applicationScore: 0,
+            applicationNotes: "",
             scholarship: null,
             isLoadingApplication: false,
             isSavingApplication: false,
@@ -67,7 +71,8 @@ class ApplicationDetail extends  React.Component{
             isUsingLocalApplication: pathname.includes("/local/"),
             promptRegisterBeforeSubmitting: false,
             userProfileForRegistration: null,
-            pageNumber: 1
+            pageNumber: 1,
+            isScholarshipDeadlinePassed: false,
         }
     }
 
@@ -95,11 +100,19 @@ class ApplicationDetail extends  React.Component{
             .then(res=>{
                 const { data: application } = res;
                 const { scholarship } = application;
-                this.setState({application, scholarship});
+                const { deadline } = scholarship;
+                
+                const isScholarshipDeadlinePassed = moment(deadline).diff(moment()) < 0;
+                // If the scholarship has expired, set the pageNumber to the last page, else, set it to the current page in state.
+                const pageNumber = isScholarshipDeadlinePassed ? applicationPages.length : this.state.pageNumber;
+
+                this.setState({application, scholarship, isScholarshipDeadlinePassed, pageNumber});
                 if (application.user_scores) {
                     const applicationScore = application.user_scores[userProfile.user] ?
                         application.user_scores[userProfile.user]["score"] : 0;
-                    this.setState({applicationScore}, () => {
+                        const applicationNotes= application.user_scores[userProfile.user] ?
+                            application.user_scores[userProfile.user]["notes"] : "";
+                    this.setState({applicationScore, applicationNotes}, () => {
                         if (location && location.hash) {
                             scrollToElement(location.hash);
                         }
@@ -109,8 +122,7 @@ class ApplicationDetail extends  React.Component{
                 this.makeScholarshipQuestionsForm(application, scholarship)
             })
             .catch(err => {
-                console.log({err});
-            })
+                            })
             .finally(() => {
                 this.setState({isLoadingApplication: false});
             })
@@ -151,7 +163,7 @@ class ApplicationDetail extends  React.Component{
         const { scholarship_responses, user_profile_responses } = addQuestionDetailToApplicationResponses(application, scholarship);
 
         if (userProfile) {
-            const verification_email = user_profile_responses.email.response
+            const verification_email = user_profile_responses.email ? user_profile_responses.email.response : userProfile.email;
             this.saveApplicationRemotely( {scholarship_responses, user_profile_responses, verification_email}, application.id);
         } else {
             this.saveApplicationLocally({scholarship_responses, user_profile_responses, scholarship }, scholarship);
@@ -210,27 +222,59 @@ class ApplicationDetail extends  React.Component{
         this.makeScholarshipQuestionsForm(application, scholarship);
     };
 
-    updateApplicationScore = (event) => {
+    updateApplicationScore = (event, eventType="score") => {
         const { userProfile } = this.props;
         const { application } = this.state;
 
-        const applicationScore = event.target.value;
+        
 
         const scorerId = userProfile.user;
-        this.setState({applicationScore}, () => {
-            // Prevent an API Request if the field is blank.
-            if (applicationScore.length !== 0) {
-                ApplicationsAPI.scoreApplication(application.id, scorerId, applicationScore)
-                    .then(res => {
-                    })
-                    .catch(err => {
-                        console.log({err});
-                        toastNotify(handleError(err))
-                    })
-            }
-        })
-    };
+        let updateValue = event.target.value;
+        let updateData = {
+            [eventType]: updateValue
+        };
 
+        let updateStateKey = {
+            score: "applicationScore",
+            notes: "applicationNotes",
+        }
+        
+        this.setState({[updateStateKey[eventType]]: updateValue}, () => {
+            // Prevent an API Request if the field is blank.
+            if (updateValue.length !== 0) {
+                if (eventType === "notes") {
+                    // if it's a notes eventType, debounce to send the network request every 3 seconds
+                    // as opposed to sending the network request every keystroke to prevent overloading the network
+                    if (scoreApplicationAutoSaveTimeoutId) {
+                        clearTimeout(scoreApplicationAutoSaveTimeoutId);
+                    }
+                    scoreApplicationAutoSaveTimeoutId = setTimeout(() => {
+                        // Runs a half second (500 ms) after the last change
+                        this.callScoreApplicationAPI(application, scorerId, updateData);
+                    }, 500);
+                } else {// else, if it's the score, we don't need to debounce because fewer changes are made and we want
+                // to update the score immediately on each key stroke.
+                    this.callScoreApplicationAPI(application, scorerId, updateData);
+                }
+                
+                
+            }
+
+        });
+        
+
+
+};
+
+    callScoreApplicationAPI = (application, scorerId, updateData) => {
+        ApplicationsAPI.scoreApplication(application.id, scorerId, updateData)
+        .then(res => {
+        })
+        .catch(err => {
+            console.log({err});
+            toastNotify(handleError(err))
+        })
+    }
     submitApplication = () => {
         const { userProfile } = this.props;
         if (userProfile) {
@@ -267,7 +311,8 @@ class ApplicationDetail extends  React.Component{
     };
 
     submitApplicationRemotely = () => {
-        const { application, scholarship } = this.state;
+        let { application } = this.state;
+        const { scholarship } = this.state;
         const { userProfile } = this.props;
         const { scholarship_responses, user_profile_responses } = addQuestionDetailToApplicationResponses(application, scholarship);
 
@@ -288,20 +333,14 @@ class ApplicationDetail extends  React.Component{
             .submit(application.id, {scholarship_responses, user_profile_responses})
             .then(res=>{
 
-                // TODO figure out how to call setState({application}) after submission without causing the following error:
-                //  Uncaught Error: Objects are not valid as a React child (found: object with keys {key, response}).
-                //  If you meant to render a collection of children, use an array instead.
-
-                // State needs to be updated with new application from response ideally
-                // const application = res.data
-                // this.setState({application})
-                // TEMPORARY SOLUTION
-
-                const submittedApplication = {
+                const { data: { application : updatedApplication} } = res;
+                application = {
                     ...application,
-                    is_submitted: true,
+                    date_modified: updatedApplication.date_modified,
+                    is_submitted: updatedApplication.is_submitted,
+                    date_submitted: updatedApplication.date_submitted
                 };
-                this.setState({ application: submittedApplication });
+                this.setState({application});
 
                 window.scrollTo(0, 0);
                 const successMessage = (
@@ -387,9 +426,9 @@ class ApplicationDetail extends  React.Component{
                 clearTimeout(autoSaveTimeoutId);
             }
             autoSaveTimeoutId = setTimeout(() => {
-                // Runs 1 second (1000 ms) after the last change
+                // Runs a half second (500 ms) after the last change
                 this.saveApplication();
-            }, 1000);
+            }, 500);
         })
 
     };
@@ -466,7 +505,7 @@ class ApplicationDetail extends  React.Component{
         const { application, isLoadingApplication, scholarship, isSavingApplication, isSubmittingApplication,
             scholarshipUserProfileQuestionsFormConfig, scholarshipQuestionsFormConfig,
             isUsingLocalApplication, promptRegisterBeforeSubmitting,
-            applicationScore, pageNumber } = this.state;
+            applicationScore, applicationNotes, pageNumber, isScholarshipDeadlinePassed } = this.state;
 
         const applicationSteps =
             (<Steps current={pageNumber-1} onChange={(current) => this.changePage(current+1)}>
@@ -534,25 +573,39 @@ class ApplicationDetail extends  React.Component{
         let applicationScoreContent = null;
 
         if (!isOwnerOfApplication) {
-            applicationScoreContent = (<div>
+            applicationScoreContent = (<div className="mb-3">
                 <p>
                     Give an application a score between 0-10 to help you rank the applications.<br />
-                    These scores will not be shared with the applicant.
+                    You can also add some notes to the application.<br />
+                    These scores are not visible to the applicant.
                 </p>
                 <input className="form-control col-12"
                        type="number" step={0.01} min={0} max={10}
-                       onChange={this.updateApplicationScore}
+                       disabled={scholarship.is_winner_selected}
+                       onChange={event => this.updateApplicationScore(event, "score")}
                        value={applicationScore}/>
-                <p>Your score is automatically saved</p>
+                {scholarship.is_winner_selected && 
+                <p className="text-muted">
+                    Score cannot be changed after the winner has been selected
+                </p>
+                }
+                
+                <textarea
+                        placeholder="Notes"
+                        className="col-12 my-3 form-control"
+                        value={applicationNotes}
+                        onChange={event => this.updateApplicationScore(event, "notes")}
+                        rows="5"
+                />
+                <p>Your score and notes are automatically saved</p><br/>
+                <Link to={`/scholarship/${scholarship.id}/manage`}> 
+                    View all applications
+                </Link>
             </div>);
         }
 
-        const { deadline } = scholarship;
-
-        let scholarshipDateMoment = moment(deadline);
-        const isScholarshipDeadlinePassed = scholarshipDateMoment.diff(moment(), 'days') < 0;
-        let scholarshipDateString = scholarshipDateMoment.format('dddd, MMMM DD, YYYY');
-        let disableSubmit = isMissingProfilePicture||isMissingSecurityQuestionAnswer;
+        let scholarshipDateString = moment(scholarship.deadline).format('dddd, MMMM DD, YYYY');
+        let disableSubmit = isMissingProfilePicture||isMissingSecurityQuestionAnswer || isSubmittingApplication;
         let submitContent = (
                     <div className={"float-right col-md-6"}>
                         You must have an account to submit locally saved applications.
@@ -581,6 +634,8 @@ class ApplicationDetail extends  React.Component{
         }
 
         let applicationForm = (<>
+            <ApplicationViewPreviousApplications currentApplicationID={applicationID} userProfile={userProfile} />
+            <br />
             <h2>Profile Questions</h2>
             {dateModified}
             <FormDynamic onUpdateForm={event => this.updateForm(event, 'user_profile_responses')}
@@ -598,10 +653,13 @@ class ApplicationDetail extends  React.Component{
             />
             </>);
 
+        let deadlinePassedMessage = null;
         if (isScholarshipDeadlinePassed) {
-            submitContent = (<p className="text-muted float-right">
-                Scholarship deadline has passed. Scholarship was due on {scholarshipDateString}
-            </p>)
+            deadlinePassedMessage = (
+                <Alert  message={`Scholarship deadline has passed. 
+                        Scholarship was due on ${scholarshipDateString}.`} />
+            );
+        submitContent = null;
         }
 
         let viewModeContent = (<>
@@ -635,6 +693,12 @@ class ApplicationDetail extends  React.Component{
                                 <>
                                     {applicationSteps}
                                     <br />
+                                    {deadlinePassedMessage && 
+                                    <>
+                                    {deadlinePassedMessage}
+                                    <br/>
+                                    </>
+                                    }
                                     {(pageNumber === 1) &&
                                     <>
                                         {applicationForm}
@@ -647,7 +711,8 @@ class ApplicationDetail extends  React.Component{
                                             <h6 className="text-muted">
                                                 As part of account verification and to
                                                 ensure a community of real students
-                                                you must upload a picture of yourself.
+                                                you must upload a picture of yourself. <br/>
+                                                This picture will also be displayed on your profile.
                                             </h6>
 
                                             {!isMissingProfilePicture &&
@@ -695,10 +760,22 @@ class ApplicationDetail extends  React.Component{
 
                                         {pageNumber === applicationPages.length &&
                                         <>
-                                            {submitContent}
+                                            {!isScholarshipDeadlinePassed && submitContent}
+                                            {/* 
+                                            If the scholarship deadline has passed.
+                                            Show the submit content on a seperate line. Since
+                                            it won't be a submit button but an alert message telling the user
+                                            that the scholarship deadline has passed.
+                                            */}
+                                            {isScholarshipDeadlinePassed &&
+
+                                            <div className="float-right col-md-6">
+                                                {deadlinePassedMessage}
+                                            </div>
+                                            }
                                         </>
                                         }
-                                        {pageNumber > 1 && (isMissingProfilePicture || isMissingSecurityQuestionAnswer) &&
+                                        {pageNumber > 1 && !isScholarshipDeadlinePassed  && (isMissingProfilePicture || isMissingSecurityQuestionAnswer) &&
                                         <div className="text-muted float-right">
 
                                             {isMissingSecurityQuestionAnswer &&

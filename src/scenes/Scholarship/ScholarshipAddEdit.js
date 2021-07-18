@@ -50,13 +50,16 @@ let scholarshipFormConfigsPage1 = [
         type: 'checkbox',
         className: 'font-weight-bold',
     },
-    {
+    // Temporarily hide blind applications feature to prevent confusing the application process.
+    // We currently launched a bunch of new features and this might confuse new potential sponsors.
+    // We can make the blind applications feature available on a case-by-case basis if a scholarship sponsor wants it.
+/*     {
         keyName: 'is_blind_applications',
         placeholder:"Hide names of applicants until a winner is selected",
         type: 'checkbox',
         className: 'font-weight-bold',
         isHidden: (scholarship) => (!scholarship.is_atila_direct_application),
-    },
+    }, */
     {
         keyName: 'criteria_info',
         type: 'html_editor',
@@ -121,24 +124,30 @@ let scholarshipFormConfigsPage1 = [
         </label>),
     },
 
-    // {
-    //     keyName: 'metadata.not_open_yet',
-    //     placeholder: 'Scholarship not open yet?',
-    //     type: 'checkbox',
-    // },
-    // {
-    //     keyName: 'open_date',
-    //     type: 'date',
-    //     isHidden: (scholarship) => (scholarship.metadata && !scholarship.metadata.not_open_yet),
-    //     html: () =>(<label htmlFor="open_date">
-    //         When does the scholarship open? <span role="img" aria-label="calendar emoji">🗓</span>
-    //     </label>),
-    // },
-    // {
-    //     keyName: 'is_not_available',
-    //     placeholder: 'Is not available?',
-    //     type: 'checkbox',
-    // },
+     {
+         keyName: 'metadata.not_open_yet',
+         placeholder: 'Scholarship not open yet?',
+         type: 'checkbox',
+     },
+     {
+         keyName: 'open_date',
+         type: 'date',
+         isHidden: (scholarship) => (scholarship.metadata && !scholarship.metadata.not_open_yet),
+         html: () =>(<label htmlFor="open_date">
+             When does the scholarship open? <span role="img" aria-label="calendar emoji">🗓</span>
+         </label>),
+     },
+     {
+         keyName: 'is_not_available',
+         placeholder: 'Is not available?',
+         type: 'checkbox',
+     },
+     {
+         keyName: 'reddit_url',
+         placeholder: 'Reddit Help Thread URL',
+         type: 'url',
+         isHidden: (scholarship, userProfile) => (userProfile && !userProfile.is_atila_admin),
+     },
 ];
 
 let additionalQuestions = [
@@ -360,7 +369,10 @@ class ScholarshipAddEdit extends React.Component{
             value = event.target.checked
         }
         if (event.stopPropagation) {
-            event.stopPropagation(); // https://github.com/facebook/react/issues/3446#issuecomment-82751540
+            // Radio button needed to be clicked twice for change to be reflected in the DOM
+            // https://github.com/facebook/react/issues/3446#issuecomment-82751540
+            // https://stackoverflow.com/a/48425083/5405197
+            event.stopPropagation(); 
         }
 
 
@@ -584,6 +596,7 @@ class ScholarshipAddEdit extends React.Component{
                         {pageNumber === 1 &&
                         <div className="my-3">
                             <FormDynamic model={scholarship}
+                                         loggedInUserProfile={userProfile}
                                          inputConfigs={scholarshipFormConfigsPage1}
                                          onUpdateForm={this.updateForm}
                                          formError={scholarshipPostError}

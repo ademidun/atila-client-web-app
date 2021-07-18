@@ -2,6 +2,7 @@ import $ from 'jquery';
 import {toastNotify} from "../models/Utils";
 import {MAX_BLOG_PAGE_VIEWS, MAX_ESSAY_PAGE_VIEWS, MAX_SCHOLARSHIP_PAGE_VIEWS} from "../models/Constants";
 import moment from "moment";
+import { message } from 'antd';
 
 export function makeXHRRequestAsPromise (method, url, data) {
     return new Promise(function (resolve, reject) {
@@ -59,6 +60,7 @@ export function genericItemTransform (item) {
                 type: item.type,
                 user: item.user,
                 published: item.published,
+                contributors: item.contributors,
             };
             break;
         case 'blog':
@@ -71,6 +73,7 @@ export function genericItemTransform (item) {
                 type: item.type,
                 user: item.user,
                 published: item.published,
+                contributors: item.contributors,
             };
             break;
         case 'forum':
@@ -292,7 +295,7 @@ export function scrollToElement(elementSelector) {
  * @param error
  * @returns {string|{response}|*}
  */
-export function getErrorMessage(error) {
+export function getErrorMessage(error, stringifyError=true) {
 
     let formattedMessage = "";
     if (error.response && error.response.status === 500) {
@@ -308,8 +311,12 @@ export function getErrorMessage(error) {
     } else {
         formattedMessage = error.message ? error.message : error;
     }
+
+    if (stringifyError) {
+        formattedMessage = JSON.stringify(formattedMessage);
+    }
     
-    return JSON.stringify(formattedMessage);
+    return formattedMessage;
 }
 
 export function getPageViewLimit(pageViews, pathname) {
@@ -508,9 +515,18 @@ export function createTableOfContents(parentSelector="") {
         if (!link) {
             return;
         }
+
         link = `${window.location.pathname}${window.location.search}#${link}`;
 
-        newLine = `<li><a href="${link}">${title}</a></li>`;
+        let indentStyle = ""
+        if(element[0].localName === "h1") {
+            indentStyle = `font-size: larger`
+        } else {
+            const indentAmount = element[0].localName === "h2" ? "3%" : "5%";
+            indentStyle = `margin-left: ${indentAmount}`
+        }
+
+        newLine = `<li style="${indentStyle}"><a href="${link}">${title}</a></li>`;
         allLines += newLine
 
     });
@@ -534,4 +550,51 @@ export function createTableOfContents(parentSelector="") {
 
     return tableOfContents;
 
+}
+
+/**
+ * https://stackoverflow.com/a/822486/5405197
+ * @param {*} html 
+ */
+export function stripHtml(html) {
+    let tmp = document.createElement("DIV");
+    tmp.innerHTML = html;
+    return tmp.textContent || tmp.innerText || "";
+}
+
+export function joinListGrammatically(lst) {
+    if (!lst) {
+        return "";
+    }
+
+    if (lst.length === 0) {
+        return "";
+    }
+
+    if (lst.length === 1) {
+        return  lst[0];
+    }
+
+    if (lst.length === 2) {
+        return lst.join(" and ");
+    }
+
+    const seperator = ", "
+    const commaSeperatedList = lst.slice(0, lst.length-2);
+    return commaSeperatedList.join(seperator) + seperator + lst[lst.length-2] + ', and ' + lst[lst.length -1]
+}
+
+// see https://stackoverflow.com/a/50067769/14874841
+// Copies formatted html to clipboard
+export function copyToClipboard(str) {
+    function listener(e) {
+        e.clipboardData.setData("text/html", str);
+        e.clipboardData.setData("text/plain", str);
+        e.preventDefault();
+    }
+    document.addEventListener("copy", listener);
+    document.execCommand("copy");
+    document.removeEventListener("copy", listener);
+
+    message.success("Copied!")
 }

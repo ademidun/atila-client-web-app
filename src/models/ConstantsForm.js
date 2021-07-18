@@ -1,4 +1,8 @@
 // If you make any changes here, notify in the Github repo and update backend as well
+import { CONTACT_TAGS } from './Contact';
+import { INDUSTRIES } from './Industries';
+import { OCCUPATIONS } from './Occupations';
+import { CONTACT_TYPES } from './Contact';
 // https://github.com/ademidun/atila-django/blob/master/helpers/constants.py
 export const AUTOCOMPLETE_KEY_LIST = [
     'eligible_schools',
@@ -273,7 +277,7 @@ export const SCHOOLS_LIST = [
     'Rotman Commerce',
     'Royal Military College of Canada',
     'Royal Roads University',
-    'Ryerson Polytechnic University',
+    'Ryerson University',
     'Saskatchewan Indian Federated College',
     'Sauder School of Business',
     'Sauder School of Business',
@@ -351,15 +355,16 @@ export const SCHOOLS_LIST = [
     'École des Hautes Études Commerciales',
     'École nationale d\'administration publique, Université du Québec'
 ];
+// TODO TEMP until we update ethnicities in the backend
 export const ETHNICITIES = [
-    'Aboriginal/First Nations',
-    'Asian/East-Asian',
-    'Black/African-American',
-    'Indian/South-Asian',
-    'Latino/Hispanic',
+    'Indigenous',
+    'East-Asian',
+    'Black',
+    'South-Asian',
+    'Latino',
     'Middle Eastern',
     'Visible Minority',
-    'White/Caucasian'
+    'White'
 ];
 export const COUNTRIES = [
     'Afghanistan',
@@ -1477,7 +1482,6 @@ export const SPORTS = [
     'Archery',
     'Arm Wrestling',
     'Athletics',
-    'Athletics',
     'Australian Rules Football',
     'Auto Racing',
     'Badminton',
@@ -1656,8 +1660,63 @@ export const GRADE_LEVELS = [
     'Other',
 ];
 
+export const OTHER_DEMOGRAPHICS = [
+    "Women",
+    "Men",
+    "LGBTQ",
+    "International Student",
+    "STEM",
+    "Low Income",
+    "Single Parent",
+    "Orphan",
+    "Army",
+];
+
 export let MASTER_LIST_EVERYTHING = MAJORS_LIST.concat(SCHOOLS_LIST).concat(MAJORS_LIST).concat(ETHNICITIES)
     .concat(DISABILITIES).concat(SPORTS).concat(ACTIVITIES).concat(RELIGIONS).concat(LANGUAGES).sort();
 
 MASTER_LIST_EVERYTHING = [...new Set(MASTER_LIST_EVERYTHING)];
 export const MASTER_LIST_EVERYTHING_UNDERSCORE = MASTER_LIST_EVERYTHING.map(item => item.toLowerCase());
+
+export const MASTER_LIST_WITH_CATEGORY_LABEL = [];
+// TODO use ALL_DEMOGRAPHICS to populate MASTER_LIST_EVERYTHING
+export const ALL_DEMOGRAPHICS = {
+    "eligible_schools": SCHOOLS_LIST,
+    "eligible_programs": MAJORS_LIST,
+    "ethnicity": ETHNICITIES,
+    "sports": SPORTS,
+    "religion": RELIGIONS,
+    "industries": INDUSTRIES,
+    "occupations": OCCUPATIONS,
+    "other_demographic": OTHER_DEMOGRAPHICS,
+    "activities": ACTIVITIES,
+    "heritage": COUNTRIES,
+    "languages": LANGUAGES,
+    "disability": DISABILITIES,
+    "citizenship": COUNTRIES,
+}
+
+for (const [demographic_type, demographic_list] of Object.entries(ALL_DEMOGRAPHICS)) {
+    MASTER_LIST_WITH_CATEGORY_LABEL.push(...demographic_list.map(item => (
+        {value: item, category: demographic_type}
+    )))
+}
+
+/**
+ * This list of category labels, has additional options that are only visible to atila admins
+ */
+ export const ALL_DEMOGRAPHICS_ADMIN = {
+    ...ALL_DEMOGRAPHICS,
+    // TODO, this can be moved back to all_demographic later, when we use this for scholarship and user profile filtering
+    "citizenship": COUNTRIES,
+    'tags': CONTACT_TAGS,
+    'account_type': CONTACT_TYPES,
+}
+
+export const MASTER_LIST_WITH_CATEGORY_LABEL_ADMIN = [];
+
+for (const [demographic_type, demographic_list] of Object.entries(ALL_DEMOGRAPHICS_ADMIN)) {
+    MASTER_LIST_WITH_CATEGORY_LABEL_ADMIN.push(...demographic_list.map(item => (
+        {value: item, category: demographic_type}
+    )))
+}

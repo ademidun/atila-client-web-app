@@ -9,7 +9,6 @@ import {connect} from "react-redux";
 import AnalyticsService from "../../services/AnalyticsService";
 import ScholarshipShareSaveButtons from "./ScholarshipShareSaveButtons";
 import HelmetSeo from "../../components/HelmetSeo";
-import UserProfileAPI from "../../services/UserProfileAPI";
 import ApplicationsAPI from "../../services/ApplicationsAPI";
 import AtilaPointsPaywallModal from "../../components/AtilaPointsPaywallModal";
 import ScholarshipExtraCriteria from "./ScholarshipExtraCriteria";
@@ -19,6 +18,7 @@ import verifiedBadge from '../../components/assets/verified.png';
 import {AtilaDirectApplicationsPopover, BlindApplicationsExplanationMessage, ReferralBonusScholarshipExplanationMessage} from "../../models/Scholarship";
 import ScholarshipFinalists, {UserProfilesCards} from "./ScholarshipFinalists";
 import ApplicationsLocal from '../Application/ApplicationsLocal';
+import ReportIncorrectInfo from "../../components/ReportIncorrectInfo";
 
 class ScholarshipDetail extends React.Component {
 
@@ -74,7 +74,8 @@ class ScholarshipDetail extends React.Component {
         ScholarshipsAPI.getSlug(slug)
             .then(res => {
                 const { scholarship, contributors } = res.data;
-                this.setState({ scholarship, contributors }, () => {
+                const { owner_detail } = scholarship;
+                this.setState({ scholarship, contributors, scholarshipUserProfile: owner_detail }, () => {
                     if (location && location.hash) {
                         scrollToElement(location.hash);
                     }
@@ -103,10 +104,6 @@ class ScholarshipDetail extends React.Component {
                             this.setState({pageViews: {guestPageViews}});
                         }
                     });
-                UserProfileAPI.get(scholarship.owner)
-                    .then(res => {
-                        this.setState({ scholarshipUserProfile: res.data });
-                    })
             })
             .catch((err) => {
                 let errorMessage = (<div className="text-center">
@@ -228,10 +225,10 @@ class ScholarshipDetail extends React.Component {
         }
 
         let scholarshipDateMoment = moment(deadline);
-        const isScholarshipDeadlinePassed = scholarshipDateMoment.diff(moment(), 'days') < 0;
+        const isScholarshipDeadlinePassed = scholarshipDateMoment.diff(moment()) < 0;
 
         let applyToScholarshipButton = null;
-        if (isScholarshipDeadlinePassed) {
+        if (isScholarshipDeadlinePassed && !currentUserScholarshipApplication) {
             applyToScholarshipButton = null;
         } else if (!userProfile) {
             applyToScholarshipButton = (<Button type="primary" size="large"
@@ -262,6 +259,22 @@ class ScholarshipDetail extends React.Component {
                 applyToScholarshipButton = null;
             }
         }
+
+        let redditUrlComponent = (
+        <div>
+        <hr />
+        <p>
+            Questions about this scholarship? Ask on the{' '}
+            <Link to={scholarship.reddit_url}>
+                reddit post for this scholarship
+            </Link>
+            {' '}on{' '}
+            <Link to={`https://reddit.com/r/atila`}>
+                r/atila.
+            </Link>
+        </p>
+        </div>
+        )
 
         return (
             <React.Fragment>
@@ -390,6 +403,8 @@ class ScholarshipDetail extends React.Component {
                             <p className="font-weight-bold">
                                 <ScholarshipDeadlineWithTags scholarship={scholarship} />
                                 <br/>
+                                <ReportIncorrectInfo scholarship={scholarship} />
+                                <br/>
                                 Amount: {fundingString}
                             </p>
                             {scholarship.is_atila_direct_application  && !isScholarshipDeadlinePassed &&
@@ -428,6 +443,7 @@ class ScholarshipDetail extends React.Component {
                             {/*todo find a way to secure against XSS: https://stackoverflow.com/a/19277723*/}
                             <hr />
                             <div dangerouslySetInnerHTML={{__html: criteria_info}} />
+                            {scholarship.reddit_url && redditUrlComponent}
                         </div>
                         <RelatedItems
                             className="col-md-4"

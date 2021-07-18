@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {UserProfileTest1} from "./UserProfile";
 
 
 export const BlogPropType = PropTypes.shape({
@@ -33,6 +34,6 @@ export const BlogWhatIsAtila = {
         first_name: 'Tomiwa',
         username: 'tomiwa',
         last_name: 'Ademidun',
-    }
-
+    },
+    contributors: [UserProfileTest1]
 };

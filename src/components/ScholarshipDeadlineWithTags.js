@@ -7,13 +7,13 @@ const todayMoment = moment(Date.now());
 
 function ScholarshipDeadlineWithTags({scholarship, datePrefix}) {
 
-    const { deadline, open_date, metadata, date_time_created} = scholarship;
+    const { deadline, open_date, date_time_created } = scholarship;
     let tag = null;
     let tagPrefix = 'due';
     let color = null;
 
     let scholarshipDateMoment = moment(deadline);
-    if (open_date && metadata && metadata.not_open_yet && open_date > todayMoment.toISOString()) {
+    if (open_date && !open_date.includes("2022-12-31") && open_date > todayMoment.toISOString()) {
         scholarshipDateMoment = moment(open_date);
         tagPrefix = 'opens';
         datePrefix = 'Opens: ';
@@ -34,10 +34,11 @@ function ScholarshipDeadlineWithTags({scholarship, datePrefix}) {
     }
 
 
-    if (deadline.includes("2022-01-01")) {
+    if (deadline.includes("2022-01-01") && (!open_date || open_date.includes("2022-12-31"))) {
         scholarshipDateString = "TBA";
         tag = null
     }
+
     return (
         <React.Fragment>
             {datePrefix} {scholarshipDateString}{' '}

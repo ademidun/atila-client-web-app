@@ -129,6 +129,7 @@ export let DEFAULT_SCHOLARSHIP = {
     sports: [],
     disability: [],
     language: [],
+    reddit_url: null,
 };
 
 export const SCHOLARSHIP_CONTRIBUTION_EXAMPLE_IMAGE = "https://hcti.io/v1/image/45ca4aac-0a18-4f52-bac3-07d98648a75d";
@@ -259,8 +260,7 @@ export const BlindApplicationsExplanationMessage = () => (
             type="info"
             message={<div style={{whiteSpace: "pre-line"}}>
                 This is a Blind Application Scholarship: The names of the applicants
-                are hidden to the scholarship reviewer
-                until a winner has been selected. <br/> This is done to reduce bias in the application review process.
+                are hidden until all submitted applications have been scored. <br/> This is done to reduce bias in the application review process.
                 <br /> <Link to="/blog/tomiwa/atila-blind-applications">Learn More</Link>
             </div>}
         />

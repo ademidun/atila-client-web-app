@@ -144,6 +144,17 @@ class ScholarshipsAPI {
         return apiCompletionPromise;
     };
 
+    static notifyApplicantsFinalistsSelected = (id) => {
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: {},
+            url: `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/notify-applicants-finalists-selected/`,
+        });
+
+        return apiCompletionPromise;
+    };
+
     static selectWinners = (id, winners) => {
 
         const apiCompletionPromise = request({
@@ -183,6 +194,41 @@ class ScholarshipsAPI {
             method: 'post',
             data: data,
             url: `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/unsubmit-applications/`,
+        });
+
+        return apiCompletionPromise;
+    };
+
+    static inviteCollaborator = (id, username) => {
+        let data = {'username': username};
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: data,
+            url: `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/invite-collaborator/`,
+        });
+
+        return apiCompletionPromise;
+    };
+
+    static assignReviewers = (id, reviewersPerApplication) => {
+        let data = {'reviewers_per_application': reviewersPerApplication}
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: data,
+            url: `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/assign-reviewers/`,
+        });
+
+        return apiCompletionPromise;
+    };
+
+    static reportIncorrectInfo = (id, data) => {
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: data,
+            url: `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/report-incorrect-info/`,
         });
 
         return apiCompletionPromise;

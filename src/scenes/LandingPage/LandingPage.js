@@ -13,6 +13,8 @@ import BannerLoggedIn from "./BannerLoggedIn";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
 import Testimonials from "../../components/Testimonials";
+import { SocialProof } from './SocialProof';
+import EbookLandingBanner from '../Ebook/EbookLandingBanner';
 
 class LandingPage extends React.Component {
 
@@ -74,11 +76,14 @@ class LandingPage extends React.Component {
             <Loading title="Loading Scholarships ..." />
             }
             {scholarshipsDirectApplication &&
+            <>
             <LandingPageContent title={`Direct Application Scholarships`}
                                 link="scholarship/direct"
                                 contentList={scholarshipsDirectApplication}
                                 contentType="scholarship" />
+            </>
             }
+            
         </React.Fragment>);
         const scholarshipsContentDueSoon = (<React.Fragment>
             {scholarshipsDueSoonIsLoading &&
@@ -92,12 +97,9 @@ class LandingPage extends React.Component {
         </React.Fragment>);
         const scholarshipsContentRecentlyAdded = (<React.Fragment>
             {scholarshipsRecentlyAdded &&
-            <React.Fragment>
-            <hr/>
             <LandingPageContent title={`Scholarships Recently Added`}
-                                contentList={scholarshipsRecentlyAdded}
-                                contentType="scholarship" />
-            </React.Fragment>
+            contentList={scholarshipsRecentlyAdded}
+            contentType="scholarship" />
             }
         </React.Fragment>);
         return (
@@ -107,23 +109,21 @@ class LandingPage extends React.Component {
                     {!userProfile &&
                     <React.Fragment>
                         <Banner/>
-                        {scholarshipsContentDirectApplication}
                         <hr/>
                         <HowItWorks accountType={"Student"}/>
                         <hr/>
-                        <Testimonials showSeo={false} filterArray={['Jasleen', 'Natalie', 'Grace', 'Chris']} />
-                        <hr/>
-                        <div className="p-5">
-                            <Link to="/register" className="btn btn-primary center-block font-size-xl">
-                                Register for Free
-                            </Link>
-                        </div>
-                        <hr/>
                         <HowItWorks accountType={"Sponsor"}/>
+                        <hr/>
+                        <SocialProof />
+                        <hr/>
+                        {scholarshipsContentDirectApplication}
+                        <hr/>
+                        <Testimonials showSeo={false} filterArray={['Jasleen', 'Natalie', 'Grace', 'Chris', 'Hania', 'Oluwatofunmi']} />
+                        <hr/>
                         {/*<hr/>*/}
                         {/*<MoreFeatures/>*/}
-                        <hr/>
                         {scholarshipsContentRecentlyAdded}
+                        <hr/>
                         {scholarshipsContentDueSoon}
                     </React.Fragment>
                         }
@@ -136,6 +136,7 @@ class LandingPage extends React.Component {
                         <hr />
                     </React.Fragment>
                     }
+                    <EbookLandingBanner showLearnMoreCTA={true} />
                     <hr />
                     <SubscribeMailingList />
                     {!userProfile &&

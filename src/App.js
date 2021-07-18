@@ -8,6 +8,8 @@ import Footer from "./components/Footer/Footer";
 import Loading from "./components/Loading";
 
 import { ToastContainer } from "react-toastify";
+import "react-notion/src/styles.css";
+import "prismjs/themes/prism-tomorrow.css";
 import "react-toastify/dist/ReactToastify.css";
 import Navbar from "./components/Navbar/Navbar";
 import GoogleAnalyticsTracker from "./services/GoogleAnalyticsTracker";
@@ -16,6 +18,7 @@ import LogRocket from "logrocket";
 import LogrocketFuzzySanitizer from 'logrocket-fuzzy-search-sanitizer';
 import setupLogRocketReact from "logrocket-react";
 import Environment from "./services/Environment";
+import { MockAPI } from './services/mocks/MockAPI';
 
 const Payment = loadable(() => import("./scenes/Payment/Payment"), {
   fallback: <Loading />,
@@ -56,6 +59,9 @@ const Testimonials = loadable(() => import("./components/Testimonials"), {
 const FinalistsList = loadable(() => import("./components/FinalistsList"), {
   fallback: <Loading />,
 });
+const BookDemo = loadable(() => import("./components/BookDemo"), {
+  fallback: <Loading />,
+});
 const AtilaPointsRankings = loadable(() => import("./components/AtilaPointsRankings"), {
   fallback: <Loading />,
 });
@@ -63,6 +69,9 @@ const About = loadable(() => import("./components/About"), {
   fallback: <Loading />,
 });
 const Rubric = loadable(() => import("./components/Rubric"), {
+  fallback: <Loading />,
+});
+const Admin = loadable(() => import("./components/Admin"), {
   fallback: <Loading />,
 });
 const Referral = loadable(() => import("./components/Referral"), {
@@ -78,6 +87,9 @@ const SiteMap = loadable(() => import("./components/SiteMap"), {
   fallback: <Loading />,
 });
 const ContactUs = loadable(() => import("./components/ContactUs"), {
+  fallback: <Loading />,
+});
+const ContactsNetwork = loadable(() => import("./scenes/Contact/ContactsNetwork"), {
   fallback: <Loading />,
 });
 const Login = loadable(() => import("./components/Login"), {
@@ -98,6 +110,7 @@ const Ebook = loadable(() => import("./scenes/Ebook/Ebook"), {
 });
 const EbookPremium = loadable(() => import("./scenes/EbookPremium/EbookPremium"), {
   fallback: <Loading />,
+
 });
 
 const privateFieldNames = [
@@ -109,7 +122,13 @@ const { requestSanitizer, responseSanitizer } = LogrocketFuzzySanitizer.setup(pr
 class App extends React.Component {
   constructor(props) {
     super(props);
-
+    /**
+     * The logic to only allow mocks in dev is alreay handled inside the function initializeMocks()
+     * Having it here is redundant but it makes it clearer to the user that we only call the mock in dev environments.
+     */
+    if (Environment.name === "dev") {
+      MockAPI.initializeMocks();
+    }
     if (process.env.NODE_ENV !== "test" &&
         !navigator.userAgent.includes('https://github.com/prerender/prerender')) {
       // TODO: mock LogRocket.init and setupLogRocketReact and all uses of LogRocket in Navbar.js and Register.js
@@ -203,6 +222,10 @@ class App extends React.Component {
                   component={GoogleAnalyticsTracker(HighSchool)}
               />
               <Route
+                  path='/demo'
+                  component={GoogleAnalyticsTracker(BookDemo)}
+              />
+              <Route
                   path='/schools/premium'
                   component={GoogleAnalyticsTracker(EbookPremium)}
               />
@@ -214,6 +237,7 @@ class App extends React.Component {
               <Route path='/testimonials' component={GoogleAnalyticsTracker(Testimonials)} />
               <Route path='/about' component={GoogleAnalyticsTracker(About)} />
               <Route path='/rubric' component={GoogleAnalyticsTracker(Rubric)} />
+              <Route path='/admin' component={GoogleAnalyticsTracker(Admin)} />
               <Route path='/values' component={GoogleAnalyticsTracker(Values)} />
               <Route path='/finalists' component={GoogleAnalyticsTracker(FinalistsList)} />
               <Route path='/rankings' component={GoogleAnalyticsTracker(AtilaPointsRankings)} />
@@ -225,6 +249,10 @@ class App extends React.Component {
               <Route
                 path='/contact'
                 component={GoogleAnalyticsTracker(ContactUs)}
+              />
+              <Route
+                path='/clubs'
+                component={GoogleAnalyticsTracker(ContactsNetwork)}
               />
               <Route
                 path='/siteMap'

@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import { Spin, Alert } from 'antd';
 import { getErrorMessage } from "../services/utils";
 import UserProfileAPI from '../services/UserProfileAPI';
-import { UserProfileReferralPreview } from "./ReferredByInput";
+import { UserProfilePreview } from "./ReferredByInput";
 import defaultSeoContent from './HelmetSeo';
 import HelmetSeo from "./HelmetSeo";
 import { AtilaPointsPopover } from '../scenes/UserProfile/UserProfileReferralManagement';
@@ -63,9 +63,42 @@ class AtilaPointsRankings extends React.Component {
             title: 'Atila Rankings',
             description: 'Top students with the most Atila Points.',
         };
+
+        let userProfilesContent = <tr>
+            <td>
+            No UserProfiles found
+            </td>
+        </tr>;
+
+        if (userProfiles) {
+            userProfilesContent = (<>
+            {userProfiles.map((userProfile, index) => (
+                        <tr key={userProfile.username}>
+                        <th scope="row">
+                            <Link to={`/profile/${userProfile.username}`} style={{display: "block"}}>
+                            {index+1}
+                            </Link>
+                        </th>
+                        <td>
+                            <Link to={`/profile/${userProfile.username}`} style={{display: "block"}}>
+                            <UserProfilePreview userProfile={userProfile} />
+                            </Link>
+                        </td>
+                        <td className="font-weight-bold">
+                            <Link to={`/profile/${userProfile.username}`} style={{display: "block"}}>
+                                {parseInt( userProfile.atila_points ).toLocaleString()}
+                            </Link>
+                        </td>
+                        </tr>
+                    ))}
+            </>
+            )
+        }
+
+
         
         return (
-            <div className="container p-2">
+            <div className="container p-2 mt-3">
                 <HelmetSeo content={seoContent}/>
                 <div className="mb-3">
                     <h1>Atila Rankings</h1>
@@ -77,7 +110,7 @@ class AtilaPointsRankings extends React.Component {
                         <Spin />
                     </div>
                 }
-                <table class="table table-striped col-12">
+                <table className="table table-hover col-12">
                 <thead style={{"backgroundColor": "aliceblue"}}>
                     <tr>
                     <th scope="col">#</th>
@@ -90,25 +123,7 @@ class AtilaPointsRankings extends React.Component {
                         Set the style display: "block" to make the entire table cell clickable.
                         To make it easier for the users.
                     */}
-                    {userProfiles.map((userProfile, index) => (
-                        <tr>
-                        <th scope="row">
-                            <Link to={`/profile/${userProfile.username}`} style={{display: "block"}}>
-                            {index+1}
-                            </Link>
-                        </th>
-                        <td>
-                            <Link to={`/profile/${userProfile.username}`} style={{display: "block"}}>
-                            <UserProfileReferralPreview userProfile={userProfile} />
-                            </Link>
-                        </td>
-                        <td className="font-weight-bold">
-                            <Link to={`/profile/${userProfile.username}`} style={{display: "block"}}>
-                                {parseInt( userProfile.atila_points ).toLocaleString()}
-                            </Link>
-                        </td>
-                        </tr>
-                    ))}
+                    {userProfilesContent}
                 </tbody>
                 </table>
                 {requestError &&

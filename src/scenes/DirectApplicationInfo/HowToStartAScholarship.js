@@ -4,7 +4,10 @@ import { BackTop, Button } from "antd";
 import HelmetSeo from "../../components/HelmetSeo";
 import {howItWorksSponsorItems} from "../LandingPage/HowItWorks";
 import {createTableOfContents, scrollToElement} from "../../services/utils";
-import LandingPageLiveDemo from "../LandingPage/LandingPageLiveDemo";
+// import UtilsAPI from '../../services/UtilsAPI';
+import Loading from '../../components/Loading';
+import { NotionRenderer } from "react-notion";
+import response from "./notionStartScholarshipsData.json";
 
 export const howToStartAScholarshipInformationItems = [
     {
@@ -13,9 +16,13 @@ export const howToStartAScholarshipInformationItems = [
             <ol>
                 <li>Visit the <Link to="/scholarship/add">add a scholarship</Link> page</li>
                 <li>Enter details about the scholarship such as the name of the scholarship, who is eligible, the story behind why you started the scholarship, the deadline, funding amount, questions for the applicants, etc.</li>
-                <li>Fund your scholarship</li>
-                <li>Optional: Others can contribute to the scholarship as well</li>
-                <li>Review Applications and pick a winner</li>
+                <li>Fund your scholarship. Optional:{' '}
+                    <Link to="/blog/tomiwa/introducing-atila-scholarship-pools-anyone-can-contribute-to-scholarships">
+                    Others can contribute to the scholarship as well
+                    </Link>
+                </li>
+                <li>Pick finalists and Atila reviews finalists</li>
+                <li>Pick winner, Atila reviews winner, winner writes thank you letter and receives funds</li>
             </ol>
         </div>),
         image: "https://imgur.com/HgIoMJ9.jpg",
@@ -32,8 +39,8 @@ export const howToStartAScholarshipInformationItems = [
                 <p>More Information can be found on the <Link to="/pricing">pricing</Link> page.</p>
             </ol>
         </div>),
-        image: "https://i.imgur.com/s0xmEVc.png",
-        imageCaption: "",
+        image: "https://i.imgur.com/qeovalb.png",
+        imageCaption: "Atila pricing diagram",
     },
     {
         title: "What does the Atila fee cover?",
@@ -45,22 +52,17 @@ export const howToStartAScholarshipInformationItems = [
                 <li>Marketing and sales to get more sponsors to start scholarships and students to apply</li>
                 <li>Website hosting and server costs</li>
             </ol>
-        </div>),
-        image: "https://i.imgur.com/s0xmEVc.png",
-        imageCaption: "",
+        </div>)
     },
-    {
-        title: "Are scholarships funded on Atila tax-deductible?",
-        body: (<div>
-            <p>Scholarships are processed through the Atila Foundation which submitted it&rsquo;s application to be a Registered Charity in November 2020. <br/>
-
-            If our application is approved in 2021, any donations made in the 2021 calendar year and beyond are eligible for tax-deductible receipts,
-                even if the donation was made before Atila receives registered charity status (source: <a href="https://www.canada.ca/en/revenue-agency/services/charities-giving/charities/policies-guidance/policy-commentary-009-official-donation-receipts-a-newly-registered-charity.html" target="_blank" rel="noopener noreferrer">Canada Revenue Agency</a>).</p>
-            <p>If you know anyone who can help speed up or increase our chances of being approved, please contact us.</p>
-        </div>),
-        image: "https://i.imgur.com/VEiCq75.png",
-        imageCaption: "",
-    },
+    // {
+    //     title: "Are scholarships funded on Atila tax-deductible?",
+    //     body: (<div>
+    //         <p>Scholarships funded through Atila are not currently tax-deductible. We have met with lawyers and experts
+    //             on registered charities about the process for issuing tax receipts.
+    //             We will update this page with more information if anything changes.
+    //         </p>
+    //     </div>)
+    // },
     {
         title: "What is the minimum amount to start a scholarship?",
         body: (<div>
@@ -97,24 +99,84 @@ export const howToStartAScholarshipInformationItems = [
 
 ];
 
+// https://www.notion.so/How-to-Start-a-Scholarship-on-Atila-e412e194b70b46698133927e760dd294
+export const HOW_TO_START_A_SCHOLARSHIP_NOTION_PAGE_ID = "e412e194b70b46698133927e760dd294";
+
+
+export const startAScholarshipFeatures = [
+    {
+        title: "Easily score and manage all applications",
+        body: (<div>
+            <ol>
+                <li>Invite others to help you score applications</li>
+                <li>Sort and filter applications by score</li>
+            </ol>
+        </div>),
+        image: "https://i.imgur.com/b9J1uyA.png",
+        imageCaption: "",
+    },
+]
+
 class HowToStartAScholarship extends React.Component {
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            loading: false,
+            notionPagedata: null,
+        }
+
+    }
     componentDidMount() {
 
-        createTableOfContents(".how-to-start-scholarship-questions");
+        this.loadNotionPage();
+    }
 
+    loadNotionPage() {
         const { location } = this.props;
 
-        if (location && location.hash) {
-            // Pause for 300 milliseconds before scrolling to the hash element, without this setTimeout
-            // the element kept scrolling back to the top of the page.
-            setTimeout(() => {
-                scrollToElement(location.hash);
-            }, 300);
-        }
+        this.setState({notionPagedata: response}, () => {
+
+            createTableOfContents(".how-to-start-scholarship-questions");
+
+            if (location && location.hash) {
+                // Pause for 300 milliseconds before scrolling to the hash element, without this setTimeout
+                // the element kept scrolling back to the top of the page.
+                setTimeout(() => {
+                    scrollToElement(location.hash);
+                }, 500);
+            }
+            });
+        // const { location } = this.props;
+        // this.setState({loading: "Loading how to start a scholarship information"});
+        // UtilsAPI
+        // .loadNotionContent(HOW_TO_START_A_SCHOLARSHIP_NOTION_PAGE_ID)
+        // .then(res => {
+        //     this.setState({notionPagedata: res.data}, () => {
+
+        //     createTableOfContents(".how-to-start-scholarship-questions");
+
+        //     if (location && location.hash) {
+        //         // Pause for 300 milliseconds before scrolling to the hash element, without this setTimeout
+        //         // the element kept scrolling back to the top of the page.
+        //         setTimeout(() => {
+        //             scrollToElement(location.hash);
+        //         }, 500);
+        //     }
+        //     });
+        // })
+        // .catch(err => {
+        //     console.log({err})
+        // })
+        // .finally( () => {
+        //     this.setState({loading: false});
+        // })
     }
 
     render() {
+        const { loading, notionPagedata } = this.state;
+
         const presentationDescription = 'Easily start a scholarship with Atila. Enter scholarship details. Fund your scholarship. Pick a winner.';
         const seoContent = {
             title: 'How to Start a Scholarship',
@@ -123,17 +185,23 @@ class HowToStartAScholarship extends React.Component {
             slug: '/start'
         };
 
-        const startScholarshipCTA = (
+        const ScholarshipCTA = (
             <React.Fragment>
+
+                <Button type="primary" className="font-size-larger col-12 my-2" style={{fontSize: "25px"}}>
+                    <Link to={`/demo`}>
+                        Step 1: Book a Demo (Optional)
+                    </Link>
+                </Button>
                 <Button type="primary" className="font-size-larger col-12 mt-3 my-2" style={{fontSize: "25px"}}>
                         <Link to="/register?type=sponsor">
-                            Step 1: Create an Account
+                            Step 2: Create an Account
                         </Link>
                     </Button>
 
                     <Button type="primary" className="font-size-larger col-12 my-2" style={{fontSize: "25px"}}>
                         <Link to="/scholarship/add">
-                            Step 2: Add a Scholarship
+                            Step 3: Add a Scholarship
                         </Link>
                     </Button>
             </React.Fragment>
@@ -142,47 +210,23 @@ class HowToStartAScholarship extends React.Component {
         return (
             <div className="HowToStartAScholarship">
                 <HelmetSeo content={seoContent} />
+                {loading && <Loading title={loading} /> }
                 <h1 className="col-sm-12 text-center">
                     How to Start a Scholarship
                 </h1>
                 <BackTop/>
+
                 <div className="container mt-5">
                     <div className="card shadow p-3 how-to-start-scholarship-questions">
-                        {startScholarshipCTA}
-                        <LandingPageLiveDemo />
-                        <hr/>
-                        <div>
-                            {howToStartAScholarshipInformationItems.map(item => (
-                                <div>
-                                    <div className="p-3">
-                                        <h2>{item.title}</h2>
-                                        {item.body}
-                                    </div>
-                                    {item.image &&
-
-                                    <div className="col-12 mb-4 shadow text-center">
-
-                                        {/*Note: TO get the image to size responsively.
-                            I just had to put it inside a parent div and add 'col-12' class.*/}
-                                        <img src={item.image}
-                                             alt={item.title}
-                                             title={item.title}
-                                             className="col-12 p-3"
-                                             style={{maxHeight: "450px", width: "auto"}}
-                                        />
-                                        {item.imageCaption &&
-                                        <p className="col-12 text-center text-muted pb-3">
-                                            {item.imageCaption}
-                                        </p>
-                                        }
-                                    </div>
-                                    }
-                                </div>
-                            ))}
+                        
+                        {notionPagedata && 
+                        <div style={{ maxWidth: 768 }}>
+                            <NotionRenderer blockMap={notionPagedata} />
                         </div>
+                        }
                     </div>
 
-                    {startScholarshipCTA}
+                    {ScholarshipCTA}
                 </div>
             </div>
         );

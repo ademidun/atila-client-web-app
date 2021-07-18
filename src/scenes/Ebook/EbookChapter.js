@@ -1,11 +1,13 @@
 import React from "react";
 import { Col, Row } from "antd";
 import "./Ebook.scss";
+import { Link } from "react-router-dom";
 
 const chapters1 = [
   {
     number: 1,
     name: "Introduction",
+    link: "blog/tomiwa/the-best-canadian-universities-for-getting-a-job-at-tech-consulting-investment-banking-and-biomedical-companies",
     subchapters: [
       {
         name: "Methodology",
@@ -28,6 +30,7 @@ const chapters1 = [
   {
     number: 2,
     name: "Tech",
+    link: "blog/tomiwa/university-of-waterloo-is-excellent-for-a-tech-job-but-why-are-there-so-few-in-upper-management",
     subchapters: [
       {
         name: "The Best Paying Firms for an Entry-Level Software Engineer",
@@ -52,6 +55,7 @@ const chapters1 = [
   {
     number: 3,
     name: "Investment Banking",
+    link: "blog/elaineyin/the-best-canadian-universities-for-american-and-canadian-investment-banks-are-surprisingly-very-different",
     subchapters: [
       {
         name: "The Top 5 Schools for Investment Banking:",
@@ -79,6 +83,7 @@ const chapters2 = [
   {
     number: 4,
     name: "Consulting",
+    link: "blog/tomiwa/the-best-canadian-universities-for-consulting-jobs/",
     subchapters: [
       {
         name: "The top 5 Schools for MBB Consulting:",
@@ -103,6 +108,7 @@ const chapters2 = [
   {
     number: 5,
     name: "Biomedical",
+    link: "blog/Melissa/return-of-the-mac-mcmaster-is-really-good-for-biomedical-jobs",
     subchapters: [
       {
         name: "The top 5 Schools for Biomedical Industry:",
@@ -150,7 +156,9 @@ function ChaptersCard({ chapter }) {
     <React.Fragment>
       <Col className='chapter-item card shadow p-3'>
         <div>
-          <h2>{chapter.name} Chapter</h2>
+          <h2>
+            {chapter.link ? <Link to={chapter.link}>{chapter.name}</Link> : `${chapter.name}`}
+          </h2>
           <div className='chapter-name'>
             <hr />
           </div>
@@ -176,7 +184,7 @@ const EbookChapter = () => {
   return (
     <div className="EbookChapter">
       <h2 className="text-center">
-        Peek Inside
+        Preview the Different Chapters
       </h2>
 
       <div className='text-center'>
