@@ -92,7 +92,7 @@ const teamMembers = [
     username: "bchabi",
     img_url: "https://i.imgur.com/42M7Qa6.png",
     description_1:
-      "Brie is currently studying Game Development at Queen's University.",
+      "Brie is currently studying Computer Science and Game Development at Queen's University.",
     link_type: "LinkedIn",
     link_url: "https://www.linkedin.com/in/basma-brie-c/",
   },
