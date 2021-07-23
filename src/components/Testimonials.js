@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { Col, Row } from "antd";
 import HelmetSeo from "./HelmetSeo";
 import {Link} from "react-router-dom";
+import { Button } from "antd";
 
 let testimonials = [
   {
@@ -100,6 +101,17 @@ let testimonials = [
   // },
 ];
 
+const caseStudies = [
+  {
+    first_name: "Skateboards For Hope",
+    last_name: "",
+    description_2: `The Skateboards for Hope Scholarship was a $500 scholarship eligible to any Canadian student who performs an extreme sport. Once the scholarship closed and the Skateboards for Hope team reviewed all of the amazing applications, they decided to include prizes for the second and third place winners as well!`,
+    button_text: 'View Case Study',
+    button_url: 'https://atila.ca/blog/llmercer/a-case-study-on-the-skateboards-for-hope-scholarship/',
+    profile_pic_url: "https://skateboardsforhope.com/wp-content/uploads/2021/05/LOGO_BLACK.png",
+  },
+]
+
 function TestimonialCard({ testimonial }) {
   return (
     <div
@@ -112,15 +124,13 @@ function TestimonialCard({ testimonial }) {
         </strong>
       </h5>
       {testimonial.profile_pic_url &&
+        <img
+            className='center-block-2 my-2'
+            src={testimonial.profile_pic_url}
+            alt={`${testimonial.first_name} Atila Testimonial`}
+            style={{ width: "250px", height: "250px", borderRadius: "50%"}}
 
-
-      <img
-          className='center-block-2 my-2'
-          src={testimonial.profile_pic_url}
-          alt={`${testimonial.first_name} Atila Testimonial`}
-          style={{ width: "250px", height: "250px", borderRadius: "50%"}}
-
-      />
+        />
       }
       <span className="small text-uppercase text-muted">
         {testimonial.position}
@@ -129,17 +139,27 @@ function TestimonialCard({ testimonial }) {
       <p className="col-12 text-muted border-left mt-2">
         {testimonial.description}
       </p>
+      <p className="col-12 mt-2">
+        {testimonial.description_2}
+      </p>
       {testimonial.img_url &&
-      <div>
+        <div>
 
-        {/*Note: TO get the image to size responsively.
-                            I just had to put it inside a parent div and add 'col-12' class.*/}
-        <img src={testimonial.img_url}
-             alt={testimonial.description}
-             title={testimonial.description}
-             className="col-12"
-        />
-      </div>
+          {/*Note: TO get the image to size responsively.
+                              I just had to put it inside a parent div and add 'col-12' class.*/}
+          <img src={testimonial.img_url}
+               alt={testimonial.description}
+               title={testimonial.description}
+               className="col-12"
+          />
+        </div>
+      }
+      {testimonial.button_url &&
+      <Link to={{ pathname: testimonial.button_url }} target={"_blank"}>
+        <Button>
+          {testimonial.button_text}
+        </Button>
+      </Link>
       }
     </div>
   );
@@ -174,7 +194,14 @@ const Testimonials = ({ showSeo = true, filterArray=null }) => {
       <TestimonialCard testimonial={testimonial} />
     </Col>
   ));
-  let title = (<h1>Atila Testimonials and Reviews</h1>);
+
+  let caseStudyCards = caseStudies.map((testimonial) => (
+      <Col xs={24} md={12} key={testimonial.first_name}>
+        <TestimonialCard testimonial={testimonial} />
+      </Col>
+  ));
+
+  let title = (<h1>Atila Testimonials and Case Studies</h1>);
 
   if (!showSeo) {
     title = <Link to={"/testimonials"}>
@@ -193,6 +220,13 @@ const Testimonials = ({ showSeo = true, filterArray=null }) => {
         <br />
         <Row gutter={16}>
           {teamCards}
+        </Row>
+        <h3 className="col-sm-12 text-center text-muted">
+          Case Studies
+        </h3>
+        <br />
+        <Row gutter={16}>
+          {caseStudyCards}
         </Row>
         {!showSeo &&
             <h3 className="text-center">
