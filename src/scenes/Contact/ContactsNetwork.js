@@ -8,7 +8,6 @@ import {toastNotify} from "../../models/Utils";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import QueryBuilder from '../../components/Query/QueryBuilder';
 import Loading from "../../components/Loading";
-import {ImageGif} from "../../components/ImageGif"
 
 class ContactsNetwork extends React.Component {
 
@@ -47,11 +46,6 @@ class ContactsNetwork extends React.Component {
     }
 
     render() {
-        const descriptionGif = {
-            gifUrl: "https://imgur.com/KBA1AqM.gif",
-            title: "How Student Club Visualizer Works",
-            imageUrl: "https://imgur.com/aKN4rVS.jpg"
-        }
         const { contacts, addContactMode, loading } = this.state;
         const pageTitle = "Student Clubs Network Visualizer";
         const pageSubTitle = "Visually explore every student club in Canada";
@@ -82,15 +76,6 @@ class ContactsNetwork extends React.Component {
                         </div>
 
                     </div>
-                    <div className="container mt-5">
-                        <div className="card shadow p-3">
-                            <ImageGif
-                                imageUrl={descriptionGif.imageUrl}
-                                gifUrl={descriptionGif.gifUrl}
-                                title={descriptionGif.title}/>
-                        </div>
-                    </div>
-                    
                     
                     {addContactMode && 
                         <ContactAddEdit />
