@@ -50,7 +50,7 @@ Here are two video tutorials we made specifically on how to Mock API Data in thi
 1. Get the JSON response of the data you want to mock.
     1. This can usually be retrieved from staging.atila.ca and checking the network tap of the request using devtools. 
     1. Right click > Inspect > Network and filter by the api URL.
-    1. Use [jsonformatter.com](https://jsonformatter.curiousconcept.com/#) to add tab spacing to make your JSON files easier to read and so it's not one one line
+    1. Use [jsonformatter.curiousconcept.com](https://jsonformatter.curiousconcept.com/#) to add tab spacing to make your JSON files easier to read and so it's not one one line
         1. Make sure to use a 4 space tab
     1. **Note:** Make sure you don't use production data containing private information for your mock data:
         1. For example, if you want to mock a list of applications or a user profile, ask someone else on the team to send your some mock data on their local dev environment and provide them with the url you are trying to mock

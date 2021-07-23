@@ -2,7 +2,7 @@ import React, {Fragment} from 'react';
 import { withRouter } from "react-router-dom";
 import { Button, Tag } from 'antd';
 import PropTypes from "prop-types";
-import { QueryItem } from './QueryItem';
+import QueryItem from './QueryItem';
 import { CopyOutlined } from "@ant-design/icons";
 import { getRandomString, prettifyKeys, copyToClipboard } from '../../services/utils';
 import { ALL_DEMOGRAPHICS } from '../../models/ConstantsForm';

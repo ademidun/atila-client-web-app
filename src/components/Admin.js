@@ -1,5 +1,8 @@
 import React from 'react';
 import ContactAddEdit from '../scenes/Contact/ContactAddEdit';
+import ContactsTable from '../scenes/Contact/ContactsTable';
+import HelmetSeo, {defaultSeoContent} from "../components/HelmetSeo";
+import {connect} from "react-redux";
 
 class Admin extends React.Component {
 
@@ -11,14 +14,40 @@ class Admin extends React.Component {
    
     render(){
         
+        const { loggedInUserProfile } = this.props;
+
+        if (!loggedInUserProfile || !loggedInUserProfile.is_atila_admin) {
+            return (
+                <div className="card shadow p-3">
+                    <h1>Only Admin users can view this page</h1>
+                </div>
+            )
+        }
+        const title = "Admin Dashboard";
+
+        const seoContent = {
+            ...defaultSeoContent,
+            title
+        };
+
         return (
-            <div>
-                <h1 style={{padding:"10px"}}>Admin Dashboard</h1> 
-                <ContactAddEdit />    
+            <div className="container mt-5">
+                <HelmetSeo content={seoContent}/>
+                <div className="card shadow p-3">
+                    <h1>{title}</h1>
+                    <div style={{width: "100%"}}>
+                        <ContactsTable />
+                    </div>
+                    <ContactAddEdit />    
+                </div>
             </div>
             
         )
     }
 }
 
-export default Admin
+const mapStateToProps = state => {
+    return { loggedInUserProfile: state.data.user.loggedInUserProfile };
+};
+
+export default connect(mapStateToProps)(Admin);

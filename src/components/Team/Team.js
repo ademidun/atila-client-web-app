@@ -18,7 +18,7 @@ const teamMembers = [
     img_url: tomiwaImage,
     description_1:
       "Tomiwa is a dual degree software engineering and business graduate from Ivey Business School," +
-        " Western University.",
+      " Western University.",
     link_type: "LinkedIn",
     link_url: "https://www.linkedin.com/in/tademidun/",
     link2_type: "Website",
@@ -44,7 +44,7 @@ const teamMembers = [
     username: "hadi",
     img_url: hadiImage,
     description_1:
-        "Hadi is currently studying Mathematics at the University of Waterloo.",
+      "Hadi is currently studying Mathematics at the University of Waterloo.",
     link_type: "LinkedIn",
     link_url: "https://www.linkedin.com/in/hadi-al-hakeem-24182819a/",
     link2_type: "Website",
@@ -57,7 +57,7 @@ const teamMembers = [
     username: "ericwang451",
     img_url: "https://i.imgur.com/4JzQWpi.png",
     description_1:
-        "Eric is currently studying Computer Science at Western University.",
+      "Eric is currently studying Computer Science at Western University.",
     link_type: "LinkedIn",
     link_url: "https://www.linkedin.com/in/eric-wang-1b0b70193/",
     link2_type: "Website",
@@ -70,7 +70,7 @@ const teamMembers = [
     username: "llmercer",
     img_url: "https://i.imgur.com/rNT1DG5.jpg",
     description_1:
-        "Lauren is currently studying Civil Engineering at the University of Alberta.",
+      "Lauren is currently studying Civil Engineering at the University of Alberta.",
     link_type: "LinkedIn",
     link_url: "https://www.linkedin.com/in/lauren-mercer-150a3a181/",
   },
@@ -81,9 +81,20 @@ const teamMembers = [
     username: "alona",
     img_url: "https://imgur.com/eixxWtw.jpg",
     description_1:
-        "Angelina will be studying Software Engineering at the University of Waterloo.",
+      "Angelina will be studying Software Engineering at the University of Waterloo.",
     link_type: "LinkedIn",
     link_url: "https://www.linkedin.com/in/angelina-wu-60643a209/",
+  },
+  {
+    first_name: "Brie",
+    last_name: "Chabi",
+    position: "Software/Design",
+    username: "bchabi",
+    img_url: "https://i.imgur.com/42M7Qa6.png",
+    description_1:
+      "Brie is currently studying Computer Science and Game Development at Queen's University.",
+    link_type: "LinkedIn",
+    link_url: "https://www.linkedin.com/in/basma-brie-c/",
   },
 ];
 
@@ -98,7 +109,7 @@ function TeamMemberCard({ teamMember, showLinkedin = true }) {
         className='center-block-2'
         src={teamMember.img_url}
         alt={teamMember.first_name}
-        style={{ width: "100px", height: "100px", borderRadius: "50%"}}
+        style={{ width: "100px", height: "100px", borderRadius: "50%" }}
 
       />
       <h5 className='mb-0'>
@@ -119,37 +130,37 @@ function TeamMemberCard({ teamMember, showLinkedin = true }) {
         )}
 
         {showLinkedin && teamMember.link2_url && (
-            <React.Fragment>
-              |{" "}
-              <li className='list-inline-item'>
-                <a
-                    href={teamMember.link2_url}
-                    className='social-link'
-                    target='_blank'
-                    rel='noopener noreferrer'
-                >
-                  {teamMember.link2_type}
-                </a>
-              </li>
+          <React.Fragment>
+            |{" "}
+            <li className='list-inline-item'>
+              <a
+                href={teamMember.link2_url}
+                className='social-link'
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                {teamMember.link2_type}
+              </a>
+            </li>
 
-            </React.Fragment>
+          </React.Fragment>
         )}
 
         {showLinkedin && teamMember.link_url && (
-            <React.Fragment>
-              |{" "}
-              <li className='list-inline-item'>
-                <a
-                    href={teamMember.link_url}
-                    className='social-link'
-                    target='_blank'
-                    rel='noopener noreferrer'
-                >
-                  {teamMember.link_type}
-                </a>
-              </li>
+          <React.Fragment>
+            |{" "}
+            <li className='list-inline-item'>
+              <a
+                href={teamMember.link_url}
+                className='social-link'
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                {teamMember.link_type}
+              </a>
+            </li>
 
-            </React.Fragment>
+          </React.Fragment>
         )}
 
       </ul>
@@ -162,7 +173,7 @@ TeamMemberCard.propTypes = {
   teamMember: PropTypes.shape({}),
 };
 
-const Team = ({ showArray = null, showLinkedin = true, showSeo = true, showAbout=true }) => {
+const Team = ({ showArray = null, showLinkedin = true, showSeo = true, showAbout = true }) => {
   const seoContent = {
     title: "Atila Team - The people that make Atila awesome",
     description: "Atila's team, the people that make Atila awesome.",
@@ -233,12 +244,12 @@ const Team = ({ showArray = null, showLinkedin = true, showSeo = true, showAbout
               info@atila.ca
             </a>{" "}
             with your resume and links to cool stuff you've done.
-            <br/>
-            <br/>
+            <br />
+            <br />
             Or message us on any of our social media platforms, found at the bottom of this page.
           </Col>
         </Row>
-        { showAbout && <About showTeam={false} />}
+        {showAbout && <About showTeam={false} />}
 
       </div>
     </React.Fragment>
