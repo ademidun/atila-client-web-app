@@ -19,7 +19,7 @@ function ScholarshipDeadlineWithTags({scholarship, datePrefix}) {
         datePrefix = 'Opens: ';
     }
     const daysFromDeadline = scholarshipDateMoment.diff(todayMoment, 'days');
-    let scholarshipDateString = scholarshipDateMoment.format('dddd, MMMM DD, YYYY');
+    let scholarshipDateString = scholarshipDateMoment.format('dddd, MMMM DD, YYYY h:mm A');
 
     if (daysFromDeadline < 0) {
         color = 'volcano';

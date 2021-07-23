@@ -242,7 +242,7 @@ export const AtilaDirectApplicationsPopover = ({children, title="What is Atila D
 export const ScholarshipDisableEditMessage = () => (
     <Alert
         type="info"
-        message={"Once scholarship is funded and published: deadline, fuding amount, eligibility, and specific questions cannot be changed directly. " +
+        message={"Once scholarship is funded and published: deadline, funding amount, eligibility, and specific questions cannot be changed directly. " +
         "\nIf you want to change any of those fields, please contact us (you can use the chat box in the bottom right)."}
     />
 );

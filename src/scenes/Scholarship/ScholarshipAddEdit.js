@@ -4,7 +4,7 @@ import $ from 'jquery';
 import FormDynamic from "../../components/Form/FormDynamic";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import {connect} from "react-redux";
-import {nestedFieldUpdate, prettifyKeys, slugify, transformLocation} from "../../services/utils";
+import {displayLocalTimeZone, nestedFieldUpdate, prettifyKeys, slugify, transformLocation} from "../../services/utils";
 import Loading from "../../components/Loading";
 import {MAJORS_LIST, SCHOOLS_LIST} from "../../models/ConstantsForm";
 import {scholarshipUserProfileSharedFormConfigs, toastNotify} from "../../models/Utils";
@@ -18,6 +18,7 @@ import {Link} from "react-router-dom";
 import {Steps, Tag} from "antd";
 import ScholarshipQuestionBuilder, {ScholarshipUserProfileQuestionBuilder} from "./ScholarshipQuestionBuilder";
 import PaymentSend from "../Payment/PaymentSend/PaymentSend";
+import Environment from "../../services/Environment";
 const { Step } = Steps;
 
 
@@ -117,10 +118,12 @@ let scholarshipFormConfigsPage1 = [
 
     {
         keyName: 'deadline',
-        type: 'datetime-local',
+        type: 'datepicker',
         html: (scholarship) =>(<label htmlFor="deadline">
             Deadline <span role="img" aria-label="clock emoji">🕐</span>
-            {scholarship.deadline && <small>We recommend picking a deadline within the next two months</small>}
+            {scholarship.deadline && <small> We recommend picking a deadline within the next two months.
+            Using local timezone ({displayLocalTimeZone()}).
+            </small>}
         </label>),
     },
 
@@ -346,6 +349,14 @@ class ScholarshipAddEdit extends React.Component{
         /**
          * Disable inputs after a brief timeout to ensure that elements have loaded before jquery adds the disabled prop.
          */
+
+        const { userProfile } = this.props;
+
+        // Don't disable inputs if we are in non prod and user is atila admin
+        if (userProfile?.is_atila_admin && Environment.name !== 'prod') {
+            return;
+        }
+
         setTimeout(() => {
 
             $("[name='is_atila_direct_application']").prop("disabled", true);
