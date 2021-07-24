@@ -72,16 +72,9 @@ PasswordShowHide.propTypes = {
 const accountTypes = [
     { label: 'Student (Apply for Scholarships)', value: 'student' },
     { label: 'Sponsor (Create Scholarships)', value: 'sponsor' },
-    { label: 'Reviewer (Review Scholarsips)', value: 'placeholder1' },
-    { label: 'Educator (Help my students get scholarships)', value: 'placeholder2' },
+    { label: 'Reviewer (Review Scholarships)', value: 'reviewer' },
+    { label: 'Educator (Help my students get scholarships)', value: 'teacher' },
 ];
-
-const { Option } = Select;
-
-function handleChange(value) {
-    console.log(`selected ${value}`);
-    
-}
 
 class Register extends React.Component {
 
@@ -142,7 +135,6 @@ class Register extends React.Component {
             value = value.replace(/\s/g, '');
 
             if (value.includes('@')) {
-
                 formErrors['username'] = (
                     <p className="text-danger">
                         '@' symbol not allowed in username. <br/>
@@ -183,23 +175,21 @@ class Register extends React.Component {
                 );
                 
             
-            } else if (value.includes('@hotmail') || value.includes('@outlook') || value.includes('@live')) {
+            } else if (value.includes('@hotmail') || value.includes('@outlook') || value.includes('@live') || value.includes('@yahoo')) {
+               
 
                 formErrors['email'] = (
                     <div>
                         <Alert
                             message = "Warning"
-                            description={"We recommend using gmail because users have noticed that users with the following domain name getting their emails from Atila blocked."}
+                            description="We recommend using Gmail because users have noticed that 
+                                users with the following domain name getting their emails from Atila 
+                                blocked."
                             type="warning"
                             showIcon 
-                            action={
-                                <div>
-                                <Button type="link">Click here</Button> to learn more
-                                </div>
-                            }
                             closable
                         />
-                        <Link to="/blog">Click here to learn more</Link>
+                        <Link to="/blog">Learn more</Link>
                         <br/>
                         <br/>
                     </div>
@@ -209,10 +199,6 @@ class Register extends React.Component {
                 delete formErrors['email'];
             }
             this.setState({ formErrors });   
-        }
-        if (event.target.type === 'accountTypes'){
-            value = event.target.account_type
-            console.log(`selected ${accountTypes.value}`);
         }
 
         if (event.target.type==='checkbox'){
@@ -375,7 +361,7 @@ class Register extends React.Component {
                                     First Name
                                 </label>
                             }
-                            <input placeholder="First name"
+                            <input placeholder="First Name"
                                    className="col-12 mb-3 form-control"
                                    name="first_name"
                                    value={first_name}
@@ -441,12 +427,11 @@ class Register extends React.Component {
                             <label>
                                 I am a(n):
                             </label><br/>
-                                <Select 
+                                <Select
                                     defaultValue={accountTypes[0].label} 
                                     style={{ width: 350 }} 
-                                    onChange={handleChange}
                                     options={accountTypes}>
-                                    <Option value={account_type}>{accountTypes.label}</Option>
+                                    <Select.Option value={account_type} onChange={this.updateForm}>{accountTypes.label}</Select.Option>
                                 </Select>
                             </div>
 
