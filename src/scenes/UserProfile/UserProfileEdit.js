@@ -18,6 +18,8 @@ import { message } from 'antd';
 
 let autoSaveTimeoutId;
 
+const maxPageNumber = 2;
+
 class UserProfileEdit extends React.Component {
 
     constructor(props) {
@@ -235,17 +237,16 @@ class UserProfileEdit extends React.Component {
                                  {scholarshipUserProfileSharedFormConfigs}
                 />}
                 <div>
-                    <div className="my-2" style={{height: "20px"}}>
-                        {pageNumber !== 2 &&
-                        <button className="btn btn-outline-primary float-right col-md-6"
-                                onClick={() => this.changePage(pageNumber+1)}>Next</button>}
+                    <div className="my-2">
+                        {pageNumber > 0 && pageNumber < maxPageNumber &&
+                        <Button className="float-right col-md-6" size={"large"} type="primary"
+                                onClick={() => this.changePage(pageNumber+1)}>Next</Button>}
                         {pageNumber > 1 &&
-                        <button className="btn btn-outline-primary float-left col-md-6"
-                                onClick={() => this.changePage(pageNumber-1)}>Prev</button>}
-                        {
-                            Object.keys(formErrors).length > 0 &&
-                            formErrorsContent
-                        }
+                        <Button className="float-left col-md-6" size={"large"} type="primary"
+                                onClick={() => this.changePage(pageNumber-1)}>Prev</Button>}
+                        <br />
+                        <br />
+                        {formErrorsContent}
                     </div>
                     <br/>
                         {pageNumber !== 0 &&
@@ -254,8 +255,9 @@ class UserProfileEdit extends React.Component {
                         </div>
                         }
                         {pageNumber === 0 &&
-                        <Button type="submit"
-                                className="btn btn-primary col-12 mt-2"
+                        <Button type="primary"
+                                className="col-12 mt-2"
+                                size={"large"}
                                 onClick={this.submitForm}>{submitButtonText}</Button>
                         }
                     <br/>
