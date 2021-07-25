@@ -192,7 +192,7 @@ class Register extends React.Component {
                             showIcon 
                             closable
                         />
-                        <Link to="/blog">Learn more</Link>
+                        <Link to="/blog/alona/why-we-recommend-our-users-to-sign-up-with-gmail">Learn more</Link>
                         <br/>
                         <br/>
                     </div>
