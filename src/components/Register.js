@@ -70,11 +70,14 @@ PasswordShowHide.propTypes = {
 };
 
 const accountTypes = [
-    { label: 'Student (Apply for Scholarships)', value: 'student' },
+    { label: 'Student (Apply for Scholarships)', value: 'student' }, // default
     { label: 'Sponsor (Create Scholarships)', value: 'sponsor' },
     { label: 'Reviewer (Review Scholarships)', value: 'reviewer' },
     { label: 'Educator (Help my students get scholarships)', value: 'teacher' },
 ];
+
+const defaultAccountType = accountTypes[0].value
+const sponsorAccountType = accountTypes[1].value
 
 class Register extends React.Component {
 
@@ -88,7 +91,7 @@ class Register extends React.Component {
 
         let nextLocation = params.get('redirect') || '/scholarship';
         let applyNow = params.get('applyNow') || false;
-        let accountType = params.get('type') || accountTypes[0].value;
+        let accountType = params.get('type') || defaultAccountType;
         let referredBy = localStorage.getItem('referred_by') || '';
         let mostRecentlyViewedContentName = localStorage.getItem('mostRecentlyViewedContentName') || '';
         let mostRecentlyViewedContentSlug = localStorage.getItem('mostRecentlyViewedContentSlug') || '';
@@ -239,7 +242,7 @@ class Register extends React.Component {
         }
 
         // If this is a sponsor account type, redirect to the add a scholarship page
-        if (account_type === accountTypes[1].value && nextLocation === '/scholarship') {
+        if (account_type === sponsorAccountType && nextLocation === '/scholarship') {
             nextLocation = "/scholarship/add"
         }
 
@@ -424,15 +427,17 @@ class Register extends React.Component {
                             </div>
                             }
                             <div className="w-100 my-1">
-                            <label>
-                                I am a(n):
-                            </label><br/>
+                                <label>
+                                    I am a(n):
+                                </label>
+                                <br/>
                                 <Select
-                                    defaultValue={accountTypes[0].label} 
+                                    value={account_type}
                                     style={{ width: 350 }} 
-                                    options={accountTypes}>
-                                    <Select.Option value={account_type} onChange={this.updateForm}>{accountTypes.label}</Select.Option>
-                                </Select>
+                                    options={accountTypes}
+                                    onChange={account_type => this.setState({userProfile:
+                                                {...this.state.userProfile, account_type}})}
+                                />
                             </div>
 
                             <div className="mb-3">
