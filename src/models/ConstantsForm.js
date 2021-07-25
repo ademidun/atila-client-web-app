@@ -1691,7 +1691,7 @@ export const ALL_DEMOGRAPHICS = {
     "other_demographic": OTHER_DEMOGRAPHICS,
     "activities": ACTIVITIES,
     "heritage": COUNTRIES,
-    "languages": LANGUAGES,
+    "language": LANGUAGES,
     "disability": DISABILITIES,
     "citizenship": COUNTRIES,
 }
