@@ -12,6 +12,8 @@ import {
     SCHOOLS_LIST,
     SPORTS
 } from "./ConstantsForm";
+import {INDUSTRIES} from "./Industries";
+import {OCCUPATIONS} from "./Occupations";
 
 export const InputConfigPropType = PropTypes.shape({
     type: PropTypes.string,
@@ -113,6 +115,18 @@ export const scholarshipUserProfileSharedFormConfigs = [
         placeholder: 'Any other Programs? 📚',
         type: 'autocomplete',
         suggestions: MAJORS_LIST,
+    },
+    {
+        keyName: 'industries',
+        placeholder: 'Any Industries?',
+        type: 'autocomplete',
+        suggestions: INDUSTRIES,
+    },
+    {
+        keyName: 'occupations',
+        placeholder: 'Any occupations?',
+        type: 'autocomplete',
+        suggestions: OCCUPATIONS,
     }
 ];
 

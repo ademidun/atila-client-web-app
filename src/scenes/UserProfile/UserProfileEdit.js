@@ -16,13 +16,7 @@ import SecurityQuestionAndAnswer from "../Application/SecurityQuestionAndAnswer"
 import FileInput from "../../components/Form/FileInput";
 import { message } from 'antd';
 
-
 let autoSaveTimeoutId;
-const userProfileSharedFormConfigs = scholarshipUserProfileSharedFormConfigs
-    .map(config => {
-        config.className = null;
-        return config;
-    });
 
 class UserProfileEdit extends React.Component {
 
@@ -164,7 +158,7 @@ class UserProfileEdit extends React.Component {
             </div>
         ));
 
-        [userProfileFormOnboarding, userProfileFormConfig, userProfileSharedFormConfigs]
+        [userProfileFormOnboarding, userProfileFormConfig, scholarshipUserProfileSharedFormConfigs]
             .forEach(formConfigSettings => {
                 formConfigSettings.forEach(currentConfig => {
                     currentConfig.error = formErrors[currentConfig.keyName] || null
@@ -238,7 +232,7 @@ class UserProfileEdit extends React.Component {
                 <FormDynamic onUpdateForm={this.updateForm}
                              model={userProfile}
                              inputConfigs=
-                                 {userProfileSharedFormConfigs}
+                                 {scholarshipUserProfileSharedFormConfigs}
                 />}
                 <div>
                     <div className="my-2" style={{height: "20px"}}>
