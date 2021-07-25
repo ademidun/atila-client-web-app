@@ -192,7 +192,7 @@ class Register extends React.Component {
                             showIcon 
                             closable
                         />
-                        <Link to="/blog/alona/why-we-recommend-our-users-to-sign-up-with-gmail">Learn more</Link>
+                        <Link to="/blog/alona/use-your-personal-email-preferably-gmail-not-your-school-email-when-signing-up-for-an-account-on-atila">Learn more</Link>
                         <br/>
                         <br/>
                     </div>
