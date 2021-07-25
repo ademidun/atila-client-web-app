@@ -149,7 +149,7 @@ class UserProfileEdit extends React.Component {
 
     render () {
 
-        const { userProfile, title, className, submitButtonText } = this.props;
+        const { userProfile, title, className, submitButtonText, showSecurityQA } = this.props;
         const { pageNumber, formErrors } = this.state;
 
         let formErrorsContent = Object.keys(formErrors).map((errorType) => (
@@ -261,11 +261,12 @@ class UserProfileEdit extends React.Component {
                     <br/>
 
                 </div>
-                <hr/>
-                <div id="security">
-                    <SecurityQuestionAndAnswer setAnswer={true} verifyAnswer={true} />
-                </div>
-
+                {showSecurityQA &&
+                    <div id="security">
+                        <hr/>
+                        <SecurityQuestionAndAnswer setAnswer={true} verifyAnswer={true}/>
+                    </div>
+                }
             </div>
         );
     }
@@ -283,7 +284,8 @@ UserProfileEdit.defaultProps = {
     className: '',
     startingPageNumber: 1,
     afterSubmitSuccess: () => {},
-    submitButtonText: 'Save'
+    submitButtonText: 'Save',
+    showSecurityQA: true,
 };
 
 UserProfileEdit.propTypes = {
@@ -294,7 +296,8 @@ UserProfileEdit.propTypes = {
     className: PropTypes.string,
     afterSubmitSuccess: PropTypes.func,
     startingPageNumber: PropTypes.number,
-    submitButtonText: PropTypes.string
+    submitButtonText: PropTypes.string,
+    showSecurityQA: PropTypes.bool,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(UserProfileEdit));
