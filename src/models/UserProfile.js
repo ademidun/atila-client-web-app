@@ -1,4 +1,4 @@
-import {GRADE_LEVELS, MAJORS_LIST, SCHOOLS_LIST} from "./ConstantsForm";
+import {GRADE_LEVELS, MAJORS_LIST, OTHER_DEMOGRAPHICS, SCHOOLS_LIST} from "./ConstantsForm";
 import PropTypes from "prop-types";
 
 export const UserProfileTest1 = {
@@ -118,6 +118,13 @@ export const userProfileFormConfig = [
         type: 'location',
         valueDisplay: model => model.country[0] && model.country[0].name,
     },
+    {
+        keyName: 'other_demographic',
+        placeholder: 'More Demographics',
+        type: 'autocomplete',
+        suggestions: OTHER_DEMOGRAPHICS,
+    },
+
 ];
 
 export const USER_PROFILE_SECURITY_QUESTIONS = [
