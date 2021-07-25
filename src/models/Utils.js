@@ -124,7 +124,7 @@ export const scholarshipUserProfileSharedFormConfigs = [
     },
     {
         keyName: 'occupations',
-        placeholder: 'Any occupations?',
+        placeholder: 'Any Occupations?',
         type: 'autocomplete',
         suggestions: OCCUPATIONS,
     }
