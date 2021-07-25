@@ -166,13 +166,9 @@ class UserProfileEdit extends React.Component {
 
         [userProfileFormOnboarding, userProfileFormConfig, userProfileSharedFormConfigs]
             .forEach(formConfigSettings => {
-            for (let i = 0; i < formConfigSettings.length; i++) {
-                if (Object.keys(formErrors).includes( formConfigSettings[i].keyName)) {
-                    formConfigSettings[i].error = formErrors[ formConfigSettings[i].keyName];
-                } else {
-                    formConfigSettings[i].error = null;
-                }
-            }
+                formConfigSettings.forEach(currentConfig => {
+                    currentConfig.error = formErrors[currentConfig.keyName] || null
+                })
         });
 
 
