@@ -81,7 +81,7 @@ class ScholarshipViewQuestions extends React.Component {
                         <br/>
                         That's the word count of the average scholarship winner, but please feel free to write less or more.
                         <br/>
-                        <a href="https://atila.ca/blog/tomiwa/whats-the-word-count-analyzing-the-correlation-between-essay-length-and-quality/">Learn More.</a> 
+                            <a href="https://atila.ca/blog/tomiwa/whats-the-word-count-analyzing-the-correlation-between-essay-length-and-quality/">Learn More.</a> 
                 </details>
                 <FormDynamic onUpdateForm={() => {}}
                              model={{}}
