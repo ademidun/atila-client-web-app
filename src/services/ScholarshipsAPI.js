@@ -108,13 +108,6 @@ class ScholarshipsAPI {
             newScholarship.funding_amount = 0;
         }
 
-        if(newScholarship.deadline) {
-            // to fix the following error
-            // The specified value "2019-09-21T23:59:00Z" does not conform to the required format.
-            // The format is "yyyy-MM-ddThh:mm" followed by optional ":ss" or ":ss.SSS"
-            newScholarship.deadline = newScholarship.deadline.substring(0,16);
-        }
-
         delete newScholarship.location;
 
         newScholarship.female_only = !!newScholarship.female_only;

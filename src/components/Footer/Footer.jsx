@@ -150,6 +150,12 @@ function Footer({location, history}) {
                       Atila's Values
                     </Link>
                   </div>
+                  <div>
+                    <Link to="/clubs">
+                      A Graph of Every Student Club in Canada{' '}
+                      <Tag color="green">new</Tag>
+                    </Link>
+                  </div>
                 </div>
               </Col>
               <Col md={6} sm={12} xs={24}>

@@ -1,6 +1,6 @@
 import {nestedFieldGet, prettifyKeys} from "../../services/utils";
 import React from "react";
-import { Select} from 'antd';
+import {DatePicker, Select} from 'antd';
 import AutoComplete from "../AutoComplete";
 import PropTypes from "prop-types";
 import {InputConfigPropType} from "../../models/Utils";
@@ -10,6 +10,7 @@ import InlineEditor from "@ckeditor/ckeditor5-build-inline";
 import "./FormDynamicInput.scss";
 import FileInput from "./FileInput";
 import {emojiDictionary} from "../../models/Constants";
+import moment from "moment";
 
 const { Option } = Select;
 
@@ -32,6 +33,16 @@ const selectChange = ( name, value, updateForm ) => {
     };
     updateForm(newEvent);
 };
+
+const datePickerChange = (name, moment, updateForm) => {
+    const newEvent = {
+        target: {
+            name,
+            value: moment.toISOString()
+        }
+    };
+    updateForm(newEvent);
+}
 
 function FormDynamicInput({model, onUpdateForm, inputConfig, loggedInUserProfile}) {
 
@@ -76,6 +87,22 @@ function FormDynamicInput({model, onUpdateForm, inputConfig, loggedInUserProfile
                 />
             );
             break;
+
+        case 'datepicker':
+            inputForm = (
+                <div>
+                    <DatePicker showTime={{format: 'HH:mm'}}
+                                onChange={moment => datePickerChange(keyName, moment, onUpdateForm)}
+                                disabled={disabled}
+                                placeholder={placeholder}
+                                value={moment(modelValue)}
+                                size={"large"}
+                                allowClear={false}
+                    />
+                </div>
+            )
+            break;
+
         case 'checkbox':
             inputForm = (
                 <div>

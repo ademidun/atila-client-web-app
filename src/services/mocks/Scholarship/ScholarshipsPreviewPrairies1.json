@@ -1,0 +1,899 @@
+{
+    "data":[
+        {
+            "activities":[
+                
+            ],
+            "archived":false,
+            "citizenship":[
+                
+            ],
+            "city":[
+                
+            ],
+            "country":[
+                
+            ],
+            "criteria_info":"<h2>How to Apply</h2><h4>Eligibility</h4>\n<ul>\n<li>Applicant must be a resident of Ontario, and a prospective high school graduate.</li>\n<li>Full-time students entering their first year of studies at a post-secondary institution.</li>\n<li>Previous winners are not eligible.</li>\n</ul>\n<h4>Application</h4>\n<ul>\n<li>For the <strong>2021</strong> scholarship, students must complete a 750-word essay, answering the question:</li>\n</ul>\n<p><em>“In 2020, our way of life changed as a result of the global pandemic. Explain the importance of community and how Women’s Institutes can play a role in preventing social isolation, both during this health crisis and beyond.”</em></p>\n<h4>Judging</h4>\n<ul>\n<li>Awarded on the basis of academic achievement upon entrance into the program. A transcript of marks for the most recent academic year showing the numerical grade average in percentage form for the complete year (e.g. 85%).</li>\n<li>Three <u>signed</u> reference letters from community organizers and/or high school faculty (no more than 2 from the school).</li>\n</ul>\n<br/><a href='https://studentawards.com/scholarships/fwio-provincial-scholarship/' target='_blank' rel='noopener noreferrer'>Source</a>",
+            "date_created":"2021-01-30",
+            "date_time_created":"2021-01-30T23:08:37.091966Z",
+            "deadline":"2021-07-16T03:00:00Z",
+            "description":"This scholarship is provided for students furthering their formal education as a full-time student at a post-secondary institution (in their first year).",
+            "disability":[
+                
+            ],
+            "eligible_programs":[
+                
+            ],
+            "eligible_schools":[
+                
+            ],
+            "ethnicity":[
+                
+            ],
+            "female_only":true,
+            "international_students_eligible":false,
+            "form_url":"",
+            "funding_amount":"1000.00",
+            "heritage":[
+                
+            ],
+            "id":772,
+            "img_url":"https://studentawards.com/wp-content/uploads/2021/04/34470480_1843793282595682_2016572164349624320_n.jpg",
+            "is_atila_direct_application":false,
+            "is_funded":false,
+            "is_editable":true,
+            "is_not_available":false,
+            "is_payment_accepted":false,
+            "is_winner_selected":false,
+            "keywords":"female",
+            "language":[
+                
+            ],
+            "learn_more_url":null,
+            "learn_more_title":null,
+            "metadata":{
+                "base_score":0.0007
+            },
+            "name":"FWIO Provincial Scholarship",
+            "is_finalists_notified":false,
+            "finalists_notified_date":null,
+            "number_available_scholarships":1,
+            "open_date":"2021-05-13",
+            "owner":null,
+            "owner_detail":null,
+            "province":[
+                {
+                    "id":1,
+                    "name":"Ontario",
+                    "country":"Canada"
+                }
+            ],
+            "published":true,
+            "religion":[
+                
+            ],
+            "scholarship_url":"https://fwio.on.ca/fwio-scholarships",
+            "slug":"fwio-provincial-scholarship-n5gshk5m",
+            "specific_questions":[
+                
+            ],
+            "sports":[
+                
+            ],
+            "updated_at":"2021-07-06T12:16:56.435855Z",
+            "user_profile_questions":[
+                
+            ],
+            "is_blind_applications":false,
+            "is_referral_bonus_eligible":false,
+            "collaborators":[
+                
+            ],
+            "reddit_url":null
+        },
+        {
+            "activities":[
+                
+            ],
+            "archived":false,
+            "citizenship":[
+                
+            ],
+            "city":[
+                
+            ],
+            "country":[
+                
+            ],
+            "criteria_info":"<h2>How to Apply</h2><h4>Eligibility</h4>\r\n<ul>\r\n<li><span>All High School students aged 14+.</span></li>\r\n</ul>\r\n<h4>Application</h4>\r\n<p>Head to the application with the button above!</p>\r\n<br/><a href='https://studentawards.com/scholarships/believe-initiative-community-leader-scholarship/' target='_blank' rel='noopener noreferrer'>Source</a>",
+            "date_created":"2021-05-29",
+            "date_time_created":"2021-05-29T10:16:41.349996Z",
+            "deadline":"2021-07-16T03:00:00Z",
+            "description":"The Believe Initiative is a program designed to help students create community impact projects. To date, we have impacted over 120,000 youth and helped students initiate over 10,000 impact projects. We’ve learned that these experiences provide students with essential leadership opportunities as well as skills such as resilience, confidence and creative problem solving.\r\n  One of the biggest barriers to students participating in volunteer projects in their community is the need to work part-time jobs in order to fund their post-secondary education, leaving them with little time for extracurricular activities. \r\n  To ensure as many students as possible have the opportunity to take on a volunteer leadership role, the Believe Initiative has created this Community Leader Scholarship. Our goal is to help reduce the financial burden in preparation for post-secondary so that student leaders have the freedom/time to give back to their community.",
+            "disability":[
+                
+            ],
+            "eligible_programs":[
+                
+            ],
+            "eligible_schools":[
+                
+            ],
+            "ethnicity":[
+                
+            ],
+            "female_only":false,
+            "international_students_eligible":false,
+            "form_url":"",
+            "funding_amount":"2000.00",
+            "heritage":[
+                
+            ],
+            "id":960,
+            "img_url":"https://studentawards.com/wp-content/uploads/2021/05/Believe-SQ-Logo.png",
+            "is_atila_direct_application":false,
+            "is_funded":false,
+            "is_editable":true,
+            "is_not_available":false,
+            "is_payment_accepted":false,
+            "is_winner_selected":false,
+            "keywords":"",
+            "language":[
+                
+            ],
+            "learn_more_url":null,
+            "learn_more_title":null,
+            "metadata":{
+                "base_score":0
+            },
+            "name":"Believe Initiative – Community Leader Scholarship",
+            "is_finalists_notified":false,
+            "finalists_notified_date":null,
+            "number_available_scholarships":1,
+            "open_date":null,
+            "owner":null,
+            "owner_detail":null,
+            "province":[
+                
+            ],
+            "published":true,
+            "religion":[
+                
+            ],
+            "scholarship_url":"https://survey.alchemer-ca.com/s3/50110092/yconic-Believe-Initiative-Scholarship",
+            "slug":"believe-initiative-community-leader-scholarship-bou8lo0k",
+            "specific_questions":[
+                
+            ],
+            "sports":[
+                
+            ],
+            "updated_at":"2021-07-08T20:42:17.994387Z",
+            "user_profile_questions":[
+                
+            ],
+            "is_blind_applications":false,
+            "is_referral_bonus_eligible":false,
+            "collaborators":[
+                
+            ],
+            "reddit_url":null
+        },
+        {
+            "activities":[
+                
+            ],
+            "archived":false,
+            "citizenship":[
+                
+            ],
+            "city":[
+                
+            ],
+            "country":[
+                
+            ],
+            "criteria_info":"<h2>How to Apply</h2><h4>Eligibility</h4>\r\n<p>Please note to be eligible you must be 25 years or younger as of September 1, 2021.</p>\r\n<p>Students entering or already attending any Canadian post-secondary education institution or flight school in the areas of S.T.E.M. education with plans to pursue a career in the Aviation and Aerospace industry. Must be 25 or younger.</p>\r\n<p><strong>Category 1:</strong> Women who also meet the above eligibility</p>\r\n<p><strong>Category 2:</strong> Above eligibility and who identify as any of the following: Indigenous / Visible minority / LGBTQQIP2SAA / Person with disabilities</p>\r\n<p><strong>Category 3:</strong> Above eligibility and whose parents either currently serve, or have retired from, the Royal Canadian Air Force.</p>\r\n<h4>Application</h4>\r\n<ul>\r\n<li><strong>Category 1</strong>\r\n<ul>\r\n<li>Women entering or already attending any Canadian post-secondary education institution or flight school in the areas of S.T.E.M. education with plans to pursue a career in the Aviation and Aerospace industry.</li>\r\n<li><a href=\"https://rcaffoundation.ca/scholarship-1\">More Info</a></li>\r\n</ul>\r\n</li>\r\n</ul>\r\n<ul>\r\n<li><strong>Category 2</strong>\r\n<ul>\r\n<li>Those who identify as the following and are entering or already attending any Canadian post-secondary education institution or flight school in the areas of S.T.E.M. education with plans to pursue a career in the Aviation and Aerospace industry.\r\n<ul>\r\n<li>Indigenous</li>\r\n<li>Visible minority</li>\r\n<li>LGBTQQIP2SAA</li>\r\n<li>Person with disabilities</li>\r\n</ul>\r\n</li>\r\n<li><a href=\"https://rcaffoundation.ca/scholarship-2/\">More Info</a></li>\r\n</ul>\r\n</li>\r\n</ul>\r\n<ul>\r\n<li><strong>Category 3</strong>\r\n<ul>\r\n<li>Students entering or already attending any Canadian post-secondary education institutional or flight school in the areas of S.T.E.M. education with plans to pursue a career in the Aviation and Aerospace industry, whose parents either currently serve, or have retired from, the Royal Canadian Air Force.</li>\r\n<li><a href=\"https://rcaffoundation.ca/scholarship-3/\">More Info</a></li>\r\n</ul>\r\n</li>\r\n</ul>\r\n<br/><a href='https://studentawards.com/scholarships/rcaf-foundation-student-scholarships/' target='_blank' rel='noopener noreferrer'>Source</a>",
+            "date_created":"2021-07-01",
+            "date_time_created":"2021-07-01T10:16:25.511032Z",
+            "deadline":"2021-07-17T03:00:00Z",
+            "description":"The RCAF Foundation Student Scholarship is to assist students in S.T.E.M. (Science, Technology, Engineering, Math) studies that could lead to future careers in the Aviation and Aerospace industry.\r\nWe expect these student scholarships to help encourage more young people to consider careers in these fields as the demand for skilled people grows in both the private and defence sectors.\r\nThis RCAF Foundation Student Scholarship supports two of our Areas of Focus including engaging young Canadians and working with the aviation and aerospace industry to promote future careers opportunities.",
+            "disability":[
+                
+            ],
+            "eligible_programs":[
+                
+            ],
+            "eligible_schools":[
+                
+            ],
+            "ethnicity":[
+                
+            ],
+            "female_only":false,
+            "international_students_eligible":false,
+            "form_url":"",
+            "funding_amount":"1000.00",
+            "heritage":[
+                
+            ],
+            "id":1000,
+            "img_url":"https://studentawards.com/wp-content/uploads/2021/06/RCAF-Foundation-Square-Logo-Newsletter.jpg",
+            "is_atila_direct_application":false,
+            "is_funded":false,
+            "is_editable":true,
+            "is_not_available":false,
+            "is_payment_accepted":false,
+            "is_winner_selected":false,
+            "keywords":"",
+            "language":[
+                
+            ],
+            "learn_more_url":null,
+            "learn_more_title":null,
+            "metadata":{
+                "base_score":0
+            },
+            "name":"RCAF Foundation Student Scholarships",
+            "is_finalists_notified":false,
+            "finalists_notified_date":null,
+            "number_available_scholarships":1,
+            "open_date":null,
+            "owner":null,
+            "owner_detail":null,
+            "province":[
+                
+            ],
+            "published":true,
+            "religion":[
+                
+            ],
+            "scholarship_url":"https://rcaffoundation.ca/portfolio-items/student-scholarship/",
+            "slug":"rcaf-foundation-student-scholarships-sca10b0d",
+            "specific_questions":[
+                
+            ],
+            "sports":[
+                
+            ],
+            "updated_at":"2021-07-08T20:42:17.769160Z",
+            "user_profile_questions":[
+                
+            ],
+            "is_blind_applications":false,
+            "is_referral_bonus_eligible":false,
+            "collaborators":[
+                
+            ],
+            "reddit_url":null
+        },
+        {
+            "activities":[
+                
+            ],
+            "archived":false,
+            "citizenship":[
+                
+            ],
+            "city":[
+                
+            ],
+            "country":[
+                {
+                    "name":"Canada"
+                }
+            ],
+            "criteria_info":"<p>The New Brunswick.. was created to help continute the African tradition of community support. How have you contributed to your local community. This can be anything from volunteer work, to research projects, public health initiatives etc.</p><p>&nbsp;</p><p>More about the <a href=\"https://www.nbaa.ca/\">NBAA</a>.</p><p>&nbsp;</p><h3>Mission Statement</h3><p>To ensure the social, economic, cultural integration and development of the African community in New Brunswick. To collaborate with stakeholders in developing programs to support the capacity of our members and to foster positive contribution to society.</p><h3>Vision Statement</h3><p>To become a leading community organization that is proactive and innovative in planning, developing, and delivering programs that will meet the needs of the African community in New Brunswick.</p><h3>Values Statement</h3><p>Our work is guided by a commitment to the following core values:</p><ul><li>Partnership and capacity building.</li><li>Foster a united African voice in the Canadian public arena.</li><li>Trusting each other and providing a foundation of working with integrity.</li><li>Trusting each other and providing a foundation of working with integrity.</li><li>Commitment to inclusiveness, fairness, equity, collaboration and teamwork.</li><li>Respect and value diversity.</li><li>Inspiring and motivating others.</li></ul>",
+            "date_created":"2021-05-27",
+            "date_time_created":"2021-05-27T23:11:32.628292Z",
+            "deadline":"2021-07-27T23:59:00Z",
+            "description":"This scholarship is open to any African student in Canada who has contributed to their community.",
+            "disability":[
+                
+            ],
+            "eligible_programs":[
+                
+            ],
+            "eligible_schools":[
+                
+            ],
+            "ethnicity":[
+                "Black/African-American"
+            ],
+            "female_only":false,
+            "international_students_eligible":false,
+            "form_url":"",
+            "funding_amount":"1000.00",
+            "heritage":[
+                
+            ],
+            "id":958,
+            "img_url":"https://firebasestorage.googleapis.com/v0/b/atila-prod.appspot.com/o/user-uploads%2Fscholarship-images%2Fffz0j7sf-69265679_2403877969694066_5958202649915424768_n.jpg?alt=media&token=4664104e-cced-4569-8b76-112daf3bbead",
+            "is_atila_direct_application":true,
+            "is_funded":true,
+            "is_editable":false,
+            "is_not_available":false,
+            "is_payment_accepted":false,
+            "is_winner_selected":false,
+            "keywords":"Black/African-American",
+            "language":[
+                
+            ],
+            "learn_more_url":"",
+            "learn_more_title":"",
+            "metadata":{
+                "base_score":0.0007
+            },
+            "name":"New Brunswick African Association Scholarship",
+            "is_finalists_notified":false,
+            "finalists_notified_date":null,
+            "number_available_scholarships":1,
+            "open_date":"2022-12-31",
+            "owner":null,
+            "owner_detail":null,
+            "province":[
+                
+            ],
+            "published":true,
+            "religion":[
+                
+            ],
+            "scholarship_url":"https://atila.ca/scholarship/new-brunswick-african-student-assosciation-scholarship-wmc7e8ng/",
+            "slug":"new-brunswick-african-association-scholarship-wmc7e8ng",
+            "specific_questions":[
+                {
+                    "key":"how-have-you-contributed-to-your-local-community",
+                    "type":"long_answer",
+                    "question":"How have you contributed to your local community? Feel free to include links to any work you have done that could help your application."
+                },
+                {
+                    "key":"what-are-your-goals-and-plans-for-the-future",
+                    "type":"long_answer",
+                    "question":"What are your goals and plans for the future?"
+                }
+            ],
+            "sports":[
+                
+            ],
+            "updated_at":"2021-07-08T20:42:18.032116Z",
+            "user_profile_questions":[
+                {
+                    "key":"first_name"
+                },
+                {
+                    "key":"last_name"
+                },
+                {
+                    "key":"email"
+                },
+                {
+                    "key":"heritage"
+                }
+            ],
+            "is_blind_applications":false,
+            "is_referral_bonus_eligible":false,
+            "collaborators":[
+                
+            ],
+            "reddit_url":null
+        },
+        {
+            "activities":[
+                "Acting",
+                "Cooking",
+                "Fashion"
+            ],
+            "archived":false,
+            "citizenship":[
+                "United States",
+                "United Kingdom",
+                "Panama"
+            ],
+            "city":[
+                {
+                    "id":224,
+                    "province":"Pennsylvania",
+                    "name":"Scranton",
+                    "country":"United States"
+                }
+            ],
+            "country":[
+                
+            ],
+            "criteria_info":"<p>I just fell in love with these kids. And I didn't want them to fall victim to the system.</p>",
+            "date_created":"2021-05-04",
+            "date_time_created":"2021-05-04T14:15:50.401360Z",
+            "deadline":"2021-07-28T23:59:00Z",
+            "description":"This scholarship is for students planning to go to college or university in the fall of 2021",
+            "disability":[
+                "Mental Health",
+                "Physical Disability"
+            ],
+            "eligible_programs":[
+                "Accounting",
+                "Business",
+                "Finance"
+            ],
+            "eligible_schools":[
+                "Capilano College"
+            ],
+            "ethnicity":[
+                "Black/African-American",
+                "Aboriginal/First Nations",
+                "Asian/East-Asian",
+                "White/Caucasian",
+                "Latino/Hispanic"
+            ],
+            "female_only":false,
+            "international_students_eligible":true,
+            "form_url":"",
+            "funding_amount":"1000.00",
+            "heritage":[
+                "Italy",
+                "Laos",
+                "Malaysia"
+            ],
+            "id":885,
+            "img_url":"https://imgur.com/DkSj4ly.jpg",
+            "is_atila_direct_application":true,
+            "is_funded":true,
+            "is_editable":false,
+            "is_not_available":false,
+            "is_payment_accepted":false,
+            "is_winner_selected":false,
+            "keywords":"Black/African-American Aboriginal/First Nations Asian/East-Asian White/Caucasian Latino/Hispanic Italy Laos Malaysia Christianity Islam Sikhism Capilano College Accounting Business Finance United States United Kingdom Panama Acting Cooking Fashion Any Sport Mental Health Physical Disability American English Dinka Fiji Hindi international student Scranton",
+            "language":[
+                "American English",
+                "Dinka",
+                "Fiji Hindi"
+            ],
+            "learn_more_url":"https://theoffice.com",
+            "learn_more_title":"Learn more about Michael Scott",
+            "metadata":{
+                "base_score":0.0127
+            },
+            "name":"Michael Scott Scott's Tots Scholarship 2021",
+            "is_finalists_notified":false,
+            "finalists_notified_date":null,
+            "number_available_scholarships":1,
+            "open_date":"2022-12-31",
+            "owner":null,
+            "owner_detail":null,
+            "province":[
+                
+            ],
+            "published":true,
+            "religion":[
+                "Christianity",
+                "Islam",
+                "Sikhism"
+            ],
+            "scholarship_url":"https://atila.ca/scholarship/michael-scott-scotts-tots-scholarship-2021-8qum3ojf/",
+            "slug":"michael-scott-scotts-tots-scholarship-2021-8qum3ojf",
+            "specific_questions":[
+                {
+                    "key":"what-is-your-favourite-quote-from-the-office",
+                    "type":"long_answer",
+                    "question":"What is your favourite quote from the Office?"
+                },
+                {
+                    "key":"who-is-your-favourite-character-and-why",
+                    "type":"long_answer",
+                    "question":"Who is your favourite character and why?"
+                },
+                {
+                    "key":"if-you-could-have-dinner-with-three-characters-who",
+                    "type":"long_answer",
+                    "question":"If you could have dinner with three characters who would it be and why?"
+                }
+            ],
+            "sports":[
+                "Any Sport"
+            ],
+            "updated_at":"2021-07-06T12:16:55.550279Z",
+            "user_profile_questions":[
+                {
+                    "key":"first_name"
+                },
+                {
+                    "key":"last_name"
+                },
+                {
+                    "key":"email"
+                }
+            ],
+            "is_blind_applications":false,
+            "is_referral_bonus_eligible":false,
+            "collaborators":[
+                
+            ],
+            "reddit_url":null
+        },
+        {
+            "activities":[
+                
+            ],
+            "archived":false,
+            "citizenship":[
+                "Canada"
+            ],
+            "city":[
+                
+            ],
+            "country":[
+                {
+                    "name":"Canada"
+                }
+            ],
+            "criteria_info":"<p>Bennett Jones LLP was founded in 1922, and has since cultivated leadership in the legal, business, and political worlds. What is a Canadian legal topic or policy that is important to you and why? Have you done any legal or policy work in this space?</p><p>&nbsp;</p><p>More about <a href=\"https://www.bennettjones.com/About\">Bennett Jones LLP</a>.</p><p>&nbsp;</p><p>As a firm, we support charitable and community organizations and initiatives dedicated to a broad spectrum of causes including health, education and the arts, among others.</p><p>Some of the charitable organizations that Bennett Jones has supported include: Bay Street Hoops, Big Brothers and Big Sisters, The Canadian Legacy Project, Evenstart, The Children’s Wish Foundation, Canadian Breast Cancer Foundation, Homes for Heroes, The Arthritis Society, UNICEF and True Patriot Love. We are also the lead donor on the Canadian MS Progression Cohort, a unique pan-Canadian research project undertaken by the Multiple Sclerosis Society of Canada. This important multi-year study seeks to answer why some people with MS experience steady progression of the disease while other do not.</p><p>We also encourage our lawyers to actively participate in community initiatives, as a means to give back and enrich their own lives and many sit on boards of grassroots organizations in their communities.</p><h3>&nbsp;</h3><h3>Pro Bono Services</h3><p>As part of our commitment to bettering the communities in which we live and work, Bennett Jones lawyers devote innumerable hours to providing pro bono legal services in a diverse range of areas from financial and business to civil liberties and human rights. This important work serves many purposes—it helps fulfill our shared belief as a firm that all Canadians are entitled to access to justice, it provides genuine professional development opportunities to our students and associates, and it encourages our lawyers to pursue areas of interest.</p><p>One example of our engagement in pro bono work is our Toronto office’s multi-year involvement with Pro Bono Ontario. Many of our litigators actively volunteer with PBO, providing pro bono services to parties in small claims matters, self-represented litigants and as amicus counsel to the court. Our lawyers have supported PBO’s Free Legal Advice Hotline, recently participating in a joint day with Nestlé Canada’s legal team and answering a record 87 calls.</p><p>We have assisted PBO in the creation of new and innovative programs, such as their Trial Matching Project, which matches Bennett Jones lawyers with self-represented litigants with a scheduled trial at Small Claims Court. The aim of this project is to ensure that self-represented litigants have the services of a lawyer at trial. We were also instrumental in the creation of PBO's Amicus Duty Counsel Program at Civil Practice Court. Noticing that self-represented litigants often have trouble navigating the fast-paced and complex nature of scheduling court, the program provides a milieus duty counsel at Civil Practice Court to assist self-represented litigants navigate the attendance.</p><p>Our litigators also volunteer with The Osgoode Hall Law School Investor Protection Clinic, where they act as supervising counsel to Osgoode students who provide free legal advice to people who believe their investments were mishandled and who cannot afford a lawyer.</p><p>In Alberta, Bennett Jones has provided pro bono legal services through a monthly, on-site legal clinic for young women at <a href=\"http://schools.cbe.ab.ca/b418/\">Louise Dean Centre </a>for 15 years, giving legal advice on civil matters. Louise Dean Centre provides specialized education for pregnant and parenting teens, allowing students to work towards a high school diploma or certificate, while affording them flexible scheduling for maternity leaves, counselling or lifestyle challenges.</p><p>Additionally, we regularly act as duty counsel in trial and appellate courts and engage in intervention work for not-for-profit organizations at all levels of court, having acted pro bono in some of Canada’s most important public interest cases.</p><p>Some further examples of our pro bono work:</p><ul><li><a href=\"https://www.bennettjones.com/Publications-Section/Announcements/Successful-Judgement-in-Pro-Bono-metoo-Case\">Successful Judgement in Pro Bono #metoo Case</a></li><li><a href=\"https://www.bennettjones.com/Publications-Section/Announcements/Pro-Bono-Legal-Team-Helps-Ensure-Educational-Supports-for-Dyslexic-Students\">Pro Bono Legal Team helps Ensure Educational Supports for young Dyslexic Students</a></li><li><a href=\"https://www.bennettjones.com/Publications-Section/Announcements/Pro-Bono-Team-Wins-Significant-Order-Before-the-Residential-Tenancy-Dispute-Resolution-Service\">Pro Bono Team Wins Significant Order Before the Residential Tenancy Dispute Resolution Service</a></li></ul><h3>&nbsp;</h3><h3>Diversity &amp; Inclusion</h3><p>Bennett Jones is a strong supporter of diversity in the workplace and our lawyers and staff are a reflection of Canada's diverse population. We are committed to providing a collegial work environment in which all individuals are treated with dignity and respect. We believe that valuing and enhancing diversity and inclusion will help us attract and retain the best talent and better serve our clients' needs in an evolving global marketplace.</p><p>In July 2020, <a href=\"https://www.bennettjones.com/Publications-Section/Announcements/Bennett-Jones-Signs-BlackNorth-Initiative-Law-Firm-Pledge\">Bennett Jones signed the BlackNorth Initiative Law Firm Pledge</a>, committing to specific actions and targets designed to end anti-Black systemic racism and create opportunities for those in underrepresented Black, Indigenous, and People of Colour (BIPOC) communities.</p><p>We are a proud member of the Law Firm Diversity and Inclusion Network (LFDIN), a network of Canadian law firms that work together to promote diversity and encourage a culture of inclusion in our firms and the broader legal profession. As a member of LFDIN, we practice and advance diversity and inclusion by:</p><ul><li>sharing ideas for the promotion of diversity and inclusion in recruitment, retention and advancement;</li><li>working with Legal Leaders for Diversity, the Canadian Centre for Diversity and Inclusion, law departments, business leaders and professional associations in their efforts to advance diversity and inclusion;</li><li>supporting outreach programs in law schools and the broader community; and</li><li>promoting thought leadership and constructive dialogue on issues of diversity and inclusion.</li></ul><p>We are also proud to be a member of the 30% Club of Canada, a community of business leaders committed to meaningful and sustainable gender balance in business leadership.</p><p>We collaborate with, and our lawyers are actively involved in, affinity bar associations such as the South Asian Bar Association, Canadian Association of Black Lawyers and the Federation of Asian-Canadian Lawyers. Additionally, we have active engagement with on-campus affinity groups to extend our recruitment reach to under-represented communities in the legal profession.</p>",
+            "date_created":"2021-05-28",
+            "date_time_created":"2021-05-28T04:56:16Z",
+            "deadline":"2021-07-28T23:59:00Z",
+            "description":"This scholarship is open to any student in Canada who is studying law at an accredited school.",
+            "disability":[
+                
+            ],
+            "eligible_programs":[
+                "Law"
+            ],
+            "eligible_schools":[
+                
+            ],
+            "ethnicity":[
+                
+            ],
+            "female_only":false,
+            "international_students_eligible":false,
+            "form_url":"",
+            "funding_amount":"1000.00",
+            "heritage":[
+                
+            ],
+            "id":959,
+            "img_url":"https://firebasestorage.googleapis.com/v0/b/atila-prod.appspot.com/o/user-uploads%2Fscholarship-images%2Fhrp39cel-Bennettjones_logo_Hor_-_Colour.jpg?alt=media&token=0b0afa16-3d2c-411a-af7d-80f3db4446a3",
+            "is_atila_direct_application":true,
+            "is_funded":true,
+            "is_editable":false,
+            "is_not_available":false,
+            "is_payment_accepted":false,
+            "is_winner_selected":false,
+            "keywords":"Law Canada",
+            "language":[
+                
+            ],
+            "learn_more_url":null,
+            "learn_more_title":null,
+            "metadata":{
+                "base_score":0.0057
+            },
+            "name":"Bennett Jones LLP Future Lawyers Scholarship",
+            "is_finalists_notified":false,
+            "finalists_notified_date":null,
+            "number_available_scholarships":1,
+            "open_date":"2022-12-31",
+            "owner":null,
+            "owner_detail":null,
+            "province":[
+                
+            ],
+            "published":true,
+            "religion":[
+                
+            ],
+            "scholarship_url":"https://atila.ca/scholarship/bennett-jones-llp-future-lawyers-scholarship-ujrhpvx9/",
+            "slug":"bennett-jones-llp-future-lawyers-scholarship-ujrhpvx9",
+            "specific_questions":[
+                {
+                    "key":"what-is-a-canadian-legal-topic-or-public-policy-is",
+                    "type":"long_answer",
+                    "question":"What is a Canadian legal topic or public policy issue that is important to you and why? Have you done any work in this space? Include links to your work if any."
+                },
+                {
+                    "key":"why-did-you-choose-to-study-law-what-type-of-law",
+                    "type":"long_answer",
+                    "question":"Why did you choose to study law? What type of law would you like to specialize in?"
+                },
+                {
+                    "key":"what-are-your-goals-and-plans-for-the-future",
+                    "type":"long_answer",
+                    "question":"What are your goals and plans for the future?"
+                }
+            ],
+            "sports":[
+                
+            ],
+            "updated_at":"2021-07-06T12:16:55.417993Z",
+            "user_profile_questions":[
+                {
+                    "key":"first_name"
+                },
+                {
+                    "key":"last_name"
+                },
+                {
+                    "key":"email"
+                },
+                {
+                    "key":"major"
+                },
+                {
+                    "key":"post_secondary_school"
+                }
+            ],
+            "is_blind_applications":false,
+            "is_referral_bonus_eligible":false,
+            "collaborators":[
+                
+            ],
+            "reddit_url":null
+        },
+        {
+            "activities":[
+                
+            ],
+            "archived":false,
+            "citizenship":[
+                
+            ],
+            "city":[
+                
+            ],
+            "country":[
+                
+            ],
+            "criteria_info":"<h2>How to Apply</h2><h4>Eligibility</h4>\n<p>An exclusive offer for yconic members!</p>\n<h4>Application</h4>\n<ul>\n<li>Download the Ampli app for free and sign up using code <strong>STUDENT10</strong> by January 31st, 2021.</li>\n<li>Simply link your debit and/or credit cards to Ampli and voila! <strong>$10 cash back </strong>will be added to your Ampli account within 10 business days.</li>\n<li>Have questions? Check out the Ampli <a href=\"http://help.ampli.ca/en/\" rel=\"noopener\" target=\"_blank\">FAQ Collection</a>.</li>\n</ul>\n<br/><a href='https://studentawards.com/scholarships/chance-to-win-1-of-5-1000-cash-prizes/' target='_blank' rel='noopener noreferrer'>Source</a>",
+            "date_created":"2021-03-25",
+            "date_time_created":"2021-03-25T20:24:12.070447Z",
+            "deadline":"2021-08-01T03:00:00Z",
+            "description":"Every month, Ampli launches a new ‘Dreamstakes’ for you to win. For July, it’s:\n1 of 5 Chances to win $1,000.\nTo be eligible, download Ampli and securely connect a bank account to automatically earn cash back and access the contest.\nThey’ve already given away $1 million in prizes, cash back, and gift cards to users in the app. Check back in next month to see what their latest giveaway is.\nMake sure to enter promo code STUDENT10 and connect a bank account to get started with $10.",
+            "disability":[
+                
+            ],
+            "eligible_programs":[
+                
+            ],
+            "eligible_schools":[
+                
+            ],
+            "ethnicity":[
+                
+            ],
+            "female_only":false,
+            "international_students_eligible":false,
+            "form_url":"",
+            "funding_amount":"1000.00",
+            "heritage":[
+                
+            ],
+            "id":854,
+            "img_url":"https://studentawards.com/wp-content/uploads/2020/11/StudentAwards-LogoTemplate-400x400-1.png",
+            "is_atila_direct_application":false,
+            "is_funded":false,
+            "is_editable":true,
+            "is_not_available":false,
+            "is_payment_accepted":false,
+            "is_winner_selected":false,
+            "keywords":"",
+            "language":[
+                
+            ],
+            "learn_more_url":null,
+            "learn_more_title":null,
+            "metadata":{
+                "base_score":0
+            },
+            "name":"Chance To Win 1 of 5 $1,000 Cash Prizes",
+            "is_finalists_notified":false,
+            "finalists_notified_date":null,
+            "number_available_scholarships":1,
+            "open_date":null,
+            "owner":null,
+            "owner_detail":null,
+            "province":[
+                
+            ],
+            "published":true,
+            "religion":[
+                
+            ],
+            "scholarship_url":"https://ampli.onelink.me/O1hH/STUDENTLP",
+            "slug":"chance-to-win-1-of-5-1000-cash-prizes-ev1e5niu",
+            "specific_questions":[
+                
+            ],
+            "sports":[
+                
+            ],
+            "updated_at":"2021-07-08T20:42:18.531589Z",
+            "user_profile_questions":[
+                
+            ],
+            "is_blind_applications":false,
+            "is_referral_bonus_eligible":false,
+            "collaborators":[
+                
+            ],
+            "reddit_url":null
+        },
+        {
+            "activities":[
+                
+            ],
+            "archived":false,
+            "citizenship":[
+                
+            ],
+            "city":[
+                
+            ],
+            "country":[
+                
+            ],
+            "criteria_info":"<h2>How to Apply</h2><h4>Eligibility</h4>\n<p>Must be a full -time/part-time student in Canada. If you are outside our operating areas (Vancouver, Calgary, Edmonton, Saskatoon, Winnipeg, Toronto, and Montreal) please contact info@era.ca for more information.</p>\n<h4>Application</h4>\n<p>We need you to come up with a marketing plan and host an e-waste collection event in your area. You will manage every detail of this event from the planning and promoting to the execution! We want to see how creative students can get with marketing the event and reaching out to your community and local businesses to ensure the event is well attended. How will you implement your ideas to raise awareness and get your networks involved? After you have followed through with the event, the team at ERA will evaluate your work and pick the winner!</p>\n<br/><a href='https://studentawards.com/scholarships/era-electronic-recycling-association-scholarship/' target='_blank' rel='noopener noreferrer'>Source</a>",
+            "date_created":"2021-03-26",
+            "date_time_created":"2021-03-26T10:16:57.188741Z",
+            "deadline":"2021-08-01T03:00:00Z",
+            "description":"We need you to come up with a marketing plan and host an e-waste collection event in your area. You will manage every detail of this event from the planning and promoting to the execution! We want to see how creative students can get with marketing the event and reaching out to your community and local businesses to ensure the event is well attended. How will you implement your ideas to raise awareness and get your networks involved? After you have followed through with the event, the team at ERA will evaluate your work and pick the winner!",
+            "disability":[
+                
+            ],
+            "eligible_programs":[
+                
+            ],
+            "eligible_schools":[
+                
+            ],
+            "ethnicity":[
+                
+            ],
+            "female_only":false,
+            "international_students_eligible":false,
+            "form_url":"",
+            "funding_amount":"10000.00",
+            "heritage":[
+                
+            ],
+            "id":876,
+            "img_url":"https://studentawards.com/wp-content/uploads/2020/10/LOGO_ERA.jpg",
+            "is_atila_direct_application":false,
+            "is_funded":false,
+            "is_editable":true,
+            "is_not_available":false,
+            "is_payment_accepted":false,
+            "is_winner_selected":false,
+            "keywords":"",
+            "language":[
+                
+            ],
+            "learn_more_url":null,
+            "learn_more_title":null,
+            "metadata":{
+                "base_score":0
+            },
+            "name":"ERA (Electronic Recycling Association) Scholarship",
+            "is_finalists_notified":false,
+            "finalists_notified_date":null,
+            "number_available_scholarships":1,
+            "open_date":null,
+            "owner":null,
+            "owner_detail":null,
+            "province":[
+                
+            ],
+            "published":true,
+            "religion":[
+                
+            ],
+            "scholarship_url":"https://www.electronicrecyclingassociation.ca/2021-era-scholarship/",
+            "slug":"era-electronic-recycling-association-scholarship-nd1hhube",
+            "specific_questions":[
+                
+            ],
+            "sports":[
+                
+            ],
+            "updated_at":"2021-07-08T20:42:18.349065Z",
+            "user_profile_questions":[
+                
+            ],
+            "is_blind_applications":false,
+            "is_referral_bonus_eligible":false,
+            "collaborators":[
+                
+            ],
+            "reddit_url":null
+        },
+        {
+            "activities":[
+                
+            ],
+            "archived":false,
+            "citizenship":[
+                
+            ],
+            "city":[
+                
+            ],
+            "country":[
+                
+            ],
+            "criteria_info":"<h2>How to Apply</h2><h4>Eligibility</h4>\n<ul>\n<li>Applicant must be currently registered to a full-time program of study in the field of study in health care, criminal justice or community &amp; social services at an accredited Canadian post-secondary college or university</li>\n<li>Applicant must be a Canadian citizens or permanent resident of Canada</li>\n<li>Applicant must have a documented disability</li>\n<li>Applicant must be under 20 years of age at time of application</li>\n</ul>\n<h4>Application</h4>\n<p>Submit an original essay of 500-700 words with the following topic: “How your disability shaped your decision to study the program you chose”<br/>\nThe following documents must be provided for consideration:</p>\n<ul>\n<li>Proof of graduating high school in 2021</li>\n<li>Proof of Fall 2021 acceptance to an accredited post-secondary institution (proof or registration to health care, criminal justice or community &amp; social services studies will be required before the scholarship is awarded)</li>\n<li>Proof of Canadian citizenship or permanent residency</li>\n<li>Documented proof of disability</li>\n</ul>\n<br/><a href='https://studentawards.com/scholarships/dcci-scholarship-for-canadian-students-with-disabilities-2/' target='_blank' rel='noopener noreferrer'>Source</a>",
+            "date_created":"2021-04-13",
+            "date_time_created":"2021-04-13T10:16:48.371526Z",
+            "deadline":"2021-08-01T03:00:00Z",
+            "description":"Disability Credit Canada’s mission is to help disabled Canadians receive the full benefits and credits they deserve from the Canadian government. As a Disability Tax Credit & CPP Disability firm we work closely with disabled Canadian and their families and we recognize the unique challenges they face.\nDisability Credit Canada is committed to helping young disabled Canadians achieve their goals in higher education or vocational training towards employment and we are proud to be offering the “DCCI Scholarship for Canadian Students with Disabilities”\nThe annual scholarship winner will be awarded $1,000 towards their tuition to an accredited Canadian post-secondary institution.\nThe scholarship will be awarded to a Canadian high school student with a documented disability who is pursuing post-secondary education in the field of study in health care, criminal justice or community & social services at an accredited Canadian institution for the upcoming academic year 2021/2022.",
+            "disability":[
+                
+            ],
+            "eligible_programs":[
+                
+            ],
+            "eligible_schools":[
+                
+            ],
+            "ethnicity":[
+                
+            ],
+            "female_only":false,
+            "international_students_eligible":false,
+            "form_url":"",
+            "funding_amount":"1000.00",
+            "heritage":[
+                
+            ],
+            "id":883,
+            "img_url":"https://studentawards.com/wp-content/uploads/2021/04/NjAweDYwMA-_63ec10eff08c65d6d554a4b8da6f1546.png",
+            "is_atila_direct_application":false,
+            "is_funded":false,
+            "is_editable":true,
+            "is_not_available":false,
+            "is_payment_accepted":false,
+            "is_winner_selected":false,
+            "keywords":"",
+            "language":[
+                
+            ],
+            "learn_more_url":null,
+            "learn_more_title":null,
+            "metadata":{
+                "base_score":0
+            },
+            "name":"DCCI Scholarship for Canadian Students with Disabilities",
+            "is_finalists_notified":false,
+            "finalists_notified_date":null,
+            "number_available_scholarships":1,
+            "open_date":null,
+            "owner":null,
+            "owner_detail":null,
+            "province":[
+                
+            ],
+            "published":true,
+            "religion":[
+                
+            ],
+            "scholarship_url":"https://disabilitycreditcanada.com/dcci-scholarship-for-canadian-students-with-disabilities/",
+            "slug":"dcci-scholarship-for-canadian-students-with-disabilities-bavzykh1",
+            "specific_questions":[
+                
+            ],
+            "sports":[
+                
+            ],
+            "updated_at":"2021-07-08T20:42:18.127763Z",
+            "user_profile_questions":[
+                
+            ],
+            "is_blind_applications":false,
+            "is_referral_bonus_eligible":false,
+            "collaborators":[
+                
+            ],
+            "reddit_url":null
+        }
+    ],
+    "funding":"$209,950",
+    "length":90,
+    "tango":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJndWVzc21lIjoiNUxYNm96TnFJa0JwRWhPIiwicGlnbGF0aW4iOiJrVTV6UU5QZURWRTJqcG1qIiwiZXhwIjoxNjI3MjI0NzU2LCJpYXQiOjE2MjYwMTUxNTZ9.Elns9xYxeovT2kduNuTtid8qI6oojgxfJBE53ZGnC14"
+}

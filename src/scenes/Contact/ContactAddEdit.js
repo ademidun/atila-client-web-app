@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from "prop-types";
 import FormDynamic from "../../components/Form/FormDynamic";
-import { DEFAULT_CONTACT, CONTACT_FORM_CONFIG_PAGE_1 } from '../../models/Contact';
+import { DEFAULT_CONTACT, CONTACT_TYPES } from '../../models/Contact';
 import { Button, Tag } from "antd";
 import ContactsAPI from "../../services/ContactsAPI";
 import { FormUtils } from '../../services/FormUtils';
@@ -10,12 +10,59 @@ import EditsAPI from '../../services/EditsApi';
 import { prettifyKeys } from '../../services/utils';
 import {toastNotify} from "../../models/Utils";
 import Loading from "../../components/Loading";
+import { ALL_DEMOGRAPHICS } from '../../models/ConstantsForm';
 
 const EDIT_MODES = ['add', 'edit', 'suggest'];
 const EDIT_MODES_HELPER_TEXT = {
     suggest: 'Your changes will be saved as suggestions and added to this club if accepted'
 }
 
+export const CONTACT_FORM_CONFIG_PAGE_1 = [
+    {
+        keyName: 'organization_name',
+    },
+    {
+        keyName: 'profile_description',
+        type: 'textarea',
+    },
+    {
+        keyName: 'instagram_username',
+    },
+    {
+        keyName: 'twitter_username',
+    },
+    {
+        keyName: 'profile_pic_url',
+    },
+    {
+        keyName: 'tiktok_username',
+    },
+    {
+        keyName: 'facebook_username',
+    },
+    {
+        keyName: 'linkedin_url',
+    },
+    {
+        keyName: 'website_url',
+    },
+    {
+        keyName: 'account_type',
+        type: 'select',
+        options: CONTACT_TYPES,
+        renderOption: (option) => prettifyKeys(option)
+    }
+];
+
+for (const [demographicKey, demographicOptions] of Object.entries(ALL_DEMOGRAPHICS)) {
+    const inputConfig = {
+        keyName: demographicKey,
+        type: 'autocomplete',
+        suggestions: demographicOptions,
+        skipPrettifyKeys: true,
+    }
+    CONTACT_FORM_CONFIG_PAGE_1.push(inputConfig);
+}
 
 class ContactAddEdit extends React.Component{
 
