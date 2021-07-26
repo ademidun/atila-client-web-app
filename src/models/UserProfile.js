@@ -91,13 +91,6 @@ export const userProfileFormConfig = [
         type: 'location',
         valueDisplay: model => model.country[0] && model.country[0].name,
     },
-    {
-        keyName: 'other_demographic',
-        placeholder: 'More Demographics',
-        type: 'autocomplete',
-        suggestions: OTHER_DEMOGRAPHICS,
-    },
-
 ];
 
 export const USER_PROFILE_SECURITY_QUESTIONS = [

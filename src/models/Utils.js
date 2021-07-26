@@ -7,7 +7,7 @@ import {
     DISABILITIES,
     ETHNICITIES,
     LANGUAGES,
-    MAJORS_LIST,
+    MAJORS_LIST, OTHER_DEMOGRAPHICS,
     RELIGIONS,
     SCHOOLS_LIST,
     SPORTS
@@ -127,7 +127,13 @@ export const scholarshipUserProfileSharedFormConfigs = [
         placeholder: 'Any Occupations?',
         type: 'autocomplete',
         suggestions: OCCUPATIONS,
-    }
+    },
+    {
+        keyName: 'other_demographic',
+        placeholder: 'More Demographics',
+        type: 'autocomplete',
+        suggestions: OTHER_DEMOGRAPHICS,
+    },
 ];
 
 // TODO get this list from a propert third party source
