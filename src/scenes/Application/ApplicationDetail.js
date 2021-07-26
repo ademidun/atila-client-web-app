@@ -405,7 +405,7 @@ class ApplicationDetail extends  React.Component{
             event.stopPropagation(); // https://github.com/facebook/react/issues/3446#issuecomment-82751540
         }
 
-        let { application, wordCount } = this.state;
+        let { application } = this.state;
         const name = event.target.name;
         let value = event.target.value;
 
