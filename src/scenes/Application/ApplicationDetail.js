@@ -18,6 +18,7 @@ import { getErrorMessage, handleError, prettifyKeys, scrollToElement } from "../
 import Register from "../../components/Register";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
+import countWords from "../Application/WordCount"
 import SecurityQuestionAndAnswer from "./SecurityQuestionAndAnswer";
 import {
     addQuestionDetailToApplicationResponses,
@@ -74,6 +75,7 @@ class ApplicationDetail extends  React.Component{
             userProfileForRegistration: null,
             pageNumber: 1,
             isScholarshipDeadlinePassed: false,
+            wordCount: 0
         }
     }
 
@@ -403,7 +405,7 @@ class ApplicationDetail extends  React.Component{
             event.stopPropagation(); // https://github.com/facebook/react/issues/3446#issuecomment-82751540
         }
 
-        let { application } = this.state;
+        let { application, wordCount } = this.state;
         const name = event.target.name;
         let value = event.target.value;
 
@@ -419,8 +421,8 @@ class ApplicationDetail extends  React.Component{
                     ...prevState.application[applicationResponseType],
                     [name]: value
                 }
-
-            }
+            },
+            wordCount: countWords(value)
         }), () => {
 
             if (autoSaveTimeoutId) {
@@ -431,7 +433,6 @@ class ApplicationDetail extends  React.Component{
                 this.saveApplication();
             }, 500);
         })
-
     };
 
     /**
@@ -649,18 +650,20 @@ class ApplicationDetail extends  React.Component{
             {dateModified}
             <details>
                 <summary>What's the word count?<Tag color="green">new</Tag></summary>
-                    There are no word count limits for scholarship applications on Atila, 
-                    but a suggested length is around 500 words per application. 
-                    <p>That's the word count of the average scholarship winner but feel free to write less or more.</p> 
-                    <div>
-                        <a href="https://docs.google.com/document/d/1_0AX4ngyrq3bmFpapdK-N0Qac59WkAwR5Oe_sRUhE-U/edit?usp=sharing">Learn More.</a> 
-                    </div>
+                There are no word count limits for scholarship applications on Atila, 
+                but a suggested length is around 500 words per application. 
+                <br/>
+                That's the word count of the average scholarship winner, but please feel free to write less or more.
+                <br/>
+                <a href="https://atila.ca/blog/tomiwa/whats-the-word-count-analyzing-the-correlation-between-essay-length-and-quality/">Learn More.</a> 
             </details>
+
             <FormDynamic onUpdateForm={event => this.updateForm(event, 'scholarship_responses')}
                          model={application.scholarship_responses}
                          inputConfigs=
                              {scholarshipQuestionsFormConfig}
             />
+            <p>Word Count: {this.state.wordCount}</p>
             </>);
 
         let deadlinePassedMessage = null;
