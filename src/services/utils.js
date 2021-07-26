@@ -603,3 +603,13 @@ export function copyToClipboard(str) {
 export function displayLocalTimeZone() {
     return Intl.DateTimeFormat().resolvedOptions().timeZone
 }
+
+
+export function transformListToValueLabelList(inputList) {
+    return inputList.map(string => {
+        return {
+            label: string,
+            value: string
+        }
+    })
+}
