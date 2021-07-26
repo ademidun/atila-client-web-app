@@ -34,6 +34,7 @@ import {BlindApplicationsExplanationMessage} from "../../models/Scholarship";
 import ApplicationsLocal from './ApplicationsLocal';
 import { Alert } from 'antd';
 import ApplicationViewPreviousApplications from "./ApplicationViewPreviousApplications";
+import {Tag} from "antd";
 
 const { Step } = Steps;
 
@@ -646,6 +647,15 @@ class ApplicationDetail extends  React.Component{
 
             <h2>Scholarship Questions</h2>
             {dateModified}
+            <details>
+                <summary>What's the word count?<Tag color="green">new</Tag></summary>
+                    There are no word count limits for scholarship applications on Atila, 
+                    but a suggested length is around 500 words per application. 
+                    <p>That's the word count of the average scholarship winner but feel free to write less or more.</p> 
+                    <div>
+                        <a href="https://docs.google.com/document/d/1_0AX4ngyrq3bmFpapdK-N0Qac59WkAwR5Oe_sRUhE-U/edit?usp=sharing">Learn More.</a> 
+                    </div>
+            </details>
             <FormDynamic onUpdateForm={event => this.updateForm(event, 'scholarship_responses')}
                          model={application.scholarship_responses}
                          inputConfigs=
