@@ -1,4 +1,4 @@
-import {GRADE_LEVELS, MAJORS_LIST, OTHER_DEMOGRAPHICS, SCHOOLS_LIST} from "./ConstantsForm";
+import {GRADE_LEVELS, MAJORS_LIST, SCHOOLS_LIST} from "./ConstantsForm";
 import PropTypes from "prop-types";
 
 export const UserProfileTest1 = {
