@@ -1672,14 +1672,9 @@ export const OTHER_DEMOGRAPHICS = [
     "Army",
 ];
 
-export let MASTER_LIST_EVERYTHING = MAJORS_LIST.concat(SCHOOLS_LIST).concat(MAJORS_LIST).concat(ETHNICITIES)
-    .concat(DISABILITIES).concat(SPORTS).concat(ACTIVITIES).concat(RELIGIONS).concat(LANGUAGES).sort();
-
-MASTER_LIST_EVERYTHING = [...new Set(MASTER_LIST_EVERYTHING)];
-export const MASTER_LIST_EVERYTHING_UNDERSCORE = MASTER_LIST_EVERYTHING.map(item => item.toLowerCase());
-
 export const MASTER_LIST_WITH_CATEGORY_LABEL = [];
-// TODO use ALL_DEMOGRAPHICS to populate MASTER_LIST_EVERYTHING
+export let MASTER_LIST_EVERYTHING = [];
+
 export const ALL_DEMOGRAPHICS = {
     "eligible_schools": SCHOOLS_LIST,
     "eligible_programs": MAJORS_LIST,
@@ -1699,9 +1694,14 @@ export const ALL_DEMOGRAPHICS = {
 for (const [demographic_type, demographic_list] of Object.entries(ALL_DEMOGRAPHICS)) {
     MASTER_LIST_WITH_CATEGORY_LABEL.push(...demographic_list.map(item => (
         {value: item, category: demographic_type}
-    )))
+    )));
+    MASTER_LIST_EVERYTHING.push(...demographic_list);
 }
 
+MASTER_LIST_EVERYTHING = MASTER_LIST_EVERYTHING.sort();
+MASTER_LIST_EVERYTHING = [...new Set(MASTER_LIST_EVERYTHING)];
+
+export const MASTER_LIST_EVERYTHING_UNDERSCORE = MASTER_LIST_EVERYTHING.map(item => item.toLowerCase());
 /**
  * This list of category labels, has additional options that are only visible to atila admins
  */
