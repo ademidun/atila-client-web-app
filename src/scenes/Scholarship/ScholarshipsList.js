@@ -364,7 +364,7 @@ class ScholarshipsList extends React.Component {
 
             if (!userProfile.post_secondary_school || !userProfile.major) {
                 missingSections = (<ul>
-                    The Following questions are missing:
+                    The following fields are missing:
                     {! userProfile.major &&
                     <li><strong>Major: </strong>What program are you currently or interested in pursuing?</li>
                     }
@@ -388,7 +388,9 @@ class ScholarshipsList extends React.Component {
                                     className={"container mt-5"}
                                     afterSubmitSuccess={this.afterProfileEdit}
                                     startingPageNumber={0}
-                                    submitButtonText="Save and See Scholarships" />
+                                    submitButtonText="Save and See Scholarships"
+                                    showSecurityQA={false}
+            />
         }
 
         const seoContent = {

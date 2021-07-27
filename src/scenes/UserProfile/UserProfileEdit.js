@@ -16,13 +16,11 @@ import SecurityQuestionAndAnswer from "../Application/SecurityQuestionAndAnswer"
 import FileInput from "../../components/Form/FileInput";
 import { message } from 'antd';
 
-
 let autoSaveTimeoutId;
-const userProfileSharedFormConfigs = scholarshipUserProfileSharedFormConfigs
-    .map(config => {
-        config.className = null;
-        return config;
-    });
+
+// although maxPageNumber is just 1, the reason we didn't delete this value completely and get rid of page navigation
+//  is because in the onboarding the initial page number is zero
+const maxPageNumber = 1;
 
 class UserProfileEdit extends React.Component {
 
@@ -155,7 +153,7 @@ class UserProfileEdit extends React.Component {
 
     render () {
 
-        const { userProfile, title, className, submitButtonText } = this.props;
+        const { userProfile, title, className, submitButtonText, showSecurityQA } = this.props;
         const { pageNumber, formErrors } = this.state;
 
         let formErrorsContent = Object.keys(formErrors).map((errorType) => (
@@ -164,15 +162,11 @@ class UserProfileEdit extends React.Component {
             </div>
         ));
 
-        [userProfileFormOnboarding, userProfileFormConfig, userProfileSharedFormConfigs]
+        [userProfileFormOnboarding, userProfileFormConfig, scholarshipUserProfileSharedFormConfigs]
             .forEach(formConfigSettings => {
-            for (let i = 0; i < formConfigSettings.length; i++) {
-                if (Object.keys(formErrors).includes( formConfigSettings[i].keyName)) {
-                    formConfigSettings[i].error = formErrors[ formConfigSettings[i].keyName];
-                } else {
-                    formConfigSettings[i].error = null;
-                }
-            }
+                formConfigSettings.forEach(currentConfig => {
+                    currentConfig.error = formErrors[currentConfig.keyName] || null
+                })
         });
 
 
@@ -217,6 +211,12 @@ class UserProfileEdit extends React.Component {
                              inputConfigs=
                                  {userProfileFormConfig}
                 />
+
+                <FormDynamic onUpdateForm={this.updateForm}
+                                            model={userProfile}
+                                            inputConfigs=
+                                                {scholarshipUserProfileSharedFormConfigs}
+                                />
                 <div id="enrollment-proof">
 
                     <FileInput
@@ -238,24 +238,17 @@ class UserProfileEdit extends React.Component {
                 </div>
                 </>
                 }
-                {pageNumber === 2 &&
-                <FormDynamic onUpdateForm={this.updateForm}
-                             model={userProfile}
-                             inputConfigs=
-                                 {userProfileSharedFormConfigs}
-                />}
                 <div>
-                    <div className="my-2" style={{height: "20px"}}>
-                        {pageNumber !== 2 &&
-                        <button className="btn btn-outline-primary float-right col-md-6"
-                                onClick={() => this.changePage(pageNumber+1)}>Next</button>}
+                    <div className="my-2">
+                        {pageNumber > 0 && pageNumber < maxPageNumber &&
+                        <Button className="float-right col-md-6" size={"large"} type="primary"
+                                onClick={() => this.changePage(pageNumber+1)}>Next</Button>}
                         {pageNumber > 1 &&
-                        <button className="btn btn-outline-primary float-left col-md-6"
-                                onClick={() => this.changePage(pageNumber-1)}>Prev</button>}
-                        {
-                            Object.keys(formErrors).length > 0 &&
-                            formErrorsContent
-                        }
+                        <Button className="float-left col-md-6" size={"large"} type="primary"
+                                onClick={() => this.changePage(pageNumber-1)}>Prev</Button>}
+                        <br />
+                        <br />
+                        {formErrorsContent}
                     </div>
                     <br/>
                         {pageNumber !== 0 &&
@@ -264,18 +257,20 @@ class UserProfileEdit extends React.Component {
                         </div>
                         }
                         {pageNumber === 0 &&
-                        <Button type="submit"
-                                className="btn btn-primary col-12 mt-2"
+                        <Button type="primary"
+                                className="col-12 mt-2"
+                                size={"large"}
                                 onClick={this.submitForm}>{submitButtonText}</Button>
                         }
                     <br/>
 
                 </div>
-                <hr/>
-                <div id="security">
-                    <SecurityQuestionAndAnswer setAnswer={true} verifyAnswer={true} />
-                </div>
-
+                {showSecurityQA &&
+                    <div id="security">
+                        <hr/>
+                        <SecurityQuestionAndAnswer setAnswer={true} verifyAnswer={true}/>
+                    </div>
+                }
             </div>
         );
     }
@@ -293,7 +288,8 @@ UserProfileEdit.defaultProps = {
     className: '',
     startingPageNumber: 1,
     afterSubmitSuccess: () => {},
-    submitButtonText: 'Save'
+    submitButtonText: 'Save',
+    showSecurityQA: true,
 };
 
 UserProfileEdit.propTypes = {
@@ -304,7 +300,8 @@ UserProfileEdit.propTypes = {
     className: PropTypes.string,
     afterSubmitSuccess: PropTypes.func,
     startingPageNumber: PropTypes.number,
-    submitButtonText: PropTypes.string
+    submitButtonText: PropTypes.string,
+    showSecurityQA: PropTypes.bool,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(UserProfileEdit));

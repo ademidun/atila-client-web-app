@@ -22,41 +22,14 @@ export const userProfileFormOnboarding = [
         suggestions: MAJORS_LIST,
     },
     {
-        keyName: 'eligible_programs',
-        placeholder: 'Any other Programs? 📚',
-        type: 'autocomplete',
-        suggestions: MAJORS_LIST,
-    },
-    {
         keyName: 'post_secondary_school',
         type: 'autocomplete_single',
-        suggestions: SCHOOLS_LIST,
-    },
-    {
-        keyName: 'eligible_schools',
-        placeholder: 'Any other schools? 🏫',
-        type: 'autocomplete',
         suggestions: SCHOOLS_LIST,
     },
     {
         keyName: 'gender',
         type: 'select',
         options: ['Male', 'Female', 'Other']
-    },
-    {
-        keyName: 'city',
-        type: 'location',
-        valueDisplay: model => model.city[0] && model.city[0].name,
-    },
-    {
-        keyName: 'province',
-        type: 'location',
-        valueDisplay: model => model.province[0] && model.province[0].name,
-    },
-    {
-        keyName: 'country',
-        type: 'location',
-        valueDisplay: model => model.country[0] && model.country[0].name,
     },
 ];
 
@@ -131,7 +104,6 @@ export const USER_PROFILE_SECURITY_QUESTIONS = [
 
 export const DEFAULT_USER_PROFILE_PICTURE_URL = "https://firebasestorage.googleapis.com/v0/b/atila-7.appspot.com/o/user-profiles%2Fgeneral-data%2Fdefault-profile-pic.png?alt=media&token=455c59f7-3a05-43f1-a79e-89abff1eae57";
 export function isCompleteUserProfile(userProfile) {
-
     return (userProfile.post_secondary_school || userProfile.eligible_schools.length !== 0) &&
         (userProfile.major || userProfile.eligible_programs.length !== 0)
 }

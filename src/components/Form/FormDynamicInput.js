@@ -1,7 +1,6 @@
-import {nestedFieldGet, prettifyKeys} from "../../services/utils";
+import {nestedFieldGet, prettifyKeys, transformListToValueLabelList} from "../../services/utils";
 import React from "react";
-import {DatePicker, Select} from 'antd';
-import AutoComplete from "../AutoComplete";
+import {DatePicker, Select, AutoComplete} from 'antd';
 import PropTypes from "prop-types";
 import {InputConfigPropType} from "../../models/Utils";
 import LocationSearchInput from "../LocationSearchInput/LocationSearchInput";
@@ -24,7 +23,7 @@ const editorChange = ( event, editor, name, updateForm ) => {
     updateForm(newEvent);
 };
 
-const selectChange = ( name, value, updateForm ) => {
+const antDesignChange = ( name, value, updateForm ) => {
     const newEvent = {
         target: {
             name,
@@ -157,7 +156,7 @@ function FormDynamicInput({model, onUpdateForm, inputConfig, loggedInUserProfile
                             value={modelValue}
                             placeholder={placeholder}
                             disabled={disabled}
-                            onChange={(selected) => selectChange(keyName, selected, onUpdateForm)}>
+                            onChange={(selected) => antDesignChange(keyName, selected, onUpdateForm)}>
                         {suggestions.map(suggestion => (
                             <Option key={suggestion}
                                     value={suggestion}>
@@ -177,11 +176,13 @@ function FormDynamicInput({model, onUpdateForm, inputConfig, loggedInUserProfile
                     <label htmlFor={keyName}>
                         {placeholder}:{' '}
                     </label> <strong> {modelValue} </strong>
-                    <AutoComplete suggestions={suggestions}
+                    <br />
+                    <AutoComplete options={transformListToValueLabelList(suggestions)}
                                   placeholder={placeholder}
-                                  onSelected={onUpdateForm}
+                                  onChange={value => antDesignChange(keyName, value, onUpdateForm)}
                                   value={modelValue}
-                                  keyName={keyName}/>
+                                  style={{width: "100%"}}
+                    />
                 </React.Fragment>
             );
             break;

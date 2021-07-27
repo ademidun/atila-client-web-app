@@ -7,11 +7,13 @@ import {
     DISABILITIES,
     ETHNICITIES,
     LANGUAGES,
-    MAJORS_LIST,
+    MAJORS_LIST, OTHER_DEMOGRAPHICS,
     RELIGIONS,
     SCHOOLS_LIST,
     SPORTS
 } from "./ConstantsForm";
+import {INDUSTRIES} from "./Industries";
+import {OCCUPATIONS} from "./Occupations";
 
 export const InputConfigPropType = PropTypes.shape({
     type: PropTypes.string,
@@ -62,7 +64,7 @@ export const scholarshipUserProfileSharedFormConfigs = [
     },
     {
         keyName: 'ethnicity',
-        placeholder: 'Ethnicity (e.g. Aboriginal, Asian, Black, South Asian) 🙋🏽‍♂️🙋🏻 🙋🏿 🙋🏾‍♂️️',
+        placeholder: 'Ethnicity (e.g. Indigenous, Asian, Black, South Asian) 🙋🏽‍♂️🙋🏻 🙋🏿 🙋🏾‍♂️️',
         type: 'autocomplete',
         suggestions: ETHNICITIES,
     },
@@ -113,7 +115,25 @@ export const scholarshipUserProfileSharedFormConfigs = [
         placeholder: 'Any other Programs? 📚',
         type: 'autocomplete',
         suggestions: MAJORS_LIST,
-    }
+    },
+    {
+        keyName: 'industries',
+        placeholder: 'Any Industries?',
+        type: 'autocomplete',
+        suggestions: INDUSTRIES,
+    },
+    {
+        keyName: 'occupations',
+        placeholder: 'Any Occupations?',
+        type: 'autocomplete',
+        suggestions: OCCUPATIONS,
+    },
+    {
+        keyName: 'other_demographic',
+        placeholder: 'More Demographics',
+        type: 'autocomplete',
+        suggestions: OTHER_DEMOGRAPHICS,
+    },
 ];
 
 // TODO get this list from a propert third party source
