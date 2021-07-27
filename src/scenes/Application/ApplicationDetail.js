@@ -422,7 +422,8 @@ class ApplicationDetail extends  React.Component{
                     [name]: value
                 }
             },
-            wordCount: countWords(value)
+            wordCount: countWords(value),
+            scholarshipQuestionsFormConfig: transformScholarshipQuestionsToApplicationForm(this.state.scholarship.specific_questions, this.state.wordCount)
         }), () => {
 
             if (autoSaveTimeoutId) {
