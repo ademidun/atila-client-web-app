@@ -18,7 +18,9 @@ import { message } from 'antd';
 
 let autoSaveTimeoutId;
 
-const maxPageNumber = 2;
+// although maxPageNumber is just 1, the reason we didn't delete this value completely and get rid of page navigation
+//  is because in the onboarding the initial page number is zero
+const maxPageNumber = 1;
 
 class UserProfileEdit extends React.Component {
 
@@ -209,6 +211,12 @@ class UserProfileEdit extends React.Component {
                              inputConfigs=
                                  {userProfileFormConfig}
                 />
+
+                <FormDynamic onUpdateForm={this.updateForm}
+                                            model={userProfile}
+                                            inputConfigs=
+                                                {scholarshipUserProfileSharedFormConfigs}
+                                />
                 <div id="enrollment-proof">
 
                     <FileInput
@@ -230,12 +238,6 @@ class UserProfileEdit extends React.Component {
                 </div>
                 </>
                 }
-                {pageNumber === 2 &&
-                <FormDynamic onUpdateForm={this.updateForm}
-                             model={userProfile}
-                             inputConfigs=
-                                 {scholarshipUserProfileSharedFormConfigs}
-                />}
                 <div>
                     <div className="my-2">
                         {pageNumber > 0 && pageNumber < maxPageNumber &&
