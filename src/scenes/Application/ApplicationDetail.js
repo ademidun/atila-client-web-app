@@ -372,7 +372,7 @@ class ApplicationDetail extends  React.Component{
 
         const { specific_questions, user_profile_questions } = scholarship;
 
-        const scholarshipQuestionsFormConfig = transformScholarshipQuestionsToApplicationForm(specific_questions);
+        const scholarshipQuestionsFormConfig = transformScholarshipQuestionsToApplicationForm(specific_questions, this.state.wordCount);
         const scholarshipUserProfileQuestionsFormConfig = transformProfileQuestionsToApplicationForm(user_profile_questions);
 
         const {

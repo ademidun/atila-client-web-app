@@ -20,7 +20,7 @@ import React from 'react';
     }
  * @param questions
  */
-export function transformScholarshipQuestionsToApplicationForm(questions) {
+export function transformScholarshipQuestionsToApplicationForm(questions, wordCount) {
 
     return questions.map(question => (
         {
@@ -28,6 +28,9 @@ export function transformScholarshipQuestionsToApplicationForm(questions) {
             placeholder: question.question,
             label: question.question,
             type: SCHOLARSHIP_QUESTIONS_TYPES_TO_FORM_TYPES[question.type],
+            html: () => (
+                <p>Word Count: {wordCount}</p>
+            )
         }
     ));
 }
