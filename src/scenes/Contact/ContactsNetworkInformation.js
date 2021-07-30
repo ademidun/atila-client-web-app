@@ -1,4 +1,5 @@
 import React from 'react';
+import { ImageGif } from '../../components/ImageGif';
 import {Link} from "react-router-dom";
 
 
@@ -6,11 +7,30 @@ class ContactsNetworkInformation extends React.Component {
 
     render() {
 
+        const descriptionGif = {
+            gifUrl: "https://i.imgur.com/KBA1AqM.gif",
+            title: "How Student Club Visualizer Works",
+            imageUrl: "https://i.imgur.com/aKN4rVS.png"
+        };
+
         return (
             <div>
             <div className="container mt-5">
                 <div className="card shadow p-3">
                 <h1>What is the Student Clubs Network Visualizer?</h1>
+
+
+                <div className="container mt-5">
+                    <div className="card shadow p-3">
+                        <ImageGif
+                            imageUrl={descriptionGif.imageUrl}
+                            gifUrl={descriptionGif.gifUrl}
+                            title={descriptionGif.title}
+                            defaultImageType="gif"/>
+                    </div>
+                </div>
+                <hr/>
+
                 <p>The Student Clubs Network Visualizer is a graph that represents different university clubs and their relationship with each other.</p>
                 <p>Each icon represents an organization from a Canadian university. Click on the club icon to learn more about each club and their follower counts. We also added the ability to suggest an edit if we have incorrect or missing information.</p>
                 <p>The arrows that connect the clubs represent following. Thus, the more arrows a club has pointed at it, the more followers it has.</p>

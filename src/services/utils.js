@@ -55,7 +55,6 @@ export function genericItemTransform (item) {
                 title: item.title,
                 description: item.description,
                 id: item.id,
-                
                 slug: item.user ? `/essay/${item.user.username}/${item.slug}/` : "",
                 image: item.user ? `${item.user.profile_pic_url}` : "",
                 type: item.type,
@@ -603,4 +602,14 @@ export function copyToClipboard(str) {
 // See https://stackoverflow.com/a/34602679/14874841 for where this code snippet comes from
 export function displayLocalTimeZone() {
     return Intl.DateTimeFormat().resolvedOptions().timeZone
+}
+
+
+export function transformListToValueLabelList(inputList) {
+    return inputList.map(string => {
+        return {
+            label: string,
+            value: string
+        }
+    })
 }

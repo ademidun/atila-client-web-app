@@ -9,7 +9,6 @@ import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import QueryBuilder from '../../components/Query/QueryBuilder';
 import Loading from "../../components/Loading";
 
-
 class ContactsNetwork extends React.Component {
 
     constructor(props){
@@ -47,7 +46,6 @@ class ContactsNetwork extends React.Component {
     }
 
     render() {
-
         const { contacts, addContactMode, loading } = this.state;
         const pageTitle = "Student Clubs Network Visualizer";
         const pageSubTitle = "Visually explore every student club in Canada";
@@ -56,7 +54,7 @@ class ContactsNetwork extends React.Component {
             ...defaultSeoContent,
             title: `${pageTitle} ${pageSubTitle}`
         };
-
+        
         return (
             <div className="container mt-5">
                 <HelmetSeo content={seoContent}/>
@@ -78,7 +76,7 @@ class ContactsNetwork extends React.Component {
                         </div>
 
                     </div>
-
+                    
                     {addContactMode && 
                         <ContactAddEdit />
                     }

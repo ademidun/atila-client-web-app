@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export class ImageGif extends React.Component{
     constructor(props) {
@@ -6,18 +7,15 @@ export class ImageGif extends React.Component{
         this.state = {
             imageUrl: props.imageUrl,
             gifUrl: props.gifUrl,
-            activeImage: props.imageUrl || props.gifUrl,
+            activeImage: props.defaultImageType === "gif" ? props.gifUrl : props.imageUrl,
             title: props.title
         }
     }
 
     handleClick = () => {
-        const currentActiveImage = this.state.activeImage;
-        if(this.state.imageUrl) {
-            if(this.state.gifUrl) {
-                let nextActiveImage = currentActiveImage === this.state.imageUrl ? this.state.gifUrl : this.state.imageUrl;
-                this.setState({activeImage: nextActiveImage})
-            }
+        if(this.state.imageUrl && this.state.gifUrl) {
+            let nextActiveImage = this.state.activeImage === this.state.imageUrl ? this.state.gifUrl : this.state.imageUrl;
+            this.setState({activeImage: nextActiveImage});
         }
 
     }
@@ -25,8 +23,18 @@ export class ImageGif extends React.Component{
         const { activeImage, title } = this.state;
         return (
             <div style={{border: "none"}} className="cursor-pointer" onClick={this.handleClick}>
-                <img src={activeImage} width="560px" alt={title}/>
+                <img src={activeImage} width="100%" alt={title}/>
             </div>
         )
     }
 }
+ImageGif.defaultProps = {
+    defaultImageType: "image"
+};
+
+ImageGif.propTypes = {
+    imageUrl: PropTypes.string.isRequired,
+    gifUrl: PropTypes.string.isRequired,
+    title: PropTypes.string,
+    defaultImageType: PropTypes.oneOf(["image", "gif"]).isRequired,
+};
