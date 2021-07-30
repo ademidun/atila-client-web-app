@@ -3,11 +3,11 @@ import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
 import {Link, withRouter} from "react-router-dom";
 import FormDynamic from "../../components/Form/FormDynamic";
-import {Tag} from "antd";
 import {
     transformProfileQuestionsToApplicationForm,
     transformScholarshipQuestionsToApplicationForm
 } from "../Application/ApplicationUtils";
+import ApplicationWordCountExplainer from '../Application/ApplicationWordCountExplainer';
 
 class ScholarshipViewQuestions extends React.Component {
     constructor(props) {
@@ -74,15 +74,7 @@ class ScholarshipViewQuestions extends React.Component {
                              inputConfigs={userProfileQuestionsFormConfig} />
                 <br />
                 <h3>Scholarship Questions </h3>
-                <details>
-                    <summary>What's the word count?<Tag color="green">new</Tag></summary>
-                        There are no word count limits for scholarship applications on Atila, 
-                        but a suggested length is around 500 words per application. 
-                        <br/>
-                        That's the word count of the average scholarship winner, but please feel free to write less or more.
-                        <br/>
-                            <a href="https://atila.ca/blog/tomiwa/whats-the-word-count-analyzing-the-correlation-between-essay-length-and-quality/">Learn More.</a> 
-                </details>
+                <ApplicationWordCountExplainer />
                 <FormDynamic onUpdateForm={() => {}}
                              model={{}}
                              inputConfigs={scholarshipQuestionsFormConfig}
