@@ -18,7 +18,6 @@ import { getErrorMessage, handleError, prettifyKeys, scrollToElement } from "../
 import Register from "../../components/Register";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
-import countWords from "../Application/WordCount"
 import SecurityQuestionAndAnswer from "./SecurityQuestionAndAnswer";
 import {
     addQuestionDetailToApplicationResponses,
@@ -35,7 +34,7 @@ import {BlindApplicationsExplanationMessage} from "../../models/Scholarship";
 import ApplicationsLocal from './ApplicationsLocal';
 import { Alert } from 'antd';
 import ApplicationViewPreviousApplications from "./ApplicationViewPreviousApplications";
-import {Tag} from "antd";
+import ApplicationWordCountExplainer from "./ApplicationWordCountExplainer";
 
 const { Step } = Steps;
 
@@ -75,7 +74,6 @@ class ApplicationDetail extends  React.Component{
             userProfileForRegistration: null,
             pageNumber: 1,
             isScholarshipDeadlinePassed: false,
-            wordCount: 0
         }
     }
 
@@ -372,7 +370,7 @@ class ApplicationDetail extends  React.Component{
 
         const { specific_questions, user_profile_questions } = scholarship;
 
-        const scholarshipQuestionsFormConfig = transformScholarshipQuestionsToApplicationForm(specific_questions, this.state.wordCount);
+        const scholarshipQuestionsFormConfig = transformScholarshipQuestionsToApplicationForm(specific_questions);
         const scholarshipUserProfileQuestionsFormConfig = transformProfileQuestionsToApplicationForm(user_profile_questions);
 
         const {
@@ -422,8 +420,7 @@ class ApplicationDetail extends  React.Component{
                     [name]: value
                 }
             },
-            wordCount: countWords(value),
-            scholarshipQuestionsFormConfig: transformScholarshipQuestionsToApplicationForm(this.state.scholarship.specific_questions, this.state.wordCount)
+            scholarshipQuestionsFormConfig: transformScholarshipQuestionsToApplicationForm(this.state.scholarship.specific_questions)
         }), () => {
 
             if (autoSaveTimeoutId) {
@@ -649,22 +646,13 @@ class ApplicationDetail extends  React.Component{
 
             <h2>Scholarship Questions</h2>
             {dateModified}
-            <details>
-                <summary>What's the word count?<Tag color="green">new</Tag></summary>
-                There are no word count limits for scholarship applications on Atila, 
-                but a suggested length is around 500 words per application. 
-                <br/>
-                That's the word count of the average scholarship winner, but please feel free to write less or more.
-                <br/>
-                <a href="https://atila.ca/blog/tomiwa/whats-the-word-count-analyzing-the-correlation-between-essay-length-and-quality/">Learn More.</a> 
-            </details>
+            <ApplicationWordCountExplainer />
 
             <FormDynamic onUpdateForm={event => this.updateForm(event, 'scholarship_responses')}
                          model={application.scholarship_responses}
                          inputConfigs=
                              {scholarshipQuestionsFormConfig}
             />
-            <p>Word Count: {this.state.wordCount}</p>
             </>);
 
         let deadlinePassedMessage = null;

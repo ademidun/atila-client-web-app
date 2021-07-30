@@ -3,6 +3,7 @@ import {userProfileFormConfig} from "../../models/UserProfile";
 import {scholarshipUserProfileSharedFormConfigs} from "../../models/Utils";
 import { stripHtml } from '../../services/utils';
 import React from 'react';
+import TextUtils from '../../services/TextUtils';
 
 /**
  * Transform array of questions of the form:
@@ -20,7 +21,7 @@ import React from 'react';
     }
  * @param questions
  */
-export function transformScholarshipQuestionsToApplicationForm(questions, wordCount) {
+export function transformScholarshipQuestionsToApplicationForm(questions) {
 
     return questions.map(question => (
         {
@@ -28,8 +29,8 @@ export function transformScholarshipQuestionsToApplicationForm(questions, wordCo
             placeholder: question.question,
             label: question.question,
             type: SCHOLARSHIP_QUESTIONS_TYPES_TO_FORM_TYPES[question.type],
-            html: () => (
-                <p>Word Count: {wordCount}</p>
+            html: (application) => (
+                <p>Word Count: {TextUtils.countWords(application[question.key])}</p>
             )
         }
     ));
