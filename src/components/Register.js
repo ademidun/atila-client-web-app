@@ -11,6 +11,7 @@ import {Link} from "react-router-dom";
 import {forbiddenCharacters, hasForbiddenCharacters} from "../models/Utils";
 import ReferredByInput from './ReferredByInput';
 
+
 export const LOG_OUT_BEFORE_REGISTERING_HELP_TEXT = "A user is already logged in. Log out to create an account";
 
 export class PasswordShowHide extends React.Component {
@@ -76,8 +77,20 @@ const accountTypes = [
     { label: 'Educator (Help my students get scholarships)', value: 'teacher' },
 ];
 
+const incompatible_emails = ['@hotmail', '@outlook', '@live', '@yahoo']
+
 const defaultAccountType = accountTypes[0].value
 const sponsorAccountType = accountTypes[1].value
+
+function check_valid_email(email) {
+	for (let domain = 0; domain < incompatible_emails.length; domain++) {
+
+		if (email.search(incompatible_emails[domain]) !== -1 || email.endsWith(".ca")) {
+			return false;
+		}
+	}
+	return true;
+}
 
 class Register extends React.Component {
 
@@ -159,8 +172,8 @@ class Register extends React.Component {
         
         if (event.target.type === 'email') {
             value = value.replace(/\s/g, '');
-            
-            if (value.endsWith('.ca')) {
+
+            if (!check_valid_email(value) && value.endsWith('.ca')) {
                 formErrors['email'] = (
                     <div>
                         <Alert
@@ -178,9 +191,8 @@ class Register extends React.Component {
                 );
                 
             
-            } else if (value.includes('@hotmail') || value.includes('@outlook') || value.includes('@live') || value.includes('@yahoo')) {
+            } else if (!check_valid_email(value)) {
                
-
                 formErrors['email'] = (
                     <div>
                         <Alert
