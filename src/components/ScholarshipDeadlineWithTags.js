@@ -1,9 +1,34 @@
 import React from "react";
 import PropTypes from 'prop-types';
 import moment from "moment";
-import {Tag} from "antd";
+import {Tag, Button} from "antd";
 import {ScholarshipPropType} from "../models/Scholarship";
+import { google, outlook, office365, yahoo, ics } from "calendar-link";
+import Environment from "../services/Environment";
+
 const todayMoment = moment(Date.now());
+
+function AddDeadlineToCalendar({scholarship}) {
+    const event = {
+        title: `Deadline for ${scholarship.name}`,
+        description: `View Scholarship: ${Environment.clientUrl}/scholarship/${scholarship.slug}`,
+        start: scholarship.deadline,
+        end: scholarship.deadline,
+    };
+
+    const gCalUrl = google(event)
+    console.log("HERE")
+    console.log(ics(event))
+
+    return (
+        <div>
+            <a href={gCalUrl} target={'_blank'} rel={'noopener noreferrer'}>
+                <Button>Save Deadline to Google Calendar</Button>
+            </a>
+        </div>
+    )
+}
+
 
 function ScholarshipDeadlineWithTags({scholarship, datePrefix}) {
 
@@ -42,6 +67,7 @@ function ScholarshipDeadlineWithTags({scholarship, datePrefix}) {
     return (
         <React.Fragment>
             {datePrefix} {scholarshipDateString}{' '}
+            <AddDeadlineToCalendar scholarship={scholarship} />
             {tag &&
             <React.Fragment>
             <br/>
