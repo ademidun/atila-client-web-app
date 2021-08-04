@@ -401,7 +401,7 @@ class ScholarshipDetail extends React.Component {
                                 </React.Fragment>
                             }
                             <p className="font-weight-bold">
-                                <ScholarshipDeadlineWithTags scholarship={scholarship} />
+                                <ScholarshipDeadlineWithTags scholarship={scholarship} addDeadlineToCalendar={true} />
                                 <br/>
                                 <ReportIncorrectInfo scholarship={scholarship} />
                                 <br/>

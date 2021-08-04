@@ -30,7 +30,7 @@ function AddDeadlineToCalendar({scholarship}) {
 }
 
 
-function ScholarshipDeadlineWithTags({scholarship, datePrefix}) {
+function ScholarshipDeadlineWithTags({scholarship, datePrefix, addDeadlineToCalendar}) {
 
     const { deadline, open_date, date_time_created } = scholarship;
     let tag = null;
@@ -67,10 +67,9 @@ function ScholarshipDeadlineWithTags({scholarship, datePrefix}) {
     return (
         <React.Fragment>
             {datePrefix} {scholarshipDateString}{' '}
-            <AddDeadlineToCalendar scholarship={scholarship} />
+            {addDeadlineToCalendar && <AddDeadlineToCalendar scholarship={scholarship} />}
             {tag &&
             <React.Fragment>
-            <br/>
             <Tag color={color} key={tag}>
                 {tag.toUpperCase()}
             </Tag>
@@ -107,11 +106,13 @@ function dateAddedTag(date_time_created){
 
 ScholarshipDeadlineWithTags.defaultProps = {
     datePrefix: 'Deadline: ',
+    addDeadlineToCalendar: false,
 };
 
 
 ScholarshipDeadlineWithTags.propTypes = {
     datePrefix: PropTypes.string,
     scholarship: ScholarshipPropType.isRequired,
+    addDeadlineToCalendar: PropTypes.bool,
 };
 export default ScholarshipDeadlineWithTags;
