@@ -34,6 +34,7 @@ import {BlindApplicationsExplanationMessage} from "../../models/Scholarship";
 import ApplicationsLocal from './ApplicationsLocal';
 import { Alert } from 'antd';
 import ApplicationViewPreviousApplications from "./ApplicationViewPreviousApplications";
+import ApplicationWordCountExplainer from "./ApplicationWordCountExplainer";
 
 const { Step } = Steps;
 
@@ -418,8 +419,8 @@ class ApplicationDetail extends  React.Component{
                     ...prevState.application[applicationResponseType],
                     [name]: value
                 }
-
-            }
+            },
+            scholarshipQuestionsFormConfig: transformScholarshipQuestionsToApplicationForm(this.state.scholarship.specific_questions)
         }), () => {
 
             if (autoSaveTimeoutId) {
@@ -430,7 +431,6 @@ class ApplicationDetail extends  React.Component{
                 this.saveApplication();
             }, 500);
         })
-
     };
 
     /**
@@ -646,6 +646,8 @@ class ApplicationDetail extends  React.Component{
 
             <h2>Scholarship Questions</h2>
             {dateModified}
+            <ApplicationWordCountExplainer />
+
             <FormDynamic onUpdateForm={event => this.updateForm(event, 'scholarship_responses')}
                          model={application.scholarship_responses}
                          inputConfigs=
