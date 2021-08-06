@@ -82,10 +82,10 @@ const incompatible_emails = ['@hotmail', '@outlook', '@live', '@yahoo']
 const defaultAccountType = accountTypes[0].value
 const sponsorAccountType = accountTypes[1].value
 
-function check_valid_email(email) {
-	for (let domain = 0; domain < incompatible_emails.length; domain++) {
+function checkValidEmailDomains(email) {
+	for (let domainIndex = 0; domainIndex < incompatible_emails.length; domainIndex++) {
 
-		if (email.search(incompatible_emails[domain]) !== -1 || email.endsWith(".ca")) {
+		if (email.toLowerCase().search(incompatible_emails[domainIndex]) !== -1) {
 			return false;
 		}
 	}
@@ -173,32 +173,34 @@ class Register extends React.Component {
         if (event.target.type === 'email') {
             value = value.replace(/\s/g, '');
 
-            if (!check_valid_email(value) && value.endsWith('.ca')) {
+            if (value.endsWith('.ca')) {
                 formErrors['email'] = (
                     <div>
                         <Alert
                             message="Warning"
                             description="We recommend using your personal email instead of your 
-                                school emails as users have reported issues with their school emails 
+                                school email, as users have reported issues with their school emails 
                                 blocking Atila emails."
                                     
                             type="warning"
                             showIcon
                             closable
                         />
+                        <Link to="/blog/alona/use-your-personal-email-preferably-gmail-not-your-school-email-when-signing-up-for-an-account-on-atila">Learn more</Link>
+                        <br/>
                         <br/>
                     </div>
                 );
                 
             
-            } else if (!check_valid_email(value)) {
+            } else if (!checkValidEmailDomains(value)) {
                
                 formErrors['email'] = (
                     <div>
                         <Alert
                             message = "Warning"
-                            description="We recommend using Gmail because users have noticed that 
-                                users with the following domain name getting their emails from Atila 
+                            description="We recommend using gmail because users with your email 
+                                domain have noticed that they are getting their emails from Atila 
                                 blocked."
                             type="warning"
                             showIcon 
