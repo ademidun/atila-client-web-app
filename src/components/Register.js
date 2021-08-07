@@ -41,7 +41,7 @@ export function EmailSignUpWarning({warningType="emailProvider"}){
     return (
         <div>
             <Alert
-                message = "Warning: Atila Emails may not arrive at the provided email address"
+                message = "Warning: Atila emails may not arrive at the provided email address"
                 description={description}
                 type="warning"
                 showIcon
