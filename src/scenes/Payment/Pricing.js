@@ -289,6 +289,11 @@ export function PricingExample() {
                     </tr>
                     </tbody>
                 </table>
+                <div className="container">
+                    <div className="card shadow p-3">
+                        <img src="https://i.imgur.com/qeovalb.png" alt="Atila Pricing Diagram" className="pricing-img"/>
+                    </div>
+                </div>
             </div>
         </div>
     )

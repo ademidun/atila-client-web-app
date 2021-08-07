@@ -6,12 +6,52 @@ import './LoginRegister.scss';
 import {setLoggedInUserProfile} from "../redux/actions/user";
 import {connect} from "react-redux";
 import TermsConditions from "./TermsConditions";
-import { Modal, Radio, Button } from "antd";
+import { Alert, Select, Modal, Button } from "antd";
 import {Link} from "react-router-dom";
 import {forbiddenCharacters, hasForbiddenCharacters} from "../models/Utils";
 import ReferredByInput from './ReferredByInput';
+import { toTitleCase } from '../services/utils';
+
 
 export const LOG_OUT_BEFORE_REGISTERING_HELP_TEXT = "A user is already logged in. Log out to create an account";
+
+// see: https://github.com/ademidun/atila-django/issues/183
+const problematicEmailProviders = ['@hotmail', '@outlook', '@live', '@yahoo']
+
+export function EmailSignUpWarning({warningType="emailProvider"}){
+
+    let description = (<>
+        We've noticed issues with this email provider blocking Atila emails, we recommend using Gmail if you have one.
+        <br/>
+        A list of email providers that are causing similar issues:{' '} 
+        {problematicEmailProviders.map(emailProvider => toTitleCase(emailProvider.replace("@", ""))).join(', ')}
+    </>);
+
+    if (warningType === "schoolEmail") {
+        description = <>
+         Users have reported issues with their school emails blocking Atila emails, we recommend using your personal email instead of your school email.
+        <br/>
+         If this is a personal email address, you may ignore this message.
+        </>
+    }
+    description = <p>
+        {description} <br/>
+        <Link to="/blog/alona/use-your-personal-email-preferably-gmail-not-your-school-email-when-signing-up-for-an-account-on-atila">Learn more</Link>
+    </p>
+    return (
+        <div>
+            <Alert
+                message = "Warning: Atila emails may not arrive at the provided email address"
+                description={description}
+                type="warning"
+                showIcon
+            />
+            
+            <br/>
+            <br/>
+        </div>
+    )
+}
 
 export class PasswordShowHide extends React.Component {
 
@@ -70,10 +110,25 @@ PasswordShowHide.propTypes = {
 };
 
 const accountTypes = [
-    { label: 'Apply for Scholarships', value: 'student' },
-    { label: 'Fund Scholarships', value: 'sponsor' },
+    { label: 'Student (Apply for Scholarships)', value: 'student' }, // default
+    { label: 'Sponsor (Create Scholarships)', value: 'sponsor' },
+    { label: 'Reviewer (Review Scholarships)', value: 'reviewer' },
+    { label: 'Educator (Help my students get scholarships)', value: 'teacher' },
 ];
 
+
+const defaultAccountType = accountTypes[0].value
+const sponsorAccountType = accountTypes[1].value
+
+function checkValidEmailProviders(email) {
+	for (let domainIndex = 0; domainIndex < problematicEmailProviders.length; domainIndex++) {
+
+		if (email.toLowerCase().search(problematicEmailProviders[domainIndex]) !== -1) {
+			return false;
+		}
+	}
+	return true;
+}
 
 class Register extends React.Component {
 
@@ -87,7 +142,7 @@ class Register extends React.Component {
 
         let nextLocation = params.get('redirect') || '/scholarship';
         let applyNow = params.get('applyNow') || false;
-        let accountType = params.get('type') || accountTypes[0].value;
+        let accountType = params.get('type') || defaultAccountType;
         let referredBy = localStorage.getItem('referred_by') || '';
         let mostRecentlyViewedContentName = localStorage.getItem('mostRecentlyViewedContentName') || '';
         let mostRecentlyViewedContentSlug = localStorage.getItem('mostRecentlyViewedContentSlug') || '';
@@ -134,7 +189,6 @@ class Register extends React.Component {
             value = value.replace(/\s/g, '');
 
             if (value.includes('@')) {
-
                 formErrors['username'] = (
                     <p className="text-danger">
                         '@' symbol not allowed in username. <br/>
@@ -151,6 +205,29 @@ class Register extends React.Component {
                 delete formErrors['username'];
             }
             this.setState({ formErrors });
+        }
+        
+        
+        if (event.target.type === 'email') {
+            value = value.replace(/\s/g, '');
+
+            if (!checkValidEmailProviders(value)) {
+               
+                formErrors['email'] = (
+                    <EmailSignUpWarning warningType="emailProvider"/>
+                );
+
+            } else if (value.endsWith('.ca')) {
+                // assumes that a user registering with an email ending with '.ca' is a school email (not always true, but a pretty accurate assumption based on user emails in our database)
+                formErrors['email'] = (
+                    <EmailSignUpWarning warningType="schoolEmail"/>
+                );
+                
+            
+            }  else {
+                delete formErrors['email'];
+            }
+            this.setState({ formErrors });   
         }
 
         if (event.target.type==='checkbox'){
@@ -191,7 +268,7 @@ class Register extends React.Component {
         }
 
         // If this is a sponsor account type, redirect to the add a scholarship page
-        if (account_type === accountTypes[1].value && nextLocation === '/scholarship') {
+        if (account_type === sponsorAccountType && nextLocation === '/scholarship') {
             nextLocation = "/scholarship/add"
         }
 
@@ -313,7 +390,7 @@ class Register extends React.Component {
                                     First Name
                                 </label>
                             }
-                            <input placeholder="First name"
+                            <input placeholder="First Name"
                                    className="col-12 mb-3 form-control"
                                    name="first_name"
                                    value={first_name}
@@ -376,16 +453,16 @@ class Register extends React.Component {
                             </div>
                             }
                             <div className="w-100 my-1">
-                            <label>
-                                I want to
-                            </label><br/>
-                                <Radio.Group
-                                    options={accountTypes}
-                                    onChange={this.updateForm}
-                                    name="account_type"
+                                <label>
+                                    I am a(n):
+                                </label>
+                                <br/>
+                                <Select
                                     value={account_type}
-                                    optionType="button"
-                                    buttonStyle="solid"
+                                    style={{ width: 350 }} 
+                                    options={accountTypes}
+                                    onChange={account_type => this.setState({userProfile:
+                                                {...this.state.userProfile, account_type}})}
                                 />
                             </div>
 
