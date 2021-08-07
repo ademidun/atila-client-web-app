@@ -77,15 +77,16 @@ const accountTypes = [
     { label: 'Educator (Help my students get scholarships)', value: 'teacher' },
 ];
 
-const incompatible_emails = ['@hotmail', '@outlook', '@live', '@yahoo']
+// see: https://github.com/ademidun/atila-django/issues/183
+const problematicEmailProviders = ['@hotmail', '@outlook', '@live', '@yahoo']
 
 const defaultAccountType = accountTypes[0].value
 const sponsorAccountType = accountTypes[1].value
 
-function checkValidEmailDomains(email) {
-	for (let domainIndex = 0; domainIndex < incompatible_emails.length; domainIndex++) {
+function checkValidEmailProviders(email) {
+	for (let domainIndex = 0; domainIndex < problematicEmailProviders.length; domainIndex++) {
 
-		if (email.toLowerCase().search(incompatible_emails[domainIndex]) !== -1) {
+		if (email.toLowerCase().search(problematicEmailProviders[domainIndex]) !== -1) {
 			return false;
 		}
 	}
@@ -173,7 +174,26 @@ class Register extends React.Component {
         if (event.target.type === 'email') {
             value = value.replace(/\s/g, '');
 
-            if (value.endsWith('.ca')) {
+            if (!checkValidEmailProviders(value)) {
+               
+                formErrors['email'] = (
+                    <div>
+                        <Alert
+                            message = "Warning"
+                            description="We recommend using gmail because users with your email 
+                                domain have noticed that they are getting their emails from Atila 
+                                blocked."
+                            type="warning"
+                            showIcon 
+                            closable
+                        />
+                        <Link to="/blog/alona/use-your-personal-email-preferably-gmail-not-your-school-email-when-signing-up-for-an-account-on-atila">Learn more</Link>
+                        <br/>
+                        <br/>
+                    </div>
+                );
+
+            } else if (value.endsWith('.ca')) {
                 formErrors['email'] = (
                     <div>
                         <Alert
@@ -193,26 +213,7 @@ class Register extends React.Component {
                 );
                 
             
-            } else if (!checkValidEmailDomains(value)) {
-               
-                formErrors['email'] = (
-                    <div>
-                        <Alert
-                            message = "Warning"
-                            description="We recommend using gmail because users with your email 
-                                domain have noticed that they are getting their emails from Atila 
-                                blocked."
-                            type="warning"
-                            showIcon 
-                            closable
-                        />
-                        <Link to="/blog/alona/use-your-personal-email-preferably-gmail-not-your-school-email-when-signing-up-for-an-account-on-atila">Learn more</Link>
-                        <br/>
-                        <br/>
-                    </div>
-                );
-
-            } else {
+            }  else {
                 delete formErrors['email'];
             }
             this.setState({ formErrors });   
