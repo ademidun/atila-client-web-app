@@ -1,0 +1,132 @@
+{
+    "scholarship": {
+        "activities": [],
+        "archived": false,
+        "citizenship": [],
+        "city": [],
+        "country": [],
+        "criteria_info": "<p>Mending the Chasm Inc. is a firm that is committed to building inclusive cultures from the inside out.&nbsp;</p><p>Everyone deserves to realize and achieve their full potential and possibility. To dream and pursue the path that leads to that dream without having to go deeply into debt. To access benefits and supports that are normally reserved for the privileged few.</p><p>We recognize that transforming culture starts with each of us, as individual leaders, committing to the work of learning, unlearning and relearning so that our practices, postures and principles support the creation of cultures that are inclusive, equitable, accessible and anti-racist. &nbsp;The next best thing each of us can do is to use our power, our privilege, and our platform, to educate our circles of trust around the impact of systemic oppression, advocate for the changes that marginalized and equity-seeking communities need, and facilitate change in all of the spaces we live and move in.</p>",
+        "date_created": "2021-08-04",
+        "date_time_created": "2021-08-04T18:08:47.722372Z",
+        "deadline": "2021-11-08T04:59:00Z",
+        "description": "My firm would like to support student leaders who embody and are actively are working to advance inclusive, equitable and anti-racist principles postures, and practices that result in community and organizational cultures that espouse these values.",
+        "disability": [],
+        "eligible_programs": [],
+        "eligible_schools": [],
+        "ethnicity": [
+            "East-Asian",
+            "Indigenous",
+            "Black",
+            "South-Asian",
+            "Latino",
+            "Middle Eastern",
+            "Visible Minority"
+        ],
+        "female_only": true,
+        "international_students_eligible": true,
+        "form_url": "",
+        "funding_amount": "500.00",
+        "heritage": [],
+        "id": 901,
+        "industries": [],
+        "img_url": "https://firebasestorage.googleapis.com/v0/b/atila-prod.appspot.com/o/user-uploads%2Fscholarship-images%2F5gyo5qv5-Logo_V_PNG.png?alt=media&token=1e4b022d-59e8-4168-a345-a4c21e6090d7",
+        "is_atila_direct_application": true,
+        "is_funded": true,
+        "is_editable": false,
+        "is_not_available": false,
+        "is_payment_accepted": false,
+        "is_winner_selected": false,
+        "keywords": "East-Asian Indigenous Black South-Asian Latino Middle Eastern Visible Minority female international student",
+        "language": [],
+        "learn_more_url": "https://www.mendingthechasm.ca/",
+        "learn_more_title": "Mending the Chasm - website",
+        "metadata": {
+            "base_score": 0
+        },
+        "name": "Mending the Chasm Scholarship",
+        "is_finalists_notified": false,
+        "finalists_notified_date": null,
+        "number_available_scholarships": 1,
+        "occupations": [],
+        "open_date": "2022-12-31",
+        "other_demographic": [],
+        "owner": 3220,
+        "owner_detail": {
+            "user": 3220,
+            "first_name": "Leena",
+            "last_name": "Sharma Seth",
+            "username": "MendingtheChasm",
+            "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-7.appspot.com/o/user-profiles%2Fgeneral-data%2Fdefault-profile-pic.png?alt=media&token=455c59f7-3a05-43f1-a79e-89abff1eae57"
+        },
+        "province": [],
+        "published": true,
+        "religion": [],
+        "scholarship_url": "https://atila.ca/scholarship/mending-the-chasm-scholarship-njckdg0l/",
+        "slug": "mending-the-chasm-scholarship-njckdg0l",
+        "specific_questions": [
+            {
+                "key": "what-does-inclusion-equity-and-diversity-mean-to",
+                "type": "long_answer",
+                "question": "What does inclusion, equity and diversity mean to you?"
+            },
+            {
+                "key": "what-are-some-ways-that-you-are-working-to-build-y",
+                "type": "long_answer",
+                "question": "What are some ways that you are working to build your anti-racist and inclusive practice?"
+            },
+            {
+                "key": "what-are-two-ways-that-you-are-working-actively-to",
+                "type": "long_answer",
+                "question": "What are two ways that you are working actively to facilitate and advocate for inclusion in your community?"
+            }
+        ],
+        "sports": [],
+        "updated_at": "2021-08-07T13:22:11.462083Z",
+        "user_profile_questions": [
+            {
+                "key": "first_name"
+            },
+            {
+                "key": "last_name"
+            },
+            {
+                "key": "email"
+            }
+        ],
+        "is_blind_applications": false,
+        "is_referral_bonus_eligible": false,
+        "collaborators": [],
+        "reddit_url": null,
+        "stripe_payment_intent_id": "pi_3JKoX7Heg0qPyG6k1bm1IdUM"
+    },
+    "contributors": [
+        {
+            "id": "w1hwlojfm8xjcqo5",
+            "scholarship": {
+                "name": "Mending the Chasm Scholarship",
+                "description": "My firm would like to support student leaders who embody and are actively are working to advance inclusive, equitable and anti-racist principles postures, and practices that result in community and organizational cultures that espouse these values.",
+                "slug": "mending-the-chasm-scholarship-njckdg0l",
+                "id": 901,
+                "img_url": "https://firebasestorage.googleapis.com/v0/b/atila-prod.appspot.com/o/user-uploads%2Fscholarship-images%2F5gyo5qv5-Logo_V_PNG.png?alt=media&token=1e4b022d-59e8-4168-a345-a4c21e6090d7",
+                "deadline": "2021-11-08T04:59:00Z",
+                "funding_amount": "500.00",
+                "metadata": {
+                    "base_score": 0
+                },
+                "open_date": "2022-12-31",
+                "date_time_created": "2021-08-04T18:08:47.722372Z",
+                "is_atila_direct_application": true
+            },
+            "username": "MendingtheChasm",
+            "is_anonymous": false,
+            "is_owner": true,
+            "first_name": "Leena",
+            "referred_by": "tomiwa",
+            "last_name": "Sharma Seth",
+            "funding_amount": "500.00",
+            "date_created": "2021-08-04T18:09:41.006316Z",
+            "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-7.appspot.com/o/user-profiles%2Fgeneral-data%2Fdefault-profile-pic.png?alt=media&token=455c59f7-3a05-43f1-a79e-89abff1eae57",
+            "funding_confirmation_image_url": "https://hcti.io/v1/image/4c37867c-69e0-46f4-9d71-db30e160a71c"
+        }
+    ]
+}
