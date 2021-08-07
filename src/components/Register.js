@@ -10,9 +10,48 @@ import { Alert, Select, Modal, Button } from "antd";
 import {Link} from "react-router-dom";
 import {forbiddenCharacters, hasForbiddenCharacters} from "../models/Utils";
 import ReferredByInput from './ReferredByInput';
+import { toTitleCase } from '../services/utils';
 
 
 export const LOG_OUT_BEFORE_REGISTERING_HELP_TEXT = "A user is already logged in. Log out to create an account";
+
+// see: https://github.com/ademidun/atila-django/issues/183
+const problematicEmailProviders = ['@hotmail', '@outlook', '@live', '@yahoo']
+
+export function EmailSignUpWarning({warningType="emailProvider"}){
+
+    let description = (<>
+        We've noticed issues with this email provider blocking Atila emails, we recommend using Gmail if you have one.
+        <br/>
+        A list of email providers that are causing similar issues:{' '} 
+        {problematicEmailProviders.map(emailProvider => toTitleCase(emailProvider.replace("@", ""))).join(', ')}
+    </>);
+
+    if (warningType === "schoolEmail") {
+        description = <>
+         Users have reported issues with their school emails blocking Atila emails, we recommend using your personal email instead of your school email.
+        <br/>
+         If this is a personal email address, you may ignore this message.
+        </>
+    }
+    description = <p>
+        {description} <br/>
+        <Link to="/blog/alona/use-your-personal-email-preferably-gmail-not-your-school-email-when-signing-up-for-an-account-on-atila">Learn more</Link>
+    </p>
+    return (
+        <div>
+            <Alert
+                message = "Warning: Atila Emails may not arrive at the provided email address"
+                description={description}
+                type="warning"
+                showIcon
+            />
+            
+            <br/>
+            <br/>
+        </div>
+    )
+}
 
 export class PasswordShowHide extends React.Component {
 
@@ -77,8 +116,6 @@ const accountTypes = [
     { label: 'Educator (Help my students get scholarships)', value: 'teacher' },
 ];
 
-// see: https://github.com/ademidun/atila-django/issues/183
-const problematicEmailProviders = ['@hotmail', '@outlook', '@live', '@yahoo']
 
 const defaultAccountType = accountTypes[0].value
 const sponsorAccountType = accountTypes[1].value
@@ -177,39 +214,13 @@ class Register extends React.Component {
             if (!checkValidEmailProviders(value)) {
                
                 formErrors['email'] = (
-                    <div>
-                        <Alert
-                            message = "Warning"
-                            description="We recommend using gmail because users with your email 
-                                domain have noticed that they are getting their emails from Atila 
-                                blocked."
-                            type="warning"
-                            showIcon 
-                            closable
-                        />
-                        <Link to="/blog/alona/use-your-personal-email-preferably-gmail-not-your-school-email-when-signing-up-for-an-account-on-atila">Learn more</Link>
-                        <br/>
-                        <br/>
-                    </div>
+                    <EmailSignUpWarning warningType="emailProvider"/>
                 );
 
             } else if (value.endsWith('.ca')) {
+                // assumes that a user registering with an email ending with '.ca' is a school email (not always true, but a pretty accurate assumption based on user emails in our database)
                 formErrors['email'] = (
-                    <div>
-                        <Alert
-                            message="Warning"
-                            description="We recommend using your personal email instead of your 
-                                school email, as users have reported issues with their school emails 
-                                blocking Atila emails."
-                                    
-                            type="warning"
-                            showIcon
-                            closable
-                        />
-                        <Link to="/blog/alona/use-your-personal-email-preferably-gmail-not-your-school-email-when-signing-up-for-an-account-on-atila">Learn more</Link>
-                        <br/>
-                        <br/>
-                    </div>
+                    <EmailSignUpWarning warningType="schoolEmail"/>
                 );
                 
             
