@@ -58,7 +58,7 @@ Here are two video tutorials we made specifically on how to Mock API Data in thi
 1. Copy that JSON response and put it into `src/services/mocks/{Object_name}/{File_name}.json` for example if you wanted to make a scholarship list response you would put it into `src/services/mocks/Scholarship/ScholarshipsPreview1.json` you might have to make a new directory if the object name you want to use doesn't exist.
     
 
-1. Go to `MockAPI.initializeMocks()` to add the instructions for how to mock your new data.
+1. Go to `MockAPI.initializeMocks()` in `src/services/mocks/MockAPI.js` to add the instructions for how to mock your new data.
 
 We use [axios-mock-adapter](https://github.com/ctimmerm/axios-mock-adapter) for our API mocking, see their documentation for how to do more advanced mocking such as returning a certain response based on the request parameters.
 

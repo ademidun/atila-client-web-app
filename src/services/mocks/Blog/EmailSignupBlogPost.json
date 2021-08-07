@@ -1,0 +1,37 @@
+{
+    "blog":{
+       "id":118,
+       "contributors":[
+          
+       ],
+       "title":"Use your Personal Email (preferably gmail), not Your School Email, When Signing up for an account on Atila",
+       "slug":"use-your-personal-email-preferably-gmail-not-your-school-email-when-signing-up-for-an-account-on-atila",
+       "alternate_slugs":[
+          
+       ],
+       "body":"<p>We noticed that users who signed up with their school emails or non-gmail domains weren’t receiving emails from Atila, causing them to miss out on important scholarship information. We recently notified users who signed up with their school emails to switch to using their personal email addresses. We also recommended users with non-gmail domains (hotmail, outlook, live, yahoo, etc.) to switch to gmail if they have one.&nbsp;&nbsp;</p><p>Here is a message showing one of our emails getting blocked by outlook:</p><figure class=\"image\"><img src=\"https://lh3.googleusercontent.com/xnSVP-DTxOJN-lLcCX3xq3mpQ5MiTTLzbKoUfDkqHpftdo2oo6DWZSQl4O8LtraxTndBBfRNW16G3AFW5HL4xjl4vgvT1Sh_JHEDKzGvJuxi6HVWwpNNdloyWSokgA39GHxnw05R\" alt=\"Screenshot from 2020-11-01 08-12-03\"></figure><p>Here is an example of our email getting blocked by a school server:</p><figure class=\"image\"><img src=\"https://lh4.googleusercontent.com/aYLG5BeXR-GyHrNL-ZkzqVm9VcVPVl-U0A2_Cfq0jhIagq2W_rcwlqWT6a2BXQmIkCnqAjVFiFD7vVtJKsSpU6B_9pNkdF9E48xAEHuUtNxXwf9Y69fCbChCv4fY3aJ1P3n4dB4M\" alt=\"Screenshot from 2020-11-01 08-16-02\"></figure><p>To prevent this problem from escalating, we added a message on our registration page to encourage incoming users to register with their personal, preferably a gmail, address.</p><figure class=\"image\"><img src=\"https://lh4.googleusercontent.com/KmqUzqKHixd0gqH1JwJ81D-ZczRl0TAgNy_6iE30TsbrFQ4Va9TOXNQBG3Jg58BoC-Xp9PLPxBbkff1-erzYF8WnZN_PzE2kClm4PTMStO6ZxK9VkN0rQWmPZfKFezT9pjpo9xsZ\"></figure>",
+       "date_created":"2021-07-28T05:59:30.000259Z",
+       "description":"Here is why we recommend new users to register with their personal email!",
+       "header_image_url":"",
+       "published":true,
+       "up_votes_count":0,
+       "down_votes_count":0,
+       "up_votes_id":[
+          
+       ],
+       "down_votes_id":[
+          
+       ],
+       "metadata":{
+          
+       },
+       "related_items":null,
+       "user":{
+          "first_name":"Angelina",
+          "last_name":"Wu",
+          "username":"alona",
+          "profile_pic_url":"https://firebasestorage.googleapis.com/v0/b/atila-prod.appspot.com/o/user-uploads%2Fuser-profile-pictures%2F2247%2Fxitdd3c2-IMG_20210609_122726%20(2).jpg?alt=media&token=bc2b0fed-675e-4f12-ab71-ced200ad85bb",
+          "id":2247
+       }
+    }
+ }
