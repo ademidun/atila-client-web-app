@@ -4,6 +4,7 @@ import ContactsQuery1 from './Contacts/ContactsQuery1.json';
 import ScholarshipsPreview1 from './Scholarship/ScholarshipsPreview1.json';
 import ScholarshipsPreviewOntario1 from './Scholarship/ScholarshipsPreviewOntario1.json';
 import ScholarshipsPreviewPrairies1 from './Scholarship/ScholarshipsPreviewPrairies1.json';
+import MendingTheChasmScholarship from './Scholarship/MendingTheChasmScholarship.json';
 import BlogPreviewList1 from './Blog/BlogPreviewList1.json';
 import EmailSignupBlogPost from './Blog/EmailSignupBlogPost.json';
 import WordCountBlogPost from './Blog/WordCountBlogPost.json';
@@ -45,6 +46,9 @@ export class MockAPI {
             ];
           });
 
+        let scholarshipSlugUrl = `${Environment.apiUrl}/scholarship-slug`;
+        scholarshipSlugUrl = new RegExp(`${scholarshipSlugUrl}/.+`);
+        mock.onGet(scholarshipSlugUrl).reply(200, MendingTheChasmScholarship);
 
 
         let relatedBlogPostsUrl = `${Environment.apiUrl}/blog/blog-posts`;
