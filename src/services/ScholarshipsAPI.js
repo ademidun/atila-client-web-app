@@ -68,11 +68,13 @@ class ScholarshipsAPI {
         return apiCompletionPromise;
     };
 
-    static put = (id, scholarship, locationData) => {
+    static put = (id, scholarship, locationData, awards) => {
 
         const apiCompletionPromise = request({
             method: 'put',
-            data: {scholarship: ScholarshipsAPI.cleanScholarship(scholarship), locationData},
+            data: {scholarship: ScholarshipsAPI.cleanScholarship(scholarship),
+                    locationData,
+                    awards},
             url: `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/`,
         });
 
@@ -90,11 +92,11 @@ class ScholarshipsAPI {
         return apiCompletionPromise;
     };
 
-    static create = (scholarship, locationData) => {
+    static create = (scholarship, locationData, awards) => {
 
         const apiCompletionPromise = request({
             method: 'post',
-            data: {scholarship: ScholarshipsAPI.cleanScholarship(scholarship), locationData},
+            data: {scholarship: ScholarshipsAPI.cleanScholarship(scholarship), locationData, awards},
             url: `${ScholarshipsAPI.scholarshipsApiUrl}/`,
         });
 
@@ -116,6 +118,18 @@ class ScholarshipsAPI {
 
         return newScholarship;
     };
+
+    static cleanAwards = (awards) => {
+        // Change the funding amount from a string to a number
+        // "200.00" => 200
+
+        return awards.map(award => {
+            return {
+                ...award,
+                funding_amount: Number.parseInt(award.funding_amount)
+            }
+        })
+    }
 
     static getApplications = (id) => {
 

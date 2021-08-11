@@ -15,7 +15,7 @@ import {
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Link} from "react-router-dom";
-import {Steps, Tag} from "antd";
+import {Steps, Tag, InputNumber, Button} from "antd";
 import ScholarshipQuestionBuilder, {ScholarshipUserProfileQuestionBuilder} from "./ScholarshipQuestionBuilder";
 import PaymentSend from "../Payment/PaymentSend/PaymentSend";
 import Environment from "../../services/Environment";
@@ -268,10 +268,11 @@ class ScholarshipAddEdit extends React.Component{
         ScholarshipsAPI.getSlug(slug)
             .then(res => {
                 const scholarship = ScholarshipsAPI.cleanScholarship(res.data.scholarship);
+                const awards = ScholarshipsAPI.cleanAwards(res.data.awards);
                 if (!scholarship.is_editable) {
                     this.disableScholarshipInputs();
                 }
-                this.setState({ scholarship }, () => {
+                this.setState({ scholarship, awards }, () => {
                     this.initializeLocations();
                 });
             })
@@ -466,7 +467,7 @@ class ScholarshipAddEdit extends React.Component{
         const scholarship = ScholarshipsAPI.cleanScholarship(this.state.scholarship);
         this.setState({scholarship});
 
-        const { isAddScholarshipMode, locationData } = this.state;
+        const { isAddScholarshipMode, locationData, awards } = this.state;
         const { userProfile } = this.props;
 
         if(!userProfile) {
@@ -476,13 +477,13 @@ class ScholarshipAddEdit extends React.Component{
         let postResponsePromise;
 
         if(isAddScholarshipMode) {
-            postResponsePromise = ScholarshipsAPI.create(scholarship,locationData)
+            postResponsePromise = ScholarshipsAPI.create(scholarship,locationData, awards)
         } else {
-            postResponsePromise = ScholarshipsAPI.put(scholarship.id, scholarship, locationData);
+            postResponsePromise = ScholarshipsAPI.put(scholarship.id, scholarship, locationData, awards);
         }
         postResponsePromise
             .then(res => {
-                const savedScholarship = ScholarshipsAPI.cleanScholarship(res.data);
+                const savedScholarship = ScholarshipsAPI.cleanScholarship(res.data.scholarship);
                 if (!savedScholarship.is_editable) {
                     this.disableScholarshipInputs();
                 }
@@ -499,7 +500,8 @@ class ScholarshipAddEdit extends React.Component{
                     toastNotify(successMessage, 'info', {position: 'bottom-right'});
                 }
 
-                this.setState({isAddScholarshipMode: false});
+                const awards = ScholarshipsAPI.cleanAwards(res.data.awards)
+                this.setState({isAddScholarshipMode: false, awards});
             })
             .catch(err=> {
                 console.log({err});
@@ -581,6 +583,25 @@ class ScholarshipAddEdit extends React.Component{
             </div>)
     }
 
+    changeAward = (newValue, index) => {
+        let newAwards = this.state.awards.slice()
+        newAwards[index].funding_amount = newValue
+        this.setState({awards: newAwards})
+    }
+
+    removeAward = (index) => {
+        let newAwards = this.state.awards.slice()
+        newAwards.splice(index, 1)
+        this.setState({awards: newAwards})
+    }
+
+    addAward = () => {
+        let newAwards = this.state.awards.slice()
+        let newAward = Object.assign({}, AwardGeneral)
+        newAwards.push(newAward)
+        this.setState({awards: newAwards})
+    }
+
     awardsPage = () => {
         const { scholarship, awards } = this.state;
 
@@ -588,11 +609,34 @@ class ScholarshipAddEdit extends React.Component{
 
         awards.forEach(award => funding_amount += award.funding_amount)
 
+        const renderAwards = awards.map((award, index) => (
+            <div key={index}>
+                Award {index + 1}:{' '}
+                <InputNumber size={"large"}
+                             value={award.funding_amount}
+                             onChange={value => this.changeAward(value, index)}
+                             style={{width: "30%"}}
+                             formatter={value => `$ ${value}`}
+                             keyboard={false}
+                />
+
+                {index > 0 &&
+                    <Button danger
+                            onClick={()=>this.removeAward(index)}
+                            style={{float: "right"}}>Remove</Button>
+                }
+                <br />
+                <br />
+            </div>
+        ))
+
         return (
-            <div className={"my-2"}>
+            <div className={"my-3"}>
                 <h5>Total Funding Amount: ${funding_amount}</h5>
-
-
+                <br />
+                {renderAwards}
+                <br />
+                <Button type="primary" onClick={this.addAward} >Add Award</Button>
             </div>
         )
     }
