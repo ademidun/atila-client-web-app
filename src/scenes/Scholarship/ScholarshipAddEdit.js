@@ -273,6 +273,7 @@ class ScholarshipAddEdit extends React.Component{
                     this.disableScholarshipInputs();
                 }
                 this.setState({ scholarship, awards }, () => {
+                    this.updateFundingAmount()
                     this.initializeLocations();
                 });
             })
@@ -579,10 +580,22 @@ class ScholarshipAddEdit extends React.Component{
             </div>)
     }
 
+    updateFundingAmount = () => {
+        const { awards } = this.state;
+        let scholarship = {...this.state.scholarship}
+
+        let newFundingAmount = 0
+        awards.forEach(award => newFundingAmount += Number.parseInt(award.funding_amount))
+        scholarship.funding_amount = newFundingAmount
+
+        this.setState({scholarship})
+    }
+
     changeAward = (newValue, index) => {
         let newAwards = this.state.awards.slice()
         newAwards[index].funding_amount = newValue
         this.setState({awards: newAwards}, ()=> {
+            this.updateFundingAmount()
             this.autoSaveAfterDelay()
         })
     }
@@ -591,6 +604,7 @@ class ScholarshipAddEdit extends React.Component{
         let newAwards = this.state.awards.slice()
         newAwards.splice(index, 1)
         this.setState({awards: newAwards}, ()=> {
+            this.updateFundingAmount()
             this.autoSaveAfterDelay()
         })
     }
@@ -600,6 +614,7 @@ class ScholarshipAddEdit extends React.Component{
         let newAward = Object.assign({}, AwardGeneral)
         newAwards.push(newAward)
         this.setState({awards: newAwards}, ()=> {
+            this.updateFundingAmount()
             this.autoSaveAfterDelay()
         })
     }
@@ -635,7 +650,6 @@ class ScholarshipAddEdit extends React.Component{
                 <h5>Total Funding Amount: ${scholarship.funding_amount}</h5>
                 <br />
                 {renderAwards}
-                <br />
                 <Button type="primary" onClick={this.addAward} >Add Award</Button>
             </div>
         )
