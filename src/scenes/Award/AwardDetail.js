@@ -1,18 +1,24 @@
 import React from "react";
-import {AwardGeneral, AwardPropType} from "../../models/Award";
+import {AwardGeneral} from "../../models/Award";
+import {formatCurrency} from "../../services/utils";
+import PropTypes from "prop-types";
 
-
+// Could be a functional component but decided to keep it class just in case.
 class AwardDetail extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
-        const { award } = this.props;
+        const { awards } = this.props;
+
+        const renderAwards = awards.map((award, index) =>
+            (
+                <div>
+                    Award {index+1}: {formatCurrency(Number.parseInt(award.funding_amount), true)}
+                </div>
+            )
+        )
 
         return (
             <div>
-
+                {renderAwards}
             </div>
         )
     }
@@ -20,11 +26,11 @@ class AwardDetail extends React.Component {
 }
 
 AwardDetail.defaultProps = {
-    award: AwardGeneral,
+    awards: [AwardGeneral],
 }
 
 AwardDetail.propTypes = {
-    award: AwardPropType.isRequired,
+    awards: PropTypes.array.isRequired,
 }
 
 export default AwardDetail;

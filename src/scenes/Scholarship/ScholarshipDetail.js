@@ -19,6 +19,7 @@ import {AtilaDirectApplicationsPopover, BlindApplicationsExplanationMessage, Ref
 import ScholarshipFinalists, {UserProfilesCards} from "./ScholarshipFinalists";
 import ApplicationsLocal from '../Application/ApplicationsLocal';
 import ReportIncorrectInfo from "../../components/ReportIncorrectInfo";
+import AwardDetail from "../Award/AwardDetail";
 
 class ScholarshipDetail extends React.Component {
 
@@ -28,6 +29,7 @@ class ScholarshipDetail extends React.Component {
         this.state = {
             scholarship: null,
             contributors: null,
+            awards: [],
             currentUserScholarshipApplication: null,
             scholarshipUserProfile: null,
             isLoadingScholarship: true,
@@ -73,9 +75,9 @@ class ScholarshipDetail extends React.Component {
         const { match : { params : { slug }}, userProfile, location } = this.props;
         ScholarshipsAPI.getSlug(slug)
             .then(res => {
-                const { scholarship, contributors } = res.data;
+                const { scholarship, contributors, awards } = res.data;
                 const { owner_detail } = scholarship;
-                this.setState({ scholarship, contributors, scholarshipUserProfile: owner_detail }, () => {
+                this.setState({ scholarship, contributors, awards, scholarshipUserProfile: owner_detail }, () => {
                     if (location && location.hash) {
                         scrollToElement(location.hash);
                     }
@@ -200,7 +202,7 @@ class ScholarshipDetail extends React.Component {
 
     render() {
 
-        const { isLoadingScholarship, scholarship,
+        const { isLoadingScholarship, scholarship, awards,
             errorLoadingScholarship, scholarshipUserProfile,
             pageViews, currentUserScholarshipApplication, isLoadingApplication, contributors } = this.state;
         const { userProfile } = this.props;
@@ -405,8 +407,9 @@ class ScholarshipDetail extends React.Component {
                                 <br/>
                                 <ReportIncorrectInfo scholarship={scholarship} />
                                 <br/>
-                                Amount: {fundingString}
+                                Total Funding: {fundingString}
                             </div>
+                            <AwardDetail awards={awards} />
                             {scholarship.is_atila_direct_application  && !isScholarshipDeadlinePassed &&
                                 <div className="mb-3">
                                     <Button type="primary">
