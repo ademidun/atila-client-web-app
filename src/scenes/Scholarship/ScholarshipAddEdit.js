@@ -268,7 +268,7 @@ class ScholarshipAddEdit extends React.Component{
         ScholarshipsAPI.getSlug(slug)
             .then(res => {
                 const scholarship = ScholarshipsAPI.cleanScholarship(res.data.scholarship);
-                const awards = ScholarshipsAPI.cleanAwards(res.data.awards);
+                const awards = res.data.awards;
                 if (!scholarship.is_editable) {
                     this.disableScholarshipInputs();
                 }
@@ -496,7 +496,7 @@ class ScholarshipAddEdit extends React.Component{
                     toastNotify(successMessage, 'info', {position: 'bottom-right'});
                 }
 
-                const awards = ScholarshipsAPI.cleanAwards(res.data.awards)
+                const awards = res.data.awards;
                 this.setState({isAddScholarshipMode: false, awards});
             })
             .catch(err=> {
@@ -609,7 +609,7 @@ class ScholarshipAddEdit extends React.Component{
 
         let funding_amount = 0;
 
-        awards.forEach(award => funding_amount += award.funding_amount)
+        awards.forEach(award => funding_amount += Number.parseInt(award.funding_amount))
 
         const renderAwards = awards.map((award, index) => (
             <div key={index}>
@@ -620,6 +620,7 @@ class ScholarshipAddEdit extends React.Component{
                              style={{width: "30%"}}
                              formatter={value => `$ ${value}`}
                              keyboard={false}
+                             stringMode={true}
                 />
 
                 {index > 0 &&

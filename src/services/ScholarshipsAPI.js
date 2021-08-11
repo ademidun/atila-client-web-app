@@ -119,18 +119,6 @@ class ScholarshipsAPI {
         return newScholarship;
     };
 
-    static cleanAwards = (awards) => {
-        // Change the funding amount from a string to a number
-        // "200.00" => 200
-
-        return awards.map(award => {
-            return {
-                ...award,
-                funding_amount: Number.parseInt(award.funding_amount)
-            }
-        })
-    }
-
     static getApplications = (id) => {
 
         const apiCompletionPromise = request({
