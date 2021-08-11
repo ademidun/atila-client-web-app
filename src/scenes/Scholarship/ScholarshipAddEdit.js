@@ -605,7 +605,7 @@ class ScholarshipAddEdit extends React.Component{
     }
 
     awardsPage = () => {
-        const { scholarship, awards } = this.state;
+        const { awards } = this.state;
 
         let funding_amount = 0;
 
