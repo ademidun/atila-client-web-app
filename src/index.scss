@@ -152,6 +152,14 @@ label {
 }
 
 .content-detail {
+
+  line-height: 2.5rem;
+  font-size: 20px;
+
+  h3, h4, h5, h6 {
+    color: #63625E;
+  }
+
   word-break: break-word;
   h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     top: 0.5rem;
@@ -159,10 +167,7 @@ label {
     font-weight: 700;
     line-height: 1.5;
   }
-  p, a {
-    line-height: 2.5rem;
-    font-size: 20px;
-  }
+  
   img {
     max-width: 100%;
   }

@@ -400,13 +400,14 @@ class ScholarshipDetail extends React.Component {
                                     </div>
                                 </React.Fragment>
                             }
-                            <p className="font-weight-bold">
+
+                            <div className="font-weight-bold">
                                 <ScholarshipDeadlineWithTags scholarship={scholarship} addDeadlineToCalendar={true} />
                                 <br/>
                                 <ReportIncorrectInfo scholarship={scholarship} />
                                 <br/>
                                 Amount: {fundingString}
-                            </p>
+                            </div>
                             {scholarship.is_atila_direct_application  && !isScholarshipDeadlinePassed &&
                                 <div className="mb-3">
                                     <Button type="primary">

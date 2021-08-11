@@ -7,6 +7,7 @@ import {
     transformProfileQuestionsToApplicationForm,
     transformScholarshipQuestionsToApplicationForm
 } from "../Application/ApplicationUtils";
+import ApplicationWordCountExplainer from '../Application/ApplicationWordCountExplainer';
 
 class ScholarshipViewQuestions extends React.Component {
     constructor(props) {
@@ -73,6 +74,7 @@ class ScholarshipViewQuestions extends React.Component {
                              inputConfigs={userProfileQuestionsFormConfig} />
                 <br />
                 <h3>Scholarship Questions </h3>
+                <ApplicationWordCountExplainer />
                 <FormDynamic onUpdateForm={() => {}}
                              model={{}}
                              inputConfigs={scholarshipQuestionsFormConfig}

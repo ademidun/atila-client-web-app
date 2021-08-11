@@ -10,6 +10,7 @@ import "./FormDynamicInput.scss";
 import FileInput from "./FileInput";
 import {emojiDictionary} from "../../models/Constants";
 import moment from "moment";
+import FormInputConstants from "../../models/FormInputConstants";
 
 const { Option } = Select;
 
@@ -222,6 +223,7 @@ function FormDynamicInput({model, onUpdateForm, inputConfig, loggedInUserProfile
                         editor={InlineEditor}
                         disabled={disabled}
                         data={modelValue}
+                        config={FormInputConstants.editorConfig}
                         onChange={ (event, editor) => editorChange(event, editor, keyName, onUpdateForm) }
                     />
                 </div>
