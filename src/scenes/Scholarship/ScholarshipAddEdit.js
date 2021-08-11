@@ -105,13 +105,6 @@ let scholarshipFormConfigsPage1 = [
         placeholder: 'Scholarship Image URL',
         type: 'image',
     },
-
-    // {
-    //     keyName: 'number_available_scholarships',
-    //     placeholder: 'Number of Available Scholarships',
-    //     type: 'number',
-    // },
-
     {
         keyName: 'deadline',
         type: 'datepicker',
@@ -680,7 +673,7 @@ class ScholarshipAddEdit extends React.Component{
         ];
 
         if (!is_atila_direct_application) {
-            scholarshipEditPages = scholarshipEditPages.slice(0,2)
+            scholarshipEditPages = scholarshipEditPages.slice(0,3)
         }
 
         const scholarshipSteps = (
