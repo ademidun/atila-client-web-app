@@ -385,13 +385,7 @@ class ScholarshipAddEdit extends React.Component{
             locationData.push(newLocation);
             this.setState({locationData});
 
-            if (autoSaveTimeoutId) {
-                clearTimeout(autoSaveTimeoutId);
-            }
-            autoSaveTimeoutId = setTimeout(() => {
-                // Runs 1 second (1000 ms) after the last change
-                this.autoSaveScholarship();
-            }, 1000);
+            this.autoSaveAfterDelay()
             return;
 
         }
@@ -431,16 +425,20 @@ class ScholarshipAddEdit extends React.Component{
 
     };
 
+    autoSaveAfterDelay = () => {
+        if (autoSaveTimeoutId) {
+            clearTimeout(autoSaveTimeoutId);
+        }
+        autoSaveTimeoutId = setTimeout(() => {
+            // Runs 1 second (1000 ms) after the last change
+            this.autoSaveScholarship();
+        }, 1000);
+    }
+
     updateScholarship = (scholarship, isAutoSaving = true) => {
         this.setState({scholarship}, () => {
             if (isAutoSaving) {
-                if (autoSaveTimeoutId) {
-                    clearTimeout(autoSaveTimeoutId);
-                }
-                autoSaveTimeoutId = setTimeout(() => {
-                    // Runs 1 second (1000 ms) after the last change
-                    this.autoSaveScholarship();
-                }, 1000);
+                this.autoSaveAfterDelay()
             }
         })
     };
@@ -456,8 +454,6 @@ class ScholarshipAddEdit extends React.Component{
         if (!isAddScholarshipMode) {
             this.submitForm({});
         }
-
-
     };
 
     submitForm = (event) => {
@@ -586,20 +582,26 @@ class ScholarshipAddEdit extends React.Component{
     changeAward = (newValue, index) => {
         let newAwards = this.state.awards.slice()
         newAwards[index].funding_amount = newValue
-        this.setState({awards: newAwards})
+        this.setState({awards: newAwards}, ()=> {
+            this.autoSaveAfterDelay()
+        })
     }
 
     removeAward = (index) => {
         let newAwards = this.state.awards.slice()
         newAwards.splice(index, 1)
-        this.setState({awards: newAwards})
+        this.setState({awards: newAwards}, ()=> {
+            this.autoSaveAfterDelay()
+        })
     }
 
     addAward = () => {
         let newAwards = this.state.awards.slice()
         let newAward = Object.assign({}, AwardGeneral)
         newAwards.push(newAward)
-        this.setState({awards: newAwards})
+        this.setState({awards: newAwards}, ()=> {
+            this.autoSaveAfterDelay()
+        })
     }
 
     awardsPage = () => {
