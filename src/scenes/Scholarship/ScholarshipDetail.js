@@ -232,7 +232,7 @@ class ScholarshipDetail extends React.Component {
             applyToScholarshipButton = null;
         } else if (!userProfile) {
             applyToScholarshipButton = (<Button type="primary" size="large"
-                className="mt-3" style={{ fontSize: "20px", width: "300px" }}
+                className="mt-3" style={{ fontSize: "18px", width: "300px", height: "100px" }}
                 disabled={isLoadingApplication}>
                 <Link to={`/register?redirect=${pathname}&applyNow=1`}>
                     Apply Now
@@ -240,7 +240,7 @@ class ScholarshipDetail extends React.Component {
             </Button>)
         } else {
             applyToScholarshipButton = (<Button type="primary" size="large"
-                className="mt-3" style={{ fontSize: "20px", width: "300px" }}
+                className="mt-3" style={{ fontSize: "18px", width: "300px", height: "100px"}}
                 onClick={this.getOrCreateApplication}
                 disabled={isLoadingApplication}>
                 {isLoadingApplication ? "Checking for existing Application..." : "Apply Now"}
@@ -327,13 +327,13 @@ class ScholarshipDetail extends React.Component {
                                 <React.Fragment>
 
                                     <Button size="large"
-                                        className="mt-3" style={{ fontSize: "20px", width: "300px" }}>
+                                        className="mt-3" style={{ fontSize: "20px", width: "300px"}}>
                                         <a href={scholarship_url}
                                             target="_blank"
                                             rel='noopener noreferrer'>
                                             Visit Scholarship Website
                                         </a>
-                                    </Button><br />
+                                    </Button><br /><br/>
 
                                 </React.Fragment>}
                             {form_url && !scholarship.is_atila_direct_application &&
@@ -368,8 +368,8 @@ class ScholarshipDetail extends React.Component {
 
                                     <React.Fragment>
 
-                                        <Button size="large"
-                                            className="mt-3" style={{ fontSize: "20px", width: "300px" }}>
+                                        <Button size="small"
+                                            className="mt-3" style={{ fontSize: "18px", width: "400px", height: "100px"}}>
                                             <Link to={`/scholarship/${slug}/questions`}>
                                                 View Application Form
                                             </Link>
@@ -378,8 +378,8 @@ class ScholarshipDetail extends React.Component {
                                     </React.Fragment>
                                     {scholarship.learn_more_url &&
                                         <React.Fragment>
-                                            <Button size="large"
-                                                className="mt-3" style={{ fontSize: "20px", width: "300px" }}>
+                                            <Button size="small"
+                                                className="mt-3" style={{ fontSize: "18px", width: "400px", height: "100px"}}>
                                                 <a href={scholarship.learn_more_url}
                                                     target="_blank"
                                                     rel='noopener noreferrer'>
@@ -399,6 +399,7 @@ class ScholarshipDetail extends React.Component {
                             }
                             {!scholarship.is_atila_direct_application && <ScholarshipShareSaveButtons scholarship={scholarship} />}
                             <br></br>
+                            {scholarship.reddit_url && redditUrlComponent}
 
                             {
                                 scholarshipUserProfile &&
@@ -459,7 +460,6 @@ class ScholarshipDetail extends React.Component {
                             {/*todo find a way to secure against XSS: https://stackoverflow.com/a/19277723*/}
                             <hr />
                             <div dangerouslySetInnerHTML={{ __html: criteria_info }} />
-                            {scholarship.reddit_url && redditUrlComponent}
                         </div>
                         <RelatedItems
                             className="col-md-4"
