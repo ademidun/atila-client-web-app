@@ -492,10 +492,7 @@ export function addStyleClasstoTables(parentSelector) {
     $(tableSelectors).each(function() {
 
         element = $(this);
-
-        if(element[0].localName === "table") {
-            element.addClass(`table table-striped`)
-        } 
+        element.addClass(`table table-striped`)
     });
 
 }
