@@ -222,7 +222,7 @@ class ScholarshipAddEdit extends React.Component{
             scholarshipPostError: null,
             isLoadingScholarship: true,
             errorLoadingScholarship: false,
-            pageNumber: 1,
+            pageNumber: 0,
             locationData: [],
             /**
              * When CkEditor loads for the first time, it calls onChange inside the <CkEditor> component
@@ -531,10 +531,107 @@ class ScholarshipAddEdit extends React.Component{
         this.setState({locationData});
     };
 
+    basicInfoPage = () => {
+        const { scholarship, scholarshipPostError } = this.state;
+        const { userProfile } = this.props;
+
+        return (
+            <div className="my-3">
+                <FormDynamic model={scholarship}
+                             loggedInUserProfile={userProfile}
+                             inputConfigs={scholarshipFormConfigsPage1}
+                             onUpdateForm={this.updateForm}
+                             formError={scholarshipPostError}
+                             onSubmit={this.submitForm}/>
+            </div>
+        )
+    }
+
+    eligibilityPage = () => {
+        const { scholarship, locationData, scholarshipPostError } = this.state;
+
+        return (
+            <div className="my-3 scholarship-eligibility-questions">
+                <h6>Leave blank for each criteria that is open to any</h6>
+                {locationData && locationData.length > 0 &&
+                <div>
+                    <h3 >Locations</h3>
+                    <table className="table">
+                        <thead>
+                        <tr>
+                            {['city','province','country'].map(location =>
+                                <th key={location}>{prettifyKeys(location)}</th>)
+                            }
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {locationData.map((locationItem, index) => <tr key={index}>
+                                {['city','province','country'].map(location =>
+                                    <td key={location}>{locationItem[location]}</td>
+                                )}
+                                <td>
+                                    <button className="btn btn-outline-primary"
+                                            onClick={()=> this.removeLocationData(index)}>
+                                        <FontAwesomeIcon icon={faTrash} />
+                                    </button>
+                                </td>
+                            </tr>
+                        )}
+                        </tbody>
+                    </table>
+                </div>
+                }
+                <FormDynamic model={scholarship}
+                             inputConfigs={scholarshipFormConfigsPage2}
+                             onUpdateForm={this.updateForm}
+                             formError={scholarshipPostError}
+                             onSubmit={this.submitForm}
+                />
+
+            </div>)
+    }
+
+    awardsPage = () => {
+        return (
+            <div className={"my-2"}>
+
+            </div>
+        )
+    }
+
+    specificQuestionsPage = () => {
+        const { scholarship } = this.state;
+
+        return (
+            <div className="mt-3 mb-5 scholarship-specific-questions">
+                <h3>User Profile Questions</h3>
+                <ScholarshipUserProfileQuestionBuilder scholarship={scholarship}
+                                                       onUpdate={this.updateForm} />
+                <hr/>
+                <h3>Scholarship Specific Questions</h3>
+                <ScholarshipQuestionBuilder scholarship={scholarship}
+                                            onUpdate={this.updateForm} />
+            </div>
+        )
+    }
+
+    fundingPage = () => {
+        const { scholarship, contributor } = this.state;
+
+        return (
+            <div className="my-3">
+                <PaymentSend scholarship={scholarship}
+                             onFundingComplete={this.onFundingComplete}
+                             contributor={contributor}
+                             contributorFundingAmount={Number.parseInt(scholarship.funding_amount)} />
+            </div>
+        )
+    }
+
     render() {
 
-        const { scholarship, isAddScholarshipMode, scholarshipPostError,
-            isLoadingScholarship, pageNumber, locationData, errorLoadingScholarship, contributor } = this.state;
+        const { scholarship, isAddScholarshipMode, isLoadingScholarship,
+            pageNumber, errorLoadingScholarship } = this.state;
         const { userProfile } = this.props;
 
         if (errorLoadingScholarship) {
@@ -557,27 +654,50 @@ class ScholarshipAddEdit extends React.Component{
         let scholarshipEditPages = [
             {
                 title: 'Basic Info',
+                render: this.basicInfoPage,
             },
             {
                 title: 'Eligibility',
+                render: this.eligibilityPage,
+            },
+            {
+                title: 'Awards',
+                render: this.awardsPage,
             },
             {
                 title: 'Specific Questions',
+                render: this.specificQuestionsPage,
             },
             {
                 title: 'Funding',
+                render: this.fundingPage,
             },
         ];
-        scholarshipEditPages = scholarshipEditPages.slice(0, is_atila_direct_application ? scholarshipEditPages.length : 2);
 
-        const scholarshipSteps = (<Steps current={pageNumber-1} onChange={(current) => this.changePage(current+1)}>
-            { scholarshipEditPages.map(item => (
-                <Step key={item.title} title={item.title} />
-            ))}
-        </Steps>);
+        if (!is_atila_direct_application) {
+            scholarshipEditPages = scholarshipEditPages.slice(0,2)
+        }
+
+        const scholarshipSteps = (
+            <Steps current={pageNumber} onChange={current => this.changePage(current)}>
+                { scholarshipEditPages.map(item => (
+                    <Step key={item.title} title={item.title} />
+                ))}
+            </Steps>);
 
         const title = isAddScholarshipMode ? 'Add Scholarship' : 'Edit Scholarship';
         const helmetTitle = `${title}${scholarship? ": " + scholarship.name : ""}`;
+
+        const navigationButtons = (
+            <div className="my-2" style={{clear: 'both'}}>
+                {pageNumber < scholarshipEditPages.length - 1 &&
+                <button className="btn btn-outline-primary float-right col-md-6"
+                        onClick={() => this.changePage(pageNumber+1)}>Next</button>}
+                {pageNumber > 0 &&
+                <button className="btn btn-outline-primary float-left col-md-6"
+                        onClick={() => this.changePage(pageNumber-1)}>Prev</button>}
+            </div>)
+
         return (
             <div className="ScholarshipAddEdit">
                 <Helmet>
@@ -604,82 +724,10 @@ class ScholarshipAddEdit extends React.Component{
                             </span> Warning, you must be logged in to add a scholarship
                         </h4>
                         }
-                        {pageNumber === 1 &&
-                        <div className="my-3">
-                            <FormDynamic model={scholarship}
-                                         loggedInUserProfile={userProfile}
-                                         inputConfigs={scholarshipFormConfigsPage1}
-                                         onUpdateForm={this.updateForm}
-                                         formError={scholarshipPostError}
-                                         onSubmit={this.submitForm}/>
-                        </div>
-                        }
-                        {pageNumber === 2 &&
-                        <div className="my-3 scholarship-eligibility-questions">
-                            <h6>Leave blank for each criteria that is open to any</h6>
-                                {locationData && locationData.length > 0 &&
-                                <div>
-                                    <h3 >Locations</h3>
-                                    <table className="table">
-                                        <thead>
-                                        <tr>
-                                            {['city','province','country'].map(location =>
-                                                <th key={location}>{prettifyKeys(location)}</th>)
-                                            }
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {locationData.map((locationItem, index) => <tr key={index}>
-                                                {['city','province','country'].map(location =>
-                                                    <td key={location}>{locationItem[location]}</td>
-                                                )}
-                                                <td>
-                                                    <button className="btn btn-outline-primary"
-                                                            onClick={()=> this.removeLocationData(index)}>
-                                                        <FontAwesomeIcon icon={faTrash} />
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        )}
-                                        </tbody>
-                                    </table>
-                                </div>
 
-                                }
-                                <FormDynamic model={scholarship}
-                                             inputConfigs={scholarshipFormConfigsPage2}
-                                             onUpdateForm={this.updateForm}
-                                             formError={scholarshipPostError}
-                                             onSubmit={this.submitForm}
-                                />
+                        {scholarshipEditPages[pageNumber].render()}
 
-                        </div>}
-                        {pageNumber === 3 &&
-                        <div className="mt-3 mb-5 scholarship-specific-questions">
-                            <h3>User Profile Questions</h3>
-                                <ScholarshipUserProfileQuestionBuilder scholarship={scholarship}
-                                                                       onUpdate={this.updateForm} />
-                                <hr/>
-                            <h3>Scholarship Specific Questions</h3>
-                                <ScholarshipQuestionBuilder scholarship={scholarship}
-                                                            onUpdate={this.updateForm} />
-                        </div>}
-                        {pageNumber === 4 &&
-                        <div className="my-3">
-                            <PaymentSend scholarship={scholarship}
-                                         onFundingComplete={this.onFundingComplete}
-                                         contributor={contributor}
-                                         contributorFundingAmount={Number.parseInt(scholarship.funding_amount)} />
-                        </div>
-                        }
-                        <div className="my-2" style={{clear: 'both'}}>
-                            {pageNumber < scholarshipEditPages.length &&
-                            <button className="btn btn-outline-primary float-right col-md-6"
-                                    onClick={() => this.changePage(pageNumber+1)}>Next</button>}
-                            {pageNumber > 1 &&
-                            <button className="btn btn-outline-primary float-left col-md-6"
-                                    onClick={() => this.changePage(pageNumber-1)}>Prev</button>}
-                        </div>
+                        {navigationButtons}
                         <hr/>
 
                         {scholarshipSteps}
