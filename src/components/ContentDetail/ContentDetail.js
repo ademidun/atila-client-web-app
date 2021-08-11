@@ -10,6 +10,7 @@ import AnalyticsService from "../../services/AnalyticsService";
 import HelmetSeo from "../HelmetSeo";
 import {
     createTableOfContents,
+    addStyleClasstoTables,
     genericItemTransform,
     guestPageViewsIncrement,
     scrollToElement,
@@ -69,6 +70,7 @@ class ContentDetail extends React.Component {
                 const content = res.data.blog || res.data.essay;
                 this.setState({content}, () => {
 
+                    addStyleClasstoTables(".content-detail");
                     createTableOfContents(".content-detail");
                     if (location && location.hash) {
                         scrollToElement(location.hash);
