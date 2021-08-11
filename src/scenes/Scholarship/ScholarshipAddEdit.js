@@ -780,11 +780,12 @@ class ScholarshipAddEdit extends React.Component{
 
                         {!isAddScholarshipMode && updatedAtDate }
                         {isAddScholarshipMode &&
-                            <button type="submit"
-                                    className="btn btn-primary col-12 mt-2"
-                                    onClick={this.submitForm}>
+                            <Button onClick={this.submitForm}
+                                    type={"primary"}
+                                    size={"large"}
+                            >
                                 Save
-                            </button>
+                            </Button>
                         }
                         {!scholarship.published && scholarship.is_atila_direct_application &&
                         <p className="text-muted center-block">
