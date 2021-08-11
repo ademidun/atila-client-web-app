@@ -485,7 +485,8 @@ class ScholarshipAddEdit extends React.Component{
                 }
 
                 if (isAddScholarshipMode) {
-                    this.setState({ scholarship: savedScholarship });
+                    const awards = res.data.awards;
+                    this.setState({ scholarship: savedScholarship, awards });
                     const successMessage = (<p>
                         <span role="img" aria-label="happy face emoji">🙂</span>
                         Successfully saved {' '}
@@ -496,8 +497,7 @@ class ScholarshipAddEdit extends React.Component{
                     toastNotify(successMessage, 'info', {position: 'bottom-right'});
                 }
 
-                const awards = res.data.awards;
-                this.setState({isAddScholarshipMode: false, awards});
+                this.setState({isAddScholarshipMode: false});
             })
             .catch(err=> {
                 console.log({err});
@@ -605,11 +605,8 @@ class ScholarshipAddEdit extends React.Component{
     }
 
     awardsPage = () => {
-        const { awards } = this.state;
-
-        let funding_amount = 0;
-
-        awards.forEach(award => funding_amount += Number.parseInt(award.funding_amount))
+        // This should be moved into a separate component like AwardAddEdit.
+        const { scholarship, awards } = this.state;
 
         const renderAwards = awards.map((award, index) => (
             <div key={index}>
@@ -635,7 +632,7 @@ class ScholarshipAddEdit extends React.Component{
 
         return (
             <div className={"my-3"}>
-                <h5>Total Funding Amount: ${funding_amount}</h5>
+                <h5>Total Funding Amount: ${scholarship.funding_amount}</h5>
                 <br />
                 {renderAwards}
                 <br />
