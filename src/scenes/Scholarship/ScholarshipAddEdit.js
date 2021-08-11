@@ -108,6 +108,7 @@ let scholarshipFormConfigsPage1 = [
         keyName: 'funding_amount',
         placeholder: 'Funding Amount 💵',
         type: 'number',
+        isHidden: (scholarship) => (scholarship.is_atila_direct_application),
     },
 
     // {
