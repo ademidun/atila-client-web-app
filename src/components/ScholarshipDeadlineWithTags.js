@@ -17,8 +17,6 @@ function AddDeadlineToCalendar({scholarship}) {
     };
 
     const gCalUrl = google(event)
-    console.log("HERE")
-    console.log(ics(event))
 
     return (
         <div>
