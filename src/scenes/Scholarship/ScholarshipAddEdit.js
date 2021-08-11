@@ -19,6 +19,7 @@ import {Steps, Tag} from "antd";
 import ScholarshipQuestionBuilder, {ScholarshipUserProfileQuestionBuilder} from "./ScholarshipQuestionBuilder";
 import PaymentSend from "../Payment/PaymentSend/PaymentSend";
 import Environment from "../../services/Environment";
+import {AwardGeneral} from "../../models/Award";
 const { Step } = Steps;
 
 
@@ -103,12 +104,6 @@ let scholarshipFormConfigsPage1 = [
         keyName: 'img_url',
         placeholder: 'Scholarship Image URL',
         type: 'image',
-    },
-    {
-        keyName: 'funding_amount',
-        placeholder: 'Funding Amount 💵',
-        type: 'number',
-        isHidden: (scholarship) => (scholarship.is_atila_direct_application),
     },
 
     // {
@@ -225,6 +220,7 @@ class ScholarshipAddEdit extends React.Component{
             errorLoadingScholarship: false,
             pageNumber: 0,
             locationData: [],
+            awards: [Object.assign({}, AwardGeneral)],
             /**
              * When CkEditor loads for the first time, it calls onChange inside the <CkEditor> component
              * and fires onChange inside ScholarshipAddEdit.updateForm
@@ -593,8 +589,16 @@ class ScholarshipAddEdit extends React.Component{
     }
 
     awardsPage = () => {
+        const { scholarship, awards } = this.state;
+
+        let funding_amount = 0;
+
+        awards.forEach(award => funding_amount += award.funding_amount)
+
         return (
             <div className={"my-2"}>
+                <h5>Total Funding Amount: ${funding_amount}</h5>
+
 
             </div>
         )
