@@ -486,8 +486,7 @@ class ScholarshipAddEdit extends React.Component{
                 }
 
                 if (isAddScholarshipMode) {
-                    const awards = res.data.awards;
-                    this.setState({ scholarship: savedScholarship, awards });
+                    this.setState({ scholarship: savedScholarship });
                     const successMessage = (<p>
                         <span role="img" aria-label="happy face emoji">🙂</span>
                         Successfully saved {' '}
@@ -497,8 +496,8 @@ class ScholarshipAddEdit extends React.Component{
                     </p>);
                     toastNotify(successMessage, 'info', {position: 'bottom-right'});
                 }
-
-                this.setState({isAddScholarshipMode: false});
+                const awards = res.data.awards;
+                this.setState({isAddScholarshipMode: false, awards});
             })
             .catch(err=> {
                 console.log({err});
