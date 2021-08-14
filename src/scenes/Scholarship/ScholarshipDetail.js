@@ -13,7 +13,7 @@ import ApplicationsAPI from "../../services/ApplicationsAPI";
 import AtilaPointsPaywallModal from "../../components/AtilaPointsPaywallModal";
 import ScholarshipExtraCriteria from "./ScholarshipExtraCriteria";
 import ScholarshipDeadlineWithTags from "../../components/ScholarshipDeadlineWithTags";
-import { Alert, Button, message } from 'antd';
+import { Alert, Button, message, Tag } from 'antd';
 import verifiedBadge from '../../components/assets/verified.png';
 import { AtilaDirectApplicationsPopover, BlindApplicationsExplanationMessage, ReferralBonusScholarshipExplanationMessage } from "../../models/Scholarship";
 import ScholarshipFinalists, { UserProfilesCards } from "./ScholarshipFinalists";
@@ -398,7 +398,7 @@ class ScholarshipDetail extends React.Component {
                                         {scholarship && <ApplicationsLocal scholarship={scholarship} />}
                                         {scholarship.is_blind_applications && <BlindApplicationsExplanationMessage />}
                                         {scholarship.is_referral_bonus_eligible && <ReferralBonusScholarshipExplanationMessage />}
-                                        { redditUrlComponent}
+                                        {scholarship.reddit_url && redditUrlComponent}
                                     </div>
 
                                 </div>
@@ -408,8 +408,8 @@ class ScholarshipDetail extends React.Component {
                             {
                                 scholarshipUserProfile &&
                                 <React.Fragment>
-                                    Added by:
-                                    <div className="bg-light mb-3 p-1" style={{ width: '250px' }}>
+                                    <div className="font-weight-bold">Added by:</div>
+                                    <div className="bg-light mb-3 p-1" style={{ width: '500px' }}>
                                         <Link to={`/profile/${scholarshipUserProfile.username}`} >
                                             <img
                                                 alt="user profile"
@@ -417,7 +417,8 @@ class ScholarshipDetail extends React.Component {
                                                 className="rounded-circle py-1 pr-1"
                                                 src={scholarshipUserProfile.profile_pic_url} />
                                             {scholarshipUserProfile.first_name} {scholarshipUserProfile.last_name}
-                                        </Link>
+                                        </Link>&nbsp;
+                                        {scholarship.is_owner && <Tag color="green">{' '}Creator</Tag>}
                                     </div>
                                 </React.Fragment>
                             }
@@ -439,7 +440,7 @@ class ScholarshipDetail extends React.Component {
                                 </div>
                             }
 
-                            {contributors && contributors.length > 0 &&
+                            {contributors && contributors.length > 1 &&
                                 <div>
                                     <h3 className="text-left">Contributors</h3>
                                     <UserProfilesCards userProfiles={contributors} userKey="id" />

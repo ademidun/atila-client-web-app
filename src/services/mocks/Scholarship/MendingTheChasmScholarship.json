@@ -34,6 +34,7 @@
         "is_funded": true,
         "is_editable": false,
         "is_not_available": false,
+        "is_owner":true,
         "is_payment_accepted": false,
         "is_winner_selected": false,
         "keywords": "East-Asian Indigenous Black South-Asian Latino Middle Eastern Visible Minority female international student",
@@ -56,7 +57,7 @@
             "first_name": "Leena",
             "last_name": "Sharma Seth",
             "username": "MendingtheChasm",
-            "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-7.appspot.com/o/user-profiles%2Fgeneral-data%2Fdefault-profile-pic.png?alt=media&token=455c59f7-3a05-43f1-a79e-89abff1eae57"
+            "profile_pic_url": "https://imgur.com/XJcYU8H.jpg"
         },
         "province": [],
         "published": true,
@@ -125,7 +126,63 @@
             "last_name": "Sharma Seth",
             "funding_amount": "500.00",
             "date_created": "2021-08-04T18:09:41.006316Z",
-            "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-7.appspot.com/o/user-profiles%2Fgeneral-data%2Fdefault-profile-pic.png?alt=media&token=455c59f7-3a05-43f1-a79e-89abff1eae57",
+            "profile_pic_url": "https://imgur.com/XJcYU8H.jpg",
+            "funding_confirmation_image_url": "https://hcti.io/v1/image/4c37867c-69e0-46f4-9d71-db30e160a71c"
+        },
+        {
+            "id": "w1hwlojfm8xjcqo5",
+            "scholarship": {
+                "name": "Mending the Chasm Scholarship",
+                "description": "My firm would like to support student leaders who embody and are actively are working to advance inclusive, equitable and anti-racist principles postures, and practices that result in community and organizational cultures that espouse these values.",
+                "slug": "mending-the-chasm-scholarship-njckdg0l",
+                "id": 901,
+                "img_url": "https://firebasestorage.googleapis.com/v0/b/atila-prod.appspot.com/o/user-uploads%2Fscholarship-images%2F5gyo5qv5-Logo_V_PNG.png?alt=media&token=1e4b022d-59e8-4168-a345-a4c21e6090d7",
+                "deadline": "2021-11-08T04:59:00Z",
+                "funding_amount": "500.00",
+                "metadata": {
+                    "base_score": 0
+                },
+                "open_date": "2022-12-31",
+                "date_time_created": "2021-08-04T18:08:47.722372Z",
+                "is_atila_direct_application": true
+            },
+            "username": "MendingtheChasm",
+            "is_anonymous": false,
+            "is_owner": false,
+            "first_name": "Leena",
+            "referred_by": "tomiwa",
+            "last_name": "Sharma Seth",
+            "funding_amount": "0.00",
+            "date_created": "2021-08-04T18:09:41.006316Z",
+            "profile_pic_url": "https://imgur.com/gxUxmXj.jpg",
+            "funding_confirmation_image_url": "https://hcti.io/v1/image/4c37867c-69e0-46f4-9d71-db30e160a71c"
+        },
+        {
+            "id": "w1hwlojfm8xjcqo5",
+            "scholarship": {
+                "name": "Mending the Chasm Scholarship",
+                "description": "My firm would like to support student leaders who embody and are actively are working to advance inclusive, equitable and anti-racist principles postures, and practices that result in community and organizational cultures that espouse these values.",
+                "slug": "mending-the-chasm-scholarship-njckdg0l",
+                "id": 901,
+                "img_url": "https://firebasestorage.googleapis.com/v0/b/atila-prod.appspot.com/o/user-uploads%2Fscholarship-images%2F5gyo5qv5-Logo_V_PNG.png?alt=media&token=1e4b022d-59e8-4168-a345-a4c21e6090d7",
+                "deadline": "2021-11-08T04:59:00Z",
+                "funding_amount": "500.00",
+                "metadata": {
+                    "base_score": 0
+                },
+                "open_date": "2022-12-31",
+                "date_time_created": "2021-08-04T18:08:47.722372Z",
+                "is_atila_direct_application": true
+            },
+            "username": "MendingtheChasm",
+            "is_anonymous": false,
+            "is_owner": false,
+            "first_name": "Leena",
+            "referred_by": "tomiwa",
+            "last_name": "Sharma Seth",
+            "funding_amount": "0.00",
+            "date_created": "2021-08-04T18:09:41.006316Z",
+            "profile_pic_url": "https://imgur.com/Lfy6F9V.jpg",
             "funding_confirmation_image_url": "https://hcti.io/v1/image/4c37867c-69e0-46f4-9d71-db30e160a71c"
         }
     ]
