@@ -86,7 +86,8 @@ let scholarshipFormConfigsPage1 = [
         keyName: 'learn_more_title',
         placeholder: 'Title for the url: e.g. Learn more about Skateboards for Hope',
         type: 'text',
-        isHidden: (scholarship) => (!scholarship.is_atila_direct_application),
+        isHidden: (scholarship) => (!scholarship.is_atila_direct_application ||
+                                    scholarship.learn_more_url.length === 0),
     },
     {
         keyName: 'scholarship_url',
@@ -531,6 +532,7 @@ class ScholarshipAddEdit extends React.Component{
                              onUpdateForm={this.updateForm}
                              formError={scholarshipPostError}
                              onSubmit={this.submitForm}/>
+                {this.awardsPage()}
             </div>
         )
     }
@@ -711,13 +713,13 @@ class ScholarshipAddEdit extends React.Component{
                 title: 'Basic Info',
                 render: this.basicInfoPage,
             },
+            // {
+            //     title: 'Awards',
+            //     render: this.awardsPage,
+            // },
             {
                 title: 'Eligibility',
                 render: this.eligibilityPage,
-            },
-            {
-                title: 'Awards',
-                render: this.awardsPage,
             },
             {
                 title: 'Specific Questions',
