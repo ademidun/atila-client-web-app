@@ -34,7 +34,6 @@
         "is_funded": true,
         "is_editable": false,
         "is_not_available": false,
-        "is_owner":true,
         "is_payment_accepted": false,
         "is_winner_selected": false,
         "keywords": "East-Asian Indigenous Black South-Asian Latino Middle Eastern Visible Minority female international student",
@@ -57,7 +56,7 @@
             "first_name": "Leena",
             "last_name": "Sharma Seth",
             "username": "MendingtheChasm",
-            "profile_pic_url": "https://imgur.com/XJcYU8H.jpg"
+            "profile_pic_url": "https://imgur.com/BlSV9Dm.jpg"
         },
         "province": [],
         "published": true,
@@ -126,7 +125,7 @@
             "last_name": "Sharma Seth",
             "funding_amount": "500.00",
             "date_created": "2021-08-04T18:09:41.006316Z",
-            "profile_pic_url": "https://imgur.com/XJcYU8H.jpg",
+            "profile_pic_url": "https://imgur.com/BlSV9Dm.jpg",
             "funding_confirmation_image_url": "https://hcti.io/v1/image/4c37867c-69e0-46f4-9d71-db30e160a71c"
         },
         {
@@ -154,7 +153,7 @@
             "last_name": "Sharma Seth",
             "funding_amount": "0.00",
             "date_created": "2021-08-04T18:09:41.006316Z",
-            "profile_pic_url": "https://imgur.com/gxUxmXj.jpg",
+            "profile_pic_url": "https://imgur.com/c5IReZI.jpg",
             "funding_confirmation_image_url": "https://hcti.io/v1/image/4c37867c-69e0-46f4-9d71-db30e160a71c"
         },
         {

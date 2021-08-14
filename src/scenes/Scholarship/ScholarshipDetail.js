@@ -418,7 +418,7 @@ class ScholarshipDetail extends React.Component {
                                                 src={scholarshipUserProfile.profile_pic_url} />
                                             {scholarshipUserProfile.first_name} {scholarshipUserProfile.last_name}
                                         </Link>&nbsp;
-                                        {scholarship.is_owner && <Tag color="green">{' '}Creator</Tag>}
+                                        {contributors.is_owner === scholarshipUserProfile.is_owner && <Tag color="green">{' '}Creator</Tag>}
                                     </div>
                                 </React.Fragment>
                             }
