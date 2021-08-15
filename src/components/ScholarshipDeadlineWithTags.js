@@ -1,90 +1,14 @@
 import React from "react";
 import PropTypes from 'prop-types';
 import moment from "moment";
-import {Tag, Radio, Space} from "antd";
+import {Tag} from "antd";
 import {ScholarshipPropType} from "../models/Scholarship";
-import { google, outlook, office365, yahoo } from "calendar-link";
-import Environment from "../services/Environment";
-import ButtonModal from "./ButtonModal";
-import {openInNewTab} from "../services/utils";
+import AddDeadlineToCalendar from "./AddDeadlineToCalendar";
 
 const todayMoment = moment(Date.now());
 
 const DEFAULT_DEADLINE = "2022-01-01";
 const DEFAULT_OPEN_DATE = "2022-12-31";
-
-class AddDeadlineToCalendar extends React.Component {
-    constructor(props) {
-        super(props);
-
-        const { scholarship } = this.props;
-
-        const event = {
-            title: `Deadline for ${scholarship.name}`,
-            description: `View Scholarship: ${Environment.clientUrl}/scholarship/${scholarship.slug}`,
-            start: scholarship.deadline,
-            end: scholarship.deadline,
-        };
-
-        const gCalUrl = google(event)
-        const outlookUrl = outlook(event)
-        const officeUrl = office365(event)
-        const yahooUrl = yahoo(event)
-
-        this.allCalendars = [
-            {title: "Google Calendar", url: gCalUrl},
-            {title: "Outlook Calendar", url: outlookUrl},
-            {title: "Office365 Calendar", url: officeUrl},
-            {title: "Yahoo Calendar", url: yahooUrl},
-        ]
-
-        this.state = {
-            calendarIndex: 0,
-        }
-    }
-
-    onRadioChange = event => {
-        this.setState({calendarIndex: event.target.value})
-    }
-
-    saveDeadline = () => {
-        const { calendarIndex } = this.state;
-        const url = this.allCalendars[calendarIndex].url
-        openInNewTab(url)
-    }
-
-    render() {
-        const { calendarIndex } = this.state;
-
-        const radioOptions = this.allCalendars.map((calendar, index) => (
-            <Radio value={index}>{calendar.title}</Radio>
-        ))
-
-        const modalBody = (
-            <div>
-                <Radio.Group onChange={this.onRadioChange} value={calendarIndex}>
-                    <Space direction="vertical">
-                        {radioOptions}
-                    </Space>
-                </Radio.Group>
-            </div>
-        )
-
-        return (
-        <div>
-            <ButtonModal showModalButtonType={""}
-                         showModalButtonSize={"medium"}
-                         showModalText={"Save Deadline To My Calendar"}
-                         modalTitle={"Choose Calendar"}
-                         modalBody={modalBody}
-                         submitText={"Save Deadline"}
-                         onSubmit={this.saveDeadline}
-            />
-        </div>
-        )
-    }
-}
-
 
 function ScholarshipDeadlineWithTags({scholarship, datePrefix, addDeadlineToCalendar}) {
 
