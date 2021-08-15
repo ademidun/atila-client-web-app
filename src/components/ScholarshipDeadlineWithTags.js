@@ -1,45 +1,107 @@
 import React from "react";
 import PropTypes from 'prop-types';
 import moment from "moment";
-import {Tag, Button} from "antd";
+import {Tag, Radio, Space} from "antd";
 import {ScholarshipPropType} from "../models/Scholarship";
-import { google, outlook, office365, yahoo, ics } from "calendar-link";
+import { google, outlook, office365, yahoo } from "calendar-link";
 import Environment from "../services/Environment";
+import ButtonModal from "./ButtonModal";
+import {openInNewTab} from "../services/utils";
 
 const todayMoment = moment(Date.now());
 
-function AddDeadlineToCalendar({scholarship}) {
-    const event = {
-        title: `Deadline for ${scholarship.name}`,
-        description: `View Scholarship: ${Environment.clientUrl}/scholarship/${scholarship.slug}`,
-        start: scholarship.deadline,
-        end: scholarship.deadline,
-    };
+const DEFAULT_DEADLINE = "2022-01-01";
+const DEFAULT_OPEN_DATE = "2022-12-31";
 
-    const gCalUrl = google(event)
+class AddDeadlineToCalendar extends React.Component {
+    constructor(props) {
+        super(props);
 
-    return (
+        const { scholarship } = this.props;
+
+        const event = {
+            title: `Deadline for ${scholarship.name}`,
+            description: `View Scholarship: ${Environment.clientUrl}/scholarship/${scholarship.slug}`,
+            start: scholarship.deadline,
+            end: scholarship.deadline,
+        };
+
+        const gCalUrl = google(event)
+        const outlookUrl = outlook(event)
+        const officeUrl = office365(event)
+        const yahooUrl = yahoo(event)
+
+        this.allCalendars = [
+            {title: "Google Calendar", url: gCalUrl},
+            {title: "Outlook Calendar", url: outlookUrl},
+            {title: "Office365 Calendar", url: officeUrl},
+            {title: "Yahoo Calendar", url: yahooUrl},
+        ]
+
+        this.state = {
+            calendarIndex: 0,
+        }
+    }
+
+    onRadioChange = event => {
+        this.setState({calendarIndex: event.target.value})
+    }
+
+    saveDeadline = () => {
+        const { calendarIndex } = this.state;
+        const url = this.allCalendars[calendarIndex].url
+        openInNewTab(url)
+    }
+
+    render() {
+        const { calendarIndex } = this.state;
+
+        const radioOptions = this.allCalendars.map((calendar, index) => (
+            <Radio value={index}>{calendar.title}</Radio>
+        ))
+
+        const modalBody = (
+            <div>
+                <Radio.Group onChange={this.onRadioChange} value={calendarIndex}>
+                    <Space direction="vertical">
+                        {radioOptions}
+                    </Space>
+                </Radio.Group>
+            </div>
+        )
+
+        return (
         <div>
-            <a href={gCalUrl} target={'_blank'} rel={'noopener noreferrer'}>
-                <Button>Save Deadline to Google Calendar</Button>
-            </a>
+            <ButtonModal showModalButtonType={""}
+                         showModalButtonSize={"medium"}
+                         showModalText={"Save Deadline To My Calendar"}
+                         modalTitle={"Choose Calendar"}
+                         modalBody={modalBody}
+                         submitText={"Save Deadline"}
+                         onSubmit={this.saveDeadline}
+            />
         </div>
-    )
+        )
+    }
 }
 
 
 function ScholarshipDeadlineWithTags({scholarship, datePrefix, addDeadlineToCalendar}) {
 
     const { deadline, open_date, date_time_created } = scholarship;
+
+    let showCalendar = addDeadlineToCalendar;
+
     let tag = null;
     let tagPrefix = 'due';
     let color = null;
 
     let scholarshipDateMoment = moment(deadline);
-    if (open_date && !open_date.includes("2022-12-31") && open_date > todayMoment.toISOString()) {
+    if (deadline?.includes(DEFAULT_DEADLINE) && open_date && !open_date.includes("2022-12-31") && open_date > todayMoment.toISOString()) {
         scholarshipDateMoment = moment(open_date);
         tagPrefix = 'opens';
         datePrefix = 'Opens: ';
+        showCalendar = false;
     }
     const daysFromDeadline = scholarshipDateMoment.diff(todayMoment, 'days');
     let scholarshipDateString = scholarshipDateMoment.format('dddd, MMMM DD, YYYY h:mm A');
@@ -57,15 +119,16 @@ function ScholarshipDeadlineWithTags({scholarship, datePrefix, addDeadlineToCale
     }
 
 
-    if (deadline.includes("2022-01-01") && (!open_date || open_date.includes("2022-12-31"))) {
+    if (deadline.includes(DEFAULT_DEADLINE) && (!open_date || open_date.includes(DEFAULT_OPEN_DATE))) {
         scholarshipDateString = "TBA";
-        tag = null
+        tag = null;
+        showCalendar = false;
     }
 
     return (
         <React.Fragment>
             {datePrefix} {scholarshipDateString}{' '}
-            {addDeadlineToCalendar && <AddDeadlineToCalendar scholarship={scholarship} />}
+            {showCalendar && <AddDeadlineToCalendar scholarship={scholarship} />}
             {tag &&
             <React.Fragment>
             <Tag color={color} key={tag}>

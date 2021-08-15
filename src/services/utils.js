@@ -613,3 +613,10 @@ export function transformListToValueLabelList(inputList) {
         }
     })
 }
+
+// See https://stackoverflow.com/a/63627688/14874841 for
+// how to securely open a new tab
+export function openInNewTab(url){
+    const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
+    if (newWindow) newWindow.opener = null
+}
