@@ -232,7 +232,7 @@ class ScholarshipDetail extends React.Component {
             applyToScholarshipButton = null;
         } else if (!userProfile) {
             applyToScholarshipButton = (<Button type="primary" size="large"
-                className="mt-3" style={{ fontSize: "18px", width: "400px", height: "70px" }}
+                className="mt-3" style={{ fontSize: "18px", width: "400px", height: "75px" }}
                 disabled={isLoadingApplication}>
                 <Link to={`/register?redirect=${pathname}&applyNow=1`}>
                     Apply Now
@@ -240,7 +240,7 @@ class ScholarshipDetail extends React.Component {
             </Button>)
         } else {
             applyToScholarshipButton = (<Button type="primary" size="large"
-                className="mt-3" style={{ fontSize: "18px", width: "400px", height: "70px"}}
+                className="mt-3" style={{ fontSize: "18px", width: "400px", height: "75px"}}
                 onClick={this.getOrCreateApplication}
                 disabled={isLoadingApplication}>
                 {isLoadingApplication ? "Checking for existing Application..." : "Apply Now"}
@@ -249,7 +249,7 @@ class ScholarshipDetail extends React.Component {
             if (currentUserScholarshipApplication) {
                 applyToScholarshipButton = (
                     <Button type="primary" size="large"
-                        className="mt-3" style={{ fontSize: "18px", width: "400px", height: "70px" }} disabled={isLoadingApplication}>
+                        className="mt-3" style={{ fontSize: "18px", width: "400px", height: "75px" }} disabled={isLoadingApplication}>
                         <Link to={`/application/${currentUserScholarshipApplication.id}`}>
                             {currentUserScholarshipApplication.is_submitted ||
                                 isScholarshipDeadlinePassed ? "View Application" : "Continue Application"}
@@ -327,7 +327,7 @@ class ScholarshipDetail extends React.Component {
                                 <React.Fragment>
 
                                     <Button size="large"
-                                        className="mt-3" style={{ fontSize: "20px", width: "300px"}}>
+                                        className="mt-3" style={{ fontSize: "18px", width: "400px", height: "75px"}}>
                                         <a href={scholarship_url}
                                             target="_blank"
                                             rel='noopener noreferrer'>
@@ -366,7 +366,7 @@ class ScholarshipDetail extends React.Component {
                                             {applyToScholarshipButton}<br/>
                                         </React.Fragment>}
 
-                                        <React.Fragment>
+                                        {scholarship.is_atila_direct_application && <React.Fragment>
 
                                             <Button size="large"
                                                 className="mt-3" style={{ fontSize: "18px", width: "400px", height: "75px"}}>
@@ -375,7 +375,7 @@ class ScholarshipDetail extends React.Component {
                                                 </Link>
                                             </Button><br />
 
-                                        </React.Fragment>
+                                        </React.Fragment>}
 
                                         {scholarship.learn_more_url &&
                                             <React.Fragment>
@@ -398,17 +398,26 @@ class ScholarshipDetail extends React.Component {
                                         {scholarship && <ApplicationsLocal scholarship={scholarship} />}
                                         {scholarship.is_blind_applications && <BlindApplicationsExplanationMessage />}
                                         {scholarship.is_referral_bonus_eligible && <ReferralBonusScholarshipExplanationMessage />}
-                                        {scholarship.reddit_url && redditUrlComponent}
                                     </div>
 
                                 </div>
                             }
                             {!scholarship.is_atila_direct_application && <ScholarshipShareSaveButtons scholarship={scholarship} />}
 
-                            {
-                                scholarshipUserProfile &&
+                            
+                            <div className="font-weight-bold">
+                                <ScholarshipDeadlineWithTags scholarship={scholarship} />
+                                <br />
+                                <ReportIncorrectInfo scholarship={scholarship} />  
+                            </div>
+
+                            <div>{scholarship.reddit_url && redditUrlComponent}</div>
+
+                            <div className="font-weight-bold">
+                            
+                                {scholarshipUserProfile &&
                                 <React.Fragment>
-                                    <div className="font-weight-bold">Added by:</div>
+                                    Added by:
                                     <div className="bg-light mb-3 p-1" style={{ width: '500px' }}>
                                         <Link to={`/profile/${scholarshipUserProfile.username}`} >
                                             <img
@@ -420,25 +429,21 @@ class ScholarshipDetail extends React.Component {
                                         </Link>&nbsp;
                                         {contributors.is_owner === scholarshipUserProfile.is_owner && <Tag color="green">{' '}Creator</Tag>}
                                     </div>
+
+                                    Amount: {fundingString}
+                                    {scholarship.is_atila_direct_application && !isScholarshipDeadlinePassed &&
+                                        <div className="mb-3">
+                                            <Button type="primary" size="large" className="mt-3"
+                                                style={{ fontSize: "18px", width: "150px", height: "75px" }}>
+                                                <Link to={`/scholarship/${slug}/contribute`}>
+                                                    Contribute
+                                                </Link>
+                                            </Button><br /><br/>
+                                        </div>
+                                    }
                                 </React.Fragment>
-                            }
-                            <div className="font-weight-bold">
-                                <ScholarshipDeadlineWithTags scholarship={scholarship} />
-                                <br />
-                                <ReportIncorrectInfo scholarship={scholarship} />
-                                <br />
-                                Amount: {fundingString}
+                                }   
                             </div>
-                            {scholarship.is_atila_direct_application && !isScholarshipDeadlinePassed &&
-                                <div className="mb-3">
-                                    <Button type="primary" size="large"
-                className="mt-3" style={{ fontSize: "18px", width: "150px", height: "60px" }}>
-                                        <Link to={`/scholarship/${slug}/contribute`}>
-                                            Contribute
-                                        </Link>
-                                    </Button><br /><br/>
-                                </div>
-                            }
 
                             {contributors && contributors.length > 1 &&
                                 <div>
@@ -467,7 +472,7 @@ class ScholarshipDetail extends React.Component {
                             {/*todo find a way to secure against XSS: https://stackoverflow.com/a/19277723*/}
                             <hr />
                             <div dangerouslySetInnerHTML={{ __html: criteria_info }} />
-                            
+                            <br/>
                         </div>
                         <RelatedItems
                             className="col-md-4"

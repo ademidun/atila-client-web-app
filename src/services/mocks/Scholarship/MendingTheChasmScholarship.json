@@ -56,7 +56,7 @@
             "first_name": "Leena",
             "last_name": "Sharma Seth",
             "username": "MendingtheChasm",
-            "profile_pic_url": "https://imgur.com/BlSV9Dm.jpg"
+            "profile_pic_url": "https://imgur.com/OI82qoN.jpg"
         },
         "province": [],
         "published": true,
@@ -125,7 +125,7 @@
             "last_name": "Sharma Seth",
             "funding_amount": "500.00",
             "date_created": "2021-08-04T18:09:41.006316Z",
-            "profile_pic_url": "https://imgur.com/BlSV9Dm.jpg",
+            "profile_pic_url": "https://imgur.com/OI82qoN.jpg",
             "funding_confirmation_image_url": "https://hcti.io/v1/image/4c37867c-69e0-46f4-9d71-db30e160a71c"
         },
         {
@@ -151,9 +151,9 @@
             "first_name": "Leena",
             "referred_by": "tomiwa",
             "last_name": "Sharma Seth",
-            "funding_amount": "0.00",
+            "funding_amount": "100.00",
             "date_created": "2021-08-04T18:09:41.006316Z",
-            "profile_pic_url": "https://imgur.com/c5IReZI.jpg",
+            "profile_pic_url": "https://imgur.com/OI82qoN.jpg",
             "funding_confirmation_image_url": "https://hcti.io/v1/image/4c37867c-69e0-46f4-9d71-db30e160a71c"
         },
         {
@@ -179,9 +179,9 @@
             "first_name": "Leena",
             "referred_by": "tomiwa",
             "last_name": "Sharma Seth",
-            "funding_amount": "0.00",
+            "funding_amount": "100.00",
             "date_created": "2021-08-04T18:09:41.006316Z",
-            "profile_pic_url": "https://imgur.com/Lfy6F9V.jpg",
+            "profile_pic_url": "https://imgur.com/OI82qoN.jpg",
             "funding_confirmation_image_url": "https://hcti.io/v1/image/4c37867c-69e0-46f4-9d71-db30e160a71c"
         }
     ]
