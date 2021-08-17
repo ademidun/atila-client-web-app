@@ -621,7 +621,7 @@ class ScholarshipAddEdit extends React.Component{
     addAward = () => {
         let newAwards = this.state.awards.slice()
         let newAward = Object.assign({}, AwardGeneral)
-        newAward.id = createId(16);
+        newAward.id = createId(20);
         newAwards.push(newAward)
         this.setState({awards: newAwards}, ()=> {
             this.updateFundingAmount()
