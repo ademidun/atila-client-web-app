@@ -4,7 +4,14 @@ import $ from 'jquery';
 import FormDynamic from "../../components/Form/FormDynamic";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import {connect} from "react-redux";
-import {displayLocalTimeZone, nestedFieldUpdate, prettifyKeys, slugify, transformLocation} from "../../services/utils";
+import {
+    createId,
+    displayLocalTimeZone,
+    nestedFieldUpdate,
+    prettifyKeys,
+    slugify,
+    transformLocation
+} from "../../services/utils";
 import Loading from "../../components/Loading";
 import {MAJORS_LIST, SCHOOLS_LIST} from "../../models/ConstantsForm";
 import {scholarshipUserProfileSharedFormConfigs, toastNotify} from "../../models/Utils";
@@ -487,7 +494,8 @@ class ScholarshipAddEdit extends React.Component{
                 }
 
                 if (isAddScholarshipMode) {
-                    this.setState({ scholarship: savedScholarship });
+                    const awards = res.data.awards;
+                    this.setState({ scholarship: savedScholarship, awards });
                     const successMessage = (<p>
                         <span role="img" aria-label="happy face emoji">🙂</span>
                         Successfully saved {' '}
@@ -497,8 +505,8 @@ class ScholarshipAddEdit extends React.Component{
                     </p>);
                     toastNotify(successMessage, 'info', {position: 'bottom-right'});
                 }
-                const awards = res.data.awards;
-                this.setState({isAddScholarshipMode: false, awards});
+
+                this.setState({isAddScholarshipMode: false});
             })
             .catch(err=> {
                 console.log({err});
@@ -613,6 +621,7 @@ class ScholarshipAddEdit extends React.Component{
     addAward = () => {
         let newAwards = this.state.awards.slice()
         let newAward = Object.assign({}, AwardGeneral)
+        newAward.id = createId(16);
         newAwards.push(newAward)
         this.setState({awards: newAwards}, ()=> {
             this.updateFundingAmount()
