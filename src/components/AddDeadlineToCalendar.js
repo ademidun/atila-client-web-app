@@ -1,9 +1,7 @@
 import React from "react";
 import Environment from "../services/Environment";
 import {google, office365, outlook, yahoo} from "calendar-link";
-import {openInNewTab} from "../services/utils";
-import {Radio, Space} from "antd";
-import ButtonModal from "./ButtonModal";
+import {Popover, Button} from "antd";
 import {ScholarshipPropType} from "../models/Scholarship";
 
 class AddDeadlineToCalendar extends React.Component {
@@ -30,49 +28,24 @@ class AddDeadlineToCalendar extends React.Component {
             {title: "Office365 Calendar", url: officeUrl},
             {title: "Yahoo Calendar", url: yahooUrl},
         ]
-
-        this.state = {
-            calendarIndex: 0,
-        }
-    }
-
-    onRadioChange = event => {
-        this.setState({calendarIndex: event.target.value})
-    }
-
-    saveDeadline = () => {
-        const { calendarIndex } = this.state;
-        const url = this.allCalendars[calendarIndex].url
-        openInNewTab(url)
     }
 
     render() {
-        const { calendarIndex } = this.state;
 
-        const radioOptions = this.allCalendars.map((calendar, index) => (
-            <Radio value={index}>{calendar.title}</Radio>
+        let calendarOptions = this.allCalendars.map(calendar => (
+            <>
+                <a href={calendar.url} target="_blank" rel="noopener noreferrer">
+                    {calendar.title}
+                </a>
+                <br />
+            </>
         ))
-
-        const modalBody = (
-            <div>
-                <Radio.Group onChange={this.onRadioChange} value={calendarIndex}>
-                    <Space direction="vertical">
-                        {radioOptions}
-                    </Space>
-                </Radio.Group>
-            </div>
-        )
 
         return (
             <div>
-                <ButtonModal showModalButtonType={""}
-                             showModalButtonSize={"medium"}
-                             showModalText={"Save Deadline To My Calendar"}
-                             modalTitle={"Choose Calendar"}
-                             modalBody={modalBody}
-                             submitText={"Save Deadline"}
-                             onSubmit={this.saveDeadline}
-                />
+                <Popover trigger={"click"} title={<b>Choose Calendar</b>} content={calendarOptions} placement={"bottom"}>
+                    <Button>Save Deadline To My Calendar</Button>
+                </Popover>
             </div>
         )
     }
