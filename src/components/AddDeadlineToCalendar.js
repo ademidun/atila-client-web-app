@@ -10,11 +10,14 @@ class AddDeadlineToCalendar extends React.Component {
 
         const { scholarship } = this.props;
 
+        const scholarshipUrl = `${Environment.clientUrl}/scholarship/${scholarship.slug}`;
+
         const event = {
             title: `Deadline for ${scholarship.name}`,
-            description: `View Scholarship: ${Environment.clientUrl}/scholarship/${scholarship.slug}`,
+            description: `View Scholarship: ${scholarshipUrl}. \n \n ${scholarship.description}`,
             start: scholarship.deadline,
             end: scholarship.deadline,
+            location: scholarshipUrl,
         };
 
         const gCalUrl = google(event)
