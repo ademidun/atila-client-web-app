@@ -485,6 +485,17 @@ export function isValidEmail(email) {
     return re.test(String(email).toLowerCase());
 }
 
+export function addStyleClasstoTables(parentSelector) {
+    let element;
+    const tableSelectors = `${parentSelector} table`
+
+    $(tableSelectors).each(function() {
+
+        element = $(this);
+        element.addClass(`table table-striped`)
+    });
+
+}
 /**
  *
  * @param parentSelector: Where to insert the new table of contents.
