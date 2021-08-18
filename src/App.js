@@ -35,6 +35,9 @@ const Application = loadable(() => import("./scenes/Application/Application"), {
 const HowToStartAScholarship = loadable(() => import("./scenes/DirectApplicationInfo/HowToStartAScholarship"), {
   fallback: <Loading />,
 });
+const NotionPageOnAtila = loadable(() => import("./scenes/Notion/NotionPageOnAtila"), {
+  fallback: <Loading />,
+});
 const HowToApplyForScholarships = loadable(() => import("./scenes/DirectApplicationInfo/HowToApplyForScholarships"), {
   fallback: <Loading />,
 });
@@ -183,6 +186,10 @@ class App extends React.Component {
               <Route
                 path='/apply'
                 component={GoogleAnalyticsTracker(HowToApplyForScholarships)}
+              />
+              <Route
+                path='/p'
+                component={GoogleAnalyticsTracker(NotionPageOnAtila)}
               />
               <Route
                 path='/search'
