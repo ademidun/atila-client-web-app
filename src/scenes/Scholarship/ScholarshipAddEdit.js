@@ -5,7 +5,6 @@ import FormDynamic from "../../components/Form/FormDynamic";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import {connect} from "react-redux";
 import {
-    createId,
     displayLocalTimeZone,
     nestedFieldUpdate,
     prettifyKeys,
@@ -494,8 +493,7 @@ class ScholarshipAddEdit extends React.Component{
                 }
 
                 if (isAddScholarshipMode) {
-                    const awards = res.data.awards;
-                    this.setState({ scholarship: savedScholarship, awards });
+                    this.setState({ scholarship: savedScholarship });
                     const successMessage = (<p>
                         <span role="img" aria-label="happy face emoji">🙂</span>
                         Successfully saved {' '}
@@ -505,8 +503,8 @@ class ScholarshipAddEdit extends React.Component{
                     </p>);
                     toastNotify(successMessage, 'info', {position: 'bottom-right'});
                 }
-
-                this.setState({isAddScholarshipMode: false});
+                const awards = res.data.awards;
+                this.setState({isAddScholarshipMode: false, awards});
             })
             .catch(err=> {
                 console.log({err});
@@ -621,7 +619,7 @@ class ScholarshipAddEdit extends React.Component{
     addAward = () => {
         let newAwards = this.state.awards.slice()
         let newAward = Object.assign({}, AwardGeneral)
-        newAward.id = createId(20);
+
         newAwards.push(newAward)
         this.setState({awards: newAwards}, ()=> {
             this.updateFundingAmount()
