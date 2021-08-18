@@ -35,7 +35,7 @@ class ContentCard extends React.Component {
         let descriptionText = description;
 
         if (description && !hideImage) {
-            descriptionText = showPreview ? description.substring(0,240) : `${description.substring(0,100)}`;
+            descriptionText = showPreview ? description.substring(0,210) : `${description.substring(0,100)}`;
             if (description.length > descriptionText) {
                 descriptionText +='...'
             }
@@ -76,7 +76,7 @@ class ContentCard extends React.Component {
                     <Link to={slug}>
                         <img  src={image}
                               alt={title}
-                              style={{ width: '100%'}}
+                              style={{ width: '100%'}} 
                         />
                     </Link>
                     }
