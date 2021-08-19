@@ -8,6 +8,7 @@ export const EnvironmentDev = {
     apiUrlRecommender: 'http://127.0.0.1:5000',
     apiUrlEmailService: 'http://127.0.0.1:5001',
     STRIPE_PUBLIC_KEY: 'pk_test_AxhlK7IudWRlQCa4azz4WElP00QVVE6SNM',
+    clientUrl: 'http://localhost:3000',
 };
 
 export const EnvironmentStaging = {
@@ -19,6 +20,7 @@ export const EnvironmentStaging = {
     apiUrlRecommender: 'https://ioqtbeqgob.execute-api.us-east-1.amazonaws.com/staging',
     apiUrlEmailService: 'https://mhc9n9h5pe.execute-api.us-east-1.amazonaws.com/staging',
     STRIPE_PUBLIC_KEY: 'pk_test_AxhlK7IudWRlQCa4azz4WElP00QVVE6SNM',
+    clientUrl: 'https://staging.atila.ca',
 };
 
 export const EnvironmentProd = {
@@ -30,6 +32,7 @@ export const EnvironmentProd = {
     apiUrlRecommender: 'https://itt9ynrcpb.execute-api.us-east-1.amazonaws.com/prod',
     apiUrlEmailService: 'https://kho47lpiuf.execute-api.us-east-1.amazonaws.com/prod',
     STRIPE_PUBLIC_KEY: 'pk_live_AgHuMdhPDSk5eKrlwoHCnZnR00uIrfIHkM',
+    clientUrl: 'https://atila.ca',
 };
 
 let Environment = {};

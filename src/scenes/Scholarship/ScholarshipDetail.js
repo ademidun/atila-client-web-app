@@ -19,6 +19,7 @@ import { AtilaDirectApplicationsPopover, BlindApplicationsExplanationMessage, Re
 import ScholarshipFinalists, { UserProfilesCards } from "./ScholarshipFinalists";
 import ApplicationsLocal from '../Application/ApplicationsLocal';
 import ReportIncorrectInfo from "../../components/ReportIncorrectInfo";
+import {addStyleClasstoTables} from "../../services/utils";
 
 class ScholarshipDetail extends React.Component {
 
@@ -76,6 +77,7 @@ class ScholarshipDetail extends React.Component {
                 const { scholarship, contributors } = res.data;
                 const { owner_detail } = scholarship;
                 this.setState({ scholarship, contributors, scholarshipUserProfile: owner_detail }, () => {
+                    addStyleClasstoTables(".content-detail");
                     if (location && location.hash) {
                         scrollToElement(location.hash);
                     }

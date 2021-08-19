@@ -16,13 +16,26 @@ export class MockAPI {
 
     static initializeMocks = () => {
 
-        if (localStorage.getItem('ATILA_MOCK_API_CALLS') !== "true" || Environment.name !== "dev") {
+        if (Environment.name === "prod") {
             if (localStorage.getItem('MOCK_API_CALLS') === "true") {
                 console.log(`"User tried to use MOCK_API_CALLS local storage setting in" ${Environment.name} environment.
                 This feature is only available in 'dev'`)
             }
             return
         }
+
+        if (Environment.name === "staging") {
+            if (!window.location.host.includes("--atila-staging.netlify.app")) {
+                return
+            } else {
+                console.log("Using mock data due to unique deploy url: '--atila-staging.netlify.app'")
+            }
+        }
+
+        if (Environment.name === "dev" && localStorage.getItem('MOCK_API_CALLS') !== "true") {
+            return
+        }
+
         var mock = new MockAdapter(axios);
         
         mock.onAny(ContactsAPI.contactsApiQueryUrl).reply(200, ContactsQuery1);

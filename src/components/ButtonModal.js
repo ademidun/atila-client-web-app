@@ -14,9 +14,8 @@ class ButtonModal extends React.Component {
     showModal = () => {
         const { onShowModal } = this.props;
         this.setState({isModalVisible: true})
-        if (onShowModal) {
-            onShowModal();
-        }
+
+        onShowModal();
     };
 
     handleModalCancel = () => {
@@ -25,10 +24,7 @@ class ButtonModal extends React.Component {
 
     onSubmit = (event) => {
         const { onSubmit } = this.props;
-
-        if (onSubmit) {
-            onSubmit(event);
-        }
+        onSubmit(event);
 
         this.handleModalCancel();
     }
@@ -97,8 +93,8 @@ ButtonModal.defaultProps = {
     addPopConfirm: false,
     popConfirmText: "",
     disabled: false,
-    onShowModal: null,
-    onSubmit: null,
+    onShowModal: () => {},
+    onSubmit: () => {},
 }
 
 ButtonModal.propTypes = {
