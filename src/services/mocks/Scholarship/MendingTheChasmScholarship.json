@@ -56,7 +56,7 @@
             "first_name": "Leena",
             "last_name": "Sharma Seth",
             "username": "MendingtheChasm",
-            "profile_pic_url": "https://imgur.com/OI82qoN.jpg"
+            "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-7.appspot.com/o/public%2Fdefault-profile-pic-2021.png?alt=media&token=d6c9d76b-4db2-4e56-89bc-fb51562a6003"
         },
         "province": [],
         "published": true,
@@ -125,7 +125,7 @@
             "last_name": "Sharma Seth",
             "funding_amount": "500.00",
             "date_created": "2021-08-04T18:09:41.006316Z",
-            "profile_pic_url": "https://imgur.com/OI82qoN.jpg",
+            "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-7.appspot.com/o/public%2Fdefault-profile-pic-2021.png?alt=media&token=d6c9d76b-4db2-4e56-89bc-fb51562a6003",
             "funding_confirmation_image_url": "https://hcti.io/v1/image/4c37867c-69e0-46f4-9d71-db30e160a71c"
         },
         {
@@ -153,7 +153,7 @@
             "last_name": "Sharma Seth",
             "funding_amount": "100.00",
             "date_created": "2021-08-04T18:09:41.006316Z",
-            "profile_pic_url": "https://imgur.com/OI82qoN.jpg",
+            "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-7.appspot.com/o/public%2Fdefault-profile-pic-2021.png?alt=media&token=d6c9d76b-4db2-4e56-89bc-fb51562a6003",
             "funding_confirmation_image_url": "https://hcti.io/v1/image/4c37867c-69e0-46f4-9d71-db30e160a71c"
         },
         {
@@ -181,7 +181,7 @@
             "last_name": "Sharma Seth",
             "funding_amount": "100.00",
             "date_created": "2021-08-04T18:09:41.006316Z",
-            "profile_pic_url": "https://imgur.com/OI82qoN.jpg",
+            "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-7.appspot.com/o/public%2Fdefault-profile-pic-2021.png?alt=media&token=d6c9d76b-4db2-4e56-89bc-fb51562a6003",
             "funding_confirmation_image_url": "https://hcti.io/v1/image/4c37867c-69e0-46f4-9d71-db30e160a71c"
         }
     ]

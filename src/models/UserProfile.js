@@ -105,7 +105,7 @@ export const USER_PROFILE_SECURITY_QUESTIONS = [
 // old default profile
 //https://firebasestorage.googleapis.com/v0/b/atila-7.appspot.com/o/user-profiles%2Fgeneral-data%2Fdefault-profile-pic.png?alt=media&token=455c59f7-3a05-43f1-a79e-89abff1eae57
 
-export const DEFAULT_USER_PROFILE_PICTURE_URL = "https://imgur.com/OI82qoN.jpg";
+export const DEFAULT_USER_PROFILE_PICTURE_URL = "https://firebasestorage.googleapis.com/v0/b/atila-7.appspot.com/o/public%2Fdefault-profile-pic-2021.png?alt=media&token=d6c9d76b-4db2-4e56-89bc-fb51562a6003";
 export function isCompleteUserProfile(userProfile) {
     return (userProfile.post_secondary_school || userProfile.eligible_schools.length !== 0) &&
         (userProfile.major || userProfile.eligible_programs.length !== 0)
