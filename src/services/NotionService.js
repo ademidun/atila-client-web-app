@@ -1,15 +1,15 @@
 import Environment from "./Environment";
 import request from "axios";
 
-class AnalyticsService {
+class NotionService {
 
-    static pageIdUrl = `${Environment.apiUrlNodeMicroservice}/page-id`;
+    static pageIdUrl = `${Environment.apiUrlNodeMicroservice}/notion/get-page/`;
 
     static getPageId = (pageId) => {
 
         const apiCompletionPromise = request({
             method: 'get',
-            url: `${AnalyticsService.pageIdUrl}?id=${pageId}`,
+            url: `${NotionService.pageIdUrl}?id=${pageId}`,
         });
 
         return apiCompletionPromise;
