@@ -21,6 +21,9 @@ import ApplicationsLocal from '../Application/ApplicationsLocal';
 import ReportIncorrectInfo from "../../components/ReportIncorrectInfo";
 import {addStyleClasstoTables} from "../../services/utils";
 
+import './ScholarshipDetail.scss';
+import $ from "jquery";
+
 class ScholarshipDetail extends React.Component {
 
     constructor(props) {
@@ -78,6 +81,8 @@ class ScholarshipDetail extends React.Component {
                 const { owner_detail } = scholarship;
                 this.setState({ scholarship, contributors, scholarshipUserProfile: owner_detail }, () => {
                     addStyleClasstoTables(".content-detail");
+                    // add CTA classes to all buttons
+                    $(".scholarship-cta-buttons button").addClass("col-md-3 col-sm-12 mt-3");
                     if (location && location.hash) {
                         scrollToElement(location.hash);
                     }
@@ -234,7 +239,6 @@ class ScholarshipDetail extends React.Component {
             applyToScholarshipButton = null;
         } else if (!userProfile) {
             applyToScholarshipButton = (<Button type="primary" size="large"
-                className="mt-3" style={{ fontSize: "18px", width: "400px", height: "75px" }}
                 disabled={isLoadingApplication}>
                 <Link to={`/register?redirect=${pathname}&applyNow=1`}>
                     Apply Now
@@ -242,7 +246,6 @@ class ScholarshipDetail extends React.Component {
             </Button>)
         } else {
             applyToScholarshipButton = (<Button type="primary" size="large"
-                className="mt-3" style={{ fontSize: "18px", width: "400px", height: "75px"}}
                 onClick={this.getOrCreateApplication}
                 disabled={isLoadingApplication}>
                 {isLoadingApplication ? "Checking for existing Application..." : "Apply Now"}
@@ -250,8 +253,7 @@ class ScholarshipDetail extends React.Component {
 
             if (currentUserScholarshipApplication) {
                 applyToScholarshipButton = (
-                    <Button type="primary" size="large"
-                        className="mt-3" style={{ fontSize: "18px", width: "400px", height: "75px" }} disabled={isLoadingApplication}>
+                    <Button type="primary" size="large" disabled={isLoadingApplication}>
                         <Link to={`/application/${currentUserScholarshipApplication.id}`}>
                             {currentUserScholarshipApplication.is_submitted ||
                                 isScholarshipDeadlinePassed ? "View Application" : "Continue Application"}
@@ -262,21 +264,24 @@ class ScholarshipDetail extends React.Component {
             }
         }
 
-        let redditUrlComponent = (
-            <div>
-                <hr />
-                <p>
-                    Questions about this scholarship? Ask on the{' '}
+        let redditUrlComponent;
+        if(scholarship.reddit_url) {
+            redditUrlComponent = (
+                <div>
+                    <hr />
+                    <h3>Questions about this scholarship?</h3> 
+                    Ask on the{' '}
                     <Link to={scholarship.reddit_url}>
-                        reddit post for this scholarship
+                        Reddit post for this scholarship
                     </Link>
                     {' '}on{' '}
                     <Link to={`https://reddit.com/r/atila`}>
                         r/atila.
                     </Link>
-                </p>
-            </div>
-        )
+                    <hr />
+                </div>
+            )
+        }
 
         return (
             <React.Fragment>
@@ -325,25 +330,6 @@ class ScholarshipDetail extends React.Component {
                                 <ScholarshipExtraCriteria scholarship={scholarship} />
                             </div>
                             <hr />
-                            {scholarship_url && !scholarship.is_atila_direct_application &&
-                                <React.Fragment>
-
-                                    <Button size="large"
-                                        className="mt-3" style={{ fontSize: "18px", width: "400px", height: "75px"}}>
-                                        <a href={scholarship_url}
-                                            target="_blank"
-                                            rel='noopener noreferrer'>
-                                            Visit Scholarship Website
-                                        </a>
-                                    </Button><br /><br/>
-
-                                </React.Fragment>}
-                            {form_url && !scholarship.is_atila_direct_application &&
-                                <React.Fragment>
-                                    <a href={form_url} target="_blank" rel="noopener noreferrer">
-                                        View Scholarship Application
-                                    </a> <br />
-                                </React.Fragment>}
                             {((scholarshipUserProfile && userProfile &&
                                 userProfile.user === scholarshipUserProfile.user)
                                 || (userProfile && userProfile.is_atila_admin))
@@ -361,50 +347,63 @@ class ScholarshipDetail extends React.Component {
                                 </React.Fragment>
                             }
 
-                            {scholarship.is_atila_direct_application &&
-                                <div>
-                                    <div style={{ display: "flex", gap: '12px', flexDirection: 'row', }}>
-                                        {applyToScholarshipButton && <React.Fragment>
-                                            {applyToScholarshipButton}<br/>
-                                        </React.Fragment>}
+                            <div className="scholarship-cta-buttons row ml-0">
 
-                                        {scholarship.is_atila_direct_application && <React.Fragment>
+                                {scholarship.is_atila_direct_application && 
+                                <React.Fragment>
+                                    {applyToScholarshipButton && <React.Fragment>
+                                        {applyToScholarshipButton}
+                                    </React.Fragment>}
 
-                                            <Button size="large"
-                                                className="mt-3" style={{ fontSize: "18px", width: "400px", height: "75px"}}>
-                                                <Link to={`/scholarship/${slug}/questions`}>
-                                                    View Application Form
-                                                </Link>
-                                            </Button><br />
+                                    <Button size="large">
+                                        <Link to={`/scholarship/${slug}/questions`}>
+                                            View Application Form
+                                        </Link>
+                                    </Button>
 
-                                        </React.Fragment>}
+                                    {scholarship.learn_more_url &&
+                                        <React.Fragment>
+                                            <Button size="large">
+                                                <a href={scholarship.learn_more_url}
+                                                    target="_blank"
+                                                    rel='noopener noreferrer'>
+                                                    {scholarship.learn_more_title || `Learn More about ${scholarship.name}`}
+                                                </a>
+                                            </Button>
+                                        </React.Fragment>
+                                    }
+                                </React.Fragment>
+                                }
 
-                                        {scholarship.learn_more_url &&
-                                            <React.Fragment>
-                                                <Button size="large"
-                                                    className="mt-3" style={{ fontSize: "18px", width: "400px", height: "75px"}}>
-                                                    <a href={scholarship.learn_more_url}
-                                                        target="_blank"
-                                                        rel='noopener noreferrer'>
-                                                        {scholarship.learn_more_title || `Learn More about ${scholarship.name}`}
-                                                    </a>
-                                                </Button><br />
-
-                                            </React.Fragment>
-
-                                        }
-                                    </div>
-                                    <div>
-                                        <hr/>
-                                        <ScholarshipShareSaveButtons scholarship={scholarship} />
-                                        {scholarship && <ApplicationsLocal scholarship={scholarship} />}
-                                        {scholarship.is_blind_applications && <BlindApplicationsExplanationMessage />}
-                                        {scholarship.is_referral_bonus_eligible && <ReferralBonusScholarshipExplanationMessage />}
-                                    </div>
-
-                                </div>
-                            }
-                            {!scholarship.is_atila_direct_application && <ScholarshipShareSaveButtons scholarship={scholarship} />}
+                                {!scholarship.is_atila_direct_application && 
+                                <React.Fragment>
+                                    {scholarship_url &&
+                                        <Button size="large"
+                                            className="mt-3">
+                                            <a href={scholarship_url}
+                                                target="_blank"
+                                                rel='noopener noreferrer'>
+                                                Visit Scholarship Website
+                                            </a>
+                                        </Button>
+                                    }
+                                    {form_url && 
+                                        <Button size="large" className="mt-3">
+                                            <a href={form_url} target="_blank" rel="noopener noreferrer">
+                                                View Scholarship Application
+                                            </a> <br />
+                                        </Button>
+                                    }
+                                </React.Fragment>
+                                }
+                            </div>
+                            <div>
+                                <hr/>
+                                <ScholarshipShareSaveButtons scholarship={scholarship} />
+                                {scholarship && <ApplicationsLocal scholarship={scholarship} />}
+                                {scholarship.is_blind_applications && <BlindApplicationsExplanationMessage />}
+                                {scholarship.is_referral_bonus_eligible && <ReferralBonusScholarshipExplanationMessage />}
+                            </div>
 
                             
                             <div className="font-weight-bold">
@@ -413,7 +412,7 @@ class ScholarshipDetail extends React.Component {
                                 <ReportIncorrectInfo scholarship={scholarship} />  
                             </div>
 
-                            <div>{scholarship.reddit_url && redditUrlComponent}</div>
+                            {redditUrlComponent}
 
                             <div className="font-weight-bold">
                             

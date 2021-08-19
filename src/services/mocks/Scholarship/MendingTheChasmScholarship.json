@@ -96,7 +96,7 @@
         "is_blind_applications": false,
         "is_referral_bonus_eligible": false,
         "collaborators": [],
-        "reddit_url": null,
+        "reddit_url": "https://www.reddit.com/r/atila/comments/ozvwj5/mending_the_chasm_scholarship/",
         "stripe_payment_intent_id": "pi_3JKoX7Heg0qPyG6k1bm1IdUM"
     },
     "contributors": [
@@ -129,7 +129,7 @@
             "funding_confirmation_image_url": "https://hcti.io/v1/image/4c37867c-69e0-46f4-9d71-db30e160a71c"
         },
         {
-            "id": "w1hwlojfm8xjcqo5",
+            "id": "w1hwlojfm8xjcqo6",
             "scholarship": {
                 "name": "Mending the Chasm Scholarship",
                 "description": "My firm would like to support student leaders who embody and are actively are working to advance inclusive, equitable and anti-racist principles postures, and practices that result in community and organizational cultures that espouse these values.",
@@ -157,7 +157,7 @@
             "funding_confirmation_image_url": "https://hcti.io/v1/image/4c37867c-69e0-46f4-9d71-db30e160a71c"
         },
         {
-            "id": "w1hwlojfm8xjcqo5",
+            "id": "w1hwlojfm8xjcqo7",
             "scholarship": {
                 "name": "Mending the Chasm Scholarship",
                 "description": "My firm would like to support student leaders who embody and are actively are working to advance inclusive, equitable and anti-racist principles postures, and practices that result in community and organizational cultures that espouse these values.",

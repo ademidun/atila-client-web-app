@@ -36,12 +36,12 @@ class AddDeadlineToCalendar extends React.Component {
     render() {
 
         let calendarOptions = this.allCalendars.map(calendar => (
-            <>
+            <React.Fragment key={calendar.url}>
                 <a href={calendar.url} target="_blank" rel="noopener noreferrer">
                     {calendar.title}
                 </a>
                 <br />
-            </>
+            </React.Fragment>
         ))
 
         return (

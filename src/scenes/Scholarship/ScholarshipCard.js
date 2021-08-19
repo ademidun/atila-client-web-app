@@ -92,12 +92,12 @@ class ScholarshipCard extends React.Component {
                                             className="rounded-circle"
                                             src={verifiedBadge} />} />}
                                 </h1>
-                                <p className="card-text">
+                                <div className="card-text">
                                     <ScholarshipDeadlineWithTags scholarship={scholarship} addDeadlineToCalendar={true} />
                                     <br/>
                                     Amount: {fundingString}
-                                </p>
-                                <p className="card-text">{descriptionText}</p>
+                                </div>
+                                <div className="card-text">{descriptionText}</div>
                                 {showPreview &&
                                 <ScholarshipExtraCriteria scholarship={scholarship} viewAsUserProfile={viewAsUserProfile} />
                                 }
