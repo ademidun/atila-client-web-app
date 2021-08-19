@@ -36,17 +36,17 @@ class AddDeadlineToCalendar extends React.Component {
     render() {
 
         let calendarOptions = this.allCalendars.map(calendar => (
-            <>
+            <React.Fragment key={calendar.url}>
                 <a href={calendar.url} target="_blank" rel="noopener noreferrer">
                     {calendar.title}
                 </a>
                 <br />
-            </>
+            </React.Fragment>
         ))
 
         return (
             <div>
-                <Popover trigger={"click"} title={<b>Choose Calendar</b>} content={calendarOptions} placement={"bottom"}>
+                <Popover trigger={"click"} title={<b>Choose Calendar</b>} content={calendarOptions} placement={"bottom"} overlayStyle={{fontSize: "1.1rem"}}>
                     <Button>Save Deadline To My Calendar</Button>
                 </Popover>
             </div>
