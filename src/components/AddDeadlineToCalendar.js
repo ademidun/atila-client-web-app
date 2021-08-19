@@ -46,7 +46,7 @@ class AddDeadlineToCalendar extends React.Component {
 
         return (
             <div>
-                <Popover trigger={"click"} title={<b>Choose Calendar</b>} content={calendarOptions} placement={"bottom"}>
+                <Popover trigger={"click"} title={<b>Choose Calendar</b>} content={calendarOptions} placement={"bottom"} overlayStyle={{fontSize: "20px"}}>
                     <Button>Save Deadline To My Calendar</Button>
                 </Popover>
             </div>

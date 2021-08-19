@@ -93,7 +93,7 @@ class ScholarshipCard extends React.Component {
                                             src={verifiedBadge} />} />}
                                 </h1>
                                 <p className="card-text">
-                                    <ScholarshipDeadlineWithTags scholarship={scholarship} />
+                                    <ScholarshipDeadlineWithTags scholarship={scholarship} addDeadlineToCalendar={true} />
                                     <br/>
                                     Amount: {fundingString}
                                 </p>

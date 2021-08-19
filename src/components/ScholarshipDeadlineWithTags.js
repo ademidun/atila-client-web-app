@@ -94,10 +94,10 @@ ScholarshipDeadlineWithTags.defaultProps = {
     addDeadlineToCalendar: false,
 };
 
-
 ScholarshipDeadlineWithTags.propTypes = {
     datePrefix: PropTypes.string,
     scholarship: ScholarshipPropType.isRequired,
     addDeadlineToCalendar: PropTypes.bool,
 };
+
 export default ScholarshipDeadlineWithTags;
