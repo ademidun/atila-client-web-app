@@ -188,7 +188,7 @@ class App extends React.Component {
                 component={GoogleAnalyticsTracker(HowToApplyForScholarships)}
               />
               <Route
-                path='/p'
+                path='/p/:pageId'
                 component={GoogleAnalyticsTracker(NotionPageOnAtila)}
               />
               <Route

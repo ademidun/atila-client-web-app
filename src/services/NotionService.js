@@ -9,9 +9,11 @@ class NotionService {
 
         const apiCompletionPromise = request({
             method: 'get',
-            url: `${NotionService.pageIdUrl}?id=${pageId}`,
+            url: `${NotionService.pageIdUrl}?pageId=${pageId}`,
         });
 
         return apiCompletionPromise;
     };
 }
+
+export default NotionService;
