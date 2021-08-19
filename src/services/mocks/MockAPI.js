@@ -17,14 +17,14 @@ export class MockAPI {
     static initializeMocks = () => {
 
         if (Environment.name === "prod") {
-            if (localStorage.getItem('MOCK_API_CALLS') === "true") {
-                console.log(`"User tried to use MOCK_API_CALLS local storage setting in" ${Environment.name} environment.
+            if (localStorage.getItem('ATILA_MOCK_API_CALLS') === "true") {
+                console.log(`"User tried to use ATILA_MOCK_API_CALLS local storage setting in" ${Environment.name} environment.
                 This feature is only available in 'dev'`)
             }
             return
         }
 
-        if (Environment.name === "staging") {
+        else if (Environment.name === "staging") {
             if (!window.location.host.includes("--atila-staging.netlify.app")) {
                 return
             } else {
@@ -32,7 +32,7 @@ export class MockAPI {
             }
         }
 
-        if (Environment.name === "dev" && localStorage.getItem('MOCK_API_CALLS') !== "true") {
+        else if (Environment.name === "dev" && localStorage.getItem('ATILA_MOCK_API_CALLS') !== "true") {
             return
         }
 
