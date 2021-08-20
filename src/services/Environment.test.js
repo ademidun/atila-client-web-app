@@ -17,7 +17,7 @@ describe('Environment', () => {
             if (Object.prototype.hasOwnProperty.call(EnvironmentStaging, prop)) {
 
                 const propValue = EnvironmentStaging[prop];
-                if (prop.toLowerCase().includes('api')) {
+                if (prop.toLowerCase().includes('api') && prop !== "apiUrlNotion") {
                     expect(propValue).toContain('staging');
                 }
 
