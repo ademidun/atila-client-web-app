@@ -6,6 +6,7 @@ import ScholarshipsPreviewOntario1 from './Scholarship/ScholarshipsPreviewOntari
 import ScholarshipsPreviewPrairies1 from './Scholarship/ScholarshipsPreviewPrairies1.json';
 import MendingTheChasmScholarship from './Scholarship/MendingTheChasmScholarship.json';
 import TopScholarNotionPage from './Notion/TopScholar.json';
+import SchulichLeaderScholarship from './Scholarship/SchulichLeaderScholarship.json';
 import BlogPreviewList1 from './Blog/BlogPreviewList1.json';
 import EmailSignupBlogPost from './Blog/EmailSignupBlogPost.json';
 import WordCountBlogPost from './Blog/WordCountBlogPost.json';
@@ -18,13 +19,26 @@ export class MockAPI {
 
     static initializeMocks = () => {
 
-        if (localStorage.getItem('ATILA_MOCK_API_CALLS') !== "true" || Environment.name !== "dev") {
-            if (localStorage.getItem('MOCK_API_CALLS') === "true") {
-                console.log(`"User tried to use MOCK_API_CALLS local storage setting in" ${Environment.name} environment.
+        if (Environment.name === "prod") {
+            if (localStorage.getItem('ATILA_MOCK_API_CALLS') === "true") {
+                console.log(`"User tried to use ATILA_MOCK_API_CALLS local storage setting in" ${Environment.name} environment.
                 This feature is only available in 'dev'`)
             }
             return
         }
+
+        else if (Environment.name === "staging") {
+            if (!window.location.host.includes("--atila-staging.netlify.app")) {
+                return
+            } else {
+                console.log("Using mock data due to unique deploy url: '--atila-staging.netlify.app'")
+            }
+        }
+
+        else if (Environment.name === "dev" && localStorage.getItem('ATILA_MOCK_API_CALLS') !== "true") {
+            return
+        }
+
         var mock = new MockAdapter(axios);
         
         mock.onAny(ContactsAPI.contactsApiQueryUrl).reply(200, ContactsQuery1);
@@ -50,7 +64,19 @@ export class MockAPI {
 
         let scholarshipSlugUrl = `${Environment.apiUrl}/scholarship-slug`;
         scholarshipSlugUrl = new RegExp(`${scholarshipSlugUrl}/.+`);
-        mock.onGet(scholarshipSlugUrl).reply(200, MendingTheChasmScholarship);
+
+        mock.onGet(scholarshipSlugUrl).reply(function (config) {
+
+            let responseData = MendingTheChasmScholarship;
+
+            if (config.url.includes("?slug=schulich")) {
+                responseData = SchulichLeaderScholarship;
+            }
+            return [
+              200,
+              responseData,
+            ];
+          });
 
 
         let relatedBlogPostsUrl = `${Environment.apiUrl}/blog/blog-posts`;

@@ -96,8 +96,8 @@ class ReportIncorrectInfo extends React.Component {
             </>
         )
 
-        let radioOptions = incorrectInfoOptions.map(optionDict => (
-            <Radio style={radioStyle} value={optionDict.label}>
+        let radioOptions = incorrectInfoOptions.map((optionDict) => (
+            <Radio style={radioStyle} value={optionDict.label} key={optionDict.label}>
                 {optionDict.value}
                 {infoOptionsLabel === 'wrong_deadline' && optionDict.label === infoOptionsLabel &&
                     wrongDeadlineExtraInfo
