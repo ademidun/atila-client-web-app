@@ -3,13 +3,13 @@ import request from "axios";
 
 class NotionService {
 
-    static pageIdUrl = `${Environment.apiUrlNodeMicroservice}/notion/get-page/`;
+    static pageIdUrl = `${Environment.apiUrlNotion}/v1/page`;
 
     static getPageId = (pageId) => {
 
         const apiCompletionPromise = request({
             method: 'get',
-            url: `${NotionService.pageIdUrl}?pageId=${pageId}`,
+            url: `${NotionService.pageIdUrl}/${pageId}`,
         });
 
         return apiCompletionPromise;
