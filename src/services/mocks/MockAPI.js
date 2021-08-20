@@ -17,10 +17,14 @@ var MockAdapter = require("axios-mock-adapter");
 
 export class MockAPI {
 
+    static ATILA_MOCK_API_CALLS = "ATILA_MOCK_API_CALLS";
     static initializeMocks = () => {
 
+        const atilaMockApiCallsLocalStorageValue = localStorage.getItem(MockAPI.ATILA_MOCK_API_CALLS);
+
+
         if (Environment.name === "prod") {
-            if (localStorage.getItem('ATILA_MOCK_API_CALLS') === "true") {
+            if (atilaMockApiCallsLocalStorageValue === "true") {
                 console.log(`"User tried to use ATILA_MOCK_API_CALLS local storage setting in" ${Environment.name} environment.
                 This feature is only available in 'dev'`)
             }
@@ -35,9 +39,10 @@ export class MockAPI {
             }
         }
 
-        else if (Environment.name === "dev" && localStorage.getItem('ATILA_MOCK_API_CALLS') !== "true") {
+        else if (Environment.name === "dev" && atilaMockApiCallsLocalStorageValue !== "true") {
             return
         }
+        console.log("MockAPI is being used");
 
         var mock = new MockAdapter(axios);
         
