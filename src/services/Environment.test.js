@@ -3,6 +3,12 @@ import {EnvironmentDev, EnvironmentProd, EnvironmentStaging} from "./Environment
 
 describe('Environment', () => {
 
+    it('renders the correct environment name', () => {
+        expect(EnvironmentDev.name).toBe('dev');
+        expect(EnvironmentStaging.name).toBe('staging');
+        expect(EnvironmentProd.name).toBe('prod');
+    });
+
     it('renders the correct api url', () => {
 
         for (let prop in EnvironmentDev) {
@@ -88,5 +94,5 @@ describe('Environment', () => {
                 }
             }
         });
-    })
+    });
 });
