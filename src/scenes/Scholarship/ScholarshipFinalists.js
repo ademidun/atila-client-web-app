@@ -170,10 +170,14 @@ export function UserProfilesCards({userProfiles, userKey="username"}) {
 
             let userDisplay = (
                 <Link to={`/profile/${user.username}`} >
-                    <img
-                        alt="user profile"
-                        className="rounded-circle py-1 pr-1 square-icon"
-                        src={user.profile_pic_url} />
+                    <div style={{padding: "10px"}}>
+                        <img
+                            alt="user profile"
+                            className="rounded-circle py-1 pr-1 square-icon"
+                            src={user.profile_pic_url} />
+                            
+                    </div>
+                    
                     {user.first_name} {user.last_name}{' '}{fundingAmount}
                 </Link>);
 
@@ -191,10 +195,11 @@ export function UserProfilesCards({userProfiles, userKey="username"}) {
             return (
                 // Use zoom:0.8 as a temporary workaround so that that ScholarshipFinalists doesn't
                 // take up too much space.
-                <Col xs={24} md={12} style={{zoom:0.9}} key={user[userKey]}>
-                    <div className="bg-light mb-3 p-1 rounded-pill">
-                        {userDisplay}
-                        {user.is_winner && <Tag color="green">{' '}Winner</Tag>}
+                
+                <Col xs={24} md={6} style={{zoom:0.9}} key={user[userKey]}>
+                    <div className="text-center" style={{background: "#F0FFFE", padding: "15px", width: "250px", height: "300px"}}>
+                        {userDisplay}<br/>
+                        {user.is_winner && <Tag color="gold">{' '}Winner</Tag>}
                         {user.is_owner && <Tag color="green">{' '}Creator</Tag>}
                     </div>
                 </Col>)
