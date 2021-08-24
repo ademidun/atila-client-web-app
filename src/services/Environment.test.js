@@ -3,6 +3,12 @@ import {EnvironmentDev, EnvironmentProd, EnvironmentStaging} from "./Environment
 
 describe('Environment', () => {
 
+    it('renders the correct environment name', () => {
+        expect(EnvironmentDev.name).toBe('dev');
+        expect(EnvironmentStaging.name).toBe('staging');
+        expect(EnvironmentProd.name).toBe('prod');
+    });
+
     it('renders the correct api url', () => {
 
         for (let prop in EnvironmentDev) {
@@ -17,7 +23,7 @@ describe('Environment', () => {
             if (Object.prototype.hasOwnProperty.call(EnvironmentStaging, prop)) {
 
                 const propValue = EnvironmentStaging[prop];
-                if (prop.toLowerCase().includes('api')) {
+                if (prop.toLowerCase().includes('api') && prop !== "apiUrlNotion") {
                     expect(propValue).toContain('staging');
                 }
 
@@ -88,5 +94,5 @@ describe('Environment', () => {
                 }
             }
         });
-    })
+    });
 });

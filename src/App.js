@@ -35,6 +35,9 @@ const Application = loadable(() => import("./scenes/Application/Application"), {
 const HowToStartAScholarship = loadable(() => import("./scenes/DirectApplicationInfo/HowToStartAScholarship"), {
   fallback: <Loading />,
 });
+const NotionPage = loadable(() => import("./scenes/Notion/NotionPage"), {
+  fallback: <Loading />,
+});
 const HowToApplyForScholarships = loadable(() => import("./scenes/DirectApplicationInfo/HowToApplyForScholarships"), {
   fallback: <Loading />,
 });
@@ -122,13 +125,7 @@ const { requestSanitizer, responseSanitizer } = LogrocketFuzzySanitizer.setup(pr
 class App extends React.Component {
   constructor(props) {
     super(props);
-    /**
-     * The logic to only allow mocks in dev is alreay handled inside the function initializeMocks()
-     * Having it here is redundant but it makes it clearer to the user that we only call the mock in dev environments.
-     */
-    if (Environment.name === "dev") {
-      MockAPI.initializeMocks();
-    }
+    MockAPI.initializeMocks();
     if (process.env.NODE_ENV !== "test" &&
         !navigator.userAgent.includes('https://github.com/prerender/prerender')) {
       // TODO: mock LogRocket.init and setupLogRocketReact and all uses of LogRocket in Navbar.js and Register.js
@@ -183,6 +180,10 @@ class App extends React.Component {
               <Route
                 path='/apply'
                 component={GoogleAnalyticsTracker(HowToApplyForScholarships)}
+              />
+              <Route
+                path='/p/:pageId'
+                component={GoogleAnalyticsTracker(NotionPage)}
               />
               <Route
                 path='/search'

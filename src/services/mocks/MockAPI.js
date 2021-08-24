@@ -5,24 +5,45 @@ import ScholarshipsPreview1 from './Scholarship/ScholarshipsPreview1.json';
 import ScholarshipsPreviewOntario1 from './Scholarship/ScholarshipsPreviewOntario1.json';
 import ScholarshipsPreviewPrairies1 from './Scholarship/ScholarshipsPreviewPrairies1.json';
 import MendingTheChasmScholarship from './Scholarship/MendingTheChasmScholarship.json';
+import TopScholarNotionPage from './Notion/TopScholar.json';
+import SchulichLeaderScholarship from './Scholarship/SchulichLeaderScholarship.json';
 import BlogPreviewList1 from './Blog/BlogPreviewList1.json';
 import EmailSignupBlogPost from './Blog/EmailSignupBlogPost.json';
 import WordCountBlogPost from './Blog/WordCountBlogPost.json';
+import NotionService from '../NotionService';
 
 var axios = require("axios");
 var MockAdapter = require("axios-mock-adapter");
 
 export class MockAPI {
 
+    static ATILA_MOCK_API_CALLS = "ATILA_MOCK_API_CALLS";
     static initializeMocks = () => {
 
-        if (localStorage.getItem('ATILA_MOCK_API_CALLS') !== "true" || Environment.name !== "dev") {
-            if (localStorage.getItem('MOCK_API_CALLS') === "true") {
-                console.log(`"User tried to use MOCK_API_CALLS local storage setting in" ${Environment.name} environment.
+        const atilaMockApiCallsLocalStorageValue = localStorage.getItem(MockAPI.ATILA_MOCK_API_CALLS);
+
+
+        if (Environment.name === "prod") {
+            if (atilaMockApiCallsLocalStorageValue === "true") {
+                console.log(`"User tried to use ATILA_MOCK_API_CALLS local storage setting in" ${Environment.name} environment.
                 This feature is only available in 'dev'`)
             }
             return
         }
+
+        else if (Environment.name === "staging") {
+            if (!window.location.host.includes("--atila-staging.netlify.app")) {
+                return
+            } else {
+                console.log("Using mock data due to unique deploy url: '--atila-staging.netlify.app'")
+            }
+        }
+
+        else if (Environment.name === "dev" && atilaMockApiCallsLocalStorageValue !== "true") {
+            return
+        }
+        console.log("MockAPI is being used");
+
         var mock = new MockAdapter(axios);
         
         mock.onAny(ContactsAPI.contactsApiQueryUrl).reply(200, ContactsQuery1);
@@ -48,7 +69,19 @@ export class MockAPI {
 
         let scholarshipSlugUrl = `${Environment.apiUrl}/scholarship-slug`;
         scholarshipSlugUrl = new RegExp(`${scholarshipSlugUrl}/.+`);
-        mock.onGet(scholarshipSlugUrl).reply(200, MendingTheChasmScholarship);
+
+        mock.onGet(scholarshipSlugUrl).reply(function (config) {
+
+            let responseData = MendingTheChasmScholarship;
+
+            if (config.url.includes("?slug=schulich")) {
+                responseData = SchulichLeaderScholarship;
+            }
+            return [
+              200,
+              responseData,
+            ];
+          });
 
 
         let relatedBlogPostsUrl = `${Environment.apiUrl}/blog/blog-posts`;
@@ -59,6 +92,9 @@ export class MockAPI {
         mock.onGet(`${Environment.apiUrl}/blog/blog/alona/use-your-personal-email-preferably-gmail-not-your-school-email-when-signing-up-for-an-account-on-atila/`).reply(200, EmailSignupBlogPost);
         mock.onGet(`${Environment.apiUrl}/blog/blog/ericwang451/whats-the-word-count-analyzing-the-correlation-between-essay-length-and-quality/`).reply(200, WordCountBlogPost);
 
+        let notionPageUrl = `${NotionService.pageIdUrl}`;
+        notionPageUrl = new RegExp(`${notionPageUrl}/.+`);
+        mock.onGet(notionPageUrl).reply(200, TopScholarNotionPage);
 
     }
 }
