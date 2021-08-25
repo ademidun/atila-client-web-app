@@ -5,6 +5,9 @@ import {Link} from "react-router-dom";
 import './Footer/Footer.scss';
 import {truncate} from "../services/utils";
 import {ProfilePicPreview, UserProfilePreview} from "./ReferredByInput";
+import './ContentCard.scss'
+import {Button} from "antd";
+
 
 class ContentCard extends React.Component {
 
@@ -49,6 +52,28 @@ class ContentCard extends React.Component {
             </div>
         )
 
+        return (
+            <div className='Card mb-3'>
+                <div className='upper-container'>
+                    <div className='image-container'>
+                        <Link to={slug}>
+                            <img  src={image}
+                                  alt={title}
+                                  style={{ width: '100px', height: '100px' }}
+                            />
+                        </Link>
+                    </div>
+                </div>
+                <div className='lower-container'>
+                    <Link title={title} to={slug}>
+                        <h3> {title} </h3>
+                    </Link>
+                    {authorsReact}
+                    <p> {descriptionText} </p>
+                    <Button> Read More</Button>
+                </div>
+            </div>
+        )
 
         return (
             <div className={`${className} card shadow p-3`} style={customStyle}>
