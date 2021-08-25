@@ -63,3 +63,21 @@ Here are two video tutorials we made specifically on how to Mock API Data in thi
 We use [axios-mock-adapter](https://github.com/ctimmerm/axios-mock-adapter) for our API mocking, see their documentation for how to do more advanced mocking such as returning a certain response based on the request parameters.
 
 **Note:** You can only mock api calls in the dev environment.
+
+## Storybook
+
+- We use Storybook to develop components independently from business logic, see [Adding Storybook to our Web App Development Process](https://github.com/storybookjs/storybook/issues/5183)
+
+- To run Storybook:
+    - delete `node_modules` and `package-lock.json` NOT `package.json`
+    - run `npm install`
+    - `npm run storybook`
+    - You can run your react server alongside storybook: Open a seperate terminal window and run `npm start`
+
+- To add a new component to Storybook: create it in `src/stories/{ComponentName}.stories.js`
+- Follow the example in `src/stories/ContentCard.stories.js` and create a seperate story for each scenario of that component
+- NOTE: if there is an error in one of your components, instead of storybook crashing, the error is displayed in the console so make sure to inpect console to see the error
+
+- Learn more here: 
+    - https://storybook.js.org/docs/react/get-started/introduction
+    - https://storybook.js.org/docs/react/writing-stories/introduction

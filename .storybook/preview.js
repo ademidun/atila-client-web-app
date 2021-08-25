@@ -19,10 +19,6 @@ configure({ adapter: new Adapter() });
 const mockStore = configureStore();
 const store = mockStore(initialReduxState);
 // const loggedInStore = mockStore(initialReduxStateLoggedIn);
-addDecorator(story => <Provider store={store}>
-  {story()}
-</Provider>);
-addDecorator(story => <MemoryRouter initialEntries={['/']}>{story()}</MemoryRouter>);
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
@@ -33,3 +29,8 @@ export const parameters = {
     },
   },
 }
+
+addDecorator(story => <Provider store={store}>
+  {story()}
+</Provider>);
+addDecorator(story => <MemoryRouter initialEntries={['/']}>{story()}</MemoryRouter>);
