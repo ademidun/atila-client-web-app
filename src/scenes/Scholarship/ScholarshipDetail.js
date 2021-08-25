@@ -447,7 +447,7 @@ class ScholarshipDetail extends React.Component {
                             </div>
 
                             {contributors && contributors.length > 1 &&
-                                <div>
+                                <div>S
                                     <h3 className="text-left">Contributors</h3>
                                     <UserProfilesCards userProfiles={contributors} userKey="id" />
                                 </div>

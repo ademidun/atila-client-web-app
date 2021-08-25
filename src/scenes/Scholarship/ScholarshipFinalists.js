@@ -109,7 +109,7 @@ export function ScholarshipFinalistEssays({ title, scholarshipFinalistEssays, is
     let displayTitle = `${title}' Essays`
 
     let essayContent;
-    if (scholarshipFinalistEssays.length  === 0) {
+    if (scholarshipFinalistEssays.length === 0) {
         essayContent = (
             <React.Fragment>
                 <h3 className="text-center">No published essays to display</h3>
@@ -156,6 +156,8 @@ export function ScholarshipFinalistEssays({ title, scholarshipFinalistEssays, is
     )
 
 }
+
+
 export function UserProfilesCards({userProfiles, userKey="username"}) {
     return (<Row gutter={[{ xs: 8, sm: 16}, 16]}>
         {userProfiles.map(user => {
