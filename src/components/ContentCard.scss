@@ -14,7 +14,7 @@
     width: 180px;
     height: 240px;
     background: white;
-    border: 2px solid #0f83ff;
+    border: 2px solid #2B7FDD;
     border-radius: 10px;
     overflow: hidden;
     margin-left: 60px;
@@ -22,13 +22,13 @@
 
 .upper-container{
     height: 100px;
-    background: linear-gradient(to bottom, #143fff, #0f83ff, #30c1ff, cyan);
+    background: linear-gradient(to bottom, #0E6DD2, #2B7FDD, #4992E9,#66A4F4,#83B6FF);
 
 }
 
 .userUpper-container{
     height: 80px;
-    background:linear-gradient(to bottom, #143fff, #0f83ff, #30c1ff, cyan);
+    background:linear-gradient(to bottom, #0E6DD2, #2B7FDD, #4992E9,#66A4F4,#83B6FF);
 }
 
 .tag{
@@ -56,7 +56,7 @@
 }
 
 #avatar-pic{
-    border: 2px solid #30c1ff;
+    border: 2px solid #83B6FF;
 }
 
 .lower-container{
@@ -81,7 +81,7 @@
 }
 
 .lower-container h4{
-    color: blue;
+    color:#0E6DD2;
     font-weight: 700;
     font-size: 1.2rem;
     font-family: Arial, Helvetica, sans-serif;
@@ -110,7 +110,7 @@ button{
     color: #2f2d2e;
     font: bold;
     background-color: white;
-    border: 2px solid blue;
+    border: 2px solid #2B7FDD;
     padding: 0.6rem;
     border-radius: 6px;
     transition-duration: 0.5s;
@@ -118,7 +118,7 @@ button{
 }
 
 button:hover{
-    background-color: linear-gradient(to bottom, #143fff, #0f83ff, #30c1ff, cyan);
+    background-color: linear-gradient(to bottom, #0E6DD2, #2B7FDD, #4992E9,#66A4F4,#83B6FF);
     transform: scale(1.1);
     border: none;
     color: white;
