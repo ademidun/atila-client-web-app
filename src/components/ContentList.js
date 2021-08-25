@@ -107,7 +107,7 @@ class ContentList extends React.Component {
                                  content={genericItemTransform(content)}
                                  className=" mb-3"
                                  hideImage={contentType==='Essays'}
-                                 /*customStyle={{padding: '10px'}}*/
+                                 
                     />
                 </Col>
                 );

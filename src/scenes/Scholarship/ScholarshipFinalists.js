@@ -85,7 +85,7 @@ class ScholarshipFinalists extends React.Component {
 
         return (
             <div className={`${className}`}>
-                <h3 className="text-center">{title}</h3>
+                <h2 className="text-center">{title}</h2>
                 {showEssaysFirst &&
                 <ScholarshipFinalistEssays title={title}
                                            scholarshipFinalistEssays={scholarshipFinalistEssays}
@@ -106,7 +106,12 @@ class ScholarshipFinalists extends React.Component {
 }
 
 export function ScholarshipFinalistEssays({ title, scholarshipFinalistEssays, isFiltered, scholarships }) {
-    let displayTitle = `${title}' Essays`
+    let displayTitle =(
+            <h2 > 
+                {title}' Essays 
+                <br/><br/>
+            </h2>
+        )
 
     let essayContent;
     if (scholarshipFinalistEssays.length === 0) {
@@ -171,45 +176,62 @@ export function UserProfilesCards({userProfiles, userKey="username"}) {
         </>;
 
             let userDisplay = (
-                <Link to={`/profile/${user.username}`} >
-                    <div style={{padding: "10px"}}>
-                        <img
-                            alt="user profile"
-                            className="rounded-circle py-1 pr-1 square-icon"
-                            src={user.profile_pic_url} />
-                            
-                    </div>
-                    
-                    {user.first_name} {user.last_name}{' '}{fundingAmount}
-                </Link>);
+                
+                    <div className='UserCard mb-3'>
+                        
+                        <div className='userUpper-container'>
+                            <div className='userImage-container'>
+                                <Link to={`/profile/${user.username}`} >
+                                <img id="avatar-pic"
+                                    alt="user profile"
+                                    src={user.profile_pic_url} />
+                                </Link>
+                            </div>
+                        </div>
+                        <div className='tag'>
+                            {user.is_winner && <Tag color="gold">{' '}Winner</Tag>}
+                            {user.is_owner && <Tag color="green">{' '}Creator</Tag>}
+                        </div>
+                        <div className='userLower-container'>
+                            <Link to={`/profile/${user.username}`} >
+                            {user.first_name}
+                            <br/> {user.last_name} 
+                            <br/>{' '}{fundingAmount}
+                            </Link>
+                        </div>
+                                  
+                    </div>  
+                );
 
             if (user.is_anonymous || !user.username) {
                 userDisplay = (
-                    <div>
-                        <img
-                            alt="user profile"
-                            className="rounded-circle py-1 pr-1 square-icon"
-                            src={user.profile_pic_url} />
+                    
+                    <div className='UserCard mb-3'>
+                        <Link to={`/profile/${user.username}`} >
+                        <div className='userUpper-container'>
+                            <div className='userImage-container'>
+                                <img id="avatar-pic"
+                                    alt="user profile"
+                                    src={user.profile_pic_url} />
+                            </div>
+                        </div>
+                        <div className='userLower-container'>
                         {user.is_anonymous ? "Anonymous" : `${user.first_name} ${user.last_name}`}{' '}{fundingAmount}
+                        </div>
+                        </Link>          
                     </div>);
             }
 
             return (
                 // Use zoom:0.8 as a temporary workaround so that that ScholarshipFinalists doesn't
                 // take up too much space.
-                /*
+                
                 <Col xs={24} md={6} style={{zoom:0.9}} key={user[userKey]}>
-                    <div className="text-center" style={{background: "#defbff", padding: "15px", width: "250px", height: "300px"}}>
-                        {userDisplay}<br/>
-                        {user.is_winner && <Tag color="gold">{' '}Winner</Tag>}
-                        {user.is_owner && <Tag color="green">{' '}Creator</Tag>}
+                    <div>
+                        <br/><br/>
+                        {userDisplay}
                     </div>
-                </Col>)*/
-                <div className="text-center" style={{background: "#defbff", padding: "15px", width: "250px", height: "300px"}}>
-                        {userDisplay}<br/>
-                        {user.is_winner && <Tag color="gold">{' '}Winner</Tag>}
-                        {user.is_owner && <Tag color="green">{' '}Creator</Tag>}
-                </div>)
+                </Col>)
         })}
 
     </Row>)
