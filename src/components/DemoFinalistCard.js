@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import './DemoFinalistCard.css'
+import './DemoFinalistCard.scss'
 
 function DemoCard({ name }, { essaytitle }, { essaycontent }) {
 
