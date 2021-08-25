@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import './Footer/Footer.scss';
-import {truncate} from "../services/utils";
-import {ProfilePicPreview, UserProfilePreview} from "./ReferredByInput";
+import { truncate } from "../services/utils";
+import { ProfilePicPreview, UserProfilePreview } from "./ReferredByInput";
 import './ContentCard.scss'
-import {Button} from "antd";
+import { Button } from "antd";
 
 
 class ContentCard extends React.Component {
@@ -38,9 +38,9 @@ class ContentCard extends React.Component {
         let descriptionText = description;
 
         if (description && !hideImage) {
-            descriptionText = showPreview ? description.substring(0,240) : `${description.substring(0,100)}`;
+            descriptionText = showPreview ? description.substring(0, 240) : `${description.substring(0, 100)}`;
             if (description.length > descriptionText) {
-                descriptionText +='...'
+                descriptionText += '...'
             }
         }
 
@@ -57,9 +57,9 @@ class ContentCard extends React.Component {
                 <div className='upper-container'>
                     <div className='image-container'>
                         <Link to={slug}>
-                            <img  src={image}
-                                  alt={title}
-                                  style={{ width: '100px', height: '100px' }}
+                            <img id="avatar-pic" src={image}
+                                alt={title}
+                                style={{ width: '100px', height: '100px' }}
                             />
                         </Link>
                     </div>
@@ -77,37 +77,37 @@ class ContentCard extends React.Component {
 
         return (
             <div className={`${className} card shadow p-3`} style={customStyle}>
-                <div  className="card-title">
+                <div className="card-title">
                     <h3>
-                        <Link  title={title} to={slug}>
+                        <Link title={title} to={slug}>
                             {truncate(title)}
                         </Link>
                     </h3>
                     <br />
-                    <p  className="badge badge-secondary"
+                    <p className="badge badge-secondary"
                         style={{ fontSize: 'small' }}>
                         {type}
                     </p>
-                    {published===false &&
-                    <p  className="badge badge-secondary mx-1"
-                        style={{ fontSize: 'small' }}>
-                        Unpublished
-                    </p>}
+                    {published === false &&
+                        <p className="badge badge-secondary mx-1"
+                            style={{ fontSize: 'small' }}>
+                            Unpublished
+                        </p>}
                 </div>
                 {user && authorsReact}
-                <div  className="card-image mb-3">
+                <div className="card-image mb-3">
                     {
-                    !hideImage && image &&
-                    <Link to={slug}>
-                        <img  src={image}
-                              alt={title}
-                              style={{ width: '100%'}}
-                        />
-                    </Link>
+                        !hideImage && image &&
+                        <Link to={slug}>
+                            <img src={image}
+                                alt={title}
+                                style={{ width: '100%' }}
+                            />
+                        </Link>
                     }
                 </div>
                 <div className="card-text">
-                    { descriptionText }
+                    {descriptionText}
                 </div>
                 {!hideImage &&
                     <button className="btn btn-link" onClick={this.togglePreview}>
