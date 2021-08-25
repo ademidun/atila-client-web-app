@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import './DemoFinalistCard.scss'
+import './ContentCard.scss'
 
 function DemoCard({ name }, { essaytitle }, { essaycontent }) {
 
@@ -17,8 +17,6 @@ function DemoCard({ name }, { essaytitle }, { essaycontent }) {
                 <p> {essaycontent} </p>
                 <button> Read More</button>
             </div>
-
-
         </div>
 
     )
