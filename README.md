@@ -69,8 +69,7 @@ We use [axios-mock-adapter](https://github.com/ctimmerm/axios-mock-adapter) for 
 - We use Storybook to develop components independently from business logic, see [Adding Storybook to our Web App Development Process](https://github.com/storybookjs/storybook/issues/5183)
 
 - To run Storybook:
-    - delete `node_modules` and `package-lock.json` NOT `package.json`
-    - run `npm install`
+    - **You only have to do this the first time you run Storybook**: delete `node_modules` and `package-lock.json` NOT `package.json` then run `npm install`
     - `npm run storybook`
     - You can run your react server alongside storybook: Open a seperate terminal window and run `npm start`
 
