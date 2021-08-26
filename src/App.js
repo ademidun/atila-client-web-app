@@ -1,16 +1,12 @@
 import React from "react";
 import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
 import loadable from "@loadable/component";
-import "bootstrap/dist/css/bootstrap.css";
 import { connect } from "react-redux";
 import LandingPage from "./scenes/LandingPage/LandingPage";
 import Footer from "./components/Footer/Footer";
 import Loading from "./components/Loading";
 
 import { ToastContainer } from "react-toastify";
-import "react-notion/src/styles.css";
-import "prismjs/themes/prism-tomorrow.css";
-import "react-toastify/dist/ReactToastify.css";
 import Navbar from "./components/Navbar/Navbar";
 import GoogleAnalyticsTracker from "./services/GoogleAnalyticsTracker";
 import ScrollToTop from "./components/ScrollToTop";
@@ -19,6 +15,13 @@ import LogrocketFuzzySanitizer from 'logrocket-fuzzy-search-sanitizer';
 import setupLogRocketReact from "logrocket-react";
 import Environment from "./services/Environment";
 import { MockAPI } from './services/mocks/MockAPI';
+
+import './index.scss';
+import 'antd/dist/antd.css';
+import "bootstrap/dist/css/bootstrap.css";
+import "react-notion/src/styles.css";
+import "prismjs/themes/prism-tomorrow.css";
+import "react-toastify/dist/ReactToastify.css";
 
 const Payment = loadable(() => import("./scenes/Payment/Payment"), {
   fallback: <Loading />,
@@ -33,6 +36,9 @@ const Application = loadable(() => import("./scenes/Application/Application"), {
   fallback: <Loading />,
 });
 const HowToStartAScholarship = loadable(() => import("./scenes/DirectApplicationInfo/HowToStartAScholarship"), {
+  fallback: <Loading />,
+});
+const NotionPage = loadable(() => import("./scenes/Notion/NotionPage"), {
   fallback: <Loading />,
 });
 const HowToApplyForScholarships = loadable(() => import("./scenes/DirectApplicationInfo/HowToApplyForScholarships"), {
@@ -177,6 +183,10 @@ class App extends React.Component {
               <Route
                 path='/apply'
                 component={GoogleAnalyticsTracker(HowToApplyForScholarships)}
+              />
+              <Route
+                path='/p/:pageId'
+                component={GoogleAnalyticsTracker(NotionPage)}
               />
               <Route
                 path='/search'

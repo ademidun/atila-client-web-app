@@ -25,6 +25,30 @@ const getDefaultQueryItem = () => ({
     queryData: {},
 });
 
+export const DEFAULT_SAMPLE_SEARCHES = [
+    {category: 'eligible_schools', value: 'University of Toronto'},
+    {category: 'eligible_schools', value: 'University of Alberta'},
+    {category: 'eligible_schools', value: 'Dalhouse University'},
+    {category: 'eligible_schools', value: 'Humber College'},
+    {category: 'eligible_programs', value: 'Nursing'},
+    {category: 'eligible_programs', value: 'Medicine'},
+    {category: 'occupations', value: 'Software Engineer'},
+    {category: 'industries', value: 'Investment Banking'},
+    {category: 'industries', value: 'Management Consulting'},
+    {category: 'religion', value: 'Christianity'},
+    {category: 'religion', value: 'Judaism'},
+    {category: 'religion', value: 'Islam'},
+    {category: 'ethnicity', value: 'East-Asian'},
+    {category: 'ethnicity', value: 'South-Asian'},
+    {category: 'ethnicity', value: 'Black'},
+    {category: 'ethnicity', value: 'Indigenous'},
+    {category: 'other_demographic', value: 'STEM'},
+    {category: 'other_demographic', value: 'Women'},
+    {category: 'other_demographic', value: 'LGBTQ'},
+    {category: 'sports', value: 'Weightlifting'},
+    {category: 'sports', value: 'Basketball'},
+];
+
 export const SampleSearches = ({sampleSearches, allQueries, onSearchSelected, className="my-3"}) => {
 
     
@@ -57,29 +81,7 @@ export const SampleSearches = ({sampleSearches, allQueries, onSearchSelected, cl
 
         this.state = {
             allQueries: [getDefaultQueryItem()],
-            sampleSearches: [
-                {category: 'eligible_schools', value: 'University of Toronto'},
-                {category: 'eligible_schools', value: 'University of Alberta'},
-                {category: 'eligible_schools', value: 'Dalhouse University'},
-                {category: 'eligible_schools', value: 'Humber College'},
-                {category: 'eligible_programs', value: 'Nursing'},
-                {category: 'eligible_programs', value: 'Medicine'},
-                {category: 'occupations', value: 'Software Engineer'},
-                {category: 'industries', value: 'Investment Banking'},
-                {category: 'industries', value: 'Management Consulting'},
-                {category: 'religion', value: 'Christianity'},
-                {category: 'religion', value: 'Judaism'},
-                {category: 'religion', value: 'Islam'},
-                {category: 'ethnicity', value: 'East-Asian'},
-                {category: 'ethnicity', value: 'South-Asian'},
-                {category: 'ethnicity', value: 'Black'},
-                {category: 'ethnicity', value: 'Indigenous'},
-                {category: 'other_demographic', value: 'STEM'},
-                {category: 'other_demographic', value: 'Women'},
-                {category: 'other_demographic', value: 'LGBTQ'},
-                {category: 'sports', value: 'Weightlifting'},
-                {category: 'sports', value: 'Basketball'},
-            ]
+            sampleSearches: props.sampleSearches
         };
 
     }
@@ -322,11 +324,13 @@ export const SampleSearches = ({sampleSearches, allQueries, onSearchSelected, cl
 QueryBuilder.defaultProps = {
     onUpdateQuery: (query) => {},
     updateQueryPropsOnLoad: true,
+    sampleSearches: DEFAULT_SAMPLE_SEARCHES,
 };
 
 QueryBuilder.propTypes = {
     onUpdateQuery: PropTypes.func.isRequired,
     updateQueryPropsOnLoad: PropTypes.bool.isRequired,
+    sampleSearches: PropTypes.array.isRequired
 };
 
 export default withRouter(QueryBuilder);

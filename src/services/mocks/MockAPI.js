@@ -5,20 +5,26 @@ import ScholarshipsPreview1 from './Scholarship/ScholarshipsPreview1.json';
 import ScholarshipsPreviewOntario1 from './Scholarship/ScholarshipsPreviewOntario1.json';
 import ScholarshipsPreviewPrairies1 from './Scholarship/ScholarshipsPreviewPrairies1.json';
 import MendingTheChasmScholarship from './Scholarship/MendingTheChasmScholarship.json';
+import TopScholarNotionPage from './Notion/TopScholar.json';
 import SchulichLeaderScholarship from './Scholarship/SchulichLeaderScholarship.json';
 import BlogPreviewList1 from './Blog/BlogPreviewList1.json';
 import EmailSignupBlogPost from './Blog/EmailSignupBlogPost.json';
 import WordCountBlogPost from './Blog/WordCountBlogPost.json';
+import NotionService from '../NotionService';
 
 var axios = require("axios");
 var MockAdapter = require("axios-mock-adapter");
 
 export class MockAPI {
 
+    static ATILA_MOCK_API_CALLS = "ATILA_MOCK_API_CALLS";
     static initializeMocks = () => {
 
+        const atilaMockApiCallsLocalStorageValue = localStorage.getItem(MockAPI.ATILA_MOCK_API_CALLS);
+
+
         if (Environment.name === "prod") {
-            if (localStorage.getItem('ATILA_MOCK_API_CALLS') === "true") {
+            if (atilaMockApiCallsLocalStorageValue === "true") {
                 console.log(`"User tried to use ATILA_MOCK_API_CALLS local storage setting in" ${Environment.name} environment.
                 This feature is only available in 'dev'`)
             }
@@ -33,9 +39,10 @@ export class MockAPI {
             }
         }
 
-        else if (Environment.name === "dev" && localStorage.getItem('ATILA_MOCK_API_CALLS') !== "true") {
+        else if (Environment.name === "dev" && atilaMockApiCallsLocalStorageValue !== "true") {
             return
         }
+        console.log("MockAPI is being used");
 
         var mock = new MockAdapter(axios);
         
@@ -85,6 +92,9 @@ export class MockAPI {
         mock.onGet(`${Environment.apiUrl}/blog/blog/alona/use-your-personal-email-preferably-gmail-not-your-school-email-when-signing-up-for-an-account-on-atila/`).reply(200, EmailSignupBlogPost);
         mock.onGet(`${Environment.apiUrl}/blog/blog/ericwang451/whats-the-word-count-analyzing-the-correlation-between-essay-length-and-quality/`).reply(200, WordCountBlogPost);
 
+        let notionPageUrl = `${NotionService.pageIdUrl}`;
+        notionPageUrl = new RegExp(`${notionPageUrl}/.+`);
+        mock.onGet(notionPageUrl).reply(200, TopScholarNotionPage);
 
     }
 }
