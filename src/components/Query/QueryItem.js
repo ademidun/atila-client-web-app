@@ -12,9 +12,6 @@ export class QueryItem extends React.Component {
 
     constructor(props){
         super(props);
-
-        console.log({props});
-
         this.state = {
             searchQuery: props.value,
         };
@@ -86,8 +83,6 @@ export class QueryItem extends React.Component {
         if (loggedInUserProfile && loggedInUserProfile.is_atila_admin) {
             suggestions = MASTER_LIST_WITH_CATEGORY_LABEL_ADMIN;
         }
-
-        console.log({loggedInUserProfile, suggestions});
 
         return (
             <>
