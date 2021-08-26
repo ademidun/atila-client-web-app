@@ -34,7 +34,7 @@ Taken from [PR #8](https://github.com/ademidun/atila-client-web-app/pull/8/files
 
 To test a specific file: `npm test -- SomeTestFileToRun` for example: `npm test -- Register`
 
-# Mocking API Data
+## Mocking API Data
 
 If you can't or don't want to use the actual backend API you can mock the responses.
 
