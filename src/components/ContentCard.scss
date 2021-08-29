@@ -3,21 +3,20 @@
     height: 480px;
     background: white;
     border-radius: 10px;
-    box-shadow: 0px 1px 10px 1px black;
+    box-shadow: 0px 1px 10px 1px #2B7FDD;
     overflow: hidden;
     margin-left: 40px;
     
 }
 
-/*TODO: move to separate scss*/
 .UserCard{
-    width: 180px;
-    height: 240px;
+    width: 165px;
+    height: 225px;
     background: white;
     box-shadow: 0px 1px 10px 1px #2B7FDD;
     border-radius: 10px;
     overflow: hidden;
-    margin-left: 60px;
+    margin-left: 16px;
 }
 
 .upper-container{
@@ -34,7 +33,7 @@
 .tag{
     display: flex;
     justify-content: center;
-    transform: translate(6px, 40px);
+    transform: translate(5px, 40px);
 }
 
 .image-container img{
@@ -52,7 +51,7 @@
     height:70px;
     border-radius: 50%;
     padding: 5px;
-    transform: translate(55px, 30px);
+    transform: translate(48px, 30px);
 }
 
 #avatar-pic{

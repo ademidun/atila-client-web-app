@@ -121,7 +121,8 @@ class LandingPage extends React.Component {
                             <ScholarshipFinalists itemType={"essay"}
                                             allFinalists={true}
                                             title="Finalists"
-                                            showEssayFirst={false}
+                                            showEssayFirst={true}
+                                            userProfile={false}
                             />
                         </div>
                         <hr/>

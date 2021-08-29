@@ -207,18 +207,24 @@ export function UserProfilesCards({userProfiles, userKey="username"}) {
                 userDisplay = (
                     
                     <div className='UserCard mb-3'>
-                        <Link to={`/profile/${user.username}`} >
+                        
                         <div className='userUpper-container'>
                             <div className='userImage-container'>
+                                <Link to={`/profile/${user.username}`} >
                                 <img id="avatar-pic"
                                     alt="user profile"
                                     src={user.profile_pic_url} />
+                                </Link>
                             </div>
+                        </div>
+                        <div className='tag'>
+                            {user.is_winner && <Tag color="gold">{' '}Winner</Tag>}
+                            {user.is_owner && <Tag color="green">{' '}Creator</Tag>}
                         </div>
                         <div className='userLower-container'>
                         {user.is_anonymous ? "Anonymous" : `${user.first_name} ${user.last_name}`}{' '}{fundingAmount}
                         </div>
-                        </Link>          
+                                  
                     </div>);
             }
 
@@ -226,7 +232,7 @@ export function UserProfilesCards({userProfiles, userKey="username"}) {
                 // Use zoom:0.8 as a temporary workaround so that that ScholarshipFinalists doesn't
                 // take up too much space.
                 
-                <Col xs={24} md={6} style={{zoom:0.9}} key={user[userKey]}>
+                <Col xs={24} md={4} style={{zoom:0.9}} key={user[userKey]}>
                     <div>
                         <br/><br/>
                         {userDisplay}
