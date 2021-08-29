@@ -56,12 +56,10 @@ class ContentCard extends React.Component {
             <div className='Card mb-3'>
                 <div className='upper-container'>
                     <div className='image-container'>
-                        <Link to={slug}>
-                            <img id="avatar-pic" src={image}
-                                alt={title}
-                                style={{ width: '100px', height: '100px' }}
-                            />
-                        </Link>
+                        <img id="avatar-pic" src={image}
+                            alt={title}
+                            style={{ width: '100px', height: '100px' }}
+                        />
                     </div>
                 </div>
                 <div className='lower-container'>
@@ -70,7 +68,9 @@ class ContentCard extends React.Component {
                     </Link>
                     {authorsReact}
                     <p> {descriptionText} </p>
-                    <Button> Read More</Button>
+                    <Link to={slug}>
+                        <Button> Read More</Button>
+                    </Link>
                 </div>
             </div>
         )

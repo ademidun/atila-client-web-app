@@ -122,7 +122,6 @@ class LandingPage extends React.Component {
                                             allFinalists={true}
                                             title="Finalists"
                                             showEssayFirst={true}
-                                            userProfile={false}
                             />
                         </div>
                         <hr/>
