@@ -44,23 +44,29 @@ class ContentCard extends React.Component {
             }
         }
 
-        let authorsReact = (
-            <div className="bg-light my-3">
-                <UserProfilePreview userProfile={user} linkProfile={true} />
-                {contributors && contributors.map(userProfile =>
-                    <ProfilePicPreview userProfile={userProfile} key={userProfile.username} linkProfile={true} />)}
-            </div>
-        )
+        let authorsReact = null;
+
+        if (user) {
+            authorsReact = (
+                <div className="bg-light my-3">
+                    <UserProfilePreview userProfile={user} linkProfile={true} />
+                    {contributors && contributors.map(userProfile =>
+                        <ProfilePicPreview userProfile={userProfile} key={userProfile.username} linkProfile={true} />)}
+                </div>
+            )
+        }
 
         return (
             <div className='Card mb-3'>
                 <div className='upper-container'>
-                    <div className='image-container'>
-                        <img id="avatar-pic" src={image}
-                            alt={title}
-                            style={{ width: '100px', height: '100px' }}
-                        />
-                    </div>
+                    {!hideImage && image &&
+                        <div className='image-container'>
+                            <img id="avatar-pic" src={image}
+                                 alt={title}
+                                 style={{width: '100px', height: '100px'}}
+                            />
+                        </div>
+                    }
                 </div>
                 <div className='lower-container'>
                     <Link title={title} to={slug}>
