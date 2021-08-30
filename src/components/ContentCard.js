@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Link } from "react-router-dom";
 
 import './Footer/Footer.scss';
-import { truncate } from "../services/utils";
 import { ProfilePicPreview, UserProfilePreview } from "./ReferredByInput";
 import './ContentCard.scss'
 import { Button } from "antd";
@@ -31,9 +30,9 @@ class ContentCard extends React.Component {
 
     render() {
 
-        const { className, content, hideImage, customStyle } = this.props;
+        const { content, hideImage } = this.props;
         const { showPreview } = this.state;
-        const { title, description, image, slug, type, user, published, contributors } = content;
+        const { title, description, image, slug, type, user, contributors } = content;
 
         let descriptionText = description;
 
@@ -111,50 +110,6 @@ class ContentCard extends React.Component {
             )
 
         }
-
-
-
-        return (
-            <div className={`${className} card shadow p-3`} style={customStyle}>
-                <div className="card-title">
-                    <h3>
-                        <Link title={title} to={slug}>
-                            {truncate(title)}
-                        </Link>
-                    </h3>
-                    <br />
-                    <p className="badge badge-secondary"
-                        style={{ fontSize: 'small' }}>
-                        {type}
-                    </p>
-                    {published === false &&
-                        <p className="badge badge-secondary mx-1"
-                            style={{ fontSize: 'small' }}>
-                            Unpublished
-                        </p>}
-                </div>
-                {user && authorsReact}
-                <div className="card-image mb-3">
-                    {
-                        !hideImage && image &&
-                        <Link to={slug}>
-                            <img src={image}
-                                alt={title}
-                                style={{ width: '100%' }}
-                            />
-                        </Link>
-                    }
-                </div>
-                <div className="card-text">
-                    {descriptionText}
-                </div>
-                {!hideImage &&
-                    <button className="btn btn-link" onClick={this.togglePreview}>
-                        Preview
-                    </button>
-                }
-            </div>
-        );
     }
 }
 
