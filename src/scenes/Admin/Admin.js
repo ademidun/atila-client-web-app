@@ -4,7 +4,7 @@ import ContactsTable from '../Contact/ContactsTable';
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import {connect} from "react-redux";
 import { Tabs } from 'antd';
-import UserSearch from './UserSearch';
+import MessagingCampaign from '../MesagingCampaign/MessagingCampaign';
 const { TabPane } = Tabs;
 
 class Admin extends React.Component {
@@ -39,8 +39,8 @@ class Admin extends React.Component {
                 <div className="card shadow p-3">
                     <h1>{title}</h1>
                     <Tabs defaultActiveKey="users">
-                        <TabPane tab="Users" key="users">
-                            <UserSearch />
+                        <TabPane tab="Messaging Campaigns" key="messaging">
+                            <MessagingCampaign />
                         </TabPane>
                         <TabPane tab="Contacts" key="contacts">
                             <div style={{width: "100%"}}>

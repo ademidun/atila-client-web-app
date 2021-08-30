@@ -2,11 +2,11 @@ import React from 'react';
 import {toastNotify} from "../../models/Utils";
 import { Table, Spin } from 'antd';
 import DataUtils from '../../services/utils/DataUtils';
-import QueryBuilder from '../../components/Query/QueryBuilder';
+import QueryBuilder from '../Query/QueryBuilder';
 import UserProfileAPI from '../../services/UserProfileAPI';
 
 
-class UserSearch extends React.Component {
+class UserProfileSearch extends React.Component {
 
     constructor(props){
         super(props);
@@ -66,4 +66,4 @@ class UserSearch extends React.Component {
     }
 }
 
-export default UserSearch;
+export default UserProfileSearch;
