@@ -56,30 +56,63 @@ class ContentCard extends React.Component {
             )
         }
 
-        return (
-            <div className='Card mb-3'>
-                <div className='upper-container'>
-                    {!hideImage && image &&
-                        <div className='image-container'>
-                            <img id="avatar-pic" src={image}
-                                 alt={title}
-                                 style={{width: '100px', height: '100px'}}
-                            />
+        if (type === "blog") {
+
+            return (
+                <div className='Card mb-3'>
+                    <div className='upper-container'>
+                        <div className='upper-container-2'>
+                            {!hideImage && image &&
+                                <img src={image}
+                                    alt={title}
+                                />
+                            }
                         </div>
-                    }
+                    </div>
+                    <div className='lower-container'>
+                        <Link title={title} to={slug}>
+                            <h3> {title} </h3>
+                        </Link>
+                        {authorsReact}
+                        <p> {descriptionText} </p>
+                        <Link to={slug}>
+                            <Button> Read More</Button>
+                        </Link>
+                    </div>
                 </div>
-                <div className='lower-container'>
-                    <Link title={title} to={slug}>
-                        <h3> {title} </h3>
-                    </Link>
-                    {authorsReact}
-                    <p> {descriptionText} </p>
-                    <Link to={slug}>
-                        <Button> Read More</Button>
-                    </Link>
+            )
+
+        } else {
+
+
+            return (
+                <div className='Card mb-3'>
+                    <div className='upper-container'>
+                        {!hideImage && image &&
+                            <div className='image-container'>
+                                <img id="avatar-pic" src={image}
+                                    alt={title}
+                                    style={{ width: '100px', height: '100px' }}
+                                />
+                            </div>
+                        }
+                    </div>
+                    <div className='lower-container'>
+                        <Link title={title} to={slug}>
+                            <h3> {title} </h3>
+                        </Link>
+                        {authorsReact}
+                        <p> {descriptionText} </p>
+                        <Link to={slug}>
+                            <Button> Read More</Button>
+                        </Link>
+                    </div>
                 </div>
-            </div>
-        )
+            )
+
+        }
+
+
 
         return (
             <div className={`${className} card shadow p-3`} style={customStyle}>
