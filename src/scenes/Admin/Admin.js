@@ -1,8 +1,11 @@
 import React from 'react';
-import ContactAddEdit from '../scenes/Contact/ContactAddEdit';
-import ContactsTable from '../scenes/Contact/ContactsTable';
-import HelmetSeo, {defaultSeoContent} from "../components/HelmetSeo";
+import ContactAddEdit from '../Contact/ContactAddEdit';
+import ContactsTable from '../Contact/ContactsTable';
+import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import {connect} from "react-redux";
+import { Tabs } from 'antd';
+import UserSearch from './UserSearch';
+const { TabPane } = Tabs;
 
 class Admin extends React.Component {
 
@@ -35,10 +38,17 @@ class Admin extends React.Component {
                 <HelmetSeo content={seoContent}/>
                 <div className="card shadow p-3">
                     <h1>{title}</h1>
-                    <div style={{width: "100%"}}>
-                        <ContactsTable />
-                    </div>
-                    <ContactAddEdit />    
+                    <Tabs defaultActiveKey="users">
+                        <TabPane tab="Users" key="users">
+                            <UserSearch />
+                        </TabPane>
+                        <TabPane tab="Contacts" key="contacts">
+                            <div style={{width: "100%"}}>
+                                <ContactsTable />
+                            </div>
+                            <ContactAddEdit />   
+                        </TabPane>
+                    </Tabs> 
                 </div>
             </div>
             

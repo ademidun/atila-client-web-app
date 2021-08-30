@@ -77,7 +77,7 @@ const About = loadable(() => import("./components/About"), {
 const Rubric = loadable(() => import("./components/Rubric"), {
   fallback: <Loading />,
 });
-const Admin = loadable(() => import("./components/Admin"), {
+const Admin = loadable(() => import("./scenes/Admin/Admin"), {
   fallback: <Loading />,
 });
 const Referral = loadable(() => import("./components/Referral"), {
