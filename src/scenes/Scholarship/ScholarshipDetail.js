@@ -19,7 +19,7 @@ import { AtilaDirectApplicationsPopover, BlindApplicationsExplanationMessage, Re
 import ScholarshipFinalists, { UserProfilesCards } from "./ScholarshipFinalists";
 import ApplicationsLocal from '../Application/ApplicationsLocal';
 import ReportIncorrectInfo from "../../components/ReportIncorrectInfo";
-import {addStyleClasstoTables} from "../../services/utils";
+import { addStyleClasstoTables } from "../../services/utils";
 
 import './ScholarshipDetail.scss';
 import $ from "jquery";
@@ -265,11 +265,11 @@ class ScholarshipDetail extends React.Component {
         }
 
         let redditUrlComponent;
-        if(scholarship.reddit_url) {
+        if (scholarship.reddit_url) {
             redditUrlComponent = (
                 <div>
                     <hr />
-                    <h3>Questions about this scholarship?</h3> 
+                    <h3>Questions about this scholarship?</h3>
                     Ask on the{' '}
                     <Link to={scholarship.reddit_url}>
                         Reddit post for this scholarship
@@ -349,105 +349,105 @@ class ScholarshipDetail extends React.Component {
 
                             <div className="scholarship-cta-buttons row ml-0">
 
-                                {scholarship.is_atila_direct_application && 
-                                <React.Fragment>
-                                    {applyToScholarshipButton && <React.Fragment>
-                                        {applyToScholarshipButton}
-                                    </React.Fragment>}
+                                {scholarship.is_atila_direct_application &&
+                                    <React.Fragment>
+                                        {applyToScholarshipButton && <React.Fragment>
+                                            {applyToScholarshipButton}
+                                        </React.Fragment>}
 
-                                    <Button size="large">
-                                        <Link to={`/scholarship/${slug}/questions`}>
-                                            View Application Form
-                                        </Link>
-                                    </Button>
+                                        <Button size="large">
+                                            <Link to={`/scholarship/${slug}/questions`}>
+                                                View Application Form
+                                            </Link>
+                                        </Button>
 
-                                    {scholarship.learn_more_url &&
-                                        <React.Fragment>
-                                            <Button size="large">
-                                                <a href={scholarship.learn_more_url}
-                                                    target="_blank"
-                                                    rel='noopener noreferrer'>
-                                                    {scholarship.learn_more_title || `Learn More about ${scholarship.name}`}
-                                                </a>
-                                            </Button>
-                                        </React.Fragment>
-                                    }
-                                </React.Fragment>
+                                        {scholarship.learn_more_url &&
+                                            <React.Fragment>
+                                                <Button size="large">
+                                                    <a href={scholarship.learn_more_url}
+                                                        target="_blank"
+                                                        rel='noopener noreferrer'>
+                                                        {scholarship.learn_more_title || `Learn More about ${scholarship.name}`}
+                                                    </a>
+                                                </Button>
+                                            </React.Fragment>
+                                        }
+                                    </React.Fragment>
                                 }
 
-                                {!scholarship.is_atila_direct_application && 
-                                <React.Fragment>
-                                    {scholarship_url &&
-                                        <Button size="large"
-                                            className="mt-3">
-                                            <a href={scholarship_url}
-                                                target="_blank"
-                                                rel='noopener noreferrer'>
-                                                Visit Scholarship Website
-                                            </a>
-                                        </Button>
-                                    }
-                                    {form_url && 
-                                        <Button size="large" className="mt-3">
-                                            <a href={form_url} target="_blank" rel="noopener noreferrer">
-                                                View Scholarship Application
-                                            </a> <br />
-                                        </Button>
-                                    }
-                                </React.Fragment>
+                                {!scholarship.is_atila_direct_application &&
+                                    <React.Fragment>
+                                        {scholarship_url &&
+                                            <Button size="large"
+                                                className="mt-3">
+                                                <a href={scholarship_url}
+                                                    target="_blank"
+                                                    rel='noopener noreferrer'>
+                                                    Visit Scholarship Website
+                                                </a>
+                                            </Button>
+                                        }
+                                        {form_url &&
+                                            <Button size="large" className="mt-3">
+                                                <a href={form_url} target="_blank" rel="noopener noreferrer">
+                                                    View Scholarship Application
+                                                </a> <br />
+                                            </Button>
+                                        }
+                                    </React.Fragment>
                                 }
                             </div>
                             <div>
-                                <hr/>
+                                <hr />
                                 <ScholarshipShareSaveButtons scholarship={scholarship} />
                                 {scholarship && <ApplicationsLocal scholarship={scholarship} />}
                                 {scholarship.is_blind_applications && <BlindApplicationsExplanationMessage />}
                                 {scholarship.is_referral_bonus_eligible && <ReferralBonusScholarshipExplanationMessage />}
                             </div>
 
-                            
+
                             <div className="font-weight-bold">
                                 <ScholarshipDeadlineWithTags scholarship={scholarship} addDeadlineToCalendar={true} />
                                 <br />
-                                <ReportIncorrectInfo scholarship={scholarship} />  
+                                <ReportIncorrectInfo scholarship={scholarship} />
                             </div>
 
                             {redditUrlComponent}
 
                             <div className="font-weight-bold">
-                            
-                                {scholarshipUserProfile &&
-                                <React.Fragment>
-                                    Added by:
-                                    <div className="bg-light mb-3 p-1" style={{ width: '500px' }}>
-                                        <Link to={`/profile/${scholarshipUserProfile.username}`} >
-                                            <img
-                                                alt="user profile"
-                                                style={{ height: '50px', maxWidth: 'auto' }}
-                                                className="rounded-circle py-1 pr-1"
-                                                src={scholarshipUserProfile.profile_pic_url} />
-                                            {scholarshipUserProfile.first_name} {scholarshipUserProfile.last_name}
-                                        </Link>&nbsp;
-                                        {contributors.is_owner === scholarshipUserProfile.is_owner && <Tag color="green">{' '}Creator</Tag>}
-                                    </div>
 
-                                    Amount: {fundingString}
-                                    {scholarship.is_atila_direct_application && !isScholarshipDeadlinePassed &&
-                                        <div className="mb-3">
-                                            <Button type="primary" size="large" className="mt-3"
-                                                style={{ fontSize: "18px", width: "150px", height: "75px" }}>
-                                                <Link to={`/scholarship/${slug}/contribute`}>
-                                                    Contribute
-                                                </Link>
-                                            </Button><br /><br/>
+                                {scholarshipUserProfile &&
+                                    <React.Fragment>
+                                        Added by:
+                                        <div className="bg-light mb-3 p-1" style={{ width: '500px' }}>
+                                            <Link to={`/profile/${scholarshipUserProfile.username}`} >
+                                                <img
+                                                    alt="user profile"
+                                                    style={{ height: '50px', maxWidth: 'auto' }}
+                                                    className="rounded-circle py-1 pr-1"
+                                                    src={scholarshipUserProfile.profile_pic_url} />
+                                                {scholarshipUserProfile.first_name} {scholarshipUserProfile.last_name}
+                                            </Link>&nbsp;
+                                            {contributors.is_owner === scholarshipUserProfile.is_owner && <Tag color="green">{' '}Creator</Tag>}
                                         </div>
-                                    }
-                                </React.Fragment>
-                                }   
+
+                                        Amount: {fundingString}
+                                        {scholarship.is_atila_direct_application && !isScholarshipDeadlinePassed &&
+                                            <div className="mb-3">
+                                                <Button type="primary" size="large" className="mt-3"
+                                                    style={{ fontSize: "18px", width: "150px", height: "75px" }}>
+                                                    <Link to={`/scholarship/${slug}/contribute`}>
+                                                        Contribute
+                                                    </Link>
+                                                </Button><br /><br />
+                                            </div>
+                                        }
+                                    </React.Fragment>
+                                }
                             </div>
 
                             {contributors && contributors.length > 1 &&
-                                <div>S
+                                <div>
                                     <h3 className="text-left">Contributors</h3>
                                     <UserProfilesCards userProfiles={contributors} userKey="id" />
                                 </div>
@@ -473,7 +473,7 @@ class ScholarshipDetail extends React.Component {
                             {/*todo find a way to secure against XSS: https://stackoverflow.com/a/19277723*/}
                             <hr />
                             <div dangerouslySetInnerHTML={{ __html: criteria_info }} />
-                            <br/>
+                            <br />
                         </div>
                         <RelatedItems
                             className="col-md-4"
