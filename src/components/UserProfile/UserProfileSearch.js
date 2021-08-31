@@ -12,7 +12,7 @@ class UserProfileSearch extends React.Component {
         super(props);
 
         this.state = {
-            contacts: [],
+            userProfiles: [],
             loading: null,
             addContactMode: false,
         };
@@ -22,16 +22,17 @@ class UserProfileSearch extends React.Component {
      * @param {*} queryData 
      */
     onUpdateQuery = (queryData) => {
-        this.setState({loading: "Loading clubs..."});
+        this.setState({loading: "Loading users..."});
         
         
         UserProfileAPI.list('query', queryData, "post")
             .then(res => {
-                const { user_profiles: contacts } = res.data;
+                console.log(res.data);
+                const { user_profiles: userProfiles } = res.data;
                 
-                this.setState({ contacts });
-                if (contacts.length === 0) {
-                    toastNotify("No clubs found matching selected query.");
+                this.setState({ userProfiles });
+                if (userProfiles.length === 0) {
+                    toastNotify("No users found matching selected query.");
                 }
             })
             .catch(err=> {
@@ -49,18 +50,20 @@ class UserProfileSearch extends React.Component {
 
     render() {
 
-        const { contacts, loading } = this.state;
+        const { userProfiles, loading } = this.state;
+        console.log({userProfiles});
 
-        let columns = DataUtils.getTableColumnsFromObjects(contacts);
+        let columns = DataUtils.getTableColumnsFromObjects(userProfiles, "userprofile");
 
         return (
             <div className="w-100">
                 <QueryBuilder onUpdateQuery={this.onUpdateQuery} queryType="userprofile" />
                 <Table columns={columns} 
-                       dataSource={contacts} 
-                       rowKey="id"
-                       loading={loading ? { indicator:<Spin />, tip:"Loading Contacts..."} : false}   
-                       style={{ width: '100%', height: '100%' }} />
+                       dataSource={userProfiles} 
+                       rowKey="user"
+                       loading={loading ? { indicator:<Spin />, tip:"Loading Users..."} : false}   
+                       style={{ width: '100%', height: '100%' }}
+                       scroll={{ x: 1300 }} />
             </div>
         );
     }

@@ -1,4 +1,5 @@
 import React from 'react';
+import { FILTER_TYPES } from '../../models/ConstantsForm';
 
 class DataUtils {
     /**
@@ -7,13 +8,29 @@ class DataUtils {
      * @param {*} objects 
      * @returns 
      */
-    static getTableColumnsFromObjects = (items) => {
+
+    static USER_PROFILE_COLUMNS = ["user", "first_name", "last_name", "email", "username"] + FILTER_TYPES;
+    static getTableColumnsFromObjects = (items, itemType = "contact") => {
 
         let columns = [];
 
         if (items.length > 0) {
 
-            columns = Object.keys(items[0]).map(itemProperty => {
+            columns = Object.keys(items[0]).filter(itemProperty => {
+                if(itemType === "userprofile"){
+                    return DataUtils.USER_PROFILE_COLUMNS.includes(itemProperty)
+                } else {
+                    return true
+                }
+            }).sort(function(a, b) {
+                if(itemType === "userprofile") {
+                    // sort array according to USER_PROFILE_COLUMNS
+                    // https://stackoverflow.com/a/28377564
+                    return DataUtils.USER_PROFILE_COLUMNS.indexOf(a) - DataUtils.USER_PROFILE_COLUMNS.indexOf(b);
+                } else {
+                    return a - b
+                }
+              }).map(itemProperty => {
                 
                 const columnSetting = {
                     title: itemProperty,
@@ -47,6 +64,8 @@ class DataUtils {
                 return columnSetting
             })
         }
+
+        console.log({columns});
 
         return columns;
     };

@@ -187,7 +187,7 @@ import { convertQueryListToDynamicQuery, DEFAULT_SAMPLE_SEARCHES, getDefaultQuer
                     return (
 
                     <div key={query.id}>
-                        <QueryItem  onUpdateQuery={(queryData) => {this.onUpdateQuery(queryData, index)}} placeHolder={queryValue} />
+                        <QueryItem  onUpdateQuery={(queryData) => {this.onUpdateQuery(queryData, index)}} placeHolder={queryValue} queryType={queryType} />
                         {allQueries.length > 1 && 
                         <div className="mb-3">
                         <Button onClick={() => {this.removeQuery(index)}} type="link">
