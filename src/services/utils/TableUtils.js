@@ -71,14 +71,10 @@ class TableUtils {
                 return columnSetting
             })
         }
-
-        console.log({columns});
-
         return columns;
     };
 
     static columnRender = (columnData, rowData, columnName) => {
-        console.log({columnData, rowData, columnName});
 
         switch(columnName) {
             // TODO make a seperate email_batches column

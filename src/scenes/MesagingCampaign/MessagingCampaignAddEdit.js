@@ -33,6 +33,10 @@ const sendMessageFormConfig = [
         type: "number"
     },
     {
+        keyName: "bcc_chance",
+        type: "number"
+    },
+    {
         keyName: "skip_send",
         type: "checkbox"
     }
@@ -45,7 +49,11 @@ class MessagingCampaignAddEdit extends React.Component{
 
         this.state = {
             campaign: props.campaign,
-            sendMessageSettings: {},
+            sendMessageSettings: {
+                limit: 5,
+                bcc_chance: 0.1,
+                skip_send: false,
+            },
             isAddCampaignMode: true,
             loading: null,
         };
