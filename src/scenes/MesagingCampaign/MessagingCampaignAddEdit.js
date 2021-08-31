@@ -9,7 +9,7 @@ import { DEFAULT_MESSAGING_CAMPAIGN } from '../../models/MessagingCampaign';
 import MessagingCampaignAPI from '../../services/MessagingCampaignAPI';
 import { toastNotify } from '../../models/Utils';
 import { updateCurrentUserProfileQuery } from '../../redux/actions/query';
-import { convertDynamicQueryToQueryList, convertQueryListToDynamicQuery } from '../../components/Query/QueryBuilder';
+import { convertDynamicQueryToQueryList, convertQueryListToDynamicQuery } from '../../components/Query/QueryBuilderHelper';
 
 const { Search } = Input;
 

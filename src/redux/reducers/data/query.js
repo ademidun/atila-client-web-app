@@ -1,4 +1,4 @@
-import { getDefaultQueryItem } from "../../../components/Query/QueryBuilder";
+import { getDefaultQueryItem } from "../../../components/Query/QueryBuilderHelper";
 import {
     UPDATE_CURRENT_USER_PROFILE_QUERY,
 } from "../../actions/query";
