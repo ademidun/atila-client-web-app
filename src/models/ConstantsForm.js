@@ -1720,3 +1720,17 @@ for (const [demographic_type, demographic_list] of Object.entries(ALL_DEMOGRAPHI
         {value: item, category: demographic_type}
     )))
 }
+export const MASTER_LIST_WITH_CATEGORY_LABEL_USER_PROFILE = [];
+
+export const ALL_DEMOGRAPHICS_USER_PROFILE = {
+    // TODO, this can be moved back to all_demographic later, when we use this for scholarship and user profile filtering
+    "post_secondary_school": SCHOOLS_LIST,
+    'major': MAJORS_LIST,
+    ...ALL_DEMOGRAPHICS
+}
+
+for (const [demographic_type, demographic_list] of Object.entries(ALL_DEMOGRAPHICS_USER_PROFILE)) {
+    MASTER_LIST_WITH_CATEGORY_LABEL_USER_PROFILE.push(...demographic_list.map(item => (
+        {value: item, category: demographic_type}
+    )))
+}

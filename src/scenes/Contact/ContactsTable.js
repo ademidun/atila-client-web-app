@@ -2,7 +2,7 @@ import React from 'react';
 import ContactsAPI from "../../services/ContactsAPI";
 import {toastNotify} from "../../models/Utils";
 import { Table, Spin } from 'antd';
-import DataUtils from '../../services/utils/DataUtils';
+import TableUtils from '../../services/utils/TableUtils';
 import QueryBuilder from '../../components/Query/QueryBuilder';
 
 
@@ -49,7 +49,7 @@ class ContactsTable extends React.Component {
 
         const { contacts, loading } = this.state;
 
-        let columns = DataUtils.getTableColumnsFromObjects(contacts);
+        let columns = TableUtils.getTableColumnsFromObjects(contacts);
 
         return (
             <div className="w-100">

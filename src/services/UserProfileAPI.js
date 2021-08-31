@@ -65,12 +65,18 @@ class UserProfileAPI {
      * Used for paths that exist at the list level.
      * @param {*} pathName 
      */
-    static list = (pathName) => {
+    static list = (pathName, data={}, method="get") => {
 
-        const apiCompletionPromise = request({
-            method: 'get',
+        const requestSettings = {
+            method,
             url: `${this.userProfileListEndPoint}/${pathName}/`,
-        });
+        };
+
+        if(data) {
+            requestSettings.data = data;
+        }
+
+        const apiCompletionPromise = request(requestSettings);
 
         return apiCompletionPromise;
     };
