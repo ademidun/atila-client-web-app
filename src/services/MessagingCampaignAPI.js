@@ -23,6 +23,7 @@ class MessagingCampaignAPI {
          * Get MessagingCampaign using the campaign's ID
          * @type {AxiosPromise}
          */
+        data.limit = Number.parseInt(data.limit);
 
         const apiCompletionPromise = request({
             method: 'post',

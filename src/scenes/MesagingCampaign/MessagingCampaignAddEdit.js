@@ -27,6 +27,17 @@ export const MESSAGING_CAMPAIGN_FORM_CONFIG_PAGE_1 = Object
     return inputConfig;
 });
 
+const sendMessageFormConfig = [
+    {
+        keyName: "limit",
+        type: "number"
+    },
+    {
+        keyName: "skip_send",
+        type: "checkbox"
+    }
+]
+
 class MessagingCampaignAddEdit extends React.Component{
 
     constructor(props) {
@@ -34,6 +45,7 @@ class MessagingCampaignAddEdit extends React.Component{
 
         this.state = {
             campaign: props.campaign,
+            sendMessageSettings: {},
             isAddCampaignMode: true,
             loading: null,
         };
@@ -77,8 +89,8 @@ class MessagingCampaignAddEdit extends React.Component{
     }
 
     sendMessages = (event) => {
-        const { campaign } = this.state;
-        this.handleCampaignResponsePromise(MessagingCampaignAPI.sendMessages(campaign.id), true);
+        const { campaign, sendMessageSettings } = this.state;
+        this.handleCampaignResponsePromise(MessagingCampaignAPI.sendMessages(campaign.id, sendMessageSettings), true);
     }
 
     handleCampaignResponsePromise(responsePromise, isResponseNested=false) {
@@ -128,8 +140,16 @@ class MessagingCampaignAddEdit extends React.Component{
             }
         });
     }
+
+    updateSendMessageSettingsForm = (event) => {
+        let { sendMessageSettings} = this.state;
+
+        sendMessageSettings = FormUtils.updateModelUsingForm(sendMessageSettings, event);
+        this.setState({ sendMessageSettings });
+    }
+
     render() {
-        const { campaign, loading, isAddCampaignMode } = this.state;
+        const { campaign, loading, isAddCampaignMode, sendMessageSettings } = this.state;
         return (
             <div>
                 <Search
@@ -152,6 +172,14 @@ class MessagingCampaignAddEdit extends React.Component{
                         className="col-12 mt-2"
                         onClick={this.handleSubmit}
                         disabled={loading}>{isAddCampaignMode ? "Create" : "Update"}</Button>
+
+                <hr />
+                <h4>Send Campaign Message</h4>
+
+
+                <FormDynamic model={sendMessageSettings}
+                             inputConfigs={sendMessageFormConfig}
+                             onUpdateForm={this.updateSendMessageSettingsForm}/>
                 {!isAddCampaignMode && 
                 <Button type="primary"
                         className="col-12 mt-2"
