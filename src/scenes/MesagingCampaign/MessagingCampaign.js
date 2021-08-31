@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import UserProfileSearch from '../../components/UserProfile/UserProfileSearch';
 import MessagingCampaignAddEdit from './MessagingCampaignAddEdit';
@@ -16,7 +17,7 @@ class MessagingCampaign extends React.Component {
         return (
             <div className="container mt-5">
                 <MessagingCampaignAddEdit />
-                <UserProfileSearch />
+                <UserProfileSearch onUpdateQuery={this.onUpdateQuery} />
             </div>
             
         )
@@ -26,5 +27,11 @@ class MessagingCampaign extends React.Component {
 const mapStateToProps = state => {
     return { loggedInUserProfile: state.data.user.loggedInUserProfile };
 };
+MessagingCampaign.defaultProps = {
+    onUpdateQuery: (query) => {},
+};
 
+MessagingCampaign.propTypes = {
+    onUpdateQuery: PropTypes.func.isRequired
+};
 export default connect(mapStateToProps)(MessagingCampaign);

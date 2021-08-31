@@ -6,7 +6,8 @@ import QueryItem from './QueryItem';
 import { CopyOutlined } from "@ant-design/icons";
 import { getRandomString, prettifyKeys, copyToClipboard } from '../../services/utils';
 import { ALL_DEMOGRAPHICS } from '../../models/ConstantsForm';
-
+import { updateCurrentUserProfileQuery } from '../../redux/actions/query';
+import { connect } from 'react-redux';
 /**
     * Render a list of example searches and when a search item is clicked, 
     * set the queryData of most recent search item in the list of queries to the selected searchItem
@@ -15,7 +16,7 @@ import { ALL_DEMOGRAPHICS } from '../../models/ConstantsForm';
 
 // Usages of DEFAULT_QUERY_ITEM need to be passed as a shallow copy using Object.assign() to avoid multiple array items sharing the same reference.
 // It also has to be used as a function so that getRandomString(8) is new each time
-const getDefaultQueryItem = () => ({
+export const getDefaultQueryItem = () => ({
     // useful for setting the queryBuilderKey without having to use index which breaks when the question order changes
     // e.g. when we remove a QuestionItem that isn't the last question
     // TODO use this same logic in the Scholarship Question Builder?
@@ -67,6 +68,76 @@ export const SampleSearches = ({sampleSearches, allQueries, onSearchSelected, cl
         }
     </div>)
 
+}
+
+
+/**
+ * Convert a list of query items that renders a query builder
+ * to a dynamic query object in Mongodb style querying that will be used for querying the dataabse.
+ * https://github.com/ademidun/atila-django/issues/328
+ * @param {*} queryList 
+ */
+export function convertQueryListToDynamicQuery(queryList){
+    let dynamicQuery = {};
+    queryList.forEach(query => {
+
+        const { queryType, queryData } = query;
+        const queryKey = Object.keys(queryData).length > 0 ? Object.keys(queryData)[0] : "";
+        if (queryType === "or") {
+            if (!dynamicQuery["$or"]) {
+                dynamicQuery["$or"] = []
+            }
+            dynamicQuery["$or"].push(queryData);
+        } else if (queryKey && dynamicQuery[queryKey]) { //if the dynamicQuery already has this attribute, add it to the $and array
+            if (!dynamicQuery["$and"]) {
+                dynamicQuery["$and"] = []
+            }
+            dynamicQuery["$and"].push(queryData);
+        } else {
+            dynamicQuery = {
+                ...dynamicQuery,
+                ...queryData
+            }
+        }
+        
+    });
+
+    console.log("convertQueryListToDynamicQuery");
+    console.log({queryList, dynamicQuery});
+
+    return dynamicQuery;
+
+}
+
+export function convertDynamicQueryToQueryList(dynamicQuery) {
+    let queryList = [];
+
+    Object.keys(dynamicQuery).forEach(queryKey => {
+        
+        if (queryKey === "$or" || queryKey === "$and" )  {
+            dynamicQuery[queryKey].forEach(queryItem => {
+                const queryRow = {
+                    id: getRandomString(8),
+                    queryType: queryKey.substring(1),// to get just "or" or "and" from "$or" or "$and"
+                    queryData: queryItem
+                };
+                queryList.push(queryRow);
+            })
+        } else {
+            const queryRow = {
+                id: getRandomString(8),
+                queryType: "and",
+                queryData: {
+                    [queryKey]: dynamicQuery[queryKey]
+                },
+            };
+            queryList.push(queryRow);
+        }
+    });
+
+    console.log("convertDynamicQueryToQueryList");
+    console.log({dynamicQuery, queryList});
+    return queryList;
 }
 
 /**
@@ -204,57 +275,35 @@ export const SampleSearches = ({sampleSearches, allQueries, onSearchSelected, cl
     onUpdateQuery = (query, index) => {
 
         const { allQueries } = this.state;
+        const { queryType, updateCurrentUserProfileQuery } = this.props;
 
         allQueries[index].queryData = query;
         this.setState({allQueries});
+
+        if (queryType === "userprofile") {
+            updateCurrentUserProfileQuery(allQueries);
+        }
 
         this.updateQueryProps(allQueries);
 
     }
 
     updateQueryProps = (allQueries) => {
-        const dynamicQuery = this.convertQueryListToDynamicQuery(allQueries);
+        const { onUpdateQuery } = this.props;
+        const dynamicQuery = convertQueryListToDynamicQuery(allQueries);
 
-        this.props.onUpdateQuery(dynamicQuery);
-    }
-    /**
-     * Convert a list of query items to a dynamic query object in Mongodb style querying.
-     * https://github.com/ademidun/atila-django/issues/328
-     * @param {*} queryList 
-     */
-    convertQueryListToDynamicQuery = (queryList) => {
-        let dynamicQuery = {};
-        queryList.forEach(query => {
-
-            const { queryType, queryData } = query;
-            const queryKey = Object.keys(queryData).length > 0 ? Object.keys(queryData)[0] : "";
-            if (queryType === "or") {
-                if (!dynamicQuery["$or"]) {
-                    dynamicQuery["$or"] = []
-                }
-                dynamicQuery["$or"].push(queryData);
-            } else if (queryKey && dynamicQuery[queryKey]) { //if the dynamicQuery already has this attribute, add it to the $and array
-                if (!dynamicQuery["$and"]) {
-                    dynamicQuery["$and"] = []
-                }
-                dynamicQuery["$and"].push(queryData);
-            } else {
-                dynamicQuery = {
-                    ...dynamicQuery,
-                    ...queryData
-                }
-            }
-            
-        });
-
-                return dynamicQuery;
-
+        onUpdateQuery(dynamicQuery);
     }
 
     render() {
-        const { allQueries, sampleSearches } = this.state;
+        let { allQueries, sampleSearches } = this.state;
+        const { queryType, currentUserProfileQuery } = this.props;
         const mostRecentQuery = allQueries[allQueries.length - 1];
         const mostRecentQueryHasValue =  Object.keys(mostRecentQuery.queryData).length > 0; 
+
+        if( queryType === "userprofile" ) {
+            allQueries = currentUserProfileQuery;
+        }
 
         return (
             <div>
@@ -321,16 +370,28 @@ export const SampleSearches = ({sampleSearches, allQueries, onSearchSelected, cl
     }
 }
 
+const mapStateToProps = state => {
+    return { 
+        currentUserProfileQuery: state.data.query.currentUserProfileQuery 
+    };
+};
+
+const mapDispatchToProps = {
+    updateCurrentUserProfileQuery
+};
+
 QueryBuilder.defaultProps = {
     onUpdateQuery: (query) => {},
     updateQueryPropsOnLoad: true,
     sampleSearches: DEFAULT_SAMPLE_SEARCHES,
+    queryType: "contact",
 };
 
 QueryBuilder.propTypes = {
     onUpdateQuery: PropTypes.func.isRequired,
     updateQueryPropsOnLoad: PropTypes.bool.isRequired,
-    sampleSearches: PropTypes.array.isRequired
+    sampleSearches: PropTypes.array.isRequired,
+    queryType: PropTypes.string.isRequired
 };
 
-export default withRouter(QueryBuilder);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(QueryBuilder));

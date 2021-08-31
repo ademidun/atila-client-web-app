@@ -55,7 +55,7 @@ class UserProfileSearch extends React.Component {
 
         return (
             <div className="w-100">
-                <QueryBuilder onUpdateQuery={this.onUpdateQuery} />
+                <QueryBuilder onUpdateQuery={this.onUpdateQuery} queryType="userprofile" />
                 <Table columns={columns} 
                        dataSource={contacts} 
                        rowKey="id"

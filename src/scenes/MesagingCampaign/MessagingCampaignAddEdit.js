@@ -8,10 +8,13 @@ import Loading from "../../components/Loading";
 import { DEFAULT_MESSAGING_CAMPAIGN } from '../../models/MessagingCampaign';
 import MessagingCampaignAPI from '../../services/MessagingCampaignAPI';
 import { toastNotify } from '../../models/Utils';
+import { updateCurrentUserProfileQuery } from '../../redux/actions/query';
+import { convertDynamicQueryToQueryList, convertQueryListToDynamicQuery } from '../../components/Query/QueryBuilder';
 
 const { Search } = Input;
 
-export const MESSAGING_CAMPAIGN_FORM_CONFIG_PAGE_1 = Object.keys(DEFAULT_MESSAGING_CAMPAIGN).map(campaign_attribute => {
+export const MESSAGING_CAMPAIGN_FORM_CONFIG_PAGE_1 = Object
+.keys(DEFAULT_MESSAGING_CAMPAIGN).filter(key => !['recipients_query'].includes(key)).map(campaign_attribute => {
 
     const inputConfig = {
         keyName: campaign_attribute
@@ -38,6 +41,10 @@ class MessagingCampaignAddEdit extends React.Component{
         this.setState({loading: true});
 
         const { isAddCampaignMode, campaign } = this.state;
+        const { currentUserProfileQuery } = this.props;
+
+
+        campaign.recipients_query = convertQueryListToDynamicQuery(currentUserProfileQuery);
 
         let postResponsePromise;
         if(isAddCampaignMode) {
@@ -66,8 +73,13 @@ class MessagingCampaignAddEdit extends React.Component{
     onGetCampaign = (campaignId) => {
         MessagingCampaignAPI.get(campaignId)
             .then(res => {
-                this.setState({isAddCampaignMode: false, campaign: res.data});
+                
+                const { updateCurrentUserProfileQuery } = this.props;
+                const campaign = res.data;
+                this.setState({isAddCampaignMode: false, campaign });
                 toastNotify(`Successfuly Retreieved campaign ${campaignId}`);
+
+                updateCurrentUserProfileQuery(convertDynamicQueryToQueryList(campaign.recipients_query));
             })
             .catch(err=> {
                 console.log({err});
@@ -124,7 +136,15 @@ MessagingCampaignAddEdit.propTypes = {
     campaign: PropTypes.shape({}),
 };
 
-const mapStateToProps = state => {
-    return { loggedInUserProfile: state.data.user.loggedInUserProfile };
+const mapDispatchToProps = {
+    updateCurrentUserProfileQuery,
 };
-export default connect(mapStateToProps)(MessagingCampaignAddEdit);
+
+const mapStateToProps = state => {
+    return { 
+        loggedInUserProfile: state.data.user.loggedInUserProfile,
+        currentUserProfileQuery: state.data.query.currentUserProfileQuery 
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MessagingCampaignAddEdit);
