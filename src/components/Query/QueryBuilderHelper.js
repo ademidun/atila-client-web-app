@@ -63,6 +63,10 @@ export function convertDynamicQueryToQueryList(dynamicQuery) {
         }
     });
 
+    if (queryList.length === 0) {
+        queryList = [getDefaultQueryItem()];
+    }
+
     return queryList;
 }
 

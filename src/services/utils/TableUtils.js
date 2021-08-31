@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { Tag } from 'antd';
 import { FILTER_TYPES } from '../../models/ConstantsForm';
 
 class TableUtils {
@@ -9,7 +10,7 @@ class TableUtils {
      * @returns 
      */
 
-    static USER_PROFILE_COLUMNS = ["user", "first_name", "last_name", "email", "username"] + FILTER_TYPES;
+    static USER_PROFILE_COLUMNS = ["user", "first_name", "last_name", "email", "username", "metadata"] + FILTER_TYPES;
     static getTableColumnsFromObjects = (items, itemType = "contact") => {
 
         let columns = [];
@@ -38,6 +39,11 @@ class TableUtils {
                     key: itemProperty,
                     render: (itemPropertyValue, item) => TableUtils.columnRender(itemPropertyValue, item, itemProperty)
                 };
+
+                if (itemProperty === "metadata") {
+                    columnSetting.sorter = (a, b) => a.metadata.hasOwnProperty("email_batches") ? -1 : b.metadata.hasOwnProperty("email_batches") ? 1 : 0
+                }
+
                 if (itemProperty === "email"){
                     
                     columnSetting.render = (email, item) => {
@@ -75,6 +81,16 @@ class TableUtils {
         console.log({columnData, rowData, columnName});
 
         switch(columnName) {
+            // TODO make a seperate email_batches column
+            case "metadata":
+                if (columnData.email_batches ) {
+                    return (
+                        <Fragment>
+                            {columnData.email_batches.map(email_batch => <Tag color="blue">{email_batch}</Tag>)}
+                        </Fragment>
+                    )
+                }
+                break
             case "city":
             case "province":
             case "country":
