@@ -27,7 +27,6 @@ class UserProfileSearch extends React.Component {
         
         UserProfileAPI.list('query', queryData, "post")
             .then(res => {
-                console.log(res.data);
                 const { user_profiles: userProfiles } = res.data;
                 
                 this.setState({ userProfiles });
@@ -51,7 +50,6 @@ class UserProfileSearch extends React.Component {
     render() {
 
         const { userProfiles, loading } = this.state;
-        console.log({userProfiles});
 
         let columns = TableUtils.getTableColumnsFromObjects(userProfiles, "userprofile");
 
