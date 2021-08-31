@@ -4,7 +4,7 @@ class MessagingCampaignAPI {
 
     static messagingCampaignApiUrl = `${Environment.apiUrl}/messaging/messaging-campaigns`;
 
-    static get = (id = '') => {
+    static get = (id) => {
         /**
          * Get MessagingCampaign using the campaign's ID
          * @type {AxiosPromise}
@@ -13,6 +13,21 @@ class MessagingCampaignAPI {
         const apiCompletionPromise = request({
             method: 'get',
             url: `${MessagingCampaignAPI.messagingCampaignApiUrl}/${id}/`,
+        });
+
+        return apiCompletionPromise;
+    };
+
+    static sendMessages = (id, data={skip_send: false, limit: 2}) => {
+        /**
+         * Get MessagingCampaign using the campaign's ID
+         * @type {AxiosPromise}
+         */
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            url: `${MessagingCampaignAPI.messagingCampaignApiUrl}/${id}/send-messages/`,
+            data
         });
 
         return apiCompletionPromise;

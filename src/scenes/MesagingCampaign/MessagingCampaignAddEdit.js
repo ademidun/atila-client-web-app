@@ -13,6 +13,8 @@ import { convertDynamicQueryToQueryList, convertQueryListToDynamicQuery } from '
 
 const { Search } = Input;
 
+let autoSaveTimeoutId;
+
 export const MESSAGING_CAMPAIGN_FORM_CONFIG_PAGE_1 = Object
 .keys(DEFAULT_MESSAGING_CAMPAIGN).filter(key => !['recipients_query'].includes(key)).map(campaign_attribute => {
 
@@ -71,37 +73,60 @@ class MessagingCampaignAddEdit extends React.Component{
     }
 
     onGetCampaign = (campaignId) => {
-        MessagingCampaignAPI.get(campaignId)
-            .then(res => {
-                
-                const { updateCurrentUserProfileQuery } = this.props;
-                const campaign = res.data;
-                this.setState({isAddCampaignMode: false, campaign });
-                toastNotify(`Successfuly Retreieved campaign ${campaignId}`);
-
-                updateCurrentUserProfileQuery(convertDynamicQueryToQueryList(campaign.recipients_query));
-            })
-            .catch(err=> {
-                console.log({err});
-                let campaignPostError = err.response && err.response.data;
-                campaignPostError = JSON.stringify(campaignPostError, null, 4);
-                this.setState({campaignPostError});
-                toastNotify(`🙁${campaignPostError}`, 'error');
-
-            })
-            .finally(()=>{
-                this.setState({loading: false});
-            });
+        this.handleCampaignResponsePromise(MessagingCampaignAPI.get(campaignId));
     }
 
-    
+    sendMessages = (event) => {
+        const { campaign } = this.state;
+        this.handleCampaignResponsePromise(MessagingCampaignAPI.sendMessages(campaign.id), true);
+    }
+
+    handleCampaignResponsePromise(responsePromise, isResponseNested=false) {
+        this.setState({loading: true});
+        responsePromise
+        .then(res => {
+                
+            const { updateCurrentUserProfileQuery } = this.props;
+            let campaign = res.data;
+            if (isResponseNested) {
+                campaign = res.data.campaign;
+            } else {
+                campaign = res.data;
+                toastNotify(`Successfuly Retreieved campaign ${campaign.id}`);
+            }
+            this.setState({isAddCampaignMode: false, campaign });
+
+            updateCurrentUserProfileQuery(convertDynamicQueryToQueryList(campaign.recipients_query));
+        })
+        .catch(err=> {
+            console.log({err});
+            let campaignPostError = err.response && err.response.data;
+            campaignPostError = JSON.stringify(campaignPostError, null, 4);
+            this.setState({campaignPostError});
+            toastNotify(`🙁${campaignPostError}`, 'error');
+
+        })
+        .finally(()=>{
+            this.setState({loading: false});
+        });
+    }
 
     updateForm = (event) => {
-        const { campaign } = this.state;
+        const { campaign, isAddCampaignMode } = this.state;
 
         const updatedCampaign = FormUtils.updateModelUsingForm(campaign, event);
 
-        this.setState({campaign: updatedCampaign });
+        this.setState({campaign: updatedCampaign }, () => {
+            if(!isAddCampaignMode) {
+                if (autoSaveTimeoutId) {
+                    clearTimeout(autoSaveTimeoutId);
+                }
+                autoSaveTimeoutId = setTimeout(() => {
+                    // Runs 1 second (1000 ms) after the last change
+                    this.handleSubmit();
+                }, 1000);
+            }
+        });
     }
     render() {
         const { campaign, loading, isAddCampaignMode } = this.state;
@@ -114,6 +139,11 @@ class MessagingCampaignAddEdit extends React.Component{
                     size="large"
                     onSearch={this.onGetCampaign}
                 />
+                {campaign.id && 
+                <h5>
+                    Campaign ID: {campaign.id}
+                </h5>
+                }
                 <FormDynamic model={campaign}
                              inputConfigs={MESSAGING_CAMPAIGN_FORM_CONFIG_PAGE_1}
                              onUpdateForm={this.updateForm}/>
@@ -122,6 +152,22 @@ class MessagingCampaignAddEdit extends React.Component{
                         className="col-12 mt-2"
                         onClick={this.handleSubmit}
                         disabled={loading}>{isAddCampaignMode ? "Create" : "Update"}</Button>
+                {!isAddCampaignMode && 
+                <Button type="primary"
+                        className="col-12 mt-2"
+                        onClick={this.sendMessages}
+                        disabled={loading}>Send Messages</Button>
+                }
+
+                {campaign.total_possible_recipients && 
+                <p>
+                    Total possible recipients: {campaign.total_possible_recipients}<br/>
+
+                    Sent Messages: {campaign.sent_messages}<br/>
+
+                    Remaining to send: {campaign.total_possible_recipients - campaign.sent_messages}<br/>
+                </p>
+                }
             </div>
         );
 
