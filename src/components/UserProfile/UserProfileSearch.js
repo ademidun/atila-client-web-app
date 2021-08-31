@@ -1,7 +1,7 @@
 import React from 'react';
 import {toastNotify} from "../../models/Utils";
 import { Table, Spin } from 'antd';
-import DataUtils from '../../services/utils/DataUtils';
+import TableUtils from '../../services/utils/TableUtils';
 import QueryBuilder from '../Query/QueryBuilder';
 import UserProfileAPI from '../../services/UserProfileAPI';
 
@@ -53,7 +53,7 @@ class UserProfileSearch extends React.Component {
         const { userProfiles, loading } = this.state;
         console.log({userProfiles});
 
-        let columns = DataUtils.getTableColumnsFromObjects(userProfiles, "userprofile");
+        let columns = TableUtils.getTableColumnsFromObjects(userProfiles, "userprofile");
 
         return (
             <div className="w-100">
