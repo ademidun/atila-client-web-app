@@ -512,7 +512,7 @@ class Register extends React.Component {
                                     type="primary"
                                     onClick={this.submitForm}
                                     disabled={loadingResponse || !agreeTermsConditions ||
-                                    Object.keys(formErrors).length > 0}>
+                                    (Object.keys(formErrors).length > 0 && !formErrors.email)}>
                                 Register
                             </Button>
 

@@ -30,7 +30,9 @@ export function transformScholarshipQuestionsToApplicationForm(questions) {
             label: question.question,
             type: SCHOLARSHIP_QUESTIONS_TYPES_TO_FORM_TYPES[question.type],
             html: (application) => (
-                <p>Word Count: {TextUtils.countWords(application[question.key])}</p>
+                <React.Fragment>
+                    {["medium_answer", "long_answer"].includes(question.type)? <p>Word Count: {TextUtils.countWords(application[question.key])}</p> : "" }
+                </React.Fragment>
             )
         }
     ));
