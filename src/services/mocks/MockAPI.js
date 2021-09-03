@@ -10,6 +10,7 @@ import SchulichLeaderScholarship from './Scholarship/SchulichLeaderScholarship.j
 import BlogPreviewList1 from './Blog/BlogPreviewList1.json';
 import EmailSignupBlogPost from './Blog/EmailSignupBlogPost.json';
 import WordCountBlogPost from './Blog/WordCountBlogPost.json';
+import AllFinalists from './Application/AllFinalists.json';
 import NotionService from '../NotionService';
 
 var axios = require("axios");
@@ -91,6 +92,8 @@ export class MockAPI {
         mock.onGet(`${Environment.apiUrl}/blog/blog/llmercer/how-we-designed-the-atila-black-and-indigenous-scholarship-graphic/`).reply(200, {blog: BlogPreviewList1.results[0]});
         mock.onGet(`${Environment.apiUrl}/blog/blog/alona/use-your-personal-email-preferably-gmail-not-your-school-email-when-signing-up-for-an-account-on-atila/`).reply(200, EmailSignupBlogPost);
         mock.onGet(`${Environment.apiUrl}/blog/blog/ericwang451/whats-the-word-count-analyzing-the-correlation-between-essay-length-and-quality/`).reply(200, WordCountBlogPost);
+        
+        mock.onGet(`${Environment.apiUrl}/application/applications/all-finalists/?page=1/`).reply(200, AllFinalists);
 
         let notionPageUrl = `${NotionService.pageIdUrl}`;
         notionPageUrl = new RegExp(`${notionPageUrl}/.+`);

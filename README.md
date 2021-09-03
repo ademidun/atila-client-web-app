@@ -10,6 +10,12 @@ prod: [![Netlify Status](https://api.netlify.com/api/v1/badges/837e9c44-3040-446
 
 staging: [![Netlify Status](https://api.netlify.com/api/v1/badges/ed4f5b21-da47-4094-8e41-89e49a620f55/deploy-status)](https://app.netlify.com/sites/atila-staging/deploys)
 
+## How to Create a Pull Request
+
+- Read: [How we Create Frontend Pull Requests at Atila](https://docs.google.com/document/d/1OJ8XKPVsVKLu_nK-EcHDzIZf_Y-QsvHeRTImT407cQI/edit#)
+
+- Watch: [How to Get the Unique Deploy URL for a Code Push](https://www.loom.com/share/e1e5c02eeb0d47b08def5aa5b81cc0e7)
+
 ## Getting Started
 
 `npm install; npm start`
@@ -41,6 +47,7 @@ If you can't or don't want to use the actual backend API you can mock the respon
 Here are two video tutorials we made specifically on how to Mock API Data in this project.
 1. [How to Mock API Data in atila-client-web-app](https://www.loom.com/share/8405abef5585401ab0924e742fcb1fd9) 
 1. [How to Mock API Data in atila-client-web-app based on the request](https://www.loom.com/share/367fe555b0584c28b6e68d1f0e5d121f)
+1. [How to Mock API data for use in a Pull Request](https://www.loom.com/share/1e707afc1fc34d3a91853b199c15e46d)
 
 **Steps:**
 
