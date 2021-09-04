@@ -34,11 +34,13 @@ class ContentCard extends React.Component {
         const { showPreview } = this.state;
         const { title, description, image, slug, type, user, contributors } = content;
 
+        let ContentCardInner;
+
         let descriptionText = description;
 
-        if (description && !hideImage) {
+        if (description) {
             descriptionText = showPreview ? description.substring(0, 240) : `${description.substring(0, 100)}`;
-            if (description.length > descriptionText) {
+            if (description.length > descriptionText.length) {
                 descriptionText += '...'
             }
         }
@@ -57,8 +59,8 @@ class ContentCard extends React.Component {
 
         if (type === "blog") {
 
-            return (
-                <div className='Card mb-3'>
+            ContentCardInner = (
+                <React.Fragment>
                     <div className='upper-container'>
                         <div className='upper-container-2'>
                             {!hideImage && image &&
@@ -78,14 +80,14 @@ class ContentCard extends React.Component {
                             <Button> Read More</Button>
                         </Link>
                     </div>
-                </div>
+                </React.Fragment>
             )
 
         } else {
 
 
-            return (
-                <div className='Card mb-3'>
+            ContentCardInner = (
+                <React.Fragment>
                     <div className='upper-container'>
                         {!hideImage && image &&
                             <div className='image-container'>
@@ -106,10 +108,16 @@ class ContentCard extends React.Component {
                             <Button> Read More</Button>
                         </Link>
                     </div>
-                </div>
+                </React.Fragment>
             )
 
         }
+
+        return (
+            <div className='ContentCard shadow mb-3'>
+                {ContentCardInner}
+            </div>
+        )
     }
 }
 
