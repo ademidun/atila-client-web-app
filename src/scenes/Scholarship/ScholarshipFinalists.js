@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Link} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 import {Row, Col, Tag} from "antd";
 import ContentCard from "../../components/ContentCard";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
@@ -72,7 +72,9 @@ class ScholarshipFinalists extends React.Component {
 
         const { scholarshipFinalistEssays, scholarshipFinalistUserProfiles, isLoadingScholarshipFinalists,
             scholarships, isFilteredByScholarshipID  } = this.state;
-        const { className, title, showEssaysFirst } = this.props;
+        const { className, title, showEssaysFirst, location : { pathname} } = this.props;
+
+        const finalistsPathname = "/finalists";
 
         if (isLoadingScholarshipFinalists) {
             return (
@@ -85,7 +87,17 @@ class ScholarshipFinalists extends React.Component {
 
         return (
             <div className={`${className}`}>
-                <h2 className="text-center">{title}</h2>
+                <h2 className="text-center">
+                    {pathname === finalistsPathname ?
+                        <React.Fragment>
+                            {title}
+                        </React.Fragment>
+                        :
+                        <Link to={finalistsPathname}>
+                            {title}
+                        </Link>
+                    }
+                </h2>
                 {showEssaysFirst &&
                 <ScholarshipFinalistEssays title={title}
                                            scholarshipFinalistEssays={scholarshipFinalistEssays}
@@ -261,5 +273,4 @@ ScholarshipFinalists.propTypes = {
     search: PropTypes.string,
 };
 
-export default ScholarshipFinalists;
-
+export default withRouter(ScholarshipFinalists);
