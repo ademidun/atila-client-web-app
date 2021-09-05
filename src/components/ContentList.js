@@ -105,7 +105,6 @@ class ContentList extends React.Component {
                     <ContentCard
                                  content={genericItemTransform(content)}
                                  className=" mb-3"
-                                 hideImage={contentType==='Essays'}
                                  
                     />
                 </Col>
