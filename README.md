@@ -12,7 +12,7 @@ staging: [![Netlify Status](https://api.netlify.com/api/v1/badges/ed4f5b21-da47-
 
 ## How to Create a Pull Request
 
-- Read: [How we Create Frontend Pull Requests at Atila](https://docs.google.com/document/d/1OJ8XKPVsVKLu_nK-EcHDzIZf_Y-QsvHeRTImT407cQI/edit#)
+- Read/Watch: [How we Write Frontend React Code and Create Pull Requests at Atila](https://atila.ca/blog/tomiwa/how-we-write-frontend-react-code-and-create-pull-requests-at-atila)
 
 - Watch: [How to Get the Unique Deploy URL for a Code Push](https://www.loom.com/share/e1e5c02eeb0d47b08def5aa5b81cc0e7)
 
