@@ -117,7 +117,7 @@ class LandingPage extends React.Component {
                         <hr/>
                         <SocialProof />
                         <hr/>
-                        <div style={{padding: "90px"}}>
+                        <div className="container">
                             <ScholarshipFinalists itemType={"essay"}
                                             allFinalists={true}
                                             title="Finalists"

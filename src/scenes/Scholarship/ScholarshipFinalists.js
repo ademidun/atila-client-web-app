@@ -176,69 +176,52 @@ export function ScholarshipFinalistEssays({ title, scholarshipFinalistEssays, is
 
 
 export function UserProfilesCards({userProfiles, userKey="username"}) {
-    return (<Row gutter={[{ xs: 8, sm: 16}, 16]}>
+    return (
+    
+    <Row gutter={[{ xs: 8, sm: 16}, 16]}>
         {userProfiles.map(user => {
 
-            let fundingAmount = <>
+            const fundingAmount = <>
                 {user.funding_amount &&
                     <strong>
                         :{' '}{ formatCurrency(user.funding_amount, true) }
                     </strong>
                 }
-        </>;
+            </>;
 
-            let userDisplay = (
-                
-                    <div className='UserCard mb-3'>
-                        
-                        <div className='userUpper-container'>
-                            <div className='userImage-container'>
-                                <Link to={`/profile/${user.username}`} >
-                                <img id="avatar-pic"
-                                    alt="user profile"
-                                    src={user.profile_pic_url} />
-                                </Link>
-                            </div>
-                        </div>
-                        <div className='tag'>
-                            {user.is_winner && <Tag color="gold">{' '}Winner</Tag>}
-                            {user.is_owner && <Tag color="green">{' '}Creator</Tag>}
-                        </div>
-                        <div className='userLower-container'>
+            const userDisplay = (  
+                <div className='UserCard'>
+                    
+                    <div className='userUpper-container'>
+                        <div className='userImage-container'>
                             <Link to={`/profile/${user.username}`} >
-                            {user.first_name}
-                            <br/> {user.last_name} 
-                            <br/>{' '}{fundingAmount}
+                            <img id="avatar-pic"
+                                alt="user profile"
+                                src={user.profile_pic_url} />
                             </Link>
                         </div>
-                                  
-                    </div>  
-                );
-
-            if (user.is_anonymous || !user.username) {
-                userDisplay = (
-                    
-                    <div className='UserCard mb-3'>
-                        
-                        <div className='userUpper-container'>
-                            <div className='userImage-container'>
-                                <Link to={`/profile/${user.username}`} >
-                                <img id="avatar-pic"
-                                    alt="user profile"
-                                    src={user.profile_pic_url} />
-                                </Link>
-                            </div>
-                        </div>
-                        <div className='tag'>
-                            {user.is_winner && <Tag color="gold">{' '}Winner</Tag>}
-                            {user.is_owner && <Tag color="green">{' '}Creator</Tag>}
-                        </div>
+                    </div>
+                    <div className='tag'>
+                        {user.is_winner && <Tag color="gold">{' '}Winner</Tag>}
+                        {user.is_owner && <Tag color="green">{' '}Creator</Tag>}
+                    </div>
+                    {user.is_anonymous || !user.username ? 
+                
                         <div className='userLower-container'>
-                        {user.is_anonymous ? "Anonymous" : `${user.first_name} ${user.last_name}`}{' '}{fundingAmount}
+                            {user.is_anonymous ? "Anonymous" : `${user.first_name} ${user.last_name}`}{' '}{fundingAmount}
                         </div>
-                                  
-                    </div>);
-            }
+                        :
+                        <div className='userLower-container'>
+                        <Link to={`/profile/${user.username}`} >
+                        {user.first_name}
+                        <br/> {user.last_name} 
+                        <br/>{' '}{fundingAmount}
+                        </Link>
+                        </div>
+                    }
+                                
+                </div>  
+            );
 
             return (
                 // Use zoom:0.8 as a temporary workaround so that that ScholarshipFinalists doesn't
@@ -250,11 +233,12 @@ export function UserProfilesCards({userProfiles, userKey="username"}) {
                         {userDisplay}
                     </div>
                 </Col>)
-        })}
+            })}
 
-    </Row>)
+    </Row>
+    )
 
-}
+};
 
 ScholarshipFinalists.defaultProps = {
     className: '',
