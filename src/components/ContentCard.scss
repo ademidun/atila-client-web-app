@@ -1,5 +1,5 @@
 .ContentCard{
-    height: 550px;
+    height: 575px;
     background: white;
     border-radius: 10px;
     overflow: hidden;
@@ -8,6 +8,11 @@
     h3 {
         font-size: 25px;
         padding: 5px;
+    }
+
+    .body {
+        overflow-x: scroll;
+        height: 150px;
     }
     
 }

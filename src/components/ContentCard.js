@@ -35,10 +35,12 @@ class ContentCard extends React.Component {
         const { title, description, image, slug, type, user, contributors } = content;
 
         let descriptionText = description;
+        let textIsTruncated = false;
 
         if (description) {
             descriptionText = showPreview ? description.substring(0, 240) : `${description.substring(0, 100)}`;
-            if (description.length > descriptionText.length) {
+            textIsTruncated = description.length > descriptionText.length;
+            if (textIsTruncated) {
                 descriptionText += '...'
             }
         }
@@ -83,10 +85,14 @@ class ContentCard extends React.Component {
                             <h3> {title} </h3>
                         </Link>
                         {authorsComponent}
-                        <p> {descriptionText} </p>
-                        <Link to={slug}>
-                            <Button> Read More</Button>
-                        </Link>
+                        <p className="body"> 
+                            {descriptionText} <br/>
+                            
+                            {textIsTruncated && 
+                            <Button onClick={this.togglePreview}>{showPreview ? "Show Less" : "Show More"}</Button>
+                            }
+                        </p>
+                        
                     </div>
             </div>
         )
