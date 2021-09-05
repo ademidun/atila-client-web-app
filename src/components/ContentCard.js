@@ -59,21 +59,23 @@ class ContentCard extends React.Component {
             <div className='ContentCard shadow mb-3'>
                     {!hideImage && image && 
                     <div className='upper-container'>
-                        {type === "blog" &&
-                        <div className='upper-container-2'>
-                            <img src={image}
-                                alt={title}
-                            />
-                        </div>
-                        }
-                        {type !== "blog" &&
-                        <div className='image-container'>
-                            <img id="avatar-pic" src={image}
-                                alt={title}
-                                style={{ width: '100px', height: '100px' }}
-                            />
-                        </div>
-                        }
+                        <Link title={title} to={slug}>
+                            {type === "blog" &&
+                            <div className='upper-container-2'>
+                                <img src={image}
+                                    alt={title}
+                                />
+                            </div>
+                            }
+                            {type !== "blog" &&
+                            <div className='image-container'>
+                                <img id="avatar-pic" src={image}
+                                    alt={title}
+                                    style={{ width: '100px', height: '100px' }}
+                                />
+                            </div>
+                            }
+                        </Link>
                     </div>
                     }
                     <div className='lower-container'>
