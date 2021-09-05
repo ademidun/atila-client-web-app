@@ -78,6 +78,11 @@ We use [axios-mock-adapter](https://github.com/ctimmerm/axios-mock-adapter) for 
 - To run Storybook:
     - **You only have to do this the first time you run Storybook**: delete `node_modules` and `package-lock.json` NOT `package.json` then run `npm install`
     - `npm run storybook`
+    - If that command fails with:
+    ```
+    Error: EEXIST: file already exists, mkdir '/Users/admin/Desktop/tomiwa/codeproj/atila-code/atila-client-web-app/node_modules/.cache/ts-docgen'
+    ```
+    - Try running `npm run storybook:clear-cache`
     - You can run your react server alongside storybook: Open a seperate terminal window and run `npm start`
 
 - To add a new component to Storybook: create it in `src/stories/{ComponentName}.stories.js`
