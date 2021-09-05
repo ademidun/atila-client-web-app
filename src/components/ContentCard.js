@@ -34,8 +34,6 @@ class ContentCard extends React.Component {
         const { showPreview } = this.state;
         const { title, description, image, slug, type, user, contributors } = content;
 
-        let ContentCardInner;
-
         let descriptionText = description;
 
         if (description) {
@@ -45,10 +43,10 @@ class ContentCard extends React.Component {
             }
         }
 
-        let authorsReact = null;
+        let authorsComponent = null;
 
         if (user) {
-            authorsReact = (
+            authorsComponent = (
                 <div className="bg-light my-3">
                     <UserProfilePreview userProfile={user} linkProfile={true} />
                     {contributors && contributors.map(userProfile =>
@@ -57,65 +55,37 @@ class ContentCard extends React.Component {
             )
         }
 
-        if (type === "blog") {
-
-            ContentCardInner = (
-                <React.Fragment>
-                    <div className='upper-container'>
-                        <div className='upper-container-2'>
-                            {!hideImage && image &&
-                                <img src={image}
-                                    alt={title}
-                                />
-                            }
-                        </div>
-                    </div>
-                    <div className='lower-container'>
-                        <Link title={title} to={slug}>
-                            <h3> {title} </h3>
-                        </Link>
-                        {authorsReact}
-                        <p> {descriptionText} </p>
-                        <Link to={slug}>
-                            <Button> Read More</Button>
-                        </Link>
-                    </div>
-                </React.Fragment>
-            )
-
-        } else {
-
-
-            ContentCardInner = (
-                <React.Fragment>
-                    <div className='upper-container'>
-                        {!hideImage && image &&
-                            <div className='image-container'>
-                                <img id="avatar-pic" src={image}
-                                    alt={title}
-                                    style={{ width: '100px', height: '100px' }}
-                                />
-                            </div>
-                        }
-                    </div>
-                    <div className='lower-container'>
-                        <Link title={title} to={slug}>
-                            <h3> {title} </h3>
-                        </Link>
-                        {authorsReact}
-                        <p> {descriptionText} </p>
-                        <Link to={slug}>
-                            <Button> Read More</Button>
-                        </Link>
-                    </div>
-                </React.Fragment>
-            )
-
-        }
-
         return (
             <div className='ContentCard shadow mb-3'>
-                {ContentCardInner}
+                    {!hideImage && image && 
+                    <div className='upper-container'>
+                        {type === "blog" &&
+                        <div className='upper-container-2'>
+                            <img src={image}
+                                alt={title}
+                            />
+                        </div>
+                        }
+                        {type !== "blog" &&
+                        <div className='image-container'>
+                            <img id="avatar-pic" src={image}
+                                alt={title}
+                                style={{ width: '100px', height: '100px' }}
+                            />
+                        </div>
+                        }
+                    </div>
+                    }
+                    <div className='lower-container'>
+                        <Link title={title} to={slug}>
+                            <h3> {title} </h3>
+                        </Link>
+                        {authorsComponent}
+                        <p> {descriptionText} </p>
+                        <Link to={slug}>
+                            <Button> Read More</Button>
+                        </Link>
+                    </div>
             </div>
         )
     }
