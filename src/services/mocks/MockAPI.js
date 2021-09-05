@@ -13,6 +13,15 @@ import WordCountBlogPost from './Blog/WordCountBlogPost.json';
 import AllFinalists from './Application/AllFinalists.json';
 import NotionService from '../NotionService';
 
+import UserProfileTomiwa from './UserProfile/UserProfileTomiwa.json';
+import UserProfileContributions from './UserProfile/UserProfileContributions.json';
+import UserProfileBlogs from './UserProfile/UserProfileBlogs.json';
+import UserProfileEssays from './UserProfile/UserProfileEssays.json';
+import UserProfileReferrals from './UserProfile/UserProfileReferrals.json';
+import UserProfileApplications from './UserProfile/UserProfileApplications.json';
+
+import EssaysPage1 from './Essay/EssaysPage1.json';
+
 var axios = require("axios");
 var MockAdapter = require("axios-mock-adapter");
 
@@ -88,6 +97,7 @@ export class MockAPI {
         let relatedBlogPostsUrl = `${Environment.apiUrl}/blog/blog-posts`;
         relatedBlogPostsUrl = new RegExp(`${relatedBlogPostsUrl}/.+/related/`);
         mock.onGet(relatedBlogPostsUrl).reply(200, BlogPreviewList1);
+
         mock.onGet(`${Environment.apiUrl}/blog/blog-posts/?page=1`).reply(200, BlogPreviewList1);
         mock.onGet(`${Environment.apiUrl}/blog/blog/llmercer/how-we-designed-the-atila-black-and-indigenous-scholarship-graphic/`).reply(200, {blog: BlogPreviewList1.results[0]});
         mock.onGet(`${Environment.apiUrl}/blog/blog/alona/use-your-personal-email-preferably-gmail-not-your-school-email-when-signing-up-for-an-account-on-atila/`).reply(200, EmailSignupBlogPost);
@@ -95,9 +105,38 @@ export class MockAPI {
         
         mock.onGet(`${Environment.apiUrl}/application/applications/all-finalists/?page=1/`).reply(200, AllFinalists);
 
+        let essayApiUrl = `${Environment.apiUrl}/essay`
+        let essayListApiUrl = new RegExp(`${essayApiUrl}/essays/\\?page=.+`);
+        let essayDetailApiUrl = new RegExp(`${essayApiUrl}/essay/.+/.+/$`);
+        let essayRelatedApiUrl = new RegExp(`${essayApiUrl}/essays/.+/related/`);
+
+        mock.onGet(essayListApiUrl).reply(200, EssaysPage1);
+        mock.onGet(essayDetailApiUrl).reply(200, {essay: EssaysPage1.results[1]});
+        mock.onGet(essayRelatedApiUrl).reply(200, EssaysPage1);
+
         let notionPageUrl = `${NotionService.pageIdUrl}`;
         notionPageUrl = new RegExp(`${notionPageUrl}/.+`);
         mock.onGet(notionPageUrl).reply(200, TopScholarNotionPage);
+
+        let userProfileAPIBaseUrl = `${Environment.apiUrl}/user-profiles`;
+
+        const userProfileContentMap = {
+            referrals: UserProfileReferrals,
+            applications: UserProfileApplications,
+            essays: UserProfileEssays,
+            blogs: UserProfileBlogs,
+            contributions: UserProfileContributions,
+            scholarships: {scholarships: ScholarshipsPreview1.data},
+            created_scholarships: {created_scholarships: ScholarshipsPreview1.data},
+        }
+        for (const [userProfileRoute, response] of Object.entries(userProfileContentMap)) {
+            let userProfileDetailAttributeUrl = new RegExp(`${userProfileAPIBaseUrl}/.+/${userProfileRoute}/`);
+
+            mock.onGet(userProfileDetailAttributeUrl).reply(200, response);
+        }
+        
+        let userProfileDetailUrl = new RegExp(`${userProfileAPIBaseUrl}/.+/$`);
+        mock.onGet(userProfileDetailUrl).reply(200, UserProfileTomiwa);
 
     }
 }

@@ -27,6 +27,7 @@ class UserProfileViewSavedScholarships extends React.Component {
 
         UserProfileAPI.getUserContent(userId, 'scholarships')
             .then(res => {
+                console.log({res});
                 const scholarships =  res.data.scholarships;
                 this.setState({scholarships}, () => {
                     this.toggleShowExpiredScholarships(false)

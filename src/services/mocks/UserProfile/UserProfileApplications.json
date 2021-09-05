@@ -1,0 +1,481 @@
+{
+    "applications": [
+        {
+            "id": "k6w2qe38ms26jdj8",
+            "date_created": "2021-09-01T01:55:00.969080Z",
+            "date_modified": "2021-09-01T02:15:51.375380Z",
+            "scholarship": {
+                "id": 852,
+                "name": "Alexis Lodge - Future of Care Scholarship",
+                "slug": "alexis-lodge-future-of-care-scholarship-90pwh6u6",
+                "specific_questions": [
+                    {
+                        "key": "why-do-you-want-to-pursue-studies-career-in-elde",
+                        "type": "long_answer",
+                        "question": "Why do you want to pursue studies & career in eldercare?"
+                    },
+                    {
+                        "key": "if-you-have-previous-work-or-volunteer-experience",
+                        "type": "long_answer",
+                        "question": "If you have previous work or volunteer experience involving caring for others, talk about it here and what you learned from that experience. Include links if you have any."
+                    },
+                    {
+                        "key": "what-is-one-way-you-think-the-eldercare-sector-cou",
+                        "type": "long_answer",
+                        "question": "What is one way you think the eldercare sector could be improved?"
+                    },
+                    {
+                        "key": "are-you-interested-in-doing-your-placement-at-alex",
+                        "type": "checkbox",
+                        "question": "Are you interested in doing your placement at Alexis Lodge?"
+                    }
+                ],
+                "user_profile_questions": [
+                    {
+                        "key": "first_name"
+                    },
+                    {
+                        "key": "last_name"
+                    },
+                    {
+                        "key": "email"
+                    },
+                    {
+                        "key": "post_secondary_school"
+                    },
+                    {
+                        "key": "major"
+                    }
+                ],
+                "deadline": "2021-09-01T03:59:00Z",
+                "funding_amount": "5000.00",
+                "is_blind_applications": false,
+                "is_winner_selected": false
+            },
+            "scholarship_responses": {
+                "why-do-you-want-to-pursue-studies-career-in-elde": {
+                    "key": "why-do-you-want-to-pursue-studies-career-in-elde",
+                    "type": "long_answer",
+                    "question": "Why do you want to pursue studies & career in eldercare?",
+                    "response": ""
+                },
+                "if-you-have-previous-work-or-volunteer-experience": {
+                    "key": "if-you-have-previous-work-or-volunteer-experience",
+                    "type": "long_answer",
+                    "question": "If you have previous work or volunteer experience involving caring for others, talk about it here and what you learned from that experience. Include links if you have any.",
+                    "response": ""
+                },
+                "are-you-interested-in-doing-your-placement-at-alex": {
+                    "key": "are-you-interested-in-doing-your-placement-at-alex",
+                    "type": "checkbox",
+                    "question": "Are you interested in doing your placement at Alexis Lodge?",
+                    "response": true
+                },
+                "what-is-one-way-you-think-the-eldercare-sector-cou": {
+                    "key": "what-is-one-way-you-think-the-eldercare-sector-cou",
+                    "type": "long_answer",
+                    "question": "What is one way you think the eldercare sector could be improved?",
+                    "response": ""
+                }
+            },
+            "user_profile_responses": {
+                "email": {
+                    "key": "email",
+                    "response": "tomiademidun@gmail.com"
+                },
+                "major": {
+                    "key": "major",
+                    "response": "Software Engineering"
+                },
+                "last_name": {
+                    "key": "last_name",
+                    "response": "Ademidun"
+                },
+                "first_name": {
+                    "key": "first_name",
+                    "response": "Tomiwa"
+                },
+                "post_secondary_school": {
+                    "key": "post_secondary_school",
+                    "response": "University of Western Ontario"
+                }
+            },
+            "is_winner": null,
+            "is_payment_accepted": false,
+            "is_submitted": false,
+            "date_submitted": null,
+            "first_name_code": "Bronze",
+            "last_name_code": "Sheepdog",
+            "is_anonymous": false,
+            "is_anonymous_essay": false,
+            "slug": "alexis-lodge-future-of-care-scholarship-application-by-tomiwa-ademidun-kdx7x7lo",
+            "title": "Alexis Lodge - Future of Care Scholarship Application by Tomiwa Ademidun",
+            "description": null,
+            "body": null,
+            "published": false,
+            "thank_you_letter": "",
+            "verification_email": "tomiademidun@gmail.com",
+            "accept_payment_email": "tomiademidun@gmail.com",
+            "user": {
+                "user": 1,
+                "first_name": "Tomiwa",
+                "last_name": "Ademidun",
+                "username": "tomiwa",
+                "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-prod.appspot.com/o/user-uploads%2Fuser-profile-pictures%2F1%2Fljy9s5nm-Ezc5Hyf.jpg?alt=media&token=2391816e-c546-4b11-b232-0cc91f9f3547"
+            },
+            "is_security_question_answered": false,
+            "is_email_verified": false,
+            "is_thank_you_letter_sent": false
+        },
+        {
+            "id": "vpuzxpksj0bh6c7m",
+            "date_created": "2021-08-07T15:55:50.970402Z",
+            "date_modified": "2021-08-07T15:59:04.857529Z",
+            "scholarship": {
+                "id": 901,
+                "name": "Mending the Chasm Scholarship",
+                "slug": "mending-the-chasm-scholarship-njckdg0l",
+                "specific_questions": [
+                    {
+                        "key": "what-does-inclusion-equity-and-diversity-mean-to",
+                        "type": "long_answer",
+                        "question": "What does inclusion, equity and diversity mean to you?"
+                    },
+                    {
+                        "key": "what-are-some-ways-that-youve-contributed-towards",
+                        "type": "long_answer",
+                        "question": "What are some ways that you've contributed towards anti-racism initiatives and advocated for inclusion in your community? (Include links if you have any)"
+                    },
+                    {
+                        "key": "what-are-your-goals-and-plans-for-the-future",
+                        "type": "long_answer",
+                        "question": "What are your goals and plans for the future?"
+                    },
+                    {
+                        "key": "would-you-be-interested-in-volunteer-or-work-oppor",
+                        "type": "checkbox",
+                        "question": "Would you be interested in volunteer or work opportunities at Mending the Chasm?"
+                    }
+                ],
+                "user_profile_questions": [
+                    {
+                        "key": "first_name"
+                    },
+                    {
+                        "key": "last_name"
+                    },
+                    {
+                        "key": "email"
+                    },
+                    {
+                        "key": "post_secondary_school"
+                    },
+                    {
+                        "key": "ethnicity"
+                    }
+                ],
+                "deadline": "2021-11-08T04:59:00Z",
+                "funding_amount": "500.00",
+                "is_blind_applications": false,
+                "is_winner_selected": false
+            },
+            "scholarship_responses": {
+                "what-are-your-goals-and-plans-for-the-future": {
+                    "key": "what-are-your-goals-and-plans-for-the-future",
+                    "type": "long_answer",
+                    "question": "What are your goals and plans for the future?",
+                    "response": "<p>My primary goal during my time at Queen's University is to broaden my perspective and</p><p>motivate my desire for proactive change in the society around us. Without indulging in too many</p><p>clichés and hollow phrases, I want my time at Queen's to include moments where I am constantly</p><p>being inspired and challenged by the intelligent people that are part of the Queen's community. I</p><p>want to leave with a degree that I hope will give me a competitive advantage in the global job</p><p>market and access to an alumni network that will benefit me in my professional endeavors. I</p><p>want to leave Queen’s with an awareness of all the possibilities for success that exist in our</p><p>global village.&nbsp;</p><p>&nbsp;</p><p>My long term vision beyond my time at Queen’s University involves seeking lucrative opportunities in emerging markets like China, Dubai, and Nigeria. My main interests</p><p>include property development and alternative energy sources, industries which I hope to become</p><p>more exposed to during my time here at Queen’s. Initially, I would love to work with a property</p><p>development firm or a renewable energy company in one of these countries, become acquainted</p><p>with the business culture and eventually start my own business that will target the growing</p><p>“noveau riche” demographic in these countries.&nbsp;</p><p>&nbsp;</p><p>It is quite evident how a degree in business or</p><p>engineering would benefit me if I decided to go this route; but I also believe that a Queen’s</p><p>degree will be even more beneficial due to its recognition around the world and the popular</p><p>exchange program in its third year commerce program which would help me develop contacts</p><p>around the world. I truly believe that a degree from Queen’s University will play an integral part</p><p>in me achieving my goals and making a positive contribution to society.</p>"
+                },
+                "what-does-inclusion-equity-and-diversity-mean-to": {
+                    "key": "what-does-inclusion-equity-and-diversity-mean-to",
+                    "type": "long_answer",
+                    "question": "What does inclusion, equity and diversity mean to you?",
+                    "response": ""
+                },
+                "what-are-some-ways-that-youve-contributed-towards": {
+                    "key": "what-are-some-ways-that-youve-contributed-towards",
+                    "type": "long_answer",
+                    "question": "What are some ways that you've contributed towards anti-racism initiatives and advocated for inclusion in your community? (Include links if you have any)",
+                    "response": ""
+                }
+            },
+            "user_profile_responses": {
+                "email": {
+                    "key": "email",
+                    "response": "tomiademidun@gmail.com"
+                },
+                "ethnicity": {
+                    "key": "ethnicity",
+                    "response": [
+                        "Black"
+                    ]
+                },
+                "last_name": {
+                    "key": "last_name",
+                    "response": "Ademidun"
+                },
+                "first_name": {
+                    "key": "first_name",
+                    "response": "Tomiwa"
+                },
+                "post_secondary_school": {
+                    "key": "post_secondary_school",
+                    "response": ""
+                }
+            },
+            "is_winner": null,
+            "is_payment_accepted": false,
+            "is_submitted": false,
+            "date_submitted": null,
+            "first_name_code": "Copper",
+            "last_name_code": "Harrier",
+            "is_anonymous": false,
+            "is_anonymous_essay": false,
+            "slug": "mending-the-chasm-scholarship-application-by-tomiwa-ademidun-58a10a8q",
+            "title": "Mending the Chasm Scholarship Application by Tomiwa Ademidun",
+            "description": null,
+            "body": null,
+            "published": false,
+            "thank_you_letter": "",
+            "verification_email": "tomiademidun@gmail.com",
+            "accept_payment_email": "tomiademidun@gmail.com",
+            "user": {
+                "user": 1,
+                "first_name": "Tomiwa",
+                "last_name": "Ademidun",
+                "username": "tomiwa",
+                "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-prod.appspot.com/o/user-uploads%2Fuser-profile-pictures%2F1%2Fljy9s5nm-Ezc5Hyf.jpg?alt=media&token=2391816e-c546-4b11-b232-0cc91f9f3547"
+            },
+            "is_security_question_answered": false,
+            "is_email_verified": false,
+            "is_thank_you_letter_sent": false
+        },
+        {
+            "id": "i4t8a36ck65v50w6",
+            "date_created": "2020-10-27T17:54:53Z",
+            "date_modified": "2021-03-15T20:43:33.658012Z",
+            "scholarship": {
+                "id": 719,
+                "name": "Mojisola Rufai and Victoria Ademidun Scholarship",
+                "slug": "mojisola-rufai-and-victoria-ademidun-scholarship-iy1bucly",
+                "specific_questions": [
+                    {
+                        "key": "how-has-growing-up-in-a-low-income-family-impacted",
+                        "type": "long_answer",
+                        "question": "How has growing up in a low-income family impacted you? How do you plan on improving the situation for your family and other families like yours? \n(You can either answer this question or the third one. You don't have to answer all 3 questions)"
+                    },
+                    {
+                        "key": "what-are-your-plans-and-goals-for-the-future",
+                        "type": "long_answer",
+                        "question": "What are your plans and goals for the future?"
+                    },
+                    {
+                        "key": "talk-about-a-time-in-your-life-when-you-had-an-opp",
+                        "type": "long_answer",
+                        "question": "Talk about a time in your life when you had an opportunity you wanted to pursue, but couldnt because you and your family couldn't afford it. How are you currently or in the future planning on improving the situation for your family and other families like yours? \n (You can either answer this question or the first one. You don't have to answer all 3 questions)"
+                    }
+                ],
+                "user_profile_questions": [
+                    {
+                        "key": "first_name"
+                    },
+                    {
+                        "key": "last_name"
+                    },
+                    {
+                        "key": "email"
+                    }
+                ],
+                "deadline": "2021-02-22T04:59:00Z",
+                "funding_amount": "1000.00",
+                "is_blind_applications": true,
+                "is_winner_selected": true
+            },
+            "scholarship_responses": {
+                "what-are-your-plans-and-goals-for-the-future": {
+                    "key": "what-are-your-plans-and-goals-for-the-future",
+                    "type": "long_answer",
+                    "question": "What are your plans and goals for the future?",
+                    "response": "<p>My primary goal during my time at Queen's University is to broaden my perspective and</p><p>motivate my desire for proactive change in the society around us. Without indulging in too many</p><p>clichés and hollow phrases, I want my time at Queen's to include moments where I am constantly</p><p>being inspired and challenged by the intelligent people that are part of the Queen's community. I</p><p>want to leave with a degree that I hope will give me a competitive advantage in the global job</p><p>market and access to an alumni network that will benefit me in my professional endeavors. I</p><p>want to leave Queen’s with an awareness of all the possibilities for success that exist in our</p><p>global village.&nbsp;</p><p>&nbsp;</p><p>My long term vision beyond my time at Queen’s University involves seeking</p><p>lucrative opportunities in emerging markets like China, Dubai, and Nigeria. My main interests</p><p>include property development and alternative energy sources, industries which I hope to become</p><p>more exposed to during my time here at Queen’s. Initially, I would love to work with a property</p><p>development firm or a renewable energy company in one of these countries, become acquainted</p><p>with the business culture and eventually start my own business that will target the growing</p><p>“noveau riche” demographic in these countries.&nbsp;</p><p>&nbsp;</p><p>It is quite evident how a degree in business or</p><p>engineering would benefit me if I decided to go this route; but I also believe that a Queen’s</p><p>degree will be even more beneficial due to its recognition around the world and the popular</p><p>exchange program in its third year commerce program which would help me develop contacts</p><p>around the world. I truly believe that a degree from Queen’s University will play an integral part</p><p>in me achieving my goals and making a positive contribution to society.</p>"
+                },
+                "how-has-growing-up-in-a-low-income-family-impacted": {
+                    "key": "how-has-growing-up-in-a-low-income-family-impacted",
+                    "type": "long_answer",
+                    "question": "How has growing up in a low-income family impacted you?",
+                    "response": "<p>My primary goal during my time at <a href=\"https://atila.ca/scholarship/the-olumide-and-aramide-ademidun-scholarship-j4m72msw\">Queen's University</a> is to broaden my perspective and</p><p>motivate my desire for proactive change in the society around us. Without indulging in too many</p><p>clichés and hollow phrases, I want my time at Queen's to include moments where I am constantly</p><p>being inspired and challenged by the intelligent people that are part of the Queen's community. I</p><p>want to leave with a degree that I hope will give me a competitive advantage in the global job</p><p>market and access to an alumni network that will benefit me in my professional endeavors. I</p><p>want to leave Queen’s with an awareness of all the possibilities for success that exist in our</p><p>global village.&nbsp;</p>"
+                }
+            },
+            "user_profile_responses": {
+                "email": {
+                    "key": "email",
+                    "response": "tomiademidun@gmail.com"
+                },
+                "last_name": {
+                    "key": "last_name",
+                    "response": "Ademidun"
+                },
+                "first_name": {
+                    "key": "first_name",
+                    "response": "Tomiwa"
+                }
+            },
+            "is_winner": false,
+            "is_payment_accepted": false,
+            "is_submitted": true,
+            "date_submitted": "2020-10-27T18:36:21Z",
+            "first_name_code": "Bronze",
+            "last_name_code": "Husky",
+            "is_anonymous": false,
+            "is_anonymous_essay": false,
+            "slug": "mojisola-rufai-and-victoria-ademidun-scholarship-application-by-tomiwa-ademidun-cxh6gzci",
+            "title": "Mojisola Rufai and Victoria Ademidun Scholarship Application by Tomiwa Ademidun",
+            "description": "My primary goal during my time at Queen's University is to broaden my perspective and\nmotivate my desire for proactive change in the society around us. Without indulging in too many\nclichés and hollow phrases, I want my time at Queen's to include moments where I am constantly\nbeing inspired and challenged by the intelligent people that are part of the Queen's community. I\nwant to leave with a degree that I hope will give me a competitive advantage in the global job\nmarket and access to an alumni network that will benefit me in my professional endeavors. I\nwant to leave Queen’s with an awareness of all the possibilities for success that exist in our\nglobal village. \n \nMy long term vision beyond my time at Queen’s University involves seeking\n",
+            "body": "<h3>What are your plans and goals for the future?</h3><br/><br/> <p>My primary goal during my time at Queen's University is to broaden my perspective and</p><p>motivate my desire for proactive change in the society around us. Without indulging in too many</p><p>clichés and hollow phrases, I want my time at Queen's to include moments where I am constantly</p><p>being inspired and challenged by the intelligent people that are part of the Queen's community. I</p><p>want to leave with a degree that I hope will give me a competitive advantage in the global job</p><p>market and access to an alumni network that will benefit me in my professional endeavors. I</p><p>want to leave Queen’s with an awareness of all the possibilities for success that exist in our</p><p>global village.&nbsp;</p><p>&nbsp;</p><p>My long term vision beyond my time at Queen’s University involves seeking</p><p>lucrative opportunities in emerging markets like China, Dubai, and Nigeria. My main interests</p><p>include property development and alternative energy sources, industries which I hope to become</p><p>more exposed to during my time here at Queen’s. Initially, I would love to work with a property</p><p>development firm or a renewable energy company in one of these countries, become acquainted</p><p>with the business culture and eventually start my own business that will target the growing</p><p>“noveau riche” demographic in these countries.&nbsp;</p><p>&nbsp;</p><p>It is quite evident how a degree in business or</p><p>engineering would benefit me if I decided to go this route; but I also believe that a Queen’s</p><p>degree will be even more beneficial due to its recognition around the world and the popular</p><p>exchange program in its third year commerce program which would help me develop contacts</p><p>around the world. I truly believe that a degree from Queen’s University will play an integral part</p><p>in me achieving my goals and making a positive contribution to society.</p><br/><br/><h3>How has growing up in a low-income family impacted you?</h3><br/><br/> <p>My primary goal during my time at <a href=\"https://atila.ca/scholarship/the-olumide-and-aramide-ademidun-scholarship-j4m72msw\">Queen's University</a> is to broaden my perspective and</p><p>motivate my desire for proactive change in the society around us. Without indulging in too many</p><p>clichés and hollow phrases, I want my time at Queen's to include moments where I am constantly</p><p>being inspired and challenged by the intelligent people that are part of the Queen's community. I</p><p>want to leave with a degree that I hope will give me a competitive advantage in the global job</p><p>market and access to an alumni network that will benefit me in my professional endeavors. I</p><p>want to leave Queen’s with an awareness of all the possibilities for success that exist in our</p><p>global village.&nbsp;</p><br/><br/>",
+            "published": false,
+            "thank_you_letter": "",
+            "verification_email": "tomiademidun@gmail.com",
+            "accept_payment_email": "tomiademidun@gmail.com",
+            "user": {
+                "user": 1,
+                "first_name": "Tomiwa",
+                "last_name": "Ademidun",
+                "username": "tomiwa",
+                "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-prod.appspot.com/o/user-uploads%2Fuser-profile-pictures%2F1%2Fljy9s5nm-Ezc5Hyf.jpg?alt=media&token=2391816e-c546-4b11-b232-0cc91f9f3547"
+            },
+            "is_security_question_answered": false,
+            "is_email_verified": false,
+            "is_thank_you_letter_sent": false
+        },
+        {
+            "id": "u27lrm1k12fi2jr8",
+            "date_created": "2020-10-11T16:21:48.269310Z",
+            "date_modified": "2021-03-31T22:55:10.815344Z",
+            "scholarship": {
+                "id": 705,
+                "name": "The Michael Scott Bursary Fund 1.0",
+                "slug": "the-michael-scott-bursary-fund-10-rewufp54",
+                "specific_questions": [
+                    {
+                        "key": "why-do-you-deserve-this-scholarship",
+                        "type": "long_answer",
+                        "question": "Why do you deserve this scholarship?"
+                    },
+                    {
+                        "key": "what-is-your-favourite-hobby",
+                        "type": "long_answer",
+                        "question": "What is your favourite hobby?"
+                    },
+                    {
+                        "key": "who-is-your-favourite-office-character",
+                        "type": "long_answer",
+                        "question": "Who is your favourite Office character?"
+                    }
+                ],
+                "user_profile_questions": [
+                    {
+                        "key": "first_name"
+                    },
+                    {
+                        "key": "last_name"
+                    },
+                    {
+                        "key": "email"
+                    }
+                ],
+                "deadline": "2020-10-12T11:59:00Z",
+                "funding_amount": "7.00",
+                "is_blind_applications": false,
+                "is_winner_selected": true
+            },
+            "scholarship_responses": {
+                "what-is-your-favourite-hobby": {
+                    "key": "what-is-your-favourite-hobby",
+                    "type": "long_answer",
+                    "question": "What is your favourite hobby?"
+                },
+                "why-do-you-deserve-this-scholarship": {
+                    "key": "why-do-you-deserve-this-scholarship",
+                    "type": "long_answer",
+                    "question": "Why do you deserve this scholarship?",
+                    "response": "<h2>Software</h2><ul><li>Aaron +Eric: Link the wiki page in the main website page</li><li>Eric: Add Unsplash</li><li>Hadi: <a href=\"https://github.com/ademidun/atila-client-web-app/issues/372\">Update email verification flow</a></li><li>Eric: Add Database to your django server<ul><li>Add the <a href=\"https://www.digitalocean.com/community/tutorials/how-to-use-postgresql-with-your-django-application-on-ubuntu-14-04\">Digital ocean Django postgres tutorial</a> to atila-django/README.md</li></ul></li><li>Hadi + Tomiwa: Fix and investigate <a href=\"https://mail.google.com/mail/u/0/#search/high+response\">high response times</a> on server<ul><li>Document and refactor scholarship filtering algorithm</li></ul></li><li>Aaron: Update report deadline picker<ul><li>Email newsletter system to announce new features and products</li><li>Write blog post for this feature, talk about Wikipedia for scholarships</li></ul></li><li>Hadi: Write a mini blog post for the reuse previous applications feature</li><li>Aaron + Hadi: Write a blog post on the feature<ul><li>Include Gifs in your blog posts</li></ul></li></ul>"
+                },
+                "who-is-your-favourite-office-character": {
+                    "key": "who-is-your-favourite-office-character",
+                    "type": "long_answer",
+                    "question": "Who is your favourite Office character?"
+                }
+            },
+            "user_profile_responses": {},
+            "is_winner": true,
+            "is_payment_accepted": false,
+            "is_submitted": false,
+            "date_submitted": "2020-10-16T00:00:00Z",
+            "first_name_code": "Chestnut",
+            "last_name_code": "Spaniel",
+            "is_anonymous": false,
+            "is_anonymous_essay": false,
+            "slug": "the-michael-scott-bursary-fund-10-application-by-tomiwa-ademidun-e2nhznyo",
+            "title": "The Michael Scott Bursary Fund 1.0 Application by Tomiwa Ademidun",
+            "description": null,
+            "body": null,
+            "published": false,
+            "thank_you_letter": "",
+            "verification_email": "tomiademidun@gmail.com",
+            "accept_payment_email": "tomiademidun@gmail.com",
+            "user": {
+                "user": 1,
+                "first_name": "Tomiwa",
+                "last_name": "Ademidun",
+                "username": "tomiwa",
+                "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-prod.appspot.com/o/user-uploads%2Fuser-profile-pictures%2F1%2Fljy9s5nm-Ezc5Hyf.jpg?alt=media&token=2391816e-c546-4b11-b232-0cc91f9f3547"
+            },
+            "is_security_question_answered": false,
+            "is_email_verified": false,
+            "is_thank_you_letter_sent": false
+        },
+        {
+            "id": "34pr754s0ki1j2mg",
+            "date_created": "2020-01-04T03:37:57.344202Z",
+            "date_modified": "2021-01-03T16:24:00.684957Z",
+            "scholarship": {
+                "id": 595,
+                "name": "Dalton Camp Award",
+                "slug": "dalton-camp-award-kliplwze",
+                "specific_questions": {},
+                "user_profile_questions": {},
+                "deadline": "2020-03-20T19:59:00Z",
+                "funding_amount": "10000.00",
+                "is_blind_applications": false,
+                "is_winner_selected": false
+            },
+            "scholarship_responses": {},
+            "user_profile_responses": {},
+            "is_winner": false,
+            "is_payment_accepted": false,
+            "is_submitted": false,
+            "date_submitted": "2020-10-16T00:00:00Z",
+            "first_name_code": "Tourquoise",
+            "last_name_code": "Retriever",
+            "is_anonymous": false,
+            "is_anonymous_essay": false,
+            "slug": null,
+            "title": null,
+            "description": null,
+            "body": null,
+            "published": false,
+            "thank_you_letter": "",
+            "verification_email": "tomiademidun@gmail.com",
+            "accept_payment_email": null,
+            "user": {
+                "user": 1,
+                "first_name": "Tomiwa",
+                "last_name": "Ademidun",
+                "username": "tomiwa",
+                "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-prod.appspot.com/o/user-uploads%2Fuser-profile-pictures%2F1%2Fljy9s5nm-Ezc5Hyf.jpg?alt=media&token=2391816e-c546-4b11-b232-0cc91f9f3547"
+            },
+            "is_security_question_answered": false,
+            "is_email_verified": false,
+            "is_thank_you_letter_sent": false
+        }
+    ]
+}

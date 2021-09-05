@@ -23,6 +23,10 @@ class ContentList extends React.Component {
         }
     }
 
+    componentDidMount() {
+        this.loadItems();
+    }
+
     loadMoreItems = () => {
         const { pageNumber } = this.state;
 
@@ -44,7 +48,6 @@ class ContentList extends React.Component {
 
         ContentAPI.list(page)
             .then(res => {
-
                 const contentResults = contentItems;
                 contentResults.push(...res.data.results);
                 this.setState({ totalContentCount: res.data.count });
@@ -61,10 +64,6 @@ class ContentList extends React.Component {
                 this.setState({ isLoadingContent: false });
             });
     };
-
-    componentDidMount() {
-        this.loadItems();
-    }
 
     render () {
 
@@ -102,8 +101,8 @@ class ContentList extends React.Component {
         }
         else {
             contentList = contentItems.map( content =>
-                <Col xs={24} md={12} lg={8}>
-                    <ContentCard key={content.id}
+                <Col xs={24} md={12} lg={8} key={content.id}>
+                    <ContentCard
                                  content={genericItemTransform(content)}
                                  className=" mb-3"
                                  hideImage={contentType==='Essays'}
