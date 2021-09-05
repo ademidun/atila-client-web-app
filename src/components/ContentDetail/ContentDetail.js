@@ -169,10 +169,24 @@ class ContentDetail extends React.Component {
                 <HelmetSeo content={genericItemTransform(content)} />
                 <div className={`${className} center-block`}>
                     <h1>{title}</h1>
+                    {header_image_url &&
+                    <div className="col-12 text-center">
+                        <img src={header_image_url}
+                            alt={title}
+                            className="header-image"
+                        />
+                    </div>
+                    }
+
+                    {pageViews &&
+                    <AtilaPointsPaywallModal pageViews={pageViews} />
+                    }
                     {canEditContent &&
-                    <Link to={`/${contentType.toLowerCase()}/edit/${contentSlug}`} >
-                        Edit {contentType}
-                    </Link>
+                    <div className="mt-3">
+                        <Link to={`/${contentType.toLowerCase()}/edit/${contentSlug}`} >
+                            Edit {contentType}
+                        </Link>
+                    </div>
                     }
 
                     {!published &&
@@ -180,16 +194,6 @@ class ContentDetail extends React.Component {
                         style={{ fontSize: 'small' }}>
                         Unpublished
                     </p>}
-                    {header_image_url &&
-                    <img src={header_image_url}
-                         alt={title}
-                         style={{ maxWidth: '100%' }}
-                         className="header-image"
-                    />}
-
-                    {pageViews &&
-                    <AtilaPointsPaywallModal pageViews={pageViews} />
-                    }
 
                     {user && authorsReact}
 

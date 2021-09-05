@@ -484,9 +484,12 @@ class ContentAddEdit extends React.Component {
                     </div>
                     }
                     {header_image_url &&
-                    <img  src={header_image_url}
-                          alt={title}
-                          style={{width: '100%' }}/>
+                    <div className="col-12 text-center">
+                        <img src={header_image_url}
+                            alt={title}
+                            className="header-image"
+                        />
+                    </div>
                     }
                     <CKEditor
                         editor={ InlineEditor }
