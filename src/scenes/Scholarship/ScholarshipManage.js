@@ -373,7 +373,7 @@ class ScholarshipManage extends React.Component {
 
     render() {
         const { userProfile } = this.props;
-        const { scholarship, applications, isLoadingApplications,
+        const { scholarship, applications, awards, isLoadingApplications,
             unsubmittedApplications, responseMessage, applicationTypeToEmail,
              reviewersPerApplication, isLoadingMessage, emailSubject, emailBody, invitedCollaborator } = this.state;
 
@@ -629,6 +629,7 @@ class ScholarshipManage extends React.Component {
                 {scholarship.is_blind_applications && <BlindApplicationsExplanationMessage />}
                 <ApplicationsTable applications={allApplications}
                                    scholarship={scholarship}
+                                   awards={awards}
                                    selectFinalistOrWinner={this.selectFinalistOrWinner}
                                    isScholarshipOwner={isScholarshipOwner}
                                    assignReviewerButton={this.assignReviewerButton}
