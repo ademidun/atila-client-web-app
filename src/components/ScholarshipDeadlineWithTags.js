@@ -3,20 +3,29 @@ import PropTypes from 'prop-types';
 import moment from "moment";
 import {Tag} from "antd";
 import {ScholarshipPropType} from "../models/Scholarship";
+import AddDeadlineToCalendar from "./AddDeadlineToCalendar";
+
 const todayMoment = moment(Date.now());
 
-function ScholarshipDeadlineWithTags({scholarship, datePrefix}) {
+const DEFAULT_DEADLINE = "2022-01-01";
+const DEFAULT_OPEN_DATE = "2022-12-31";
+
+function ScholarshipDeadlineWithTags({scholarship, datePrefix, addDeadlineToCalendar}) {
 
     const { deadline, open_date, date_time_created } = scholarship;
+
+    let showCalendar = addDeadlineToCalendar;
+
     let tag = null;
     let tagPrefix = 'due';
     let color = null;
 
     let scholarshipDateMoment = moment(deadline);
-    if (open_date && !open_date.includes("2022-12-31") && open_date > todayMoment.toISOString()) {
+    if (deadline?.includes(DEFAULT_DEADLINE) && open_date && !open_date.includes("2022-12-31") && open_date > todayMoment.toISOString()) {
         scholarshipDateMoment = moment(open_date);
         tagPrefix = 'opens';
         datePrefix = 'Opens: ';
+        showCalendar = false;
     }
     const daysFromDeadline = scholarshipDateMoment.diff(todayMoment, 'days');
     let scholarshipDateString = scholarshipDateMoment.format('dddd, MMMM DD, YYYY h:mm A');
@@ -34,9 +43,10 @@ function ScholarshipDeadlineWithTags({scholarship, datePrefix}) {
     }
 
 
-    if (deadline.includes("2022-01-01") && (!open_date || open_date.includes("2022-12-31"))) {
+    if (deadline.includes(DEFAULT_DEADLINE) && (!open_date || open_date.includes(DEFAULT_OPEN_DATE))) {
         scholarshipDateString = "TBA";
-        tag = null
+        tag = null;
+        showCalendar = false;
     }
 
     return (
@@ -44,12 +54,12 @@ function ScholarshipDeadlineWithTags({scholarship, datePrefix}) {
             {datePrefix} {scholarshipDateString}{' '}
             {tag &&
             <React.Fragment>
-            <br/>
             <Tag color={color} key={tag}>
                 {tag.toUpperCase()}
             </Tag>
             </React.Fragment>
             }
+            {showCalendar && <AddDeadlineToCalendar scholarship={scholarship} />}
             {date_time_created && dateAddedTag(date_time_created)}
         </React.Fragment>
     );
@@ -81,11 +91,13 @@ function dateAddedTag(date_time_created){
 
 ScholarshipDeadlineWithTags.defaultProps = {
     datePrefix: 'Deadline: ',
+    addDeadlineToCalendar: false,
 };
-
 
 ScholarshipDeadlineWithTags.propTypes = {
     datePrefix: PropTypes.string,
     scholarship: ScholarshipPropType.isRequired,
+    addDeadlineToCalendar: PropTypes.bool,
 };
+
 export default ScholarshipDeadlineWithTags;

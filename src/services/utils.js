@@ -485,6 +485,17 @@ export function isValidEmail(email) {
     return re.test(String(email).toLowerCase());
 }
 
+export function addStyleClasstoTables(parentSelector) {
+    let element;
+    const tableSelectors = `${parentSelector} table`
+
+    $(tableSelectors).each(function() {
+
+        element = $(this);
+        element.addClass(`table table-striped`)
+    });
+
+}
 /**
  *
  * @param parentSelector: Where to insert the new table of contents.
@@ -612,4 +623,11 @@ export function transformListToValueLabelList(inputList) {
             value: string
         }
     })
+}
+
+// See https://stackoverflow.com/a/63627688/14874841 for
+// how to securely open a new tab
+export function openInNewTab(url){
+    const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
+    if (newWindow) newWindow.opener = null
 }

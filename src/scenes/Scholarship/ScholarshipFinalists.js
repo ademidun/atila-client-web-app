@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Link} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 import {Row, Col, Tag} from "antd";
 import ContentCard from "../../components/ContentCard";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
@@ -72,7 +72,9 @@ class ScholarshipFinalists extends React.Component {
 
         const { scholarshipFinalistEssays, scholarshipFinalistUserProfiles, isLoadingScholarshipFinalists,
             scholarships, isFilteredByScholarshipID  } = this.state;
-        const { className, title, showEssaysFirst } = this.props;
+        const { className, title, showEssaysFirst, location : { pathname} } = this.props;
+
+        const finalistsPathname = "/finalists";
 
         if (isLoadingScholarshipFinalists) {
             return (
@@ -85,7 +87,17 @@ class ScholarshipFinalists extends React.Component {
 
         return (
             <div className={`${className}`}>
-                <h3 className="text-center">{title}</h3>
+                <h2 className="text-center">
+                    {pathname === finalistsPathname ?
+                        <React.Fragment>
+                            {title}
+                        </React.Fragment>
+                        :
+                        <Link to={finalistsPathname}>
+                            {title}
+                        </Link>
+                    }
+                </h2>
                 {showEssaysFirst &&
                 <ScholarshipFinalistEssays title={title}
                                            scholarshipFinalistEssays={scholarshipFinalistEssays}
@@ -106,10 +118,15 @@ class ScholarshipFinalists extends React.Component {
 }
 
 export function ScholarshipFinalistEssays({ title, scholarshipFinalistEssays, isFiltered, scholarships }) {
-    let displayTitle = `${title}' Essays`
+    let displayTitle =(
+            <h2 > 
+                {title}' Essays 
+                <br/><br/>
+            </h2>
+        )
 
     let essayContent;
-    if (scholarshipFinalistEssays.length  === 0) {
+    if (scholarshipFinalistEssays.length === 0) {
         essayContent = (
             <React.Fragment>
                 <h3 className="text-center">No published essays to display</h3>
@@ -156,53 +173,72 @@ export function ScholarshipFinalistEssays({ title, scholarshipFinalistEssays, is
     )
 
 }
+
+
 export function UserProfilesCards({userProfiles, userKey="username"}) {
-    return (<Row gutter={[{ xs: 8, sm: 16}, 16]}>
+    return (
+    
+    <Row gutter={[{ xs: 8, sm: 16}, 16]}>
         {userProfiles.map(user => {
 
-            let fundingAmount = <>
+            const fundingAmount = <>
                 {user.funding_amount &&
                     <strong>
                         :{' '}{ formatCurrency(user.funding_amount, true) }
                     </strong>
                 }
-        </>;
+            </>;
 
-            let userDisplay = (
-                <Link to={`/profile/${user.username}`} >
-                    <img
-                        alt="user profile"
-                        className="rounded-circle py-1 pr-1 square-icon"
-                        src={user.profile_pic_url} />
-                    {user.first_name} {user.last_name}{' '}{fundingAmount}
-                </Link>);
-
-            if (user.is_anonymous || !user.username) {
-                userDisplay = (
-                    <div>
-                        <img
-                            alt="user profile"
-                            className="rounded-circle py-1 pr-1 square-icon"
-                            src={user.profile_pic_url} />
-                        {user.is_anonymous ? "Anonymous" : `${user.first_name} ${user.last_name}`}{' '}{fundingAmount}
-                    </div>);
-            }
+            const userDisplay = (  
+                <div className='UserCard'>
+                    
+                    <div className='userUpper-container'>
+                        <div className='userImage-container'>
+                            <Link to={`/profile/${user.username}`} >
+                            <img id="avatar-pic"
+                                alt="user profile"
+                                src={user.profile_pic_url} />
+                            </Link>
+                        </div>
+                    </div>
+                    <div className='tag'>
+                        {user.is_winner && <Tag color="gold">{' '}Winner</Tag>}
+                        {user.is_owner && <Tag color="green">{' '}Creator</Tag>}
+                    </div>
+                    {user.is_anonymous || !user.username ? 
+                
+                        <div className='userLower-container'>
+                            {user.is_anonymous ? "Anonymous" : `${user.first_name} ${user.last_name}`}{' '}{fundingAmount}
+                        </div>
+                        :
+                        <div className='userLower-container'>
+                        <Link to={`/profile/${user.username}`} >
+                        {user.first_name}
+                        <br/> {user.last_name} 
+                        <br/>{' '}{fundingAmount}
+                        </Link>
+                        </div>
+                    }
+                                
+                </div>  
+            );
 
             return (
                 // Use zoom:0.8 as a temporary workaround so that that ScholarshipFinalists doesn't
                 // take up too much space.
-                <Col xs={24} md={12} style={{zoom:0.9}} key={user[userKey]}>
-                    <div className="bg-light mb-3 p-1 rounded-pill">
+                
+                <Col xs={24} md={4} style={{zoom:0.9}} key={user[userKey]}>
+                    <div>
+                        <br/><br/>
                         {userDisplay}
-                        {user.is_winner && <Tag color="green">{' '}Winner</Tag>}
-                        {user.is_owner && <Tag color="green">{' '}Creator</Tag>}
                     </div>
                 </Col>)
-        })}
+            })}
 
-    </Row>)
+    </Row>
+    )
 
-}
+};
 
 ScholarshipFinalists.defaultProps = {
     className: '',
@@ -221,5 +257,4 @@ ScholarshipFinalists.propTypes = {
     search: PropTypes.string,
 };
 
-export default ScholarshipFinalists;
-
+export default withRouter(ScholarshipFinalists);

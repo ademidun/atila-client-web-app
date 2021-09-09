@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import './Footer/Footer.scss';
-import {truncate} from "../services/utils";
-import {ProfilePicPreview, UserProfilePreview} from "./ReferredByInput";
+import { ProfilePicPreview, UserProfilePreview } from "./ReferredByInput";
+import './ContentCard.scss'
+import { Button } from "antd";
+
 
 class ContentCard extends React.Component {
 
@@ -28,69 +30,72 @@ class ContentCard extends React.Component {
 
     render() {
 
-        const { className, content, hideImage, customStyle } = this.props;
+        const { content, hideImage } = this.props;
         const { showPreview } = this.state;
-        const { title, description, image, slug, type, user, published, contributors } = content;
+        const { title, description, image, slug, type, user, contributors } = content;
 
         let descriptionText = description;
+        let textIsTruncated = false;
 
-        if (description && !hideImage) {
-            descriptionText = showPreview ? description.substring(0,240) : `${description.substring(0,100)}`;
-            if (description.length > descriptionText) {
-                descriptionText +='...'
+        if (description) {
+            descriptionText = showPreview ? description.substring(0, 240) : `${description.substring(0, 100)}`;
+            textIsTruncated = description.length > descriptionText.length;
+            if (textIsTruncated) {
+                descriptionText += '...'
             }
         }
 
-        let authorsReact = (
-            <div className="bg-light my-3">
-                <UserProfilePreview userProfile={user} linkProfile={true} />
-                {contributors && contributors.map(userProfile =>
-                    <ProfilePicPreview userProfile={userProfile} key={userProfile.username} linkProfile={true} />)}
-            </div>
-        )
+        let authorsComponent = null;
 
+        if (user) {
+            authorsComponent = (
+                <div className="bg-light my-3">
+                    <UserProfilePreview userProfile={user} linkProfile={true} />
+                    {contributors && contributors.map(userProfile =>
+                        <ProfilePicPreview userProfile={userProfile} key={userProfile.username} linkProfile={true} />)}
+                </div>
+            )
+        }
 
         return (
-            <div className={`${className} card shadow p-3`} style={customStyle}>
-                <div  className="card-title">
-                    <h3>
-                        <Link  title={title} to={slug}>
-                            {truncate(title)}
+            <div className='ContentCard shadow mb-3'>
+                    {!hideImage && image && 
+                    <div className='upper-container'>
+                        <Link title={title} to={slug}>
+                            {type === "blog" &&
+                            <div className='upper-container-2'>
+                                <img src={image}
+                                    alt={title}
+                                />
+                            </div>
+                            }
+                            {type !== "blog" &&
+                            <div className='image-container'>
+                                <img id="avatar-pic" src={image}
+                                    alt={title}
+                                    style={{ width: '100px', height: '100px' }}
+                                />
+                            </div>
+                            }
                         </Link>
-                    </h3>
-                    <br />
-                    <p  className="badge badge-secondary"
-                        style={{ fontSize: 'small' }}>
-                        {type}
-                    </p>
-                    {published===false &&
-                    <p  className="badge badge-secondary mx-1"
-                        style={{ fontSize: 'small' }}>
-                        Unpublished
-                    </p>}
-                </div>
-                {user && authorsReact}
-                <div  className="card-image mb-3">
-                    {
-                    !hideImage && image &&
-                    <Link to={slug}>
-                        <img  src={image}
-                              alt={title}
-                              style={{ width: '100%'}}
-                        />
-                    </Link>
+                    </div>
                     }
-                </div>
-                <div className="card-text">
-                    { descriptionText }
-                </div>
-                {!hideImage &&
-                    <button className="btn btn-link" onClick={this.togglePreview}>
-                        Preview
-                    </button>
-                }
+                    <div className='lower-container'>
+                        <Link title={title} to={slug}>
+                            <h3> {title} </h3>
+                        </Link>
+                        {authorsComponent}
+                        <p className="body"> 
+                            {descriptionText} <br/>
+                            
+                            {textIsTruncated && 
+                            <Button onClick={this.togglePreview}>{showPreview ? "Show Less" : "Show More"}</Button>
+                            }
+                        </p>
+                        
+                    </div>
             </div>
-        );
+        )
     }
 }
 
