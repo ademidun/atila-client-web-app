@@ -150,11 +150,15 @@ class ScholarshipsAPI {
         return apiCompletionPromise;
     };
 
-    static selectWinners = (id, winners) => {
+    static selectWinners = (id, winnerID, awardID) => {
+        const data = {
+            winner: winnerID, 
+            award: awardID,
+        }
 
         const apiCompletionPromise = request({
             method: 'post',
-            data: winners,
+            data: data,
             url: `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/select-winner/`,
         });
 

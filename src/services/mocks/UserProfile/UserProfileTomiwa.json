@@ -1,0 +1,132 @@
+{
+    "academic_average": null,
+    "academic_career_goals": "",
+    "account_type": "student",
+    "activities": [],
+    "atila_points": "900.0000",
+    "atila_points_detail": {},
+    "birth_date": null,
+    "citizenship": [],
+    "city": [
+        {
+            "id": 1,
+            "province": "Ontario",
+            "name": "Toronto",
+            "country": "Canada"
+        }
+    ],
+    "created_scholarships_count": 0,
+    "country": [
+        {
+            "name": "Canada"
+        }
+    ],
+    "country_extra": [],
+    "cover_letter": null,
+    "date_created": "2021-08-06",
+    "date_time_created": "2021-08-06T02:37:32.449067Z",
+    "disability": [],
+    "eligible_programs": [
+        "Business",
+        "Engineering",
+        "Entrepreneurship"
+    ],
+    "eligible_schools": [
+        "Ivey Business School",
+        "University of Western Ontario"
+    ],
+    "email": "tomiwa@atila.ca",
+    "enrollment_proof": null,
+    "ethnicity": [],
+    "extracurricular_description": "",
+    "financial_need": false,
+    "first_name": "Tomiwa",
+    "gender": "Male",
+    "grade_level": null,
+    "heritage": [],
+    "industries": [],
+    "is_atila_admin": true,
+    "is_atila_premium": false,
+    "is_debug_mode": false,
+    "is_international_student": false,
+    "is_sponsor": false,
+    "is_verified": false,
+    "language": [],
+    "last_name": "Ademidun",
+    "major": "Software Engineering",
+    "metadata": {
+        "stale_cache": false,
+        "last_scholarship_count": 8
+    },
+    "occupations": [],
+    "other_demographic": [],
+    "post_secondary_school": "University of Western Ontario",
+    "profile_description": "",
+    "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-7.appspot.com/o/user-profiles%2Fgeneral-data%2Fdefault-profile-pic.png?alt=media&token=455c59f7-3a05-43f1-a79e-89abff1eae57",
+    "province": [
+        {
+            "id": 1,
+            "name": "Ontario",
+            "country": "Canada"
+        }
+    ],
+    "public_metadata": {},
+    "reference_letter": null,
+    "reference_letter_alternate": null,
+    "referred_by": null,
+    "religion": [],
+    "resume": null,
+    "saved_scholarships": [],
+    "scholarships_match_score": [
+        {
+            "id": 711,
+            "name": "Atila Science and Engineering STEM Scholarship",
+            "score": 43.63283698724573
+        },
+        {
+            "id": 1,
+            "name": "Atila Scholarship DEMO",
+            "score": 38.18587827286608
+        },
+        {
+            "id": 710,
+            "name": "Atila Drake \"Superfan\" Scholarship",
+            "score": 33.59783698724573
+        },
+        {
+            "id": 720,
+            "name": "Olumide and Aramide Ademidun Scholarship",
+            "score": 18.395084486722045
+        },
+        {
+            "id": 739,
+            "name": "Skateboards For Hope Scholarship",
+            "score": 12.975206561842958
+        },
+        {
+            "id": 733,
+            "name": "Atila Continuous Learning Scholarship",
+            "score": 12.975206561842958
+        },
+        {
+            "id": 735,
+            "name": "Atila Black and Indigenous  People of Color (BIPOC) Scholarship (oj0gx3a)",
+            "score": 10.061328287400624
+        }
+    ],
+    "scholarships_not_interested": [],
+    "secondary_school": "",
+    "security_question": null,
+    "security_question_is_answered": false,
+    "sports": [],
+    "stripe_connected_account_id": null,
+    "stripe_customer_id": null,
+    "submitted_applications_count": 0,
+    "title": "",
+    "transcript": null,
+    "updated_at": "2021-09-03T01:43:01.140190Z",
+    "user": 2,
+    "username": "tomiwa",
+    "verification_token": "b6y2mcViErhTypKMYbncQRzVxqtUaXCE",
+    "referred_by_detail": null
+}

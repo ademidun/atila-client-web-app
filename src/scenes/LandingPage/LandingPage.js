@@ -15,6 +15,7 @@ import Loading from "../../components/Loading";
 import Testimonials from "../../components/Testimonials";
 import { SocialProof } from './SocialProof';
 import EbookLandingBanner from '../Ebook/EbookLandingBanner';
+import ScholarshipFinalists from "../Scholarship/ScholarshipFinalists";
 
 class LandingPage extends React.Component {
 
@@ -115,6 +116,14 @@ class LandingPage extends React.Component {
                         <HowItWorks accountType={"Sponsor"}/>
                         <hr/>
                         <SocialProof />
+                        <hr/>
+                        <div className="container">
+                            <ScholarshipFinalists itemType={"essay"}
+                                            allFinalists={true}
+                                            title="Finalists"
+                                            showEssayFirst={true}
+                            />
+                        </div>
                         <hr/>
                         {scholarshipsContentDirectApplication}
                         <hr/>

@@ -158,6 +158,13 @@ class Navbar extends React.Component {
                                 Add Scholarship
                             </Link>
                         </Menu.Item>
+                        {userProfile.is_atila_admin && 
+                            <Menu.Item key="admin">
+                                <Link to="/admin">
+                                    Admin
+                                </Link>
+                            </Menu.Item>
+                        }
                         <Menu.Item key="view-profile">
                             <Link to={`/profile/${userProfile.username}`}>
                                 View Profile

@@ -10,6 +10,12 @@ prod: [![Netlify Status](https://api.netlify.com/api/v1/badges/837e9c44-3040-446
 
 staging: [![Netlify Status](https://api.netlify.com/api/v1/badges/ed4f5b21-da47-4094-8e41-89e49a620f55/deploy-status)](https://app.netlify.com/sites/atila-staging/deploys)
 
+## How to Create a Pull Request
+
+- Read/Watch: [How we Write Frontend React Code and Create Pull Requests at Atila](https://atila.ca/blog/tomiwa/how-we-write-frontend-react-code-and-create-pull-requests-at-atila)
+
+- Watch: [How to Get the Unique Deploy URL for a Code Push](https://www.loom.com/share/e1e5c02eeb0d47b08def5aa5b81cc0e7)
+
 ## Getting Started
 
 `npm install; npm start`
@@ -34,13 +40,14 @@ Taken from [PR #8](https://github.com/ademidun/atila-client-web-app/pull/8/files
 
 To test a specific file: `npm test -- SomeTestFileToRun` for example: `npm test -- Register`
 
-# Mocking API Data
+## Mocking API Data
 
 If you can't or don't want to use the actual backend API you can mock the responses.
 
 Here are two video tutorials we made specifically on how to Mock API Data in this project.
 1. [How to Mock API Data in atila-client-web-app](https://www.loom.com/share/8405abef5585401ab0924e742fcb1fd9) 
 1. [How to Mock API Data in atila-client-web-app based on the request](https://www.loom.com/share/367fe555b0584c28b6e68d1f0e5d121f)
+1. [How to Mock API data for use in a Pull Request](https://www.loom.com/share/1e707afc1fc34d3a91853b199c15e46d)
 
 **Steps:**
 
@@ -63,3 +70,25 @@ Here are two video tutorials we made specifically on how to Mock API Data in thi
 We use [axios-mock-adapter](https://github.com/ctimmerm/axios-mock-adapter) for our API mocking, see their documentation for how to do more advanced mocking such as returning a certain response based on the request parameters.
 
 **Note:** You can only mock api calls in the dev environment.
+
+## Storybook
+
+- We use Storybook to develop components independently from business logic, see [Adding Storybook to our Web App Development Process](https://github.com/storybookjs/storybook/issues/5183)
+
+- To run Storybook:
+    - **You only have to do this the first time you run Storybook**: delete `node_modules` and `package-lock.json` NOT `package.json` then run `npm install`
+    - `npm run storybook`
+    - If that command fails with:
+    ```
+    Error: EEXIST: file already exists, mkdir '/Users/admin/Desktop/tomiwa/codeproj/atila-code/atila-client-web-app/node_modules/.cache/ts-docgen'
+    ```
+    - Try running `npm run storybook:clear-cache`
+    - You can run your react server alongside storybook: Open a seperate terminal window and run `npm start`
+
+- To add a new component to Storybook: create it in `src/stories/{ComponentName}.stories.js`
+- Follow the example in `src/stories/ContentCard.stories.js` and create a seperate story for each scenario of that component
+- NOTE: if there is an error in one of your components, instead of storybook crashing, the error is displayed in the console so make sure to inpect console to see the error
+
+- Learn more here: 
+    - https://storybook.js.org/docs/react/get-started/introduction
+    - https://storybook.js.org/docs/react/writing-stories/introduction

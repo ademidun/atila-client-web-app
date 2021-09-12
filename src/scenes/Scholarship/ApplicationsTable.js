@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import { Alert, Button, Table, Tag, Popconfirm } from "antd";
+import { Alert, Button, Table, Tag, Popconfirm, Popover } from "antd";
 import { UserProfilePreview } from "../../components/ReferredByInput";
 import { slugify } from '../../services/utils';
 import { CSVLink } from 'react-csv';
@@ -51,7 +51,7 @@ export class ApplicationsTable extends  React.Component {
 
     render () {
 
-        const { scholarship, selectFinalistOrWinner, isScholarshipOwner, assignReviewerButton } = this.props;
+        const { scholarship, selectFinalistOrWinner, isScholarshipOwner, assignReviewerButton, awards } = this.props;
         const { collaborators, owner_detail } = scholarship;
         const { showScores, allApplications, filteredApplications, searchTerm } = this.state;
     
@@ -81,7 +81,7 @@ export class ApplicationsTable extends  React.Component {
             key: '5',
             render: (applicationID, application) => (
                 <React.Fragment>
-                    {application.is_submitted ? renderFinalistOrWinnerButton(application, scholarship, selectFinalistOrWinner) : "Cannot select unsubmitted application"}
+                    {application.is_submitted ? renderFinalistOrWinnerButton(application, scholarship, selectFinalistOrWinner, awards) : "Cannot select unsubmitted application"}
                 </React.Fragment>
             ),
         };
@@ -283,7 +283,7 @@ export class ApplicationsTable extends  React.Component {
 }
 
 const todayDate = new Date().toISOString();
-export const renderFinalistOrWinnerButton = (application, scholarship, selectFinalistOrWinner) => {
+export const renderFinalistOrWinnerButton = (application, scholarship, selectFinalistOrWinner, awards) => {
 
     let finalistOrWinnerText = scholarship.is_finalists_notified ? "winner" : "finalist"
     let confirmText = `Are you sure you want to pick this ${finalistOrWinnerText}?`;
@@ -314,7 +314,11 @@ export const renderFinalistOrWinnerButton = (application, scholarship, selectFin
                 <p>
                     This finalist has been selected. Confirm finalists before you select a winner.
                 </p>
-                <Popconfirm placement="topLeft" title={"Confirm de-selecting of finalist?"} onConfirm={() => selectFinalistOrWinner(application, scholarship)} okText="Yes" cancelText="No">
+                <Popconfirm placement="topLeft" 
+                    title={"Confirm de-selecting of finalist?"} 
+                    onConfirm={() => selectFinalistOrWinner(application, scholarship)} 
+                    okText="Yes" 
+                    cancelText="No">
                     <Button danger>
                         Unselect Finalist...
                     </Button>
@@ -329,13 +333,39 @@ export const renderFinalistOrWinnerButton = (application, scholarship, selectFin
             </p>
         )
     }
-    return (
-        <Popconfirm placement="topLeft" title={confirmText} onConfirm={() => selectFinalistOrWinner(application, scholarship)} okText="Yes" cancelText="No">
-            <Button className="btn-success">
-                Select {finalistOrWinnerText}...
-            </Button>
-        </Popconfirm>
+
+    if (!scholarship.is_finalists_notified) {
+        return (
+            <Popconfirm placement="topLeft" 
+                        title={confirmText} 
+                        onConfirm={() => selectFinalistOrWinner(application, scholarship)} 
+                        okText="Yes" cancelText="No">
+                <Button className="btn-success">
+                    Select Finalist...
+                </Button>
+            </Popconfirm>
+        )
+    }
+
+    const awardOptions = awards.map(award => 
+        (
+            <Popconfirm placement="topLeft" 
+                        title={confirmText} 
+                        onConfirm={() => selectFinalistOrWinner(application, scholarship, award.id)} 
+                        okText="Yes" cancelText="No">
+                <Button>{award.funding_amount}</Button>
+            </Popconfirm>
+        )
     )
+
+    return (
+        <Popover trigger={"click"} title={<b>Choose Award</b>} content={awardOptions} placement={"top"}>
+                <Button className="btn-success">
+                    Select Winner...
+                </Button>
+        </Popover>
+    )
+    
 };
 export const getApplicationUsernamesByAttribute = (application, attributeName="assigned_reviewers") => {
     let usernames = [];

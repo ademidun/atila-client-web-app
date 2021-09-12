@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from "prop-types";
 import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
-import {  MASTER_LIST_WITH_CATEGORY_LABEL, MASTER_LIST_WITH_CATEGORY_LABEL_ADMIN } from '../../models/ConstantsForm';
+import {  MASTER_LIST_WITH_CATEGORY_LABEL, MASTER_LIST_WITH_CATEGORY_LABEL_ADMIN, MASTER_LIST_WITH_CATEGORY_LABEL_USER_PROFILE } from '../../models/ConstantsForm';
 import AutoComplete from '../AutoComplete';
 import { Tag } from 'antd';
 import { prettifyKeys } from '../../services/utils';
@@ -12,9 +12,6 @@ export class QueryItem extends React.Component {
 
     constructor(props){
         super(props);
-
-        console.log({props});
-
         this.state = {
             searchQuery: props.value,
         };
@@ -80,14 +77,14 @@ export class QueryItem extends React.Component {
 
     render() {
         const { searchQuery } = this.state;
-        const { placeHolder,loggedInUserProfile } = this.props;
+        const { placeHolder,loggedInUserProfile, queryType } = this.props;
 
         let suggestions = MASTER_LIST_WITH_CATEGORY_LABEL;
         if (loggedInUserProfile && loggedInUserProfile.is_atila_admin) {
             suggestions = MASTER_LIST_WITH_CATEGORY_LABEL_ADMIN;
+        } if (queryType === "userprofile") {
+            suggestions = MASTER_LIST_WITH_CATEGORY_LABEL_USER_PROFILE;
         }
-
-        console.log({loggedInUserProfile, suggestions});
 
         return (
             <>
@@ -111,12 +108,14 @@ const mapStateToProps = state => {
 QueryItem.defaultProps = {
     onUpdateQuery: (query) => {},
     value: "",
+    queryType: "contact",
 };
 
 QueryItem.propTypes = {
     onUpdateQuery: PropTypes.func,
     placeHolder: PropTypes.string,
     loggedInUserProfile: PropTypes.shape({}).isRequired,
+    queryType: PropTypes.string.isRequired
 };
 
 export default withRouter(connect(mapStateToProps)(QueryItem));

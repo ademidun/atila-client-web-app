@@ -1,0 +1,58 @@
+{
+    "referral_user_profiles": [
+      {
+        "user": 2573,
+        "first_name": "munachi",
+        "last_name": "Ernest-eze",
+        "username": "munasco",
+        "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-prod.appspot.com/o/user-uploads%2Fuser-profile-pictures%2F2573%2Fvtfvcofv-IMG_0135%20(2).jpg?alt=media&token=3bc9ac5f-bf8d-4f23-a94a-9b90e0abcd8e"
+      },
+      {
+        "user": 2377,
+        "first_name": "Chelsea",
+        "last_name": "James",
+        "username": "chel.seawaves",
+        "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-prod.appspot.com/o/user-uploads%2Fuser-profile-pictures%2F2377%2F355ru7w4-Chelsea%20Nyomi_Photo_Richards%20James.JPG?alt=media&token=0ad17b6e-0557-4edf-86a4-d3f64b91c08c"
+      },
+      {
+        "user": 2346,
+        "first_name": "Nye",
+        "last_name": "Lyn",
+        "username": "nyelyn",
+        "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-7.appspot.com/o/user-profiles%2Fgeneral-data%2Fdefault-profile-pic.png?alt=media&token=455c59f7-3a05-43f1-a79e-89abff1eae57"
+      },
+      {
+        "user": 3318,
+        "first_name": "Ijeoma",
+        "last_name": "Oladipo",
+        "username": "Ijeoma1027",
+        "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-7.appspot.com/o/user-profiles%2Fgeneral-data%2Fdefault-profile-pic.png?alt=media&token=455c59f7-3a05-43f1-a79e-89abff1eae57"
+      },
+      {
+        "user": 2345,
+        "first_name": "Anita",
+        "last_name": "Owusu",
+        "username": "Neetsy317",
+        "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-7.appspot.com/o/user-profiles%2Fgeneral-data%2Fdefault-profile-pic.png?alt=media&token=455c59f7-3a05-43f1-a79e-89abff1eae57"
+      },
+      {
+        "user": 3220,
+        "first_name": "Leena",
+        "last_name": "Sharma Seth",
+        "username": "MendingtheChasm",
+        "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-7.appspot.com/o/user-profiles%2Fgeneral-data%2Fdefault-profile-pic.png?alt=media&token=455c59f7-3a05-43f1-a79e-89abff1eae57"
+      }
+    ],
+    "atila_points": 1360,
+    "atila_points_detail": {
+      "total_atila_points": 60,
+      "points_from_registered_users": 60,
+      "points_from_created_scholarships": 0,
+      "points_from_winning_applications": 0,
+      "points_from_finalist_applications": 0,
+      "points_from_submitted_applications": 0,
+      "points_from_contributed_scholarships": 0,
+      "points_from_created_scholarships_dollar_bonus": 0,
+      "points_from_contributed_scholarships_dollar_bonus": 0
+    }
+  }
