@@ -61,7 +61,9 @@ class ContentCard extends React.Component {
             <div className='ContentCard shadow mb-3'>
                     {!hideImage && image && 
                     <div className='upper-container'>
-                        <Link title={title} to={slug}>
+                        <Link title={title} to={slug}
+                            target="_blank"
+                            rel='noopener noreferrer'>
                             {type === "blog" &&
                             <div className='upper-container-2'>
                                 <img src={image}
@@ -81,7 +83,9 @@ class ContentCard extends React.Component {
                     </div>
                     }
                     <div className='lower-container'>
-                        <Link title={title} to={slug}>
+                        <Link title={title} to={slug}
+                            target="_blank"
+                            rel='noopener noreferrer'>
                             <h3> {title} </h3>
                         </Link>
                         {authorsComponent}

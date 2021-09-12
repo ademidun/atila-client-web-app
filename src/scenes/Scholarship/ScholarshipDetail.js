@@ -13,7 +13,7 @@ import ApplicationsAPI from "../../services/ApplicationsAPI";
 import AtilaPointsPaywallModal from "../../components/AtilaPointsPaywallModal";
 import ScholarshipExtraCriteria from "./ScholarshipExtraCriteria";
 import ScholarshipDeadlineWithTags from "../../components/ScholarshipDeadlineWithTags";
-import { Alert, Button, message, Tag } from 'antd';
+import { Alert, Button, message, Tag, Row, Col } from 'antd';
 import verifiedBadge from '../../components/assets/verified.png';
 import { AtilaDirectApplicationsPopover, BlindApplicationsExplanationMessage, ReferralBonusScholarshipExplanationMessage } from "../../models/Scholarship";
 import ScholarshipFinalists, { UserProfilesCards } from "./ScholarshipFinalists";
@@ -240,7 +240,9 @@ class ScholarshipDetail extends React.Component {
         } else if (!userProfile) {
             applyToScholarshipButton = (<Button type="primary" size="large"
                 disabled={isLoadingApplication}>
-                <Link to={`/register?redirect=${pathname}&applyNow=1`}>
+                <Link to={`/register?redirect=${pathname}&applyNow=1`} 
+                    target="_blank"
+                    rel='noopener noreferrer'>
                     Apply Now
                 </Link>
             </Button>)
@@ -254,7 +256,9 @@ class ScholarshipDetail extends React.Component {
             if (currentUserScholarshipApplication) {
                 applyToScholarshipButton = (
                     <Button type="primary" size="large" disabled={isLoadingApplication}>
-                        <Link to={`/application/${currentUserScholarshipApplication.id}`}>
+                        <Link to={`/application/${currentUserScholarshipApplication.id}`}
+                            target="_blank"
+                            rel='noopener noreferrer'>
                             {currentUserScholarshipApplication.is_submitted ||
                                 isScholarshipDeadlinePassed ? "View Application" : "Continue Application"}
                         </Link>
@@ -271,11 +275,15 @@ class ScholarshipDetail extends React.Component {
                     <hr />
                     <h3>Questions about this scholarship?</h3>
                     Ask on the{' '}
-                    <Link to={scholarship.reddit_url}>
+                    <Link to={scholarship.reddit_url}
+                        target="_blank"
+                        rel='noopener noreferrer'>
                         Reddit post for this scholarship
                     </Link>
                     {' '}on{' '}
-                    <Link to={`https://reddit.com/r/atila`}>
+                    <Link to={`https://reddit.com/r/atila`}
+                        target="_blank"
+                        rel='noopener noreferrer'>
                         r/atila.
                     </Link>
                     <hr />
@@ -336,11 +344,15 @@ class ScholarshipDetail extends React.Component {
                                 &&
                                 <React.Fragment>
 
-                                    <Link to={`/scholarship/edit/${slug}`}>
+                                    <Link to={`/scholarship/edit/${slug}`}
+                                        target="_blank"
+                                        rel='noopener noreferrer'>
                                         Edit Scholarship
                                     </Link><br />
                                     {scholarship.is_atila_direct_application &&
-                                        <Link to={`/scholarship/${scholarship.id}/manage`}>
+                                        <Link to={`/scholarship/${scholarship.id}/manage`}
+                                            target="_blank"
+                                            rel='noopener noreferrer'>
                                             Manage Applications
                                         </Link>
                                     }
@@ -356,8 +368,10 @@ class ScholarshipDetail extends React.Component {
                                         </React.Fragment>}
 
                                         <Button size="large">
-                                            <Link to={`/scholarship/${slug}/questions`}>
-                                                View Application Form
+                                            <Link to={`/scholarship/${slug}/questions`} 
+                                                target="_blank"
+                                                rel='noopener noreferrer'>
+                                                View Application<br/> Form
                                             </Link>
                                         </Button>
 
@@ -389,7 +403,9 @@ class ScholarshipDetail extends React.Component {
                                         }
                                         {form_url &&
                                             <Button size="large" className="mt-3">
-                                                <a href={form_url} target="_blank" rel="noopener noreferrer">
+                                                <a href={form_url} 
+                                                    target="_blank" 
+                                                    rel="noopener noreferrer">
                                                     View Scholarship Application
                                                 </a> <br />
                                             </Button>
@@ -420,7 +436,9 @@ class ScholarshipDetail extends React.Component {
                                     <React.Fragment>
                                         Added by:
                                         <div className="bg-light mb-3 p-1" style={{ width: '500px' }}>
-                                            <Link to={`/profile/${scholarshipUserProfile.username}`} >
+                                            <Link to={`/profile/${scholarshipUserProfile.username}`} 
+                                                target="_blank"
+                                                rel='noopener noreferrer'>
                                                 <img
                                                     alt="user profile"
                                                     style={{ height: '50px', maxWidth: 'auto' }}
@@ -436,7 +454,9 @@ class ScholarshipDetail extends React.Component {
                                             <div className="mb-3">
                                                 <Button type="primary" size="large" className="mt-3"
                                                     style={{ fontSize: "18px", width: "150px", height: "75px" }}>
-                                                    <Link to={`/scholarship/${slug}/contribute`}>
+                                                    <Link to={`/scholarship/${slug}/contribute`}
+                                                        target="_blank"
+                                                        rel='noopener noreferrer'>
                                                         Contribute
                                                     </Link>
                                                 </Button><br /><br />
@@ -447,10 +467,17 @@ class ScholarshipDetail extends React.Component {
                             </div>
 
                             {contributors && contributors.length > 1 &&
+                                
                                 <div>
                                     <h3 className="text-left">Contributors</h3>
+                                    <Row >
+                                    <Col xs={24} md={40} style={{zoom:0.9}}>
+                                    <div>
                                     <UserProfilesCards userProfiles={contributors} userKey="id" />
-                                </div>
+                                    </div>
+                                    </Col>
+                                    </Row>
+                                </div> 
 
                             }
                             {is_not_available &&
@@ -483,12 +510,16 @@ class ScholarshipDetail extends React.Component {
                         {!userProfile &&
                             <React.Fragment>
                                 <Button type="primary" className="font-size-larger col-12 mt-1" style={{ fontSize: "25px" }}>
-                                    <Link to="/register">
+                                    <Link to="/register"
+                                        target="_blank"
+                                        rel='noopener noreferrer'>
                                         Register for Free to see more Scholarships
                                     </Link>
                                 </Button>
                                 <Button type="primary" className="font-size-larger col-12 my-3" style={{ fontSize: "25px" }}>
-                                    <Link to="/start">
+                                    <Link to="/start"
+                                        target="_blank"
+                                        rel='noopener noreferrer'>
                                         Start a Scholarship
                                     </Link>
                                 </Button>
