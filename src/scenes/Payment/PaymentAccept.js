@@ -5,7 +5,6 @@ import Loading from "../../components/Loading";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import ApplicationsAPI from "../../services/ApplicationsAPI";
-import { prettifyKeys} from "../../services/utils";
 import {Link} from "react-router-dom";
 import InlineEditor from "@ckeditor/ckeditor5-build-inline";
 import CKEditor from "@ckeditor/ckeditor5-react";
@@ -17,7 +16,6 @@ import "../../index.scss";
 
 const { Step } = Steps;
 
-const ALL_PAYMENT_ACCEPTANCE_STEPS = ["verify_email", "security_question", "proof_of_enrolment", "thank_you_email", "accept_payment"];
 let autoSaveTimeoutId;
 
 class PaymentAccept extends React.Component {
@@ -613,18 +611,65 @@ class PaymentAccept extends React.Component {
         }
 
         if (!application) {
+            if (loading) {
+                return (
+                    <div className="container mt-5">
+                        <div className="card shadow p-3">
+                            <Loading title={loading} />
+                        </div>
+                    </div>
+                )
+            } else {
+                return (
+                    <div className="container mt-5">
+                        <div className="card shadow p-3">
+                            <h1>You are not authorized to view this page.</h1>
+                        </div>
+                    </div>
+                )
+            }
+        }
+
+        if (application.user.user !== userProfile.user) {
             return (
                 <div className="container mt-5">
                     <div className="card shadow p-3">
-                        {loading &&
-                        <Loading title={loading} />
-                        }
+                        <h1>You are not authorized to view this page.</h1>
                     </div>
                 </div>
             )
         }
 
         let currentPaymentAcceptanceStepIndex = this.getCurrentStep();
+
+        let paymentAcceptanceSteps = [
+            {
+                slug: 'verify_email',
+                title: 'Verify Email',
+                render: this.verifyEmailStep,
+            },
+            {
+                slug: 'security_question',
+                title: 'Security Question',
+                render: this.securityQuestionStep,
+            },
+            {
+                slug: 'proof_of_enrolment',
+                title: 'Proof of Enrolment',
+                render: this.proofOfEnrolmentStep,
+            },
+            {
+                slug: 'thank_you_email',
+                title: 'Thank You Email',
+                render: this.thankYouEmailStep,
+            },
+            {
+                slug: 'accept_payment',
+                title: 'Accept Payment',
+                render: this.acceptPaymentStep,
+            }
+        ]
+
         return (
             <div className="container mt-5">
                 <div className="card shadow p-3">
@@ -632,10 +677,9 @@ class PaymentAccept extends React.Component {
                     <Loading title={loading} />
                     }
                     <Steps type="navigation"
-                        current={ALL_PAYMENT_ACCEPTANCE_STEPS
-                            .findIndex(step => step === ALL_PAYMENT_ACCEPTANCE_STEPS[currentPaymentAcceptanceStepIndex])}>
-                        {ALL_PAYMENT_ACCEPTANCE_STEPS.map(paymentAcceptanceStep => (
-                            <Step key={paymentAcceptanceStep} title={prettifyKeys(paymentAcceptanceStep)} />
+                        current={currentPaymentAcceptanceStepIndex}>
+                        {paymentAcceptanceSteps.map(step => (
+                            <Step key={step.slug} title={step.title} />
                         ))}
                     </Steps>
                     <div>
@@ -643,11 +687,7 @@ class PaymentAccept extends React.Component {
                             <Link to={`/scholarship/${scholarship.slug}`}> {scholarship.name}</Link>
                         </h1>
 
-                        {(currentPaymentAcceptanceStepIndex === 0) && this.verifyEmailStep()}
-                        {(currentPaymentAcceptanceStepIndex === 1) && this.securityQuestionStep()}
-                        {(currentPaymentAcceptanceStepIndex === 2) && this.proofOfEnrolmentStep()}
-                        {(currentPaymentAcceptanceStepIndex === 3) && this.thankYouEmailStep()}
-                        {(currentPaymentAcceptanceStepIndex === 4) && this.acceptPaymentStep()}
+                        {paymentAcceptanceSteps[currentPaymentAcceptanceStepIndex].render()}
 
                     </div>
                 </div>
