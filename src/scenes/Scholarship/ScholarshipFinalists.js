@@ -198,9 +198,7 @@ export function UserProfilesCards({userProfiles, userKey="username"}) {
                     
                     <div className='userUpper-container'>
                         <div className='userImage-container'>
-                            <Link to={`/profile/${user.username}`} 
-                                target="_blank"
-                                rel='noopener noreferrer'>
+                            <Link to={`/profile/${user.username}`}>
                             <img id="avatar-pic"
                                 alt="user profile"
                                 src={user.profile_pic_url} />
@@ -218,9 +216,7 @@ export function UserProfilesCards({userProfiles, userKey="username"}) {
                         </div>
                         :
                         <div className='userLower-container'>
-                        <Link to={`/profile/${user.username}`} 
-                            target="_blank"
-                            rel='noopener noreferrer'>
+                        <Link to={`/profile/${user.username}`}>
                         {user.first_name}
                         <br/> {user.last_name} 
                         <br/>{' '}{fundingAmount}
