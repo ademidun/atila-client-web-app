@@ -357,9 +357,7 @@ class ScholarshipDetail extends React.Component {
                                         </React.Fragment>}
 
                                         <Button size="large">
-                                            <Link to={`/scholarship/${slug}/questions`} 
-                                                target="_blank"
-                                                rel='noopener noreferrer'>
+                                            <Link to={`/scholarship/${slug}/questions`}>
                                                 View Application<br/> Form
                                             </Link>
                                         </Button>
@@ -454,7 +452,7 @@ class ScholarshipDetail extends React.Component {
                                 <div>
                                     <h3 className="text-left">Contributors</h3>
                                     <Row >
-                                    <Col xs={24} md={40} style={{zoom:0.9}}>
+                                    <Col xs={24} md={40} style={{zoom:1.1}}>
                                     <div>
                                     <UserProfilesCards userProfiles={contributors} userKey="id" />
                                     </div>

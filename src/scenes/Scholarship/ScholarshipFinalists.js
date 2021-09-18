@@ -217,9 +217,8 @@ export function UserProfilesCards({userProfiles, userKey="username"}) {
                         :
                         <div className='userLower-container'>
                         <Link to={`/profile/${user.username}`}>
-                        {user.first_name}
-                        <br/> {user.last_name} 
-                        <br/>{' '}{fundingAmount}
+                        {user.first_name}{' '}{user.last_name} 
+                        {fundingAmount}
                         </Link>
                         </div>
                     }
