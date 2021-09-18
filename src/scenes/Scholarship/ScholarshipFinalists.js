@@ -93,7 +93,9 @@ class ScholarshipFinalists extends React.Component {
                             {title}
                         </React.Fragment>
                         :
-                        <Link to={finalistsPathname}>
+                        <Link to={finalistsPathname}
+                            target="_blank"
+                            rel='noopener noreferrer'>
                             {title}
                         </Link>
                     }
@@ -155,7 +157,9 @@ export function ScholarshipFinalistEssays({ title, scholarshipFinalistEssays, is
         // Get all the scholarship titles as link components
         let scholarshipTitles = scholarships.map((scholarship, idx) => (
             <>
-                <Link to={`/scholarship/${scholarship.slug}`}>
+                <Link to={`/scholarship/${scholarship.slug}`}
+                    target="_blank"
+                    rel='noopener noreferrer'>
                     {scholarship.name}
                 </Link>
                 {idx !== scholarships.length-1 && ', '} {/* Don't put a separator on final title */}
@@ -194,7 +198,7 @@ export function UserProfilesCards({userProfiles, userKey="username"}) {
                     
                     <div className='userUpper-container'>
                         <div className='userImage-container'>
-                            <Link to={`/profile/${user.username}`} >
+                            <Link to={`/profile/${user.username}`}>
                             <img id="avatar-pic"
                                 alt="user profile"
                                 src={user.profile_pic_url} />
@@ -212,10 +216,9 @@ export function UserProfilesCards({userProfiles, userKey="username"}) {
                         </div>
                         :
                         <div className='userLower-container'>
-                        <Link to={`/profile/${user.username}`} >
-                        {user.first_name}
-                        <br/> {user.last_name} 
-                        <br/>{' '}{fundingAmount}
+                        <Link to={`/profile/${user.username}`}>
+                        {user.first_name}{' '}{user.last_name} 
+                        {fundingAmount}
                         </Link>
                         </div>
                     }
@@ -224,15 +227,11 @@ export function UserProfilesCards({userProfiles, userKey="username"}) {
             );
 
             return (
-                // Use zoom:0.8 as a temporary workaround so that that ScholarshipFinalists doesn't
-                // take up too much space.
                 
-                <Col xs={24} md={4} style={{zoom:0.9}} key={user[userKey]}>
                     <div>
                         <br/><br/>
                         {userDisplay}
-                    </div>
-                </Col>)
+                    </div>)
             })}
 
     </Row>

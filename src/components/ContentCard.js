@@ -38,7 +38,7 @@ class ContentCard extends React.Component {
         let textIsTruncated = false;
 
         if (description) {
-            descriptionText = showPreview ? description.substring(0, 240) : `${description.substring(0, 100)}`;
+            descriptionText = showPreview ? description.substring(0, 240) : `${description.substring(0, 75)}`;
             textIsTruncated = description.length > descriptionText.length;
             if (textIsTruncated) {
                 descriptionText += '...'

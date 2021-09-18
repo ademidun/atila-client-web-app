@@ -1,8 +1,9 @@
 import $ from 'jquery';
-import {toastNotify} from "../models/Utils";
+import {toastNotify} from "../models/Utils.js";
 import {MAX_BLOG_PAGE_VIEWS, MAX_ESSAY_PAGE_VIEWS, MAX_SCHOLARSHIP_PAGE_VIEWS} from "../models/Constants";
-import moment from "moment";
+import {moment} from "moment";
 import { message } from 'antd';
+/*import { element } from 'prop-types';*/
 
 export function makeXHRRequestAsPromise (method, url, data) {
     return new Promise(function (resolve, reject) {
@@ -561,6 +562,16 @@ export function createTableOfContents(parentSelector="") {
 
     return tableOfContents;
 
+}
+
+export function openAllLinksInNewTab(parentSelector=""){
+    const anchorSelectors = `${parentSelector} a`
+
+    $(anchorSelectors).each(function() {
+        let element = $(this);
+        element.attr("target", "_blank")
+        element.attr("rel", "noopener noreferrer")
+    });
 }
 
 /**

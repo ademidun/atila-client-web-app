@@ -14,7 +14,8 @@ import {
     genericItemTransform,
     guestPageViewsIncrement,
     scrollToElement,
-    toTitleCase
+    toTitleCase,
+    openAllLinksInNewTab
 } from "../../services/utils";
 import {Button} from "antd";
 import AtilaPointsPaywallModal from "../AtilaPointsPaywallModal";
@@ -72,6 +73,7 @@ class ContentDetail extends React.Component {
 
                     addStyleClasstoTables(".content-detail");
                     createTableOfContents(".content-detail");
+                    openAllLinksInNewTab(".content-detail");
                     if (location && location.hash) {
                         scrollToElement(location.hash);
                     }
