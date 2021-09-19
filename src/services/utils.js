@@ -1,7 +1,7 @@
 import $ from 'jquery';
-import {toastNotify} from "../models/Utils.js";
+import {toastNotify} from "../models/Utils";
 import {MAX_BLOG_PAGE_VIEWS, MAX_ESSAY_PAGE_VIEWS, MAX_SCHOLARSHIP_PAGE_VIEWS} from "../models/Constants";
-import {moment} from "moment";
+import moment from "moment";
 import { message } from 'antd';
 /*import { element } from 'prop-types';*/
 
@@ -544,7 +544,7 @@ export function createTableOfContents(parentSelector="") {
     });
 
     let tableOfContents =
-        "<nav role='navigation' class='table-of-contents'>" +
+        "<nav role='navigation' class='table-of-contents shadow-bottom-inset'>" +
         "<h2>Table of Contents:</h2>" +
         "<ul>";
 
@@ -569,8 +569,10 @@ export function openAllLinksInNewTab(parentSelector=""){
 
     $(anchorSelectors).each(function() {
         let element = $(this);
-        element.attr("target", "_blank")
-        element.attr("rel", "noopener noreferrer")
+        if (element.href && !element.href.startsWith("/")) { //don't open relative links e.g. table of contents links or <Link> components in a new tab
+            element.attr("target", "_blank")
+            element.attr("rel", "noopener noreferrer")
+        }
     });
 }
 

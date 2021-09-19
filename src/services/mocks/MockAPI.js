@@ -10,6 +10,7 @@ import SchulichLeaderScholarship from './Scholarship/SchulichLeaderScholarship.j
 import BlogPreviewList1 from './Blog/BlogPreviewList1.json';
 import EmailSignupBlogPost from './Blog/EmailSignupBlogPost.json';
 import WordCountBlogPost from './Blog/WordCountBlogPost.json';
+import ScholarshipGuideBlogPost from './Blog/ScholarshipGuideBlogPost.json';
 import AllFinalists from './Application/AllFinalists.json';
 import NotionService from '../NotionService';
 
@@ -21,6 +22,7 @@ import UserProfileReferrals from './UserProfile/UserProfileReferrals.json';
 import UserProfileApplications from './UserProfile/UserProfileApplications.json';
 
 import EssaysPage1 from './Essay/EssaysPage1.json';
+import AnalyticsService from '../AnalyticsService';
 
 var axios = require("axios");
 var MockAdapter = require("axios-mock-adapter");
@@ -57,6 +59,8 @@ export class MockAPI {
         var mock = new MockAdapter(axios);
         
         mock.onAny(ContactsAPI.contactsApiQueryUrl).reply(200, ContactsQuery1);
+
+        mock.onAny(AnalyticsService.pageViewsUrl).reply(200, {});
 
         mock.onAny(`${Environment.apiUrl}/scholarship-preview/?page=1`).reply(function (config) {
             // `config` is the axios config and contains things like the url
@@ -102,7 +106,7 @@ export class MockAPI {
         mock.onGet(`${Environment.apiUrl}/blog/blog/llmercer/how-we-designed-the-atila-black-and-indigenous-scholarship-graphic/`).reply(200, {blog: BlogPreviewList1.results[0]});
         mock.onGet(`${Environment.apiUrl}/blog/blog/alona/use-your-personal-email-preferably-gmail-not-your-school-email-when-signing-up-for-an-account-on-atila/`).reply(200, EmailSignupBlogPost);
         mock.onGet(`${Environment.apiUrl}/blog/blog/ericwang451/whats-the-word-count-analyzing-the-correlation-between-essay-length-and-quality/`).reply(200, WordCountBlogPost);
-        
+        mock.onGet(`${Environment.apiUrl}/blog/blog/tomiwa/atila-scholarship-guide/`).reply(200, ScholarshipGuideBlogPost)
         mock.onGet(`${Environment.apiUrl}/application/applications/all-finalists/?page=1/`).reply(200, AllFinalists);
 
         let essayApiUrl = `${Environment.apiUrl}/essay`

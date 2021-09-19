@@ -35,12 +35,14 @@ class ContentCard extends React.Component {
         const { title, description, image, slug, type, user, contributors } = content;
 
         let descriptionText = description;
-        let textIsTruncated = false;
+
+        const PREVIEW_MINIMUM = 75;
+        const PREVIEW_MAXIMUM = 240;
+        const showPreviewButton = description?.length > PREVIEW_MINIMUM;
 
         if (description) {
-            descriptionText = showPreview ? description.substring(0, 240) : `${description.substring(0, 75)}`;
-            textIsTruncated = description.length > descriptionText.length;
-            if (textIsTruncated) {
+            descriptionText = showPreview ? description.substring(0, PREVIEW_MAXIMUM) : `${description.substring(0, PREVIEW_MINIMUM)}`;
+            if (description.length > descriptionText.length) {
                 descriptionText += '...'
             }
         }
@@ -86,12 +88,12 @@ class ContentCard extends React.Component {
                         </Link>
                         {authorsComponent}
                         <p className="body"> 
-                            {descriptionText} <br/>
-                            
-                            {textIsTruncated && 
-                            <Button onClick={this.togglePreview}>{showPreview ? "Show Less" : "Show More"}</Button>
-                            }
+                            {descriptionText}
                         </p>
+                            
+                        {showPreviewButton && 
+                        <Button onClick={this.togglePreview}>{showPreview ? "Show Less" : "Show More"}</Button>
+                        }
                         
                     </div>
             </div>
