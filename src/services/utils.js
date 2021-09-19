@@ -544,7 +544,7 @@ export function createTableOfContents(parentSelector="") {
     });
 
     let tableOfContents =
-        "<nav role='navigation' class='table-of-contents'>" +
+        "<nav role='navigation' class='table-of-contents shadow-bottom-inset'>" +
         "<h2>Table of Contents:</h2>" +
         "<ul>";
 

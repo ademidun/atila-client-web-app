@@ -11,8 +11,11 @@
     }
 
     .body {
-        overflow-x: scroll;
-        height: 150px;
+        overflow: auto;
+        height: 175px;
+        padding: 15px;
+        white-space: pre-line;
+        text-align: left;
     }
     
 }
