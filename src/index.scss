@@ -323,6 +323,11 @@ label {
   &-bottom-inset {
     box-shadow: inset 0px -15px 10px -15px #111;
   }
+
+  // not currently used, but in case it' needed, the logic is here
+  &-bottom-inset-hover:hover {
+    box-shadow: inset 0px -15px 10px -15px #111;
+  }
   
   &-left {
     box-shadow: -15px 0px 10px -15px #111;    

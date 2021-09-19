@@ -569,8 +569,10 @@ export function openAllLinksInNewTab(parentSelector=""){
 
     $(anchorSelectors).each(function() {
         let element = $(this);
-        element.attr("target", "_blank")
-        element.attr("rel", "noopener noreferrer")
+        if (element.href && !element.href.startsWith("/")) { //don't open relative links e.g. table of contents links or <Link> components in a new tab
+            element.attr("target", "_blank")
+            element.attr("rel", "noopener noreferrer")
+        }
     });
 }
 
