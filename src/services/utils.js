@@ -1,7 +1,7 @@
 import $ from 'jquery';
-import {toastNotify} from "../models/Utils.js";
+import {toastNotify} from "../models/Utils";
 import {MAX_BLOG_PAGE_VIEWS, MAX_ESSAY_PAGE_VIEWS, MAX_SCHOLARSHIP_PAGE_VIEWS} from "../models/Constants";
-import {moment} from "moment";
+import moment from "moment";
 import { message } from 'antd';
 /*import { element } from 'prop-types';*/
 

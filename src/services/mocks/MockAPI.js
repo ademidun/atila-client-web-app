@@ -21,6 +21,7 @@ import UserProfileReferrals from './UserProfile/UserProfileReferrals.json';
 import UserProfileApplications from './UserProfile/UserProfileApplications.json';
 
 import EssaysPage1 from './Essay/EssaysPage1.json';
+import AnalyticsService from '../AnalyticsService';
 
 var axios = require("axios");
 var MockAdapter = require("axios-mock-adapter");
@@ -57,6 +58,8 @@ export class MockAPI {
         var mock = new MockAdapter(axios);
         
         mock.onAny(ContactsAPI.contactsApiQueryUrl).reply(200, ContactsQuery1);
+
+        mock.onAny(AnalyticsService.pageViewsUrl).reply(200, {});
 
         mock.onAny(`${Environment.apiUrl}/scholarship-preview/?page=1`).reply(function (config) {
             // `config` is the axios config and contains things like the url

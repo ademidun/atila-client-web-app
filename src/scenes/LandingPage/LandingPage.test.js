@@ -1,5 +1,6 @@
 import React from 'react';
 import { configure, mount } from 'enzyme';
+import {Provider} from "react-redux";
 import configureStore from "redux-mock-store";
 import Banner from './Banner';
 import LandingPage from './LandingPage';
@@ -13,6 +14,7 @@ configure({ adapter: new Adapter() });
 const mockStore = configureStore();
 
 const store = mockStore(initialReduxState);
+const storeLoggedIn = mockStore(initialReduxStateLoggedIn);
 
 jest.mock('../../services/ScholarshipsAPI');
 ScholarshipsAPI.getDueSoon.mockImplementation(() => {
@@ -25,7 +27,20 @@ describe('<LandingPage />', () => {
     it('renders without crashing', () => {
         const wrapper = mount(
             <MemoryRouter>
-                <LandingPage store={store} />
+                <Provider store={store}>
+                    <LandingPage />
+                </Provider>
+            </MemoryRouter>
+        );
+        expect(wrapper).toBeTruthy();
+    });
+
+    it('renders without crashing - Logged In', () => {
+        const wrapper = mount(
+            <MemoryRouter>
+                <Provider store={storeLoggedIn}>
+                    <LandingPage />
+                </Provider>
             </MemoryRouter>
         );
         expect(wrapper).toBeTruthy();

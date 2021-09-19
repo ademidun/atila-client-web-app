@@ -1,6 +1,5 @@
 import React from 'react';
 import {mount} from 'enzyme';
-import { MemoryRouter } from 'react-router';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 
