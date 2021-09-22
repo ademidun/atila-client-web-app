@@ -739,7 +739,7 @@ class ScholarshipAddEdit extends React.Component{
         ];
 
         if (!is_atila_direct_application) {
-            scholarshipEditPages = scholarshipEditPages.slice(0,3)
+            scholarshipEditPages = scholarshipEditPages.slice(0,2)
         }
 
         const scholarshipSteps = (
