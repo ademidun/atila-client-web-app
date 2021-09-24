@@ -13,11 +13,11 @@ import FileInput from "../../components/Form/FileInput";
 import moment from "moment";
 
 import "../../index.scss";
+import { NOT_LOGGED_IN_PAYMENT_ACCEPT_ERROR, UNAUTHORIZED_TO_VIEW_PAGE } from '../../models/ConstantsErrors';
 
 const { Step } = Steps;
 
 let autoSaveTimeoutId;
-
 class PaymentAccept extends React.Component {
 
     constructor(props) {
@@ -604,7 +604,7 @@ class PaymentAccept extends React.Component {
             return (
                 <div className="container mt-5">
                     <div className="card shadow p-3">
-                        <h1>You must be logged in to accept scholarship awards</h1>
+                        <h1>{NOT_LOGGED_IN_PAYMENT_ACCEPT_ERROR}</h1>
                     </div>
                 </div>
             )
@@ -623,7 +623,7 @@ class PaymentAccept extends React.Component {
                 return (
                     <div className="container mt-5">
                         <div className="card shadow p-3">
-                            <h1>You are not authorized to view this page.</h1>
+                            <h1>{UNAUTHORIZED_TO_VIEW_PAGE}</h1>
                         </div>
                     </div>
                 )
@@ -634,7 +634,7 @@ class PaymentAccept extends React.Component {
             return (
                 <div className="container mt-5">
                     <div className="card shadow p-3">
-                        <h1>You are not authorized to view this page.</h1>
+                        <h1>{UNAUTHORIZED_TO_VIEW_PAGE}</h1>
                     </div>
                 </div>
             )

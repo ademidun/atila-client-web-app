@@ -12,3 +12,8 @@ Object.defineProperty(window, 'matchMedia', {
         dispatchEvent: jest.fn(),
     })),
 });
+
+jest.mock('react', () => ({
+    ...jest.requireActual('react'),
+    useLayoutEffect: jest.requireActual('react').useEffect,
+}));
