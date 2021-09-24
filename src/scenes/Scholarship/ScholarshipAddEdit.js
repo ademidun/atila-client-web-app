@@ -505,6 +505,7 @@ class ScholarshipAddEdit extends React.Component{
                 }
                 const awards = res.data.awards;
                 this.setState({isAddScholarshipMode: false, awards});
+                this.setState({scholarshipPostError: null});
             })
             .catch(err=> {
                 console.log({err});
