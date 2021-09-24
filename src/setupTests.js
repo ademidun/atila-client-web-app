@@ -17,3 +17,5 @@ jest.mock('react', () => ({
     ...jest.requireActual('react'),
     useLayoutEffect: jest.requireActual('react').useEffect,
 }));
+
+localStorage.setItem('ATILA_MOCK_API_CALLS', "true");

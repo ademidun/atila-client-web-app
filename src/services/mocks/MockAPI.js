@@ -11,6 +11,7 @@ import BlogPreviewList1 from './Blog/BlogPreviewList1.json';
 import EmailSignupBlogPost from './Blog/EmailSignupBlogPost.json';
 import WordCountBlogPost from './Blog/WordCountBlogPost.json';
 import AllFinalists from './Application/AllFinalists.json';
+import ApplicationFinalistSTEM from './Application/ApplicationFinalistSTEM.json';
 import NotionService from '../NotionService';
 
 import UserProfileTomiwa from './UserProfile/UserProfileTomiwa.json';
@@ -21,6 +22,7 @@ import UserProfileReferrals from './UserProfile/UserProfileReferrals.json';
 import UserProfileApplications from './UserProfile/UserProfileApplications.json';
 
 import EssaysPage1 from './Essay/EssaysPage1.json';
+import ApplicationsAPI from '../ApplicationsAPI';
 
 var axios = require("axios");
 var MockAdapter = require("axios-mock-adapter");
@@ -28,10 +30,10 @@ var MockAdapter = require("axios-mock-adapter");
 export class MockAPI {
 
     static ATILA_MOCK_API_CALLS = "ATILA_MOCK_API_CALLS";
-    static initializeMocks = () => {
+
+    constructor() {
 
         const atilaMockApiCallsLocalStorageValue = localStorage.getItem(MockAPI.ATILA_MOCK_API_CALLS);
-
 
         if (Environment.name === "prod") {
             if (atilaMockApiCallsLocalStorageValue === "true") {
@@ -52,13 +54,15 @@ export class MockAPI {
         else if (Environment.name === "dev" && atilaMockApiCallsLocalStorageValue !== "true") {
             return
         }
+        this.mock = new MockAdapter(axios);
         console.log("MockAPI is being used");
+    }
 
-        var mock = new MockAdapter(axios);
-        
-        mock.onAny(ContactsAPI.contactsApiQueryUrl).reply(200, ContactsQuery1);
+    initializeMocks = () => {
 
-        mock.onAny(`${Environment.apiUrl}/scholarship-preview/?page=1`).reply(function (config) {
+        this.mock.onAny(ContactsAPI.contactsApiQueryUrl).reply(200, ContactsQuery1);
+
+        this.mock.onAny(`${Environment.apiUrl}/scholarship-preview/?page=1`).reply(function (config) {
             // `config` is the axios config and contains things like the url
           
             // return an array in the form of [status, data, headers]
@@ -80,7 +84,7 @@ export class MockAPI {
         let scholarshipSlugUrl = `${Environment.apiUrl}/scholarship-slug`;
         scholarshipSlugUrl = new RegExp(`${scholarshipSlugUrl}/.+`);
 
-        mock.onGet(scholarshipSlugUrl).reply(function (config) {
+        this.mock.onGet(scholarshipSlugUrl).reply(function (config) {
 
             let responseData = MendingTheChasmScholarship;
 
@@ -96,27 +100,28 @@ export class MockAPI {
 
         let relatedBlogPostsUrl = `${Environment.apiUrl}/blog/blog-posts`;
         relatedBlogPostsUrl = new RegExp(`${relatedBlogPostsUrl}/.+/related/`);
-        mock.onGet(relatedBlogPostsUrl).reply(200, BlogPreviewList1);
+        this.mock.onGet(relatedBlogPostsUrl).reply(200, BlogPreviewList1);
 
-        mock.onGet(`${Environment.apiUrl}/blog/blog-posts/?page=1`).reply(200, BlogPreviewList1);
-        mock.onGet(`${Environment.apiUrl}/blog/blog/llmercer/how-we-designed-the-atila-black-and-indigenous-scholarship-graphic/`).reply(200, {blog: BlogPreviewList1.results[0]});
-        mock.onGet(`${Environment.apiUrl}/blog/blog/alona/use-your-personal-email-preferably-gmail-not-your-school-email-when-signing-up-for-an-account-on-atila/`).reply(200, EmailSignupBlogPost);
-        mock.onGet(`${Environment.apiUrl}/blog/blog/ericwang451/whats-the-word-count-analyzing-the-correlation-between-essay-length-and-quality/`).reply(200, WordCountBlogPost);
+        this.mock.onGet(`${Environment.apiUrl}/blog/blog-posts/?page=1`).reply(200, BlogPreviewList1);
+        this.mock.onGet(`${Environment.apiUrl}/blog/blog/llmercer/how-we-designed-the-atila-black-and-indigenous-scholarship-graphic/`).reply(200, {blog: BlogPreviewList1.results[0]});
+        this.mock.onGet(`${Environment.apiUrl}/blog/blog/alona/use-your-personal-email-preferably-gmail-not-your-school-email-when-signing-up-for-an-account-on-atila/`).reply(200, EmailSignupBlogPost);
+        this.mock.onGet(`${Environment.apiUrl}/blog/blog/ericwang451/whats-the-word-count-analyzing-the-correlation-between-essay-length-and-quality/`).reply(200, WordCountBlogPost);
         
-        mock.onGet(`${Environment.apiUrl}/application/applications/all-finalists/?page=1/`).reply(200, AllFinalists);
+        this.mock.onGet(`${ApplicationsAPI.applicationsApiUrl}/all-finalists/?page=1/`).reply(200, AllFinalists);
+        this.mockApplicationGet();
 
         let essayApiUrl = `${Environment.apiUrl}/essay`
         let essayListApiUrl = new RegExp(`${essayApiUrl}/essays/\\?page=.+`);
         let essayDetailApiUrl = new RegExp(`${essayApiUrl}/essay/.+/.+/$`);
         let essayRelatedApiUrl = new RegExp(`${essayApiUrl}/essays/.+/related/`);
 
-        mock.onGet(essayListApiUrl).reply(200, EssaysPage1);
-        mock.onGet(essayDetailApiUrl).reply(200, {essay: EssaysPage1.results[1]});
-        mock.onGet(essayRelatedApiUrl).reply(200, EssaysPage1);
+        this.mock.onGet(essayListApiUrl).reply(200, EssaysPage1);
+        this.mock.onGet(essayDetailApiUrl).reply(200, {essay: EssaysPage1.results[1]});
+        this.mock.onGet(essayRelatedApiUrl).reply(200, EssaysPage1);
 
         let notionPageUrl = `${NotionService.pageIdUrl}`;
         notionPageUrl = new RegExp(`${notionPageUrl}/.+`);
-        mock.onGet(notionPageUrl).reply(200, TopScholarNotionPage);
+        this.mock.onGet(notionPageUrl).reply(200, TopScholarNotionPage);
 
         let userProfileAPIBaseUrl = `${Environment.apiUrl}/user-profiles`;
 
@@ -132,11 +137,15 @@ export class MockAPI {
         for (const [userProfileRoute, response] of Object.entries(userProfileContentMap)) {
             let userProfileDetailAttributeUrl = new RegExp(`${userProfileAPIBaseUrl}/.+/${userProfileRoute}/`);
 
-            mock.onGet(userProfileDetailAttributeUrl).reply(200, response);
+            this.mock.onGet(userProfileDetailAttributeUrl).reply(200, response);
         }
         
         let userProfileDetailUrl = new RegExp(`${userProfileAPIBaseUrl}/.+/$`);
-        mock.onGet(userProfileDetailUrl).reply(200, UserProfileTomiwa);
+        this.mock.onGet(userProfileDetailUrl).reply(200, UserProfileTomiwa);
 
+    }
+
+    mockApplicationGet = (application = ApplicationFinalistSTEM, status= 200) => {
+        this.mock.onGet(`${ApplicationsAPI.applicationsApiUrl}/${application.id}/`).reply(status, application);
     }
 }
