@@ -88,6 +88,8 @@ class ScholarshipDetail extends React.Component {
                     if (location && location.hash) {
                         scrollToElement(location.hash);
                     }
+
+                    this.findExistingApplication();
                 });
 
                 const { is_not_available } = scholarship;
@@ -102,8 +104,6 @@ class ScholarshipDetail extends React.Component {
                 */
                 localStorage.setItem("mostRecentlyViewedContentName", scholarship.name);
                 localStorage.setItem("mostRecentlyViewedContentSlug", location.pathname);
-
-                this.findExistingApplication();
 
                 AnalyticsService
                     .savePageView(scholarship, userProfile)
@@ -135,22 +135,13 @@ class ScholarshipDetail extends React.Component {
             });
     };
 
-    /**
-     * If user is logged in, check the database for an existing application. If not logged in, check local storage
-     * for an application.
-    */
-
     findExistingApplication = () => {
         const { userProfile } = this.props;
         const { scholarship } = this.state;
 
-        if (userProfile) {
-            this.findExistingApplicationRemotely(scholarship, userProfile);
+        if(!userProfile || !scholarship.is_atila_direct_application) {
+            return
         }
-
-    };
-
-    findExistingApplicationRemotely = (scholarship, userProfile) => {
 
         this.setState({ isLoadingApplication: true });
         ApplicationsAPI
