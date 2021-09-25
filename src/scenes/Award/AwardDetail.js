@@ -10,7 +10,7 @@ class AwardDetail extends React.Component {
 
         const renderAwards = awards.map((award, index) =>
             (
-                <div>
+                <div key={index}>
                     Award {index+1}: {formatCurrency(Number.parseInt(award.funding_amount), true)}
                 </div>
             )

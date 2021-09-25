@@ -7,6 +7,7 @@ import ScholarshipsPreviewPrairies1 from './Scholarship/ScholarshipsPreviewPrair
 import MendingTheChasmScholarship from './Scholarship/MendingTheChasmScholarship.json';
 import TopScholarNotionPage from './Notion/TopScholar.json';
 import SchulichLeaderScholarship from './Scholarship/SchulichLeaderScholarship.json';
+import AynRandScholarship from './Scholarship/AynRandScholarship.json';
 import BlogPreviewList1 from './Blog/BlogPreviewList1.json';
 import EmailSignupBlogPost from './Blog/EmailSignupBlogPost.json';
 import WordCountBlogPost from './Blog/WordCountBlogPost.json';
@@ -90,6 +91,10 @@ export class MockAPI {
 
             if (config.url.includes("?slug=schulich")) {
                 responseData = SchulichLeaderScholarship;
+            }
+
+            else if (config.url.includes("?slug=ayn-rand")) {
+                responseData = AynRandScholarship;
             }
             return [
               200,
