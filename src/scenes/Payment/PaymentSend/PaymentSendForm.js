@@ -197,12 +197,14 @@ class PaymentSendForm extends React.Component {
             )
         }
 
-        let canFundScholarship = scholarship.id && Number.parseInt(contributorFundingAmount) >= minimumFundingAmount;
+        let canFundScholarship = scholarship.id && Number.parseInt(contributorFundingAmount) >= minimumFundingAmount && agreeSponsorAgreement;
         let canFundScholarshipMessage = `Confirm order (${formatCurrency(totalPaymentAmount)})`;
 
         if (!canFundScholarship) {
             if (!scholarship.id) {
                 canFundScholarshipMessage = "You must save scholarship before you can fund";
+            } else if (!agreeSponsorAgreement) {
+                canFundScholarshipMessage = "You must agree to the Scholarship Sponsors agreement";
             } else {
                 canFundScholarshipMessage = (<React.Fragment>
                     Scholarship funding amount <br/>
@@ -212,6 +214,14 @@ class PaymentSendForm extends React.Component {
             }
         }
 
+        let modalTitle = (
+            <>
+                Scholarship Sponsors Agreement &nbsp;&nbsp;&nbsp;
+                <a href={"/scholarship-sponsor-agreement"} target={"_blank"} rel={"noopener noreferrer"}>
+                    <Button>Open In New Tab</Button>
+                </a>
+            </>
+        )
 
         return (
             <React.Fragment>
@@ -282,8 +292,8 @@ class PaymentSendForm extends React.Component {
                                         <ButtonModal
                                                 showModalText={"Scholarship Sponsor Agreement"}
                                                 showModalButtonType={"link"}
-                                                modalTitle={"Scholarship Sponsor Agreement"}
-                                                modalBody={<ScholarshipSponsorsAgreement />}
+                                                modalTitle={modalTitle}
+                                                modalBody={<ScholarshipSponsorsAgreement openInNewTab={true} />}
                                                 style={{display: 'inline-block'}}
                                                 customFooter={null}
                                         />
