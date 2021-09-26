@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from "prop-types";
 import {CardElement, injectStripe} from 'react-stripe-elements';
-import {Alert, Button, Col, Result, Row} from "antd";
+import {Alert, Button, Col, Result, Row, Modal, Checkbox} from "antd";
 import {Link, withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 import {UserProfilePropType} from "../../../models/UserProfile";
@@ -19,6 +19,8 @@ import {formatCurrency, getErrorMessage} from "../../../services/utils";
 import PaymentAPI from "../../../services/PaymentAPI";
 import {ScholarshipDisableEditMessage, ScholarshipPropType, ScholarshipFundingWillPublishMessage} from "../../../models/Scholarship";
 import Environment from "../../../services/Environment";
+import ScholarshipSponsorsAgreement from "../../../components/ScholarshipSponsorsAgreement";
+import ButtonModal from "../../../components/ButtonModal";
 
 export const PREMIUM_PRICE_BEFORE_TAX = 9;
 export const PREMIUM_PRICE_WITH_TAX = 10.17;
@@ -71,6 +73,7 @@ class PaymentSendForm extends React.Component {
             contributorFundingAmount,
             isScholarshipOwner,
             minimumFundingAmount,
+            agreeSponsorAgreement: false,
         };
 
         this.cardElementRef = React.createRef();
@@ -172,7 +175,7 @@ class PaymentSendForm extends React.Component {
         const { cardHolderName, isResponseLoading, isResponseLoadingMessage,
             isPaymentSuccess, isScholarshipOwner,
             isResponseErrorMessage, totalPaymentAmount, contributorFundingAmount,
-            contributor, minimumFundingAmount} = this.state;
+            contributor, minimumFundingAmount, agreeSponsorAgreement} = this.state;
 
         const isResponseErrorMessageWithContactLink = (<div style={{whiteSpace: "pre-line"}}>
             {isResponseErrorMessage}
@@ -269,6 +272,22 @@ class PaymentSendForm extends React.Component {
                                         }
                                     </Col>
                                 </Row>
+
+                                {isScholarshipOwner && !scholarship.is_funded &&
+                                    <>
+                                        <Checkbox checked={agreeSponsorAgreement}
+                                                  onChange={(e)=>{this.setState({agreeSponsorAgreement: e.target.checked})}}
+                                        />
+                                        {' '}I agree to the{' '}
+                                        <ButtonModal
+                                                showModalText={"Scholarship Sponsor Agreement"}
+                                                showModalButtonType={"link"}
+                                                modalTitle={"Scholarship Sponsor Agreement"}
+                                                modalBody={<ScholarshipSponsorsAgreement />}
+                                                buttonStyle={{float: 'left', display: 'inline-block'}}
+                                        />
+                                    </>
+                                }
 
                                 <Button className="col-12 my-3"
                                         type="primary"
