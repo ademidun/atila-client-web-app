@@ -278,13 +278,13 @@ class PaymentSendForm extends React.Component {
                                         <Checkbox checked={agreeSponsorAgreement}
                                                   onChange={(e)=>{this.setState({agreeSponsorAgreement: e.target.checked})}}
                                         />
-                                        {' '}I agree to the{' '}
+                                        {' '}I agree to the
                                         <ButtonModal
                                                 showModalText={"Scholarship Sponsor Agreement"}
                                                 showModalButtonType={"link"}
                                                 modalTitle={"Scholarship Sponsor Agreement"}
                                                 modalBody={<ScholarshipSponsorsAgreement />}
-                                                buttonStyle={{float: 'left', display: 'inline-block'}}
+                                                style={{display: 'inline-block'}}
                                         />
                                     </>
                                 }

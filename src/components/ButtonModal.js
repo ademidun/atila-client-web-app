@@ -31,7 +31,7 @@ class ButtonModal extends React.Component {
 
     render() {
         const { showModalButtonSize, showModalButtonDanger, showModalButtonType, showModalText, modalTitle, modalBody, submitText,
-             addPopConfirm, popConfirmText, disabled, buttonStyle } = this.props;
+             addPopConfirm, popConfirmText, disabled, style } = this.props;
         const { isModalVisible } = this.state;
 
         const modalFooter = [
@@ -60,13 +60,12 @@ class ButtonModal extends React.Component {
         let footer = addPopConfirm ? modalFooterWithPopConfirm : modalFooter
 
         return(
-            <div>
+            <div style={style}>
                 <Button
                     type={showModalButtonType}
                     danger={showModalButtonDanger}
                     size={showModalButtonSize} onClick={this.showModal}
                     disabled={disabled}
-                    style={buttonStyle}
                 >
                     {showModalText}
                 </Button>
@@ -111,7 +110,7 @@ ButtonModal.propTypes = {
     disabled: PropTypes.bool,
     onShowModal: PropTypes.func,
     onSubmit: PropTypes.func,
-    buttonStyle: PropTypes.shape({}),
+    style: PropTypes.shape({}),
 }
 
 export default ButtonModal;
