@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from "prop-types";
 import {CardElement, injectStripe} from 'react-stripe-elements';
-import {Alert, Button, Col, Result, Row, Modal, Checkbox} from "antd";
+import {Alert, Button, Col, Result, Row, Checkbox} from "antd";
 import {Link, withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 import {UserProfilePropType} from "../../../models/UserProfile";

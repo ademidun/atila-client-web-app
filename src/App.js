@@ -89,6 +89,9 @@ const Values = loadable(() => import("./components/Values"), {
 const TermsConditions = loadable(() => import("./components/TermsConditions"), {
   fallback: <Loading />,
 });
+const ScholarshipSponsorsAgreement = loadable(() => import("./components/ScholarshipSponsorsAgreement"), {
+  fallback: <Loading />,
+})
 const SiteMap = loadable(() => import("./components/SiteMap"), {
   fallback: <Loading />,
 });
@@ -249,6 +252,10 @@ class App extends React.Component {
               <Route
                 path='/terms-and-conditions'
                 component={GoogleAnalyticsTracker(TermsConditions)}
+              />
+              <Route
+                  path='/scholarship-sponsor-agreement'
+                  component={GoogleAnalyticsTracker(ScholarshipSponsorsAgreement)}
               />
               <Route
                 path='/contact'
