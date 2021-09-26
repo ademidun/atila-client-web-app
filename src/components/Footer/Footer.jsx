@@ -156,6 +156,11 @@ function Footer({location, history}) {
                       <Tag color="green">new</Tag>
                     </Link>
                   </div>
+                  <div>
+                    <Link to="/scholarship-sponsor-agreement">
+                      Scholarship Sponsors Agreement
+                    </Link>
+                  </div>
                 </div>
               </Col>
               <Col md={6} sm={12} xs={24}>

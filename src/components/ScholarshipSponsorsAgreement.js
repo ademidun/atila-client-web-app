@@ -4,8 +4,8 @@ import React from "react";
 class ScholarshipSponsorsAgreement extends React.Component {
     render() {
         return (
-            <div className={"container m-3"}>
-                <div className="card p-3">
+            <div className="container mt-5">
+                <div className="card shadow p-3">
                     <h2>Scholarship Sponsor Agreement</h2>
                     <p>This agreement is entered between Atila Inc. (&ldquo;Atila&rdquo;) and any sponsoring Individual or Organization (&ldquo;Sponsor&rdquo;) that creates a scholarship on Atila.</p>
                     <p>By sponsoring a scholarship on Atila, the Sponsor agrees to the terms outlined in this agreement.</p>
