@@ -1,5 +1,5 @@
 // CheckoutForm.js
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from "prop-types";
 import {CardElement, injectStripe} from 'react-stripe-elements';
 import {Alert, Button, Col, Result, Row, Checkbox} from "antd";
@@ -19,7 +19,7 @@ import {formatCurrency, getErrorMessage} from "../../../services/utils";
 import PaymentAPI from "../../../services/PaymentAPI";
 import {ScholarshipDisableEditMessage, ScholarshipPropType, ScholarshipFundingWillPublishMessage} from "../../../models/Scholarship";
 import Environment from "../../../services/Environment";
-import ScholarshipSponsorsAgreement from "../../../components/ScholarshipSponsorsAgreement";
+import ScholarshipSponsorAgreement from "../../../components/ScholarshipSponsorAgreement";
 import ButtonModal from "../../../components/ButtonModal";
 
 export const PREMIUM_PRICE_BEFORE_TAX = 9;
@@ -217,9 +217,9 @@ class PaymentSendForm extends React.Component {
         let modalTitle = (
             <>
                 Scholarship Sponsors Agreement &nbsp;&nbsp;&nbsp;
-                <a href={"/scholarship-sponsor-agreement"} target={"_blank"} rel={"noopener noreferrer"}>
-                    <Button>Open In New Tab</Button>
-                </a>
+                <Link to="/scholarship-sponsor-agreement" target={"_blank"} rel={"noopener noreferrer"}>
+                    <Button>View Agreement In New Tab</Button>
+                </Link>
             </>
         )
 
@@ -283,8 +283,7 @@ class PaymentSendForm extends React.Component {
                                     </Col>
                                 </Row>
 
-                                {isScholarshipOwner && !scholarship.is_funded &&
-                                    <>
+                                <Fragment>
                                         <Checkbox checked={agreeSponsorAgreement}
                                                   onChange={(e)=>{this.setState({agreeSponsorAgreement: e.target.checked})}}
                                         />
@@ -293,12 +292,11 @@ class PaymentSendForm extends React.Component {
                                                 showModalText={"Scholarship Sponsor Agreement"}
                                                 showModalButtonType={"link"}
                                                 modalTitle={modalTitle}
-                                                modalBody={<ScholarshipSponsorsAgreement openInNewTab={true} />}
+                                                modalBody={<ScholarshipSponsorAgreement openInNewTab={true} />}
                                                 style={{display: 'inline-block'}}
                                                 customFooter={null}
                                         />
-                                    </>
-                                }
+                                </Fragment>
 
                                 <Button className="col-12 my-3"
                                         type="primary"

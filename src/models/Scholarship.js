@@ -33,6 +33,26 @@ export const ScholarshipGeneral = {
     deadline: nextMonth,
 };
 
+export const ScholarshipAgreementExample = {
+    id: 201,
+    name: 'Sample Scholarship',
+    description: 'This scholarship is for any student studying at an accredited institution.',
+    amount: '2000',
+    slug: 'sample-scholarship',
+    deadline: nextMonth,
+    awards: [
+        {
+            funding_amount: "1000.00"
+        },
+        {
+            funding_amount: "1000.00"
+        },
+        {
+            funding_amount: "3000.00"
+        },
+    ],
+};
+
 export const ScholarshipEngineering = {
     id: 100,
     owner: UserProfileTest1.user,
