@@ -131,7 +131,10 @@ const { requestSanitizer, responseSanitizer } = LogrocketFuzzySanitizer.setup(pr
 class App extends React.Component {
   constructor(props) {
     super(props);
-    MockAPI.initializeMocks();
+    let mockApi = new MockAPI();
+    if (mockApi.mock) {
+      mockApi.initializeMocks();
+    }
     if (process.env.NODE_ENV !== "test" &&
         !navigator.userAgent.includes('https://github.com/prerender/prerender')) {
       // TODO: mock LogRocket.init and setupLogRocketReact and all uses of LogRocket in Navbar.js and Register.js

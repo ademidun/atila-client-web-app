@@ -67,6 +67,7 @@ class ScholarshipManage extends React.Component {
 
         this.state = {
             scholarship: null,
+            awards: null,
             applications: null,
             unsubmittedApplications: null,
             isLoadingApplications: false,
@@ -97,8 +98,8 @@ class ScholarshipManage extends React.Component {
         this.setState({isLoadingApplications: true});
         ScholarshipsAPI.getApplications(scholarshipID)
             .then(res => {
-                const {scholarship, applications, unsubmitted_applications: unsubmittedApplications} =  res.data;
-                this.setState({scholarship, applications, unsubmittedApplications});
+                const {scholarship, applications, unsubmitted_applications: unsubmittedApplications, awards} =  res.data;
+                this.setState({scholarship, applications, unsubmittedApplications, awards});
                 if (scholarship.is_winner_selected) {
                     this.setState({responseMessage: WINNER_SELECTED_MESSAGE});
                 }
@@ -108,26 +109,26 @@ class ScholarshipManage extends React.Component {
             });
     };
 
-    selectFinalistOrWinner = (application, scholarship) => {
+    selectFinalistOrWinner = (application, scholarship, awardID) => {
 
         if (scholarship.is_finalists_notified) {
-            this.selectWinner(application, scholarship);
+            this.selectWinner(application, scholarship, awardID);
         } else {
-            this.toggleFinalist(application, scholarship);
+            this.toggleFinalist(application);
         }
         
     };
 
-    selectWinner = (application, scholarship) => {
-        const winners = {winners: application.id};
+    selectWinner = (application, scholarship, awardID) => {
+        const winnerID = application.id;
         const scholarshipID = scholarship.id;
         this.setState({isLoadingMessage: "Messaging winners..."});
 
         ScholarshipsAPI
-            .selectWinners(scholarshipID, winners)
+            .selectWinners(scholarshipID, winnerID, awardID)
             .then((res)=>{
-                const {scholarship, applications, unsubmitted_applications: unsubmittedApplications} =  res.data;
-                this.setState({scholarship, applications, unsubmittedApplications});
+                const {scholarship, applications, unsubmitted_applications: unsubmittedApplications, awards} =  res.data;
+                this.setState({scholarship, applications, unsubmittedApplications, awards});
                 this.setState({responseMessage: WINNER_SELECTED_MESSAGE});
             })
             .catch(err => {
@@ -139,15 +140,15 @@ class ScholarshipManage extends React.Component {
             })
     }
 
-    toggleFinalist = (application, scholarship) => {
+    toggleFinalist = (application) => {
         this.setState({isLoadingMessage: "Updating application..."});
 
         ApplicationsAPI
             .selectFinalist(application.id, {is_finalist: !application.is_finalist})
             .then((res)=>{
                 console.log({res});
-                const {scholarship, applications, unsubmitted_applications: unsubmittedApplications} =  res.data;
-                this.setState({scholarship, applications, unsubmittedApplications});
+                const {scholarship, applications, unsubmitted_applications: unsubmittedApplications, awards} =  res.data;
+                this.setState({scholarship, applications, unsubmittedApplications, awards});
             })
             .catch(err => {
                 console.log({err});
@@ -167,8 +168,8 @@ class ScholarshipManage extends React.Component {
         ScholarshipsAPI
             .emailApplicants(scholarshipID, postData)
             .then(res=> {
-                const {scholarship, applications, unsubmitted_applications: unsubmittedApplications} =  res.data;
-                this.setState({scholarship, applications, unsubmittedApplications});
+                const {scholarship, applications, unsubmitted_applications: unsubmittedApplications, awards} =  res.data;
+                this.setState({scholarship, applications, unsubmittedApplications, awards});
                 this.setState({responseMessage: "All applicants have been emailed!"});
             })
             .catch(err=>{
@@ -200,8 +201,8 @@ class ScholarshipManage extends React.Component {
         ScholarshipsAPI
             .unSubmitApplications(scholarshipID, {})
             .then(res=> {
-                const {scholarship, applications, unsubmitted_applications: unsubmittedApplications} =  res.data;
-                this.setState({scholarship, applications, unsubmittedApplications});
+                const {scholarship, applications, unsubmitted_applications: unsubmittedApplications, awards} =  res.data;
+                this.setState({scholarship, applications, unsubmittedApplications, awards});
                 this.setState({responseMessage: "All applications have been unsubmitted."})
             })
             .catch(err=>{
@@ -246,10 +247,10 @@ class ScholarshipManage extends React.Component {
         ScholarshipsAPI
             .assignReviewers(scholarship.id, reviewersPerApplication)
             .then(res=> {
-                const {scholarship, applications, unsubmitted_applications: unsubmittedApplications} =  res.data;
+                const {scholarship, applications, unsubmitted_applications: unsubmittedApplications, awards} =  res.data;
                 const responseMessage = `Scholarship reviewers have been assigned.`;
 
-                this.setState({scholarship, applications, unsubmittedApplications, responseMessage});
+                this.setState({scholarship, applications, unsubmittedApplications, awards, responseMessage});
             })
             .catch(err=>{
                 console.log({err});
@@ -277,10 +278,10 @@ class ScholarshipManage extends React.Component {
             ApplicationsAPI
                 .assignReviewer(application.id, assignReviewerCurrentUser.user)
                 .then(res => {
-                    const {scholarship, applications, unsubmitted_applications: unsubmittedApplications} = res.data;
+                    const {scholarship, applications, unsubmitted_applications: unsubmittedApplications, awards} = res.data;
                     const responseMessage = `Reviewer has been assigned.`;
 
-                    this.setState({scholarship, applications, unsubmittedApplications, responseMessage});
+                    this.setState({scholarship, applications, unsubmittedApplications, awards, responseMessage});
                 })
                 .catch(err => {
                     console.log({err});
@@ -304,10 +305,10 @@ class ScholarshipManage extends React.Component {
         ScholarshipsAPI
             .notifyApplicantsFinalistsSelected(scholarship.id, )
             .then(res=> {
-                const {scholarship, applications, unsubmitted_applications: unsubmittedApplications} =  res.data;
+                const {scholarship, applications, unsubmitted_applications: unsubmittedApplications, awards} =  res.data;
                 const responseMessage = `Scholarship finalists and non-finalists have been notified.`;
 
-                this.setState({scholarship, applications, unsubmittedApplications, responseMessage});
+                this.setState({scholarship, applications, unsubmittedApplications, awards, responseMessage});
             })
             .catch(err=>{
                 console.log({err});
@@ -372,7 +373,7 @@ class ScholarshipManage extends React.Component {
 
     render() {
         const { userProfile } = this.props;
-        const { scholarship, applications, isLoadingApplications,
+        const { scholarship, applications, awards, isLoadingApplications,
             unsubmittedApplications, responseMessage, applicationTypeToEmail,
              reviewersPerApplication, isLoadingMessage, emailSubject, emailBody, invitedCollaborator } = this.state;
 
@@ -628,6 +629,7 @@ class ScholarshipManage extends React.Component {
                 {scholarship.is_blind_applications && <BlindApplicationsExplanationMessage />}
                 <ApplicationsTable applications={allApplications}
                                    scholarship={scholarship}
+                                   awards={awards}
                                    selectFinalistOrWinner={this.selectFinalistOrWinner}
                                    isScholarshipOwner={isScholarshipOwner}
                                    assignReviewerButton={this.assignReviewerButton}

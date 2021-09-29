@@ -574,6 +574,11 @@ class ApplicationDetail extends  React.Component{
 
         if (!isOwnerOfApplication) {
             applicationScoreContent = (<div className="mb-3">
+                <h3 className="text-center">
+                    <Link to={`/scholarship/${scholarship.id}/manage`}> 
+                        View all applications
+                    </Link>
+                </h3>
                 <p>
                     Give an application a score between 0-10 to help you rank the applications.<br />
                     You can also add some notes to the application.<br />
@@ -597,10 +602,7 @@ class ApplicationDetail extends  React.Component{
                         onChange={event => this.updateApplicationScore(event, "notes")}
                         rows="5"
                 />
-                <p>Your score and notes are automatically saved</p><br/>
-                <Link to={`/scholarship/${scholarship.id}/manage`}> 
-                    View all applications
-                </Link>
+                <p className="text-muted">Your score and notes are automatically saved</p><br/>
             </div>);
         }
 

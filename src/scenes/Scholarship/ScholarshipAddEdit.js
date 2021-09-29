@@ -4,7 +4,13 @@ import $ from 'jquery';
 import FormDynamic from "../../components/Form/FormDynamic";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import {connect} from "react-redux";
-import {displayLocalTimeZone, nestedFieldUpdate, prettifyKeys, slugify, transformLocation} from "../../services/utils";
+import {
+    displayLocalTimeZone,
+    nestedFieldUpdate,
+    prettifyKeys,
+    slugify,
+    transformLocation
+} from "../../services/utils";
 import Loading from "../../components/Loading";
 import {MAJORS_LIST, SCHOOLS_LIST} from "../../models/ConstantsForm";
 import {scholarshipUserProfileSharedFormConfigs, toastNotify} from "../../models/Utils";
@@ -15,10 +21,11 @@ import {
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Link} from "react-router-dom";
-import {Steps, Tag} from "antd";
+import {Steps, Tag, InputNumber, Button} from "antd";
 import ScholarshipQuestionBuilder, {ScholarshipUserProfileQuestionBuilder} from "./ScholarshipQuestionBuilder";
 import PaymentSend from "../Payment/PaymentSend/PaymentSend";
 import Environment from "../../services/Environment";
+import {AwardGeneral} from "../../models/Award";
 const { Step } = Steps;
 
 
@@ -104,18 +111,6 @@ let scholarshipFormConfigsPage1 = [
         placeholder: 'Scholarship Image URL',
         type: 'image',
     },
-    {
-        keyName: 'funding_amount',
-        placeholder: 'Funding Amount 💵',
-        type: 'number',
-    },
-
-    // {
-    //     keyName: 'number_available_scholarships',
-    //     placeholder: 'Number of Available Scholarships',
-    //     type: 'number',
-    // },
-
     {
         keyName: 'deadline',
         type: 'datepicker',
@@ -222,8 +217,9 @@ class ScholarshipAddEdit extends React.Component{
             scholarshipPostError: null,
             isLoadingScholarship: true,
             errorLoadingScholarship: false,
-            pageNumber: 1,
+            pageNumber: 0,
             locationData: [],
+            awards: [Object.assign({}, AwardGeneral)],
             /**
              * When CkEditor loads for the first time, it calls onChange inside the <CkEditor> component
              * and fires onChange inside ScholarshipAddEdit.updateForm
@@ -278,10 +274,12 @@ class ScholarshipAddEdit extends React.Component{
         ScholarshipsAPI.getSlug(slug)
             .then(res => {
                 const scholarship = ScholarshipsAPI.cleanScholarship(res.data.scholarship);
+                const awards = res.data.awards;
                 if (!scholarship.is_editable) {
                     this.disableScholarshipInputs();
                 }
-                this.setState({ scholarship }, () => {
+                this.setState({ scholarship, awards }, () => {
+                    this.updateFundingAmount()
                     this.initializeLocations();
                 });
             })
@@ -394,13 +392,7 @@ class ScholarshipAddEdit extends React.Component{
             locationData.push(newLocation);
             this.setState({locationData});
 
-            if (autoSaveTimeoutId) {
-                clearTimeout(autoSaveTimeoutId);
-            }
-            autoSaveTimeoutId = setTimeout(() => {
-                // Runs 1 second (1000 ms) after the last change
-                this.autoSaveScholarship();
-            }, 1000);
+            this.autoSaveAfterDelay()
             return;
 
         }
@@ -440,16 +432,20 @@ class ScholarshipAddEdit extends React.Component{
 
     };
 
+    autoSaveAfterDelay = () => {
+        if (autoSaveTimeoutId) {
+            clearTimeout(autoSaveTimeoutId);
+        }
+        autoSaveTimeoutId = setTimeout(() => {
+            // Runs 1 second (1000 ms) after the last change
+            this.autoSaveScholarship();
+        }, 1000);
+    }
+
     updateScholarship = (scholarship, isAutoSaving = true) => {
         this.setState({scholarship}, () => {
             if (isAutoSaving) {
-                if (autoSaveTimeoutId) {
-                    clearTimeout(autoSaveTimeoutId);
-                }
-                autoSaveTimeoutId = setTimeout(() => {
-                    // Runs 1 second (1000 ms) after the last change
-                    this.autoSaveScholarship();
-                }, 1000);
+                this.autoSaveAfterDelay()
             }
         })
     };
@@ -465,8 +461,6 @@ class ScholarshipAddEdit extends React.Component{
         if (!isAddScholarshipMode) {
             this.submitForm({});
         }
-
-
     };
 
     submitForm = (event) => {
@@ -476,7 +470,7 @@ class ScholarshipAddEdit extends React.Component{
         const scholarship = ScholarshipsAPI.cleanScholarship(this.state.scholarship);
         this.setState({scholarship});
 
-        const { isAddScholarshipMode, locationData } = this.state;
+        const { isAddScholarshipMode, locationData, awards } = this.state;
         const { userProfile } = this.props;
 
         if(!userProfile) {
@@ -486,13 +480,13 @@ class ScholarshipAddEdit extends React.Component{
         let postResponsePromise;
 
         if(isAddScholarshipMode) {
-            postResponsePromise = ScholarshipsAPI.create(scholarship,locationData)
+            postResponsePromise = ScholarshipsAPI.create(scholarship,locationData, awards)
         } else {
-            postResponsePromise = ScholarshipsAPI.put(scholarship.id, scholarship, locationData);
+            postResponsePromise = ScholarshipsAPI.put(scholarship.id, scholarship, locationData, awards);
         }
         postResponsePromise
             .then(res => {
-                const savedScholarship = ScholarshipsAPI.cleanScholarship(res.data);
+                const savedScholarship = ScholarshipsAPI.cleanScholarship(res.data.scholarship);
                 if (!savedScholarship.is_editable) {
                     this.disableScholarshipInputs();
                 }
@@ -508,8 +502,9 @@ class ScholarshipAddEdit extends React.Component{
                     </p>);
                     toastNotify(successMessage, 'info', {position: 'bottom-right'});
                 }
-
-                this.setState({isAddScholarshipMode: false});
+                const awards = res.data.awards;
+                this.setState({isAddScholarshipMode: false, awards});
+                this.setState({scholarshipPostError: null});
             })
             .catch(err=> {
                 console.log({err});
@@ -531,10 +526,176 @@ class ScholarshipAddEdit extends React.Component{
         this.setState({locationData});
     };
 
+    basicInfoPage = () => {
+        const { scholarship, scholarshipPostError } = this.state;
+        const { userProfile } = this.props;
+
+        return (
+            <div className="my-3">
+                <FormDynamic model={scholarship}
+                             loggedInUserProfile={userProfile}
+                             inputConfigs={scholarshipFormConfigsPage1}
+                             onUpdateForm={this.updateForm}
+                             formError={scholarshipPostError}
+                             onSubmit={this.submitForm}/>
+                {this.awardsPage()}
+            </div>
+        )
+    }
+
+    eligibilityPage = () => {
+        const { scholarship, locationData, scholarshipPostError } = this.state;
+
+        return (
+            <div className="my-3 scholarship-eligibility-questions">
+                <h6>Leave blank for each criteria that is open to any</h6>
+                {locationData && locationData.length > 0 &&
+                <div>
+                    <h3 >Locations</h3>
+                    <table className="table">
+                        <thead>
+                        <tr>
+                            {['city','province','country'].map(location =>
+                                <th key={location}>{prettifyKeys(location)}</th>)
+                            }
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {locationData.map((locationItem, index) => <tr key={index}>
+                                {['city','province','country'].map(location =>
+                                    <td key={location}>{locationItem[location]}</td>
+                                )}
+                                <td>
+                                    <button className="btn btn-outline-primary"
+                                            onClick={()=> this.removeLocationData(index)}>
+                                        <FontAwesomeIcon icon={faTrash} />
+                                    </button>
+                                </td>
+                            </tr>
+                        )}
+                        </tbody>
+                    </table>
+                </div>
+                }
+                <FormDynamic model={scholarship}
+                             inputConfigs={scholarshipFormConfigsPage2}
+                             onUpdateForm={this.updateForm}
+                             formError={scholarshipPostError}
+                             onSubmit={this.submitForm}
+                />
+
+            </div>)
+    }
+
+    updateFundingAmount = () => {
+        const { awards } = this.state;
+        let scholarship = {...this.state.scholarship}
+
+        let newFundingAmount = 0
+        awards.forEach(award => newFundingAmount += Number.parseInt(award.funding_amount))
+        scholarship.funding_amount = newFundingAmount
+
+        this.setState({scholarship})
+    }
+
+    changeAward = (newValue, index) => {
+        let newAwards = this.state.awards.slice()
+        newAwards[index].funding_amount = newValue
+        this.setState({awards: newAwards}, ()=> {
+            this.updateFundingAmount()
+            this.autoSaveAfterDelay()
+        })
+    }
+
+    removeAward = (index) => {
+        let newAwards = this.state.awards.slice()
+        newAwards.splice(index, 1)
+        this.setState({awards: newAwards}, ()=> {
+            this.updateFundingAmount()
+            this.autoSaveAfterDelay()
+        })
+    }
+
+    addAward = () => {
+        let newAwards = this.state.awards.slice()
+        let newAward = Object.assign({}, AwardGeneral)
+
+        newAwards.push(newAward)
+        this.setState({awards: newAwards}, ()=> {
+            this.updateFundingAmount()
+            this.autoSaveAfterDelay()
+        })
+    }
+
+    awardsPage = () => {
+        // This should be moved into a separate component like AwardAddEdit.
+        const { scholarship, awards } = this.state;
+
+        const renderAwards = awards.map((award, index) => (
+            <div key={index}>
+                Award {index + 1}:{' '}
+                <InputNumber size={"large"}
+                             value={award.funding_amount}
+                             onChange={value => this.changeAward(value, index)}
+                             style={{width: "30%"}}
+                             formatter={value => `$ ${value}`}
+                             keyboard={false}
+                             stringMode={true}
+                />
+
+                {index > 0 &&
+                    <Button danger
+                            onClick={()=>this.removeAward(index)}
+                            style={{float: "right"}}>Remove</Button>
+                }
+                <br />
+                <br />
+            </div>
+        ))
+
+        return (
+            <div className={"my-3"}>
+                <h5>Total Funding Amount: ${scholarship.funding_amount}</h5>
+                <br />
+                {renderAwards}
+                <Button type="primary" onClick={this.addAward} >Add Award</Button>
+            </div>
+        )
+    }
+
+    specificQuestionsPage = () => {
+        const { scholarship } = this.state;
+
+        return (
+            <div className="mt-3 mb-5 scholarship-specific-questions">
+                <h3>User Profile Questions</h3>
+                <ScholarshipUserProfileQuestionBuilder scholarship={scholarship}
+                                                       onUpdate={this.updateForm} />
+                <hr/>
+                <h3>Scholarship Specific Questions</h3>
+                <ScholarshipQuestionBuilder scholarship={scholarship}
+                                            onUpdate={this.updateForm} />
+            </div>
+        )
+    }
+
+    fundingPage = () => {
+        const { scholarship, contributor } = this.state;
+
+        return (
+            <div className="my-3">
+                <PaymentSend scholarship={scholarship}
+                             onFundingComplete={this.onFundingComplete}
+                             contributor={contributor}
+                             contributorFundingAmount={Number.parseInt(scholarship.funding_amount)} />
+            </div>
+        )
+    }
+
     render() {
 
-        const { scholarship, isAddScholarshipMode, scholarshipPostError,
-            isLoadingScholarship, pageNumber, locationData, errorLoadingScholarship, contributor } = this.state;
+        const { scholarship, isAddScholarshipMode, isLoadingScholarship,
+            pageNumber, errorLoadingScholarship } = this.state;
         const { userProfile } = this.props;
 
         if (errorLoadingScholarship) {
@@ -557,27 +718,50 @@ class ScholarshipAddEdit extends React.Component{
         let scholarshipEditPages = [
             {
                 title: 'Basic Info',
+                render: this.basicInfoPage,
             },
+            // {
+            //     title: 'Awards',
+            //     render: this.awardsPage,
+            // },
             {
                 title: 'Eligibility',
+                render: this.eligibilityPage,
             },
             {
                 title: 'Specific Questions',
+                render: this.specificQuestionsPage,
             },
             {
                 title: 'Funding',
+                render: this.fundingPage,
             },
         ];
-        scholarshipEditPages = scholarshipEditPages.slice(0, is_atila_direct_application ? scholarshipEditPages.length : 2);
 
-        const scholarshipSteps = (<Steps current={pageNumber-1} onChange={(current) => this.changePage(current+1)}>
-            { scholarshipEditPages.map(item => (
-                <Step key={item.title} title={item.title} />
-            ))}
-        </Steps>);
+        if (!is_atila_direct_application) {
+            scholarshipEditPages = scholarshipEditPages.slice(0,2)
+        }
+
+        const scholarshipSteps = (
+            <Steps current={pageNumber} onChange={current => this.changePage(current)}>
+                { scholarshipEditPages.map(item => (
+                    <Step key={item.title} title={item.title} />
+                ))}
+            </Steps>);
 
         const title = isAddScholarshipMode ? 'Add Scholarship' : 'Edit Scholarship';
         const helmetTitle = `${title}${scholarship? ": " + scholarship.name : ""}`;
+
+        const navigationButtons = (
+            <div className="my-2" style={{clear: 'both'}}>
+                {pageNumber < scholarshipEditPages.length - 1 &&
+                <button className="btn btn-outline-primary float-right col-md-6"
+                        onClick={() => this.changePage(pageNumber+1)}>Next</button>}
+                {pageNumber > 0 &&
+                <button className="btn btn-outline-primary float-left col-md-6"
+                        onClick={() => this.changePage(pageNumber-1)}>Prev</button>}
+            </div>)
+
         return (
             <div className="ScholarshipAddEdit">
                 <Helmet>
@@ -604,82 +788,10 @@ class ScholarshipAddEdit extends React.Component{
                             </span> Warning, you must be logged in to add a scholarship
                         </h4>
                         }
-                        {pageNumber === 1 &&
-                        <div className="my-3">
-                            <FormDynamic model={scholarship}
-                                         loggedInUserProfile={userProfile}
-                                         inputConfigs={scholarshipFormConfigsPage1}
-                                         onUpdateForm={this.updateForm}
-                                         formError={scholarshipPostError}
-                                         onSubmit={this.submitForm}/>
-                        </div>
-                        }
-                        {pageNumber === 2 &&
-                        <div className="my-3 scholarship-eligibility-questions">
-                            <h6>Leave blank for each criteria that is open to any</h6>
-                                {locationData && locationData.length > 0 &&
-                                <div>
-                                    <h3 >Locations</h3>
-                                    <table className="table">
-                                        <thead>
-                                        <tr>
-                                            {['city','province','country'].map(location =>
-                                                <th key={location}>{prettifyKeys(location)}</th>)
-                                            }
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {locationData.map((locationItem, index) => <tr key={index}>
-                                                {['city','province','country'].map(location =>
-                                                    <td key={location}>{locationItem[location]}</td>
-                                                )}
-                                                <td>
-                                                    <button className="btn btn-outline-primary"
-                                                            onClick={()=> this.removeLocationData(index)}>
-                                                        <FontAwesomeIcon icon={faTrash} />
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        )}
-                                        </tbody>
-                                    </table>
-                                </div>
 
-                                }
-                                <FormDynamic model={scholarship}
-                                             inputConfigs={scholarshipFormConfigsPage2}
-                                             onUpdateForm={this.updateForm}
-                                             formError={scholarshipPostError}
-                                             onSubmit={this.submitForm}
-                                />
+                        {scholarshipEditPages[pageNumber].render()}
 
-                        </div>}
-                        {pageNumber === 3 &&
-                        <div className="mt-3 mb-5 scholarship-specific-questions">
-                            <h3>User Profile Questions</h3>
-                                <ScholarshipUserProfileQuestionBuilder scholarship={scholarship}
-                                                                       onUpdate={this.updateForm} />
-                                <hr/>
-                            <h3>Scholarship Specific Questions</h3>
-                                <ScholarshipQuestionBuilder scholarship={scholarship}
-                                                            onUpdate={this.updateForm} />
-                        </div>}
-                        {pageNumber === 4 &&
-                        <div className="my-3">
-                            <PaymentSend scholarship={scholarship}
-                                         onFundingComplete={this.onFundingComplete}
-                                         contributor={contributor}
-                                         contributorFundingAmount={Number.parseInt(scholarship.funding_amount)} />
-                        </div>
-                        }
-                        <div className="my-2" style={{clear: 'both'}}>
-                            {pageNumber < scholarshipEditPages.length &&
-                            <button className="btn btn-outline-primary float-right col-md-6"
-                                    onClick={() => this.changePage(pageNumber+1)}>Next</button>}
-                            {pageNumber > 1 &&
-                            <button className="btn btn-outline-primary float-left col-md-6"
-                                    onClick={() => this.changePage(pageNumber-1)}>Prev</button>}
-                        </div>
+                        {navigationButtons}
                         <hr/>
 
                         {scholarshipSteps}
@@ -688,11 +800,12 @@ class ScholarshipAddEdit extends React.Component{
 
                         {!isAddScholarshipMode && updatedAtDate }
                         {isAddScholarshipMode &&
-                            <button type="submit"
-                                    className="btn btn-primary col-12 mt-2"
-                                    onClick={this.submitForm}>
+                            <Button onClick={this.submitForm}
+                                    type={"primary"}
+                                    size={"large"}
+                            >
                                 Save
-                            </button>
+                            </Button>
                         }
                         {!scholarship.published && scholarship.is_atila_direct_application &&
                         <p className="text-muted center-block">

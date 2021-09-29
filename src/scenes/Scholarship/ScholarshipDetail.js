@@ -19,6 +19,7 @@ import { AtilaDirectApplicationsPopover, BlindApplicationsExplanationMessage, Re
 import ScholarshipFinalists, { UserProfilesCards } from "./ScholarshipFinalists";
 import ApplicationsLocal from '../Application/ApplicationsLocal';
 import ReportIncorrectInfo from "../../components/ReportIncorrectInfo";
+import AwardDetail from "../Award/AwardDetail";
 import { addStyleClasstoTables, openAllLinksInNewTab } from "../../services/utils";
 
 import './ScholarshipDetail.scss';
@@ -32,6 +33,7 @@ class ScholarshipDetail extends React.Component {
         this.state = {
             scholarship: null,
             contributors: null,
+            awards: [],
             currentUserScholarshipApplication: null,
             scholarshipUserProfile: null,
             isLoadingScholarship: true,
@@ -77,9 +79,10 @@ class ScholarshipDetail extends React.Component {
         const { match: { params: { slug } }, userProfile, location } = this.props;
         ScholarshipsAPI.getSlug(slug)
             .then(res => {
-                const { scholarship, contributors } = res.data;
+                const { scholarship, contributors, awards } = res.data;
                 const { owner_detail } = scholarship;
-                this.setState({ scholarship, contributors, scholarshipUserProfile: owner_detail }, () => {
+
+                this.setState({ scholarship, contributors, awards, scholarshipUserProfile: owner_detail }, () => {
                     addStyleClasstoTables(".content-detail");
                     openAllLinksInNewTab(".content-detail");
                     // add CTA classes to all buttons
@@ -87,6 +90,8 @@ class ScholarshipDetail extends React.Component {
                     if (location && location.hash) {
                         scrollToElement(location.hash);
                     }
+
+                    this.findExistingApplication();
                 });
 
                 const { is_not_available } = scholarship;
@@ -101,8 +106,6 @@ class ScholarshipDetail extends React.Component {
                 */
                 localStorage.setItem("mostRecentlyViewedContentName", scholarship.name);
                 localStorage.setItem("mostRecentlyViewedContentSlug", location.pathname);
-
-                this.findExistingApplication();
 
                 AnalyticsService
                     .savePageView(scholarship, userProfile)
@@ -134,22 +137,13 @@ class ScholarshipDetail extends React.Component {
             });
     };
 
-    /**
-     * If user is logged in, check the database for an existing application. If not logged in, check local storage
-     * for an application.
-    */
-
     findExistingApplication = () => {
         const { userProfile } = this.props;
         const { scholarship } = this.state;
 
-        if (userProfile) {
-            this.findExistingApplicationRemotely(scholarship, userProfile);
+        if(!userProfile || !scholarship.is_atila_direct_application) {
+            return
         }
-
-    };
-
-    findExistingApplicationRemotely = (scholarship, userProfile) => {
 
         this.setState({ isLoadingApplication: true });
         ApplicationsAPI
@@ -208,7 +202,7 @@ class ScholarshipDetail extends React.Component {
 
     render() {
 
-        const { isLoadingScholarship, scholarship,
+        const { isLoadingScholarship, scholarship, awards,
             errorLoadingScholarship, scholarshipUserProfile,
             pageViews, currentUserScholarshipApplication, isLoadingApplication, contributors } = this.state;
         const { userProfile } = this.props;
@@ -432,7 +426,8 @@ class ScholarshipDetail extends React.Component {
                                             {contributors.is_owner === scholarshipUserProfile.is_owner && <Tag color="green">{' '}Creator</Tag>}
                                         </div>
 
-                                        Amount: {fundingString}
+                                        Total Funding: {fundingString}
+                                        <AwardDetail awards={awards} />
                                         {scholarship.is_atila_direct_application && !isScholarshipDeadlinePassed &&
                                             <div className="mb-3">
                                                 <Button type="primary" size="large" className="mt-3"

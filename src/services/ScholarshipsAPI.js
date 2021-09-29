@@ -68,11 +68,13 @@ class ScholarshipsAPI {
         return apiCompletionPromise;
     };
 
-    static put = (id, scholarship, locationData) => {
+    static put = (id, scholarship, locationData, awards) => {
 
         const apiCompletionPromise = request({
             method: 'put',
-            data: {scholarship: ScholarshipsAPI.cleanScholarship(scholarship), locationData},
+            data: {scholarship: ScholarshipsAPI.cleanScholarship(scholarship),
+                    locationData,
+                    awards},
             url: `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/`,
         });
 
@@ -90,11 +92,11 @@ class ScholarshipsAPI {
         return apiCompletionPromise;
     };
 
-    static create = (scholarship, locationData) => {
+    static create = (scholarship, locationData, awards) => {
 
         const apiCompletionPromise = request({
             method: 'post',
-            data: {scholarship: ScholarshipsAPI.cleanScholarship(scholarship), locationData},
+            data: {scholarship: ScholarshipsAPI.cleanScholarship(scholarship), locationData, awards},
             url: `${ScholarshipsAPI.scholarshipsApiUrl}/`,
         });
 
@@ -148,11 +150,15 @@ class ScholarshipsAPI {
         return apiCompletionPromise;
     };
 
-    static selectWinners = (id, winners) => {
+    static selectWinners = (id, winnerID, awardID) => {
+        const data = {
+            winner: winnerID, 
+            award: awardID,
+        }
 
         const apiCompletionPromise = request({
             method: 'post',
-            data: winners,
+            data: data,
             url: `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/select-winner/`,
         });
 
