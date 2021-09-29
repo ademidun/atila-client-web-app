@@ -9,7 +9,7 @@ function ScholarshipSponsorAgreementAppendix ({scholarship, awards}) {
         </h1>
 
         <h6 className="text-center text-muted">
-            Note: This is a sample Appendix. An agreement with the correct values is available after you save a scholarship.
+            Note: This is a sample Appendix. An agreement with the relevant values is available after Sponsor saves a scholarship.
         </h6>
 
         <p>
