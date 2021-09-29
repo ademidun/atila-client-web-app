@@ -1,8 +1,8 @@
 // CheckoutForm.js
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from "prop-types";
 import {CardElement, injectStripe} from 'react-stripe-elements';
-import {Alert, Button, Col, Result, Row} from "antd";
+import {Alert, Button, Col, Result, Row, Checkbox} from "antd";
 import {Link, withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 import {UserProfilePropType} from "../../../models/UserProfile";
@@ -19,6 +19,8 @@ import {formatCurrency, getErrorMessage} from "../../../services/utils";
 import PaymentAPI from "../../../services/PaymentAPI";
 import {ScholarshipDisableEditMessage, ScholarshipPropType, ScholarshipFundingWillPublishMessage} from "../../../models/Scholarship";
 import Environment from "../../../services/Environment";
+import ScholarshipSponsorAgreement from "../../../components/ScholarshipSponsorAgreement";
+import ButtonModal from "../../../components/ButtonModal";
 
 export const PREMIUM_PRICE_BEFORE_TAX = 9;
 export const PREMIUM_PRICE_WITH_TAX = 10.17;
@@ -71,6 +73,7 @@ class PaymentSendForm extends React.Component {
             contributorFundingAmount,
             isScholarshipOwner,
             minimumFundingAmount,
+            agreeSponsorAgreement: false,
         };
 
         this.cardElementRef = React.createRef();
@@ -172,7 +175,7 @@ class PaymentSendForm extends React.Component {
         const { cardHolderName, isResponseLoading, isResponseLoadingMessage,
             isPaymentSuccess, isScholarshipOwner,
             isResponseErrorMessage, totalPaymentAmount, contributorFundingAmount,
-            contributor, minimumFundingAmount} = this.state;
+            contributor, minimumFundingAmount, agreeSponsorAgreement} = this.state;
 
         const isResponseErrorMessageWithContactLink = (<div style={{whiteSpace: "pre-line"}}>
             {isResponseErrorMessage}
@@ -194,12 +197,14 @@ class PaymentSendForm extends React.Component {
             )
         }
 
-        let canFundScholarship = scholarship.id && Number.parseInt(contributorFundingAmount) >= minimumFundingAmount;
+        let canFundScholarship = scholarship.id && Number.parseInt(contributorFundingAmount) >= minimumFundingAmount && agreeSponsorAgreement;
         let canFundScholarshipMessage = `Confirm order (${formatCurrency(totalPaymentAmount)})`;
 
         if (!canFundScholarship) {
             if (!scholarship.id) {
                 canFundScholarshipMessage = "You must save scholarship before you can fund";
+            } else if (!agreeSponsorAgreement) {
+                canFundScholarshipMessage = "You must agree to the Scholarship Sponsors agreement";
             } else {
                 canFundScholarshipMessage = (<React.Fragment>
                     Scholarship funding amount <br/>
@@ -209,6 +214,14 @@ class PaymentSendForm extends React.Component {
             }
         }
 
+        let modalTitle = (
+            <>
+                Scholarship Sponsors Agreement &nbsp;&nbsp;&nbsp;
+                <Link to="/scholarship-sponsor-agreement" target={"_blank"} rel={"noopener noreferrer"}>
+                    <Button>View Agreement In New Tab</Button>
+                </Link>
+            </>
+        )
 
         return (
             <React.Fragment>
@@ -269,6 +282,21 @@ class PaymentSendForm extends React.Component {
                                         }
                                     </Col>
                                 </Row>
+
+                                <Fragment>
+                                        <Checkbox checked={agreeSponsorAgreement}
+                                                  onChange={(e)=>{this.setState({agreeSponsorAgreement: e.target.checked})}}
+                                        />
+                                        &nbsp;&nbsp;I agree to the
+                                        <ButtonModal
+                                                showModalText={"Scholarship Sponsor Agreement"}
+                                                showModalButtonType={"link"}
+                                                modalTitle={modalTitle}
+                                                modalBody={<ScholarshipSponsorAgreement openInNewTab={true} />}
+                                                style={{display: 'inline-block'}}
+                                                customFooter={null}
+                                        />
+                                </Fragment>
 
                                 <Button className="col-12 my-3"
                                         type="primary"
