@@ -88,7 +88,6 @@ function ScholarshipSponsorAgreement ({scholarship = ScholarshipAgreementExample
                 </li>
                 <li>
                     The timeframe and process for applications are as follows:
-                </li>
                 <ol>
                     <li>
                         Sponsor must select a minimum of 3 finalists for each award in Scholarship Awards.
@@ -113,14 +112,15 @@ function ScholarshipSponsorAgreement ({scholarship = ScholarshipAgreementExample
                     </li>
                     <li>
                         If Sponsor does not select winners within the aforementioned timeframe, Atila will select winners on Sponsor&rsquo;s behalf.
-                        <br/>
-                        <br/>
+                    </li>
+                    <li>
+                    If Sponsor selects a scholarship winner, Atila will verify and confirm the identity of the winner before the scholarship can be given to the winner. In the case of an invalid scholarship winner, Sponsor must pick alternate winners until a valid winner is selected. If Sponsor does not pick a valid winner within the 14-day period, Atila will pick a winner on the Sponsor’s behalf.
                     </li>
                 </ol>
+                <br/>
+                </li>
                 <li>
                     For any individual award in Scholarship Awards valued at CAD 5,000 or more, Sponsor has the option to mail a ceremonial cheque to the winner. Atila will be responsible for sending the ceremonial cheque to the winners as decided by Sponsor at no additional cost to Sponsor.
-                    <br/>
-                    <br/>
                     <br/>
                 </li>
             </ol>
@@ -129,8 +129,6 @@ function ScholarshipSponsorAgreement ({scholarship = ScholarshipAgreementExample
                 <a href="https://tools.canlearn.ca/cslgs-scpse/cln-cln/reea-mdl/reea-mdl-1-eng.do?nom-name=ON">
                     https://tools.canlearn.ca/cslgs-scpse/cln-cln/reea-mdl/reea-mdl-1-eng.do?nom-name=ON
                 </a>
-            </p>
-            <p>
                 Accessed September 28, 2021.
             </p>
             <h2>
