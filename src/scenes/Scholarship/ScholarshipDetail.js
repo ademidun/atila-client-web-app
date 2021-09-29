@@ -13,14 +13,15 @@ import ApplicationsAPI from "../../services/ApplicationsAPI";
 import AtilaPointsPaywallModal from "../../components/AtilaPointsPaywallModal";
 import ScholarshipExtraCriteria from "./ScholarshipExtraCriteria";
 import ScholarshipDeadlineWithTags from "../../components/ScholarshipDeadlineWithTags";
-import { Alert, Button, message, Tag } from 'antd';
+import { Alert, Button, message, Tag, Row, Col } from 'antd';
 import verifiedBadge from '../../components/assets/verified.png';
 import { AtilaDirectApplicationsPopover, BlindApplicationsExplanationMessage, ReferralBonusScholarshipExplanationMessage } from "../../models/Scholarship";
 import ScholarshipFinalists, { UserProfilesCards } from "./ScholarshipFinalists";
 import ApplicationsLocal from '../Application/ApplicationsLocal';
 import ReportIncorrectInfo from "../../components/ReportIncorrectInfo";
 import AwardDetail from "../Award/AwardDetail";
-import { addStyleClasstoTables } from "../../services/utils";
+import { addStyleClasstoTables, openAllLinksInNewTab } from "../../services/utils";
+
 import './ScholarshipDetail.scss';
 import $ from "jquery";
 
@@ -83,6 +84,7 @@ class ScholarshipDetail extends React.Component {
 
                 this.setState({ scholarship, contributors, awards, scholarshipUserProfile: owner_detail }, () => {
                     addStyleClasstoTables(".content-detail");
+                    openAllLinksInNewTab(".content-detail");
                     // add CTA classes to all buttons
                     $(".scholarship-cta-buttons button").addClass("col-md-3 col-sm-12 mt-3");
                     if (location && location.hash) {
@@ -350,7 +352,7 @@ class ScholarshipDetail extends React.Component {
 
                                         <Button size="large">
                                             <Link to={`/scholarship/${slug}/questions`}>
-                                                View Application Form
+                                                View Application<br/> Form
                                             </Link>
                                         </Button>
 
@@ -382,7 +384,7 @@ class ScholarshipDetail extends React.Component {
                                         }
                                         {form_url &&
                                             <Button size="large" className="mt-3">
-                                                <a href={form_url} target="_blank" rel="noopener noreferrer">
+                                                <a href={form_url}>
                                                     View Scholarship Application
                                                 </a> <br />
                                             </Button>
@@ -413,7 +415,7 @@ class ScholarshipDetail extends React.Component {
                                     <React.Fragment>
                                         Added by:
                                         <div className="bg-light mb-3 p-1" style={{ width: '500px' }}>
-                                            <Link to={`/profile/${scholarshipUserProfile.username}`} >
+                                            <Link to={`/profile/${scholarshipUserProfile.username}`}>
                                                 <img
                                                     alt="user profile"
                                                     style={{ height: '50px', maxWidth: 'auto' }}
@@ -441,10 +443,17 @@ class ScholarshipDetail extends React.Component {
                             </div>
 
                             {contributors && contributors.length > 1 &&
+                                
                                 <div>
                                     <h3 className="text-left">Contributors</h3>
+                                    <Row >
+                                    <Col xs={24} md={40} style={{zoom:1.1}}>
+                                    <div>
                                     <UserProfilesCards userProfiles={contributors} userKey="id" />
-                                </div>
+                                    </div>
+                                    </Col>
+                                    </Row>
+                                </div> 
 
                             }
                             {is_not_available &&

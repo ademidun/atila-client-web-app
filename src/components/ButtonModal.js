@@ -31,8 +31,9 @@ class ButtonModal extends React.Component {
 
     render() {
         const { showModalButtonSize, showModalButtonDanger, showModalButtonType, showModalText, modalTitle, modalBody, submitText,
-             addPopConfirm, popConfirmText, disabled } = this.props;
+             addPopConfirm, popConfirmText, disabled, style, customFooter } = this.props;
         const { isModalVisible } = this.state;
+
 
         const modalFooter = [
             <Button key="back" onClick={this.handleModalCancel}>
@@ -57,10 +58,18 @@ class ButtonModal extends React.Component {
             </Popconfirm>
         ]
 
-        let footer = addPopConfirm ? modalFooterWithPopConfirm : modalFooter
+        let footer;
+
+        if (customFooter !== undefined) {
+            footer = customFooter
+        } else if (addPopConfirm) {
+            footer = modalFooterWithPopConfirm
+        } else {
+            footer = modalFooter
+        }
 
         return(
-            <div>
+            <div style={style}>
                 <Button
                     type={showModalButtonType}
                     danger={showModalButtonDanger}
@@ -110,6 +119,8 @@ ButtonModal.propTypes = {
     disabled: PropTypes.bool,
     onShowModal: PropTypes.func,
     onSubmit: PropTypes.func,
+    style: PropTypes.shape({}),
+    customFooter: PropTypes.node,
 }
 
 export default ButtonModal;
