@@ -14,7 +14,7 @@ function ScholarshipSponsorAgreement ({scholarship = ScholarshipAgreementExample
     };
 
     return (
-        <div className="container">
+        <div className="ScholarshipSponsorAgreement container">
         <HelmetSeo content={seoContent} />
             <div className="card container mt-3 p-5 shadow">
             <h1>
