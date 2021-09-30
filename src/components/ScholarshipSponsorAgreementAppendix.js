@@ -74,7 +74,7 @@ function ScholarshipSponsorAgreementAppendix ({scholarship, awards}) {
                 </tr>
                 <tr>
                     <td>Deadline</td>
-                    <td>September 30, 2021 11:59PM Eastern Standard Time (EST)</td>
+                    <td>November 30, 2021, 11:59PM Eastern Standard Time (EST)</td>
                 </tr>
             </tbody>
         </table>

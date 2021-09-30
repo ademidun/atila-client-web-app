@@ -158,7 +158,7 @@ function Footer({location, history}) {
                   </div>
                   <div>
                     <Link to="/scholarship-sponsor-agreement">
-                      Scholarship Sponsors Agreement
+                      Scholarship Sponsor Agreement
                     </Link>
                   </div>
                 </div>
