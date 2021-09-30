@@ -117,9 +117,9 @@ function ScholarshipSponsorAgreement ({scholarship = ScholarshipAgreementExample
             </ol>
             <p>
                 [1] ​​Government of Canada. (2019). List of Educational Institutions.
-                <a href="https://tools.canlearn.ca/cslgs-scpse/cln-cln/reea-mdl/reea-mdl-1-eng.do?nom-name=ON">
-                    https://tools.canlearn.ca/cslgs-scpse/cln-cln/reea-mdl/reea-mdl-1-eng.do?nom-name=ON
-                </a>
+                <a href="https://www.canada.ca/en/employment-social-development/programs/designated-schools.html" target="_blank" rel="noopener noreferrer">
+                    https://www.canada.ca/en/employment-social-development/programs/designated-schools.html
+                </a>{' '}
                 Accessed September 28, 2021.
             </p>
             <h2>
@@ -151,11 +151,6 @@ function ScholarshipSponsorAgreement ({scholarship = ScholarshipAgreementExample
             <p>
                 This Agreement is intended as a binding and enforceable agreement between Sponsor and Atila. 
             </p>
-
-
-
-
-
                 <hr/>
                 <ScholarshipSponsorAgreementAppendix scholarship={scholarship} awards={awards} />
             </div>
