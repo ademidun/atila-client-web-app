@@ -569,7 +569,9 @@ export function openAllLinksInNewTab(parentSelector=""){
 
     $(anchorSelectors).each(function() {
         let element = $(this);
-        if (element.href && !element.href.startsWith("/")) { //don't open relative links e.g. table of contents links or <Link> components in a new tab
+
+        const linkOnSamePage = element.prop("href").includes(window.location.href);
+        if (!linkOnSamePage) { //don't open links to content on the same page in a new tab
             element.attr("target", "_blank")
             element.attr("rel", "noopener noreferrer")
         }
