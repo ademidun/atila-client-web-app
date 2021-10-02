@@ -129,6 +129,10 @@ function SelectReviewers({reviewers, onChangeSelectedReviewers}) {
   
     return (
       <div>
+        <p>
+            Who do you want to review applications?
+        </p>
+        <Divider />
         <Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll}>
           Check all
         </Checkbox>
