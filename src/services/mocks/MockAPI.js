@@ -26,6 +26,7 @@ import UserProfileApplications from './UserProfile/UserProfileApplications.json'
 import EssaysPage1 from './Essay/EssaysPage1.json';
 import ApplicationsAPI from '../ApplicationsAPI';
 import AnalyticsService from '../AnalyticsService';
+import { toastNotify } from '../../models/Utils';
 
 var axios = require("axios");
 var MockAdapter = require("axios-mock-adapter");
@@ -58,7 +59,9 @@ export class MockAPI {
             return
         }
         this.mock = new MockAdapter(axios);
-        console.log("MockAPI is being used");
+        const notificationMessage = "MockAPI is being used";
+        console.log(notificationMessage);
+        toastNotify(notificationMessage)
     }
 
     initializeMocks = () => {

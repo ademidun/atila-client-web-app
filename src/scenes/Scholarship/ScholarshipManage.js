@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
-import {Alert, Button, Input, InputNumber, Popconfirm, Radio, Tag} from "antd";
+import {Alert, Button, Input, Popconfirm, Radio, Tag} from "antd";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
 import {BlindApplicationsExplanationMessage, WINNER_SELECTED_MESSAGE} from "../../models/Scholarship";
@@ -12,6 +12,7 @@ import ApplicationsAPI from "../../services/ApplicationsAPI";
 import { ApplicationsTable } from './ApplicationsTable';
 import AutoCompleteRemoteData from '../../components/AutoCompleteRemoteData';
 import { MinusCircleOutlined } from '@ant-design/icons';
+import AssignReviewers from './AssignReviewers';
 
 
 class AssignReviewerRadioSelect extends React.Component {
@@ -76,7 +77,6 @@ class ScholarshipManage extends React.Component {
             // This is called email, but currently it is for inviting using usernames. This is because
             //  eventually we might switch to using emails.
             applicationTypeToEmail: 'all', // This is only for the modal to email applicants
-            reviewersPerApplication: 2,
             isLoadingMessage: null,
             assignReviewerCurrentUser: null,
             emailSubject: "",
@@ -240,33 +240,6 @@ class ScholarshipManage extends React.Component {
             });
     }
 
-    autoAssignReviewers = () => {
-        const { scholarship, reviewersPerApplication } = this.state;
-        this.setState({isLoadingMessage: "Auto assigning reviewers..."});
-
-        ScholarshipsAPI
-            .assignReviewers(scholarship.id, reviewersPerApplication)
-            .then(res=> {
-                const {scholarship, applications, unsubmitted_applications: unsubmittedApplications, awards} =  res.data;
-                const responseMessage = `Scholarship reviewers have been assigned.`;
-
-                this.setState({scholarship, applications, unsubmittedApplications, awards, responseMessage});
-            })
-            .catch(err=>{
-                console.log({err});
-                const { response_message } = err.response.data;
-                if (response_message) {
-                    this.setState({responseMessage: response_message});
-                } else {
-                    this.setState({responseMessage: "There was an error assigning reviewers.\n\n Please message us using the chat icon in the bottom right of your screen."});
-                }
-            })
-            .then(() => {
-                this.setState({isLoadingMessage: null});
-            });
-
-    }
-
     assignReviewer = (application) => {
         const { assignReviewerCurrentUser } = this.state;
 
@@ -367,15 +340,10 @@ class ScholarshipManage extends React.Component {
 
     }
 
-    updateReviewersPerApplication = (reviewersPerApplication) => {
-        this.setState({reviewersPerApplication});
-    }
-
     render() {
         const { userProfile } = this.props;
         const { scholarship, applications, awards, isLoadingApplications,
-            unsubmittedApplications, responseMessage, applicationTypeToEmail,
-             reviewersPerApplication, isLoadingMessage, emailSubject, emailBody, invitedCollaborator } = this.state;
+            unsubmittedApplications, responseMessage, applicationTypeToEmail, isLoadingMessage, emailSubject, emailBody, invitedCollaborator } = this.state;
 
         const { location: { pathname } } = this.props;
         const todayDate = new Date().toISOString();
@@ -476,23 +444,6 @@ class ScholarshipManage extends React.Component {
 
         const reviewers = [owner_detail, ...collaborators]
 
-        let autoAssignReviewersModalBody = (
-            <>
-                <h6>Number of reviewers per application</h6>
-                <InputNumber value={reviewersPerApplication}
-                             min={1}
-                             max={reviewers.length}
-                             step={1}
-                             onChange={this.updateReviewersPerApplication} />
-                {(reviewersPerApplication > reviewers.length || reviewersPerApplication < 1) &&
-                <p style={{"color": "red"}}>
-                    Reviewers per application must be {  reviewersPerApplication < 1 ?
-                    "greater than 0" : `less than or equal to the number of reviewers (${reviewers.length})`}
-                </p>
-                }
-            </>
-        )
-
         let reviewersPreview = reviewers.map((reviewer, index) => (
             <div style={{"marginRight": "3%"}} key={reviewer.user}>
                 <UserProfilePreview userProfile={reviewer} linkProfile={true}/>
@@ -550,15 +501,8 @@ class ScholarshipManage extends React.Component {
                         disabled={isLoadingMessage || scholarship.is_winner_selected}
                     />
                     <br />
-                    <ButtonModal
-                        showModalButtonSize={"large"}
-                        showModalText={"Auto Assign Reviewers..."}
-                        modalTitle={"Auto Assign Reviewers"}
-                        modalBody={autoAssignReviewersModalBody}
-                        submitText={"Confirm Auto Assigning"}
-                        onSubmit={this.autoAssignReviewers}
-                        disabled={isLoadingMessage || scholarship.is_winner_selected}
-                    />
+                    <AssignReviewers scholarship={scholarship} showAsModal={true} />
+                    <br />
                     {todayDate > scholarship.deadline && !scholarship.is_finalists_notified && 
                     <>
                         <br/>
