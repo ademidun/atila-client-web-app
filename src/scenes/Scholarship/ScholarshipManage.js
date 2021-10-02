@@ -194,6 +194,12 @@ class ScholarshipManage extends React.Component {
         
     };
 
+    onAutoAssignResponse = (response) => {
+        const {scholarship, applications, unsubmitted_applications: unsubmittedApplications, awards} =  response;
+                const responseMessage = `Scholarship reviewers have been assigned.`;
+                this.setState({scholarship, applications, unsubmittedApplications, awards, responseMessage});
+    }
+
     unSubmitApplications = () => {
         const { scholarship } = this.state;
         const scholarshipID = scholarship.id;
@@ -501,7 +507,7 @@ class ScholarshipManage extends React.Component {
                         disabled={isLoadingMessage || scholarship.is_winner_selected}
                     />
                     <br />
-                    <AssignReviewers scholarship={scholarship} showAsModal={true} />
+                    <AssignReviewers scholarship={scholarship} showAsModal={true} onResponse={this.onAutoAssignResponse} />
                     <br />
                     {todayDate > scholarship.deadline && !scholarship.is_finalists_notified && 
                     <>
