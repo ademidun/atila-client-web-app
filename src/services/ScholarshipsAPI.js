@@ -210,11 +210,14 @@ class ScholarshipsAPI {
         return apiCompletionPromise;
     };
 
-    static assignReviewers = (id, reviewersPerApplication) => {
-        let data = {'reviewers_per_application': reviewersPerApplication}
+    static assignReviewers = (id, reviewersPerApplication, selectedReviewers) => {
+        let data = { 
+            "reviewers_per_application": reviewersPerApplication,
+            "reviewers": selectedReviewers,
+        }
 
         const apiCompletionPromise = request({
-            method: 'post',
+            method: "post",
             data: data,
             url: `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/assign-reviewers/`,
         });
