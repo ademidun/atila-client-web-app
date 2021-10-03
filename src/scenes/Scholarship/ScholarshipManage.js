@@ -508,7 +508,11 @@ class ScholarshipManage extends React.Component {
                     />
                     <br />
                     <AssignReviewers scholarship={scholarship} showAsModal={true} onResponse={this.onAutoAssignResponse} />
-                    <br />
+                    {scholarship.is_winner_selected &&
+                    <>
+                        <p className="text-muted">Cannot invite collaborators or assign reviewers after after a winner is selected.</p>
+                    </>
+                    }
                     {todayDate > scholarship.deadline && !scholarship.is_finalists_notified && 
                     <>
                         <br/>
