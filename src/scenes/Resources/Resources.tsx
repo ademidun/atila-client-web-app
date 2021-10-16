@@ -12,9 +12,10 @@ function Resources(){
     const seoContent = {
         ...defaultSeoContent,
         title,
-        description: 'A list of resources to help you get scholarships.',
+        description: 'A list of resources to help students get scholarships.',
     };
-    const presentationId = "2PACX-1vR2yzK_cDJBfuVPnuf-6MBYlJBNgfZOTKj6zZ69Nw3vN-r1k0uBbq5P-JuhGtXdHLCdx9uEUqcbpqmi";
+    const presentationLinkId = "1HmM_VW53PCnYsnthGxzG2_x1Mcddjm1zdxPHQ78x6zw";
+    const presentationEmbedId = "2PACX-1vR2yzK_cDJBfuVPnuf-6MBYlJBNgfZOTKj6zZ69Nw3vN-r1k0uBbq5P-JuhGtXdHLCdx9uEUqcbpqmi";
 
     const studentResourceBlogs: Blog[] = [
         {
@@ -109,14 +110,14 @@ function Resources(){
             <h1>{title}</h1>
 
             <h2>
-                <a href={`https://docs.google.com/presentation/d/e/${presentationId}/pub?start=false&loop=false&delayms=3000`}>
+                <a href={`https://docs.google.com/presentation/d/${presentationLinkId}/edit?usp=sharing`} target="_blank" rel="noopener noreferrer">
                     How to get Scholarships Presentation
                 </a>
             </h2>
             <div className="responsive-google-slides">
               <iframe 
                 title="How to get Scholarships Presentation"
-                src={`https://docs.google.com/presentation/d/e/${presentationId}/embed?start=false&loop=false&delayms=3000`}></iframe>
+                src={`https://docs.google.com/presentation/d/e/${presentationEmbedId}/embed?start=false&loop=false&delayms=3000`}></iframe>
             </div>
             <hr/>
             <h2 className="my-2">
