@@ -8,7 +8,7 @@ import { Row, Col } from 'antd';
 function Resources(){
 
 
-    const title: string = 'Scholarship resources for Students';
+    const title: string = 'Scholarship Resources for Students';
     const seoContent = {
         ...defaultSeoContent,
         title,
@@ -111,7 +111,7 @@ function Resources(){
 
             <h2>
                 <a href={`https://docs.google.com/presentation/d/${presentationLinkId}/edit?usp=sharing`} target="_blank" rel="noopener noreferrer">
-                    How to get Scholarships Presentation
+                    How to get scholarships presentation
                 </a>
             </h2>
             <div className="responsive-google-slides">
@@ -121,14 +121,14 @@ function Resources(){
             </div>
             <hr/>
             <h2 className="my-2">
-                Useful Blog Posts for Students
+                Useful blog posts for students
             </h2>
             <ContentListDisplay contentList={studentResourceBlogs} />
             <hr/>
             {socialMediaResources.length > 0  && 
             <>
                 <h2 className="my-2">
-                    Useful Social Media Posts for Students
+                    Useful social media posts for students
                 </h2>
                 <Row>
                 {socialMediaResources.map (resource => (
@@ -140,7 +140,7 @@ function Resources(){
                 <hr/>
             </>
             }
-            <p>Do you want us to speak to your class about scholarships? <Link to="/contact">Contact Us</Link>
+            <p>Do you want us to speak to your class about scholarships? <Link to="/contact">contact us</Link>
             </p>
         </div>
     </div>);
