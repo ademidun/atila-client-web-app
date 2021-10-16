@@ -121,6 +121,10 @@ const EbookPremium = loadable(() => import("./scenes/EbookPremium/EbookPremium")
   fallback: <Loading />,
 
 });
+const Resources = loadable(() => import("./scenes/Resources/Resources"), {
+  fallback: <Loading />,
+
+});
 
 const privateFieldNames = [
   'password',
@@ -251,6 +255,8 @@ class App extends React.Component {
               <Route path='/values' component={GoogleAnalyticsTracker(Values)} />
               <Route path='/finalists' component={GoogleAnalyticsTracker(FinalistsList)} />
               <Route path='/rankings' component={GoogleAnalyticsTracker(AtilaPointsRankings)} />
+              <Route path='/students' component={GoogleAnalyticsTracker(Resources)} />
+              <Redirect from="/student" to="/students" />
               <Redirect from="/points" to="/blog/tomiwa/atila-points" />
               <Route
                 path='/terms-and-conditions'

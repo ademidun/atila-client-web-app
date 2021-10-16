@@ -121,8 +121,8 @@ function Footer({location, history}) {
                     </Link>
                   </div>
                   <div>
-                    <Link to="/profile/atilaeng">
-                      Engineering
+                    <Link to="/students">
+                      Student Resources
                     </Link>
                   </div>
                   <div>

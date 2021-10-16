@@ -1,7 +1,23 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import {UserProfileTest1} from "./UserProfile";
 
+export interface Blog {
+    id: number,
+    header_image_url: string,
+    title: string,
+    slug: string,
+    description: string,
+    body: ReactElement<any, any> | string,
+    user?: {
+        id: number,
+        first_name: string,
+        username: string,
+        last_name: string,
+        profile_pic_url: string,
+    },
+    contributors?: Array <any>,
+}
 
 export const BlogPropType = PropTypes.shape({
     id: PropTypes.string.isRequired,
@@ -18,7 +34,7 @@ export const BlogPropType = PropTypes.shape({
     }),
 });
 
-export const BlogWhatIsAtila = {
+export const BlogWhatIsAtila : Blog = {
     id: 789758,
     header_image_url: 'https://firebasestorage.googleapis.com/v0/b/atila-7.appspot.com/' +
         'o/public%2Fatila-scholarship-default-image.jpeg?alt=media&token=cd789758-3400-43d5-9ea7-d2facf709ea2',
@@ -31,9 +47,11 @@ export const BlogWhatIsAtila = {
         </div>
     ,
     user: {
+        id: 1,
         first_name: 'Tomiwa',
         username: 'tomiwa',
         last_name: 'Ademidun',
+        profile_pic_url: "",
     },
     contributors: [UserProfileTest1]
 };

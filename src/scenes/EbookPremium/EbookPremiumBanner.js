@@ -91,66 +91,65 @@ class EbookPremiumBanner extends Component {
 
     return (
       <React.Fragment>
-        {!loggedIn && (
+        {!loggedIn && 
           <div className='vh-100 EbookPremiumBanner'>
             <div>
               <Row className='text-center'>
-                <div className='container mt-5'>
-                  <div className='card shadow p-3'>
-                    <div>
-                      <h1>Login</h1>
-                      <form className='row p-3' onSubmit={this.submitForm}>
+                  <div className='container mt-5'>
+                    <div className='card shadow p-3'>
+                      <div>
+                        <h1>Login</h1>
+                        <form className='row p-3' onSubmit={this.submitForm}>
+                          <input
+                            placeholder='Email you purchased the book with'
+                            className='col-12 mb-3 form-control'
+                            name='email'
+                            value={email}
+                            onChange={this.updateForm}
+                          />
+                          <small>
+                            Hint: For a free preview use,
+                            email: <code>{FREE_PREVIEW_EMAIL}</code>{' '}
+                            License key: <code>{FREE_PREVIEW_LICENSE_KEY}</code>{' '}
+                            <Button onClick={this.autoFillPreview}
+                                    type="link">
+                              Auto Fill Free preview
+                            </Button>
+
+                          </small>
+
                         <input
-                          placeholder='Email you purchased the book with'
+                          placeholder='License Key you received after purchasing book (check your email)'
                           className='col-12 mb-3 form-control'
-                          name='email'
-                          value={email}
+                          name='licenseKey'
+                          value={licenseKey}
                           onChange={this.updateForm}
                         />
-                        <small>
-                          Hint: For a free preview use,
-                          email: <code>{FREE_PREVIEW_EMAIL}</code>{' '}
-                          License key: <code>{FREE_PREVIEW_LICENSE_KEY}</code>{' '}
-                          <Button onClick={this.autoFillPreview}
-                                  type="link">
-                            Auto Fill Free preview
-                          </Button>
-
-                        </small>
-
-                      <input
-                        placeholder='License Key you received after purchasing book (check your email)'
-                        className='col-12 mb-3 form-control'
-                        name='licenseKey'
-                        value={licenseKey}
-                        onChange={this.updateForm}
-                      />
-                        <ResponseDisplay isLoadingResponse={isLoadingResponse}
-                                         responseError={responseError} />
-                      <div className='w-100'>
-                        <button
-                          className='btn btn-primary col-sm-12 col-md-5 float-left mb-1'
-                          type='submit'
-                          disabled={isLoadingResponse}
-                        >
-                          Login
-                        </button>
-                        <Link
-                          to='/schools'
-                          className='btn btn-outline-primary col-sm-12 col-md-5 float-right'
-                        >
-                          Buy Ebook
-                        </Link>
-                      </div>
-                    </form>
+                          <ResponseDisplay isLoadingResponse={isLoadingResponse}
+                                          responseError={responseError} />
+                        <div className='w-100'>
+                          <button
+                            className='btn btn-primary col-sm-12 col-md-5 float-left mb-1'
+                            type='submit'
+                            disabled={isLoadingResponse}
+                          >
+                            Login
+                          </button>
+                          <Link
+                            to='/schools'
+                            className='btn btn-outline-primary col-sm-12 col-md-5 float-right'
+                          >
+                            Buy Ebook
+                          </Link>
+                        </div>
+                      </form>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Row>
-          )}
-        </div>
-      </div>
-        )}
+              </Row>
+            </div>
+            </div>
+        }
       {loggedIn && <EbookPremiumTabs />}
       </React.Fragment>)
   }
