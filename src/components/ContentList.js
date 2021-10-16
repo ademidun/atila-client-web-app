@@ -2,11 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Loading from "./Loading";
-import ContentCard from "./ContentCard";
-import {genericItemTransform} from "../services/utils";
 import {Link} from "react-router-dom";
 import ResponseDisplay from "./ResponseDisplay";
-import {Col, Row} from "antd";
+import ContentListDisplay from './ContentListDisplay';
 
 class ContentList extends React.Component {
 
@@ -100,15 +98,7 @@ class ContentList extends React.Component {
                     title={`Loading ${contentType}...`} />);
         }
         else {
-            contentList = contentItems.map( content =>
-                <Col xs={24} md={12} lg={8} key={content.id}>
-                    <ContentCard
-                                 content={genericItemTransform(content)}
-                                 className=" mb-3"
-                                 
-                    />
-                </Col>
-                );
+            contentList = <ContentListDisplay contentList={contentItems} />
         }
 
         const slugifyContent = contentType.substring(0, contentType.length - 1).toLowerCase();
@@ -126,9 +116,7 @@ class ContentList extends React.Component {
                         </Link>
                     </div>
                 </div>
-                <Row gutter={{ xs: 8, sm: 16}}>
-                    {contentList}
-                </Row>
+                {contentList}
                 {
                     contentItems.length < totalContentCount
                     &&
