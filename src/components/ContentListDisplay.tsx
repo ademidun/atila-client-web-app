@@ -19,7 +19,7 @@ function ContentListDisplay(props: Props) {
         />
     </Col>)
 
-    return (<Row gutter={{ xs: 8, sm: 16}}>
+    return (<Row gutter={{ xs: 8, sm: 16, md: 24}}>
         {contentListDisplay}
     </Row>)
 
