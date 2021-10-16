@@ -92,3 +92,7 @@ We use [axios-mock-adapter](https://github.com/ctimmerm/axios-mock-adapter) for 
 - Learn more here: 
     - https://storybook.js.org/docs/react/get-started/introduction
     - https://storybook.js.org/docs/react/writing-stories/introduction
+    
+## Troubleshooting
+- If you get compiler errors in your IDE, try setting your Typescript version:
+    - https://stackoverflow.com/a/64969461/5405197
