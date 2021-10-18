@@ -210,6 +210,18 @@ class ScholarshipsAPI {
         return apiCompletionPromise;
     };
 
+    static inviteCollaboratorViaEmail = (id, email) => {
+        let data = {'email': email};
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: data,
+            url: `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/invite-collaborator-email/`,
+        });
+
+        return apiCompletionPromise;
+    };
+
     static assignReviewers = (id, reviewersPerApplication, selectedReviewers) => {
         let data = { 
             "reviewers_per_application": reviewersPerApplication,
