@@ -82,6 +82,7 @@ class ScholarshipManage extends React.Component {
             assignReviewerCurrentUser: null,
             emailSubject: "",
             emailBody: "",
+            pending_invites: [],
         }
     }
 
@@ -90,6 +91,7 @@ class ScholarshipManage extends React.Component {
 
         if (userProfile) {
             this.getScholarshipApplications();
+            this.getPendingInvites();
         }
     }
 
@@ -109,6 +111,21 @@ class ScholarshipManage extends React.Component {
                 this.setState({isLoadingApplications: false});
             });
     };
+
+    getPendingInvites = () => {
+        const { match : { params : { scholarshipID }} } = this.props;
+
+        this.setState({isLoadingMessage: 'Loading invites...'});
+        ScholarshipsAPI.getPendingInvites(scholarshipID)
+            .then(res => {
+                const { pending_invites } =  res.data;
+                console.log(pending_invites)
+                this.setState({ pending_invites });
+            })
+            .finally(() => {
+                this.setState({isLoadingMessage: null});
+            });
+    }
 
     selectFinalistOrWinner = (application, scholarship, awardID) => {
 
@@ -252,8 +269,8 @@ class ScholarshipManage extends React.Component {
         ScholarshipsAPI
             .inviteCollaboratorViaEmail(scholarship.id, invitedEmail)
             .then(res => {
-                const {scholarship} =  res.data;
-                this.setState({scholarship});
+                const { scholarship, pending_invites } =  res.data;
+                this.setState({ scholarship, pending_invites });
                 this.setState({responseMessage: `${invitedEmail} has been sent an invite.`});
                 this.setState({invitedEmail: ""})
             })
@@ -375,7 +392,7 @@ class ScholarshipManage extends React.Component {
         const { userProfile } = this.props;
         const { scholarship, applications, awards, isLoadingApplications,
             unsubmittedApplications, responseMessage, applicationTypeToEmail, isLoadingMessage,
-             emailSubject, emailBody, invitedCollaborator, invitedEmail } = this.state;
+             emailSubject, emailBody, invitedCollaborator, invitedEmail, pending_invites } = this.state;
 
         const { location: { pathname } } = this.props;
         const todayDate = new Date().toISOString();
@@ -501,6 +518,13 @@ class ScholarshipManage extends React.Component {
             title: `${scholarship.name} application management`
         };
 
+        const renderPendingInvites = pending_invites.map(invite => (
+            <>
+                {invite.to_email}
+                <br />
+            </>
+        ))
+
         return (
             <div className="container mt-5">
                 <HelmetSeo  content={seoContent}/>
@@ -599,8 +623,23 @@ class ScholarshipManage extends React.Component {
                 }
 
                 <br />
-                <h5>Reviewers</h5>
-                {reviewersPreview}
+                
+                <div>
+                    <div style={{float: 'left'}}>
+                        <h5>Reviewers</h5>
+                        {reviewersPreview}
+                    </div>
+                    
+                    {pending_invites.length > 0 &&
+                    <div style={{float: 'right'}}>
+                        <h5>Pending Invites</h5>
+                        {renderPendingInvites}
+                    </div>
+                    }
+                </div>
+                <div style={{clear:'both', fontSize: '1px'}}></div>
+
+                <br />
                 <br />
 
                 {/*

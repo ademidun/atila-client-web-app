@@ -139,6 +139,17 @@ class ScholarshipsAPI {
         return apiCompletionPromise;
     };
 
+    static getPendingInvites = id => {
+
+        const apiCompletionPromise = request({
+            method: 'get',
+            url: `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/pending-invites/`,
+        });
+
+        return apiCompletionPromise;
+
+    };
+
     static notifyApplicantsFinalistsSelected = (id) => {
 
         const apiCompletionPromise = request({
