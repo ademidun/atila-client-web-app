@@ -118,7 +118,7 @@ class ScholarshipManage extends React.Component {
         this.setState({isLoadingMessage: 'Loading invites...'});
         ScholarshipsAPI.getPendingInvites(scholarshipID)
             .then(res => {
-                const { pending_invites } =  res.data;
+                const { invites: pending_invites } =  res.data;
                 console.log(pending_invites)
                 this.setState({ pending_invites });
             })
@@ -269,7 +269,7 @@ class ScholarshipManage extends React.Component {
         ScholarshipsAPI
             .inviteCollaboratorViaEmail(scholarship.id, invitedEmail)
             .then(res => {
-                const { scholarship, pending_invites } =  res.data;
+                const { scholarship, invites: pending_invites } =  res.data;
                 this.setState({ scholarship, pending_invites });
                 this.setState({responseMessage: `${invitedEmail} has been sent an invite.`});
                 this.setState({invitedEmail: ""})

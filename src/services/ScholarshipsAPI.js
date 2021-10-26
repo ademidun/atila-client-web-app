@@ -140,14 +140,20 @@ class ScholarshipsAPI {
     };
 
     static getPendingInvites = id => {
+        return this.getInvites(id, 'pending');
+    };
 
+    static getInvites = (id, status=null) => {
+        let url = `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/invites/`
+        if (status) {
+            url += `?status=${status}`
+        }
         const apiCompletionPromise = request({
             method: 'get',
-            url: `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/pending-invites/`,
+            url: url,
         });
 
         return apiCompletionPromise;
-
     };
 
     static notifyApplicantsFinalistsSelected = (id) => {
