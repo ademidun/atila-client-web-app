@@ -143,9 +143,14 @@ class InviteScholarshipCollaborator extends  React.Component {
     }
 }
 
+InviteScholarshipCollaborator.defaultProps = {
+    isButtonDisabled: false,
+    setParentState: () => {},
+}
+
 InviteScholarshipCollaborator.propTypes = {
     isButtonDisabled: PropTypes.bool,
-    scholarship: ScholarshipPropType,
+    scholarship: ScholarshipPropType.isRequired,
     setParentState: PropTypes.func,
 };
 
