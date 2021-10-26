@@ -1,4 +1,6 @@
 import React from 'react';
+import {connect} from "react-redux";
+import PropTypes from 'prop-types';
 import { Link } from "react-router-dom";
 import { Alert, Button, Table, Tag, Popconfirm, Popover } from "antd";
 import { UserProfilePreview } from "../../components/ReferredByInput";
@@ -12,7 +14,110 @@ import EmailModal from "../../components/EmailModal";
 // Show a warning
 export const maxReviewerScoreDifference = 2.1;
 
-export class ApplicationsTable extends  React.Component {
+const todayDate = new Date().toISOString();
+export const renderFinalistOrWinnerButton = (application, scholarship, selectFinalistOrWinner, awards) => {
+
+    let finalistOrWinnerText = scholarship.is_finalists_notified ? "winner" : "finalist"
+    let confirmText = `Are you sure you want to pick this ${finalistOrWinnerText}?`;
+    if (scholarship.is_finalists_notified) {
+        confirmText = confirmText + " You will not be able to undo this action.";
+    }
+
+    if (todayDate < scholarship.deadline) {
+        return (
+            <p>
+                You can pick a winner after the deadline has passed
+            </p>
+        )
+    }
+
+    if (scholarship.is_winner_selected) {
+        return (
+            <p>
+                Winner has been selected
+            </p>
+        )
+    }
+
+
+    if (application.is_finalist && !scholarship.is_finalists_notified) {
+        return (
+            <>
+                <p>
+                    This finalist has been selected. Confirm finalists before you select a winner.
+                </p>
+                <Popconfirm placement="topLeft" 
+                    title={"Confirm de-selecting of finalist?"} 
+                    onConfirm={() => selectFinalistOrWinner(application, scholarship)} 
+                    okText="Yes" 
+                    cancelText="No">
+                    <Button danger>
+                        Unselect Finalist...
+                    </Button>
+                </Popconfirm>
+            </>
+        )
+    }
+    if (!application.is_finalist && scholarship.is_finalists_notified) {
+        return (
+            <p>
+                Only finalists can be selected as a winner
+            </p>
+        )
+    }
+
+    if (!scholarship.is_finalists_notified) {
+        return (
+            <Popconfirm placement="topLeft" 
+                        title={confirmText} 
+                        onConfirm={() => selectFinalistOrWinner(application, scholarship)} 
+                        okText="Yes" cancelText="No">
+                <Button className="btn-success">
+                    Select Finalist...
+                </Button>
+            </Popconfirm>
+        )
+    }
+
+    const awardOptions = awards.map(award => 
+        (
+            <Popconfirm placement="topLeft" 
+                        title={confirmText} 
+                        onConfirm={() => selectFinalistOrWinner(application, scholarship, award.id)} 
+                        okText="Yes" cancelText="No">
+                <Button>{award.funding_amount}</Button>
+            </Popconfirm>
+        )
+    )
+
+    return (
+        <Popover trigger={"click"} title={<b>Choose Award</b>} content={awardOptions} placement={"top"}>
+                <Button className="btn-success">
+                    Select Winner...
+                </Button>
+        </Popover>
+    )
+    
+};
+export const getApplicationUsernamesByAttribute = (application, attributeName="assigned_reviewers") => {
+    let usernames = [];
+    const { assigned_reviewers, user_scores } = application;
+    if (assigned_reviewers && attributeName === "assigned_reviewers") {
+        usernames = assigned_reviewers.map(reviewer => reviewer.username);
+    } else if (user_scores && attributeName === "user_scores") {
+
+        for (const userScore of Object.values(user_scores)) {
+            if (userScore.user) {
+                usernames.push(userScore.user.username)
+            }
+        }
+    } 
+    
+    return usernames;
+}
+
+
+class ApplicationsTable extends  React.Component {
     constructor(props) {
         super(props);
 
@@ -51,7 +156,7 @@ export class ApplicationsTable extends  React.Component {
 
     render () {
 
-        const { scholarship, selectFinalistOrWinner, isScholarshipOwner, assignReviewerButton, awards } = this.props;
+        const { scholarship, selectFinalistOrWinner, isScholarshipOwner, assignReviewerButton, awards, loggedInUserProfile } = this.props;
         const { collaborators, owner_detail } = scholarship;
         const { showScores, allApplications, filteredApplications, searchTerm } = this.state;
     
@@ -248,7 +353,7 @@ export class ApplicationsTable extends  React.Component {
             }
         ];
     
-        if (isScholarshipOwner) {
+        if (isScholarshipOwner || loggedInUserProfile.is_atila_admin) {
             columns.push(selectWinnerColumn);
         }
     
@@ -282,104 +387,18 @@ export class ApplicationsTable extends  React.Component {
     }
 }
 
-const todayDate = new Date().toISOString();
-export const renderFinalistOrWinnerButton = (application, scholarship, selectFinalistOrWinner, awards) => {
-
-    let finalistOrWinnerText = scholarship.is_finalists_notified ? "winner" : "finalist"
-    let confirmText = `Are you sure you want to pick this ${finalistOrWinnerText}?`;
-    if (scholarship.is_finalists_notified) {
-        confirmText = confirmText + " You will not be able to undo this action.";
-    }
-
-    if (todayDate < scholarship.deadline) {
-        return (
-            <p>
-                You can pick a winner after the deadline has passed
-            </p>
-        )
-    }
-
-    if (scholarship.is_winner_selected) {
-        return (
-            <p>
-                Winner has been selected
-            </p>
-        )
-    }
-
-
-    if (application.is_finalist && !scholarship.is_finalists_notified) {
-        return (
-            <>
-                <p>
-                    This finalist has been selected. Confirm finalists before you select a winner.
-                </p>
-                <Popconfirm placement="topLeft" 
-                    title={"Confirm de-selecting of finalist?"} 
-                    onConfirm={() => selectFinalistOrWinner(application, scholarship)} 
-                    okText="Yes" 
-                    cancelText="No">
-                    <Button danger>
-                        Unselect Finalist...
-                    </Button>
-                </Popconfirm>
-            </>
-        )
-    }
-    if (!application.is_finalist && scholarship.is_finalists_notified) {
-        return (
-            <p>
-                Only finalists can be selected as a winner
-            </p>
-        )
-    }
-
-    if (!scholarship.is_finalists_notified) {
-        return (
-            <Popconfirm placement="topLeft" 
-                        title={confirmText} 
-                        onConfirm={() => selectFinalistOrWinner(application, scholarship)} 
-                        okText="Yes" cancelText="No">
-                <Button className="btn-success">
-                    Select Finalist...
-                </Button>
-            </Popconfirm>
-        )
-    }
-
-    const awardOptions = awards.map(award => 
-        (
-            <Popconfirm placement="topLeft" 
-                        title={confirmText} 
-                        onConfirm={() => selectFinalistOrWinner(application, scholarship, award.id)} 
-                        okText="Yes" cancelText="No">
-                <Button>{award.funding_amount}</Button>
-            </Popconfirm>
-        )
-    )
-
-    return (
-        <Popover trigger={"click"} title={<b>Choose Award</b>} content={awardOptions} placement={"top"}>
-                <Button className="btn-success">
-                    Select Winner...
-                </Button>
-        </Popover>
-    )
-    
+const mapStateToProps = state => {
+    return { loggedInUserProfile: state.data.user.loggedInUserProfile };
 };
-export const getApplicationUsernamesByAttribute = (application, attributeName="assigned_reviewers") => {
-    let usernames = [];
-    const { assigned_reviewers, user_scores } = application;
-    if (assigned_reviewers && attributeName === "assigned_reviewers") {
-        usernames = assigned_reviewers.map(reviewer => reviewer.username);
-    } else if (user_scores && attributeName === "user_scores") {
 
-        for (const userScore of Object.values(user_scores)) {
-            if (userScore.user) {
-                usernames.push(userScore.user.username)
-            }
-        }
-    } 
-    
-    return usernames;
-}
+ApplicationsTable.propTypes = {
+    applications: PropTypes.shape({}),
+    scholarship: PropTypes.shape({}),
+    awards: PropTypes.shape({}),
+    selectFinalistOrWinner: PropTypes.shape({}),
+    isScholarshipOwner: PropTypes.bool,
+    assignReviewerButton: PropTypes.shape({}),
+    loggedInUserProfile: PropTypes.shape({}),
+};
+
+export default connect(mapStateToProps)(ApplicationsTable);
