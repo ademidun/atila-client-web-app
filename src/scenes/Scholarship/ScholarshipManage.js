@@ -9,7 +9,7 @@ import ButtonModal from "../../components/ButtonModal";
 import {UserProfilePreview} from "../../components/ReferredByInput";
 import HelmetSeo, {defaultSeoContent} from '../../components/HelmetSeo';
 import ApplicationsAPI from "../../services/ApplicationsAPI";
-import { ApplicationsTable } from './ApplicationsTable';
+import ApplicationsTable from './ApplicationsTable';
 import AutoCompleteRemoteData from '../../components/AutoCompleteRemoteData';
 import { MinusCircleOutlined } from '@ant-design/icons';
 import AssignReviewers from './AssignReviewers';

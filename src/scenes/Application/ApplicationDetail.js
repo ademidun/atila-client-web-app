@@ -516,12 +516,13 @@ class ApplicationDetail extends  React.Component{
 
         let inViewMode = application.is_submitted;
         let dateModified;
+        let dateModifiedString;
         if (application.date_modified) {
-            dateModified = new Date(application.date_modified);
+            dateModifiedString = new Date(application.date_modified);
+            dateModifiedString = `${dateModifiedString.toDateString()} ${dateModifiedString.toLocaleTimeString()}`
             dateModified =  (<div className="text-muted float-left col-12">
-                Last Auto-Saved {isUsingLocalApplication? " locally ": null}: {dateModified.toDateString()}{' '}
-                {dateModified.toLocaleTimeString()}
-            </div>)
+                Last Auto-Saved {isUsingLocalApplication? " locally ": null}: {dateModifiedString}
+        </div>)
         } else {
             dateModified =  (<div className="text-muted float-left col-12">
                 Start typing and your application will automatically save
@@ -602,7 +603,7 @@ class ApplicationDetail extends  React.Component{
                         onChange={event => this.updateApplicationScore(event, "notes")}
                         rows="5"
                 />
-                <p className="text-muted">Your score and notes are automatically saved</p><br/>
+                <p className="text-muted">Your score and notes are automatically saved. {dateModifiedString? `Last auto-saved: ${dateModifiedString}`: "" }</p><br/>
             </div>);
         }
 
