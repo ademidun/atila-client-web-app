@@ -4,7 +4,7 @@ import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 import {  MASTER_LIST_WITH_CATEGORY_LABEL, MASTER_LIST_WITH_CATEGORY_LABEL_ADMIN, MASTER_LIST_WITH_CATEGORY_LABEL_USER_PROFILE } from '../../models/ConstantsForm';
 import AutoComplete from '../AutoComplete';
-import { Tag } from 'antd';
+import { Tag, Radio, Input } from 'antd';
 import { prettifyKeys } from '../../services/utils';
 
 
@@ -82,12 +82,33 @@ export class QueryItem extends React.Component {
         let suggestions = MASTER_LIST_WITH_CATEGORY_LABEL;
         if (loggedInUserProfile && loggedInUserProfile.is_atila_admin) {
             suggestions = MASTER_LIST_WITH_CATEGORY_LABEL_ADMIN;
+
         } if (queryType === "userprofile") {
             suggestions = MASTER_LIST_WITH_CATEGORY_LABEL_USER_PROFILE;
         }
 
         return (
             <>
+                {loggedInUserProfile && loggedInUserProfile.is_atila_admin &&
+                <Radio.Group defaultValue="a" buttonStyle="solid">
+                    <Radio.Button value="a">Query Builder</Radio.Button>
+                    <Radio.Button value="b">Custom Field</Radio.Button>
+                </Radio.Group>}
+
+                <Input.Group compact>
+                    <Input 
+                        style={{ width: "50%" }} 
+                        placeholder="Field" 
+                    />
+                    <Input
+                        className="site-input-right"
+                        style={{ width: "50%" }}
+                        placeholder="Value"
+                    />
+                </Input.Group>
+                
+
+                {/*
                 <AutoComplete   suggestions={suggestions}
                                 placeholder={placeHolder||"Search by school, program, ethnicity, activity, industry, or more"}
                                 value={searchQuery}
@@ -95,7 +116,7 @@ export class QueryItem extends React.Component {
                                 renderSuggestion={this.renderSuggestion}
                                 onSuggestionSelected={this.onSuggestionSelected}
                                 inputToSuggestion={this.inputToSuggestion}
-                                keyName={'searchString'}/>
+                keyName={'searchString'}/>*/}
             </>
         );
     }
