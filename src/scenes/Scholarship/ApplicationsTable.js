@@ -9,6 +9,7 @@ import { CSVLink } from 'react-csv';
 import { convertApplicationsToCSVFormat, maxApplicationScoreDifference } from '../Application/ApplicationUtils';
 import { ApplicationsSearch, ApplicationPreview } from '../Application/ApplicationsSearch';
 import EmailModal from "../../components/EmailModal";
+import { CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
 
 
 // Show a warning
@@ -190,7 +191,9 @@ class ApplicationsTable extends  React.Component {
                 </React.Fragment>
             ),
         };
-    
+        const checkIcon = (<CheckCircleTwoTone twoToneColor="#52c41a" />);
+
+        const closeIcon = (<CloseCircleTwoTone twoToneColor="#FF0000" />);
         const columns = [
             {
                 title: <b>Full Name</b>,
@@ -203,6 +206,18 @@ class ApplicationsTable extends  React.Component {
                     return (
                         <>
                         {displayName}
+
+                        {loggedInUserProfile && loggedInUserProfile.is_atila_admin && application.user &&
+                        <div className="my-2">
+                        <Link to={`/profile/${application.user.username}/admin`}>View Profile (@{application.user.username})</Link>
+                        </div>
+                        }
+
+                        {application.is_finalist &&
+                        <div className="mb-2">
+                        Verified proof of enrollment? { userProfile.enrollment_proof_verified ? checkIcon : closeIcon}
+                        </div>
+                        }
                         
                         <EmailModal scholarship={scholarship}
                                     application={application}
@@ -392,12 +407,12 @@ const mapStateToProps = state => {
 };
 
 ApplicationsTable.propTypes = {
-    applications: PropTypes.shape({}),
+    applications: PropTypes.array,
     scholarship: PropTypes.shape({}),
-    awards: PropTypes.shape({}),
-    selectFinalistOrWinner: PropTypes.shape({}),
+    awards: PropTypes.array,
+    selectFinalistOrWinner: PropTypes.func,
     isScholarshipOwner: PropTypes.bool,
-    assignReviewerButton: PropTypes.shape({}),
+    assignReviewerButton: PropTypes.elementType,
     loggedInUserProfile: PropTypes.shape({}),
 };
 

@@ -61,7 +61,7 @@ class ApplicationDetail extends  React.Component{
 
         this.state = {
             application: {},
-            applicationScore: 0,
+            applicationScore: null,
             applicationNotes: "",
             scholarship: null,
             isLoadingApplication: false,
@@ -110,7 +110,7 @@ class ApplicationDetail extends  React.Component{
                 this.setState({application, scholarship, isScholarshipDeadlinePassed, pageNumber});
                 if (application.user_scores) {
                     const applicationScore = application.user_scores[userProfile.user] ?
-                        application.user_scores[userProfile.user]["score"] : 0;
+                        application.user_scores[userProfile.user]["score"] : null;
                         const applicationNotes= application.user_scores[userProfile.user] ?
                             application.user_scores[userProfile.user]["notes"] : "";
                     this.setState({applicationScore, applicationNotes}, () => {
@@ -270,6 +270,18 @@ class ApplicationDetail extends  React.Component{
     callScoreApplicationAPI = (application, scorerId, updateData) => {
         ApplicationsAPI.scoreApplication(application.id, scorerId, updateData)
         .then(res => {
+            const { date_modified } = res.data;
+            let { application } = this.state;
+            
+            /**
+             * We only want to update the date_modified so it can show up in the UI
+             *  and the user knows the data was autosaved.
+             */
+            application = {
+                ...application,
+                date_modified
+            };
+            this.setState({application});
         })
         .catch(err => {
             console.log({err});
@@ -586,6 +598,7 @@ class ApplicationDetail extends  React.Component{
                     These scores are not visible to the applicant.
                 </p>
                 <input className="form-control col-12"
+                       placeholder="Score"
                        type="number" step={0.01} min={0} max={10}
                        disabled={scholarship.is_winner_selected}
                        onChange={event => this.updateApplicationScore(event, "score")}

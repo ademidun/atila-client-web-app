@@ -38,7 +38,7 @@ class Admin extends React.Component {
                 <HelmetSeo content={seoContent}/>
                 <div className="card shadow p-3">
                     <h1>{title}</h1>
-                    <Tabs defaultActiveKey="users">
+                    <Tabs defaultActiveKey="messaging">
                         <TabPane tab="Messaging Campaigns" key="messaging">
                             <MessagingCampaign />
                         </TabPane>
