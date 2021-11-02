@@ -1,7 +1,7 @@
 import {SCHOLARSHIP_QUESTIONS_TYPES_TO_FORM_TYPES} from "../../models/Scholarship";
 import {userProfileFormConfig} from "../../models/UserProfile";
 import {scholarshipUserProfileSharedFormConfigs} from "../../models/Utils";
-import { stripHtml } from '../../services/utils';
+import { prettifyKeys, stripHtml } from '../../services/utils';
 import React from 'react';
 import TextUtils from '../../services/TextUtils';
 
@@ -205,7 +205,7 @@ export const maxApplicationScoreDifference = userScores => {
 }
 
 /**
- * Given a list of applications. Return all the applications that have a scholarship response that matches the searchTerm.
+ * Given a list of applications, return all the applications that match the searchTerm.
  * @param {Array} applications 
  * @param {String} searchTerm 
  */
@@ -243,7 +243,25 @@ export const findOccurencesOfSearchTerm = ( application, searchTerm, contextSize
     
     const occurencesOfSearchTerm = [];
 
-    for (const questionResponse of Object.values(application.scholarship_responses)) {
+    const questionResponses = Object.values(application.scholarship_responses);
+    for (const userProfileResponseKey in application.user_profile_responses) {
+        if (Object.hasOwnProperty.call(application.user_profile_responses, userProfileResponseKey)) {
+            let userProfileResponseValue = application.user_profile_responses[userProfileResponseKey].response;
+            if (!userProfileResponseValue) {
+                continue
+            }
+            if (typeof userProfileResponseValue === "string" || userProfileResponseValue instanceof String) {
+                questionResponses.unshift({response: `${prettifyKeys(userProfileResponseKey)}: ${userProfileResponseValue}`})
+            } else if (userProfileResponseValue.prop && userProfileResponseValue.prop.constructor === Array) {
+                userProfileResponseValue = userProfileResponseValue.join(', ');
+                questionResponses.unshift({response: `${prettifyKeys(userProfileResponseKey)}: ${userProfileResponseValue}`})
+            }
+        }
+    }
+
+    console.log({application, questionResponses});
+
+    for (const questionResponse of questionResponses) {
         const responseText = questionResponse.type === "long_answer" ? stripHtml(questionResponse.response) : questionResponse.response;
 
         let searchTermRegex = new RegExp(searchTerm, 'gi');

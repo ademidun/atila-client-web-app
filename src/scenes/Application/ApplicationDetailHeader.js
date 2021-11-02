@@ -40,11 +40,16 @@ function ApplicationDetailHeader({ application, scholarship, isOwnerOfApplicatio
         return (
             <>
                 <h5 className="text-muted">
-                    Your application was submitted on
-                    {' '}
-                    {dateSubmitted.toDateString()}{' '}
-                    {dateSubmitted.toLocaleTimeString()}
-                    {' '}
+                    Your application has been submitted.
+                    {application.date_submitted && 
+                    <>
+                        {' '}
+                        Date Submitted: {' '}
+                        {dateSubmitted.toDateString()}{' '}
+                        {dateSubmitted.toLocaleTimeString()}
+                        {' '}
+                    </>
+                    }
                     Good luck! <br/>
                 </h5>
                 <div>
