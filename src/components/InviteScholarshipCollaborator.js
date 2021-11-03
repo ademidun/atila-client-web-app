@@ -82,7 +82,7 @@ class InviteScholarshipCollaborator extends  React.Component {
 
         let inviteCollaboratorModalBody = (
             <>
-                Invite an Atila user to collaborate on this scholarship!
+                Invite an Atila user to collaborate on this scholarship.
                 <br /> <br />
                 <AutoCompleteRemoteData placeholder={"Collaborator's username or name..."}
                                         onSelect={(userProfile)=>{this.setState({invitedCollaborator: userProfile})}}
@@ -108,7 +108,7 @@ class InviteScholarshipCollaborator extends  React.Component {
 
         let inviteCollaboratorViaEmailModalBody = (
             <>
-                Invite anyone to collaborate with their email!
+                Invite anyone to collaborate with their email.
                 <br /><br />
                 <Input  value={invitedEmail}
                         onChange={e=>this.setState({invitedEmail: e.target.value})}
