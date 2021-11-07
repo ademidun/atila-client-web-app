@@ -139,6 +139,23 @@ class ScholarshipsAPI {
         return apiCompletionPromise;
     };
 
+    static getPendingInvites = id => {
+        return this.getInvites(id, 'pending');
+    };
+
+    static getInvites = (id, status=null) => {
+        let url = `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/invites/`
+        if (status) {
+            url += `?status=${status}`
+        }
+        const apiCompletionPromise = request({
+            method: 'get',
+            url: url,
+        });
+
+        return apiCompletionPromise;
+    };
+
     static notifyApplicantsFinalistsSelected = (id) => {
 
         const apiCompletionPromise = request({
@@ -200,6 +217,18 @@ class ScholarshipsAPI {
 
     static inviteCollaborator = (id, username) => {
         let data = {'username': username};
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: data,
+            url: `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/invite-collaborator/`,
+        });
+
+        return apiCompletionPromise;
+    };
+
+    static inviteCollaboratorViaEmail = (id, email) => {
+        let data = {'email': email};
 
         const apiCompletionPromise = request({
             method: 'post',

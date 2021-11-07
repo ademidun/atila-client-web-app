@@ -10,9 +10,8 @@ import {UserProfilePreview} from "../../components/ReferredByInput";
 import HelmetSeo, {defaultSeoContent} from '../../components/HelmetSeo';
 import ApplicationsAPI from "../../services/ApplicationsAPI";
 import ApplicationsTable from './ApplicationsTable';
-import AutoCompleteRemoteData from '../../components/AutoCompleteRemoteData';
-import { MinusCircleOutlined } from '@ant-design/icons';
 import AssignReviewers from './AssignReviewers';
+import InviteScholarshipCollaborator from "../../components/InviteScholarshipCollaborator";
 
 
 class AssignReviewerRadioSelect extends React.Component {
@@ -73,14 +72,12 @@ class ScholarshipManage extends React.Component {
             unsubmittedApplications: null,
             isLoadingApplications: false,
             responseMessage: null,
-            invitedCollaborator: null,
-            // This is called email, but currently it is for inviting using usernames. This is because
-            //  eventually we might switch to using emails.
             applicationTypeToEmail: 'all', // This is only for the modal to email applicants
             isLoadingMessage: null,
             assignReviewerCurrentUser: null,
             emailSubject: "",
             emailBody: "",
+            pending_invites: [],
         }
     }
 
@@ -89,6 +86,7 @@ class ScholarshipManage extends React.Component {
 
         if (userProfile) {
             this.getScholarshipApplications();
+            this.getPendingInvites();
         }
     }
 
@@ -108,6 +106,21 @@ class ScholarshipManage extends React.Component {
                 this.setState({isLoadingApplications: false});
             });
     };
+
+    getPendingInvites = () => {
+        const { match : { params : { scholarshipID }} } = this.props;
+
+        this.setState({isLoadingMessage: 'Loading invites...'});
+        ScholarshipsAPI.getPendingInvites(scholarshipID)
+            .then(res => {
+                const { invites: pending_invites } =  res.data;
+                console.log(pending_invites)
+                this.setState({ pending_invites });
+            })
+            .finally(() => {
+                this.setState({isLoadingMessage: null});
+            });
+    }
 
     selectFinalistOrWinner = (application, scholarship, awardID) => {
 
@@ -220,32 +233,6 @@ class ScholarshipManage extends React.Component {
             });
     };
 
-    inviteCollaborator = () => {
-        const { scholarship, invitedCollaborator } = this.state;
-        this.setState({isLoadingMessage: "Inviting collaborators..."});
-        ScholarshipsAPI
-            .inviteCollaborator(scholarship.id, invitedCollaborator.username)
-            .then(res => {
-                // invites_sent is also in res.data
-                const {scholarship} =  res.data;
-                this.setState({scholarship});
-                this.setState({responseMessage: `${invitedCollaborator.username} has been sent an invite email.`});
-                this.setState({invitedCollaborator: null});
-            })
-            .catch(err => {
-                console.log({err});
-                const { response_message } = err.response.data;
-                if (response_message) {
-                    this.setState({responseMessage: response_message});
-                } else {
-                    this.setState({responseMessage: `There was an error inviting ${invitedCollaborator}.\n\n Please message us using the chat icon in the bottom right of your screen.`})
-                }
-            })
-            .then(() => {
-                this.setState({isLoadingMessage: null});
-            });
-    }
-
     assignReviewer = (application) => {
         const { assignReviewerCurrentUser } = this.state;
 
@@ -346,10 +333,15 @@ class ScholarshipManage extends React.Component {
 
     }
 
+    setParentState = (newStateVariables) => {
+        this.setState(newStateVariables)
+    }
+
     render() {
         const { userProfile } = this.props;
         const { scholarship, applications, awards, isLoadingApplications,
-            unsubmittedApplications, responseMessage, applicationTypeToEmail, isLoadingMessage, emailSubject, emailBody, invitedCollaborator } = this.state;
+            unsubmittedApplications, responseMessage, applicationTypeToEmail, isLoadingMessage,
+             emailSubject, emailBody, pending_invites } = this.state;
 
         const { location: { pathname } } = this.props;
         const todayDate = new Date().toISOString();
@@ -400,29 +392,6 @@ class ScholarshipManage extends React.Component {
             { label: 'Non Winner finalists', value: 'non_winner_finalists' }
         ];
 
-        let inviteCollaboratorModalBody = (
-            <>
-            <AutoCompleteRemoteData placeholder={"Collaborator's username or name..."}
-                                    onSelect={(userProfile)=>{this.setState({invitedCollaborator: userProfile})}}
-                                    type="user" />
-
-                {invitedCollaborator && 
-                <div className="my-2">
-                    Pending invite: <br/>
-                    <UserProfilePreview userProfile={invitedCollaborator} />
-                    
-                    <MinusCircleOutlined
-                        style={{
-                            fontSize: "30px",
-                        }}
-                        onClick={()=>{
-                            this.setState({invitedCollaborator: null})
-                        }}
-                    />
-                </div>
-                }
-            </>
-        )
         let isScholarshipOwner = userProfile.user === scholarship.owner
 
         let emailApplicantsModalBody = (
@@ -461,6 +430,13 @@ class ScholarshipManage extends React.Component {
             title: `${scholarship.name} application management`
         };
 
+        const renderPendingInvites = pending_invites.map(invite => (
+            <>
+                {invite.to_email}
+                <br />
+            </>
+        ))
+
         return (
             <div className="container mt-5">
                 <HelmetSeo  content={seoContent}/>
@@ -497,14 +473,10 @@ class ScholarshipManage extends React.Component {
                     />
                     <br />
                     {/*Only allow the scholarship owner to see the invite button. May want to be changed in the future.*/}
-                    <ButtonModal
-                        showModalButtonSize={"large"}
-                        showModalText={"Invite Collaborator..."}
-                        modalTitle={"Invite Collaborator"}
-                        modalBody={inviteCollaboratorModalBody}
-                        submitText={"Send Invite"}
-                        onSubmit={this.inviteCollaborator}
-                        disabled={isLoadingMessage || scholarship.is_winner_selected}
+                    <InviteScholarshipCollaborator
+                        scholarship={scholarship}
+                        isButtonDisabled={isLoadingMessage || scholarship.is_winner_selected}
+                        setParentState={this.setParentState}
                     />
                     <br />
                     <AssignReviewers scholarship={scholarship} showAsModal={true} onResponse={this.onAutoAssignResponse} />
@@ -548,8 +520,23 @@ class ScholarshipManage extends React.Component {
                 }
 
                 <br />
-                <h5>Reviewers</h5>
-                {reviewersPreview}
+                
+                <div>
+                    <div style={{float: 'left'}}>
+                        <h5>Reviewers</h5>
+                        {reviewersPreview}
+                    </div>
+                    
+                    {pending_invites.length > 0 &&
+                    <div style={{float: 'right'}}>
+                        <h5>Pending Invites</h5>
+                        {renderPendingInvites}
+                    </div>
+                    }
+                </div>
+                <div style={{clear:'both', fontSize: '1px'}}></div>
+
+                <br />
                 <br />
 
                 {/*
