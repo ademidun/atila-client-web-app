@@ -4,16 +4,28 @@ import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 import {  MASTER_LIST_WITH_CATEGORY_LABEL, MASTER_LIST_WITH_CATEGORY_LABEL_ADMIN, MASTER_LIST_WITH_CATEGORY_LABEL_USER_PROFILE } from '../../models/ConstantsForm';
 import AutoComplete from '../AutoComplete';
-import { Tag, Radio, Input } from 'antd';
+import { Tag, Radio, Input, Button } from 'antd';
 import { prettifyKeys } from '../../services/utils';
 
 
+const queryBuilder = 'queryBuilder';
+const customQuery = 'customQuery';
+
+const queryInputTypes = [
+    { label: 'Query Builder', value: queryBuilder },
+    { label: 'Custom Query', value: customQuery },
+  ];
+
 export class QueryItem extends React.Component {
 
+    
     constructor(props){
         super(props);
         this.state = {
             searchQuery: props.value,
+            queryInputType: queryInputTypes[0].value,
+            customQueryKey: "",
+            customQueryValue: "",
         };
 
     }
@@ -62,6 +74,24 @@ export class QueryItem extends React.Component {
         </p>
     );
 
+    onChangeQueryInputType = e => {
+        this.setState({queryInputType: e.target.value})
+    }
+
+    onCustomQueryUpdate = event => {
+        this.setState({[event.target.name]: event.target.value})
+    }
+
+    onCustomQueryEntered = event => {
+        const { onUpdateQuery } = this.props;
+        const { customQueryKey, customQueryValue } = this.state;
+
+        const queryData = {
+            [customQueryKey]: customQueryValue
+        }
+        onUpdateQuery(queryData);
+    }
+
     /**
      * If the user passes in an input string that is not one of the autocomplete options, save it as all_fields
      * option that will search all fields in the database.
@@ -76,7 +106,7 @@ export class QueryItem extends React.Component {
     )
 
     render() {
-        const { searchQuery } = this.state;
+        const { searchQuery,queryInputType, customQueryKey, customQueryValue } = this.state;
         const { placeHolder,loggedInUserProfile, queryType } = this.props;
 
         let suggestions = MASTER_LIST_WITH_CATEGORY_LABEL;
@@ -90,33 +120,50 @@ export class QueryItem extends React.Component {
         return (
             <>
                 {loggedInUserProfile && loggedInUserProfile.is_atila_admin &&
-                <Radio.Group defaultValue="a" buttonStyle="solid">
-                    <Radio.Button value="a">Query Builder</Radio.Button>
-                    <Radio.Button value="b">Custom Field</Radio.Button>
-                </Radio.Group>}
+                <Radio.Group className="mb-2" options={queryInputTypes} 
+                onChange={this.onChangeQueryInputType} value={queryInputType} optionType="button"  buttonStyle="solid" />}
 
-                <Input.Group compact>
-                    <Input 
-                        style={{ width: "50%" }} 
-                        placeholder="Field" 
-                    />
-                    <Input
-                        className="site-input-right"
-                        style={{ width: "50%" }}
-                        placeholder="Value"
-                    />
-                </Input.Group>
+                {queryInputType == customQuery &&
+                <>
+                    <Input.Group compact>
+                        <Input 
+                            style={{ width: "50%" }} 
+                            placeholder="Field"
+                            name="customQueryKey"
+                            value={customQueryKey}
+                            onChange={this.onCustomQueryUpdate}
+                            onPressEnter={this.onCustomQueryEntered}
+                        />
+                        <Input
+                            className="site-input-right"
+                            style={{ width: "50%" }}
+                            placeholder="Value"
+                            name="customQueryValue"
+                            value={customQueryValue}
+                            onChange={this.onCustomQueryUpdate}
+                            onPressEnter={this.onCustomQueryEntered}
+                        />
+                    </Input.Group>
+
+                    <Button onClick={this.onCustomQueryEntered}>
+                        Search
+                    </Button>
+                </>
+                }
+
+                {queryInputType == queryBuilder &&
+                    <AutoComplete   suggestions={suggestions}
+                    placeholder={placeHolder||"Search by school, program, ethnicity, activity, industry, or more"}
+                    value={searchQuery}
+                    getSuggestionValue={suggestion => suggestion.value}
+                    renderSuggestion={this.renderSuggestion}
+                    onSuggestionSelected={this.onSuggestionSelected}
+                    inputToSuggestion={this.inputToSuggestion}
+                    keyName={'searchString'}/>
+                }
                 
 
-                {/*
-                <AutoComplete   suggestions={suggestions}
-                                placeholder={placeHolder||"Search by school, program, ethnicity, activity, industry, or more"}
-                                value={searchQuery}
-                                getSuggestionValue={suggestion => suggestion.value}
-                                renderSuggestion={this.renderSuggestion}
-                                onSuggestionSelected={this.onSuggestionSelected}
-                                inputToSuggestion={this.inputToSuggestion}
-                keyName={'searchString'}/>*/}
+                
             </>
         );
     }
