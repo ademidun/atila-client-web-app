@@ -123,7 +123,7 @@ export class QueryItem extends React.Component {
                 <Radio.Group className="mb-2" options={queryInputTypes} 
                 onChange={this.onChangeQueryInputType} value={queryInputType} optionType="button"  buttonStyle="solid" />}
 
-                {queryInputType == customQuery &&
+                {queryInputType === customQuery &&
                 <>
                     <Input.Group compact>
                         <Input 
@@ -151,7 +151,7 @@ export class QueryItem extends React.Component {
                 </>
                 }
 
-                {queryInputType == queryBuilder &&
+                {queryInputType === queryBuilder &&
                     <AutoComplete   suggestions={suggestions}
                     placeholder={placeHolder||"Search by school, program, ethnicity, activity, industry, or more"}
                     value={searchQuery}
