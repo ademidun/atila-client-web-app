@@ -80,8 +80,7 @@ export const renderFinalistOrWinnerButton = (application, scholarship, selectFin
         )
     }
 
-    const awardOptions = awards.map(award => 
-        (
+    const awardOptions = awards.filter(award => !award.recipient).map(award =>        (
             <Popconfirm placement="topLeft" 
                         title={confirmText} 
                         onConfirm={() => selectFinalistOrWinner(application, scholarship, award.id)} 
@@ -214,9 +213,9 @@ class ApplicationsTable extends  React.Component {
                         }
 
                         {application.is_finalist &&
-                        <div className="mb-2">
-                        Verified proof of enrollment? { userProfile.enrollment_proof_verified ? checkIcon : closeIcon}
-                        </div>
+                            <div className="mb-2">
+                            Verified proof of enrollment? { userProfile.enrollment_proof_verified ? checkIcon : closeIcon}
+                            </div>
                         }
                         
                         <EmailModal scholarship={scholarship}
