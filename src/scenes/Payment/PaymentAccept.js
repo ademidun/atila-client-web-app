@@ -9,7 +9,6 @@ import {Link} from "react-router-dom";
 import InlineEditor from "@ckeditor/ckeditor5-build-inline";
 import CKEditor from "@ckeditor/ckeditor5-react";
 import {toastNotify} from "../../models/Utils";
-import FileInput from "../../components/Form/FileInput";
 import moment from "moment";
 
 import "../../index.scss";
@@ -71,17 +70,9 @@ class PaymentAccept extends React.Component {
      * @returns {number}
      */
     getCurrentStep = () => {
-        /*
-        */
-
         const { application } = this.state;
-        const { userProfile } = this.props;
-        return 0
 
         if (application.is_thank_you_letter_sent){
-            return 4
-        }
-        if (userProfile.enrollment_proof && application.is_security_question_answered){
             return 3
         }
         if (application.is_security_question_answered){
@@ -316,51 +307,6 @@ class PaymentAccept extends React.Component {
                 </Col>
             </Row>
 
-        )
-    };
-
-    onEnrollmentUpload = (event) => {
-
-        const userProfileUpdateData = {
-            [event.target.name]: event.target.value
-        };
-
-        this.updateUserProfile(userProfileUpdateData);
-    };
-
-    proofOfEnrolmentStep = () => {
-        const title  = "Upload Proof of Enrollment";
-        const { userProfile } = this.props;
-
-        return (
-            <Row gutter={[{ xs: 8, sm: 16}, 16]}>
-                <Col span={24}>
-                    <h3 className="text-center">
-                        {title}
-                    </h3>
-                </Col>
-                <Col span={24}>
-                    <FileInput
-                        title={title}
-                        keyName="enrollment_proof"
-                        onChangeHandler={this.onEnrollmentUpload}
-                        type="image,pdf"
-                        filePath={`user-profile-files/${userProfile.user}`}
-                        uploadHint="Enrollment proof must be a PDF (preferred) or an image."/>
-                </Col>
-                {userProfile.enrollment_proof &&
-                    <>
-                        <Col span={24}>
-                            <a href={userProfile.enrollment_proof}  target="_blank" rel="noopener noreferrer">
-                                View your Enrollment Proof
-                            </a>
-                        </Col>
-                        <Col span={24}>
-                            If you're not automatically redirected to the next step, try refreshing the page.
-                        </Col>
-                    </>
-                }
-            </Row>
         )
     };
 
@@ -655,11 +601,6 @@ class PaymentAccept extends React.Component {
                 slug: 'security_question',
                 title: 'Security Question',
                 render: this.securityQuestionStep,
-            },
-            {
-                slug: 'proof_of_enrolment',
-                title: 'Proof of Enrolment',
-                render: this.proofOfEnrolmentStep,
             },
             {
                 slug: 'thank_you_email',
