@@ -75,7 +75,7 @@ class PaymentAccept extends React.Component {
         if (application.is_thank_you_letter_sent){
             return 3
         }
-        if (application.is_security_question_answered){
+        if (application.is_security_question_answered && application.is_email_verified){
             return 2
         }
         if (application.is_email_verified){
@@ -579,7 +579,7 @@ class PaymentAccept extends React.Component {
             }
         }
 
-        if (application.user.user !== userProfile.user) {
+        if (application.user.user !== userProfile.user || !application.is_winner) {
             return (
                 <div className="container mt-5">
                     <div className="card shadow p-3">
