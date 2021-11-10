@@ -21,11 +21,24 @@ export class QueryItem extends React.Component {
     
     constructor(props){
         super(props);
+        const { value, queryKey } = props;
+
+        let customQueryKey = "";
+        let customQueryValue = "";
+        let queryInputType = queryInputTypes[0].value;
+        // If the queryKey includes a double underscore assume that it is a custom query
+        // see: https://github.com/ademidun/atila-django/blob/496f1e78fd94126925b67849896e13a78e168033/search/query.py#L81-L84
+        if (queryKey && queryKey.includes("__")) {
+            queryInputType = queryInputTypes[1].value;
+            customQueryKey = queryKey;
+            customQueryValue = value;
+        }
+
         this.state = {
-            searchQuery: props.value,
-            queryInputType: queryInputTypes[0].value,
-            customQueryKey: "",
-            customQueryValue: "",
+            searchQuery: value,
+            queryInputType,
+            customQueryKey,
+            customQueryValue,
         };
 
     }
@@ -145,7 +158,7 @@ export class QueryItem extends React.Component {
                         />
                     </Input.Group>
 
-                    <Button onClick={this.onCustomQueryEntered}>
+                    <Button onClick={this.onCustomQueryEntered} className="my-3">
                         Search
                     </Button>
                 </>
@@ -176,11 +189,13 @@ const mapStateToProps = state => {
 QueryItem.defaultProps = {
     onUpdateQuery: (query) => {},
     value: "",
+    queryKey: "",
     queryType: "contact",
 };
 
 QueryItem.propTypes = {
     onUpdateQuery: PropTypes.func,
+    queryKey: PropTypes.string,
     placeHolder: PropTypes.string,
     loggedInUserProfile: PropTypes.shape({}).isRequired,
     queryType: PropTypes.string.isRequired
