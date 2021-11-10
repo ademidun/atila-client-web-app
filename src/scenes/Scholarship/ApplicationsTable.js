@@ -32,10 +32,21 @@ export const renderFinalistOrWinnerButton = (application, scholarship, selectFin
         )
     }
 
+    if (application.is_winner) {
+        console.log(application)
+        console.log(awards)
+        let application_award = awards.filter(award => application.id === award?.recipient?.id)[0]
+        return (
+            <p>
+                Winner! This application won ${application_award.funding_amount}.
+            </p>
+        )
+    }
+
     if (scholarship.is_winner_selected) {
         return (
             <p>
-                Winner has been selected
+                All Winners have been selected.
             </p>
         )
     }
