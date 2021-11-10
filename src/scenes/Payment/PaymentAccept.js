@@ -24,6 +24,8 @@ class PaymentAccept extends React.Component {
         super(props);
 
         this.state = {
+            verificationCode: "",
+            securityQuestionResponse: "",
             loading: null,
             application: null,
             scholarship: null,
@@ -74,6 +76,7 @@ class PaymentAccept extends React.Component {
 
         const { application } = this.state;
         const { userProfile } = this.props;
+        return 0
 
         if (application.is_thank_you_letter_sent){
             return 4
@@ -183,7 +186,7 @@ class PaymentAccept extends React.Component {
 
     verifyEmailStep = () => {
         const { userProfile } = this.props;
-        const { application, loading } = this.state;
+        const { application, loading, verificationCode } = this.state;
 
         return (
             <Row gutter={[{ xs: 8, sm: 16}, 16]}>
@@ -197,24 +200,24 @@ class PaymentAccept extends React.Component {
                     <Input value={application.verification_email} disabled={true}/>
                 </Col>
                 <Col span={24}>
-                    <Input id="code" placeholder="Email Verification Code" />
+                    <Input value={verificationCode} placeholder="Email Verification Code"
+                           onChange={e => this.setState({verificationCode: e.target.value})} />
                 </Col>
                 <Col span={24}>
+                    <Button onClick={()=>{this.verifyEmailCode(verificationCode)}}
+                            className="center-block mt-3"
+                            type="primary"
+                            disabled={loading}
+                    >
+                        Verify Email
+                    </Button>
+                    <br />
                     <Button onClick={()=>{this.resendVerificationEmail()}}
                             className="center-block mt-3"
                             type="primary"
                             disabled={loading}
                     >
                         Resend Email Verification Code
-                    </Button>
-                    {/*There might be a cleaner method to reference the input value than
-                    document.getElementById('code').value.*/}
-                    <Button onClick={()=>{this.verifyEmailCode(document.getElementById('code').value)}}
-                            className="center-block mt-3"
-                            type="primary"
-                            disabled={loading}
-                    >
-                        Verify Email
                     </Button>
                 </Col>
             </Row>
