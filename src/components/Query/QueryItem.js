@@ -4,16 +4,41 @@ import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 import {  MASTER_LIST_WITH_CATEGORY_LABEL, MASTER_LIST_WITH_CATEGORY_LABEL_ADMIN, MASTER_LIST_WITH_CATEGORY_LABEL_USER_PROFILE } from '../../models/ConstantsForm';
 import AutoComplete from '../AutoComplete';
-import { Tag } from 'antd';
+import { Tag, Radio, Input, Button } from 'antd';
 import { prettifyKeys } from '../../services/utils';
 
 
+const queryBuilder = 'queryBuilder';
+const customQuery = 'customQuery';
+
+const queryInputTypes = [
+    { label: 'Query Builder', value: queryBuilder },
+    { label: 'Custom Query', value: customQuery },
+  ];
+
 export class QueryItem extends React.Component {
 
+    
     constructor(props){
         super(props);
+        const { value, queryKey } = props;
+
+        let customQueryKey = "";
+        let customQueryValue = "";
+        let queryInputType = queryInputTypes[0].value;
+        // If the queryKey includes a double underscore assume that it is a custom query
+        // see: https://github.com/ademidun/atila-django/blob/496f1e78fd94126925b67849896e13a78e168033/search/query.py#L81-L84
+        if (queryKey && queryKey.includes("__")) {
+            queryInputType = queryInputTypes[1].value;
+            customQueryKey = queryKey;
+            customQueryValue = value;
+        }
+
         this.state = {
-            searchQuery: props.value,
+            searchQuery: value,
+            queryInputType,
+            customQueryKey,
+            customQueryValue,
         };
 
     }
@@ -62,6 +87,24 @@ export class QueryItem extends React.Component {
         </p>
     );
 
+    onChangeQueryInputType = e => {
+        this.setState({queryInputType: e.target.value})
+    }
+
+    onCustomQueryUpdate = event => {
+        this.setState({[event.target.name]: event.target.value})
+    }
+
+    onCustomQueryEntered = event => {
+        const { onUpdateQuery } = this.props;
+        const { customQueryKey, customQueryValue } = this.state;
+
+        const queryData = {
+            [customQueryKey]: customQueryValue
+        }
+        onUpdateQuery(queryData);
+    }
+
     /**
      * If the user passes in an input string that is not one of the autocomplete options, save it as all_fields
      * option that will search all fields in the database.
@@ -76,26 +119,64 @@ export class QueryItem extends React.Component {
     )
 
     render() {
-        const { searchQuery } = this.state;
+        const { searchQuery,queryInputType, customQueryKey, customQueryValue } = this.state;
         const { placeHolder,loggedInUserProfile, queryType } = this.props;
 
         let suggestions = MASTER_LIST_WITH_CATEGORY_LABEL;
         if (loggedInUserProfile && loggedInUserProfile.is_atila_admin) {
             suggestions = MASTER_LIST_WITH_CATEGORY_LABEL_ADMIN;
+
         } if (queryType === "userprofile") {
             suggestions = MASTER_LIST_WITH_CATEGORY_LABEL_USER_PROFILE;
         }
 
         return (
             <>
-                <AutoComplete   suggestions={suggestions}
-                                placeholder={placeHolder||"Search by school, program, ethnicity, activity, industry, or more"}
-                                value={searchQuery}
-                                getSuggestionValue={suggestion => suggestion.value}
-                                renderSuggestion={this.renderSuggestion}
-                                onSuggestionSelected={this.onSuggestionSelected}
-                                inputToSuggestion={this.inputToSuggestion}
-                                keyName={'searchString'}/>
+                {loggedInUserProfile && loggedInUserProfile.is_atila_admin &&
+                <Radio.Group className="mb-2" options={queryInputTypes} 
+                onChange={this.onChangeQueryInputType} value={queryInputType} optionType="button"  buttonStyle="solid" />}
+
+                {queryInputType === customQuery &&
+                <>
+                    <Input.Group compact>
+                        <Input 
+                            style={{ width: "50%" }} 
+                            placeholder="Field"
+                            name="customQueryKey"
+                            value={customQueryKey}
+                            onChange={this.onCustomQueryUpdate}
+                            onPressEnter={this.onCustomQueryEntered}
+                        />
+                        <Input
+                            className="site-input-right"
+                            style={{ width: "50%" }}
+                            placeholder="Value"
+                            name="customQueryValue"
+                            value={customQueryValue}
+                            onChange={this.onCustomQueryUpdate}
+                            onPressEnter={this.onCustomQueryEntered}
+                        />
+                    </Input.Group>
+
+                    <Button onClick={this.onCustomQueryEntered} className="my-3">
+                        Search
+                    </Button>
+                </>
+                }
+
+                {queryInputType === queryBuilder &&
+                    <AutoComplete   suggestions={suggestions}
+                    placeholder={placeHolder||"Search by school, program, ethnicity, activity, industry, or more"}
+                    value={searchQuery}
+                    getSuggestionValue={suggestion => suggestion.value}
+                    renderSuggestion={this.renderSuggestion}
+                    onSuggestionSelected={this.onSuggestionSelected}
+                    inputToSuggestion={this.inputToSuggestion}
+                    keyName={'searchString'}/>
+                }
+                
+
+                
             </>
         );
     }
@@ -108,11 +189,13 @@ const mapStateToProps = state => {
 QueryItem.defaultProps = {
     onUpdateQuery: (query) => {},
     value: "",
+    queryKey: "",
     queryType: "contact",
 };
 
 QueryItem.propTypes = {
     onUpdateQuery: PropTypes.func,
+    queryKey: PropTypes.string,
     placeHolder: PropTypes.string,
     loggedInUserProfile: PropTypes.shape({}).isRequired,
     queryType: PropTypes.string.isRequired

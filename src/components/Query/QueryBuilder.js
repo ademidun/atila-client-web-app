@@ -182,12 +182,14 @@ import { convertQueryListToDynamicQuery, DEFAULT_SAMPLE_SEARCHES, getDefaultQuer
         return (
             <div>
                 {allQueries.map((query, index) => {
+                    console.log("query.queryData", query.queryData)
                     const queryValue =  Object.keys(query.queryData).length > 0 ? query.queryData[Object.keys(query.queryData)[0]] : ""; 
+                    const queryKey =  Object.keys(query.queryData).length > 0 ? Object.keys(query.queryData)[0] : ""; 
 
                     return (
 
                     <div key={query.id}>
-                        <QueryItem  onUpdateQuery={(queryData) => {this.onUpdateQuery(queryData, index)}} placeHolder={queryValue} queryType={queryType} />
+                        <QueryItem  onUpdateQuery={(queryData) => {this.onUpdateQuery(queryData, index)}} placeHolder={queryValue} value={queryValue} queryType={queryType} queryKey={queryKey} />
                         {allQueries.length > 1 && 
                         <div className="mb-3">
                         <Button onClick={() => {this.removeQuery(index)}} type="link">

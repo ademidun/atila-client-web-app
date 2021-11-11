@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import { Tag } from 'antd';
 import { FILTER_TYPES } from '../../models/ConstantsForm';
+import ReactJson from 'react-json-view'
 
 class TableUtils {
     /**
@@ -10,7 +11,7 @@ class TableUtils {
      * @returns 
      */
 
-    static USER_PROFILE_COLUMNS = ["user", "first_name", "last_name", "email", "username", "metadata"] + FILTER_TYPES;
+    static USER_PROFILE_COLUMNS = ["user", "first_name", "last_name", "email", "username", "metadata", "email_analytics"] + FILTER_TYPES;
     static getTableColumnsFromObjects = (items, itemType = "contact") => {
 
         let columns = [];
@@ -42,6 +43,21 @@ class TableUtils {
 
                 if (itemProperty === "metadata") {
                     columnSetting.sorter = (a, b) => a.metadata.hasOwnProperty("email_batches") ? -1 : b.metadata.hasOwnProperty("email_batches") ? 1 : 0
+                }
+                if (itemProperty === "email_analytics"){
+
+                    columnSetting.sorter = (a, b) => {
+                        console.log({a,b})
+                        let clickDetailsA = a.email_analytics.click_details ||[]
+                        let clickDetailsB = b.email_analytics.click_details ||[]
+
+                        console.log({a,b, clickDetailsA, clickDetailsB});
+
+                        return  clickDetailsA.length < clickDetailsB.length ? -1 : clickDetailsA.length > clickDetailsB.length  ? 1 : 0
+                    }
+                    columnSetting.render = (email_analytics, item) => (
+                        <ReactJson src={email_analytics} collapsed={1} name="email_analytics" />
+                    )
                 }
 
                 if (itemProperty === "email"){
