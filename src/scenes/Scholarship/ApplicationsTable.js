@@ -97,10 +97,11 @@ export const renderFinalistOrWinnerButton = (application, scholarship, selectFin
 
     const awardOptions = awards.filter(award => !award.recipient).map(award =>        (
             <Popconfirm placement="topLeft" 
-                        title={confirmText} 
+                        title={confirmText}
+                        key={award.id} 
                         onConfirm={() => selectFinalistOrWinner(application, scholarship, award.id)} 
                         okText="Yes" cancelText="No">
-                <Button>{award.funding_amount}</Button>
+                <Button>{formatCurrency(award.funding_amount, true)}</Button>
             </Popconfirm>
         )
     )
