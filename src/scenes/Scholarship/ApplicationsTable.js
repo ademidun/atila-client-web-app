@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Link } from "react-router-dom";
 import { Alert, Button, Table, Tag, Popconfirm, Popover } from "antd";
 import { UserProfilePreview } from "../../components/ReferredByInput";
-import { slugify } from '../../services/utils';
+import { formatCurrency, slugify } from '../../services/utils';
 import { CSVLink } from 'react-csv';
 import { convertApplicationsToCSVFormat, maxApplicationScoreDifference } from '../Application/ApplicationUtils';
 import { ApplicationsSearch, ApplicationPreview } from '../Application/ApplicationsSearch';
@@ -16,6 +16,8 @@ import { CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
 export const maxReviewerScoreDifference = 2.1;
 
 const todayDate = new Date().toISOString();
+
+
 export const renderFinalistOrWinnerButton = (application, scholarship, selectFinalistOrWinner, awards) => {
 
     let finalistOrWinnerText = scholarship.is_finalists_notified ? "winner" : "finalist"
@@ -24,7 +26,8 @@ export const renderFinalistOrWinnerButton = (application, scholarship, selectFin
         confirmText = confirmText + " You will not be able to undo this action.";
     }
 
-    if (todayDate < scholarship.deadline) {
+    const deadlineHasPassed = scholarship.deadline < todayDate;
+    if (!deadlineHasPassed) {
         return (
             <p>
                 You can pick a winner after the deadline has passed
@@ -32,10 +35,22 @@ export const renderFinalistOrWinnerButton = (application, scholarship, selectFin
         )
     }
 
+    if (application.is_winner) {
+        console.log(application)
+        console.log(awards)
+        let application_award = awards.find(award => application.id === award?.recipient?.id)
+        return (
+            <div>
+                <div className="mb-2"><Tag color="green">Winner</Tag></div>
+                This application won {formatCurrency(application_award.funding_amount, true)}.
+            </div>
+        )
+    }
+
     if (scholarship.is_winner_selected) {
         return (
             <p>
-                Winner has been selected
+                All Winners have been selected.
             </p>
         )
     }
@@ -80,13 +95,13 @@ export const renderFinalistOrWinnerButton = (application, scholarship, selectFin
         )
     }
 
-    const awardOptions = awards.map(award => 
-        (
+    const awardOptions = awards.filter(award => !award.recipient).map(award =>        (
             <Popconfirm placement="topLeft" 
-                        title={confirmText} 
+                        title={confirmText}
+                        key={award.id} 
                         onConfirm={() => selectFinalistOrWinner(application, scholarship, award.id)} 
                         okText="Yes" cancelText="No">
-                <Button>{award.funding_amount}</Button>
+                <Button>{formatCurrency(award.funding_amount, true)}</Button>
             </Popconfirm>
         )
     )
@@ -160,6 +175,8 @@ class ApplicationsTable extends  React.Component {
         const { scholarship, selectFinalistOrWinner, isScholarshipOwner, assignReviewerButton, awards, loggedInUserProfile } = this.props;
         const { collaborators, owner_detail } = scholarship;
         const { showScores, allApplications, filteredApplications, searchTerm } = this.state;
+
+    const deadlineHasPassed = scholarship.deadline < todayDate;
     
         let allReviewers = [...collaborators, owner_detail];
     
@@ -214,9 +231,9 @@ class ApplicationsTable extends  React.Component {
                         }
 
                         {application.is_finalist &&
-                        <div className="mb-2">
-                        Verified proof of enrollment? { userProfile.enrollment_proof_verified ? checkIcon : closeIcon}
-                        </div>
+                            <div className="mb-2">
+                            Verified proof of enrollment? { userProfile.enrollment_proof_verified ? checkIcon : closeIcon}
+                            </div>
                         }
                         
                         <EmailModal scholarship={scholarship}
@@ -241,9 +258,14 @@ class ApplicationsTable extends  React.Component {
                 key: '2',
                 render: (id, application) => (
                     <React.Fragment>
-                        {application.is_winner && <><Tag color="green">Winner</Tag>{' '}</>}
-                        {!application.is_winner && application.is_finalist && <><Tag>Finalist</Tag>{' '}</>}
-                        {application.is_submitted ? <Link to={`/application/${application.id}`}>View</Link> : "Cannot view unsubmitted application"}
+                        {application.is_winner && <div className="mb-2"><Tag color="green">Winner</Tag></div>}
+                        {!application.is_winner && application.is_finalist && <div className="mb-2"><Tag>Finalist</Tag></div>}
+                        {application.is_submitted || deadlineHasPassed ? <Link to={`/application/${application.id}`}>View Application</Link> : "Cannot view unsubmitted application before the deadline"}
+                        {loggedInUserProfile && loggedInUserProfile.is_atila_admin && 
+                            <div className="my-2">
+                                <pre>ID: {id}</pre>
+                            </div>
+                        }
                         { application.scholarship_responses && Object.values(application.scholarship_responses).length > 0
                         && 
                             <>

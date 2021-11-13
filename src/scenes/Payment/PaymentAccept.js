@@ -9,7 +9,6 @@ import {Link} from "react-router-dom";
 import InlineEditor from "@ckeditor/ckeditor5-build-inline";
 import CKEditor from "@ckeditor/ckeditor5-react";
 import {toastNotify} from "../../models/Utils";
-import FileInput from "../../components/Form/FileInput";
 import moment from "moment";
 
 import "../../index.scss";
@@ -24,6 +23,8 @@ class PaymentAccept extends React.Component {
         super(props);
 
         this.state = {
+            verificationCode: "",
+            securityQuestionResponse: "",
             loading: null,
             application: null,
             scholarship: null,
@@ -69,19 +70,12 @@ class PaymentAccept extends React.Component {
      * @returns {number}
      */
     getCurrentStep = () => {
-        /*
-        */
-
         const { application } = this.state;
-        const { userProfile } = this.props;
 
         if (application.is_thank_you_letter_sent){
-            return 4
-        }
-        if (userProfile.enrollment_proof && application.is_security_question_answered){
             return 3
         }
-        if (application.is_security_question_answered){
+        if (application.is_security_question_answered && application.is_email_verified){
             return 2
         }
         if (application.is_email_verified){
@@ -183,7 +177,7 @@ class PaymentAccept extends React.Component {
 
     verifyEmailStep = () => {
         const { userProfile } = this.props;
-        const { application, loading } = this.state;
+        const { application, loading, verificationCode } = this.state;
 
         return (
             <Row gutter={[{ xs: 8, sm: 16}, 16]}>
@@ -197,24 +191,24 @@ class PaymentAccept extends React.Component {
                     <Input value={application.verification_email} disabled={true}/>
                 </Col>
                 <Col span={24}>
-                    <Input id="code" placeholder="Email Verification Code" />
+                    <Input value={verificationCode} placeholder="Email Verification Code"
+                           onChange={e => this.setState({verificationCode: e.target.value})} />
                 </Col>
                 <Col span={24}>
+                    <Button onClick={()=>{this.verifyEmailCode(verificationCode)}}
+                            className="center-block mt-3"
+                            type="primary"
+                            disabled={loading}
+                    >
+                        Verify Email
+                    </Button>
+                    <br />
                     <Button onClick={()=>{this.resendVerificationEmail()}}
                             className="center-block mt-3"
                             type="primary"
                             disabled={loading}
                     >
                         Resend Email Verification Code
-                    </Button>
-                    {/*There might be a cleaner method to reference the input value than
-                    document.getElementById('code').value.*/}
-                    <Button onClick={()=>{this.verifyEmailCode(document.getElementById('code').value)}}
-                            className="center-block mt-3"
-                            type="primary"
-                            disabled={loading}
-                    >
-                        Verify Email
                     </Button>
                 </Col>
             </Row>
@@ -313,51 +307,6 @@ class PaymentAccept extends React.Component {
                 </Col>
             </Row>
 
-        )
-    };
-
-    onEnrollmentUpload = (event) => {
-
-        const userProfileUpdateData = {
-            [event.target.name]: event.target.value
-        };
-
-        this.updateUserProfile(userProfileUpdateData);
-    };
-
-    proofOfEnrolmentStep = () => {
-        const title  = "Upload Proof of Enrollment";
-        const { userProfile } = this.props;
-
-        return (
-            <Row gutter={[{ xs: 8, sm: 16}, 16]}>
-                <Col span={24}>
-                    <h3 className="text-center">
-                        {title}
-                    </h3>
-                </Col>
-                <Col span={24}>
-                    <FileInput
-                        title={title}
-                        keyName="enrollment_proof"
-                        onChangeHandler={this.onEnrollmentUpload}
-                        type="image,pdf"
-                        filePath={`user-profile-files/${userProfile.user}`}
-                        uploadHint="Enrollment proof must be a PDF (preferred) or an image."/>
-                </Col>
-                {userProfile.enrollment_proof &&
-                    <>
-                        <Col span={24}>
-                            <a href={userProfile.enrollment_proof}  target="_blank" rel="noopener noreferrer">
-                                View your Enrollment Proof
-                            </a>
-                        </Col>
-                        <Col span={24}>
-                            If you're not automatically redirected to the next step, try refreshing the page.
-                        </Col>
-                    </>
-                }
-            </Row>
         )
     };
 
@@ -630,7 +579,7 @@ class PaymentAccept extends React.Component {
             }
         }
 
-        if (application.user.user !== userProfile.user) {
+        if (application.user.user !== userProfile.user || !application.is_winner) {
             return (
                 <div className="container mt-5">
                     <div className="card shadow p-3">
@@ -652,11 +601,6 @@ class PaymentAccept extends React.Component {
                 slug: 'security_question',
                 title: 'Security Question',
                 render: this.securityQuestionStep,
-            },
-            {
-                slug: 'proof_of_enrolment',
-                title: 'Proof of Enrolment',
-                render: this.proofOfEnrolmentStep,
             },
             {
                 slug: 'thank_you_email',

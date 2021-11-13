@@ -16,7 +16,6 @@ const runAllPromises = () => new Promise(setImmediate);
 const paymentAcceptanceStepsTitles = [
     {title: 'Verify Email'},
     {title: 'Security Question'},
-    {title: 'Proof of Enrolment'},
     {title: 'Thank You Email'},
     {title: 'Accept Payment'},
 ]
@@ -69,6 +68,7 @@ describe('<PaymentAccept />', () => {
     it('renders application steps for logged in user and is application owner', async () => {
 
         ApplicationFinalistSTEM.user.user = initialReduxStateLoggedIn.data.user.loggedInUserProfile.user;
+        ApplicationFinalistSTEM.is_winner = true;
         mockApi.mockApplicationGet(ApplicationFinalistSTEM);
 
 

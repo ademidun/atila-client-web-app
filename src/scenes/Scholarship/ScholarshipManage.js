@@ -12,6 +12,7 @@ import ApplicationsAPI from "../../services/ApplicationsAPI";
 import ApplicationsTable from './ApplicationsTable';
 import AssignReviewers from './AssignReviewers';
 import InviteScholarshipCollaborator from "../../components/InviteScholarshipCollaborator";
+import {toastNotify} from "../../models/Utils";
 
 
 class AssignReviewerRadioSelect extends React.Component {
@@ -146,7 +147,15 @@ class ScholarshipManage extends React.Component {
             })
             .catch(err => {
                 console.log({err});
-                this.setState({responseMessage: "There was an error selecting a winner.\n\n Please message us using the chat icon in the bottom right of your screen."});
+                const { error } = err.response.data;
+                if (error) {
+                    toastNotify(error, 'error')
+                    this.setState({responseMessage: error})
+                } else {
+                    const error_msg = "There was an error selecting a winner.\n\n Please message us using the chat icon in the bottom right of your screen."
+                    toastNotify(error_msg)
+                    this.setState({responseMessage: error_msg});
+                }
             })
             .then(() => {
                 this.setState({isLoadingMessage: null});
