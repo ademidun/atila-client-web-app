@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Link } from "react-router-dom";
 import { Alert, Button, Table, Tag, Popconfirm, Popover } from "antd";
 import { UserProfilePreview } from "../../components/ReferredByInput";
-import { slugify } from '../../services/utils';
+import { formatCurrency, slugify } from '../../services/utils';
 import { CSVLink } from 'react-csv';
 import { convertApplicationsToCSVFormat, maxApplicationScoreDifference } from '../Application/ApplicationUtils';
 import { ApplicationsSearch, ApplicationPreview } from '../Application/ApplicationsSearch';
@@ -38,11 +38,12 @@ export const renderFinalistOrWinnerButton = (application, scholarship, selectFin
     if (application.is_winner) {
         console.log(application)
         console.log(awards)
-        let application_award = awards.filter(award => application.id === award?.recipient?.id)[0]
+        let application_award = awards.find(award => application.id === award?.recipient?.id)
         return (
-            <p>
-                Winner! This application won ${application_award.funding_amount}.
-            </p>
+            <div>
+                <div className="mb-2"><Tag color="green">Winner</Tag></div>
+                This application won {formatCurrency(application_award.funding_amount, true)}.
+            </div>
         )
     }
 
