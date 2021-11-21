@@ -4,18 +4,19 @@ import HelmetSeo, { defaultSeoContent } from '../../components/HelmetSeo';
 import { Blog } from '../../models/Blog';
 import ContentListDisplay from '../../components/ContentListDisplay';
 import { Row, Col } from 'antd';
+import HowToGetScholarships from "../LandingPage/LandingPageLiveDemo";
 
 function Resources(){
 
 
-    const title: string = 'Scholarship Resources for Students';
+    const title: string = 'Scholarship Resources';
     const seoContent = {
         ...defaultSeoContent,
         title,
         description: 'A list of resources to help students get scholarships.',
     };
-    const presentationLinkId = "1HmM_VW53PCnYsnthGxzG2_x1Mcddjm1zdxPHQ78x6zw";
-    const presentationEmbedId = "2PACX-1vR2yzK_cDJBfuVPnuf-6MBYlJBNgfZOTKj6zZ69Nw3vN-r1k0uBbq5P-JuhGtXdHLCdx9uEUqcbpqmi";
+    const presentationLinkId = "1x1V1Bq9y9y69QhjqGgEiiIL4OdYOhzXm7J-iOP4w9Xg";
+    const presentationEmbedId = "2PACX-1vTtd3GOECnF_KiNFVkgaQ_6gTLutyoPPfJCVmHqfMZvrE-Bszs2ZMpCPnQRetyBuc5o5_9sCqctcS9x";
 
     const studentResourceBlogs: Blog[] = [
         {
@@ -88,6 +89,37 @@ function Resources(){
                 profile_pic_url: "https://firebasestorage.googleapis.com/v0/b/atila-prod.appspot.com/o/user-uploads%2Fuser-profile-pictures%2F1972%2Fpoysmr85-hi.png?alt=media&token=0a951337-b510-45b7-b612-e39c26bf8864",
                 id: 1972
             }
+        },
+        { //todo: get blog id and replace this with "Things You Should Do When Creating a Scholarship" blog
+          id: 155,
+          contributors: [
+            {
+              user: 1289,
+              first_name: "Aaron",
+              last_name: "Doerfler",
+              username: "aarondoerfler",
+              profile_pic_url: "https://firebasestorage.googleapis.com/v0/b/atila-prod.appspot.com/o/user-uploads%2Fuser-profile-pictures%2F1289%2Fi7aqzlpa-headshotzoom.jpg?alt=media&token=a6071b1c-afd6-43d3-b008-f57e347caa2b"
+            },
+            {
+              user: 1816,
+              first_name: "Lauren",
+              last_name: "Mercer",
+              username: "llmercer",
+              profile_pic_url: "https://firebasestorage.googleapis.com/v0/b/atila-prod.appspot.com/o/user-uploads%2Fscholarship-images%2Fedo55xjv-Profile%20Photo.jpg?alt=media&token=1ee1db2a-f81b-4391-ade7-e19265600bda"
+            }
+          ],
+          title: "Atila’s Guide to Getting Scholarships for School",
+          slug: "atila-scholarship-guide",
+          description: "The average university student graduates with $28K in student debt, yet at the same time, every year there are millions of dollars in scholarships that go unclaimed!\n\nOur guide hopes to solve both of those problems.",
+          header_image_url: "https://i.imgur.com/95qV22q.png",
+          user: {
+            first_name: "Tomiwa",
+            last_name: "Ademidun",
+            username: "tomiwa",
+            profile_pic_url: "https://firebasestorage.googleapis.com/v0/b/atila-prod.appspot.com/o/user-uploads%2Fuser-profile-pictures%2F1%2Fljy9s5nm-Ezc5Hyf.jpg?alt=media&token=2391816e-c546-4b11-b232-0cc91f9f3547",
+            id: 1
+          },
+          body: "",
         }
       ]
 
@@ -120,8 +152,13 @@ function Resources(){
                 src={`https://docs.google.com/presentation/d/e/${presentationEmbedId}/embed?start=false&loop=false&delayms=3000`}></iframe>
             </div>
             <hr/>
+            <p>Interested in having Atila talk to your students about Scholarships? <Link to="/contact">Contact us</Link>
+            </p>
+            <hr/>
+            <HowToGetScholarships youtubeVideoId="CbcyPWNFdnY" title="How To Get Scholarships - Sample Presentation" />
+            <hr/>
             <h2 className="my-2">
-                Useful blog posts for students
+                Here are some blog posts you might find useful
             </h2>
             <ContentListDisplay contentList={studentResourceBlogs} />
             <hr/>
@@ -140,8 +177,7 @@ function Resources(){
                 <hr/>
             </>
             }
-            <p>Do you want us to speak to your class about scholarships? <Link to="/contact">contact us</Link>
-            </p>
+            
         </div>
     </div>);
 }

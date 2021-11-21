@@ -13,4 +13,17 @@ function LandingPageLiveDemo({youtubeVideoId="4NPLmaar8is", title="How To Add A 
     );
 }
 
+function HowToGetScholarships({youtubeVideoId="CbcyPWNFdnY", title="How To Get Scholarships - Sample Presentation"}) {
+    
+    return (
+        <div>
+            <iframe title={title}
+                    allowFullScreen
+                    src={`//www.youtube.com/embed/${youtubeVideoId}?cc_load_policy=1&cc_lang_pref=en`}
+                    >
+            </iframe>
+        </div>
+    );
+}
+
 export default LandingPageLiveDemo;
