@@ -90,8 +90,8 @@ function Resources(){
                 id: 1972
             }
         },
-        { //todo: get blog id and replace this with "Things You Should Do When Creating a Scholarship" blog
-          id: 155,
+        { 
+          id: 194,
           contributors: [
             {
               user: 1289,
@@ -108,10 +108,10 @@ function Resources(){
               profile_pic_url: "https://firebasestorage.googleapis.com/v0/b/atila-prod.appspot.com/o/user-uploads%2Fscholarship-images%2Fedo55xjv-Profile%20Photo.jpg?alt=media&token=1ee1db2a-f81b-4391-ade7-e19265600bda"
             }
           ],
-          title: "Atila’s Guide to Getting Scholarships for School",
-          slug: "atila-scholarship-guide",
-          description: "The average university student graduates with $28K in student debt, yet at the same time, every year there are millions of dollars in scholarships that go unclaimed!\n\nOur guide hopes to solve both of those problems.",
-          header_image_url: "https://i.imgur.com/95qV22q.png",
+          title: "Things You Should Do When Creating a Scholarship",
+          slug: "things-you-should-do-when-creating-a-scholarship",
+          description: "Include applications and thank you letters from previous winners\r\nHave both finalists and winners in your scholarship\r\nAvoid word count and page count restrictions\r\nMove away from manual application processes\r\n\r\nAvoid PDF and Email Submissions\r\nUse Web Form Submissions",
+          header_image_url: "https://i.imgur.com/g8tqfqM.png",
           user: {
             first_name: "Tomiwa",
             last_name: "Ademidun",
@@ -152,8 +152,8 @@ function Resources(){
                 src={`https://docs.google.com/presentation/d/e/${presentationEmbedId}/embed?start=false&loop=false&delayms=3000`}></iframe>
             </div>
             <hr/>
-            <p>Interested in having Atila talk to your students about Scholarships? <Link to="/contact">Contact us</Link>
-            </p>
+            <h6>Interested in having Atila talk to your students about Scholarships? <Link to="/contact">Contact us</Link>
+            </h6>
             <hr/>
             <HowToGetScholarships youtubeVideoId="CbcyPWNFdnY" title="How To Get Scholarships - Sample Presentation" />
             <hr/>
