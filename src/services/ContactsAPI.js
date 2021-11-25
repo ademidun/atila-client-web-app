@@ -4,6 +4,7 @@ import Environment from './Environment'
 class ContactsAPI {
     static contactsApiUrl = `${Environment.apiUrl}/contact`;
     static contactsApiQueryUrl = `${Environment.apiUrl}/contact/contacts/query/`;
+    static contactsApiQueryStudentClubsUrl = `${Environment.apiUrl}/contact/contacts/query-student-clubs/`;
 
     static create = (contact) => {
 
@@ -33,6 +34,17 @@ class ContactsAPI {
             method: 'post',
             data: queryData,
             url: ContactsAPI.contactsApiQueryUrl,
+        });
+
+        return apiCompletionPromise
+    }
+
+    static queryStudentClubs = (queryData) => {
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: queryData,
+            url: ContactsAPI.contactsApiQueryStudentClubsUrl,
         });
 
         return apiCompletionPromise

@@ -67,6 +67,7 @@ export class MockAPI {
     initializeMocks = () => {
 
         this.mock.onAny(ContactsAPI.contactsApiQueryUrl).reply(200, ContactsQuery1);
+        this.mock.onAny(ContactsAPI.contactsApiQueryStudentClubsUrl).reply(200, ContactsQuery1);
 
         this.mock.onAny(AnalyticsService.pageViewsUrl).reply(200, {});
 
