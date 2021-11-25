@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 import {Button, Tag} from "antd";
-import LandingPageLiveDemo from "./LandingPageLiveDemo";
+import EmbedResponsiveYoutubeVideo from "./LandingPageLiveDemo";
 import {
     ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP,
     ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_START_SCHOLARSHIP
@@ -136,7 +136,7 @@ export function HowItWorksStudent() {
                 <DescriptionsWithScreenshotsList items={howItWorksStudent} />
             </div>
 
-            <LandingPageLiveDemo youtubeVideoId="iLIHhuY9b0k" title="How to Start a Scholarship on Atila" />
+            <EmbedResponsiveYoutubeVideo youtubeVideoId="iLIHhuY9b0k" title="How to Start a Scholarship on Atila" />
 
             <h1 className="col-sm-12 text-center">
                 <Link to="/apply"> Learn More </Link>
@@ -169,7 +169,7 @@ export function HowItWorksSponsor({hideLearnMore = false}) {
             {/*Hide Learn More is true on the /start page. Which is when we want to show the demo first
             Otherwise, when used elsewhere, we want to show the demo after the screenshots*/}
             {hideLearnMore &&
-            <LandingPageLiveDemo />
+            <EmbedResponsiveYoutubeVideo />
             }
             <div>
             <DescriptionsWithScreenshotsList items={howItWorksSponsorItems} />
@@ -178,7 +178,7 @@ export function HowItWorksSponsor({hideLearnMore = false}) {
             {/*Hide Learn More is true on the /start page. Which is when we want to show the demo first
             Otherwise, when used elsewhere, we want to show the demo after the screenshots*/}
             {!hideLearnMore &&
-                <LandingPageLiveDemo />
+                <EmbedResponsiveYoutubeVideo />
             }
 
 

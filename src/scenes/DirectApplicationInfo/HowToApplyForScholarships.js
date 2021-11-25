@@ -1,7 +1,7 @@
 import React from "react";
 import HelmetSeo from "../../components/HelmetSeo";
 import {Link} from "react-router-dom";
-import LandingPageLiveDemo from "../LandingPage/LandingPageLiveDemo";
+import EmbedResponsiveYoutubeVideo from "../LandingPage/LandingPageLiveDemo";
 import { BackTop, Button } from "antd";
 import { createTableOfContents } from "../../services/utils";
 import InformationWithImage from "../../components/InformationWithImage";
@@ -29,7 +29,7 @@ export const howToStartAScholarshipInformationItems = [
         title: "Video Demo",
         body: (<div>
             <ol>
-                <LandingPageLiveDemo youtubeVideoId="iLIHhuY9b0k"/>
+                <EmbedResponsiveYoutubeVideo youtubeVideoId="iLIHhuY9b0k"/>
             </ol>
         </div>),
         image: "",
