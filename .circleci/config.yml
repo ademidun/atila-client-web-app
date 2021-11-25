@@ -23,6 +23,7 @@ jobs:
           name: test
           command: npm test
   deploy: # deploy script
+    resource_class: large
     working_directory: ~/repository
     docker:
       - image: cimg/node:14.17.6
