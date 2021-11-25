@@ -4,7 +4,7 @@ import HelmetSeo, { defaultSeoContent } from '../../components/HelmetSeo';
 import { Blog } from '../../models/Blog';
 import ContentListDisplay from '../../components/ContentListDisplay';
 import { Row, Col } from 'antd';
-import HowToGetScholarships from "../LandingPage/LandingPageLiveDemo";
+import EmbedResponsiveYoutubeVideo from "../LandingPage/LandingPageLiveDemo";
 
 function Resources(){
 
@@ -155,7 +155,7 @@ function Resources(){
             <h6>Interested in having Atila talk to your students about Scholarships? <Link to="/contact">Contact us</Link>
             </h6>
             <hr/>
-            <HowToGetScholarships youtubeVideoId="CbcyPWNFdnY" title="How To Get Scholarships - Sample Presentation" />
+            <EmbedResponsiveYoutubeVideo youtubeVideoId="CbcyPWNFdnY" title="How To Get Scholarships - Sample Presentation" />
             <hr/>
             <h2 className="my-2">
                 Here are some blog posts you might find useful
