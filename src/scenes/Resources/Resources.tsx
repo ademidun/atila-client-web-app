@@ -12,6 +12,7 @@ function Resources(){
     const title: string = 'Scholarship Resources';
     const seoContent = {
         ...defaultSeoContent,
+        image: "https://i.imgur.com/iKX5D9V.jpg",
         title,
         description: 'A list of resources to help students get scholarships.',
     };
@@ -140,10 +141,17 @@ function Resources(){
         <HelmetSeo content={seoContent} />
         <div className="card shadow p-3 text-center">
             <h1>{title}</h1>
-
+            <hr/>
+            <h2>
+                <a href={`https://youtube.com/watch?v=CbcyPWNFdnY`} target="_blank" rel="noopener noreferrer">
+                    How to get Scholarships - Video
+                </a>
+            </h2>
+            <EmbedResponsiveYoutubeVideo youtubeVideoId="CbcyPWNFdnY" title="How To Get Scholarships for School" />
+            <hr/>
             <h2>
                 <a href={`https://docs.google.com/presentation/d/${presentationLinkId}/edit?usp=sharing`} target="_blank" rel="noopener noreferrer">
-                    How to get scholarships presentation
+                    How to get Scholarships - Slides
                 </a>
             </h2>
             <div className="responsive-google-slides">
@@ -152,11 +160,14 @@ function Resources(){
                 src={`https://docs.google.com/presentation/d/e/${presentationEmbedId}/embed?start=false&loop=false&delayms=3000`}></iframe>
             </div>
             <hr/>
-            <h6>Interested in having Atila talk to your students about Scholarships? <Link to="/contact">Contact us</Link>
-            </h6>
-            <hr/>
-            <EmbedResponsiveYoutubeVideo youtubeVideoId="CbcyPWNFdnY" title="How To Get Scholarships - Sample Presentation" />
-            <hr/>
+            <div className="my-3">
+              <h3>
+                <strong>
+                  Interested in having Atila talk to your students about scholarships? <Link to="/contact">Contact us</Link>
+                </strong>
+              </h3>
+            </div>
+              <hr/>
             <h2 className="my-2">
                 Here are some blog posts you might find useful
             </h2>
