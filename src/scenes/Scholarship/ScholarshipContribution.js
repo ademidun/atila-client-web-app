@@ -285,10 +285,98 @@ class ScholarshipContribution extends React.Component {
         )
     }
 
-    render () {
+    paymentPageRender = (paymentSend) => {
+        return (
+            <div className="col-12">
+                <h1>
+                    Enter Payment Details
+                </h1>
+                {paymentSend}
+            </div>
+        )
+    }
+
+    completePageRender = (paymentSend) => {
         const { userProfile } = this.props;
+        const { scholarship, contributor, showRegistrationForm } = this.state;
+
+        return (
+            <div className="col-12">
+                <div>
+                    <h1>Share your Contribution Image</h1>
+                    {contributor.funding_confirmation_image_url &&
+                    <>
+                        <div className="col-12">
+                            <img src={contributor.funding_confirmation_image_url}
+                                 style={{width: "100%"}} alt={`Scholarship Contribution confirmation for ${contributor.first_name}`} />
+                            {/*
+                                                After 3 seconds, hide the message that tells the user the image may take some time to load.
+                                                The images are generated using htmlcsstoimage.com which can take about 3 seconds to load.
+                                                This message lets the user know to stay on the page and not navigate away.
+                                             */}
+                            <p id="hide-after-3-seconds">Your confirmation image may take a few seconds to display, please wait...</p>
+                        </div>
+                    </>
+                    }
+                    {contributor.is_anonymous &&
+                    <div>
+                        <h6 className="text-muted text-center">
+                            No image to share since you're anonymous, but if you decide to share your name for future scholarships,
+                            you can get an image like this:
+                        </h6>
+                        <div className="col-12">
+                            <img src={SCHOLARSHIP_CONTRIBUTION_EXAMPLE_IMAGE}
+                                 style={{width: "70%"}} alt={`Scholarship Contribution confirmation for ${contributor.first_name}`} />
+                        </div>
+                    </div>
+                    }
+                    <div className="col-12 text-center mb-3">
+                        <a target="_blank" rel="noopener noreferrer" href={contributor.is_anonymous ? SCHOLARSHIP_CONTRIBUTION_EXAMPLE_IMAGE : contributor.funding_confirmation_image_url}>
+                            View Image (Right click or hold on mobile to save image)
+                        </a>
+                    </div>
+                    <div className="col-12 text-center mb-3">
+                        <Link to={`/scholarship/${scholarship.slug}`}>
+                            View Scholarship: {scholarship.name}
+                        </Link>
+                    </div>
+                    {!userProfile &&
+                    <div className="col-12 text-center mb-3">
+                        <h1>Optional: Create an Account</h1> <br/>
+                        <p className="text-muted">
+                            Creating an account will allow you to view all your contributions
+                            on Atila and request being added as a reviewer to applications for this
+                            scholarship.
+                        </p>
+                        <Button onClick={this.toggleShowRegistrationForm} type="link">
+                            {showRegistrationForm ? 'Hide ' : 'Show '} Registration Form
+                        </Button>
+                        {showRegistrationForm &&
+                        <Register location={this.props.location}
+                                  userProfile={contributor}
+                                  disableRedirect={true}/>
+                        }
+                    </div>
+                    }
+
+                </div>
+                {paymentSend}
+            </div>
+        )
+    }
+
+    render () {
         const { isLoadingScholarship, scholarship, pageNumber, contributor,
-            invalidInput, showRegistrationForm, fundingComplete } = this.state;
+            invalidInput, fundingComplete } = this.state;
+
+        let paymentSend = null
+        if (pageNumber >= 3) {
+            // Only initialize this component on the necessary pages.
+            paymentSend = <PaymentSend scholarship={scholarship}
+                                       onFundingComplete={data => this.onFundingComplete(data, scholarshipContributionPages)}
+                                       contributorFundingAmount={contributor.funding_amount}
+                                       contributor={contributor} />
+        }
 
         let scholarshipContributionPages = [
             {
@@ -305,11 +393,11 @@ class ScholarshipContribution extends React.Component {
             },
             {
                 title: 'Payment',
-                render: null,
+                render: () => this.paymentPageRender(paymentSend),
             },
             {
                 title: 'Complete',
-                render: null,
+                render: () => this.completePageRender(paymentSend),
             },
         ];
 
@@ -363,94 +451,17 @@ class ScholarshipContribution extends React.Component {
         </div>
         )
 
-
         return (
             <div className="container mt-5 text-center">
                 {scholarshipSteps}
                 <div className="row my-3">
-                    {pageNumber <= 2 &&
-                        scholarshipContributionPages[pageNumber].render()
-                    }
-                    {pageNumber >= 3 &&
-                    <div className="col-12">
-                        {pageNumber === 4 &&
-                            <div>
-                                <h1>Share your Contribution Image</h1>
-                                {contributor.funding_confirmation_image_url &&
-                                    <>
-                                    <div className="col-12">
-                                        <img src={contributor.funding_confirmation_image_url}
-                                             style={{width: "100%"}} alt={`Scholarship Contribution confirmation for ${contributor.first_name}`} />
-                                             {/*
-                                                After 3 seconds, hide the message that tells the user the image may take some time to load.
-                                                The images are generated using htmlcsstoimage.com which can take about 3 seconds to load.
-                                                This message lets the user know to stay on the page and not navigate away.
-                                             */}
-                                             <p id="hide-after-3-seconds">Your confirmation image may take a few seconds to display, please wait...</p>
-                                    </div>
-                                    </>
-                                }
-                                {contributor.is_anonymous &&
-                                    <div>
-                                        <h6 className="text-muted text-center">
-                                            No image to share since you're anonymous, but if you decide to share your name for future scholarships,
-                                        you can get an image like this:
-                                        </h6>
-                                        <div className="col-12">
-                                            <img src={SCHOLARSHIP_CONTRIBUTION_EXAMPLE_IMAGE}
-                                                 style={{width: "70%"}} alt={`Scholarship Contribution confirmation for ${contributor.first_name}`} />
-                                        </div>
-                                    </div>
-                                }
-                                <div className="col-12 text-center mb-3">
-                                    <a target="_blank" rel="noopener noreferrer" href={contributor.is_anonymous ? SCHOLARSHIP_CONTRIBUTION_EXAMPLE_IMAGE : contributor.funding_confirmation_image_url}>
-                                        View Image (Right click or hold on mobile to save image)
-                                    </a>
-                                </div>
-                                <div className="col-12 text-center mb-3">
-                                    <Link to={`/scholarship/${scholarship.slug}`}>
-                                        View Scholarship: {scholarship.name}
-                                    </Link>
-                                </div>
-                                {!userProfile &&
-                                <div className="col-12 text-center mb-3">
-                                    <h1>Optional: Create an Account</h1> <br/>
-                                    <p className="text-muted">
-                                        Creating an account will allow you to view all your contributions
-                                        on Atila and request being added as a reviewer to applications for this
-                                        scholarship.
-                                    </p>
-                                    <Button onClick={this.toggleShowRegistrationForm} type="link">
-                                        {showRegistrationForm ? 'Hide ' : 'Show '} Registration Form
-                                    </Button>
-                                    {showRegistrationForm &&
-                                    <Register location={this.props.location}
-                                              userProfile={contributor}
-                                              disableRedirect={true}/>
-                                    }
-                                </div>
-                                }
 
-                            </div>
-                        }
-                        {pageNumber === 3 &&
-                        <h1>
-                            Enter Payment Details
-                        </h1>
-                        }
-                        <PaymentSend scholarship={scholarship}
-                                     onFundingComplete={data => this.onFundingComplete(data, scholarshipContributionPages)}
-                                     contributorFundingAmount={contributor.funding_amount}
-                                     contributor={contributor} />
-                    </div>
-                    }
+                    {scholarshipContributionPages[pageNumber].render()}
 
                     {invalidInput &&
-
-                    <p className="text-danger">
-                        {invalidInput}
-                    </p>
-
+                        <p className="text-danger">
+                            {invalidInput}
+                        </p>
                     }
                 </div>
 
