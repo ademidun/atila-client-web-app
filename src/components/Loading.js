@@ -29,7 +29,7 @@ function Loading({isLoading , title, className, loaderType, width}) {
 
 Loading.defaultProps = {
     isLoading: true,
-    title: "Loading Atila.ca",
+    title: "Loading",
     className: "mt-3",
     loaderType: "bar",
     width: 'auto',
