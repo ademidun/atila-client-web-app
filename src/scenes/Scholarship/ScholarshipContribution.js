@@ -73,6 +73,11 @@ class ScholarshipContribution extends React.Component {
             .then(res => {
                 const { scholarship, awards, owner_detail } = res.data;
                 this.setState({ scholarship, awards, scholarshipOwner: owner_detail });
+                if (awards.length > 0) {
+                    // Default to contributing towards the top award.
+                    const top_award_id = awards[0].id
+                    this.setFundingDistribution(top_award_id)
+                }
             })
             .catch(err => {
                 console.log({err})
@@ -176,8 +181,8 @@ class ScholarshipContribution extends React.Component {
         this.setState({showCustomContribution: !showCustomContribution});
     }
 
-    updateFundingDistribution = (event) => {
-        const newContributor = { ...this.state.contributor, funding_distribution: event.target.value }
+    setFundingDistribution = (new_distribution) => {
+        const newContributor = { ...this.state.contributor, funding_distribution: new_distribution }
         this.setState({contributor: newContributor});
     }
 
@@ -207,7 +212,7 @@ class ScholarshipContribution extends React.Component {
                 {showCustomContribution &&
                 <>
                     <h3>How would you like the contribution amount to  be split?</h3>
-                    <Radio.Group onChange={this.updateFundingDistribution}
+                    <Radio.Group onChange={e => this.setFundingDistribution(e.target.value)}
                         value={funding_distribution}>
                         <Space direction="vertical">
                             <Radio value={"create"}>Create a new award with value ${contributor.funding_amount}.</Radio>
