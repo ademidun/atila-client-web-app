@@ -216,13 +216,14 @@ export function getRandomContributorProfilePicture(excludeDefaultProfilePicture=
 export let DEFAULT_SCHOLARSHIP_CONTRIBUTOR = {
     first_name: "",
     last_name: "",
-    funding_amount: "",
+    funding_amount: "50",
     email: "",
     user: null,
     is_anonymous:false,
     referred_by: null,
     username: null,
     profile_pic_url: getRandomContributorProfilePicture(),
+    funding_distribution: "create",
 };
 
 const atilaDirectApplicationsPopoverContent = (
