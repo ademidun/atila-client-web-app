@@ -13,7 +13,7 @@ import ScholarshipsAPI from "../../../services/ScholarshipsAPI";
 import {
     ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP,
     ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_START_SCHOLARSHIP,
-    ATILA_SCHOLARSHIP_FEE
+    ATILA_SCHOLARSHIP_FEE, ATILA_SCHOLARSHIP_FEE_TAX
 } from "../../../models/Constants";
 import {formatCurrency, getErrorMessage} from "../../../services/utils";
 import PaymentAPI from "../../../services/PaymentAPI";
@@ -58,7 +58,7 @@ class PaymentSendForm extends React.Component {
 
         // totalPaymentAmount = contributorFundingAmount + (Atila 9% fee + 13% tax)
         const totalPaymentAmount = Number.parseInt(contributorFundingAmount)  +
-            (ATILA_SCHOLARSHIP_FEE * 1.13 * Number.parseInt(contributorFundingAmount));
+            (ATILA_SCHOLARSHIP_FEE * (1 + ATILA_SCHOLARSHIP_FEE_TAX) * Number.parseInt(contributorFundingAmount));
 
         this.state = {
             cardHolderName,
