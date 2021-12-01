@@ -4,8 +4,7 @@ import {connect} from "react-redux";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
 
-import {Button, Input, Steps} from "antd";
-import UserProfileAPI from "../../services/UserProfileAPI";
+import {Button, Input, Radio, Space, Steps} from "antd";
 import PaymentSend from "../Payment/PaymentSend/PaymentSend";
 import {UserProfilePropType} from "../../models/UserProfile";
 import Register from "../../components/Register";
@@ -53,6 +52,7 @@ class ScholarshipContribution extends React.Component {
 
         this.state = {
             scholarship: null,
+            awards: [],
             scholarshipOwner: null,
             isLoadingScholarship: true,
             pageNumber: 0,
@@ -61,6 +61,7 @@ class ScholarshipContribution extends React.Component {
             showRegistrationForm: true,
             fundingComplete: false,
             referredByUserProfile: null,
+            showCustomContribution: false,
         }
     }
 
@@ -70,16 +71,8 @@ class ScholarshipContribution extends React.Component {
         ScholarshipsAPI
             .getSlug(slug)
             .then(res => {
-                const { scholarship } = res.data;
-                this.setState({ scholarship });
-
-                // TODO, scholarship serializer should return the userprofile information inside scholarship.owner
-                // instead of only returning the userprofile PK.
-
-                UserProfileAPI.get(scholarship.owner)
-                    .then(res => {
-                        this.setState({ scholarshipOwner: res.data });
-                    })
+                const { scholarship, awards, owner_detail } = res.data;
+                this.setState({ scholarship, awards, scholarshipOwner: owner_detail });
             })
             .catch(err => {
                 console.log({err})
@@ -177,8 +170,21 @@ class ScholarshipContribution extends React.Component {
         this.setState({contributor: newContributor, referredByUserProfile});
     };
 
+    toggleShowCustomContribution = () => {
+        const { showCustomContribution } = this.state;
+
+        this.setState({showCustomContribution: !showCustomContribution});
+    }
+
+    updateFundingDistribution = (event) => {
+        const newContributor = { ...this.state.contributor, funding_distribution: event.target.value }
+        this.setState({contributor: newContributor});
+    }
+
     amountPageRender = () => {
-        const { scholarship, contributor } = this.state;
+        const { scholarship, awards, contributor, showCustomContribution } = this.state;
+        const { funding_distribution } = contributor
+
         return (
             <div className="col-12">
                 <h1>
@@ -194,6 +200,24 @@ class ScholarshipContribution extends React.Component {
                        min="0"
                        step="1"
                        onChange={this.updateContributorInfo}/>
+
+                <br />
+                <br />
+                <Button onClick={this.toggleShowCustomContribution}>Customize Contribution</Button>
+                {showCustomContribution &&
+                <>
+                    <h3>How would you like the contribution amount to  be split?</h3>
+                    <Radio.Group onChange={this.updateFundingDistribution}
+                        value={funding_distribution}>
+                        <Space direction="vertical">
+                            <Radio value={"create"}>Create a new award with value ${contributor.funding_amount}.</Radio>
+                            {awards.map((award, index) => (
+                                <Radio value={award.id}>Increase award {index + 1} (${award.funding_amount}).</Radio>
+                            ))}
+                        </Space>
+                    </Radio.Group>
+                </>
+                }
             </div>
         )
     }
