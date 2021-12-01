@@ -5,6 +5,7 @@ import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import {connect} from "react-redux";
 import { Tabs } from 'antd';
 import MessagingCampaign from '../MesagingCampaign/MessagingCampaign';
+import AdminActions from './AdminActions';
 const { TabPane } = Tabs;
 
 class Admin extends React.Component {
@@ -38,6 +39,8 @@ class Admin extends React.Component {
                 <HelmetSeo content={seoContent}/>
                 <div className="card shadow p-3">
                     <h1>{title}</h1>
+                    <hr/>
+                    <AdminActions />
                     <Tabs defaultActiveKey="messaging">
                         <TabPane tab="Messaging Campaigns" key="messaging">
                             <MessagingCampaign />
