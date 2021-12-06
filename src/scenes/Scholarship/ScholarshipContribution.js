@@ -220,13 +220,14 @@ class ScholarshipContribution extends React.Component {
                 {showCustomContribution &&
                 <>
                     <h3>How would you like the contribution amount to  be split?</h3>
-                    <Radio.Group onChange={e => this.setFundingDistribution(e.target.value)}
-                        value={funding_distribution}>
+                    <Radio.Group onChange={this.updateContributorInfo}
+                        value={funding_distribution}
+                        name={"funding_distribution"}>
                         <Space direction="vertical">
-                            <Radio value={"create"}>Create a new award with value ${contributor.funding_amount}.</Radio>
                             {awards.map((award, index) => (
                                 <Radio value={award.id}>Increase award {index + 1} (${award.funding_amount}).</Radio>
                             ))}
+                            <Radio value={"create"}>Create a new award with value ${contributor.funding_amount}.</Radio>
                         </Space>
                     </Radio.Group>
                 </>
