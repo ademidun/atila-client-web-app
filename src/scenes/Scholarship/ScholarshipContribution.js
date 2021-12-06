@@ -52,6 +52,8 @@ class ScholarshipContribution extends React.Component {
             defaultContributor.referred_by = referredBy
         }
 
+        defaultContributor.funding_distribution = "create"
+
 
         this.state = {
             scholarship: null,

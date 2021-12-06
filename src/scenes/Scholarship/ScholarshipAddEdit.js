@@ -199,7 +199,7 @@ class ScholarshipAddEdit extends React.Component{
 
         const { userProfile } = props;
 
-        let contributor = DEFAULT_SCHOLARSHIP_CONTRIBUTOR;
+        let contributor = Object.assign({}, DEFAULT_SCHOLARSHIP_CONTRIBUTOR);
 
         if (userProfile) {
             Object.keys(contributor).forEach(contributorKey => {
@@ -210,6 +210,7 @@ class ScholarshipAddEdit extends React.Component{
 
             });
         }
+        contributor.funding_distribution = null;
 
         this.state = {
             scholarship: Object.assign({}, DEFAULT_SCHOLARSHIP),
