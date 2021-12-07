@@ -441,7 +441,7 @@ class ScholarshipContribution extends React.Component {
             },
         ];
 
-        const scholarshipSteps = (<Steps current={pageNumber} onChange={(current) => this.changePage(current+1)}>
+        const scholarshipSteps = (<Steps current={pageNumber} onChange={(newPage) => this.changePage(newPage)}>
             { scholarshipContributionPages.map(item => {
 
                 let disableStep = invalidInput || (!fundingComplete && (["Payment", "Complete"].includes(item.title)
