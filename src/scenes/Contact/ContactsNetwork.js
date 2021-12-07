@@ -23,7 +23,7 @@ class ContactsNetwork extends React.Component {
 
     onUpdateQuery = (queryData) => {
         this.setState({loading: "Loading clubs..."});
-        ContactsAPI.query(queryData)
+        ContactsAPI.queryStudentClubs(queryData)
             .then(res => {
                 const { contacts } = res.data;
                 

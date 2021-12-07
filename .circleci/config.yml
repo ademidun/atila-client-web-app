@@ -4,40 +4,41 @@ jobs:
   build:
     working_directory: ~/repository
     docker:
-      - image: circleci/node:10.16.3
+      - image: cimg/node:14.17.6
     steps:
       - checkout
       - run:
           name: update-npm
           command: 'sudo npm install -g npm@latest'
       - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
+          key: dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "package.json" }}
       - run:
-          name: install-npm
+          name: install-npm-packages
           command: npm install
       - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
+          key: dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "package.json" }}
           paths:
             - ./node_modules
       - run:
           name: test
           command: npm test
   deploy: # deploy script
+    resource_class: large
     working_directory: ~/repository
     docker:
-      - image: circleci/node:10.16.3
+      - image: cimg/node:14.17.6
     steps:
       - checkout
       - run:
           name: update-npm
           command: 'sudo npm install -g npm@latest'
       - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
+          key: dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "package.json" }}
       - run:
-          name: install-npm
+          name: install-npm-packages
           command: npm install
       - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
+          key: dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "package.json" }}
           paths:
             - ./node_modules
       - run: # build react
