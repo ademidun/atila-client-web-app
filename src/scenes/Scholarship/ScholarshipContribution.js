@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
 
-import {Button, Input, Radio, Space, Steps} from "antd";
+import {Alert, Button, Input, Radio, Space, Steps} from "antd";
 import PaymentSend from "../Payment/PaymentSend/PaymentSend";
 import {UserProfilePropType} from "../../models/UserProfile";
 import Register from "../../components/Register";
@@ -203,6 +203,14 @@ class ScholarshipContribution extends React.Component {
         const { scholarship, awards, contributor, showCustomContribution } = this.state;
         const { funding_distribution } = contributor
 
+        const alertMessage = (
+            <div>
+                Minimum contribution: ${ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP}.
+                <br />
+                Minimum contribution for new award: ${ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_NEW_AWARD}.
+            </div>
+        )
+
         return (
             <div className="col-12">
                 <h1>
@@ -250,6 +258,12 @@ class ScholarshipContribution extends React.Component {
                             </Radio>
                         </Space>
                     </Radio.Group>
+
+                    <br />
+                    <br />
+                    <Alert message={alertMessage}
+                           type="info"
+                    />
                 </>
                 }
             </div>
