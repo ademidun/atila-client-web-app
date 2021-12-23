@@ -103,7 +103,6 @@ class ScholarshipContribution extends React.Component {
             event.preventDefault();
         }
         let { contributor, pageNumber } = this.state;
-        let { is_anonymous } = contributor;
         let invalidInput = null;
         let value = event.target.value;
         let eventName = event.target.name;
@@ -119,16 +118,20 @@ class ScholarshipContribution extends React.Component {
                 invalidInput = true;
             }
         }
-        // If the user types a first name or last name then that implies they are not anonymous.
-        if (eventName === "first_name" || eventName === "last_name") {
-            is_anonymous = !value;
-        }
 
         contributor = {
             ...contributor,
-            is_anonymous,
             [eventName]: value
         };
+
+        // If the user types a first name or last name then that implies they are not anonymous.
+        // If no first or last name then they're anonymous.
+        contributor.is_anonymous = contributor.first_name || contributor.last_name
+
+        if (!contributor.funding_amount) {
+            invalidInput = `Please enter a contribution amount.`
+        }
+
         if (contributor && contributor.funding_amount < ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP
             && contributor.funding_distribution !== "create") {
             invalidInput = `Minimum contribution amount is $${ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP}.`;
@@ -221,15 +224,30 @@ class ScholarshipContribution extends React.Component {
                 <Button onClick={this.toggleShowCustomContribution}>Customize Contribution</Button>
                 {showCustomContribution &&
                 <>
+                    <br /> <br />
                     <h3>How would you like the contribution amount to  be split?</h3>
                     <Radio.Group onChange={this.updateContributorInfo}
                         value={funding_distribution}
                         name={"funding_distribution"}>
                         <Space direction="vertical">
-                            {awards.map((award, index) => (
-                                <Radio value={award.id}>Increase award {index + 1} (${award.funding_amount}).</Radio>
-                            ))}
-                            <Radio value={"create"}>Create a new award with value ${contributor.funding_amount}.</Radio>
+                            {awards.map((award, index) => {
+                                let numFundingAmount = Number.parseFloat(award.funding_amount)
+
+                                if (!contributor.funding_amount) {
+                                    return <Radio value={award.id}>
+                                        Increase award {index + 1} (${numFundingAmount}).
+                                    </Radio>
+                                }
+
+                                let newAwardTotal = Number.parseFloat(award.funding_amount) + Number.parseFloat(contributor.funding_amount)
+                                return <Radio value={award.id}>
+                                    Increase award {index + 1} (${numFundingAmount} {'->'} ${newAwardTotal}).
+                                </Radio>
+                            })}
+                            <Radio value={"create"}>
+                                {contributor.funding_amount ? `Create a new award with value $${contributor.funding_amount}.`
+                                    : `Create a new award.`}
+                            </Radio>
                         </Space>
                     </Radio.Group>
                 </>
