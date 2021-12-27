@@ -10,3 +10,8 @@ export const AwardPropType = PropTypes.shape({
 export const AwardGeneral = {
     funding_amount: "1000",
 }
+
+export class Award {
+    id: string = "";
+    funding_amount: number|string = "0.00";
+}

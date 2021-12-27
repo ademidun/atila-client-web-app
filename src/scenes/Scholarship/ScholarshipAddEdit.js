@@ -21,11 +21,12 @@ import {
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Link} from "react-router-dom";
-import {Steps, Tag, InputNumber, Button} from "antd";
+import {Steps, Tag, Button} from "antd";
 import ScholarshipQuestionBuilder, {ScholarshipUserProfileQuestionBuilder} from "./ScholarshipQuestionBuilder";
 import PaymentSend from "../Payment/PaymentSend/PaymentSend";
 import Environment from "../../services/Environment";
 import {AwardGeneral} from "../../models/Award";
+import AwardsAddEdit from './AwardsAddEdit';
 const { Step } = Steps;
 
 
@@ -538,7 +539,6 @@ class ScholarshipAddEdit extends React.Component{
                              onUpdateForm={this.updateForm}
                              formError={scholarshipPostError}
                              onSubmit={this.submitForm}/>
-                {this.awardsPage()}
             </div>
         )
     }
@@ -592,7 +592,15 @@ class ScholarshipAddEdit extends React.Component{
         let scholarship = {...this.state.scholarship}
 
         let newFundingAmount = 0
-        awards.forEach(award => newFundingAmount += Number.parseInt(award.funding_amount))
+        // Allow decimal values when the currency of a scholarship is in Ethereum
+        if (scholarship.currency !== "ETH") {
+            awards.forEach(award => newFundingAmount += Number.parseInt(award.funding_amount))
+        } else {
+            awards.forEach(award => newFundingAmount += Number.parseFloat(award.funding_amount));
+            // convert to 2 decimal places
+            newFundingAmount = newFundingAmount.toFixed(2)
+        }
+        
         scholarship.funding_amount = newFundingAmount
 
         this.setState({scholarship})
@@ -628,38 +636,16 @@ class ScholarshipAddEdit extends React.Component{
     }
 
     awardsPage = () => {
-        // This should be moved into a separate component like AwardAddEdit.
         const { scholarship, awards } = this.state;
 
-        const renderAwards = awards.map((award, index) => (
-            <div key={index}>
-                Award {index + 1}:{' '}
-                <InputNumber size={"large"}
-                             value={award.funding_amount}
-                             onChange={value => this.changeAward(value, index)}
-                             style={{width: "30%"}}
-                             formatter={value => `$ ${value}`}
-                             keyboard={false}
-                             stringMode={true}
-                />
-
-                {index > 0 &&
-                    <Button danger
-                            onClick={()=>this.removeAward(index)}
-                            style={{float: "right"}}>Remove</Button>
-                }
-                <br />
-                <br />
-            </div>
-        ))
-
         return (
-            <div className={"my-3"}>
-                <h5>Total Funding Amount: ${scholarship.funding_amount}</h5>
-                <br />
-                {renderAwards}
-                <Button type="primary" onClick={this.addAward} >Add Award</Button>
-            </div>
+            <AwardsAddEdit scholarship={scholarship} 
+                           awards={awards}
+                           onCurrencyChange={this.updateForm}
+                           onChangeAward={this.changeAward}
+                           onRemoveAward={this.removeAward}
+                           onAddAward={this.addAward}
+                            />
         )
     }
 
@@ -720,10 +706,10 @@ class ScholarshipAddEdit extends React.Component{
                 title: 'Basic Info',
                 render: this.basicInfoPage,
             },
-            // {
-            //     title: 'Awards',
-            //     render: this.awardsPage,
-            // },
+            {
+                title: 'Awards',
+                render: this.awardsPage,
+            },
             {
                 title: 'Eligibility',
                 render: this.eligibilityPage,
