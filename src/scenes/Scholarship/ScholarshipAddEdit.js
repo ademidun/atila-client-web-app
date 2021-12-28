@@ -598,7 +598,7 @@ class ScholarshipAddEdit extends React.Component{
         } else {
             awards.forEach(award => newFundingAmount += Number.parseFloat(award.funding_amount));
             // convert to 2 decimal places
-            newFundingAmount = newFundingAmount.toFixed(2)
+            newFundingAmount = newFundingAmount.toFixed(4)
         }
         
         scholarship.funding_amount = newFundingAmount

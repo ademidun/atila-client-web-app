@@ -10,6 +10,7 @@ export const EnvironmentDev = {
     apiUrlEmailService: 'http://127.0.0.1:5001',
     STRIPE_PUBLIC_KEY: 'pk_test_AxhlK7IudWRlQCa4azz4WElP00QVVE6SNM',
     clientUrl: 'http://localhost:3000',
+    ETHEREUM_DESTINATION_ADDRESS: "0x538642a5f4554A6f42381760F0B51e4203812A82",
 };
 
 export const EnvironmentStaging = {
@@ -23,6 +24,7 @@ export const EnvironmentStaging = {
     apiUrlEmailService: 'https://mhc9n9h5pe.execute-api.us-east-1.amazonaws.com/staging',
     STRIPE_PUBLIC_KEY: 'pk_test_AxhlK7IudWRlQCa4azz4WElP00QVVE6SNM',
     clientUrl: 'https://staging.atila.ca',
+    ETHEREUM_DESTINATION_ADDRESS: "0x538642a5f4554A6f42381760F0B51e4203812A82",
 };
 
 export const EnvironmentProd = {
@@ -36,6 +38,7 @@ export const EnvironmentProd = {
     apiUrlEmailService: 'https://kho47lpiuf.execute-api.us-east-1.amazonaws.com/prod',
     STRIPE_PUBLIC_KEY: 'pk_live_AgHuMdhPDSk5eKrlwoHCnZnR00uIrfIHkM',
     clientUrl: 'https://atila.ca',
+    ETHEREUM_DESTINATION_ADDRESS: "0x538642a5f4554A6f42381760F0B51e4203812A82",
 };
 
 // set to EnvironmentDev as the default so we can use type hinting and the autocomplete feature

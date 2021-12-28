@@ -21,6 +21,7 @@ import {ScholarshipDisableEditMessage, ScholarshipPropType, ScholarshipFundingWi
 import Environment from "../../../services/Environment";
 import ScholarshipSponsorAgreement from "../../../components/ScholarshipSponsorAgreement";
 import ButtonModal from "../../../components/ButtonModal";
+import DigitalCurrencyPaymentForm from "./DigitalCurrencyPaymentForm";
 
 export const PREMIUM_PRICE_BEFORE_TAX = 9;
 export const PREMIUM_PRICE_WITH_TAX = 10.17;
@@ -57,8 +58,13 @@ class PaymentSendForm extends React.Component {
         }
 
         // totalPaymentAmount = contributorFundingAmount + (Atila 9% fee + 13% tax)
-        const totalPaymentAmount = Number.parseInt(contributorFundingAmount)  +
-            (ATILA_SCHOLARSHIP_FEE * 1.13 * Number.parseInt(contributorFundingAmount));
+        let totalPaymentAmount = Number.parseInt(contributorFundingAmount)  +
+        (ATILA_SCHOLARSHIP_FEE * 1.13 * Number.parseInt(contributorFundingAmount));
+        if (scholarship.currency === "ETH") { //preserve decimal places if using ethereum
+            totalPaymentAmount = Number.parseFloat(contributorFundingAmount)  +
+        (ATILA_SCHOLARSHIP_FEE * 1.13 * Number.parseFloat(contributorFundingAmount));
+            totalPaymentAmount = totalPaymentAmount.toFixed(4);
+        }
 
         this.state = {
             cardHolderName,
@@ -177,6 +183,8 @@ class PaymentSendForm extends React.Component {
             isResponseErrorMessage, totalPaymentAmount, contributorFundingAmount,
             contributor, minimumFundingAmount, agreeSponsorAgreement} = this.state;
 
+            console.log({totalPaymentAmount, contributorFundingAmount})
+
         const isResponseErrorMessageWithContactLink = (<div style={{whiteSpace: "pre-line"}}>
             {isResponseErrorMessage}
             <br /> <Link to="/contact"> Contact us</Link> if problem continues
@@ -258,6 +266,8 @@ class PaymentSendForm extends React.Component {
                                 }
                             </div>
                             {!isPaymentSuccess &&
+                            <>
+                            {scholarship.currency !== "ETH" && 
                             <form onSubmit={this.handleSubmit}>
                                 <Row gutter={16}>
                                     <Col span={24} className="mb-3">
@@ -285,7 +295,7 @@ class PaymentSendForm extends React.Component {
 
                                 <Fragment>
                                         <Checkbox checked={agreeSponsorAgreement}
-                                                  onChange={(e)=>{this.setState({agreeSponsorAgreement: e.target.checked})}}
+                                                onChange={(e)=>{this.setState({agreeSponsorAgreement: e.target.checked})}}
                                         />
                                         &nbsp;&nbsp;I agree to the
                                         <ButtonModal
@@ -316,7 +326,12 @@ class PaymentSendForm extends React.Component {
                                     </>
                                 }
 
-                            </form>
+                            </form>}
+                            {scholarship.currency === "ETH" && 
+                                <DigitalCurrencyPaymentForm amount={totalPaymentAmount} />
+                            }
+
+                            </>
                             }
                         </Col>
                         <Col sm={24} md={12}>
