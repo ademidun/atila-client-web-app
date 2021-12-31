@@ -235,20 +235,20 @@ class PaymentSendForm extends React.Component {
 
                     <Row gutter={16}>
                         <Col sm={24} md={12}>
-                            <div className="checkout-form-container">
-                                {isPaymentSuccess &&
-                                <Result
-                                    status="success"
-                                    title="Scholarship Contribution was Successful 🙂"
-                                    subTitle="Check your email for your receipt."
-                                    extra={[
-                                        <Link to={`/scholarship/${scholarship.slug}`} key="view">
-                                            View Scholarship: {scholarship.name}
-                                        </Link>,
-                                    ]}
-                                />
-                                }
-                            </div>
+                            {isPaymentSuccess &&
+                                <div className="checkout-form-container">
+                                    <Result
+                                        status="success"
+                                        title="Scholarship Contribution was Successful 🙂"
+                                        subTitle="Check your email for your receipt."
+                                        extra={[
+                                            <Link to={`/scholarship/${scholarship.slug}`} key="view">
+                                                View Scholarship: {scholarship.name}
+                                            </Link>,
+                                        ]}
+                                    />
+                                </div>
+                            }
                             {!isPaymentSuccess &&
                             <form onSubmit={this.handleSubmit}>
                                 <Row gutter={16}>
@@ -299,14 +299,6 @@ class PaymentSendForm extends React.Component {
                                     {canFundScholarshipMessage}
                                 </Button>
 
-                                {isResponseErrorMessage &&
-                                    <Alert
-                                        type="error"
-                                        message={isResponseErrorMessageWithContactLink}
-                                        className="mb-3"
-                                    />
-                                }
-
                                 {isScholarshipOwner && !scholarship.is_funded &&
                                     <>
                                         <ScholarshipFundingWillPublishMessage />
@@ -317,6 +309,15 @@ class PaymentSendForm extends React.Component {
                                 }
 
                             </form>
+                            }
+
+
+                            {isResponseErrorMessage &&
+                                <Alert
+                                    type="error"
+                                    message={isResponseErrorMessageWithContactLink}
+                                    className="mb-3"
+                                />
                             }
                         </Col>
                         <Col sm={24} md={12}>
