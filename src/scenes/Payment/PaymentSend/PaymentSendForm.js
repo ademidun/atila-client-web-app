@@ -179,7 +179,7 @@ class PaymentSendForm extends React.Component {
 
         const isResponseErrorMessageWithContactLink = (<div style={{whiteSpace: "pre-line"}}>
             {isResponseErrorMessage}
-            <br /> <Link to="/contact"> Contact us</Link> if problem continues
+            <br /> <Link to="/contact" target="_blank" rel="noopener noreferrer"> Contact us</Link> if problem continues (opens in new tab)
         </div>);
 
         if (!scholarship) {
@@ -231,14 +231,6 @@ class PaymentSendForm extends React.Component {
                         <Loading
                             isLoading={isResponseLoading}
                             title={isResponseLoadingMessage} />
-                    }
-
-                    {isResponseErrorMessage &&
-                        <Alert
-                            type="error"
-                            message={isResponseErrorMessageWithContactLink}
-                            className="mb-3"
-                        />
                     }
 
                     <Row gutter={16}>
@@ -306,6 +298,14 @@ class PaymentSendForm extends React.Component {
                                         onClick={this.handleSubmit}>
                                     {canFundScholarshipMessage}
                                 </Button>
+
+                                {isResponseErrorMessage &&
+                                    <Alert
+                                        type="error"
+                                        message={isResponseErrorMessageWithContactLink}
+                                        className="mb-3"
+                                    />
+                                }
 
                                 {isScholarshipOwner && !scholarship.is_funded &&
                                     <>
