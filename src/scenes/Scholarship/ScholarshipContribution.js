@@ -506,7 +506,7 @@ class ScholarshipContribution extends React.Component {
             {pageNumber === 0 &&
             <Button className="float-left col-md-6 mb-3">
                 <Link to={`/scholarship/${scholarship.slug}`}>
-                    Back
+                    Back to {scholarship.name}
                 </Link>
             </Button>}
 
