@@ -126,7 +126,7 @@ class ScholarshipContribution extends React.Component {
 
         // If the user types a first name or last name then that implies they are not anonymous.
         // If no first or last name then they're anonymous.
-        contributor.is_anonymous = contributor.first_name || contributor.last_name
+        contributor.is_anonymous = !(contributor.first_name || contributor.last_name)
 
         if (!contributor.funding_amount) {
             invalidInput = `Please enter a contribution amount.`
@@ -339,6 +339,7 @@ class ScholarshipContribution extends React.Component {
 
                 <Input value={contributor.email}
                        name="email"
+                       type="email"
                        placeholder="Email"
                        className="col-12"
                        onChange={this.updateContributorInfo}/>
