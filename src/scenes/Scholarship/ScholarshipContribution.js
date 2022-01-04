@@ -164,10 +164,10 @@ class ScholarshipContribution extends React.Component {
 
     onFundingComplete = (fundingCompletionData, scholarshipContributionPages) => {
         // TODO implement some logic that should happen after a scholarship has been funded
-        const { contributor } = fundingCompletionData;
+        const { contribution } = fundingCompletionData;
 
         // set pageNumber to the last page of scholarshipContributionPages
-        this.setState({contributor, pageNumber: scholarshipContributionPages.length - 1, fundingComplete: true});
+        this.setState({contributor: contribution, pageNumber: scholarshipContributionPages.length - 1, fundingComplete: true});
 
         setTimeout(()=> {
             if (document.getElementById("hide-after-3-seconds")) {
