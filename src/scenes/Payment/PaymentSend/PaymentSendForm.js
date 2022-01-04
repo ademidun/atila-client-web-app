@@ -79,12 +79,12 @@ class PaymentSendForm extends React.Component {
         this.cardElementRef = React.createRef();
     }
 
-    fundScholarship = (data) => {
+    saveScholarshipContribution = (data) => {
         const { scholarship, onFundingComplete } = this.props;
         this.setState({isResponseLoading: true});
         this.setState({isResponseLoadingMessage: 'Saving Contribution'});
         ScholarshipsAPI
-            .fundScholarship(scholarship.id, data)
+            .saveScholarshipContribution(scholarship.id, data)
             .then(res => {
                 onFundingComplete(res.data)
             })
@@ -141,9 +141,11 @@ class PaymentSendForm extends React.Component {
                     if (cardPaymentResult.paymentIntent.status === 'succeeded') {
                         this.setState({isPaymentSuccess: true});
                         this.setState({isResponseLoading: false});
+                        
+                        contributor.stripe_payment_intent_id = cardPaymentResult.paymentIntent.id;
+                        contributor.funding_amount = contributorFundingAmount;
 
-                        this.fundScholarship({ stripe_payment_intent_id: cardPaymentResult.paymentIntent.id,
-                                                     contributor, funding_amount: contributorFundingAmount});
+                        this.saveScholarshipContribution({ contribution: contributor});
                     }
                 }
 
