@@ -70,6 +70,7 @@ export class MockAPI {
         this.mock.onAny(ContactsAPI.contactsApiQueryStudentClubsUrl).reply(200, ContactsQuery1);
 
         this.mock.onAny(AnalyticsService.pageViewsUrl).reply(200, {});
+        this.mock.onAny(AnalyticsService.searchAnalyticsUrl).reply(200, {});
 
         this.mock.onAny(`${Environment.apiUrl}/scholarship-preview/?page=1`).reply(function (config) {
             // `config` is the axios config and contains things like the url
