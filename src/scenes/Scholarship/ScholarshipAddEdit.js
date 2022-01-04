@@ -204,7 +204,7 @@ class ScholarshipAddEdit extends React.Component{
         if (userProfile) {
             Object.keys(contributor).forEach(contributorKey => {
 
-                if (userProfile[contributorKey]) {
+                if (userProfile.hasOwnProperty(contributorKey)) {
                     contributor[contributorKey] = userProfile[contributorKey]
                 }
 
