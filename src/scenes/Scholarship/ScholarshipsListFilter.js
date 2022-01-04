@@ -4,6 +4,7 @@ import {FILTER_TYPES, SORT_TYPES} from "../../models/ConstantsForm";
 import {prettifyKeys, transformFilterDisplay, myJoin} from "../../services/utils";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTimes} from "@fortawesome/free-solid-svg-icons";
+import QueryBuilder from '../../components/Query/QueryBuilder';
 
 class ScholarshipsListFilter extends React.Component {
 
@@ -97,6 +98,7 @@ class ScholarshipsListFilter extends React.Component {
                         ))}
                     </select>
                 </div>
+                <QueryBuilder onUpdateQuery={this.onUpdateQuery} />
             </div>
         );
     }
