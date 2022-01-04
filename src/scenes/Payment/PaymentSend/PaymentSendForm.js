@@ -110,7 +110,7 @@ class PaymentSendForm extends React.Component {
 
         const paymentData = {
             scholarship: { name: scholarship.name, id: scholarship.id },
-            funding_amount: totalPaymentAmount,
+            total_payment_amount: totalPaymentAmount,
             contributor,
         };
 
