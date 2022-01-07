@@ -199,17 +199,18 @@ class ScholarshipAddEdit extends React.Component{
 
         const { userProfile } = props;
 
-        let contributor = DEFAULT_SCHOLARSHIP_CONTRIBUTOR;
+        let contributor = Object.assign({}, DEFAULT_SCHOLARSHIP_CONTRIBUTOR);
 
         if (userProfile) {
             Object.keys(contributor).forEach(contributorKey => {
 
-                if (userProfile[contributorKey]) {
+                if (userProfile.hasOwnProperty(contributorKey)) {
                     contributor[contributorKey] = userProfile[contributorKey]
                 }
 
             });
         }
+        contributor.funding_distribution = null;
 
         this.state = {
             scholarship: Object.assign({}, DEFAULT_SCHOLARSHIP),
@@ -247,6 +248,7 @@ class ScholarshipAddEdit extends React.Component{
     componentDidMount() {
 
         const { userProfile } = this.props;
+        const { contributor } = this.state;
 
         const { match : { path }} = this.props;
 
@@ -254,6 +256,7 @@ class ScholarshipAddEdit extends React.Component{
             this.setState({isAddScholarshipMode: true});
             this.setState({isLoadingScholarship: false});
             const scholarship = this.state.scholarship;
+            contributor.funding_amount = scholarship.funding_amount;
 
             if(userProfile) {
                 scholarship.owner = userProfile.user;
@@ -261,7 +264,7 @@ class ScholarshipAddEdit extends React.Component{
             else {
                 toastNotify(`⚠️ Warning, you must be logged in to add a scholarship`);
             }
-            this.setState({scholarship});
+            this.setState({ scholarship, contributor });
         } else {
             this.loadContent();
         }
@@ -588,14 +591,15 @@ class ScholarshipAddEdit extends React.Component{
     }
 
     updateFundingAmount = () => {
-        const { awards } = this.state;
+        const { awards, contributor } = this.state;
         let scholarship = {...this.state.scholarship}
 
         let newFundingAmount = 0
         awards.forEach(award => newFundingAmount += Number.parseInt(award.funding_amount))
         scholarship.funding_amount = newFundingAmount
+        contributor.funding_amount = scholarship.funding_amount;
 
-        this.setState({scholarship})
+        this.setState({ scholarship, contributor })
     }
 
     changeAward = (newValue, index) => {
@@ -643,11 +647,11 @@ class ScholarshipAddEdit extends React.Component{
                              stringMode={true}
                 />
 
-                {index > 0 &&
-                    <Button danger
+                            <Button danger
                             onClick={()=>this.removeAward(index)}
-                            style={{float: "right"}}>Remove</Button>
-                }
+                            style={{float: "right"}}>
+                                Remove
+                            </Button>
                 <br />
                 <br />
             </div>

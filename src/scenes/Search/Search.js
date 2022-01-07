@@ -104,7 +104,9 @@ class Search extends React.Component {
                     },
                     type: 'search',
                 };
-                AnalyticsService.saveSearchAnalytics({search_results}, null).then();
+                AnalyticsService.saveSearchAnalytics({search_results}, null)
+                .then()
+                .catch(err=>{console.log({err})});;
 
             })
             .catch(err => {

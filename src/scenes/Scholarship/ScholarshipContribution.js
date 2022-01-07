@@ -4,38 +4,22 @@ import {connect} from "react-redux";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
 
-import {Button, Input, Steps} from "antd";
-import UserProfileAPI from "../../services/UserProfileAPI";
+import {Alert, Button, Input, Radio, Space, Steps} from "antd";
 import PaymentSend from "../Payment/PaymentSend/PaymentSend";
 import {UserProfilePropType} from "../../models/UserProfile";
 import Register from "../../components/Register";
 import FileInput from "../../components/Form/FileInput";
 import {DEFAULT_SCHOLARSHIP_CONTRIBUTOR, SCHOLARSHIP_CONTRIBUTION_EXAMPLE_IMAGE} from "../../models/Scholarship";
 import ScholarshipContributionProfilePictureChooser from "./ScholarshipContributionProfilePictureChooser";
-import {ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP} from "../../models/Constants";
+import {
+    ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_NEW_AWARD,
+    ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP
+} from "../../models/Constants";
 import {isValidEmail} from "../../services/utils";
 import ReferredByInput from "../../components/ReferredByInput";
 
 const { Step } = Steps;
 
-
-let scholarshipContributionPages = [
-    {
-        title: 'Amount',
-    },
-    {
-        title: 'Name',
-    },
-    {
-        title: 'Email',
-    },
-    {
-        title: 'Payment',
-    },
-    {
-        title: 'Complete',
-    },
-];
 
 class ScholarshipContribution extends React.Component {
     constructor(props) {
@@ -68,17 +52,21 @@ class ScholarshipContribution extends React.Component {
             defaultContributor.referred_by = referredBy
         }
 
+        defaultContributor.funding_distribution = "create"
+
 
         this.state = {
             scholarship: null,
+            awards: [],
             scholarshipOwner: null,
             isLoadingScholarship: true,
-            pageNumber: 1,
+            pageNumber: 0,
             contributor: defaultContributor,
             invalidInput: !defaultContributor.funding_amount,
             showRegistrationForm: true,
             fundingComplete: false,
             referredByUserProfile: null,
+            showCustomContribution: false,
         }
     }
 
@@ -88,16 +76,13 @@ class ScholarshipContribution extends React.Component {
         ScholarshipsAPI
             .getSlug(slug)
             .then(res => {
-                const { scholarship } = res.data;
-                this.setState({ scholarship });
-
-                // TODO, scholarship serializer should return the userprofile information inside scholarship.owner
-                // instead of only returning the userprofile PK.
-
-                UserProfileAPI.get(scholarship.owner)
-                    .then(res => {
-                        this.setState({ scholarshipOwner: res.data });
-                    })
+                const { scholarship, awards, owner_detail } = res.data;
+                this.setState({ scholarship, awards, scholarshipOwner: owner_detail });
+                if (awards.length > 0) {
+                    // Default to contributing towards the top award.
+                    const top_award_id = awards[0].id
+                    this.setFundingDistribution(top_award_id)
+                }
             })
             .catch(err => {
                 console.log({err})
@@ -118,7 +103,6 @@ class ScholarshipContribution extends React.Component {
             event.preventDefault();
         }
         let { contributor, pageNumber } = this.state;
-        let { is_anonymous } = contributor;
         let invalidInput = null;
         let value = event.target.value;
         let eventName = event.target.name;
@@ -134,18 +118,27 @@ class ScholarshipContribution extends React.Component {
                 invalidInput = true;
             }
         }
-        // If the user types a first name or last name then that implies they are not anonymous.
-        if (eventName === "first_name" || eventName === "last_name") {
-            is_anonymous = !value;
-        }
 
         contributor = {
             ...contributor,
-            is_anonymous,
             [eventName]: value
         };
-        if (contributor && contributor.funding_amount < ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP) {
+
+        // If the user types a first name or last name then that implies they are not anonymous.
+        // If no first or last name then they're anonymous.
+        contributor.is_anonymous = !(contributor.first_name || contributor.last_name)
+
+        if (!contributor.funding_amount) {
+            invalidInput = `Please enter a contribution amount.`
+        }
+
+        if (contributor && contributor.funding_amount < ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP
+            && contributor.funding_distribution !== "create") {
             invalidInput = `Minimum contribution amount is $${ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP}.`;
+        }
+        if (contributor && contributor.funding_distribution === "create" &&
+            contributor.funding_amount < ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_NEW_AWARD) {
+            invalidInput = `Minimum contribution amount for starting a new award is $${ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_NEW_AWARD}.`;
         }
 
         this.setState({ contributor, invalidInput }, () => {
@@ -169,12 +162,12 @@ class ScholarshipContribution extends React.Component {
 
     };
 
-    onFundingComplete = (fundingCompletionData) => {
+    onFundingComplete = (fundingCompletionData, scholarshipContributionPages) => {
         // TODO implement some logic that should happen after a scholarship has been funded
-        const { contributor } = fundingCompletionData;
+        const { contribution } = fundingCompletionData;
 
         // set pageNumber to the last page of scholarshipContributionPages
-        this.setState({contributor, pageNumber: scholarshipContributionPages.length, fundingComplete: true});
+        this.setState({contributor: contribution, pageNumber: scholarshipContributionPages.length - 1, fundingComplete: true});
 
         setTimeout(()=> {
             if (document.getElementById("hide-after-3-seconds")) {
@@ -195,12 +188,293 @@ class ScholarshipContribution extends React.Component {
         this.setState({contributor: newContributor, referredByUserProfile});
     };
 
-    render () {
-        const { userProfile } = this.props;
-        const { isLoadingScholarship, scholarship, pageNumber, referredByUserProfile,
-            contributor, scholarshipOwner, invalidInput, showRegistrationForm, fundingComplete } = this.state;
+    toggleShowCustomContribution = () => {
+        const { showCustomContribution } = this.state;
 
-        const scholarshipSteps = (<Steps current={pageNumber-1} onChange={(current) => this.changePage(current+1)}>
+        this.setState({showCustomContribution: !showCustomContribution});
+    }
+
+    setFundingDistribution = (new_distribution) => {
+        const newContributor = { ...this.state.contributor, funding_distribution: new_distribution }
+        this.setState({contributor: newContributor});
+    }
+
+    amountPageRender = () => {
+        const { scholarship, awards, contributor, showCustomContribution } = this.state;
+        const { funding_distribution } = contributor
+
+        const alertMessage = (
+            <div>
+                Minimum contribution: ${ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP}.
+                <br />
+                Minimum contribution for new award: ${ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_NEW_AWARD}.
+            </div>
+        )
+
+        return (
+            <div className="col-12">
+                <h1>
+                    How much would you like to contribute to {scholarship.name}?
+                </h1>
+
+                <Input value={contributor.funding_amount}
+                       prefix="$"
+                       name="funding_amount"
+                       placeholder="Funding Amount"
+                       className="col-12"
+                       type="number"
+                       min="0"
+                       step="1"
+                       onChange={this.updateContributorInfo}/>
+
+                <br />
+                <br />
+                <Button onClick={this.toggleShowCustomContribution}>Customize Contribution</Button>
+                {showCustomContribution &&
+                <>
+                    <br /> <br />
+                    <h3>How would you like the contribution amount to  be split?</h3>
+                    <Radio.Group onChange={this.updateContributorInfo}
+                        value={funding_distribution}
+                        name={"funding_distribution"}>
+                        <Space direction="vertical">
+                            {awards.map((award, index) => {
+                                let numFundingAmount = Number.parseFloat(award.funding_amount)
+
+                                if (!contributor.funding_amount) {
+                                    return <Radio value={award.id}>
+                                        Increase award {index + 1} (${numFundingAmount}).
+                                    </Radio>
+                                }
+
+                                let newAwardTotal = Number.parseFloat(award.funding_amount) + Number.parseFloat(contributor.funding_amount)
+                                return <Radio value={award.id}>
+                                    Increase award {index + 1} (${numFundingAmount} {'->'} ${newAwardTotal}).
+                                </Radio>
+                            })}
+                            <Radio value={"create"}>
+                                {contributor.funding_amount ? `Create a new award with value $${contributor.funding_amount}.`
+                                    : `Create a new award.`}
+                            </Radio>
+                        </Space>
+                    </Radio.Group>
+
+                    <br />
+                    <br />
+                    <Alert message={alertMessage}
+                           type="info"
+                    />
+                </>
+                }
+            </div>
+        )
+    }
+
+    namePageRender = () => {
+        const { contributor, scholarshipOwner, pageNumber } = this.state;
+
+        return (
+            <div className="col-12">
+                <h1>
+                    Let{' '}{scholarshipOwner ? scholarshipOwner.first_name: "the Scholarship sponsor"}{' '}
+                    know who is contributing
+                </h1>
+
+                <Input value={contributor.first_name}
+                       name="first_name"
+                       placeholder="First name"
+                       className="col-12 mb-3"
+                       onChange={this.updateContributorInfo}/>
+
+                <Input value={contributor.last_name}
+                       name="last_name"
+                       placeholder="Last name"
+                       className="col-12"
+                       onChange={this.updateContributorInfo}/>
+                <hr/>
+
+                <Button className="float-right col-md-6" type="link"
+                        onClick={() => {
+                            this.contributeAnonymously();
+                            this.changePage(pageNumber+1);
+                        }}>
+                    Skip to contribute anonymously
+                </Button>
+                <h3>Add a Picture of yourself to go with your donation</h3>
+                <FileInput title={"Profile Picture"}
+                           type={"image"}
+                           keyName={"profile_pic_url"}
+                           filePath={`user-profile-pictures-contributors`}
+                           onChangeHandler={this.updateContributorInfo} />
+                {contributor.profile_pic_url &&
+                <>
+                    <img src={contributor.profile_pic_url}
+                         alt={contributor.first_name}
+                         style={{width: "150px"}}
+                         className="rounded-circle shadow my-3"/>
+                </>
+                }
+
+                <h3 className="my-3">Or Select your Preferred image</h3>
+                <ScholarshipContributionProfilePictureChooser contributor={contributor}
+                                                              onSelectedPicture={this.updateContributorInfo}/>
+            </div>
+        )
+    }
+
+    emailPageRender = () => {
+        const { contributor, referredByUserProfile } = this.state;
+
+        // Show the referred by field if there is no logged in user or there is no referred by field.
+        // const showReferredByInput = !userProfile || !contributor.referred_by
+        // Temporarily hide showReferredByInput to avoid complicating contribution flow and the field is not
+        // currently being used.
+        const showReferredByInput = false;
+
+        return (
+            <div className="col-12">
+                <h1>
+                    Email to receive your funding confirmation
+                </h1>
+
+                <Input value={contributor.email}
+                       name="email"
+                       type="email"
+                       placeholder="Email"
+                       className="col-12"
+                       onChange={this.updateContributorInfo}/>
+
+                {showReferredByInput &&
+                <>
+                    <br />
+                    <br />
+                    <h2>Were you referred to contribute by a user? (Optional)</h2>
+                    <ReferredByInput username={contributor.referred_by}
+                                     onSelect={this.selectReferredByUserProfile}
+                                     referredByUserProfile={referredByUserProfile} />
+                </>
+                }
+            </div>
+        )
+    }
+
+    paymentPageRender = (paymentSend) => {
+        return (
+            <div className="col-12">
+                <h1>
+                    Enter Payment Details
+                </h1>
+                {paymentSend}
+            </div>
+        )
+    }
+
+    completePageRender = (paymentSend) => {
+        const { userProfile } = this.props;
+        const { scholarship, contributor, showRegistrationForm } = this.state;
+
+        return (
+            <div className="col-12">
+                <div>
+                    <h1>Share your Contribution Image</h1>
+                    {contributor.funding_confirmation_image_url &&
+                    <>
+                        <div className="col-12">
+                            <img src={contributor.funding_confirmation_image_url}
+                                 style={{width: "100%"}} alt={`Scholarship Contribution confirmation for ${contributor.first_name}`} />
+                            {/*
+                                                After 3 seconds, hide the message that tells the user the image may take some time to load.
+                                                The images are generated using htmlcsstoimage.com which can take about 3 seconds to load.
+                                                This message lets the user know to stay on the page and not navigate away.
+                                             */}
+                            <p id="hide-after-3-seconds">Your confirmation image may take a few seconds to display, please wait...</p>
+                        </div>
+                    </>
+                    }
+                    {contributor.is_anonymous &&
+                    <div>
+                        <h6 className="text-muted text-center">
+                            No image to share since you're anonymous, but if you decide to share your name for future scholarships,
+                            you can get an image like this:
+                        </h6>
+                        <div className="col-12">
+                            <img src={SCHOLARSHIP_CONTRIBUTION_EXAMPLE_IMAGE}
+                                 style={{width: "70%"}} alt={`Scholarship Contribution confirmation for ${contributor.first_name}`} />
+                        </div>
+                    </div>
+                    }
+                    <div className="col-12 text-center mb-3">
+                        <a target="_blank" rel="noopener noreferrer" href={contributor.is_anonymous ? SCHOLARSHIP_CONTRIBUTION_EXAMPLE_IMAGE : contributor.funding_confirmation_image_url}>
+                            View Image (Right click or hold on mobile to save image)
+                        </a>
+                    </div>
+                    <div className="col-12 text-center mb-3">
+                        <Link to={`/scholarship/${scholarship.slug}`}>
+                            View Scholarship: {scholarship.name}
+                        </Link>
+                    </div>
+                    {!userProfile &&
+                    <div className="col-12 text-center mb-3">
+                        <h1>Optional: Create an Account</h1> <br/>
+                        <p className="text-muted">
+                            Creating an account will allow you to view all your contributions
+                            on Atila and request being added as a reviewer to applications for this
+                            scholarship.
+                        </p>
+                        <Button onClick={this.toggleShowRegistrationForm} type="link">
+                            {showRegistrationForm ? 'Hide ' : 'Show '} Registration Form
+                        </Button>
+                        {showRegistrationForm &&
+                        <Register location={this.props.location}
+                                  userProfile={contributor}
+                                  disableRedirect={true}/>
+                        }
+                    </div>
+                    }
+
+                </div>
+                {paymentSend}
+            </div>
+        )
+    }
+
+    render () {
+        const { isLoadingScholarship, scholarship, pageNumber, contributor,
+            invalidInput, fundingComplete } = this.state;
+
+        let paymentSend = null
+        if (pageNumber >= 3) {
+            // Only initialize this component on the necessary pages.
+            paymentSend = <PaymentSend scholarship={scholarship}
+                                       onFundingComplete={data => this.onFundingComplete(data, scholarshipContributionPages)}
+                                       contributorFundingAmount={contributor.funding_amount}
+                                       contributor={contributor} />
+        }
+
+        let scholarshipContributionPages = [
+            {
+                title: 'Amount',
+                render: this.amountPageRender,
+            },
+            {
+                title: 'Name',
+                render: this.namePageRender,
+            },
+            {
+                title: 'Email',
+                render: this.emailPageRender,
+            },
+            {
+                title: 'Payment',
+                render: () => this.paymentPageRender(paymentSend),
+            },
+            {
+                title: 'Complete',
+                render: () => this.completePageRender(paymentSend),
+            },
+        ];
+
+        const scholarshipSteps = (<Steps current={pageNumber} onChange={(newPage) => this.changePage(newPage)}>
             { scholarshipContributionPages.map(item => {
 
                 let disableStep = invalidInput || (!fundingComplete && (["Payment", "Complete"].includes(item.title)
@@ -227,210 +501,43 @@ class ScholarshipContribution extends React.Component {
         const navigationButtons = (
             <div className="row">
 
-            {pageNumber > 1 &&
+            {pageNumber > 0 &&
             <Button className="float-left col-md-6 mb-3"
                     onClick={() => this.changePage(pageNumber-1)}>Back</Button>}
-            {pageNumber === 1 &&
+            {pageNumber === 0 &&
             <Button className="float-left col-md-6 mb-3">
                 <Link to={`/scholarship/${scholarship.slug}`}>
-                    Back
+                    Back to {scholarship.name}
                 </Link>
             </Button>}
 
-            {pageNumber < scholarshipContributionPages.length &&
+            {pageNumber < scholarshipContributionPages.length - 1 &&
             <Button className="float-right col-md-6 mb-3"
                     type="primary"
                     onClick={() => this.changePage(pageNumber+1)}
                     disabled={invalidInput
-                    || (pageNumber === 2 && !contributor.first_name)
-                    || (pageNumber === 3 && !contributor.email)
-                    || (pageNumber === 4 && !fundingComplete)}>
+                    || (pageNumber === 1 && !contributor.first_name)
+                    || (pageNumber === 2 && !contributor.email)
+                    || (pageNumber === 3 && !fundingComplete)}>
                 Next
             </Button>}
         </div>
         )
 
-        // Show the referred by field if there is no logged in user or there is no referred by field.
-        // const showReferredByInput = !userProfile || !contributor.referred_by
-        // Temporarily hide showReferredByInput to avoid complicating contribution flow and the field is not
-        // currently being used.
-        const showReferredByInput = false;
-
         return (
             <div className="container mt-5 text-center">
                 {scholarshipSteps}
                 <div className="row my-3">
-                    {pageNumber === 1 &&
-                        <div className="col-12">
-                        <h1>
-                            How much would you like to contribute to {scholarship.name}?
-                        </h1>
 
-                        <Input value={contributor.funding_amount}
-                               prefix="$"
-                               name="funding_amount"
-                               placeholder="Funding Amount"
-                               className="col-12"
-                               type="number"
-                               min="0"
-                               step="1"
-                               onChange={this.updateContributorInfo}/>
-                    </div>
-
-                    }
-                    {pageNumber === 2 &&
-                        <div className="col-12">
-                        <h1>
-                            Let{' '}{scholarshipOwner ? scholarshipOwner.first_name: "the Scholarship sponsor"}{' '}
-                            know who is contributing
-                        </h1>
-
-                        <Input value={contributor.first_name}
-                               name="first_name"
-                               placeholder="First name"
-                               className="col-12 mb-3"
-                               onChange={this.updateContributorInfo}/>
-
-                        <Input value={contributor.last_name}
-                               name="last_name"
-                               placeholder="Last name"
-                               className="col-12"
-                               onChange={this.updateContributorInfo}/>
-                               <hr/>
-
-                            <Button className="float-right col-md-6" type="link"
-                                    onClick={() => {
-                                        this.contributeAnonymously();
-                                        this.changePage(pageNumber+1);
-                                    }}>
-                                Skip to contribute anonymously
-                            </Button>
-                           <h3>Add a Picture of yourself to go with your donation</h3>
-                            <FileInput title={"Profile Picture"}
-                                       type={"image"}
-                                       keyName={"profile_pic_url"}
-                                       filePath={`user-profile-pictures-contributors`}
-                                       onChangeHandler={this.updateContributorInfo} />
-                            {contributor.profile_pic_url &&
-                            <>
-                            <img src={contributor.profile_pic_url}
-                                                                 alt={contributor.first_name}
-                                                                 style={{width: "150px"}}
-                                                                 className="rounded-circle shadow my-3"/>
-                            </>
-                            }
-
-                            <h3 className="my-3">Or Select your Preferred image</h3>
-                            <ScholarshipContributionProfilePictureChooser contributor={contributor}
-                                                                          onSelectedPicture={this.updateContributorInfo}/>
-                    </div>
-                    }
-                    {pageNumber === 3 &&
-                    <div className="col-12">
-                        <h1>
-                            Email to receive your funding confirmation
-                        </h1>
-
-                        <Input value={contributor.email}
-                               name="email"
-                               placeholder="Email"
-                               className="col-12"
-                               onChange={this.updateContributorInfo}/>
-
-                        {showReferredByInput &&
-                        <>
-                            <br />
-                            <br />
-                            <h2>Were you referred to contribute by a user? (Optional)</h2>
-                            <ReferredByInput username={contributor.referred_by} 
-                            onSelect={this.selectReferredByUserProfile} 
-                            referredByUserProfile={referredByUserProfile} />
-                        </>
-                        }
-                    </div>
-                    }
-                    {pageNumber >= 4 &&
-                    <div className="col-12">
-                        {pageNumber === 5 &&
-                            <div>
-                                <h1>Share your Contribution Image</h1>
-                                {contributor.funding_confirmation_image_url &&
-                                    <>
-                                    <div className="col-12">
-                                        <img src={contributor.funding_confirmation_image_url}
-                                             style={{width: "100%"}} alt={`Scholarship Contribution confirmation for ${contributor.first_name}`} />
-                                             {/*
-                                                After 3 seconds, hide the message that tells the user the image may take some time to load.
-                                                The images are generated using htmlcsstoimage.com which can take about 3 seconds to load.
-                                                This message lets the user know to stay on the page and not navigate away.
-                                             */}
-                                             <p id="hide-after-3-seconds">Your confirmation image may take a few seconds to display, please wait...</p>
-                                    </div>
-                                    </>
-                                }
-                                {contributor.is_anonymous &&
-                                    <div>
-                                        <h6 className="text-muted text-center">
-                                            No image to share since you're anonymous, but if you decide to share your name for future scholarships,
-                                        you can get an image like this:
-                                        </h6>
-                                        <div className="col-12">
-                                            <img src={SCHOLARSHIP_CONTRIBUTION_EXAMPLE_IMAGE}
-                                                 style={{width: "70%"}} alt={`Scholarship Contribution confirmation for ${contributor.first_name}`} />
-                                        </div>
-                                    </div>
-                                }
-                                <div className="col-12 text-center mb-3">
-                                    <a target="_blank" rel="noopener noreferrer" href={contributor.is_anonymous ? SCHOLARSHIP_CONTRIBUTION_EXAMPLE_IMAGE : contributor.funding_confirmation_image_url}>
-                                        View Image (Right click or hold on mobile to save image)
-                                    </a>
-                                </div>
-                                <div className="col-12 text-center mb-3">
-                                    <Link to={`/scholarship/${scholarship.slug}`}>
-                                        View Scholarship: {scholarship.name}
-                                    </Link>
-                                </div>
-                                {!userProfile &&
-                                <div className="col-12 text-center mb-3">
-                                    <h1>Optional: Create an Account</h1> <br/>
-                                    <p className="text-muted">
-                                        Creating an account will allow you to view all your contributions
-                                        on Atila and request being added as a reviewer to applications for this
-                                        scholarship.
-                                    </p>
-                                    <Button onClick={this.toggleShowRegistrationForm} type="link">
-                                        {showRegistrationForm ? 'Hide ' : 'Show '} Registration Form
-                                    </Button>
-                                    {showRegistrationForm &&
-                                    <Register location={this.props.location}
-                                              userProfile={contributor}
-                                              disableRedirect={true}/>
-                                    }
-                                </div>
-                                }
-
-                            </div>
-                        }
-                        {pageNumber === 4 &&
-                        <h1>
-                            Enter Payment Details
-                        </h1>
-                        }
-                        <PaymentSend scholarship={scholarship}
-                                     onFundingComplete={this.onFundingComplete}
-                                     contributorFundingAmount={contributor.funding_amount}
-                                     contributor={contributor} />
-                    </div>
-                    }
+                    {scholarshipContributionPages[pageNumber].render()}
 
                     {invalidInput &&
-
-                    <p className="text-danger">
-                        {invalidInput}
-                    </p>
-
+                        <p className="text-danger">
+                            {invalidInput}
+                        </p>
                     }
                 </div>
+
                 {navigationButtons}
             
             </div>

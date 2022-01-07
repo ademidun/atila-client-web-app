@@ -182,12 +182,12 @@ class ScholarshipsAPI {
         return apiCompletionPromise;
     };
 
-    static fundScholarship = (id, data) => {
+    static saveScholarshipContribution = (id, data) => {
 
         const apiCompletionPromise = request({
             method: 'post',
             data: data,
-            url: `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/fund-scholarship/`,
+            url: `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/save-scholarship-contribution/`,
         });
 
         return apiCompletionPromise;

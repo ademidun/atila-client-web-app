@@ -12,8 +12,8 @@ import Invoice from "./Invoice";
 import ScholarshipsAPI from "../../../services/ScholarshipsAPI";
 import {
     ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP,
-    ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_START_SCHOLARSHIP,
-    ATILA_SCHOLARSHIP_FEE
+    ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_NEW_AWARD,
+    ATILA_SCHOLARSHIP_FEE, ATILA_SCHOLARSHIP_FEE_TAX
 } from "../../../models/Constants";
 import {formatCurrency, getErrorMessage} from "../../../services/utils";
 import PaymentAPI from "../../../services/PaymentAPI";
@@ -48,7 +48,7 @@ class PaymentSendForm extends React.Component {
         let minimumFundingAmount = ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP;
 
         if (isScholarshipEditMode) {
-            minimumFundingAmount = ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_START_SCHOLARSHIP;
+            minimumFundingAmount = ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_NEW_AWARD;
         }
 
 
@@ -58,7 +58,7 @@ class PaymentSendForm extends React.Component {
 
         // totalPaymentAmount = contributorFundingAmount + (Atila 9% fee + 13% tax)
         const totalPaymentAmount = Number.parseInt(contributorFundingAmount)  +
-            (ATILA_SCHOLARSHIP_FEE * 1.13 * Number.parseInt(contributorFundingAmount));
+            (ATILA_SCHOLARSHIP_FEE * (1 + ATILA_SCHOLARSHIP_FEE_TAX) * Number.parseInt(contributorFundingAmount));
 
         this.state = {
             cardHolderName,
@@ -79,12 +79,12 @@ class PaymentSendForm extends React.Component {
         this.cardElementRef = React.createRef();
     }
 
-    fundScholarship = (data) => {
+    saveScholarshipContribution = (data) => {
         const { scholarship, onFundingComplete } = this.props;
         this.setState({isResponseLoading: true});
         this.setState({isResponseLoadingMessage: 'Saving Contribution'});
         ScholarshipsAPI
-            .fundScholarship(scholarship.id, data)
+            .saveScholarshipContribution(scholarship.id, data)
             .then(res => {
                 onFundingComplete(res.data)
             })
@@ -110,7 +110,7 @@ class PaymentSendForm extends React.Component {
 
         const paymentData = {
             scholarship: { name: scholarship.name, id: scholarship.id },
-            funding_amount: totalPaymentAmount,
+            total_payment_amount: totalPaymentAmount,
             contributor,
         };
 
@@ -141,9 +141,11 @@ class PaymentSendForm extends React.Component {
                     if (cardPaymentResult.paymentIntent.status === 'succeeded') {
                         this.setState({isPaymentSuccess: true});
                         this.setState({isResponseLoading: false});
+                        
+                        contributor.stripe_payment_intent_id = cardPaymentResult.paymentIntent.id;
+                        contributor.funding_amount = contributorFundingAmount;
 
-                        this.fundScholarship({ stripe_payment_intent_id: cardPaymentResult.paymentIntent.id,
-                                                     contributor, funding_amount: contributorFundingAmount});
+                        this.saveScholarshipContribution({ contribution: contributor});
                     }
                 }
 
@@ -179,7 +181,7 @@ class PaymentSendForm extends React.Component {
 
         const isResponseErrorMessageWithContactLink = (<div style={{whiteSpace: "pre-line"}}>
             {isResponseErrorMessage}
-            <br /> <Link to="/contact"> Contact us</Link> if problem continues
+            <br /> <Link to="/contact" target="_blank" rel="noopener noreferrer"> Contact us</Link> if problem continues (opens in new tab)
         </div>);
 
         if (!scholarship) {
@@ -197,22 +199,21 @@ class PaymentSendForm extends React.Component {
             )
         }
 
-        let canFundScholarship = scholarship.id && Number.parseInt(contributorFundingAmount) >= minimumFundingAmount && agreeSponsorAgreement;
-        let canFundScholarshipMessage = `Confirm order (${formatCurrency(totalPaymentAmount)})`;
+        const greaterThanOrEqualMinimumAmount = Number.parseInt(contributorFundingAmount) >= minimumFundingAmount;
+        const canFundScholarship = scholarship.id && greaterThanOrEqualMinimumAmount && agreeSponsorAgreement;
+        let fundScholarshipMessage = `Confirm order (${formatCurrency(totalPaymentAmount)})`;
 
-        if (!canFundScholarship) {
-            if (!scholarship.id) {
-                canFundScholarshipMessage = "You must save scholarship before you can fund";
-            } else if (!agreeSponsorAgreement) {
-                canFundScholarshipMessage = "You must agree to the Scholarship Sponsors agreement";
-            } else {
-                canFundScholarshipMessage = (<React.Fragment>
-                    Scholarship funding amount <br/>
-                    must be greater than or equal to
-                    ${minimumFundingAmount}
-                </React.Fragment>);
-            }
-        }
+        if (!greaterThanOrEqualMinimumAmount)  {
+            fundScholarshipMessage = (<React.Fragment>
+                Scholarship funding amount <br/>
+                must be greater than or equal to
+                ${minimumFundingAmount}
+            </React.Fragment>);
+        } else if (!scholarship.id) {
+            fundScholarshipMessage = "You must save scholarship before you can fund";
+        } else if (!agreeSponsorAgreement) {
+            fundScholarshipMessage = "You must agree to the Scholarship Sponsors agreement";
+        } 
 
         let modalTitle = (
             <>
@@ -233,30 +234,22 @@ class PaymentSendForm extends React.Component {
                             title={isResponseLoadingMessage} />
                     }
 
-                    {isResponseErrorMessage &&
-                        <Alert
-                            type="error"
-                            message={isResponseErrorMessageWithContactLink}
-                            className="mb-3"
-                        />
-                    }
-
                     <Row gutter={16}>
                         <Col sm={24} md={12}>
-                            <div className="checkout-form-container">
-                                {isPaymentSuccess &&
-                                <Result
-                                    status="success"
-                                    title="Scholarship Contribution was Successful 🙂"
-                                    subTitle="Check your email for your receipt."
-                                    extra={[
-                                        <Link to={`/scholarship/${scholarship.slug}`} key="view">
-                                            View Scholarship: {scholarship.name}
-                                        </Link>,
-                                    ]}
-                                />
-                                }
-                            </div>
+                            {isPaymentSuccess &&
+                                <div className="checkout-form-container">
+                                    <Result
+                                        status="success"
+                                        title="Scholarship Contribution was Successful 🙂"
+                                        subTitle="Check your email for your receipt."
+                                        extra={[
+                                            <Link to={`/scholarship/${scholarship.slug}`} key="view">
+                                                View Scholarship: {scholarship.name}
+                                            </Link>,
+                                        ]}
+                                    />
+                                </div>
+                            }
                             {!isPaymentSuccess &&
                             <form onSubmit={this.handleSubmit}>
                                 <Row gutter={16}>
@@ -304,7 +297,7 @@ class PaymentSendForm extends React.Component {
                                         style={{height: "auto"}}
                                         disabled={isResponseLoading || !canFundScholarship || isPaymentSuccess}
                                         onClick={this.handleSubmit}>
-                                    {canFundScholarshipMessage}
+                                    {fundScholarshipMessage}
                                 </Button>
 
                                 {isScholarshipOwner && !scholarship.is_funded &&
@@ -317,6 +310,15 @@ class PaymentSendForm extends React.Component {
                                 }
 
                             </form>
+                            }
+
+
+                            {isResponseErrorMessage &&
+                                <Alert
+                                    type="error"
+                                    message={isResponseErrorMessageWithContactLink}
+                                    className="mb-3"
+                                />
                             }
                         </Col>
                         <Col sm={24} md={12}>
