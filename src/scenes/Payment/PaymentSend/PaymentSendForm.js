@@ -12,7 +12,7 @@ import Invoice from "./Invoice";
 import ScholarshipsAPI from "../../../services/ScholarshipsAPI";
 import {
     ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP,
-    ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_START_SCHOLARSHIP,
+    ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_NEW_AWARD,
     ATILA_SCHOLARSHIP_FEE, ATILA_SCHOLARSHIP_FEE_TAX
 } from "../../../models/Constants";
 import {formatCurrency, getErrorMessage} from "../../../services/utils";
@@ -48,7 +48,7 @@ class PaymentSendForm extends React.Component {
         let minimumFundingAmount = ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP;
 
         if (isScholarshipEditMode) {
-            minimumFundingAmount = ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_START_SCHOLARSHIP;
+            minimumFundingAmount = ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_NEW_AWARD;
         }
 
 

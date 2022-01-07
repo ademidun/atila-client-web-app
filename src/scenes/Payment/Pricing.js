@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import {
     ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP,
-    ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_START_SCHOLARSHIP,
+    ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_NEW_AWARD,
     ATILA_SCHOLARSHIP_FEE
 } from "../../models/Constants";
 
@@ -160,7 +160,7 @@ export function PricingExample() {
                         <td>
                             <p>
                                 Sponsor picks the value: <br/>
-                                ${ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_START_SCHOLARSHIP} minimum to start
+                                ${ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_NEW_AWARD} minimum to start
                                 a scholarship or ${ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP}
                                 {' '}minimum to contribute to an existing scholarship.
                             </p>

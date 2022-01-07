@@ -4,7 +4,7 @@ import {Button, Tag} from "antd";
 import EmbedResponsiveYoutubeVideo from "./LandingPageLiveDemo";
 import {
     ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP,
-    ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_START_SCHOLARSHIP
+    ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_NEW_AWARD
 } from "../../models/Constants";
 import {ImageGif} from "../../components/ImageGif";
 
@@ -81,7 +81,7 @@ export const howItWorksSponsorItems = [
         title: "Fund Scholarship",
         body: <p>Fund the scholarship with a credit card or debit card.
             <br/><br/>
-            The minimum funding amount for a scholarship is just ${ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_START_SCHOLARSHIP}. <br/> <br/>
+            The minimum funding amount for a scholarship is just ${ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_NEW_AWARD}. <br/> <br/>
             The minimum funding amount for additional contributions is ${ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP}.
         </p>,
         image: "https://i.imgur.com/kgpSskJ.png",
