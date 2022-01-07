@@ -199,22 +199,21 @@ class PaymentSendForm extends React.Component {
             )
         }
 
-        let canFundScholarship = scholarship.id && Number.parseInt(contributorFundingAmount) >= minimumFundingAmount && agreeSponsorAgreement;
-        let canFundScholarshipMessage = `Confirm order (${formatCurrency(totalPaymentAmount)})`;
+        const greaterThanOrEqualMinimumAmount = Number.parseInt(contributorFundingAmount) >= minimumFundingAmount;
+        const canFundScholarship = scholarship.id && greaterThanOrEqualMinimumAmount && agreeSponsorAgreement;
+        let fundScholarshipMessage = `Confirm order (${formatCurrency(totalPaymentAmount)})`;
 
-        if (!canFundScholarship) {
-            if (!scholarship.id) {
-                canFundScholarshipMessage = "You must save scholarship before you can fund";
-            } else if (!agreeSponsorAgreement) {
-                canFundScholarshipMessage = "You must agree to the Scholarship Sponsors agreement";
-            } else {
-                canFundScholarshipMessage = (<React.Fragment>
-                    Scholarship funding amount <br/>
-                    must be greater than or equal to
-                    ${minimumFundingAmount}
-                </React.Fragment>);
-            }
-        }
+        if (!greaterThanOrEqualMinimumAmount)  {
+            fundScholarshipMessage = (<React.Fragment>
+                Scholarship funding amount <br/>
+                must be greater than or equal to
+                ${minimumFundingAmount}
+            </React.Fragment>);
+        } else if (!scholarship.id) {
+            fundScholarshipMessage = "You must save scholarship before you can fund";
+        } else if (!agreeSponsorAgreement) {
+            fundScholarshipMessage = "You must agree to the Scholarship Sponsors agreement";
+        } 
 
         let modalTitle = (
             <>
@@ -298,7 +297,7 @@ class PaymentSendForm extends React.Component {
                                         style={{height: "auto"}}
                                         disabled={isResponseLoading || !canFundScholarship || isPaymentSuccess}
                                         onClick={this.handleSubmit}>
-                                    {canFundScholarshipMessage}
+                                    {fundScholarshipMessage}
                                 </Button>
 
                                 {isScholarshipOwner && !scholarship.is_funded &&
