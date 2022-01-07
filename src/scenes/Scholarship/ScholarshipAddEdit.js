@@ -647,7 +647,7 @@ class ScholarshipAddEdit extends React.Component{
                              stringMode={true}
                 />
 
-                {index > 0 &&
+                {awards.length > 0 &&
                     <Button danger
                             onClick={()=>this.removeAward(index)}
                             style={{float: "right"}}>Remove</Button>
