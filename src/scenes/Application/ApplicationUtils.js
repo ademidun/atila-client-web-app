@@ -3,7 +3,7 @@ import {userProfileFormConfig} from "../../models/UserProfile";
 import {scholarshipUserProfileSharedFormConfigs} from "../../models/Utils";
 import { prettifyKeys, stripHtml } from '../../services/utils';
 import React from 'react';
-import TextUtils from '../../services/TextUtils';
+import TextUtils from '../../services/utils/TextUtils';
 
 /**
  * Transform array of questions of the form:

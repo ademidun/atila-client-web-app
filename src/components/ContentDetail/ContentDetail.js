@@ -17,9 +17,10 @@ import {
     toTitleCase,
     openAllLinksInNewTab
 } from "../../services/utils";
-import {Button} from "antd";
+import { Button } from "antd";
 import AtilaPointsPaywallModal from "../AtilaPointsPaywallModal";
 import {UserProfilePreview} from "../ReferredByInput";
+import ContentPaymentForm from '../Payments/ContentPaymentForm';
 
 class ContentDetail extends React.Component {
 
@@ -87,6 +88,9 @@ class ContentDetail extends React.Component {
                             this.setState({pageViews: {guestPageViews}});
                         }
                     })
+                    .catch(err => {
+                        console.log({err});
+                    })
             })
             .catch(err => {
                 this.setState({errorGettingContent: { err }});
@@ -151,8 +155,14 @@ class ContentDetail extends React.Component {
 
         } else {
             contentToDisplay = (
-                <div className={`${className} col-md-8 content-detail`}
-                     dangerouslySetInnerHTML={{__html: body}} />
+                <div className={`${className} col-md-8`}>
+                    <ContentPaymentForm contentId={id} contentType={contentType} />
+                    <hr/>
+                    <div className="content-detail"
+                        dangerouslySetInnerHTML={{__html: body}} />
+                        <hr />
+                    <ContentPaymentForm contentId={id} contentType={contentType} />
+                </div>
             )
         }
 

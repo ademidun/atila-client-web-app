@@ -20,6 +20,12 @@ staging: [![Netlify Status](https://api.netlify.com/api/v1/badges/ed4f5b21-da47-
 
 `npm install; npm start`
 
+## Adding a Bit Component
+- We use the [atila-web-components-library](https://github.com/atilatech/atila-web-components-library) for some of our web components
+- You can add your desired component using: `npm install @orgName/componentScopeName.componentID`
+1. `npm config set '@atila:registry' https://node.bit.dev`
+2. `npm i @atila/web-components-library.ui.crypto-payment-form` or `yarn add @atila/web-components-library.ui.crypto-payment-form`
+
 ## Steps for Adding a new Item to Redux
 
 Taken from [PR #8](https://github.com/ademidun/atila-client-web-app/pull/8/files)
