@@ -1,6 +1,8 @@
 import React from 'react';
 import {configure, mount, shallow} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
+import configureStore from "redux-mock-store";
+import {Provider} from "react-redux";
 import "core-js/stable";
 import {ContentDetailTest as ContentDetail} from "./ContentDetail";
 import {BlogWhatIsAtila} from "../../models/Blog";
@@ -10,9 +12,15 @@ import {MemoryRouter} from "react-router-dom";
 import SearchApi from "../../services/SearchAPI";
 import {UserProfileTest1} from "../../models/UserProfile";
 import {EssayIveyApplication} from "../../models/Essay";
-import {relatedItems} from "../../models/Constants";
+import {initialReduxState, initialReduxStateLoggedIn, relatedItems} from "../../models/Constants";
 
 configure({ adapter: new Adapter() });
+
+const mockStore = configureStore();
+
+const guestUserStore = mockStore(initialReduxState);
+const loggedInStore = mockStore(initialReduxStateLoggedIn);
+
 jest.mock("../../services/utils", () => {
     return {
         ...(jest.requireActual("../../services/utils")),
@@ -33,10 +41,12 @@ describe('<ContentDetail />', () => {
 
         const wrapper = shallow(
             <MemoryRouter>
+                <Provider store={guestUserStore}>
                 <ContentDetail contentType={'blog'}
                                contentSlug={'atila/what-is-atila'}
                                ContentAPI={BlogsApi}
                 />
+                </Provider>
             </MemoryRouter>
         );
         expect(wrapper.html()).toBeTruthy();
@@ -46,11 +56,13 @@ describe('<ContentDetail />', () => {
 
         const wrapper = shallow(
             <MemoryRouter>
+                <Provider store={loggedInStore}>
             <ContentDetail contentType={'blog'}
                            contentSlug={'atila/what-is-atila'}
                            ContentAPI={BlogsApi}
                            userProfile={UserProfileTest1}
             />
+            </Provider>
             </MemoryRouter>
         );
         expect(wrapper.html()).toBeTruthy();
@@ -60,11 +72,13 @@ describe('<ContentDetail />', () => {
 
         const wrapper = mount(
             <MemoryRouter>
+                <Provider store={loggedInStore}>
             <ContentDetail contentType={'blog'}
                            contentSlug={'atila/what-is-atila'}
                            ContentAPI={BlogsApi}
                            userProfile={UserProfileTest1}
             />
+            </Provider>
             </MemoryRouter>
         );
         wrapper.find(ContentDetail).setState({ content: BlogWhatIsAtila });
@@ -84,11 +98,13 @@ describe('<ContentDetail />', () => {
 
         const wrapper = mount(
             <MemoryRouter>
+                <Provider store={loggedInStore}>
             <ContentDetail contentType={'blog'}
                            contentSlug={'atila/what-is-atila'}
                            ContentAPI={BlogsApi}
                            userProfile={UserProfileTest1}
             />
+            </Provider>
             </MemoryRouter>
         );
         let childWrapper = wrapper.find(ContentDetail);
@@ -105,10 +121,12 @@ describe('<ContentDetail />', () => {
 
         const wrapper = mount(
             <MemoryRouter>
+                <Provider store={guestUserStore}>
             <ContentDetail contentType={'blog'}
                            contentSlug={'atila/what-is-atila'}
                            ContentAPI={BlogsApi}
             />
+            </Provider>
             </MemoryRouter>
         );
         let childWrapper = wrapper.find(ContentDetail);
@@ -123,10 +141,12 @@ describe('<ContentDetail />', () => {
 
         const wrapper = mount(
             <MemoryRouter>
+                <Provider store={guestUserStore}>
                 <ContentDetail contentType={'blog'}
                                contentSlug={'atila/what-is-atila'}
                                ContentAPI={BlogsApi}
                 />
+                </Provider>
             </MemoryRouter>
         );
         wrapper.find(ContentDetail).setState({ content: BlogWhatIsAtila });
@@ -145,10 +165,12 @@ describe('<ContentDetail />', () => {
 
         const wrapper = mount(
             <MemoryRouter>
+                <Provider store={guestUserStore}>
                 <ContentDetail contentType={'essay'}
                                contentSlug={'atila/what-is-atila'}
                                ContentAPI={BlogsApi}
                 />
+                </Provider>
             </MemoryRouter>
         );
         wrapper.find(ContentDetail).setState({ content: BlogWhatIsAtila });
