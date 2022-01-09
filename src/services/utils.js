@@ -149,9 +149,12 @@ export function toTitleCase(str) {
     return str;
 }
 
-export function formatCurrency(input, convertToInteger=false) {
+export function formatCurrency(input, convertToInteger=false, decimalPlaces=false) {
     if (convertToInteger) {
         input = Number.parseInt(input);
+    }
+    if (decimalPlaces) {
+        input = input.toFixed(decimalPlaces)
     }
     return input.toLocaleString('en-ca', {style : 'currency', currency: 'CAD'});
 }

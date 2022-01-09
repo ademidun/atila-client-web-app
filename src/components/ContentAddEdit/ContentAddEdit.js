@@ -18,6 +18,7 @@ import {MinusCircleOutlined} from "@ant-design/icons";
 import ButtonModal from "../ButtonModal";
 import CloseCircleOutlined from "@ant-design/icons/lib/icons/CloseCircleOutlined";
 import FormInputConstants from '../../models/FormInputConstants';
+import LinkContentToWallet from '../Payments/LinkContentToWallet';
 
 const defaultContent = {
     title: '',
@@ -453,6 +454,7 @@ class ContentAddEdit extends React.Component {
 
                             {isOwner &&
                                 <>
+                                <LinkContentToWallet content={this.state.content} />
                                 <ButtonModal
                                     showModalButtonSize={"medium"}
                                     showModalText={"Invite Contributor..."}

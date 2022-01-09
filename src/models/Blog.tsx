@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import {UserProfileTest1} from "./UserProfile";
+import { Wallet } from './Wallet.class';
 
 export interface Blog {
     id: number,
@@ -17,6 +18,8 @@ export interface Blog {
         profile_pic_url: string,
     },
     contributors?: Array <any>,
+    wallet?: string | null;
+    wallet_detail?: Wallet | null;
 }
 
 export const BlogPropType = PropTypes.shape({
@@ -53,5 +56,7 @@ export const BlogWhatIsAtila : Blog = {
         last_name: 'Ademidun',
         profile_pic_url: "",
     },
-    contributors: [UserProfileTest1]
+    contributors: [UserProfileTest1],
+    wallet: null,
+    wallet_detail: null,
 };

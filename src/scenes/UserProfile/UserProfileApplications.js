@@ -14,7 +14,7 @@ class UserProfileApplications extends React.Component {
         super(props);
 
         this.state = {
-            applications: null,
+            applications: [],
             isLoading: false,
         }
     }
