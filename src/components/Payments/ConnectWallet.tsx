@@ -99,6 +99,11 @@ function ConnectWallet(props: any) {
           }
     }
 
+    /**
+     * TODO: This code isn't working. Please fix in a future commit or PR.
+     * @param event 
+     * @param wallet 
+     */
     const handleWalletLabelChange = (event: any, wallet: Wallet) => {
         const postData = {
             label: event.target.value,
@@ -116,7 +121,7 @@ function ConnectWallet(props: any) {
 
     return (
         <div>
-            <Button onClick={connectWallet} disabled={!!loadingWallet}>
+            <Button onClick={connectWallet} disabled={!!loadingWallet} type="primary">
                 Connect Wallet
             </Button>
             {error && <Alert type="error" message={error} className="my-3" />}

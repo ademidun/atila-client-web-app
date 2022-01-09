@@ -135,6 +135,17 @@ class ContentDetail extends React.Component {
 
         let contentToDisplay = null;
 
+        const contentPaymentForm = (
+            <>
+                    {content.wallet && content.wallet_detail &&
+                    <div>
+                        <ContentPaymentForm content={content} />
+                        <hr/>
+                    </div>
+                    }
+            </>
+        )
+
         if(!userProfile && contentType === 'essay') {
             contentToDisplay = (
                 <div className=" col-md-8 content-detail">
@@ -156,12 +167,11 @@ class ContentDetail extends React.Component {
         } else {
             contentToDisplay = (
                 <div className={`${className} col-md-8`}>
-                    <ContentPaymentForm contentId={id} contentType={contentType} />
-                    <hr/>
+                    {contentPaymentForm}
                     <div className="content-detail"
                         dangerouslySetInnerHTML={{__html: body}} />
                         <hr />
-                    <ContentPaymentForm contentId={id} contentType={contentType} />
+                    {contentPaymentForm}
                 </div>
             )
         }

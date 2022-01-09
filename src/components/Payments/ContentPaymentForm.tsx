@@ -7,19 +7,24 @@ import PaymentAPI from '../../services/PaymentAPI';
 import {connect} from "react-redux";
 import { UserProfile } from '../../models/UserProfile.class';
 import Environment from '../../services/Environment';
+import { getItemType } from '../../services/utils';
+import { Blog } from '../../models/Blog';
 
 const { Option } = Select;
 const { TextArea } = Input;
 
 export interface ContentPaymentFormPropTypes {
-    contentType: string,
-    contentId: string | number,
+    content: Blog,
     userProfileLoggedIn?: UserProfile,
 }
 
 function ContentPaymentForm(props: ContentPaymentFormPropTypes){
-    
-    const { contentType, contentId, userProfileLoggedIn} = props;
+    console.log({props});
+    const { content, userProfileLoggedIn } = props;
+
+    const { id: contentId } = content;
+    const contentType = getItemType(content);
+    const wallet = content.wallet_detail;
 
     const currencyExchangeRates: any = {
         ETH: 3808.87,
@@ -139,6 +144,7 @@ function ContentPaymentForm(props: ContentPaymentFormPropTypes){
                     currency={currency}
                     isTestNet={network === "testnet"}
                     isEditableDestinationAddress={userProfileLoggedIn?.is_atila_admin}
+                    destinationAddress={wallet?.address}
                  />
             </>}
         </div>)

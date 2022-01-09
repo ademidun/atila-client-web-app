@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Alert, Radio } from 'antd';
+import { Alert, Button, Radio } from 'antd';
 import { connect } from 'react-redux'
 import { Blog } from '../../models/Blog'
 import { UserProfile } from '../../models/UserProfile.class';
@@ -22,9 +22,7 @@ const LinkContentToWallet = (props: LinkContentToWalletPropTypes) => {
     const [wallets, setWallets] = useState<Array<Wallet>>([]);
     const [error, setError] = useState("");
     const [loadingWallet, setLoadingWallet] = useState("");
-    const [contentWallet, setContentWallet] = useState(content.wallet)
-
-    console.log({props});
+    const [contentWallet, setContentWallet] = useState(content.wallet);;
     
     /**
      * If we weant to pass a function to useEffect we must memoize the function to prevent an infinite loop re-render.
@@ -60,7 +58,6 @@ const LinkContentToWallet = (props: LinkContentToWalletPropTypes) => {
         const walletId = event.target.value; 
         BlogsApi.patch(content.id, {wallet:  walletId})
         .then(res => {
-            console.log({res});
             setContentWallet(res.data.wallet);
         })
         .catch(error => {
@@ -70,6 +67,15 @@ const LinkContentToWallet = (props: LinkContentToWalletPropTypes) => {
         .finally(()=> {
             setLoadingWallet("");
         })
+    }
+
+    const handleUnlinkWallet = () => {
+        const event = {
+            target: {
+                value: null
+            }
+        }
+        handleSelectWallet(event);
     }
 
     useEffect(() => {
@@ -93,6 +99,11 @@ const LinkContentToWallet = (props: LinkContentToWalletPropTypes) => {
                 {wallets.length === 0 && <div>No Wallets found. Visit your profile to connect a wallet.</div>}
             </div>
             }
+            {contentWallet && 
+                <Button onClick={handleUnlinkWallet} disabled={!!loadingWallet} >
+                    Unlink Wallet
+                </Button>
+        }
         </div>
     )
 }
