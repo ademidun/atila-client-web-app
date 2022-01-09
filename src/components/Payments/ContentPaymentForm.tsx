@@ -41,10 +41,10 @@ function ContentPaymentForm(props: ContentPaymentFormPropTypes){
     ]
     const currencyOptions = [
         {
-            value: "ETH",
+            value: "BNB",
         },
         {
-            value: "BNB",
+            value: "ETH",
         }
     ]
 
@@ -129,7 +129,7 @@ function ContentPaymentForm(props: ContentPaymentFormPropTypes){
         return (
         <div className="container my-3">
             <h5>
-            Enjoyed this article? Tip the Author in ETH or BNB: <Tag color="green">New</Tag>
+            Enjoyed this article? Tip the Author in BNB or ETH: <Tag color="green">New</Tag>
             </h5>
             {selectCurrency}<br/>
             {userProfileLoggedIn?.is_atila_admin && <>{selectNetwork}<br/></>}
