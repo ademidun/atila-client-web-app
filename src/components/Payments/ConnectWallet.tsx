@@ -2,8 +2,10 @@ import { Alert, Button } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react'
 import { connect } from 'react-redux';
 import { UserProfile } from '../../models/UserProfile.class';
+import { Wallet } from '../../models/Wallet.class';
 import PaymentAPI from '../../services/PaymentAPI';
 import UserProfileAPI from '../../services/UserProfileAPI';
+import Loading from '../Loading';
 
 export interface ConmectWalletPropTypes {
     userProfileLoggedIn?: UserProfile,
@@ -13,8 +15,9 @@ function ConnectWallet(props: any) {
 
     const { userProfileLoggedIn } = props;
     // TODO add class for Wallet
-    const [wallet, setWallet] = useState({} as any);
+    const [wallets, setWallets] = useState<Array<Wallet>>([]);
     const [error, setError] = useState("");
+    const [loadingWallet, setLoadingWallet] = useState("");
     
     /**
      * If we weant to pass a function to useEffect we must memoize the function to prevent an infinite loop re-render.
@@ -25,16 +28,20 @@ function ConnectWallet(props: any) {
     const getWallet = useCallback(
         () => {
     
+        setLoadingWallet("Loading user wallet");
         UserProfileAPI.getUserContent(userProfileLoggedIn.user, "wallets")
         .then(res => {
             console.log({res});
             const { data: { wallets } } = res;
-            if (wallets?.length > 0) {
-                setWallet(wallets[0]);
+            if (wallets) {
+                setWallets(wallets);
             }
         })
         .catch(error => {
             console.log({error});
+        })
+        .finally(()=> {
+            setLoadingWallet("");
         })
           return ;// code that references a prop
         },
@@ -54,7 +61,7 @@ function ConnectWallet(props: any) {
             PaymentAPI.saveWallet(postData)
             .then(res => {
                 console.log({res});
-                setWallet(res.data);
+                setWallets([res.data, ...wallets]);
                 
             })
             .catch(error => {
@@ -65,9 +72,22 @@ function ConnectWallet(props: any) {
         if (window.ethereum) {
             try {
               const walletAddresses = await window.ethereum.request({ method: 'eth_requestAccounts' }) as Array<string>;
-              console.log({walletAddresses});
-              saveWallet(walletAddresses[0])
+
+              let walletAddress;
+              if (walletAddresses.length > 0) {
+                console.log({walletAddresses});
+                walletAddress = walletAddresses[0];
+
+                if (wallets.map(wallet => wallet.address).includes(walletAddress)) {
+                    setError("This wallet has already been connected");
+                    return;
+                } else {
+                    saveWallet(walletAddresses[0]);
+                }
+                
+              }
             } catch (error: any) {
+                console.log({error});
               if (error.code === 4001) {
                 // User rejected request
               }
@@ -79,15 +99,21 @@ function ConnectWallet(props: any) {
     }
     return (
         <div>
-            <Button onClick={connectWallet}>
+            <Button onClick={connectWallet} disabled={!!loadingWallet}>
                 Connect Wallet
             </Button>
-            {wallet && 
-            <div>
-                Wallet Address: {wallet.address}
-            </div>
+            {error && <Alert type="error" message={error} className="my-3" />}
+            <h5 className="my-3">Connected wallets</h5>
+            {wallets.length > 0 &&
+                <ol>
+                {wallets.map(wallet => (
+                    <li>
+                        Wallet Address: {wallet.address}
+                    </li>
+                ))}
+                </ol>
             }
-            {error && <Alert type="error" message={error} className="mb-3" />}
+            {loadingWallet && <Loading isLoading={loadingWallet} title={loadingWallet} />}
         </div>
     )
 }

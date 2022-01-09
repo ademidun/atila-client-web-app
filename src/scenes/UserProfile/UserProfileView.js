@@ -11,6 +11,7 @@ import FileInput from "../../components/Form/FileInput";
 import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import UserProfileReferralManagement from './UserProfileReferralManagement';
 import ConnectWallet from '../../components/Payments/ConnectWallet';
+import Environment from '../../services/Environment';
 
 class UserProfileView extends React.Component {
 
@@ -183,7 +184,7 @@ class UserProfileView extends React.Component {
                             }
                             {isProfileEditable && 
                             <>
-                            {loggedInUserProfile && userProfile?.user === loggedInUserProfile?.user && 
+                            {(loggedInUserProfile?.is_atila_admin || (Environment.name !== "prod" && loggedInUserProfile && loggedInUserProfile?.user === userProfile?.user)) && 
                             <>
                                 <hr/>
                                 <ConnectWallet /> 
