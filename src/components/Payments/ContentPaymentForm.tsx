@@ -103,7 +103,9 @@ function ContentPaymentForm(props: ContentPaymentFormPropTypes){
       <Select value={paymentAmount} onChange={handleChange} style={{width: "250px"}}>
           <Option value={0} disabled={true}>{"Select Amount"}</Option>
           {paymentAmountOptions.map(paymentAmountOption => (
-              <Option value={paymentAmountOption}>{TextUtils.formatCurrency(paymentAmountOption)} ({TextUtils.formatCurrency(paymentAmountOption/currencyExchangeRates[currency], currency)})</Option>
+                <Option value={paymentAmountOption} key={paymentAmountOption}>
+                  {TextUtils.formatCurrency(paymentAmountOption)} ({TextUtils.formatCurrency(paymentAmountOption/currencyExchangeRates[currency], currency)})
+                </Option>
           ))}
       </Select>
     </>

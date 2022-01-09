@@ -1,5 +1,5 @@
 import { Alert, Button } from 'antd';
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { connect } from 'react-redux';
 import { UserProfile } from '../../models/UserProfile.class';
 import PaymentAPI from '../../services/PaymentAPI';
@@ -16,24 +16,34 @@ function ConnectWallet(props: any) {
     const [wallet, setWallet] = useState({} as any);
     const [error, setError] = useState("");
     
+    /**
+     * If we weant to pass a function to useEffect we must memoize the function to prevent an infinite loop re-render.
+     * This is because functions change their reference each time a component is re-rendered.
+     * Instead, we only want to rerender when the userProfileLoggedIn.user reference inside the getWallet() function is changed
+     * see: https://stackoverflow.com/a/62601621
+     */
+    const getWallet = useCallback(
+        () => {
+    
+        UserProfileAPI.getUserContent(userProfileLoggedIn.user, "wallets")
+        .then(res => {
+            console.log({res});
+            const { data: { wallets } } = res;
+            if (wallets?.length > 0) {
+                setWallet(wallets[0]);
+            }
+        })
+        .catch(error => {
+            console.log({error});
+        })
+          return ;// code that references a prop
+        },
+        [userProfileLoggedIn,]
+      );
+
     useEffect(() => {
         getWallet();
-      }, []);
-
-    const getWallet = () => {
-    
-            UserProfileAPI.getUserContent(userProfileLoggedIn.user, "wallets")
-            .then(res => {
-                console.log({res});
-                const { data: { wallets } } = res;
-                if (wallets?.length > 0) {
-                    setWallet(wallets[0]);
-                }
-            })
-            .catch(error => {
-                console.log({error});
-            })
-    }
+      }, [getWallet]);
 
     const saveWallet = (walletAddress: string) => {
             const postData = {
