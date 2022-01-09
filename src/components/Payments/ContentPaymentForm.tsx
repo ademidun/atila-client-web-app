@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Select, Tag, Input } from 'antd';
+import { Select, Tag, Input, Radio } from 'antd';
 import CryptoPaymentForm, { TransactionResponsePayment } from '@atila/web-components-library.ui.crypto-payment-form'
 import TextUtils from '../../services/utils/TextUtils';
 import PaymentAPI from '../../services/PaymentAPI';
 
 import {connect} from "react-redux";
 import { UserProfile } from '../../models/UserProfile.class';
+import Environment from '../../services/Environment';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -13,30 +14,53 @@ const { TextArea } = Input;
 export interface ContentPaymentFormPropTypes {
     contentType: string,
     contentId: string | number,
-    userProfileLoggedIn: UserProfile,
+    userProfileLoggedIn?: UserProfile,
 }
 
 function ContentPaymentForm(props: ContentPaymentFormPropTypes){
     
     const { contentType, contentId, userProfileLoggedIn} = props;
 
-    const [paymentAmount, setPaymentAmount] = useState(0);
-    const [paymentNote, setPaymentNote] = useState("")
-
-    const currencyExchangeRates = {
-     ETH: 3808.87,
+    const currencyExchangeRates: any = {
+        ETH: 3808.87,
+        BNB: 550.38,
     }
 
-    const selectedCurrency = "ETH";
+    const paymentAmountOptions = [
+        0.10,
+        1,
+        5,
+        10,
+        25,
+        100,
+    ]
+    const currencyOptions = [
+        {
+            value: "ETH",
+        },
+        {
+            value: "BNB",
+        }
+    ]
+
+    const networkOptions = [
+        {
+            value: "testnet",
+        },
+        {
+            value: "mainnet",
+        }
+    ]
+
+    const [paymentAmount, setPaymentAmount] = useState(0);
+    const [paymentNote, setPaymentNote] = useState("");
+    const [currency, setCurrency] = useState(currencyOptions[0].value);
+    // set the default environment to testnet in any non-prod environment or if it's not an atila_admin_user
+    const [network, setNetwork] = useState(networkOptions[Environment.name === "prod" || !userProfileLoggedIn?.is_atila_admin ? 1 : 0].value)
 
     const handleChange = (value: any) => {
       console.log(`selected ${value}`);
       setPaymentAmount(value);
-    }
-
-    const handlePaymentNoteChange = (event: any) => {
-      console.log({event});
-      setPaymentNote(event.target.value);
     }
 
     const handlePaymentSuccess = (transaction: TransactionResponsePayment) => {
@@ -46,8 +70,8 @@ function ContentPaymentForm(props: ContentPaymentFormPropTypes){
             [contentType]: contentId,
             hash: transaction.hash,
             source_address: transaction.from,
-            currency_code: selectedCurrency,
-            network_chain_id: 3,
+            currency_code: currency,
+            network_chain_id: transaction.network?.chainId,
             network_name: transaction.network?.name,
             transaction_fee_hex: transaction.gasPrice?._hex,
             withdrawn_amount_hex: transaction.value._hex,
@@ -69,38 +93,54 @@ function ContentPaymentForm(props: ContentPaymentFormPropTypes){
         console.log({error});
     }
 
+    const handleCurrencyChange = (event: any) => {
+        setCurrency(event.target.value);
+    }
 
-
-    const paymentAmountOptions = [
-        0.10,
-        1,
-        5,
-        10,
-        25,
-        100,
-    ]
 
     const selectAmount = (
       <>
       <Select value={paymentAmount} onChange={handleChange} style={{width: "250px"}}>
           <Option value={0} disabled={true}>{"Select Amount"}</Option>
           {paymentAmountOptions.map(paymentAmountOption => (
-              <Option value={paymentAmountOption}>{TextUtils.formatCurrency(paymentAmountOption)} ({TextUtils.formatCurrency(paymentAmountOption/currencyExchangeRates[selectedCurrency], selectedCurrency)})</Option>
+              <Option value={paymentAmountOption}>{TextUtils.formatCurrency(paymentAmountOption)} ({TextUtils.formatCurrency(paymentAmountOption/currencyExchangeRates[currency], currency)})</Option>
           ))}
       </Select>
     </>
     )
-        return (<div className="container my-3">
+
+    const selectCurrency = (
+        <Radio.Group value={currency} onChange={handleCurrencyChange} optionType="button" buttonStyle="solid" className="mb-3">
+            {currencyOptions.map(currencyOption => (<Radio.Button key={currencyOption.value} value={currencyOption.value}>{currencyOption.value}</Radio.Button>))}
+      </Radio.Group>
+    )
+    const selectNetwork = (
+        <Radio.Group value={network} onChange={event => setNetwork(event.target.value)} optionType="button" buttonStyle="solid" className="mb-3">
+            {networkOptions.map(currencyOption => (<Radio.Button key={currencyOption.value} value={currencyOption.value}>{currencyOption.value}</Radio.Button>))}
+      </Radio.Group>
+    )
+        return (
+        <div className="container my-3">
             <h5>
             Enjoyed this article? Tip the Author in ETH or BNB: <Tag color="green">New</Tag>
             </h5>
+            {selectCurrency}<br/>
+            {userProfileLoggedIn?.is_atila_admin && <>{selectNetwork}<br/></>}
             {selectAmount}
             {paymentAmount > 0 && 
             <>  
-                <TextArea rows={4} onChange={handlePaymentNoteChange} placeholder="Optional: leave a note for the author" />
-                <CryptoPaymentForm amount={paymentAmount/currencyExchangeRates[selectedCurrency]} onSuccess={handlePaymentSuccess} onError={handlePaymentError} />
+                <TextArea className="my-3" rows={4} onChange={event => setPaymentNote(event.target.value)} placeholder="Optional: leave a note for the author" />
+                {network === "testnet" && <Tag>Network: {network}</Tag>}
+                <CryptoPaymentForm amount={paymentAmount/currencyExchangeRates[currency]} 
+                    onSuccess={handlePaymentSuccess} 
+                    onError={handlePaymentError}
+                    currency={currency}
+                    isTestNet={network === "testnet"}
+                    isEditableDestinationAddress={userProfileLoggedIn?.is_atila_admin}
+                 />
             </>}
-    </div>);
+        </div>)
+    ;
 }
 
 const mapStateToProps = (state: any) => {
