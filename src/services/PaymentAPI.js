@@ -40,6 +40,17 @@ class PaymentAPI {
         return apiCompletionPromise;
     };
 
+    static patchWallet = (id, postData) => {
+
+        const apiCompletionPromise = request({
+            url: `${PaymentAPI.apiUrlWallets}/${id}/`,
+            method: 'patch',
+            data: postData,
+        });
+
+        return apiCompletionPromise;
+    };
+
 }
 
 export default PaymentAPI;

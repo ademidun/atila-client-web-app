@@ -1,7 +1,9 @@
 import { UserProfile } from "./UserProfile.class";
 
 export interface Wallet {
-    user: number,
-    user_detail?: UserProfile,
-    address: string,
+    id: string;
+    user: number;
+    user_detail?: UserProfile;
+    label: string;
+    address: string;
 }

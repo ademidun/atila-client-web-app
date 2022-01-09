@@ -1,4 +1,4 @@
-import { Alert, Button } from 'antd';
+import { Alert, Button, Input } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react'
 import { connect } from 'react-redux';
 import { UserProfile } from '../../models/UserProfile.class';
@@ -22,10 +22,10 @@ function ConnectWallet(props: any) {
     /**
      * If we weant to pass a function to useEffect we must memoize the function to prevent an infinite loop re-render.
      * This is because functions change their reference each time a component is re-rendered.
-     * Instead, we only want to rerender when the userProfileLoggedIn.user reference inside the getWallet() function is changed
+     * Instead, we only want to rerender when the userProfileLoggedIn.user reference inside the getWallets() function is changed
      * see: https://stackoverflow.com/a/62601621
      */
-    const getWallet = useCallback(
+    const getWallets = useCallback(
         () => {
     
         setLoadingWallet("Loading user wallet");
@@ -49,8 +49,8 @@ function ConnectWallet(props: any) {
       );
 
     useEffect(() => {
-        getWallet();
-      }, [getWallet]);
+        getWallets();
+      }, [getWallets]);
 
     const saveWallet = (walletAddress: string) => {
             const postData = {
@@ -72,6 +72,7 @@ function ConnectWallet(props: any) {
         if (window.ethereum) {
             try {
               const walletAddresses = await window.ethereum.request({ method: 'eth_requestAccounts' }) as Array<string>;
+              setError("");
 
               let walletAddress;
               if (walletAddresses.length > 0) {
@@ -97,6 +98,22 @@ function ConnectWallet(props: any) {
             setError("Crypto wallet not found. Install the metamask or similar extension.");
           }
     }
+
+    const handleWalletLabelChange = (event: any, wallet: Wallet) => {
+        const postData = {
+            label: event.target.value,
+        }
+
+        PaymentAPI.patchWallet(wallet.id, postData)
+        .then(res => {
+            console.log({res});
+            
+        })
+        .catch(error => {
+            console.log({error});
+        })
+    }
+
     return (
         <div>
             <Button onClick={connectWallet} disabled={!!loadingWallet}>
@@ -109,6 +126,8 @@ function ConnectWallet(props: any) {
                 {wallets.map(wallet => (
                     <li>
                         Wallet Address: {wallet.address}
+                        <Input value={wallet.label} placeholder="Add a label to help you remember this wallet. TEMP DEBUG. COPY PASTE THE LABEL, typing it might not work." 
+                        onChange={event => handleWalletLabelChange(event, wallet)} />
                     </li>
                 ))}
                 </ol>

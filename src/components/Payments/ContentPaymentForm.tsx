@@ -11,12 +11,6 @@ import Environment from '../../services/Environment';
 const { Option } = Select;
 const { TextArea } = Input;
 
-
-
-export function Walletcard() {
-    
-}
-
 export interface ContentPaymentFormPropTypes {
     contentType: string,
     contentId: string | number,
