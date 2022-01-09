@@ -10,6 +10,7 @@ import {RESERVED_USERNAMES} from "../../models/Constants";
 import FileInput from "../../components/Form/FileInput";
 import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import UserProfileReferralManagement from './UserProfileReferralManagement';
+import ConnectWallet from '../../components/Payments/ConnectWallet';
 
 class UserProfileView extends React.Component {
 
@@ -182,6 +183,12 @@ class UserProfileView extends React.Component {
                             }
                             {isProfileEditable && 
                             <>
+                            {loggedInUserProfile && userProfile?.user === loggedInUserProfile?.user && 
+                            <>
+                                <hr/>
+                                <ConnectWallet /> 
+                             </>
+                            }
                             <hr/>
                             <UserProfileReferralManagement /> 
                             </>

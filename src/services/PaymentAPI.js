@@ -5,6 +5,7 @@ class PaymentAPI {
 
     static apiUrlPayment = `${Environment.apiUrl}/payment`;
     static apiUrlTransactions = `${PaymentAPI.apiUrlPayment}/transactions`;
+    static apiUrlWallets = `${PaymentAPI.apiUrlPayment}/wallets`;
 
     static getClientSecret = (paymentData) => {
 
@@ -17,12 +18,23 @@ class PaymentAPI {
         return apiCompletionPromise;
     };
 
-    static saveTransaction = (transactionData) => {
+    static saveTransaction = (postData) => {
 
         const apiCompletionPromise = request({
             url: `${PaymentAPI.apiUrlTransactions}/`,
             method: 'post',
-            data: transactionData,
+            data: postData,
+        });
+
+        return apiCompletionPromise;
+    };
+
+    static saveWallet = (postData) => {
+
+        const apiCompletionPromise = request({
+            url: `${PaymentAPI.apiUrlWallets}/`,
+            method: 'post',
+            data: postData,
         });
 
         return apiCompletionPromise;
