@@ -204,6 +204,21 @@ class ScholarshipsList extends React.Component {
         }
     };
 
+    updateQuery = (queryData) => {
+        this.setState({isLoadingScholarships: true})
+        ScholarshipsAPI.queryScholarships(queryData)
+            .then(res => {
+                const { scholarships } = res.data
+                this.setState({scholarships})
+            })
+            .catch(err => {
+                console.log({err})
+            })
+            .finally(() => {
+                this.setState({isLoadingScholarships: false})
+            })
+    }
+
     updateFilterOrSort = (event) => {
         const { searchPayload } = this.state;
         const {
@@ -481,7 +496,7 @@ class ScholarshipsList extends React.Component {
                     </Button>
                 </div>
                 }
-                <ScholarshipsListFilter model={userProfile} updateFilterOrSortBy={this.updateFilterOrSort} />
+                <ScholarshipsListFilter model={userProfile} updateFilterOrSortBy={this.updateQuery} />
 
                     {scholarships &&
                     <div className="mt-3">

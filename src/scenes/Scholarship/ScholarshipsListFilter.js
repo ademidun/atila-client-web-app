@@ -6,6 +6,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTimes} from "@fortawesome/free-solid-svg-icons";
 import QueryBuilder from '../../components/Query/QueryBuilder';
 
+
 class ScholarshipsListFilter extends React.Component {
 
     constructor(props) {
@@ -44,42 +45,27 @@ class ScholarshipsListFilter extends React.Component {
         updateFilterOrSortBy(event);
     };
 
+    onUpdateQuery = (queryData) => {
+        const { updateFilterOrSortBy } = this.props;
+        console.log(queryData);
+        
+        updateFilterOrSortBy(queryData)
+    };
+
     render() {
         const { model } = this.props;
         const { filterValue, sortValue } = this.state;
 
         return (
             <div className="row">
-                <div className="col-sm-6">
+                <div className="col-sm-8">
                     <label htmlFor="filter_by_user" className="float-left">
                         Filter by:
                     </label>
-                    {filterValue !== 'Select Filter' &&
-                    <div className="chip">
-                        Clear Filter
-                        <FontAwesomeIcon className="cursor-pointer ml-1" icon={faTimes}
-                                         onClick={this.clearFilterBy}/>
+                    <div className="">
+                        <QueryBuilder onUpdateQuery={this.onUpdateQuery} />
                     </div>
-                    }
-                    <select
-                        className="form-control"
-                        name="filter_by_user"
-                        value={filterValue || 'Select Filter'}
-                        onChange={this.updateFilterOrSortBy}
-                    >
-                        <option key={'Select Filter'} disabled hidden>{'Select Filter'}</option>
-                        {FILTER_TYPES.map(filter_type => (
-                            <option key={filter_type} value={filter_type}>
-                            {prettifyKeys(filter_type)}
-                            </option>
-                        ))}
-                    </select>
-                    {filterValue !== 'Select Filter' &&
-                    <div className="font-weight-bold">
-                        {/*Change here*/}
-                        {myJoin(transformFilterDisplay(filterValue, model), ', ')}
-                    </div>
-                    }
+            
                 </div>
                 <div className="col-sm-6 col-md-3">
                     <label htmlFor="sort_by" className="float-left">
@@ -97,8 +83,7 @@ class ScholarshipsListFilter extends React.Component {
                             </option>
                         ))}
                     </select>
-                </div>
-                <QueryBuilder onUpdateQuery={this.onUpdateQuery} />
+                </div>   
             </div>
         );
     }

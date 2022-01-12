@@ -14,6 +14,17 @@ class ScholarshipsAPI {
         return apiCompletionPromise;
     };
 
+    static queryScholarships = (queryData) => {
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            url: `${ScholarshipsAPI.scholarshipsApiUrl}/query/`,
+            data: {queryData}
+        });
+
+        return apiCompletionPromise;
+    };
+
     static getSlug = (slug) => {
 
         const apiCompletionPromise = request({
