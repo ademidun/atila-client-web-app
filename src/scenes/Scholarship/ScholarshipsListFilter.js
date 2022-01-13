@@ -59,30 +59,12 @@ class ScholarshipsListFilter extends React.Component {
         return (
             <div className="row">
                 <div className="col-sm-8">
-                    <label htmlFor="filter_by_user" className="float-left">
-                        Filter by:
-                    </label>
-                    <div className="">
-                        <QueryBuilder onUpdateQuery={this.onUpdateQuery} />
-                    </div>
+                    
+                    
             
                 </div>
                 <div className="col-sm-6 col-md-3">
-                    <label htmlFor="sort_by" className="float-left">
-                        Sort by:
-                    </label>
-                    <select
-                        className="form-control"
-                        name="sort_by"
-                        value={sortValue}
-                        onChange={this.updateFilterOrSortBy}
-                    >
-                        {SORT_TYPES.map(sort_type => (
-                            <option key={sort_type} value={sort_type}>
-                                {prettifyKeys(sort_type)}
-                            </option>
-                        ))}
-                    </select>
+                    
                 </div>   
             </div>
         );

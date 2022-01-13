@@ -315,6 +315,53 @@ class ScholarshipsList extends React.Component {
         }
     };
 
+    loadItems = () => {
+
+        const { searchQuery } = this.state;
+
+        SearchApi.search(searchQuery)
+            .then(res => {
+                this.setState({ searchResults: res.data });
+                const search_results = {
+                    search_query: searchQuery,
+                    metadata: res.data.metadata,
+                    results_count: {
+                        scholarships: res.data.scholarships.length,
+                        blogPosts: res.data.blogPosts.length,
+                        essays: res.data.essays.length,
+                    },
+                    type: 'search',
+                };
+                AnalyticsService.saveSearchAnalytics({search_results}, null).then();
+
+            })
+            .catch(err => {
+                this.setState({responseError : err });
+            })
+            .finally(() => {
+                this.setState({ isLoadingResponse: false });
+            });
+    };
+
+    updateSearch = event => {
+        event.preventDefault();
+        const searchQuery = unSlugify(event.target.value);
+        this.setState({searchQuery}, () => {
+            this.submitSearch();
+        });
+    };
+
+    submitSearch = event => {
+        if (event && event.preventDefault) {
+            event.preventDefault();
+        }
+        const { searchQuery } = this.state;
+        
+        this.setState({ isLoadingResponse: true }, () => {
+            this.loadItems();
+        });
+    };
+
     render () {
         const {
             match : { params : { searchString: searchStringRaw } },
@@ -328,6 +375,10 @@ class ScholarshipsList extends React.Component {
             pageNumber, viewAsUserString, viewAsUserProfile, viewAsUserError, scholarshipsScoreBreakdown} = this.state;
 
         let loadMoreScholarshipsOrRegisterCTA = null;
+
+        const customTheme = {
+            container: 'react-autosuggest__container col-sm-12 col-md-7 p-0 my-3 mx-1',
+        };
 
         if(userProfile) {
             loadMoreScholarshipsOrRegisterCTA = (<React.Fragment>
@@ -496,7 +547,19 @@ class ScholarshipsList extends React.Component {
                     </Button>
                 </div>
                 }
-                <ScholarshipsListFilter model={userProfile} updateFilterOrSortBy={this.updateQuery} />
+                <form  onSubmit={this.submitSearch} className="row">
+
+                <AutoComplete suggestions={MASTER_LIST_EVERYTHING_UNDERSCORE}
+                            placeholder={"Enter search here"}
+                            onSelected={this.updateSearch}
+                            value={searchQuery}
+                            customTheme={customTheme}
+                            keyName='search'/>
+                <button className="btn btn-primary col-md-4 col-sm-12 my-3 mx-1"
+                        type="submit">
+                    Search
+                </button>
+                </form>
 
                     {scholarships &&
                     <div className="mt-3">
