@@ -4,7 +4,6 @@ import "./Ebook.scss";
 import {handleButtonClickEventFacebook} from "../../models/Utils";
 import {EBOOK_AUDIENCE_IMAGES} from "../../models/Constants";
 import PropTypes from "prop-types";
-import ScholarshipsListFilter from "../Scholarship/ScholarshipsListFilter";
 import {Link} from "react-router-dom";
 
 class EbookLandingBanner extends Component {
@@ -87,7 +86,7 @@ class EbookLandingBanner extends Component {
   }
 }
 
-ScholarshipsListFilter.defaultProps = {
+EbookLandingBanner.defaultProps = {
     audience: '1',
     heightClassName: "vh-100-min",
     showLearnMoreCTA: false
