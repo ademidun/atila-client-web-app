@@ -486,6 +486,7 @@ class ScholarshipManage extends React.Component {
                         scholarship={scholarship}
                         isButtonDisabled={isLoadingMessage || scholarship.is_winner_selected}
                         setParentState={this.setParentState}
+                        source={"manage"}
                     />
                     <br />
                     <AssignReviewers scholarship={scholarship} showAsModal={true} onResponse={this.onAutoAssignResponse} />
