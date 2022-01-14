@@ -27,6 +27,8 @@ const defaultContent = {
     body: '',
     essay_source_url: '',
     header_image_url: '',
+    video_url: '',
+    slides_url: '',
     published: false,
 };
 
@@ -292,7 +294,7 @@ class ContentAddEdit extends React.Component {
         const descriptionLabel = `Description: Write a short summary of what your ${contentType.toLowerCase()} post is about (400 characters max.).`;
 
         const { content : {
-            title, description, published, header_image_url, body, essay_source_url, user, contributors
+            title, description, published, header_image_url, video_url, slides_url, body, essay_source_url, user, contributors
         } } = this.state;
 
         if (!isAddContentMode && isLoading) {
@@ -451,6 +453,18 @@ class ContentAddEdit extends React.Component {
                                className="col-12 mb-3 form-control"
                                onChange={this.updateForm}
                                value={header_image_url} />
+                            <input type="url"
+                               name="video_url"
+                               placeholder={`Paste the url of a video for your ${contentType.toLowerCase()} post`}
+                               className="col-12 mb-3 form-control"
+                               onChange={this.updateForm}
+                               value={video_url} />
+                            <input type="url"
+                               name="slides_url"
+                               placeholder={`Paste the url of the slides for your ${contentType.toLowerCase()} post`}
+                               className="col-12 mb-3 form-control"
+                               onChange={this.updateForm}
+                               value={slides_url} />
 
                             {isOwner &&
                                 <>
