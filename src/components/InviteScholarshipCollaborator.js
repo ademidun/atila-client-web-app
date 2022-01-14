@@ -22,12 +22,12 @@ class InviteScholarshipCollaborator extends  React.Component {
 
     inviteCollaborator = () => {
         const { invitedCollaborator, invitedEmail, isInviteViaEmail } = this.state;
-        const { scholarship, setParentState } = this.props;
+        const { scholarship, setParentState, source } = this.props;
         setParentState({isLoadingMessage: "Sending invite..."});
 
         if (isInviteViaEmail) {
             ScholarshipsAPI
-                .inviteCollaboratorViaEmail(scholarship.id, invitedEmail)
+                .inviteCollaboratorViaEmail(scholarship.id, invitedEmail, source)
                 .then(res => {
                     const { scholarship, invites: pending_invites } =  res.data;
 
@@ -147,12 +147,14 @@ class InviteScholarshipCollaborator extends  React.Component {
 InviteScholarshipCollaborator.defaultProps = {
     isButtonDisabled: false,
     setParentState: () => {},
+    source: "manage",
 }
 
 InviteScholarshipCollaborator.propTypes = {
     isButtonDisabled: PropTypes.bool,
     scholarship: ScholarshipPropType.isRequired,
     setParentState: PropTypes.func,
+    source: PropTypes.string,  // "edit" or "manage"
 };
 
 export default InviteScholarshipCollaborator

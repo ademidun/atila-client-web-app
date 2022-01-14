@@ -227,8 +227,8 @@ class ScholarshipsAPI {
         return apiCompletionPromise;
     };
 
-    static inviteCollaboratorViaEmail = (id, email) => {
-        let data = {'email': email};
+    static inviteCollaboratorViaEmail = (id, email, source) => {
+        let data = {'email': email, 'source': source};
 
         const apiCompletionPromise = request({
             method: 'post',
