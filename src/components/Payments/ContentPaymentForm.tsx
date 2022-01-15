@@ -61,7 +61,7 @@ function ContentPaymentForm(props: ContentPaymentFormPropTypes){
     const [paymentNote, setPaymentNote] = useState("");
     const [currency, setCurrency] = useState(currencyOptions[0].value);
     // set the default environment to testnet in any non-prod environment or if it's not an atila_admin_user
-    const [network, setNetwork] = useState(networkOptions[Environment.name === "prod" || !userProfileLoggedIn?.is_atila_admin ? 1 : 0].value)
+    const [network, setNetwork] = useState(networkOptions[Environment.name === "prod" ? 1 : 0].value)
 
     const handleChange = (value: any) => {
       console.log(`selected ${value}`);
