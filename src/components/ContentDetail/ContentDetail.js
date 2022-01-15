@@ -187,7 +187,7 @@ class ContentDetail extends React.Component {
             </div>);
 
         return (
-            <div className="m-5 px-md-5">
+            <div className="m-md-5 m-4">
                 <HelmetSeo content={genericItemTransform(content)} />
                 <div className={`${className} center-block`}>
                     <h1>{title}</h1>

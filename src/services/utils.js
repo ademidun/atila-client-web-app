@@ -496,7 +496,7 @@ export function addStyleClasstoTables(parentSelector) {
     $(tableSelectors).each(function() {
 
         element = $(this);
-        element.addClass(`table table-striped`)
+        element.addClass(`table table-striped table-responsive border-light`)
     });
 
 }
@@ -547,7 +547,7 @@ export function createTableOfContents(parentSelector="") {
     });
 
     let tableOfContents =
-        "<nav role='navigation' class='table-of-contents shadow-bottom-inset'>" +
+        "<div class='mb-3 p-3 border-light'><nav role='navigation' class='table-of-contents'> " +
         "<h2>Table of Contents:</h2>" +
         "<ul>";
 
@@ -555,7 +555,7 @@ export function createTableOfContents(parentSelector="") {
     if (newLine) {
         tableOfContents += allLines;
         tableOfContents += "</ul>" +
-            "</nav>";
+            "</nav></div><hr class='mb-5' />";
 
         if (parentSelector) {
             $(parentSelector).prepend(tableOfContents);
