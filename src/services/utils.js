@@ -581,6 +581,20 @@ export function openAllLinksInNewTab(parentSelector=""){
     });
 }
 
+export function makeImagesCards(parentSelector=""){
+    let element;
+    const selectors = `${parentSelector} img`;
+    console.log("makeImagesCards");
+    console.log({parentSelector, selectors, element});
+
+    $(selectors).each(function() {
+
+        element = $(this);
+        element.addClass(`card shadow`)
+    });
+
+}
+
 /**
  * https://stackoverflow.com/a/822486/5405197
  * @param {*} html 

@@ -15,13 +15,16 @@ import {
     guestPageViewsIncrement,
     scrollToElement,
     toTitleCase,
-    openAllLinksInNewTab
+    openAllLinksInNewTab,
+    makeImagesCards
 } from "../../services/utils";
 import { Button } from "antd";
 import AtilaPointsPaywallModal from "../AtilaPointsPaywallModal";
 import {UserProfilePreview} from "../ReferredByInput";
 import ContentPaymentForm from '../Payments/ContentPaymentForm';
 
+
+export const CONTENT_DETAIL_CLASS_NAME = "content-detail";
 class ContentDetail extends React.Component {
 
     constructor(props) {
@@ -72,9 +75,10 @@ class ContentDetail extends React.Component {
                 const content = res.data.blog || res.data.essay;
                 this.setState({content}, () => {
 
-                    addStyleClasstoTables(".content-detail");
-                    createTableOfContents(".content-detail");
-                    openAllLinksInNewTab(".content-detail");
+                    createTableOfContents(`.${CONTENT_DETAIL_CLASS_NAME}`);
+                    addStyleClasstoTables(`.${CONTENT_DETAIL_CLASS_NAME}`);
+                    openAllLinksInNewTab(`.${CONTENT_DETAIL_CLASS_NAME}`);
+                    makeImagesCards(`.${CONTENT_DETAIL_CLASS_NAME}`)
                     if (location && location.hash) {
                         scrollToElement(location.hash);
                     }
