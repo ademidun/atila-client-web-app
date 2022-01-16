@@ -485,8 +485,9 @@ class ScholarshipManage extends React.Component {
                     <InviteScholarshipCollaborator
                         scholarship={scholarship}
                         isButtonDisabled={isLoadingMessage || scholarship.is_winner_selected}
-                        setParentState={this.setParentState}
                         source={"manage"}
+                        responseCB={msg => {this.setState({responseMessage: msg})}}
+                        pendingInvitesCB={pending_invites => {this.setState({pending_invites})}}
                     />
                     <br />
                     <AssignReviewers scholarship={scholarship} showAsModal={true} onResponse={this.onAutoAssignResponse} />
