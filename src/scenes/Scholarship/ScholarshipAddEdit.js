@@ -21,11 +21,12 @@ import {
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Link} from "react-router-dom";
-import {Steps, Tag, InputNumber, Button} from "antd";
+import {Steps, Tag, InputNumber, Button, Alert} from "antd";
 import ScholarshipQuestionBuilder, {ScholarshipUserProfileQuestionBuilder} from "./ScholarshipQuestionBuilder";
 import PaymentSend from "../Payment/PaymentSend/PaymentSend";
 import Environment from "../../services/Environment";
 import {AwardGeneral} from "../../models/Award";
+import InviteScholarshipCollaborator from "../../components/InviteScholarshipCollaborator";
 const { Step } = Steps;
 
 
@@ -530,7 +531,7 @@ class ScholarshipAddEdit extends React.Component{
     };
 
     basicInfoPage = () => {
-        const { scholarship, scholarshipPostError } = this.state;
+        const { scholarship, scholarshipPostError, isAddScholarshipMode } = this.state;
         const { userProfile } = this.props;
 
         return (
@@ -542,6 +543,16 @@ class ScholarshipAddEdit extends React.Component{
                              formError={scholarshipPostError}
                              onSubmit={this.submitForm}/>
                 {this.awardsPage()}
+                <InviteScholarshipCollaborator
+                    isButtonDisabled={isAddScholarshipMode}
+                    scholarship={scholarship}
+                    source={"edit"}
+                />
+                {isAddScholarshipMode &&
+                <>
+                    <br />
+                    <Alert message={"Save scholarship to invite other collaborators."} type={"info"} />
+                </>}
             </div>
         )
     }
