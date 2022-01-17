@@ -22,7 +22,7 @@ import AtilaPointsPaywallModal from "../AtilaPointsPaywallModal";
 import {UserProfilePreview} from "../ReferredByInput";
 import ContentPaymentForm from '../Payments/ContentPaymentForm';
 import EmbedResponsiveYoutubeVideo from "../../scenes/LandingPage/LandingPageLiveDemo";
-
+import ContentBody from './ContentBody/ContentBody';
 
 class ContentDetail extends React.Component {
 
@@ -74,9 +74,9 @@ class ContentDetail extends React.Component {
                 const content = res.data.blog || res.data.essay;
                 this.setState({content}, () => {
 
-                    addStyleClasstoTables(".content-detail");
-                    createTableOfContents(".content-detail");
-                    openAllLinksInNewTab(".content-detail");
+                    addStyleClasstoTables(".ContentBody");
+                    createTableOfContents(".ContentBody");
+                    openAllLinksInNewTab(".ContentBody");
                     if (location && location.hash) {
                         scrollToElement(location.hash);
                     }
@@ -120,7 +120,7 @@ class ContentDetail extends React.Component {
                 title={'Loading...'} />)
         }
 
-        const { title, body, header_image_url, video_url, slides_url, user, id, published, contributors } = content;
+        const { title, body, header_image_url, video_url, slides_url, body_type, user, id, published, contributors } = content;
 
         let isContributor = false;
         if (userProfile && contributors) {
@@ -150,7 +150,7 @@ class ContentDetail extends React.Component {
 
         if(!userProfile && contentType === 'essay') {
             contentToDisplay = (
-                <div className=" col-md-8 content-detail">
+                <div className=" col-md-8 ContentBody">
                     <div className={`${className} paywall-border`}
                          dangerouslySetInnerHTML={{__html: body}} />
                     <div className="card shadow p-3">
@@ -177,9 +177,7 @@ class ContentDetail extends React.Component {
                             src={slides_url}>
                         </iframe>
                     </div>}
-                    <div className="content-detail"
-                        dangerouslySetInnerHTML={{__html: body}} />
-                        
+                        <ContentBody body={body} bodyType={body_type} />
                         <hr />
                     {contentPaymentForm}
                 </div>

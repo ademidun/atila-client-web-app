@@ -558,7 +558,7 @@ export function createTableOfContents(parentSelector="") {
             "</nav>";
 
         if (parentSelector) {
-            $(parentSelector).prepend(tableOfContents);
+            $(parentSelector).before(tableOfContents);
         }
 
     }
