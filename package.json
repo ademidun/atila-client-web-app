@@ -116,5 +116,10 @@
     "redux-saga": "^1.0.5",
     "terser": "^5.10.0",
     "terser-webpack-plugin": "^5.2.5"
+  },
+  "jest": {
+    "transformIgnorePatterns": [
+      "node_modules/(?!react-markdown)/"
+    ]
   }
 }
