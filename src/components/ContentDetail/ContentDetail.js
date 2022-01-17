@@ -21,6 +21,8 @@ import { Button } from "antd";
 import AtilaPointsPaywallModal from "../AtilaPointsPaywallModal";
 import {UserProfilePreview} from "../ReferredByInput";
 import ContentPaymentForm from '../Payments/ContentPaymentForm';
+import EmbedResponsiveYoutubeVideo from "../../scenes/LandingPage/LandingPageLiveDemo";
+
 
 class ContentDetail extends React.Component {
 
@@ -118,7 +120,7 @@ class ContentDetail extends React.Component {
                 title={'Loading...'} />)
         }
 
-        const { title, body, header_image_url, user, id, published, contributors } = content;
+        const { title, body, header_image_url, video_url, slides_url, user, id, published, contributors } = content;
 
         let isContributor = false;
         if (userProfile && contributors) {
@@ -168,8 +170,10 @@ class ContentDetail extends React.Component {
             contentToDisplay = (
                 <div className={`${className} col-md-8`}>
                     {contentPaymentForm}
+                    {video_url && <EmbedResponsiveYoutubeVideo youtubeVideoUrl={video_url} title="" />}
                     <div className="content-detail"
                         dangerouslySetInnerHTML={{__html: body}} />
+                        
                         <hr />
                     {contentPaymentForm}
                 </div>
