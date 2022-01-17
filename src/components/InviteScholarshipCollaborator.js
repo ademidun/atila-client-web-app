@@ -24,7 +24,7 @@ class InviteScholarshipCollaborator extends  React.Component {
 
     inviteCollaborator = () => {
         const { invitedCollaborator, invitedEmail, isInviteViaEmail } = this.state;
-        const { scholarship, source, responseCB, pendingInvitesCB } = this.props;
+        const { scholarship, source, onInviteSuccess, onInviteError, pendingInvitesCB } = this.props;
         this.setState({loading: "Sending invite..."})
 
         if (isInviteViaEmail) {
@@ -35,7 +35,7 @@ class InviteScholarshipCollaborator extends  React.Component {
                     this.setState({invitedEmail: ""})
 
                     const msg = `${invitedEmail} has been sent an invite.`
-                    responseCB(msg)
+                    onInviteSuccess(msg)
 
                     if (pending_invites) {
                         pendingInvitesCB(pending_invites)
@@ -48,7 +48,7 @@ class InviteScholarshipCollaborator extends  React.Component {
                     if (response_message) {
                         msg = response_message
                     }
-                    responseCB(msg)
+                    onInviteError(msg)
                 })
                 .finally(() => {
                     this.setState({loading: null})
@@ -59,7 +59,7 @@ class InviteScholarshipCollaborator extends  React.Component {
                 .then(res => {
                     this.setState({invitedCollaborator: null});
                     const msg = `${invitedCollaborator.username} has been sent an invite email.`
-                    responseCB(msg)
+                    onInviteSuccess(msg)
                 })
                 .catch(err => {
                     console.log({err});
@@ -68,7 +68,7 @@ class InviteScholarshipCollaborator extends  React.Component {
                     if (response_message) {
                         msg = response_message
                     }
-                    responseCB(msg)
+                    onInviteError(msg)
                 })
                 .finally(() => {
                     this.setState({loading: null})
@@ -150,7 +150,8 @@ class InviteScholarshipCollaborator extends  React.Component {
 InviteScholarshipCollaborator.defaultProps = {
     isButtonDisabled: false,
     source: "manage",
-    responseCB: (msg) => {toastNotify(msg)},
+    onInviteSuccess: (msg) => {toastNotify(msg)},
+    onInviteError: (err) => {toastNotify(err,"error")},
     pendingInvitesCB: (pending_invites) => {},
 }
 
@@ -158,8 +159,9 @@ InviteScholarshipCollaborator.propTypes = {
     scholarship: ScholarshipPropType.isRequired,
     isButtonDisabled: PropTypes.bool,
     source: PropTypes.string,  // "edit" or "manage"
-    responseCB: PropTypes.func, // Callback function.
-    pendingInvitesCB: PropTypes.func,
+    onInviteSuccess: PropTypes.func, // Callback function on success
+    onInviteError: PropTypes.func, // Callback function on error
+    pendingInvitesCB: PropTypes.func, // cb function to store pending_invites if needed
 };
 
 export default InviteScholarshipCollaborator

@@ -342,10 +342,6 @@ class ScholarshipManage extends React.Component {
 
     }
 
-    setParentState = (newStateVariables) => {
-        this.setState(newStateVariables)
-    }
-
     render() {
         const { userProfile } = this.props;
         const { scholarship, applications, awards, isLoadingApplications,
@@ -486,7 +482,8 @@ class ScholarshipManage extends React.Component {
                         scholarship={scholarship}
                         isButtonDisabled={isLoadingMessage || scholarship.is_winner_selected}
                         source={"manage"}
-                        responseCB={msg => {this.setState({responseMessage: msg})}}
+                        onInviteSuccess={msg => {this.setState({responseMessage: msg})}}
+                        onInviteError={msg => {this.setState({responseMessage: msg})}}
                         pendingInvitesCB={pending_invites => {this.setState({pending_invites})}}
                     />
                     <br />
