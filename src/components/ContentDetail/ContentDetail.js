@@ -170,7 +170,13 @@ class ContentDetail extends React.Component {
             contentToDisplay = (
                 <div className={`${className} col-md-8`}>
                     {contentPaymentForm}
-                    {video_url && <EmbedResponsiveYoutubeVideo youtubeVideoUrl={video_url} title="" />}
+                    {video_url && <EmbedResponsiveYoutubeVideo youtubeVideoUrl={video_url} title={title} />}
+                    {slides_url && slides_url.startsWith("https://docs.google.com") && <div className="responsive-google-slides">
+                        <iframe 
+                            title={title}
+                            src={slides_url}>
+                        </iframe>
+                    </div>}
                     <div className="content-detail"
                         dangerouslySetInnerHTML={{__html: body}} />
                         
