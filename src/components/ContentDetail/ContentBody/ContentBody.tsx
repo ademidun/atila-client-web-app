@@ -13,13 +13,16 @@ ContentBody.defaultProps = {
     bodyType: "html",
 }
 
+
+export const CONTENT_BODY_CLASS_NAME = "ContentBody";
+
 function ContentBody(props: ContentBodyPropTypes) {
 
     const { body, bodyType } = props;
     let bodyContent;
     if (bodyType === "markdown") {
         bodyContent = (
-            <div className={`ContentBody ${bodyType}`}>
+            <div className={`${CONTENT_BODY_CLASS_NAME} ${bodyType}`}>
                 <ReactMarkdown children={body} />
             </div>
             
@@ -27,7 +30,7 @@ function ContentBody(props: ContentBodyPropTypes) {
     } else {
         bodyContent = (
             // TODO find a way to secure against XSS: https://stackoverflow.com/a/19277723*/                    
-            <div className={`ContentBody ${bodyType}`}
+            <div className={`${CONTENT_BODY_CLASS_NAME} ${bodyType}`}
                 dangerouslySetInnerHTML={{__html: body}} />
                 );
     }

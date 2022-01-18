@@ -8,6 +8,7 @@ import UserProfileAPI from '../../services/UserProfileAPI';
 import Loading from '../Loading';
 import { getErrorMessage } from '../../services/utils';
 import BlogsApi from '../../services/BlogsAPI';
+import { Link } from 'react-router-dom';
 
 export interface LinkContentToWalletPropTypes {
     content: Blog, //TODO: add support for Application, Essay and other content types
@@ -91,12 +92,12 @@ const LinkContentToWallet = (props: LinkContentToWalletPropTypes) => {
                 <Radio.Group value={contentWallet || "Select a wallet"} onChange={handleSelectWallet} optionType="button" buttonStyle="solid">
                     {wallets.map(wallet => (
                         <Radio.Button value={wallet.id} key={wallet.id} className="mb-1">
-                            {wallet.label && <>{wallet.label}: </>} {wallet.address}
+                            {wallet.label && <>{wallet.label}: </>} {`${wallet.address.substr(0,4)}...${wallet.address.substr(-4)}`}
                         </Radio.Button>
                     ))}
                     <p className="text-muted">Wallet changes are automatically saved</p>
                 </Radio.Group>
-                {wallets.length === 0 && <div>No Wallets found. Visit your profile to connect a wallet.</div>}
+                {wallets.length === 0 && <div>No Wallets found. <Link to="/profile/edit">Visit  your profile </Link> to connect a wallet.</div>}
             </div>
             }
             {contentWallet && 

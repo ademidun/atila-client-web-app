@@ -24,7 +24,7 @@ import { addStyleClasstoTables, openAllLinksInNewTab } from "../../services/util
 
 import './ScholarshipDetail.scss';
 import $ from "jquery";
-import ContentBody from '../../components/ContentDetail/ContentBody/ContentBody';
+import ContentBody, { CONTENT_BODY_CLASS_NAME } from '../../components/ContentDetail/ContentDetail';
 
 class ScholarshipDetail extends React.Component {
 
@@ -84,8 +84,8 @@ class ScholarshipDetail extends React.Component {
                 const { owner_detail } = scholarship;
 
                 this.setState({ scholarship, contributors, awards, scholarshipUserProfile: owner_detail }, () => {
-                    addStyleClasstoTables(".ContentBody");
-                    openAllLinksInNewTab(".ContentBody");
+                    addStyleClasstoTables(`.${CONTENT_BODY_CLASS_NAME}`);
+                    openAllLinksInNewTab(`.${CONTENT_BODY_CLASS_NAME}`);
                     // add CTA classes to all buttons
                     $(".scholarship-cta-buttons button").addClass("col-md-3 col-sm-12 mt-3");
                     if (location && location.hash) {

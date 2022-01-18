@@ -15,14 +15,16 @@ import {
     guestPageViewsIncrement,
     scrollToElement,
     toTitleCase,
-    openAllLinksInNewTab
+    openAllLinksInNewTab,
+    makeImagesCards
 } from "../../services/utils";
 import { Button } from "antd";
 import AtilaPointsPaywallModal from "../AtilaPointsPaywallModal";
 import {UserProfilePreview} from "../ReferredByInput";
 import ContentPaymentForm from '../Payments/ContentPaymentForm';
 import EmbedResponsiveYoutubeVideo from "../../scenes/LandingPage/LandingPageLiveDemo";
-import ContentBody from './ContentBody/ContentBody';
+import ContentBody, { CONTENT_BODY_CLASS_NAME } from './ContentBody/ContentBody';
+
 
 class ContentDetail extends React.Component {
 
@@ -74,9 +76,10 @@ class ContentDetail extends React.Component {
                 const content = res.data.blog || res.data.essay;
                 this.setState({content}, () => {
 
-                    addStyleClasstoTables(".ContentBody");
-                    createTableOfContents(".ContentBody");
-                    openAllLinksInNewTab(".ContentBody");
+                    createTableOfContents(`.${CONTENT_BODY_CLASS_NAME}`);
+                    addStyleClasstoTables(`.${CONTENT_BODY_CLASS_NAME}`);
+                    openAllLinksInNewTab(`.${CONTENT_BODY_CLASS_NAME}`);
+                    makeImagesCards(`.${CONTENT_BODY_CLASS_NAME}`)
                     if (location && location.hash) {
                         scrollToElement(location.hash);
                     }
@@ -195,7 +198,7 @@ class ContentDetail extends React.Component {
             </div>);
 
         return (
-            <div className="m-5 px-md-5">
+            <div className="m-md-5 m-4">
                 <HelmetSeo content={genericItemTransform(content)} />
                 <div className={`${className} center-block`}>
                     <h1>{title}</h1>
