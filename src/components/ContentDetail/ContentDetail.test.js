@@ -33,6 +33,10 @@ jest.mock("../../services/utils", () => {
     }
 });
 jest.mock('../../services/SearchAPI');
+jest.mock("react-markdown", () => (props) => {
+    return <>{props.children}</>
+})
+
 SearchApi.relatedItems.mockImplementation(() => Promise.resolve({ data: { items: relatedItems } } ));
 
 describe('<ContentDetail />', () => {
@@ -90,7 +94,7 @@ describe('<ContentDetail />', () => {
         expect(childWrapper
             .find('img.header-image').prop('src')).toEqual(BlogWhatIsAtila.header_image_url);
         expect(childWrapper
-            .find('div.content-detail').prop('dangerouslySetInnerHTML')).toBeTruthy();
+            .find('div.ContentBody').prop('dangerouslySetInnerHTML')).toBeTruthy();
 
     });
 
@@ -154,10 +158,10 @@ describe('<ContentDetail />', () => {
         let childWrapper = wrapper.find(ContentDetail);
 
         expect(childWrapper
-            .find('div.content-detail').exists()).toBeTruthy();
+            .find('div.ContentBody').exists()).toBeTruthy();
 
         expect(childWrapper
-            .find('div.content-detail').prop('dangerouslySetInnerHTML').__html).toBeTruthy();
+            .find('div.ContentBody').prop('dangerouslySetInnerHTML').__html).toBeTruthy();
 
     });
 
@@ -175,7 +179,7 @@ describe('<ContentDetail />', () => {
         );
         wrapper.find(ContentDetail).setState({ content: BlogWhatIsAtila });
         wrapper.update();
-        let childWrapper = wrapper.find('.content-detail');
+        let childWrapper = wrapper.find('.ContentBody');
 
         expect(childWrapper
             .find('div.paywall-border').exists()).toBeTruthy();
