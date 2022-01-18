@@ -119,7 +119,10 @@
   },
   "jest": {
     "transformIgnorePatterns": [
-      "node_modules/(?!react-markdown)/"
-    ]
+      "node_modules/(?!(antd|bootstrap|prismjs|react-toastify)/)"
+    ],
+    "moduleNameMapper": {
+      "\\.(css|less)$": "identity-obj-proxy"
+    }
   }
 }

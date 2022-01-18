@@ -33,6 +33,10 @@ jest.mock("../../services/utils", () => {
     }
 });
 jest.mock('../../services/SearchAPI');
+jest.mock("react-markdown", () => (props) => {
+    return <>{props.children}</>
+})
+
 SearchApi.relatedItems.mockImplementation(() => Promise.resolve({ data: { items: relatedItems } } ));
 
 describe('<ContentDetail />', () => {
