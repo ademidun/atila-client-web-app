@@ -22,9 +22,10 @@ import { Button } from "antd";
 import AtilaPointsPaywallModal from "../AtilaPointsPaywallModal";
 import {UserProfilePreview} from "../ReferredByInput";
 import ContentPaymentForm from '../Payments/ContentPaymentForm';
+import EmbedResponsiveYoutubeVideo from "../../scenes/LandingPage/LandingPageLiveDemo";
+import ContentBody, { CONTENT_BODY_CLASS_NAME } from './ContentBody/ContentBody';
 
 
-export const CONTENT_DETAIL_CLASS_NAME = "content-detail";
 class ContentDetail extends React.Component {
 
     constructor(props) {
@@ -75,10 +76,10 @@ class ContentDetail extends React.Component {
                 const content = res.data.blog || res.data.essay;
                 this.setState({content}, () => {
 
-                    createTableOfContents(`.${CONTENT_DETAIL_CLASS_NAME}`);
-                    addStyleClasstoTables(`.${CONTENT_DETAIL_CLASS_NAME}`);
-                    openAllLinksInNewTab(`.${CONTENT_DETAIL_CLASS_NAME}`);
-                    makeImagesCards(`.${CONTENT_DETAIL_CLASS_NAME}`)
+                    createTableOfContents(`.${CONTENT_BODY_CLASS_NAME}`);
+                    addStyleClasstoTables(`.${CONTENT_BODY_CLASS_NAME}`);
+                    openAllLinksInNewTab(`.${CONTENT_BODY_CLASS_NAME}`);
+                    makeImagesCards(`.${CONTENT_BODY_CLASS_NAME}`)
                     if (location && location.hash) {
                         scrollToElement(location.hash);
                     }
@@ -122,7 +123,7 @@ class ContentDetail extends React.Component {
                 title={'Loading...'} />)
         }
 
-        const { title, body, header_image_url, user, id, published, contributors } = content;
+        const { title, body, header_image_url, video_url, slides_url, body_type, user, id, published, contributors } = content;
 
         let isContributor = false;
         if (userProfile && contributors) {
@@ -152,7 +153,7 @@ class ContentDetail extends React.Component {
 
         if(!userProfile && contentType === 'essay') {
             contentToDisplay = (
-                <div className=" col-md-8 content-detail">
+                <div className=" col-md-8 ContentBody">
                     <div className={`${className} paywall-border`}
                          dangerouslySetInnerHTML={{__html: body}} />
                     <div className="card shadow p-3">
@@ -172,8 +173,14 @@ class ContentDetail extends React.Component {
             contentToDisplay = (
                 <div className={`${className} col-md-8`}>
                     {contentPaymentForm}
-                    <div className="content-detail"
-                        dangerouslySetInnerHTML={{__html: body}} />
+                    {video_url && <EmbedResponsiveYoutubeVideo youtubeVideoUrl={video_url} title={title} />}
+                    {slides_url && slides_url.startsWith("https://docs.google.com") && <div className="responsive-google-slides">
+                        <iframe 
+                            title={title}
+                            src={slides_url}>
+                        </iframe>
+                    </div>}
+                        <ContentBody body={body} bodyType={body_type} />
                         <hr />
                     {contentPaymentForm}
                 </div>

@@ -20,7 +20,7 @@ import './index.scss';
 import 'antd/dist/antd.css';
 import "bootstrap/dist/css/bootstrap.css";
 import "react-notion/src/styles.css";
-import "prismjs/themes/prism-tomorrow.css";
+import "prismjs/themes/prism-tomorrow.css"; //used for React Notion code syntax higlighting
 import "react-toastify/dist/ReactToastify.css";
 
 const Payment = loadable(() => import("./scenes/Payment/Payment"), {

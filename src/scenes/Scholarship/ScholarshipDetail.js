@@ -24,7 +24,7 @@ import { addStyleClasstoTables, openAllLinksInNewTab } from "../../services/util
 
 import './ScholarshipDetail.scss';
 import $ from "jquery";
-import { CONTENT_DETAIL_CLASS_NAME } from '../../components/ContentDetail/ContentDetail';
+import ContentBody, { CONTENT_BODY_CLASS_NAME } from '../../components/ContentDetail/ContentBody/ContentBody';
 
 class ScholarshipDetail extends React.Component {
 
@@ -84,8 +84,8 @@ class ScholarshipDetail extends React.Component {
                 const { owner_detail } = scholarship;
 
                 this.setState({ scholarship, contributors, awards, scholarshipUserProfile: owner_detail }, () => {
-                    addStyleClasstoTables(`.${CONTENT_DETAIL_CLASS_NAME}`);
-                    openAllLinksInNewTab(`.${CONTENT_DETAIL_CLASS_NAME}`);
+                    addStyleClasstoTables(`.${CONTENT_BODY_CLASS_NAME}`);
+                    openAllLinksInNewTab(`.${CONTENT_BODY_CLASS_NAME}`);
                     // add CTA classes to all buttons
                     $(".scholarship-cta-buttons button").addClass("col-md-3 col-sm-12 mt-3");
                     if (location && location.hash) {
@@ -286,7 +286,7 @@ class ScholarshipDetail extends React.Component {
                 {pageViews &&
                     <AtilaPointsPaywallModal pageViews={pageViews} />
                 }
-                <div className={`${CONTENT_DETAIL_CLASS_NAME} container mt-5"`}>
+                <div className="container mt-5">
                     <div className="row">
                         <div className="col-12">
                             <h1>
@@ -474,9 +474,8 @@ class ScholarshipDetail extends React.Component {
                                 </React.Fragment>
                             }
 
-                            {/*todo find a way to secure against XSS: https://stackoverflow.com/a/19277723*/}
                             <hr />
-                            <div dangerouslySetInnerHTML={{ __html: criteria_info }} />
+                            <ContentBody body={criteria_info} bodyType="html" />
                             <br />
                         </div>
                         <RelatedItems

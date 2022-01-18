@@ -558,7 +558,7 @@ export function createTableOfContents(parentSelector="") {
             "</nav></div><hr class='mb-5' />";
 
         if (parentSelector) {
-            $(parentSelector).prepend(tableOfContents);
+            $(parentSelector).before(tableOfContents);
         }
 
     }

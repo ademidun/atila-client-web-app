@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import CKEditor from "@ckeditor/ckeditor5-react";
 import InlineEditor from "@ckeditor/ckeditor5-build-inline";
 import {Helmet} from "react-helmet";
-import { Alert, Button, Popconfirm } from 'antd';
+import { Alert, Button, Popconfirm, Radio } from 'antd';
 import {Link, withRouter} from "react-router-dom";
 import TextareaAutosize from 'react-autosize-textarea';
 import {connect} from "react-redux";
@@ -19,14 +19,18 @@ import ButtonModal from "../ButtonModal";
 import CloseCircleOutlined from "@ant-design/icons/lib/icons/CloseCircleOutlined";
 import FormInputConstants from '../../models/FormInputConstants';
 import LinkContentToWallet from '../Payments/LinkContentToWallet';
+import ContentBody from '../ContentDetail/ContentBody/ContentBody';
 
 const defaultContent = {
     title: '',
     slug: '',
     description: '',
     body: '',
+    body_type: 'html',
     essay_source_url: '',
     header_image_url: '',
+    video_url: '',
+    slides_url: '',
     published: false,
 };
 
@@ -292,7 +296,7 @@ class ContentAddEdit extends React.Component {
         const descriptionLabel = `Description: Write a short summary of what your ${contentType.toLowerCase()} post is about (400 characters max.).`;
 
         const { content : {
-            title, description, published, header_image_url, body, essay_source_url, user, contributors
+            title, description, published, header_image_url, video_url, slides_url, body, essay_source_url, user, contributors, body_type,
         } } = this.state;
 
         if (!isAddContentMode && isLoading) {
@@ -334,7 +338,12 @@ class ContentAddEdit extends React.Component {
     
         )
 
-        let isOwner = userProfile?.username === user?.username
+        let isOwner = userProfile?.username === user?.username;
+
+        const bodyTypeOptions = [
+            { label: 'HTML', value: 'html' },
+            { label: 'Markdown', value: 'markdown' },
+          ];
 
         let inviteContributorModalBody = (
             <>
@@ -445,12 +454,33 @@ class ContentAddEdit extends React.Component {
 
                         {contentType === 'Blog' &&
                         <>
+                            <Radio.Group
+                                options={bodyTypeOptions}
+                                onChange={this.updateForm}
+                                name="body_type"
+                                value={body_type}
+                                optionType="button"
+                                buttonStyle="solid"
+                                className="col-12 mb-3"
+                                />
                             <input type="url"
                                name="header_image_url"
                                placeholder={`Paste the url of a cover image for your ${contentType.toLowerCase()} post`}
                                className="col-12 mb-3 form-control"
                                onChange={this.updateForm}
                                value={header_image_url} />
+                            <input type="url"
+                               name="video_url"
+                               placeholder={`Paste the url of a video for your ${contentType.toLowerCase()} post`}
+                               className="col-12 mb-3 form-control"
+                               onChange={this.updateForm}
+                               value={video_url} />
+                            <input type="url"
+                               name="slides_url"
+                               placeholder={`Paste the url of the slides for your ${contentType.toLowerCase()} post`}
+                               className="col-12 mb-3 form-control"
+                               onChange={this.updateForm}
+                               value={slides_url} />
 
                             {isOwner &&
                                 <>
@@ -493,12 +523,28 @@ class ContentAddEdit extends React.Component {
                         />
                     </div>
                     }
-                    <CKEditor
-                        editor={ InlineEditor }
-                        data={body}
-                        onChange={ this.editorChange }
-                        config={FormInputConstants.editorConfig}
-                    />
+                    {body_type === "markdown" && 
+                    <div className="mw-100 text-left">
+
+                        <textarea 
+                              className="col-12 mb-3 form-control"
+                              name="body"
+                              value={body}
+                              onChange={this.updateForm}
+                              rows={12}
+                            />
+                            <ContentBody body={body} bodyType={body_type} className="mw-100" />
+                    </div>
+                    
+                    } 
+                    {body_type !== "markdown" && 
+                        <CKEditor
+                            editor={ InlineEditor }
+                            data={body}
+                            onChange={ this.editorChange }
+                            config={FormInputConstants.editorConfig}
+                        />
+                    }
                     {contentPostError &&
                     <pre className="text-danger" style={{ whiteSpace: 'pre-wrap' }}>
                         {JSON.stringify(contentPostError, null, 4)}

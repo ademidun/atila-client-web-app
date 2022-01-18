@@ -17,6 +17,9 @@ const mockStore = configureStore();
 const guestUserStore = mockStore(initialReduxState);
 const loggedInStore = mockStore(initialReduxStateLoggedIn);
 
+jest.mock("react-markdown", () => (props) => {
+    return <>{props.children}</>
+})
 let mockApi = new MockAPI();
 mockApi.initializeMocks();
 describe('<ApplicationDetail />', () => {
