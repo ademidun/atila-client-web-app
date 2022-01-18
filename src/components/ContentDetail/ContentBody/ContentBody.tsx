@@ -6,11 +6,13 @@ interface ContentBodyPropTypes {
     /** Amount to send to destination address before gas fees. */
     body: string;
     bodyType: string;
+    className: string;
 }
 
 ContentBody.defaultProps = {
     body: "",
     bodyType: "html",
+    className: "",
 }
 
 
@@ -18,11 +20,11 @@ export const CONTENT_BODY_CLASS_NAME = "ContentBody";
 
 function ContentBody(props: ContentBodyPropTypes) {
 
-    const { body, bodyType } = props;
+    const { body, bodyType, className } = props;
     let bodyContent;
     if (bodyType === "markdown") {
         bodyContent = (
-            <div className={`${CONTENT_BODY_CLASS_NAME} ${bodyType}`}>
+            <div className={`${CONTENT_BODY_CLASS_NAME} ${bodyType} ${className}`}>
                 <ReactMarkdown children={body} />
             </div>
             

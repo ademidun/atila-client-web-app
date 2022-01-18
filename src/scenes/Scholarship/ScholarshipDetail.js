@@ -24,7 +24,7 @@ import { addStyleClasstoTables, openAllLinksInNewTab } from "../../services/util
 
 import './ScholarshipDetail.scss';
 import $ from "jquery";
-import ContentBody, { CONTENT_BODY_CLASS_NAME } from '../../components/ContentDetail/ContentDetail';
+import ContentBody, { CONTENT_BODY_CLASS_NAME } from '../../components/ContentDetail/ContentBody/ContentBody';
 
 class ScholarshipDetail extends React.Component {
 
