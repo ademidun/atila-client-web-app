@@ -21,11 +21,12 @@ import {
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Link} from "react-router-dom";
-import {Steps, Tag, InputNumber, Button} from "antd";
+import {Steps, Tag, InputNumber, Button, Alert} from "antd";
 import ScholarshipQuestionBuilder, {ScholarshipUserProfileQuestionBuilder} from "./ScholarshipQuestionBuilder";
 import PaymentSend from "../Payment/PaymentSend/PaymentSend";
 import Environment from "../../services/Environment";
 import {AwardGeneral} from "../../models/Award";
+import InviteScholarshipCollaborator from "../../components/InviteScholarshipCollaborator";
 const { Step } = Steps;
 
 
@@ -541,7 +542,6 @@ class ScholarshipAddEdit extends React.Component{
                              onUpdateForm={this.updateForm}
                              formError={scholarshipPostError}
                              onSubmit={this.submitForm}/>
-                {this.awardsPage()}
             </div>
         )
     }
@@ -633,7 +633,7 @@ class ScholarshipAddEdit extends React.Component{
 
     awardsPage = () => {
         // This should be moved into a separate component like AwardAddEdit.
-        const { scholarship, awards } = this.state;
+        const { scholarship, awards, isAddScholarshipMode } = this.state;
 
         const renderAwards = awards.map((award, index) => (
             <div key={index}>
@@ -663,6 +663,18 @@ class ScholarshipAddEdit extends React.Component{
                 <br />
                 {renderAwards}
                 <Button type="primary" onClick={this.addAward} >Add Award</Button>
+                <br />
+                <br />
+                <InviteScholarshipCollaborator
+                    isButtonDisabled={isAddScholarshipMode}
+                    scholarship={scholarship}
+                    source={"edit"}
+                />
+                {isAddScholarshipMode &&
+                <>
+                    <br />
+                    <Alert message={"Save scholarship to invite other collaborators."} type={"info"} />
+                </>}
             </div>
         )
     }
@@ -724,10 +736,10 @@ class ScholarshipAddEdit extends React.Component{
                 title: 'Basic Info',
                 render: this.basicInfoPage,
             },
-            // {
-            //     title: 'Awards',
-            //     render: this.awardsPage,
-            // },
+            {
+                title: 'Awards',
+                render: this.awardsPage,
+            },
             {
                 title: 'Eligibility',
                 render: this.eligibilityPage,
@@ -743,7 +755,7 @@ class ScholarshipAddEdit extends React.Component{
         ];
 
         if (!is_atila_direct_application) {
-            scholarshipEditPages = scholarshipEditPages.slice(0,2)
+            scholarshipEditPages = [scholarshipEditPages[0], scholarshipEditPages[2]]
         }
 
         const scholarshipSteps = (

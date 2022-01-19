@@ -7,13 +7,15 @@ import {Input, Switch} from "antd";
 import ScholarshipsAPI from "../services/ScholarshipsAPI";
 import PropTypes from "prop-types";
 import {ScholarshipPropType} from "../models/Scholarship";
-
+import {toastNotify} from "../models/Utils";
+import Loading from "./Loading";
 
 class InviteScholarshipCollaborator extends  React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
+            loading: null,
             invitedCollaborator: null,
             invitedEmail: "",
             isInviteViaEmail: false,
@@ -22,62 +24,60 @@ class InviteScholarshipCollaborator extends  React.Component {
 
     inviteCollaborator = () => {
         const { invitedCollaborator, invitedEmail, isInviteViaEmail } = this.state;
-        const { scholarship, setParentState } = this.props;
-        setParentState({isLoadingMessage: "Sending invite..."});
+        const { scholarship, source, onInviteSuccess, onInviteError, pendingInvitesCB } = this.props;
+        this.setState({loading: "Sending invite..."})
 
         if (isInviteViaEmail) {
             ScholarshipsAPI
-                .inviteCollaboratorViaEmail(scholarship.id, invitedEmail)
+                .inviteCollaboratorViaEmail(scholarship.id, invitedEmail, source)
                 .then(res => {
-                    const { scholarship, invites: pending_invites } =  res.data;
-
+                    const { invites: pending_invites } =  res.data;
                     this.setState({invitedEmail: ""})
-                    setParentState({ scholarship, responseMessage: `${invitedEmail} has been sent an invite.` });
+
+                    const msg = `${invitedEmail} has been sent an invite.`
+                    onInviteSuccess(msg)
+
                     if (pending_invites) {
-                        setParentState({ pending_invites })
+                        pendingInvitesCB(pending_invites)
                     }
                 })
                 .catch(err => {
                     console.log({err});
                     const { response_message } = err.response.data;
+                    let msg = `There was an error inviting ${invitedEmail}.\n\n Please message us using the chat icon in the bottom right of your screen.`;
                     if (response_message) {
-                        setParentState({responseMessage: response_message});
-                    } else {
-                        setParentState({responseMessage: `There was an error inviting ${invitedEmail}.\n\n Please message us using the chat icon in the bottom right of your screen.`})
+                        msg = response_message
                     }
+                    onInviteError(msg)
                 })
-                .then(() => {
-                    setParentState({isLoadingMessage: null});
+                .finally(() => {
+                    this.setState({loading: null})
                 });
         } else {
             ScholarshipsAPI
                 .inviteCollaborator(scholarship.id, invitedCollaborator.username)
                 .then(res => {
-                    const {scholarship} = res.data;
                     this.setState({invitedCollaborator: null});
-
-                    setParentState({
-                        scholarship,
-                        responseMessage: `${invitedCollaborator.username} has been sent an invite email.`
-                    })
+                    const msg = `${invitedCollaborator.username} has been sent an invite email.`
+                    onInviteSuccess(msg)
                 })
                 .catch(err => {
                     console.log({err});
                     const {response_message} = err.response.data;
+                    let msg = `There was an error inviting ${invitedCollaborator}.\n\n Please message us using the chat icon in the bottom right of your screen.`
                     if (response_message) {
-                        setParentState({responseMessage: response_message});
-                    } else {
-                        setParentState({responseMessage: `There was an error inviting ${invitedCollaborator}.\n\n Please message us using the chat icon in the bottom right of your screen.`})
+                        msg = response_message
                     }
+                    onInviteError(msg)
                 })
-                .then(() => {
-                    setParentState({isLoadingMessage: null});
+                .finally(() => {
+                    this.setState({loading: null})
                 });
         }
     }
 
     render() {
-        const { invitedCollaborator, invitedEmail, isInviteViaEmail } = this.state;
+        const { invitedCollaborator, invitedEmail, isInviteViaEmail, loading } = this.state;
         const { isButtonDisabled } = this.props;
 
         let inviteCollaboratorModalBody = (
@@ -119,6 +119,9 @@ class InviteScholarshipCollaborator extends  React.Component {
 
         let inviteModalBody = (
             <>
+                {loading &&
+                    <Loading title={loading} />
+                }
                 <Switch checked={isInviteViaEmail}
                         onChange={(checked) => {this.setState({isInviteViaEmail: checked})}} />
                 &nbsp;&nbsp;Invite with email
@@ -146,13 +149,19 @@ class InviteScholarshipCollaborator extends  React.Component {
 
 InviteScholarshipCollaborator.defaultProps = {
     isButtonDisabled: false,
-    setParentState: () => {},
+    source: "manage",
+    onInviteSuccess: (msg) => {toastNotify(msg)},
+    onInviteError: (err) => {toastNotify(err,"error")},
+    pendingInvitesCB: (pending_invites) => {},
 }
 
 InviteScholarshipCollaborator.propTypes = {
-    isButtonDisabled: PropTypes.bool,
     scholarship: ScholarshipPropType.isRequired,
-    setParentState: PropTypes.func,
+    isButtonDisabled: PropTypes.bool,
+    source: PropTypes.string,  // "edit" or "manage"
+    onInviteSuccess: PropTypes.func, // Callback function on success
+    onInviteError: PropTypes.func, // Callback function on error
+    pendingInvitesCB: PropTypes.func, // cb function to store pending_invites if needed
 };
 
 export default InviteScholarshipCollaborator
