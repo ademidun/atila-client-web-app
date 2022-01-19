@@ -47,6 +47,9 @@ const HowToApplyForScholarships = loadable(() => import("./scenes/DirectApplicat
 const Search = loadable(() => import("./scenes/Search/Search"), {
   fallback: <Loading />,
 });
+const SearchAlgolia = loadable(() => import("./scenes/Search/SearchAlgolia"), {
+  fallback: <Loading />,
+});
 const UserProfile = loadable(() => import("./scenes/UserProfile/UserProfile"), {
   fallback: <Loading />,
 });
@@ -199,8 +202,12 @@ class App extends React.Component {
                 component={GoogleAnalyticsTracker(NotionPage)}
               />
               <Route
-                path='/search'
+                path='/search-old'
                 component={GoogleAnalyticsTracker(Search)}
+              />
+              <Route
+                path='/search'
+                component={GoogleAnalyticsTracker(SearchAlgolia)}
               />
               <Route
                   path='/s/:urlQuery?'
