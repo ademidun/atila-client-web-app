@@ -45,7 +45,7 @@ const NotionPage = loadable(() => import("./scenes/Notion/NotionPage"), {
 const HowToApplyForScholarships = loadable(() => import("./scenes/DirectApplicationInfo/HowToApplyForScholarships"), {
   fallback: <Loading />,
 });
-const SearchAlgolia = loadable(() => import("./scenes/Search/SearchAlgolia"), {
+const SearchAlgolia = loadable(() => import("./scenes/Search/Search"), {
   fallback: <Loading />,
 });
 const UserProfile = loadable(() => import("./scenes/UserProfile/UserProfile"), {

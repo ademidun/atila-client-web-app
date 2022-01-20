@@ -1,32 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
 import algoliasearch from 'algoliasearch/lite';
-import { InstantSearch, Hits, PoweredBy, Pagination, connectStateResults, SearchBox } from 'react-instantsearch-dom';
+import { InstantSearch, Hits, PoweredBy, Pagination, SearchBox } from 'react-instantsearch-dom';
 import 'instantsearch.css/themes/satellite.css'; //algolia instant search styling
-import ScholarshipCard from '../Scholarship/ScholarshipCard';
 import Environment from '../../services/Environment';
 import qs from 'qs';
-import Loading from '../../components/Loading';
 import HelmetSeo from '../../components/HelmetSeo';
+import { Results, SearchResultHit } from './SearchResults';
+import './Search.scss'
 
 const algoliaClient = algoliasearch(Environment.ALGOLIA_APP_ID, Environment.ALGOLIA_PUBLIC_KEY);
 
 const MINIMUM_CHARACTER_LENGTH = 3;
 const DEBOUNCE_TIME = 400;
-
-export function SearchResultHit(props: any) {
-
-  const { hit } = props;
-  if (hit.deadline && Number.isInteger(hit.deadline)) {
-    if (new Date(hit.deadline).toISOString().startsWith("1970")) {
-      // if the timestamp is giving an epoch date then it's probably in seconds and we should multiply by 1000 to convert to milliseconds
-      hit.deadline = hit.deadline * 1000
-    }
-    hit.deadline = new Date(hit.deadline).toISOString();
-}
-  return (
-    <ScholarshipCard scholarship={hit} className="col-12" />
-  );
-}
 
 // customize search client to prevent sending a search on initial load
 // https://www.algolia.com/doc/guides/building-search-ui/going-further/conditional-requests/react/
@@ -48,26 +33,8 @@ const searchClient = {
     return algoliaClient.search(requests);
   },
 };
-	
-/**
- * Only show results when 3 or more characters are typed and let user know if no results were found.
- * https://www.algolia.com/doc/guides/building-search-ui/going-further/conditional-display/react/
- */
-const Results = connectStateResults(
-  ({ searchState, searchResults, children, isSearchStalled }: { searchState: any, searchResults: any, children: any, isSearchStalled: boolean}) => {
 
-    if (!searchState?.query || searchState?.query?.length < 3) {
-      return <div>Please type at least 3 characters</div>
-    } else if (searchResults?.nbHits === 0) {
-      return <div>No results have been found for {searchState.query}.</div>
-    } else {
-      return <>
-      {isSearchStalled && <Loading title="Loading search results" />}
-        {children}
-      </>
-    }
-  }
-);
+
 	
 
 const createURL = (state: any) => `?${qs.stringify(state)}`;
@@ -109,7 +76,7 @@ function SearchAlgolia({ location, history }: { location: any, history: any }) {
   const indexName = `${Environment.name}_scholarship_index`;
 
   return (
-    <div className="SearchAlgolia container p-5">
+    <div className="Search container p-md-5">
     <HelmetSeo content={seoContent} />    
     <InstantSearch searchClient={searchClient} 
                    indexName={indexName} 
