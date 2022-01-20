@@ -20,4 +20,14 @@ class TextUtils {
     }
 }
 
+/**
+ * 
+ * @source https://stackoverflow.com/a/16251861
+ * @param words 
+ * @returns 
+ */
+export const arrayToString = (words: Array<string>) => {
+    return [words.slice(0, -1).join(', '), words.slice(-1)[0]].join(words.length < 2 ? '' : ' and ');
+}
+
 export default TextUtils;
