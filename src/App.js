@@ -210,10 +210,7 @@ class App extends React.Component {
                 path='/search'
                 component={GoogleAnalyticsTracker(SearchAlgolia)}
               />
-              <Route
-                  path='/s/:urlQuery?'
-                  component={GoogleAnalyticsTracker(Search)}
-              />
+              <Redirect from="/s/:query" to="/search?query=:query" />
               <Route path='/login' component={GoogleAnalyticsTracker(Login)} />
               <Route
                 path='/pricing'
