@@ -45,9 +45,6 @@ const NotionPage = loadable(() => import("./scenes/Notion/NotionPage"), {
 const HowToApplyForScholarships = loadable(() => import("./scenes/DirectApplicationInfo/HowToApplyForScholarships"), {
   fallback: <Loading />,
 });
-const Search = loadable(() => import("./scenes/Search/Search"), {
-  fallback: <Loading />,
-});
 const SearchAlgolia = loadable(() => import("./scenes/Search/SearchAlgolia"), {
   fallback: <Loading />,
 });
@@ -201,10 +198,6 @@ class App extends React.Component {
               <Route
                 path='/p/:pageId'
                 component={GoogleAnalyticsTracker(NotionPage)}
-              />
-              <Route
-                path='/search-old'
-                component={GoogleAnalyticsTracker(Search)}
               />
               <Route
                 path='/search'
