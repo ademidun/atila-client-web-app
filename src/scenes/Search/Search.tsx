@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import algoliasearch from 'algoliasearch/lite';
-import { InstantSearch, Hits, PoweredBy, Pagination, SearchBox } from 'react-instantsearch-dom';
+import { InstantSearch, Hits, PoweredBy, Pagination, SearchBox, Configure } from 'react-instantsearch-dom';
 import 'instantsearch.css/themes/satellite.css'; //algolia instant search styling
 import Environment from '../../services/Environment';
 import qs from 'qs';
@@ -39,10 +39,21 @@ const searchClient = {
 
 const createURL = (state: any) => `?${qs.stringify(state)}`;
 
-const searchStateToUrl = (searchState: any) =>
-  searchState ? createURL(searchState) : '';
+const searchStateToUrl = (searchState: any) =>{
+  const searchStateCopy = Object.assign({}, searchState);
+  // remove hits per page configuration from showing in the url so that the URLs look clean and simple
+  // otherwise, your URL looks like: http://localhost:3000/search?query=canada&page=2&configure%5BhitsPerPage%5D=8
+  // Alternate example without encoding: http://localhost:3000/search?query=canada&page=2&configure[hitsPerPage]=8
+  delete searchStateCopy.configure?.hitsPerPage;
+  const searchStateUrl = searchState ? createURL(searchStateCopy) : '';
+  return searchStateUrl;
+}
 
-const urlToSearchState = ({ search, match=null }: { search: any, match: any}) => qs.parse(search.slice(1));
+const urlToSearchState = ({ search, match=null }: { search: any, match: any}) => {
+  const searchState = qs.parse(search.slice(1));
+  console.log({searchState});
+  return searchState;
+};
 
 
 function SearchAlgolia({ location, history }: { location: any, history: any }) {
@@ -57,6 +68,7 @@ function SearchAlgolia({ location, history }: { location: any, history: any }) {
 
     debouncedSetStateRef.current = setTimeout(() => {
       history.push(searchStateToUrl(updatedSearchState));
+      window.scrollTo(0,0)
     }, DEBOUNCE_TIME);
 
     setSearchState(updatedSearchState);
@@ -83,6 +95,9 @@ function SearchAlgolia({ location, history }: { location: any, history: any }) {
                    searchState={searchState} 
                    onSearchStateChange={onSearchStateChange}
                    createURL={createURL}>
+          <Configure
+          hitsPerPage={8}
+        />
         <SearchBox  className="mb-3" 
                     searchAsYouType={false} 
                     showLoadingIndicator />
