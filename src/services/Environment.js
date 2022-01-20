@@ -9,6 +9,8 @@ export const EnvironmentDev = {
     apiUrlRecommender: 'http://127.0.0.1:5000',
     apiUrlEmailService: 'http://127.0.0.1:5001',
     STRIPE_PUBLIC_KEY: 'pk_test_AxhlK7IudWRlQCa4azz4WElP00QVVE6SNM',
+    ALGOLIA_PUBLIC_KEY: '0bd3e798b8330dc08ba51ab519fd35e7',
+    ALGOLIA_APP_ID: 'HH66ESLTOR',
     clientUrl: 'http://localhost:3000',
 };
 
@@ -22,6 +24,8 @@ export const EnvironmentStaging = {
     apiUrlRecommender: 'https://ioqtbeqgob.execute-api.us-east-1.amazonaws.com/staging',
     apiUrlEmailService: 'https://mhc9n9h5pe.execute-api.us-east-1.amazonaws.com/staging',
     STRIPE_PUBLIC_KEY: 'pk_test_AxhlK7IudWRlQCa4azz4WElP00QVVE6SNM',
+    ALGOLIA_PUBLIC_KEY: '0bd3e798b8330dc08ba51ab519fd35e7',
+    ALGOLIA_APP_ID: 'HH66ESLTOR',
     clientUrl: 'https://staging.atila.ca',
 };
 
@@ -35,6 +39,8 @@ export const EnvironmentProd = {
     apiUrlRecommender: 'https://itt9ynrcpb.execute-api.us-east-1.amazonaws.com/prod',
     apiUrlEmailService: 'https://kho47lpiuf.execute-api.us-east-1.amazonaws.com/prod',
     STRIPE_PUBLIC_KEY: 'pk_live_AgHuMdhPDSk5eKrlwoHCnZnR00uIrfIHkM',
+    ALGOLIA_PUBLIC_KEY: '0bd3e798b8330dc08ba51ab519fd35e7',
+    ALGOLIA_APP_ID: 'HH66ESLTOR',
     clientUrl: 'https://atila.ca',
 };
 
