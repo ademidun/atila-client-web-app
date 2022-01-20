@@ -33,6 +33,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Configure @atila as a Scoped Registry
+          command: npm config set '@atila:registry' https://node.bit.dev
+      - run:
           name: update-npm
           command: 'sudo npm install -g npm@latest'
       - restore_cache:
