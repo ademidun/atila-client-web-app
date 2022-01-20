@@ -106,16 +106,19 @@ function SearchAlgolia({ location, history }: { location: any, history: any }) {
     description: `Scholarships, Blogs, and Essays search results${searchState.query ? ` for ${searchState.query}`: ''}`,
     slug: `/search?query=${searchState.query}`
   };
+  const indexName = `${Environment.name}_scholarship_index`;
 
   return (
     <div className="SearchAlgolia container p-5">
     <HelmetSeo content={seoContent} />    
     <InstantSearch searchClient={searchClient} 
-                   indexName={`${Environment.name}_scholarship_index"`} 
+                   indexName={indexName} 
                    searchState={searchState} 
                    onSearchStateChange={onSearchStateChange}
                    createURL={createURL}>
-        <SearchBox  className="mb-3" searchAsYouType={false} showLoadingIndicator/>
+        <SearchBox  className="mb-3" 
+                    searchAsYouType={false} 
+                    showLoadingIndicator />
         <Results>
           <Hits hitComponent={SearchResultHit} />
         </Results>
