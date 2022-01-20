@@ -1,17 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
 import algoliasearch from 'algoliasearch/lite';
-import { InstantSearch, Hits, PoweredBy, Pagination, SearchBox, Configure } from 'react-instantsearch-dom';
+import { InstantSearch, Hits, PoweredBy, Pagination, SearchBox, Configure, Index } from 'react-instantsearch-dom';
 import 'instantsearch.css/themes/satellite.css'; //algolia instant search styling
 import Environment from '../../services/Environment';
 import qs from 'qs';
 import HelmetSeo from '../../components/HelmetSeo';
-import { Results, SearchResultHit } from './SearchResults';
+import { SearchResults, SearchResultHit } from './SearchResults';
 import './Search.scss'
 
 const algoliaClient = algoliasearch(Environment.ALGOLIA_APP_ID, Environment.ALGOLIA_PUBLIC_KEY);
 
 const MINIMUM_CHARACTER_LENGTH = 3;
 const DEBOUNCE_TIME = 400;
+const HITS_PER_PAGE = 5;
 
 // customize search client to prevent sending a search on initial load
 // https://www.algolia.com/doc/guides/building-search-ui/going-further/conditional-requests/react/
@@ -41,17 +42,18 @@ const createURL = (state: any) => `?${qs.stringify(state)}`;
 
 const searchStateToUrl = (searchState: any) =>{
   const searchStateCopy = Object.assign({}, searchState);
-  // remove hits per page configuration from showing in the url so that the URLs look clean and simple
-  // otherwise, your URL looks like: http://localhost:3000/search?query=canada&page=2&configure%5BhitsPerPage%5D=8
+  // TODO remove hits per page configuration from showing in the url so that the URLs look clean and simple
+  // otherwise, your URL looks like: 
+  // http://localhost:3000/search?query=canada&page=2&configure%5BhitsPerPage%5D=8
+  // http://localhost:3000/search?query=scholarship&page=1&indices%5Bdev_scholarship_index%5D%5Bconfigure%5D%5BhitsPerPage%5D=8&indices%5Bdev_scholarship_index%5D%5Bpage%5D=2&indices%5Bdev_blog_index%5D%5Bconfigure%5D%5BhitsPerPage%5D=8&indices%5Bdev_blog_index%5D%5Bpage%5D=1
   // Alternate example without encoding: http://localhost:3000/search?query=canada&page=2&configure[hitsPerPage]=8
-  delete searchStateCopy.configure?.hitsPerPage;
+  // delete searchStateCopy.indices;
   const searchStateUrl = searchState ? createURL(searchStateCopy) : '';
   return searchStateUrl;
 }
 
 const urlToSearchState = ({ search, match=null }: { search: any, match: any}) => {
   const searchState = qs.parse(search.slice(1));
-  console.log({searchState});
   return searchState;
 };
 
@@ -85,27 +87,36 @@ function SearchAlgolia({ location, history }: { location: any, history: any }) {
     description: `Scholarships, Blogs, and Essays search results${searchState.query ? ` for ${searchState.query}`: ''}`,
     slug: `/search?query=${searchState.query}`
   };
-  const indexName = `${Environment.name}_scholarship_index`;
+  const scholarshipIndex = `${Environment.name}_scholarship_index`;
+  const blogIndex = `${Environment.name}_blog_index`;
 
   return (
     <div className="Search container p-md-5">
     <HelmetSeo content={seoContent} />    
     <InstantSearch searchClient={searchClient} 
-                   indexName={indexName} 
+                   indexName={scholarshipIndex} 
                    searchState={searchState} 
                    onSearchStateChange={onSearchStateChange}
                    createURL={createURL}>
-          <Configure
-          hitsPerPage={8}
-        />
         <SearchBox  className="mb-3" 
                     searchAsYouType={false} 
                     showLoadingIndicator />
-        <Results>
-          <Hits hitComponent={SearchResultHit} />
-        </Results>
-        <Pagination  className="my-3" />
-        <PoweredBy  className="mb-3" />
+        <Index indexName={scholarshipIndex}>
+          <Configure hitsPerPage={HITS_PER_PAGE} />
+          <SearchResults title="Scholarships">
+            <Hits hitComponent={SearchResultHit} />
+          </SearchResults>
+          <Pagination  className="my-3" />
+        </Index>
+
+        <Index indexName={blogIndex}>
+          <Configure hitsPerPage={HITS_PER_PAGE} />
+          <SearchResults title="Blogs">
+            <Hits hitComponent={SearchResultHit} />
+          </SearchResults>
+          <Pagination  className="my-3" />
+        </Index>
+        <PoweredBy  className="mb-3 mt-5" />
     </InstantSearch>
     </div>
   )
