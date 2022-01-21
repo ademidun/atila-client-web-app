@@ -50,7 +50,7 @@ export function SearchResultHit(props: any) {
       if (!searchState?.query || searchState?.query?.length < 3) {
         results = <p>Please type at least 3 characters</p>
       } else if (searchResults?.nbHits === 0) {
-        results = <p>No results found for {searchState.query}.
+        results = <p className="text-center">No {title?.toLowerCase() || "results"} found for {searchState.query}.
         {showExpiredScholarshipsPrompt}</p>
       }
 
