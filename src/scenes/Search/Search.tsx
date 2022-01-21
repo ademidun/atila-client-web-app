@@ -7,12 +7,15 @@ import qs from 'qs';
 import HelmetSeo from '../../components/HelmetSeo';
 import { SearchResults, SearchResultHit } from './SearchResults';
 import './Search.scss'
+import { Radio } from 'antd';
 
 const algoliaClient = algoliasearch(Environment.ALGOLIA_APP_ID, Environment.ALGOLIA_PUBLIC_KEY);
 
 const MINIMUM_CHARACTER_LENGTH = 3;
 const DEBOUNCE_TIME = 400;
 const HITS_PER_PAGE = 5;
+
+const NOW_TIMESTAMP = Date.now();
 
 // customize search client to prevent sending a search on initial load
 // https://www.algolia.com/doc/guides/building-search-ui/going-further/conditional-requests/react/
@@ -61,6 +64,13 @@ const urlToSearchState = ({ search, match=null }: { search: any, match: any}) =>
 function SearchAlgolia({ location, history }: { location: any, history: any }) {
 
   const [searchState, setSearchState] = useState(urlToSearchState(location));
+  const [showExpiredScholarships, setshowExpiredScholarships] = useState(false);
+
+  const showExpiredScholarshipsOptions = [
+    { label: 'Show Expired Scholarships', value: true },
+    { label: 'Hide Expired Scholarships', value: false },
+  ];
+
   // TODO find a way to get searchResults and use it in the HelmetSEO
   // const [searchResults, _setSearchResults] = useState<any>({});
   const debouncedSetStateRef = useRef<null|any>(null);
@@ -78,7 +88,7 @@ function SearchAlgolia({ location, history }: { location: any, history: any }) {
 
   useEffect(() => {
     setSearchState(urlToSearchState(location));
-  }, [location]);
+  }, [location, showExpiredScholarships]);
 
   const seoContent = {
     title: searchState.query ? `${searchState.query} - Search`: 'Search',
@@ -89,7 +99,12 @@ function SearchAlgolia({ location, history }: { location: any, history: any }) {
   };
   const scholarshipIndex = `${Environment.name}_scholarship_index`;
   const blogIndex = `${Environment.name}_blog_index`;
-
+  const scholarshipConfiguration: any = {};
+  if (!showExpiredScholarships) {
+    // the deadline is saved in seconds in our index so we have to convert the current date from milliseconds to seconds;
+    const nowTimestampInSeconds = Math.round( NOW_TIMESTAMP / 1000 );
+    scholarshipConfiguration.filters = `deadline >= ${nowTimestampInSeconds}`;
+  }
   return (
     <div className="Search container p-md-5">
     <HelmetSeo content={seoContent} />    
@@ -102,7 +117,15 @@ function SearchAlgolia({ location, history }: { location: any, history: any }) {
                     searchAsYouType={false} 
                     showLoadingIndicator />
         <Index indexName={scholarshipIndex}>
-          <Configure hitsPerPage={HITS_PER_PAGE} />
+          <Configure hitsPerPage={HITS_PER_PAGE} {...scholarshipConfiguration} />
+          <Radio.Group
+            className="mb-3"
+            options={showExpiredScholarshipsOptions}
+            onChange={event => setshowExpiredScholarships(event.target.value)}
+            value={showExpiredScholarships}
+            optionType="button"
+            buttonStyle="solid"
+          />
           <SearchResults title="Scholarships">
             <Hits hitComponent={SearchResultHit} />
           </SearchResults>

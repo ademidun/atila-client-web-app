@@ -43,12 +43,15 @@ export function SearchResultHit(props: any) {
 
   export const SearchResults = connectStateResults((props: SearchResultsProps) => {
     const { searchState, searchResults, children, isSearchStalled, title } = props;
+      const showExpiredScholarshipsPrompt = searchResults?._state?.filters?.startsWith("deadline >=") && 
+      searchResults?._state?.index?.includes("scholarship_index") ? "Try showing expired scholarships to see more results." : "";
 
       let results = children;
       if (!searchState?.query || searchState?.query?.length < 3) {
         results = <p>Please type at least 3 characters</p>
       } else if (searchResults?.nbHits === 0) {
-        results = <p>No results have been found for {searchState.query}.</p>
+        results = <p>No results found for {searchState.query}.
+        {showExpiredScholarshipsPrompt}</p>
       }
 
       return <div className="SearchResults">
