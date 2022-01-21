@@ -55,8 +55,13 @@ const searchStateToUrl = (searchState: any) =>{
   return searchStateUrl;
 }
 
-const urlToSearchState = ({ search, match=null }: { search: any, match: any}) => {
+const urlToSearchState = ({ search}: { search: any}) => {
   const searchState = qs.parse(search.slice(1));
+  // ?q=<term> should set the same search state as ?query=<term>
+  if(searchState.q && !searchState.query) {
+    searchState.query = searchState.q;
+    delete searchState.q;
+  }
   return searchState;
 };
 
