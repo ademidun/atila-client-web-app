@@ -32,7 +32,11 @@ class ContentCard extends React.Component {
 
         const { content, hideImage } = this.props;
         const { showPreview } = this.state;
-        const { title, description, image, slug, type, user, contributors } = content;
+        const { title, description, image, slug, type} = content;
+        let { contributors, contributors_json, user, user_json } = content;
+
+        contributors = contributors || contributors_json;
+        user = user || user_json;
 
         let descriptionText = description;
 
@@ -83,9 +87,11 @@ class ContentCard extends React.Component {
                     </div>
                     }
                     <div className='lower-container'>
-                        <Link title={title} to={slug}>
-                            <h3> {title} </h3>
-                        </Link>
+                        <div className="title">
+                            <Link title={title} to={slug}>
+                                <h3> {title} </h3>
+                            </Link>
+                        </div>
                         {authorsComponent}
                         <p className="body"> 
                             {descriptionText}

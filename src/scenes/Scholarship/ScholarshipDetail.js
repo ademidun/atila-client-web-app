@@ -115,7 +115,8 @@ class ScholarshipDetail extends React.Component {
                             const guestPageViews = guestPageViewsIncrement();
                             this.setState({ pageViews: { guestPageViews } });
                         }
-                    });
+                    })
+                    .catch(err=>{});
             })
             .catch((err) => {
                 let errorMessage = (<div className="text-center">

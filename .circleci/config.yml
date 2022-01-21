@@ -13,6 +13,9 @@ jobs:
       - restore_cache:
           key: dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "package.json" }}
       - run:
+          name: Configure @atila as a Scoped Registry
+          command: npm config set '@atila:registry' https://node.bit.dev
+      - run:
           name: install-npm-packages
           command: npm install
       - save_cache:
@@ -29,6 +32,9 @@ jobs:
       - image: cimg/node:14.17.6
     steps:
       - checkout
+      - run:
+          name: Configure @atila as a Scoped Registry
+          command: npm config set '@atila:registry' https://node.bit.dev
       - run:
           name: update-npm
           command: 'sudo npm install -g npm@latest'

@@ -9,7 +9,7 @@ import AnalyticsService from "../../services/AnalyticsService";
 import {slugify, unSlugify} from "../../services/utils";
 import HelmetSeo from "../../components/HelmetSeo";
 
-class Search extends React.Component {
+class SearchAtila extends React.Component {
 
     constructor(props) {
         super(props);
@@ -19,7 +19,7 @@ class Search extends React.Component {
             location : { search },
         } = this.props;
         const params = new URLSearchParams(search);
-        const searchQuery = unSlugify(params.get('q') || '');
+        const searchQuery = unSlugify(params.get('q') || params.get('query') || '');
 
         this.state = {
             searchQuery,
@@ -33,17 +33,17 @@ class Search extends React.Component {
 
     componentDidMount() {
         // Redirect to /search if necessary
-        if (!this.props.location.pathname.includes("/search")) {
+        if (!this.props.location.pathname.includes("/search-old")) {
             const { urlQuery } = this.props.match.params
 
             if (urlQuery) {
                 this.props.history.push({
-                    pathname: '/search',
+                    pathname: '/search-old',
                     search: `?q=${slugify(urlQuery)}`
                 });
             } else {
                 this.props.history.push({
-                    pathname: '/search'
+                    pathname: '/search-old'
                 });
             }
         }
@@ -59,7 +59,7 @@ class Search extends React.Component {
             location : { search },
         } = props;
         const params = new URLSearchParams(search);
-        const searchQuery = unSlugify(params.get('q') || '');
+        const searchQuery = unSlugify(params.get('q') || params.get('query') || '');
         const { prevSearchQuery } = state;
 
         if (searchQuery !== prevSearchQuery) {
@@ -80,7 +80,7 @@ class Search extends React.Component {
             location : { search },
         } = this.props;
         const params = new URLSearchParams(search);
-        const searchQuery = unSlugify(params.get('q') || '');
+        const searchQuery = unSlugify(params.get('q') ||params.get('query') ||  '');
 
         if (searchResults === null && !responseError && searchQuery !== prevSearchQuery) {
             this.loadItems();
@@ -131,7 +131,7 @@ class Search extends React.Component {
         }
         const { searchQuery } = this.state;
         this.props.history.push({
-            pathname: '/search',
+            pathname: '/search-old',
             search: `?q=${slugify(searchQuery)}`
         });
         this.setState({ isLoadingResponse: true }, () => {
@@ -151,7 +151,7 @@ class Search extends React.Component {
         const seoContent = {
             title: searchQuery? `${searchQuery} - Search`: 'Search',
             description: `Scholarships, Blogs, and Essays for ${searchQuery}`,
-            slug: `/search?q=${searchQuery}`
+            slug: `/search-old?q=${searchQuery}`
         };
 
         if (searchResults) {
@@ -200,4 +200,4 @@ class Search extends React.Component {
         );
     }
 }
-export default Search;
+export default SearchAtila;

@@ -5,6 +5,7 @@ import {connect} from "react-redux";
 import {AUTOCOMPLETE_KEY_LIST} from "../../models/ConstantsForm";
 import {Link} from "react-router-dom";
 import {emojiDictionary} from "../../models/Constants";
+import { arrayToString } from "../../services/utils/TextUtils";
 
 export function doesScholarshipHaveExtraCriteria(scholarship) {
     return (AUTOCOMPLETE_KEY_LIST.some(key => (scholarship[key] && scholarship[key].length>0)) ||
@@ -54,7 +55,7 @@ function ScholarshipExtraCriteria({scholarship, loggedInUserProfile, viewAsUserP
             {['city', 'province', 'country'].map(locationType => (
                 <React.Fragment key={locationType}>
 
-                    {scholarship[locationType] && scholarship[locationType].map((locationString, index) => (
+                    {scholarship[locationType] && scholarship[locationType].map && scholarship[locationType].map((locationString, index) => (
                         <p key={locationString.name}>
                             {index===0 && <strong>{prettifyKeys(locationType)}: {' '}</strong>}
                             {' '}
@@ -77,6 +78,9 @@ function ScholarshipExtraCriteria({scholarship, loggedInUserProfile, viewAsUserP
                     ))}
                 </React.Fragment>
             ))}
+            {scholarship.location_names && 
+                <div><strong>Eligible Locations: </strong> {arrayToString(scholarship.location_names)}</div>
+            }
 
             {scholarship.female_only && <p><strong>Female Only <span role="img" aria-label="female emoji">
                 🙎🏾

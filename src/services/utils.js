@@ -39,51 +39,28 @@ export function makeXHRRequestAsPromise (method, url, data) {
 export function genericItemTransform (item) {
 
     item.type = getItemType(item);
+    let user = item.user || item.user_json;
 
     switch(item.type) {
         case 'scholarship':
             item = {
-                title: item.name,
-                description: item.description,
-                id: item.id,
+                ...item,
                 slug: `/scholarship/${item.slug}/`,
                 image: item.img_url,
-                type: item.type,
             };
             break;
         case 'essay':
             item = {
-                title: item.title,
-                description: item.description,
-                id: item.id,
-                slug: item.user ? `/essay/${item.user.username}/${item.slug}/` : "",
-                image: item.user ? `${item.user.profile_pic_url}` : "",
-                type: item.type,
-                user: item.user,
-                published: item.published,
-                contributors: item.contributors,
+                ...item,
+                slug: user ? `/essay/${user.username}/${item.slug}/` : "",
+                image: user ? `${user.profile_pic_url}` : "",
             };
             break;
         case 'blog':
             item = {
-                title: item.title,
-                description: item.description,
+                ...item,
                 image: item.header_image_url,
-                id: item.id,
-                slug: item.user ? `/blog/${item.user.username}/${item.slug}/` : "",
-                type: item.type,
-                user: item.user,
-                published: item.published,
-                contributors: item.contributors,
-            };
-            break;
-        case 'forum':
-            item = {
-                title: item.starting_comment ? item.starting_comment.title || item.title : item.title,
-                description: item.starting_comment ?  item.starting_comment.text || item.text: item.text,
-                id: item.id,
-                slug: `/forum/${item.slug}/`,
-                type: item.type,
+                slug: user ? `/blog/${user.username}/${item.slug}/` : "",
             };
             break;
         default:

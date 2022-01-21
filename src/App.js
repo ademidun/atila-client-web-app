@@ -23,6 +23,7 @@ import "react-notion/src/styles.css";
 import "prismjs/themes/prism-tomorrow.css"; //used for React Notion code syntax higlighting
 import "react-toastify/dist/ReactToastify.css";
 
+
 const Payment = loadable(() => import("./scenes/Payment/Payment"), {
   fallback: <Loading />,
 });
@@ -42,6 +43,9 @@ const NotionPage = loadable(() => import("./scenes/Notion/NotionPage"), {
   fallback: <Loading />,
 });
 const HowToApplyForScholarships = loadable(() => import("./scenes/DirectApplicationInfo/HowToApplyForScholarships"), {
+  fallback: <Loading />,
+});
+const SearchAtila = loadable(() => import("./scenes/Search/SearchAtila"), {
   fallback: <Loading />,
 });
 const Search = loadable(() => import("./scenes/Search/Search"), {
@@ -199,13 +203,15 @@ class App extends React.Component {
                 component={GoogleAnalyticsTracker(NotionPage)}
               />
               <Route
+                path='/search-old'
+                component={GoogleAnalyticsTracker(SearchAtila)}
+              />
+              <Route
                 path='/search'
                 component={GoogleAnalyticsTracker(Search)}
               />
-              <Route
-                  path='/s/:urlQuery?'
-                  component={GoogleAnalyticsTracker(Search)}
-              />
+              <Redirect from="/s/:query" to="/search?query=:query" />
+              <Redirect from="/s" to="/search" />
               <Route path='/login' component={GoogleAnalyticsTracker(Login)} />
               <Route
                 path='/pricing'
