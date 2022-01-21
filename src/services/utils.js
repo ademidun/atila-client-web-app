@@ -40,7 +40,6 @@ export function genericItemTransform (item) {
 
     item.type = getItemType(item);
     let user = item.user || item.user_json;
-    console.log({item, user});
 
     switch(item.type) {
         case 'scholarship':

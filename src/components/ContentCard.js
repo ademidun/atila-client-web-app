@@ -34,7 +34,6 @@ class ContentCard extends React.Component {
         const { showPreview } = this.state;
         const { title, description, image, slug, type} = content;
         let { contributors, contributors_json, user, user_json } = content;
-        console.log({content});
 
         contributors = contributors || contributors_json;
         user = user || user_json;
