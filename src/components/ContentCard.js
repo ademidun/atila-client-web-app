@@ -88,9 +88,11 @@ class ContentCard extends React.Component {
                     </div>
                     }
                     <div className='lower-container'>
-                        <Link title={title} to={slug}>
-                            <h3> {title} </h3>
-                        </Link>
+                        <div className="title">
+                            <Link title={title} to={slug}>
+                                <h3> {title} </h3>
+                            </Link>
+                        </div>
                         {authorsComponent}
                         <p className="body"> 
                             {descriptionText}
