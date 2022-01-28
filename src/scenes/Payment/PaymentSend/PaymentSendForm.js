@@ -112,6 +112,7 @@ class PaymentSendForm extends React.Component {
             scholarship: { name: scholarship.name, id: scholarship.id },
             total_payment_amount: totalPaymentAmount,
             contributor,
+            currency: 'CAD',
         };
 
         try{
