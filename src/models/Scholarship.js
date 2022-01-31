@@ -5,6 +5,7 @@ import React from "react";
 import {Alert, Popover} from "antd";
 import {AUTOCOMPLETE_KEY_LIST} from "./ConstantsForm";
 import UserProfileReferralCode from '../scenes/UserProfile/UserProfileReferralCode';
+import {Currencies} from "./ConstantsPayments";
 
 let nextMonth = new Date();
 nextMonth.setDate(nextMonth.getDate() + 30);
@@ -224,6 +225,7 @@ export let DEFAULT_SCHOLARSHIP_CONTRIBUTOR = {
     username: null,
     profile_pic_url: getRandomContributorProfilePicture(),
     funding_distribution: "create",
+    currency: Currencies.CAD.code,
 };
 
 const atilaDirectApplicationsPopoverContent = (
