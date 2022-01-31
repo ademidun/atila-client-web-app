@@ -10,17 +10,13 @@ import {updateLoggedInUserProfile} from "../../../redux/actions/user";
 import Loading from "../../../components/Loading";
 import Invoice from "./Invoice";
 import ScholarshipsAPI from "../../../services/ScholarshipsAPI";
-import {
-    ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP,
-    ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_NEW_AWARD,
-    ATILA_SCHOLARSHIP_FEE, ATILA_SCHOLARSHIP_FEE_TAX
-} from "../../../models/Constants";
 import {formatCurrency, getErrorMessage} from "../../../services/utils";
 import PaymentAPI from "../../../services/PaymentAPI";
 import {ScholarshipDisableEditMessage, ScholarshipPropType, ScholarshipFundingWillPublishMessage} from "../../../models/Scholarship";
 import Environment from "../../../services/Environment";
 import ScholarshipSponsorAgreement from "../../../components/ScholarshipSponsorAgreement";
 import ButtonModal from "../../../components/ButtonModal";
+import {ATILA_SCHOLARSHIP_FEE, ATILA_SCHOLARSHIP_FEE_TAX, Currencies} from "../../../models/ConstantsPayments";
 
 export const PREMIUM_PRICE_BEFORE_TAX = 9;
 export const PREMIUM_PRICE_WITH_TAX = 10.17;
@@ -45,10 +41,10 @@ class PaymentSendForm extends React.Component {
 
         let isScholarshipEditMode = location.pathname.includes('/scholarship/edit/') || location.pathname === "/scholarship/add" || location.pathname === "/scholarship/add/";
 
-        let minimumFundingAmount = ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP;
+        let minimumFundingAmount = Currencies.CAD.minimum_funding_amount_contribute_scholarship;
 
         if (isScholarshipEditMode) {
-            minimumFundingAmount = ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_NEW_AWARD;
+            minimumFundingAmount = Currencies.CAD.minimum_funding_amount_contribute_new_award;
         }
 
 

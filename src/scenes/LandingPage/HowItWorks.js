@@ -2,11 +2,8 @@ import React from 'react';
 import {Link} from "react-router-dom";
 import {Button, Tag} from "antd";
 import EmbedResponsiveYoutubeVideo from "./LandingPageLiveDemo";
-import {
-    ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP,
-    ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_NEW_AWARD
-} from "../../models/Constants";
 import {ImageGif} from "../../components/ImageGif";
+import {Currencies} from "../../models/ConstantsPayments";
 
 function HowItWorks({accountType}) {
 
@@ -81,8 +78,8 @@ export const howItWorksSponsorItems = [
         title: "Fund Scholarship",
         body: <p>Fund the scholarship with a credit card or debit card.
             <br/><br/>
-            The minimum funding amount for a scholarship is just ${ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_NEW_AWARD}. <br/> <br/>
-            The minimum funding amount for additional contributions is ${ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP}.
+            The minimum funding amount for a scholarship is just ${Currencies.CAD.minimum_funding_amount_contribute_new_award}. <br/> <br/>
+            The minimum funding amount for additional contributions is ${Currencies.CAD.minimum_funding_amount_contribute_scholarship}.
         </p>,
         image: "https://i.imgur.com/kgpSskJ.png",
         gif: "https://s3.gifyu.com/images/Add-Scholarship_-Michael-Scott-Scotts-Tots-Scholarship-2021---Atila--Mozilla-Firefox-2021-05-04-10-15-30.gif"

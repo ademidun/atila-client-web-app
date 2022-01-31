@@ -11,12 +11,9 @@ import Register from "../../components/Register";
 import FileInput from "../../components/Form/FileInput";
 import {DEFAULT_SCHOLARSHIP_CONTRIBUTOR, SCHOLARSHIP_CONTRIBUTION_EXAMPLE_IMAGE} from "../../models/Scholarship";
 import ScholarshipContributionProfilePictureChooser from "./ScholarshipContributionProfilePictureChooser";
-import {
-    ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_NEW_AWARD,
-    ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP
-} from "../../models/Constants";
 import {isValidEmail} from "../../services/utils";
 import ReferredByInput from "../../components/ReferredByInput";
+import {Currencies} from "../../models/ConstantsPayments";
 
 const { Step } = Steps;
 
@@ -132,13 +129,13 @@ class ScholarshipContribution extends React.Component {
             invalidInput = `Please enter a contribution amount.`
         }
 
-        if (contributor && contributor.funding_amount < ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP
+        if (contributor && contributor.funding_amount < Currencies.CAD.minimum_funding_amount_contribute_scholarship
             && contributor.funding_distribution !== "create") {
-            invalidInput = `Minimum contribution amount is $${ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP}.`;
+            invalidInput = `Minimum contribution amount is $${Currencies.CAD.minimum_funding_amount_contribute_scholarship}.`;
         }
         if (contributor && contributor.funding_distribution === "create" &&
-            contributor.funding_amount < ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_NEW_AWARD) {
-            invalidInput = `Minimum contribution amount for starting a new award is $${ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_NEW_AWARD}.`;
+            contributor.funding_amount < Currencies.CAD.minimum_funding_amount_contribute_new_award) {
+            invalidInput = `Minimum contribution amount for starting a new award is $${Currencies.CAD.minimum_funding_amount_contribute_new_award}.`;
         }
 
         this.setState({ contributor, invalidInput }, () => {
@@ -205,9 +202,9 @@ class ScholarshipContribution extends React.Component {
 
         const alertMessage = (
             <div>
-                Minimum contribution: ${ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP}.
+                Minimum contribution: ${Currencies.CAD.minimum_funding_amount_contribute_scholarship}.
                 <br />
-                Minimum contribution for new award: ${ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_NEW_AWARD}.
+                Minimum contribution for new award: ${Currencies.CAD.minimum_funding_amount_contribute_new_award}.
             </div>
         )
 

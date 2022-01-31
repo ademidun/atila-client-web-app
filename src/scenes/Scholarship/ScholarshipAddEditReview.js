@@ -1,8 +1,8 @@
-import {ATILA_SCHOLARSHIP_FEE} from "../../models/Constants";
 import {formatCurrency} from "../../services/utils";
 import {Button} from "antd";
 import React from "react";
 import {Link} from "react-router-dom";
+import {ATILA_SCHOLARSHIP_FEE} from "../../models/ConstantsPayments";
 
 
 export function ScholarshipAddEditReview ({scholarship}){
