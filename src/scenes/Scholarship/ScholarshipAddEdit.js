@@ -27,7 +27,7 @@ import PaymentSend from "../Payment/PaymentSend/PaymentSend";
 import Environment from "../../services/Environment";
 import {AwardGeneral} from "../../models/Award";
 import InviteScholarshipCollaborator from "../../components/InviteScholarshipCollaborator";
-import {Currencies, CURRENCY_CODES} from "../../models/ConstantsPayments";
+import {CURRENCY_CODES} from "../../models/ConstantsPayments";
 const { Step } = Steps;
 
 
