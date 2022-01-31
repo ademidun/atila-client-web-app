@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
 
-import {Alert, Button, Input, Radio, Space, Steps} from "antd";
+import {Alert, Button, Input, Radio, Select, Space, Steps} from "antd";
 import PaymentSend from "../Payment/PaymentSend/PaymentSend";
 import {UserProfilePropType} from "../../models/UserProfile";
 import Register from "../../components/Register";
@@ -13,7 +13,7 @@ import {DEFAULT_SCHOLARSHIP_CONTRIBUTOR, SCHOLARSHIP_CONTRIBUTION_EXAMPLE_IMAGE}
 import ScholarshipContributionProfilePictureChooser from "./ScholarshipContributionProfilePictureChooser";
 import {isValidEmail} from "../../services/utils";
 import ReferredByInput from "../../components/ReferredByInput";
-import {Currencies} from "../../models/ConstantsPayments";
+import {Currencies, CURRENCY_CODES} from "../../models/ConstantsPayments";
 
 const { Step } = Steps;
 
@@ -196,9 +196,14 @@ class ScholarshipContribution extends React.Component {
         this.setState({contributor: newContributor});
     }
 
+    onCurrencyChange = (newCurrency) => {
+        const newContributor = { ...this.state.contributor, currency: newCurrency }
+        this.setState({contributor: newContributor});
+    }
+
     amountPageRender = () => {
         const { scholarship, awards, contributor, showCustomContribution } = this.state;
-        const { funding_distribution } = contributor
+        const { funding_distribution, currency } = contributor
 
         const alertMessage = (
             <div>
@@ -208,6 +213,15 @@ class ScholarshipContribution extends React.Component {
             </div>
         )
 
+        const currency_options = CURRENCY_CODES.map(code => {return {'label': code, 'value': code}})
+
+        const renderChangeCurrency = (
+            <>
+                Currency:{' '}
+                <Select value={currency} options={currency_options} onChange={this.onCurrencyChange} />
+            </>
+        )
+
         return (
             <div className="col-12">
                 <h1>
@@ -215,7 +229,7 @@ class ScholarshipContribution extends React.Component {
                 </h1>
 
                 <Input value={contributor.funding_amount}
-                       prefix="$"
+                       prefix={currency}
                        name="funding_amount"
                        placeholder="Funding Amount"
                        className="col-12"
@@ -224,6 +238,9 @@ class ScholarshipContribution extends React.Component {
                        step="1"
                        onChange={this.updateContributorInfo}/>
 
+                <br />
+                <br />
+                {renderChangeCurrency}
                 <br />
                 <br />
                 <Button onClick={this.toggleShowCustomContribution}>Customize Contribution</Button>
@@ -356,6 +373,19 @@ class ScholarshipContribution extends React.Component {
     }
 
     paymentPageRender = (paymentSend) => {
+        const { contributor } = this.state;
+        const { currency } = contributor
+
+        if (currency !== Currencies.CAD.code) {
+            return (
+                <div className="col-12">
+                    <h1>
+                        To be implemented
+                    </h1>
+                </div>
+            )
+        }
+
         return (
             <div className="col-12">
                 <h1>
