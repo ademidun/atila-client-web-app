@@ -129,13 +129,14 @@ class ScholarshipContribution extends React.Component {
             invalidInput = `Please enter a contribution amount.`
         }
 
-        if (contributor && contributor.funding_amount < Currencies.CAD.minimum_funding_amount_contribute_scholarship
+        const currency = contributor.currency
+        if (contributor && contributor.funding_amount < Currencies[currency].minimum_funding_amount_contribute_scholarship
             && contributor.funding_distribution !== "create") {
-            invalidInput = `Minimum contribution amount is $${Currencies.CAD.minimum_funding_amount_contribute_scholarship}.`;
+            invalidInput = `Minimum contribution amount is ${Currencies[currency].minimum_funding_amount_contribute_scholarship}. ${currency}`;
         }
         if (contributor && contributor.funding_distribution === "create" &&
-            contributor.funding_amount < Currencies.CAD.minimum_funding_amount_contribute_new_award) {
-            invalidInput = `Minimum contribution amount for starting a new award is $${Currencies.CAD.minimum_funding_amount_contribute_new_award}.`;
+            contributor.funding_amount < Currencies[currency].minimum_funding_amount_contribute_new_award) {
+            invalidInput = `Minimum contribution amount for starting a new award is ${Currencies[currency].minimum_funding_amount_contribute_new_award}. ${currency}`;
         }
 
         this.setState({ contributor, invalidInput }, () => {
@@ -205,11 +206,11 @@ class ScholarshipContribution extends React.Component {
         const { scholarship, awards, contributor, showCustomContribution } = this.state;
         const { funding_distribution, currency } = contributor
 
-        const alertMessage = (
+        const minContributionInfo = (
             <div>
-                Minimum contribution: ${Currencies.CAD.minimum_funding_amount_contribute_scholarship}.
+                Minimum contribution: {Currencies[currency].minimum_funding_amount_contribute_scholarship} {currency}.
                 <br />
-                Minimum contribution for new award: ${Currencies.CAD.minimum_funding_amount_contribute_new_award}.
+                Minimum contribution for new award: {Currencies[currency].minimum_funding_amount_contribute_new_award} {currency}.
             </div>
         )
 
@@ -252,22 +253,23 @@ class ScholarshipContribution extends React.Component {
                         value={funding_distribution}
                         name={"funding_distribution"}>
                         <Space direction="vertical">
-                            {awards.map((award, index) => {
+                            {awards.filter(award => award.currency === contributor.currency)
+                                .map(award => {
                                 let numFundingAmount = Number.parseFloat(award.funding_amount)
 
                                 if (!contributor.funding_amount) {
                                     return <Radio value={award.id}>
-                                        Increase award {index + 1} (${numFundingAmount}).
+                                        Increase the {numFundingAmount} {award.currency} award.
                                     </Radio>
                                 }
 
                                 let newAwardTotal = Number.parseFloat(award.funding_amount) + Number.parseFloat(contributor.funding_amount)
                                 return <Radio value={award.id}>
-                                    Increase award {index + 1} (${numFundingAmount} {'->'} ${newAwardTotal}).
+                                    Increase the {numFundingAmount} {award.currency} award to {newAwardTotal} {contributor.currency}
                                 </Radio>
                             })}
                             <Radio value={"create"}>
-                                {contributor.funding_amount ? `Create a new award with value $${contributor.funding_amount}.`
+                                {contributor.funding_amount ? `Create a new award with value ${contributor.funding_amount} ${contributor.currency}.`
                                     : `Create a new award.`}
                             </Radio>
                         </Space>
@@ -275,7 +277,7 @@ class ScholarshipContribution extends React.Component {
 
                     <br />
                     <br />
-                    <Alert message={alertMessage}
+                    <Alert message={minContributionInfo}
                            type="info"
                     />
                 </>
