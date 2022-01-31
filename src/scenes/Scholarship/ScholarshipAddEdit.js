@@ -725,22 +725,14 @@ class ScholarshipAddEdit extends React.Component{
     }
 
     fundingPage = () => {
-        const { scholarship, contributor, awardsCurrency } = this.state;
-
-        if (awardsCurrency !== Currencies.CAD.code) {
-            return (
-                <div className="my-3">
-                    To be implemented for non CAD currencies
-                </div>
-            )
-        }
+        const { scholarship, contributor } = this.state;
 
         return (
             <div className="my-3">
                 <PaymentSend scholarship={scholarship}
                              onFundingComplete={this.onFundingComplete}
                              contributor={contributor}
-                             contributorFundingAmount={Number.parseInt(scholarship.funding_amount)} />
+                             contributorFundingAmount={Number.parseFloat(scholarship.funding_amount)} />
             </div>
         )
     }

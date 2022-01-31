@@ -375,19 +375,6 @@ class ScholarshipContribution extends React.Component {
     }
 
     paymentPageRender = (paymentSend) => {
-        const { contributor } = this.state;
-        const { currency } = contributor
-
-        if (currency !== Currencies.CAD.code) {
-            return (
-                <div className="col-12">
-                    <h1>
-                        To be implemented
-                    </h1>
-                </div>
-            )
-        }
-
         return (
             <div className="col-12">
                 <h1>
