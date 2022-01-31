@@ -21,12 +21,13 @@ import {
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Link} from "react-router-dom";
-import {Steps, Tag, InputNumber, Button, Alert} from "antd";
+import {Steps, Tag, InputNumber, Button, Alert, Select} from "antd";
 import ScholarshipQuestionBuilder, {ScholarshipUserProfileQuestionBuilder} from "./ScholarshipQuestionBuilder";
 import PaymentSend from "../Payment/PaymentSend/PaymentSend";
 import Environment from "../../services/Environment";
 import {AwardGeneral} from "../../models/Award";
 import InviteScholarshipCollaborator from "../../components/InviteScholarshipCollaborator";
+import {Currencies, CURRENCY_CODES} from "../../models/ConstantsPayments";
 const { Step } = Steps;
 
 
@@ -221,6 +222,7 @@ class ScholarshipAddEdit extends React.Component{
             errorLoadingScholarship: false,
             pageNumber: 0,
             locationData: [],
+            awardsCurrency: Currencies.CAD.code,
             awards: [Object.assign({}, AwardGeneral)],
             /**
              * When CkEditor loads for the first time, it calls onChange inside the <CkEditor> component
@@ -282,7 +284,8 @@ class ScholarshipAddEdit extends React.Component{
                 if (!scholarship.is_editable) {
                     this.disableScholarshipInputs();
                 }
-                this.setState({ scholarship, awards }, () => {
+                const awardsCurrency = scholarship.currency
+                this.setState({ scholarship, awards, awardsCurrency }, () => {
                     this.updateFundingAmount()
                     this.initializeLocations();
                 });
@@ -595,7 +598,7 @@ class ScholarshipAddEdit extends React.Component{
         let scholarship = {...this.state.scholarship}
 
         let newFundingAmount = 0
-        awards.forEach(award => newFundingAmount += Number.parseInt(award.funding_amount))
+        awards.forEach(award => newFundingAmount += Number.parseFloat(award.funding_amount))
         scholarship.funding_amount = newFundingAmount
         contributor.funding_amount = scholarship.funding_amount;
 
@@ -621,9 +624,11 @@ class ScholarshipAddEdit extends React.Component{
     }
 
     addAward = () => {
-        let newAwards = this.state.awards.slice()
+        const { awardsCurrency } = this.state;
         let newAward = Object.assign({}, AwardGeneral)
+        newAward.currency = awardsCurrency
 
+        let newAwards = this.state.awards.slice()
         newAwards.push(newAward)
         this.setState({awards: newAwards}, ()=> {
             this.updateFundingAmount()
@@ -631,9 +636,21 @@ class ScholarshipAddEdit extends React.Component{
         })
     }
 
+    onCurrencyChange = (newCurrency) => {
+        let newAwards = this.state.awards.slice()
+        let scholarship = {...this.state.scholarship}
+        scholarship.currency = newCurrency
+        newAwards.forEach(award => award.currency = newCurrency)
+        console.log({newAwards})
+
+        this.setState({awardsCurrency: newCurrency, awards: newAwards, scholarship}, () =>{
+            this.autoSaveAfterDelay()
+        })
+    }
+
     awardsPage = () => {
         // This should be moved into a separate component like AwardAddEdit.
-        const { scholarship, awards, isAddScholarshipMode } = this.state;
+        const { scholarship, awards, isAddScholarshipMode, awardsCurrency } = this.state;
 
         const renderAwards = awards.map((award, index) => (
             <div key={index}>
@@ -642,7 +659,7 @@ class ScholarshipAddEdit extends React.Component{
                              value={award.funding_amount}
                              onChange={value => this.changeAward(value, index)}
                              style={{width: "30%"}}
-                             formatter={value => `$ ${value}`}
+                             // formatter={value => `${awardsCurrency} ${value}`}
                              keyboard={false}
                              stringMode={true}
                 />
@@ -657,9 +674,21 @@ class ScholarshipAddEdit extends React.Component{
             </div>
         ))
 
+        const currency_options = CURRENCY_CODES.map(code => {return {'label': code, 'value': code}})
+
+        const renderChangeCurrency = (
+            <>
+                Currency:{' '}
+                <Select value={awardsCurrency} options={currency_options} onChange={this.onCurrencyChange} />
+            </>
+        )
+
         return (
             <div className={"my-3"}>
-                <h5>Total Funding Amount: ${scholarship.funding_amount}</h5>
+                <h5>Total Funding Amount: {scholarship.funding_amount} {awardsCurrency}</h5>
+                <br />
+                {renderChangeCurrency}
+                <br />
                 <br />
                 {renderAwards}
                 <Button type="primary" onClick={this.addAward} >Add Award</Button>
@@ -696,7 +725,15 @@ class ScholarshipAddEdit extends React.Component{
     }
 
     fundingPage = () => {
-        const { scholarship, contributor } = this.state;
+        const { scholarship, contributor, awardsCurrency } = this.state;
+
+        if (awardsCurrency !== Currencies.CAD.code) {
+            return (
+                <div className="my-3">
+                    To be implemented for non CAD currencies
+                </div>
+            )
+        }
 
         return (
             <div className="my-3">
