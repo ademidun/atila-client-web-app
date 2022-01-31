@@ -183,7 +183,7 @@ export function UserProfilesCards({userProfiles, userKey="username"}) {
     return (
     
     <Row gutter={[{ xs: 8, sm: 16}, 16]}>
-        {userProfiles.map(user => {
+        {userProfiles.map((user, index) => {
 
             const fundingAmount = <>
                 {user.funding_amount &&
@@ -225,10 +225,8 @@ export function UserProfilesCards({userProfiles, userKey="username"}) {
                                 
                 </div>  
             );
-
             return (
-                
-                    <div>
+                    <div key={index}>
                         <br/><br/>
                         {userDisplay}
                     </div>)
