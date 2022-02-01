@@ -5,6 +5,7 @@
   "dependencies": {
     "@ant-design/icons": "~4.2.2",
     "@atila/web-components-library.ui.crypto-payment-form": "0.0.5",
+    "@atila/web-components-library.ui.currency-display": "0.0.4",
     "@ckeditor/ckeditor5-build-inline": "^12.4.0",
     "@ckeditor/ckeditor5-media-embed": "^28.0.0",
     "@ckeditor/ckeditor5-react": "^1.1.3",
