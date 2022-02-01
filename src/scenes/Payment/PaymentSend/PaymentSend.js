@@ -14,10 +14,10 @@ class PaymentSend extends React.Component {
         const { scholarship, onFundingComplete, contributor, contributorFundingAmount } = this.props;
         const { currency } = contributor
 
-        if (currency !== Currencies.CAD.code) {
+        if (Currencies[currency].is_crypto) {
             return (
                 <h1>
-                    To be implemented for non CAD currencies
+                    To be implemented for crypto currencies
                 </h1>
             )
         }

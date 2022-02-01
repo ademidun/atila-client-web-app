@@ -1,26 +1,45 @@
 class Currency {
-    constructor(name, code, minimum_funding_amount_contribute_new_award, minimum_funding_amount_contribute_scholarship) {
+    constructor(name,
+                code,
+                minimum_funding_amount_contribute_new_award,
+                minimum_funding_amount_contribute_scholarship,
+                is_crypto=false) {
         this.name = name
         this.code = code
         this.minimum_funding_amount_contribute_new_award = minimum_funding_amount_contribute_new_award
         this.minimum_funding_amount_contribute_scholarship = minimum_funding_amount_contribute_scholarship
+        this.is_crypto = is_crypto
     }
 }
 
 const CAD = new Currency(
-    "Canadian Dollar", "CAD", 200, 10
+    "Canadian Dollar",
+    "CAD",
+    200,
+    10
 )
 
 const USD = new Currency(
-    "United States Dollar", "USD", 200, 10
+    "United States Dollar",
+    "USD",
+    200,
+    10
 )
 
 const ETH = new Currency(
-    "Ethereum", "ETH", 0.07, 0.02
+    "Ethereum",
+    "ETH",
+    0.07,
+    0.02,
+    true
 )
 
 const BNB = new Currency(
-    "Binance Coin", "BNB", 0.5, 0.09
+    "Binance Coin",
+    "BNB",
+    0.5,
+    0.09,
+    true
 )
 
 export const Currencies = {
