@@ -642,7 +642,6 @@ class ScholarshipAddEdit extends React.Component{
 
         contributor.currency = newCurrency
         newAwards.forEach(award => award.currency = newCurrency)
-        console.log({newAwards})
 
         this.setState({awards: newAwards, contributor}, () =>{
             this.autoSaveAfterDelay()
@@ -740,7 +739,6 @@ class ScholarshipAddEdit extends React.Component{
     }
 
     render() {
-
         const { scholarship, isAddScholarshipMode, isLoadingScholarship,
             pageNumber, errorLoadingScholarship } = this.state;
         const { userProfile } = this.props;
