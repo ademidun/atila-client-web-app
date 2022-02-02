@@ -27,7 +27,7 @@ import PaymentSend from "../Payment/PaymentSend/PaymentSend";
 import Environment from "../../services/Environment";
 import {AwardGeneral} from "../../models/Award";
 import InviteScholarshipCollaborator from "../../components/InviteScholarshipCollaborator";
-import {CURRENCY_CODES} from "../../models/ConstantsPayments";
+import {CAD, CURRENCY_CODES} from "../../models/ConstantsPayments";
 const { Step } = Steps;
 
 
@@ -284,7 +284,7 @@ class ScholarshipAddEdit extends React.Component{
                     this.disableScholarshipInputs();
                 }
                 let contributor = {...this.state.contributor}
-                contributor.currency = scholarship.currency
+                contributor.currency = awards[0]?.currency || CAD.code
                 this.setState({ scholarship, awards, contributor }, () => {
                     this.updateFundingAmount()
                     this.initializeLocations();
@@ -638,14 +638,13 @@ class ScholarshipAddEdit extends React.Component{
 
     onCurrencyChange = (newCurrency) => {
         let newAwards = this.state.awards.slice()
-        let scholarship = {...this.state.scholarship}
         let contributor = {...this.state.contributor}
-        scholarship.currency = newCurrency
+
         contributor.currency = newCurrency
         newAwards.forEach(award => award.currency = newCurrency)
         console.log({newAwards})
 
-        this.setState({awards: newAwards, scholarship, contributor}, () =>{
+        this.setState({awards: newAwards, contributor}, () =>{
             this.autoSaveAfterDelay()
         })
     }

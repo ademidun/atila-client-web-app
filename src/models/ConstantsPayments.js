@@ -12,21 +12,21 @@ class Currency {
     }
 }
 
-const CAD = new Currency(
+export const CAD = new Currency(
     "Canadian Dollar",
     "CAD",
     200,
     10
 )
 
-const USD = new Currency(
+export const USD = new Currency(
     "United States Dollar",
     "USD",
     200,
     10
 )
 
-const ETH = new Currency(
+export const ETH = new Currency(
     "Ethereum",
     "ETH",
     0.07,
@@ -34,7 +34,7 @@ const ETH = new Currency(
     true
 )
 
-const BNB = new Currency(
+export const BNB = new Currency(
     "Binance Coin",
     "BNB",
     0.5,
