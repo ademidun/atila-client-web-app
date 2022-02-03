@@ -166,17 +166,7 @@ class ScholarshipDetail extends React.Component {
     };
 
     getOrCreateApplication = () => {
-        const { userProfile } = this.props;
-
-        if (userProfile) {
-            this.getOrCreateApplicationRemotely();
-        } else {
-            this.getOrCreateApplicationLocally();
-        }
-    };
-
-
-    getOrCreateApplicationRemotely = () => {
+        
         const { userProfile } = this.props;
         const { scholarship } = this.state;
         ApplicationsAPI.getOrCreate({ scholarship: scholarship.id, user: userProfile.user })
@@ -189,19 +179,7 @@ class ScholarshipDetail extends React.Component {
             .catch(err => {
                 console.log({ err });
             })
-
     };
-
-
-    getOrCreateApplicationLocally = () => {
-        const { scholarship } = this.state;
-
-        ApplicationsAPI.getOrCreateLocally(scholarship);
-
-        this.props.history.push(`/application/local/scholarship_${scholarship.id}`);
-
-    };
-
 
     render() {
 

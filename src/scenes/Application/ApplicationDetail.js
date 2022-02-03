@@ -17,7 +17,6 @@ import {Button, Popconfirm, Steps} from "antd";
 import { getErrorMessage, handleError, prettifyKeys, scrollToElement } from "../../services/utils";
 import Register from "../../components/Register";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
-import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import SecurityQuestionAndAnswer from "./SecurityQuestionAndAnswer";
 import {
     addQuestionDetailToApplicationResponses,
@@ -82,17 +81,6 @@ class ApplicationDetail extends  React.Component{
     }
 
     getApplication = () => {
-        const { userProfile, location : { pathname } } = this.props;
-        const { isUsingLocalApplication } = this.state;
-
-        if (userProfile && !pathname.includes("/local/")) {
-            this.getApplicationRemotely();
-        } else if (isUsingLocalApplication) {
-            this.getApplicationLocally();
-        }
-    };
-
-    getApplicationRemotely = () => {
 
         const { match : { params : { applicationID }}, location, userProfile } = this.props;
 
@@ -127,32 +115,6 @@ class ApplicationDetail extends  React.Component{
             .finally(() => {
                 this.setState({isLoadingApplication: false});
             })
-
-    };
-
-    getApplicationLocally = () => {
-
-        const { match : { params : { scholarshipID }} } = this.props;
-        this.setState({isLoadingApplication: true});
-        ScholarshipsAPI
-            .get(scholarshipID)
-            .then(res => {
-                const {data: scholarship} = res;
-                const application = ApplicationsAPI.getOrCreateLocally({id: scholarshipID});
-                // TODO load scholarship from remote database
-                this.setState({application, scholarship});
-                this.makeScholarshipQuestionsForm(application, scholarship);
-            })
-            .catch((err) => {
-                console.log({err});
-            })
-            .finally(() => {
-                this.setState({isLoadingApplication: false});
-            });
-
-
-
-
     };
 
     saveApplication = () => {

@@ -24,35 +24,6 @@ class ApplicationsAPI {
         return apiCompletionPromise;
     };
 
-    static getOrCreateLocally = (scholarship) => {
-        /**
-         * Takes a scholarship ID and checks local storage to see if an application for this ID already exists.
-         * Intended to be used for applications from non-logged in users.
-         * @type {string}
-         */
-
-        const localApplicationID = `local_application_scholarship_id_${scholarship.id}`;
-        let applicationData = localStorage.getItem(localApplicationID);
-        if (!applicationData) {
-
-            const { deadline, funding_amount, id, name, slug, specific_questions, user_profile_questions } = scholarship;
-            applicationData = {
-                user_profile_responses: {},
-                scholarship_responses: {},
-                scholarship: { deadline, funding_amount, id, name, slug, specific_questions, user_profile_questions }
-            };
-
-            applicationData = JSON.stringify(applicationData);
-
-            localStorage.setItem(localApplicationID, applicationData);
-        }
-
-        applicationData = JSON.parse(applicationData);
-        applicationData.scholarship = scholarship;
-
-        return applicationData;
-    };
-
     static get = (applicationID) => {
 
         const apiCompletionPromise = request({
