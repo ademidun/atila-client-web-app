@@ -4,19 +4,16 @@ import {connect} from "react-redux";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
 
-import {Alert, Button, Input, Radio, Space, Steps} from "antd";
+import {Alert, Button, Input, Radio, Select, Space, Steps} from "antd";
 import PaymentSend from "../Payment/PaymentSend/PaymentSend";
 import {UserProfilePropType} from "../../models/UserProfile";
 import Register from "../../components/Register";
 import FileInput from "../../components/Form/FileInput";
 import {DEFAULT_SCHOLARSHIP_CONTRIBUTOR, SCHOLARSHIP_CONTRIBUTION_EXAMPLE_IMAGE} from "../../models/Scholarship";
 import ScholarshipContributionProfilePictureChooser from "./ScholarshipContributionProfilePictureChooser";
-import {
-    ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_NEW_AWARD,
-    ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP
-} from "../../models/Constants";
 import {isValidEmail} from "../../services/utils";
 import ReferredByInput from "../../components/ReferredByInput";
+import {CryptoCurrencies, Currencies, CURRENCY_CODES} from "../../models/ConstantsPayments";
 
 const { Step } = Steps;
 
@@ -132,13 +129,14 @@ class ScholarshipContribution extends React.Component {
             invalidInput = `Please enter a contribution amount.`
         }
 
-        if (contributor && contributor.funding_amount < ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP
+        const currency = contributor.currency
+        if (contributor && contributor.funding_amount < Currencies[currency].minimum_funding_amount_contribute_scholarship
             && contributor.funding_distribution !== "create") {
-            invalidInput = `Minimum contribution amount is $${ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP}.`;
+            invalidInput = `Minimum contribution amount is ${Currencies[currency].minimum_funding_amount_contribute_scholarship}. ${currency}`;
         }
         if (contributor && contributor.funding_distribution === "create" &&
-            contributor.funding_amount < ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_NEW_AWARD) {
-            invalidInput = `Minimum contribution amount for starting a new award is $${ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_NEW_AWARD}.`;
+            contributor.funding_amount < Currencies[currency].minimum_funding_amount_contribute_new_award) {
+            invalidInput = `Minimum contribution amount for starting a new award is ${Currencies[currency].minimum_funding_amount_contribute_new_award}. ${currency}`;
         }
 
         this.setState({ contributor, invalidInput }, () => {
@@ -199,16 +197,30 @@ class ScholarshipContribution extends React.Component {
         this.setState({contributor: newContributor});
     }
 
+    onCurrencyChange = (newCurrency) => {
+        const newContributor = { ...this.state.contributor, currency: newCurrency }
+        this.setState({contributor: newContributor});
+    }
+
     amountPageRender = () => {
         const { scholarship, awards, contributor, showCustomContribution } = this.state;
-        const { funding_distribution } = contributor
+        const { funding_distribution, currency } = contributor
 
-        const alertMessage = (
+        const minContributionInfo = (
             <div>
-                Minimum contribution: ${ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_SCHOLARSHIP}.
+                Minimum contribution: {Currencies[currency].minimum_funding_amount_contribute_scholarship} {currency}.
                 <br />
-                Minimum contribution for new award: ${ATILA_DIRECT_APPLICATION_MINIMUM_FUNDING_AMOUNT_CONTRIBUTE_NEW_AWARD}.
+                Minimum contribution for new award: {Currencies[currency].minimum_funding_amount_contribute_new_award} {currency}.
             </div>
+        )
+
+        const currency_options = CURRENCY_CODES.map(code => {return {'label': code, 'value': code}})
+
+        const renderChangeCurrency = (
+            <>
+                Currency:{' '}
+                <Select value={currency} options={currency_options} onChange={this.onCurrencyChange} />
+            </>
         )
 
         return (
@@ -218,7 +230,7 @@ class ScholarshipContribution extends React.Component {
                 </h1>
 
                 <Input value={contributor.funding_amount}
-                       prefix="$"
+                       prefix={currency}
                        name="funding_amount"
                        placeholder="Funding Amount"
                        className="col-12"
@@ -229,6 +241,17 @@ class ScholarshipContribution extends React.Component {
 
                 <br />
                 <br />
+                {renderChangeCurrency}
+                <br />
+                <br />
+                {CryptoCurrencies.includes(currency) && 
+                <>
+                    <Alert message="Support for cryptocurrencies coming soon" />
+                    <br />
+                    <br />
+                </>
+                
+                }
                 <Button onClick={this.toggleShowCustomContribution}>Customize Contribution</Button>
                 {showCustomContribution &&
                 <>
@@ -238,22 +261,23 @@ class ScholarshipContribution extends React.Component {
                         value={funding_distribution}
                         name={"funding_distribution"}>
                         <Space direction="vertical">
-                            {awards.map((award, index) => {
+                            {awards.filter(award => award.currency === contributor.currency)
+                                .map(award => {
                                 let numFundingAmount = Number.parseFloat(award.funding_amount)
 
                                 if (!contributor.funding_amount) {
                                     return <Radio value={award.id}>
-                                        Increase award {index + 1} (${numFundingAmount}).
+                                        Increase the {numFundingAmount} {award.currency} award.
                                     </Radio>
                                 }
 
                                 let newAwardTotal = Number.parseFloat(award.funding_amount) + Number.parseFloat(contributor.funding_amount)
                                 return <Radio value={award.id}>
-                                    Increase award {index + 1} (${numFundingAmount} {'->'} ${newAwardTotal}).
+                                    Increase the {numFundingAmount} {award.currency} award to {newAwardTotal} {contributor.currency}
                                 </Radio>
                             })}
                             <Radio value={"create"}>
-                                {contributor.funding_amount ? `Create a new award with value $${contributor.funding_amount}.`
+                                {contributor.funding_amount ? `Create a new award with value ${contributor.funding_amount} ${contributor.currency}.`
                                     : `Create a new award.`}
                             </Radio>
                         </Space>
@@ -261,7 +285,7 @@ class ScholarshipContribution extends React.Component {
 
                     <br />
                     <br />
-                    <Alert message={alertMessage}
+                    <Alert message={minContributionInfo}
                            type="info"
                     />
                 </>
@@ -518,7 +542,8 @@ class ScholarshipContribution extends React.Component {
                     disabled={invalidInput
                     || (pageNumber === 1 && !contributor.first_name)
                     || (pageNumber === 2 && !contributor.email)
-                    || (pageNumber === 3 && !fundingComplete)}>
+                    || (pageNumber === 3 && !fundingComplete)
+                    || CryptoCurrencies.includes(contributor.currency)}>
                 Next
             </Button>}
         </div>

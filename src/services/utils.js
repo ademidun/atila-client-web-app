@@ -47,6 +47,7 @@ export function genericItemTransform (item) {
                 ...item,
                 slug: `/scholarship/${item.slug}/`,
                 image: item.img_url,
+                title: item.name,
             };
             break;
         case 'essay':

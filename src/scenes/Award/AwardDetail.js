@@ -1,7 +1,7 @@
 import React from "react";
 import {AwardGeneral} from "../../models/Award";
-import {formatCurrency} from "../../services/utils";
 import PropTypes from "prop-types";
+import CurrencyDisplay from "@atila/web-components-library.ui.currency-display";
 
 // Could be a functional component but decided to keep it class just in case.
 class AwardDetail extends React.Component {
@@ -10,15 +10,28 @@ class AwardDetail extends React.Component {
 
         const renderAwards = awards.map((award, index) =>
             (
-                <div key={index}>
-                    Award {index+1}: {formatCurrency(Number.parseInt(award.funding_amount), true)}
-                </div>
+                <tr key={index}>
+                <th scope="row">{index+1}</th>
+                <td><CurrencyDisplay amount={award.funding_amount} inputCurrency={award.currency||"CAD"} outputCurrency="USD" /></td>
+                </tr>
             )
         )
 
         return (
-            <div>
-                {renderAwards}
+            <div className="AwardDetail">
+
+                <table class="table table-striped">
+                <thead>
+                    <tr>
+                    <th scope="col">Award</th>
+                    <th scope="col">Funding Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {renderAwards}
+                </tbody>
+                </table>
+                
             </div>
         )
     }
