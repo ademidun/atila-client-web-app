@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from "react-router-dom";
 import moment from "moment";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
-import { formatCurrency, genericItemTransform, guestPageViewsIncrement, scrollToElement } from "../../services/utils";
+import { genericItemTransform, guestPageViewsIncrement, scrollToElement } from "../../services/utils";
 import Loading from "../../components/Loading";
 import RelatedItems from "../../components/RelatedItems";
 import { connect } from "react-redux";
@@ -25,6 +25,7 @@ import { addStyleClasstoTables, openAllLinksInNewTab } from "../../services/util
 import './ScholarshipDetail.scss';
 import $ from "jquery";
 import ContentBody, { CONTENT_BODY_CLASS_NAME } from '../../components/ContentDetail/ContentBody/ContentBody';
+import CurrencyDisplay from '@atila/web-components-library.ui.currency-display';
 
 class ScholarshipDetail extends React.Component {
 
@@ -220,13 +221,8 @@ class ScholarshipDetail extends React.Component {
                     isLoading={isLoadingScholarship}
                     title={'Loading Scholarships..'} />)
         }
-        const { id, name, description, funding_amount,
-            slug, img_url, criteria_info, scholarship_url, form_url, is_not_available, deadline } = scholarship;
-        let fundingString = formatCurrency(Number.parseInt(funding_amount), true);
-
-        if (Number.parseInt(funding_amount) === 0) {
-            fundingString = "varies";
-        }
+        const { id, name, description, slug, img_url, criteria_info,
+             scholarship_url, form_url, is_not_available, deadline } = scholarship;
 
         let scholarshipDateMoment = moment(deadline);
         const isScholarshipDeadlinePassed = scholarshipDateMoment.diff(moment()) < 0;
@@ -428,7 +424,7 @@ class ScholarshipDetail extends React.Component {
                                             {contributors.is_owner === scholarshipUserProfile.is_owner && <Tag color="green">{' '}Creator</Tag>}
                                         </div>
 
-                                        Total Funding: {fundingString}
+                                        Total Funding: <CurrencyDisplay amount={scholarship.funding_amount} inputCurrency={scholarship.currency||"CAD"} outputCurrency="USD" />
                                         <AwardDetail awards={awards} />
                                         {scholarship.is_atila_direct_application && !isScholarshipDeadlinePassed &&
                                             <div className="mb-3">
