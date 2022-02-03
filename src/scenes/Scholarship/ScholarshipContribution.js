@@ -13,7 +13,7 @@ import {DEFAULT_SCHOLARSHIP_CONTRIBUTOR, SCHOLARSHIP_CONTRIBUTION_EXAMPLE_IMAGE}
 import ScholarshipContributionProfilePictureChooser from "./ScholarshipContributionProfilePictureChooser";
 import {isValidEmail} from "../../services/utils";
 import ReferredByInput from "../../components/ReferredByInput";
-import {Currencies, CURRENCY_CODES} from "../../models/ConstantsPayments";
+import {CryptoCurrencies, Currencies, CURRENCY_CODES} from "../../models/ConstantsPayments";
 
 const { Step } = Steps;
 
@@ -244,6 +244,14 @@ class ScholarshipContribution extends React.Component {
                 {renderChangeCurrency}
                 <br />
                 <br />
+                {CryptoCurrencies.includes(currency) && 
+                <>
+                    <Alert message="Support for cryptocurrencies coming soon" />
+                    <br />
+                    <br />
+                </>
+                
+                }
                 <Button onClick={this.toggleShowCustomContribution}>Customize Contribution</Button>
                 {showCustomContribution &&
                 <>
@@ -534,7 +542,8 @@ class ScholarshipContribution extends React.Component {
                     disabled={invalidInput
                     || (pageNumber === 1 && !contributor.first_name)
                     || (pageNumber === 2 && !contributor.email)
-                    || (pageNumber === 3 && !fundingComplete)}>
+                    || (pageNumber === 3 && !fundingComplete)
+                    || CryptoCurrencies.includes(contributor.currency)}>
                 Next
             </Button>}
         </div>

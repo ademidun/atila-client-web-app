@@ -51,3 +51,5 @@ export const CURRENCY_CODES = Object.keys(Currencies).map(key => Currencies[key]
 
 export const ATILA_SCHOLARSHIP_FEE = 0.09;
 export const ATILA_SCHOLARSHIP_FEE_TAX = 0.13;
+
+export const CryptoCurrencies = [ETH.code, BNB.code]
