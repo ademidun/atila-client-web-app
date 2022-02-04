@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Button, Modal } from 'antd';
 import moment from 'moment';
-import { connect } from 'react-redux';
+import { connect, Provider } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
 import Loading from '../../components/Loading';
@@ -9,6 +9,10 @@ import { Application } from '../../models/Application.class';
 import { Scholarship } from '../../models/Scholarship.class';
 import { UserProfile } from '../../models/UserProfile.class';
 import ApplicationsAPI from '../../services/ApplicationsAPI';
+import { ConnectWalletHelperText } from '../../models/ConstantsPayments';
+import { ModalFuncProps } from 'antd/lib/modal';
+import LinkContentToWallet from '../../components/Payments/LinkContentToWallet';
+import store from '../../redux/store';
 
 interface ScholarshipApplyButtonPropTypes extends RouteComponentProps {
     /** Amount to send to destination address before gas fees. */
@@ -19,6 +23,11 @@ interface ScholarshipApplyButtonPropTypes extends RouteComponentProps {
 ScholarshipApplyButton.defaultProps = {
 }
 
+
+interface ModalFuncType {
+    destroy: () => void;
+    update: (newConfig: ModalFuncProps) => void;
+}
 
 
 /**
@@ -32,6 +41,8 @@ function ScholarshipApplyButton(props: ScholarshipApplyButtonPropTypes): JSX.Ele
     
     const [isLoadingApplication, setIsLoadingApplication] = useState<boolean>(false);
     const [application, setApplication] = useState<Application|undefined>(undefined);
+    // let connectWalletModal: ModalFuncType;
+
 
     let scholarshipDateMoment = moment(scholarship.deadline);
     const isScholarshipDeadlinePassed = scholarshipDateMoment.diff(moment()) < 0;
@@ -86,29 +97,19 @@ function ScholarshipApplyButton(props: ScholarshipApplyButtonPropTypes): JSX.Ele
 
 
     const connectWallet = () => {
-        let secondsToGo = 5;
-        const cryptoWalletTutorialUrl = "https://atila.ca/blog/aarondoerfler/how-to-setup-metamask-and-connect-it-to-atila/";
         const modalContent = <>
-            This is a crypto scholarship. You need a connected crypto wallet to apply. <br/>
-            First time connecting a wallet? See <a href={cryptoWalletTutorialUrl} target="_blank" rel="noopener noreferrer">
-                How to Connect a Crypto Wallet to Atila Account
-                </a><br/>
-                This modal will be destroyed after ${secondsToGo} seconds.
+        <Provider store={store}>
+        This scholarship is paid in crypto. You need a connected crypto wallet to apply. <br/>
+            <ConnectWalletHelperText />
+            <LinkContentToWallet content={application} contentType="Application" />
+        </Provider>
+
         </>
-        const modal = Modal.success({
+        Modal.success({
           title: 'Connect your crypto wallet',
           content: modalContent,
         });
-        const timer = setInterval(() => {
-          secondsToGo -= 1;
-          modal.update({
-            content: `This modal will be destroyed after ${secondsToGo} second.`,
-          });
-        }, 1000);
-        setTimeout(() => {
-          clearInterval(timer);
-          modal.destroy();
-        }, secondsToGo * 1000);
+
     }
 
     useEffect(() => {

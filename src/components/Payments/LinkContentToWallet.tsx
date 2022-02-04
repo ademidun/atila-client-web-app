@@ -8,22 +8,26 @@ import UserProfileAPI from '../../services/UserProfileAPI';
 import Loading from '../Loading';
 import { getErrorMessage } from '../../services/utils';
 import BlogsApi from '../../services/BlogsAPI';
-import { Link } from 'react-router-dom';
+import { Application } from '../../models/Application.class';
+import ApplicationsAPI from '../../services/ApplicationsAPI';
+import ConnectWallet from './ConnectWallet';
 
 export interface LinkContentToWalletPropTypes {
-    content: Blog, //TODO: add support for Application, Essay and other content types
-    userProfileLoggedIn: UserProfile
+    content: Blog | Application | undefined, //TODO: add support for Application, Essay and other content types
+    contentType: "Blog" | "Application",
+    userProfileLoggedIn: UserProfile,
+
 }
 
 const LinkContentToWallet = (props: LinkContentToWalletPropTypes) => {
 
 
-    const { userProfileLoggedIn, content } = props;
+    const { userProfileLoggedIn, content, contentType } = props;
     // TODO add class for Wallet
     const [wallets, setWallets] = useState<Array<Wallet>>([]);
     const [error, setError] = useState("");
     const [loadingWallet, setLoadingWallet] = useState("");
-    const [contentWallet, setContentWallet] = useState(content.wallet);;
+    const [contentWallet, setContentWallet] = useState(content?.wallet);
     
     /**
      * If we weant to pass a function to useEffect we must memoize the function to prevent an infinite loop re-render.
@@ -56,8 +60,13 @@ const LinkContentToWallet = (props: LinkContentToWalletPropTypes) => {
       );
 
     const handleSelectWallet = (event: any) => {
-        const walletId = event.target.value; 
-        BlogsApi.patch(content.id, {wallet:  walletId})
+        if(!content) {
+            return
+        }
+        const walletId = event.target.value;
+        let ContentApi = contentType === "Blog" ? BlogsApi : ApplicationsAPI;
+
+        ContentApi.patch(content.id, {wallet:  walletId})
         .then(res => {
             setContentWallet(res.data.wallet);
         })
@@ -97,7 +106,11 @@ const LinkContentToWallet = (props: LinkContentToWalletPropTypes) => {
                     ))}
                     <p className="text-muted">Wallet changes are automatically saved</p>
                 </Radio.Group>
-                {wallets.length === 0 && <div>No Wallets found. <Link to="/profile/edit">Visit  your profile </Link> to connect a wallet.</div>}
+                {wallets.length === 0 && 
+                <div>No Wallets found. Connect a Wallet.
+                    <ConnectWallet />
+                
+                </div>}
             </div>
             }
             {contentWallet && 

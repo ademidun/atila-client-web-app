@@ -5,6 +5,7 @@ import { UserProfile } from '../../models/UserProfile.class';
 import { Wallet } from '../../models/Wallet.class';
 import PaymentAPI from '../../services/PaymentAPI';
 import UserProfileAPI from '../../services/UserProfileAPI';
+import { getErrorMessage } from '../../services/utils';
 import Loading from '../Loading';
 
 export interface ConmectWalletPropTypes {
@@ -31,7 +32,6 @@ function ConnectWallet(props: any) {
         setLoadingWallet("Loading user wallet");
         UserProfileAPI.getUserContent(userProfileLoggedIn.user, "wallets")
         .then(res => {
-            console.log({res});
             const { data: { wallets } } = res;
             if (wallets) {
                 setWallets(wallets);
@@ -60,7 +60,6 @@ function ConnectWallet(props: any) {
     
             PaymentAPI.saveWallet(postData)
             .then(res => {
-                console.log({res});
                 setWallets([res.data, ...wallets]);
                 
             })
@@ -76,7 +75,6 @@ function ConnectWallet(props: any) {
 
               let walletAddress;
               if (walletAddresses.length > 0) {
-                console.log({walletAddresses});
                 walletAddress = walletAddresses[0];
 
                 if (wallets.map(wallet => wallet.address).includes(walletAddress)) {
@@ -89,13 +87,10 @@ function ConnectWallet(props: any) {
               }
             } catch (error: any) {
                 console.log({error});
-              if (error.code === 4001) {
-                // User rejected request
-              }
-              setError(error);
+              setError(getErrorMessage(error));
             }
           } else {
-            setError("Crypto wallet not found. Install the metamask or similar extension.");
+            setError("Crypto wallet not found. Install Metamask, Trust Wallet or a similar tool.");
           }
     }
 
@@ -110,10 +105,7 @@ function ConnectWallet(props: any) {
         }
 
         PaymentAPI.patchWallet(wallet.id, postData)
-        .then(res => {
-            console.log({res});
-            
-        })
+        .then(res => {})
         .catch(error => {
             console.log({error});
         })

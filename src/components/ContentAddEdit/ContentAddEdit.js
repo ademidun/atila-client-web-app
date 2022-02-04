@@ -484,7 +484,7 @@ class ContentAddEdit extends React.Component {
 
                             {isOwner &&
                                 <>
-                                <LinkContentToWallet content={this.state.content} />
+                                <LinkContentToWallet content={this.state.content} contentType={contentType} />
                                 <ButtonModal
                                     showModalButtonSize={"medium"}
                                     showModalText={"Invite Contributor..."}

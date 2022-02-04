@@ -1,4 +1,5 @@
 export class Application {
     id: string = "";
-    is_submitted: boolean = false
+    is_submitted: boolean = false;
+    wallet: string = "";
 }
