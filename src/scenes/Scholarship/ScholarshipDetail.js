@@ -9,7 +9,6 @@ import { connect } from "react-redux";
 import AnalyticsService from "../../services/AnalyticsService";
 import ScholarshipShareSaveButtons from "./ScholarshipShareSaveButtons";
 import HelmetSeo from "../../components/HelmetSeo";
-import ApplicationsAPI from "../../services/ApplicationsAPI";
 import AtilaPointsPaywallModal from "../../components/AtilaPointsPaywallModal";
 import ScholarshipExtraCriteria from "./ScholarshipExtraCriteria";
 import ScholarshipDeadlineWithTags from "../../components/ScholarshipDeadlineWithTags";
@@ -26,6 +25,7 @@ import './ScholarshipDetail.scss';
 import $ from "jquery";
 import ContentBody, { CONTENT_BODY_CLASS_NAME } from '../../components/ContentDetail/ContentBody/ContentBody';
 import CurrencyDisplay from '@atila/web-components-library.ui.currency-display';
+import ScholarshipApplyButton from './ScholarshipApplyButton';
 
 class ScholarshipDetail extends React.Component {
 
@@ -92,8 +92,6 @@ class ScholarshipDetail extends React.Component {
                     if (location && location.hash) {
                         scrollToElement(location.hash);
                     }
-
-                    this.findExistingApplication();
                 });
 
                 const { is_not_available } = scholarship;
@@ -140,54 +138,12 @@ class ScholarshipDetail extends React.Component {
             });
     };
 
-    findExistingApplication = () => {
-        const { userProfile } = this.props;
-        const { scholarship } = this.state;
-
-        if(!userProfile || !scholarship.is_atila_direct_application) {
-            return
-        }
-
-        this.setState({ isLoadingApplication: true });
-        ApplicationsAPI
-            .doesApplicationExist(userProfile.user, scholarship.id)
-            .then(res => {
-                const { data: { exists, application } } = res;
-                if (exists) {
-                    this.setState({ currentUserScholarshipApplication: application });
-                }
-            })
-            .catch((err) => {
-                console.log({ err });
-            })
-            .finally(() => {
-                this.setState({ isLoadingApplication: false });
-            });
-    };
-
-    getOrCreateApplication = () => {
-        
-        const { userProfile } = this.props;
-        const { scholarship } = this.state;
-        ApplicationsAPI.getOrCreate({ scholarship: scholarship.id, user: userProfile.user })
-            .then(res => {
-
-                const { data: { application } } = res;
-
-                this.props.history.push(`/application/${application.id}`);
-            })
-            .catch(err => {
-                console.log({ err });
-            })
-    };
-
     render() {
 
         const { isLoadingScholarship, scholarship, awards,
             errorLoadingScholarship, scholarshipUserProfile,
-            pageViews, currentUserScholarshipApplication, isLoadingApplication, contributors } = this.state;
+            pageViews, contributors } = this.state;
         const { userProfile } = this.props;
-        const { location: { pathname } } = this.props;
 
         if (errorLoadingScholarship) {
             return errorLoadingScholarship;
@@ -204,36 +160,6 @@ class ScholarshipDetail extends React.Component {
 
         let scholarshipDateMoment = moment(deadline);
         const isScholarshipDeadlinePassed = scholarshipDateMoment.diff(moment()) < 0;
-
-        let applyToScholarshipButton = null;
-        if (isScholarshipDeadlinePassed && !currentUserScholarshipApplication) {
-            applyToScholarshipButton = null;
-        } else if (!userProfile) {
-            applyToScholarshipButton = (<Button type="primary" size="large"
-                disabled={isLoadingApplication}>
-                <Link to={`/register?redirect=${pathname}&applyNow=1`}>
-                    Apply Now
-                </Link>
-            </Button>)
-        } else {
-            applyToScholarshipButton = (<Button type="primary" size="large"
-                onClick={this.getOrCreateApplication}
-                disabled={isLoadingApplication}>
-                {isLoadingApplication ? "Checking for existing Application..." : "Apply Now"}
-            </Button>);
-
-            if (currentUserScholarshipApplication) {
-                applyToScholarshipButton = (
-                    <Button type="primary" size="large" disabled={isLoadingApplication}>
-                        <Link to={`/application/${currentUserScholarshipApplication.id}`}>
-                            {currentUserScholarshipApplication.is_submitted ||
-                                isScholarshipDeadlinePassed ? "View Application" : "Continue Application"}
-                        </Link>
-                    </Button>)
-            } else if (scholarshipUserProfile && userProfile.user === scholarshipUserProfile.user) {
-                applyToScholarshipButton = null;
-            }
-        }
 
         let redditUrlComponent;
         if (scholarship.reddit_url) {
@@ -322,9 +248,7 @@ class ScholarshipDetail extends React.Component {
 
                                 {scholarship.is_atila_direct_application &&
                                     <React.Fragment>
-                                        {applyToScholarshipButton && <React.Fragment>
-                                            {applyToScholarshipButton}
-                                        </React.Fragment>}
+                                        <ScholarshipApplyButton scholarship={scholarship} />
 
                                         <Button size="large">
                                             <Link to={`/scholarship/${slug}/questions`}>
