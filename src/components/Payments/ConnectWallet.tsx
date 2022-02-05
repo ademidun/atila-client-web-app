@@ -146,7 +146,7 @@ function ConnectWallet(props: any) {
             {wallets.length > 0 &&
                 <ol>
                 {wallets.map(wallet => (
-                    <li>
+                    <li key={wallet.id}>
                         Wallet Address: {wallet.address}
                         <Input value={wallet.label} placeholder="Add a label to help you remember this wallet." 
                         onChange={event => handleWalletLabelChange(event, wallet)} />

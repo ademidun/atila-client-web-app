@@ -1,7 +1,7 @@
 import { UserProfile } from "./UserProfile.class";
 
 export class Scholarship {
-    id: string = "";
+    id: number = 0;
     name: string = "";
     description: string = "";
     scholarship_url: string = "";

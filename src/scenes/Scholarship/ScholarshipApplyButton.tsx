@@ -3,7 +3,7 @@ import { Button, Modal } from 'antd';
 import moment from 'moment';
 import { connect, Provider } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { Link } from 'react-router-dom';
+import { BrowserRouter, Link } from 'react-router-dom';
 import Loading from '../../components/Loading';
 import { Application } from '../../models/Application.class';
 import { Scholarship } from '../../models/Scholarship.class';
@@ -14,6 +14,7 @@ import { ModalFuncProps } from 'antd/lib/modal';
 import LinkContentToWallet from '../../components/Payments/LinkContentToWallet';
 import store from '../../redux/store';
 import './ScholarshipApplyButton.scss'
+
 
 interface ScholarshipApplyButtonPropTypes extends RouteComponentProps {
     /** Amount to send to destination address before gas fees. */
@@ -39,7 +40,7 @@ function ScholarshipApplyButton(props: ScholarshipApplyButtonPropTypes): JSX.Ele
     
     const [isLoadingApplication, setIsLoadingApplication] = useState<boolean>(false);
     const [application, setApplication] = useState<Application|undefined>(undefined);
-    // let connectWalletModal: ModalFuncType;
+    let connectWalletModal: ModalFuncType;
 
 
     let scholarshipDateMoment = moment(scholarship.deadline);
@@ -97,13 +98,20 @@ function ScholarshipApplyButton(props: ScholarshipApplyButtonPropTypes): JSX.Ele
     const connectWallet = () => {
         const modalContent = <>
         <Provider store={store}>
-        This scholarship is paid in crypto. You need a connected crypto wallet to apply. <br/>
-            <ConnectWalletHelperText />
-            <LinkContentToWallet content={application} contentType="Application" />
+            <BrowserRouter>
+                This scholarship is paid in crypto. You need a connected crypto wallet to apply. <br/>
+                    <ConnectWalletHelperText />
+                    <LinkContentToWallet content={{ scholarship: scholarship.id, user: loggedInUserProfile!.user, id: null }} 
+                    contentType="Application"
+                    onContentLinked={(newApplication) => {
+                        connectWalletModal.destroy();
+                        history.push(`/application/${newApplication.id}`);
+                        }} />
+            </BrowserRouter>
         </Provider>
 
         </>
-        Modal.confirm({
+        connectWalletModal = Modal.confirm({
           title: 'Connect your crypto wallet',
           content: modalContent,
           maskClosable: true,
