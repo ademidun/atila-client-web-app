@@ -29,7 +29,7 @@ class PaymentAPI {
         return apiCompletionPromise;
     };
 
-    static saveWallet = (postData) => {
+    static createWallet = (postData) => {
 
         const apiCompletionPromise = request({
             url: `${PaymentAPI.apiUrlWallets}/`,

@@ -13,14 +13,12 @@ import { ConnectWalletHelperText } from '../../models/ConstantsPayments';
 import { ModalFuncProps } from 'antd/lib/modal';
 import LinkContentToWallet from '../../components/Payments/LinkContentToWallet';
 import store from '../../redux/store';
+import './ScholarshipApplyButton.scss'
 
 interface ScholarshipApplyButtonPropTypes extends RouteComponentProps {
     /** Amount to send to destination address before gas fees. */
     loggedInUserProfile?: UserProfile;
     scholarship: Scholarship;
-}
-
-ScholarshipApplyButton.defaultProps = {
 }
 
 
@@ -105,9 +103,12 @@ function ScholarshipApplyButton(props: ScholarshipApplyButtonPropTypes): JSX.Ele
         </Provider>
 
         </>
-        Modal.success({
+        Modal.confirm({
           title: 'Connect your crypto wallet',
           content: modalContent,
+          maskClosable: true,
+          cancelText: "Cancel",
+          okButtonProps:{ style: { display: 'none' } },
         });
 
     }
@@ -117,7 +118,7 @@ function ScholarshipApplyButton(props: ScholarshipApplyButtonPropTypes): JSX.Ele
     }, [findExistingApplication]);
     
     const viewApplicationButton = (
-        <Button type="primary" size="large">
+        <Button type="primary" size="large" className="ScholarshipApplyButton">
                     <Link to={`/application/${application?.id}`}>
                         View Application
                     </Link>
@@ -125,7 +126,7 @@ function ScholarshipApplyButton(props: ScholarshipApplyButtonPropTypes): JSX.Ele
     );
     // is there a way to combine logic of View Application and Continue Application?
     const continueApplicationButton = (
-        <Button type="primary" size="large">
+        <Button type="primary" size="large" className="ScholarshipApplyButton">
                     <Link to={`/application/${application?.id}`}>
                         Continue Application
                     </Link>
@@ -133,14 +134,14 @@ function ScholarshipApplyButton(props: ScholarshipApplyButtonPropTypes): JSX.Ele
     );
 
     const registerButton = (
-    <Button type="primary" size="large">
+    <Button type="primary" size="large" className="ScholarshipApplyButton">
         <Link to={`/register?redirect=${pathname}&applyNow=1`}>
             Apply Now
         </Link>
     </Button>
 );
 
-    const startApplicationButton = (<Button type="primary" size="large"
+    const startApplicationButton = (<Button type="primary" size="large" className="ScholarshipApplyButton"
     onClick={getOrCreateApplication}
    >
     Apply Now

@@ -1,0 +1,13 @@
+//because the tyle is in a Modal, it can't be nested under .ScholarshipApplyButton
+// When calling Modal methods, antd will dynamically create React instance by ReactDOM.render. Whose context is different with origin code located context.
+// see: https://ant.design/components/modal/#Why-I-can-not-access-context,-redux,-ConfigProvider-locale/prefixCls-in-Modal.xxx
+
+.ant-modal-confirm-warning .ant-modal-confirm-body > .anticon, 
+.ant-modal-confirm-confirm .ant-modal-confirm-body > .anticon {
+    /**
+    Change the confirm icon color (#faad14) to the info icon color.
+    Unable to set the Modal type to icon while using info() so the workaround is to use Modal.confirm() but
+    style it as if it was infor
+    */
+    color: #1890ff; 
+}

@@ -106,11 +106,11 @@ const LinkContentToWallet = (props: LinkContentToWalletPropTypes) => {
                     ))}
                     <p className="text-muted">Wallet changes are automatically saved</p>
                 </Radio.Group>
-                {wallets.length === 0 && 
-                <div>No Wallets found. Connect a Wallet.
-                    <ConnectWallet />
-                
-                </div>}
+                <hr/>
+                <div>
+                    <h5>Connect a new Wallet</h5>
+                    <ConnectWallet onSaveWallets={(wallets: Array<Wallet>) => setWallets(wallets)} />
+                </div>
             </div>
             }
             {contentWallet && 

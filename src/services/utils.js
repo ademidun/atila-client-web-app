@@ -279,19 +279,14 @@ export function scrollToElement(elementSelector) {
  */
 export function getErrorMessage(error, stringifyError=true) {
 
-    let formattedMessage = "";
-    if (error.response && error.response.status === 500) {
-        formattedMessage = "Internal server error. Please contact us."
-    } else if(error.response && error.response.data ) {
-        if(error.response.data.error && error.response.data.error.message) {
-            formattedMessage = error.response.data.error.message
-        } else if (error.response.data.error) {
-            formattedMessage = error.response.data.error
-        } else if(error.response.data) {
-            formattedMessage = error.response.data
-        }
-    } else {
-        formattedMessage = error.message ? error.message : error;
+    let formattedMessage = error?.message || error;
+
+    if(error.response ) {
+        if (error.response.status === 500) {
+            formattedMessage = "Internal server error. Please contact us using the blue chat icon in the bottom right or visit atila.ca/contact."
+        } else {
+            formattedMessage = error?.response?.data?.error?.message || error?.response?.data?.error || error?.response?.data || error.response
+        }    
     }
 
     if (stringifyError) {
