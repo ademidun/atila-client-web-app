@@ -180,6 +180,7 @@ function FormDynamicInput({model, onUpdateForm, inputConfig, loggedInUserProfile
                     <br />
                     <AutoComplete options={transformListToValueLabelList(suggestions)}
                                   placeholder={placeholder}
+                                  disabled={disabled}
                                   onChange={value => antDesignChange(keyName, value, onUpdateForm)}
                                   value={modelValue}
                                   style={{width: "100%"}}

@@ -25,9 +25,9 @@ import {Steps, Tag, InputNumber, Button, Alert, Select} from "antd";
 import ScholarshipQuestionBuilder, {ScholarshipUserProfileQuestionBuilder} from "./ScholarshipQuestionBuilder";
 import PaymentSend from "../Payment/PaymentSend/PaymentSend";
 import Environment from "../../services/Environment";
-import {AwardGeneral} from "../../models/Award";
 import InviteScholarshipCollaborator from "../../components/InviteScholarshipCollaborator";
 import {CAD, CURRENCY_CODES} from "../../models/ConstantsPayments";
+import { DEFAULT_AWARD } from '../../models/Award.class';
 const { Step } = Steps;
 
 
@@ -222,7 +222,7 @@ class ScholarshipAddEdit extends React.Component{
             errorLoadingScholarship: false,
             pageNumber: 0,
             locationData: [],
-            awards: [Object.assign({}, AwardGeneral)],
+            awards: [Object.assign({}, DEFAULT_AWARD)],
             /**
              * When CkEditor loads for the first time, it calls onChange inside the <CkEditor> component
              * and fires onChange inside ScholarshipAddEdit.updateForm
@@ -625,7 +625,7 @@ class ScholarshipAddEdit extends React.Component{
 
     addAward = () => {
         const { contributor } = this.state;
-        let newAward = Object.assign({}, AwardGeneral)
+        let newAward = Object.assign({}, DEFAULT_AWARD)
         newAward.currency = contributor.currency
 
         let newAwards = this.state.awards.slice()

@@ -134,6 +134,9 @@ const LinkContentToWallet = (props: LinkContentToWalletPropTypes) => {
                     ))}
                     <p className="text-muted">Wallet changes are automatically saved</p>
                 </Radio.Group>
+                {wallets?.length === 0 &&
+                <>No wallets found. Connect a wallet below.</>
+                }
                 <hr/>
                 <div>
                     <h5>Connect a new Wallet</h5>

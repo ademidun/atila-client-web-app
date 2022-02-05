@@ -56,15 +56,13 @@ export const CURRENCY_CODES = Object.values(Currencies).map(currency => currency
 export const ATILA_SCHOLARSHIP_FEE = 0.09;
 export const ATILA_SCHOLARSHIP_FEE_TAX = 0.13;
 
-export const CryptoCurrencies = Object.values(Currencies).filter(currency => currency.is_crypto).map(currency => currency.code)
-
-console.log({ CURRENCY_CODES, CryptoCurrencies });
+export const CryptoCurrencies = Object.values(Currencies).filter(currency => currency.is_crypto).map(currency => currency.code);
 
 export const cryptoWalletTutorialUrl = "https://atila.ca/blog/aarondoerfler/how-to-setup-metamask-and-connect-it-to-atila";
 
 export const ConnectWalletHelperText = () => (
     <>
-    First time connecting a wallet? See <a href={cryptoWalletTutorialUrl} target="_blank" rel="noopener noreferrer">
+    <strong>First time connecting a wallet?</strong> See <a href={cryptoWalletTutorialUrl} target="_blank" rel="noopener noreferrer">
         How to connect a crypto wallet to your Atila account
         </a><br/>
     </>

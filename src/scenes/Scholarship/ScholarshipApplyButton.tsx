@@ -99,7 +99,7 @@ function ScholarshipApplyButton(props: ScholarshipApplyButtonPropTypes): JSX.Ele
         const modalContent = <>
         <Provider store={store}>
             <BrowserRouter>
-                This scholarship is paid in crypto. You need a connected crypto wallet to apply. <br/>
+                This scholarship is paid in crypto. You need a connected crypto wallet to apply. <br/> <br/>
                     <ConnectWalletHelperText />
                     <LinkContentToWallet content={{ scholarship: scholarship.id, user: loggedInUserProfile!.user, id: null }} 
                     contentType="Application"

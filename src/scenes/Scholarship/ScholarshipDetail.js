@@ -304,14 +304,31 @@ class ScholarshipDetail extends React.Component {
                             <div className="font-weight-bold">
                                 <ScholarshipDeadlineWithTags scholarship={scholarship} addDeadlineToCalendar={true} />
                                 <br />
-                                <ReportIncorrectInfo scholarship={scholarship} />
+                                <ReportIncorrectInfo scholarship={scholarship} className="mb-3" />
                             </div>
 
                             {redditUrlComponent}
 
                             <div className="font-weight-bold">
 
-                                {scholarshipUserProfile &&
+                                    <div className="mb-3">
+                                    Total Funding: <CurrencyDisplay amount={scholarship.funding_amount} inputCurrency={scholarship.currency||"CAD"} outputCurrency="USD" />
+                                    </div>
+                                    <AwardDetail awards={awards} />
+                                    {
+                                        scholarship.is_atila_direct_application && !isScholarshipDeadlinePassed &&
+                                        <div className="mb-3">
+                                            <Button type="primary" size="large" className="mt-3"
+                                                style={{ fontSize: "18px", width: "150px", height: "75px" }}>
+                                                <Link to={`/scholarship/${slug}/contribute`}>
+                                                    Contribute
+                                                </Link>
+                                            </Button><br /><br />
+                                        </div>
+                                    }
+                            </div>
+
+                            {scholarshipUserProfile &&
                                     <React.Fragment>
                                         Added by:
                                         <div className="bg-light mb-3 p-1" style={{ width: '500px' }}>
@@ -325,22 +342,8 @@ class ScholarshipDetail extends React.Component {
                                             </Link>&nbsp;
                                             {contributors.is_owner === scholarshipUserProfile.is_owner && <Tag color="green">{' '}Creator</Tag>}
                                         </div>
-
-                                        Total Funding: <CurrencyDisplay amount={scholarship.funding_amount} inputCurrency={scholarship.currency||"CAD"} outputCurrency="USD" />
-                                        <AwardDetail awards={awards} />
-                                        {scholarship.is_atila_direct_application && !isScholarshipDeadlinePassed &&
-                                            <div className="mb-3">
-                                                <Button type="primary" size="large" className="mt-3"
-                                                    style={{ fontSize: "18px", width: "150px", height: "75px" }}>
-                                                    <Link to={`/scholarship/${slug}/contribute`}>
-                                                        Contribute
-                                                    </Link>
-                                                </Button><br /><br />
-                                            </div>
-                                        }
                                     </React.Fragment>
-                                }
-                            </div>
+                            }
 
                             {contributors && contributors.length > 1 &&
                                 

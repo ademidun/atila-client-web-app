@@ -142,17 +142,19 @@ function ConnectWallet(props: any) {
                 Connect Wallet
             </Button>
             {error && <Alert type="error" message={error} className="my-3" />}
-            <h5 className="my-3">Connected wallets</h5>
             {wallets.length > 0 &&
-                <ol>
-                {wallets.map(wallet => (
-                    <li key={wallet.id}>
-                        Wallet Address: {wallet.address}
-                        <Input value={wallet.label} placeholder="Add a label to help you remember this wallet." 
-                        onChange={event => handleWalletLabelChange(event, wallet)} />
-                    </li>
-                ))}
-                </ol>
+                <div>
+                    <h5 className="my-3">Connected wallets</h5>
+                    <ol>
+                        {wallets.map(wallet => (
+                            <li key={wallet.id}>
+                                {wallet.label || "Unlabelled wallet"}: {wallet.address}
+                                <Input value={wallet.label} placeholder="Add a label to help you remember this wallet." 
+                                onChange={event => handleWalletLabelChange(event, wallet)} />
+                            </li>
+                        ))}
+                    </ol>
+                </div>
             }
             {loadingWallet && <Loading isLoading={loadingWallet} title={loadingWallet} />}
         </div>
