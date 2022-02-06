@@ -7,6 +7,8 @@ import PaymentAPI from '../../services/PaymentAPI';
 import UserProfileAPI from '../../services/UserProfileAPI';
 import { getErrorMessage } from '../../services/utils';
 import Loading from '../Loading';
+import WalletDisplay from './WalletDisplay';
+import { ConnectWalletHelperText } from '../../models/ConstantsPayments';
 
 export interface ConmectWalletPropTypes {
     userProfileLoggedIn?: UserProfile,
@@ -148,7 +150,7 @@ function ConnectWallet(props: any) {
                     <ol>
                         {wallets.map(wallet => (
                             <li key={wallet.id}>
-                                {wallet.label || "Unlabelled wallet"}: {wallet.address}
+                                <WalletDisplay wallet={wallet} />
                                 <Input value={wallet.label} placeholder="Add a label to help you remember this wallet." 
                                 onChange={event => handleWalletLabelChange(event, wallet)} />
                             </li>
@@ -156,6 +158,7 @@ function ConnectWallet(props: any) {
                     </ol>
                 </div>
             }
+            {wallets.length === 0 && <ConnectWalletHelperText />}
             {loadingWallet && <Loading isLoading={loadingWallet} title={loadingWallet} />}
         </div>
     )

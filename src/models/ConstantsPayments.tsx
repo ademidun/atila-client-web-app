@@ -62,8 +62,18 @@ export const cryptoWalletTutorialUrl = "https://atila.ca/blog/aarondoerfler/how-
 
 export const ConnectWalletHelperText = () => (
     <>
-    <strong>First time connecting a wallet?</strong> See <a href={cryptoWalletTutorialUrl} target="_blank" rel="noopener noreferrer">
-        How to connect a crypto wallet to your Atila account
-        </a><br/>
+    <strong>First time connecting a wallet?</strong>
+    <ol>
+        <li><a href="https://metamask.io" target="_blank" rel="noopener noreferrer">Install the Metamask crypto wallet</a></li>
+        <li>See <a href={cryptoWalletTutorialUrl} target="_blank" rel="noopener noreferrer"> How to connect a crypto wallet to your Atila account</a></li>
+    </ol>
+    </>
+)
+
+export const CryptoScholarshipWalletExplanation = () => (
+    <>
+        This scholarship is paid in crypto so you need a 
+        <a href={cryptoWalletTutorialUrl} target="_blank" rel="noopener noreferrer">crypto wallet</a> to apply. <br/>
+        This wallet address will be submitted with your application and used to send you an award if chosen.
     </>
 )

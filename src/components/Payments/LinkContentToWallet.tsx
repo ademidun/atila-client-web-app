@@ -12,6 +12,7 @@ import { Application } from '../../models/Application.class';
 import ApplicationsAPI from '../../services/ApplicationsAPI';
 import ConnectWallet from './ConnectWallet';
 import { RouteComponentProps, withRouter } from 'react-router';
+import WalletDisplay from './WalletDisplay';
 
 export interface LinkContentToWalletPropTypes extends RouteComponentProps  {
     content: Blog | Application,
@@ -129,7 +130,7 @@ const LinkContentToWallet = (props: LinkContentToWalletPropTypes) => {
                 <Radio.Group value={contentWallet || "Select a wallet"} onChange={handleSelectWallet} optionType="button" buttonStyle="solid" disabled={!!loadingWallet}>
                     {wallets.map(wallet => (
                         <Radio.Button value={wallet.id} key={wallet.id} className="mb-1">
-                            {wallet.label && <>{wallet.label}: </>} {`${wallet.address.substr(0,4)}...${wallet.address.substr(-4)}`}
+                            <WalletDisplay wallet={wallet} />
                         </Radio.Button>
                     ))}
                     <p className="text-muted">Wallet changes are automatically saved</p>

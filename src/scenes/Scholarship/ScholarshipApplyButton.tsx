@@ -9,7 +9,7 @@ import { Application } from '../../models/Application.class';
 import { Scholarship } from '../../models/Scholarship.class';
 import { UserProfile } from '../../models/UserProfile.class';
 import ApplicationsAPI from '../../services/ApplicationsAPI';
-import { ConnectWalletHelperText } from '../../models/ConstantsPayments';
+import { CryptoScholarshipWalletExplanation } from '../../models/ConstantsPayments';
 import { ModalFuncProps } from 'antd/lib/modal';
 import LinkContentToWallet from '../../components/Payments/LinkContentToWallet';
 import store from '../../redux/store';
@@ -99,8 +99,7 @@ function ScholarshipApplyButton(props: ScholarshipApplyButtonPropTypes): JSX.Ele
         const modalContent = <>
         <Provider store={store}>
             <BrowserRouter>
-                This scholarship is paid in crypto. You need a connected crypto wallet to apply. <br/> <br/>
-                    <ConnectWalletHelperText />
+                    <CryptoScholarshipWalletExplanation/>
                     <LinkContentToWallet content={{ scholarship: scholarship.id, user: loggedInUserProfile!.user, id: null }} 
                     contentType="Application"
                     onContentLinked={(newApplication) => {

@@ -34,6 +34,8 @@ import ApplicationsLocal from './ApplicationsLocal';
 import { Alert } from 'antd';
 import ApplicationViewPreviousApplications from "./ApplicationViewPreviousApplications";
 import ApplicationWordCountExplainer from "./ApplicationWordCountExplainer";
+import WalletDisplay from "../../components/Payments/WalletDisplay";
+import { CryptoScholarshipWalletExplanation } from "../../models/ConstantsPayments";
 
 const { Step } = Steps;
 
@@ -621,6 +623,13 @@ class ApplicationDetail extends  React.Component{
                          inputConfigs=
                              {scholarshipUserProfileQuestionsFormConfig}
             />
+            {application.wallet && 
+            <div className="my-3">
+                <h2>Application Wallet:</h2>
+                <label><CryptoScholarshipWalletExplanation/></label><br/>
+                <WalletDisplay wallet={application.wallet_detail} />
+            </div>
+            }
 
             <h2>Scholarship Questions</h2>
             {dateModified}
