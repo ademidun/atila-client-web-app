@@ -73,7 +73,7 @@ export const ConnectWalletHelperText = () => (
 export const CryptoScholarshipWalletExplanation = () => (
     <>
         This scholarship is paid in crypto so you need a 
-        <a href={cryptoWalletTutorialUrl} target="_blank" rel="noopener noreferrer">crypto wallet</a> to apply. <br/>
+       {' '}<a href={cryptoWalletTutorialUrl} target="_blank" rel="noopener noreferrer">crypto wallet</a>{' '}to apply. <br/>
         This wallet address will be submitted with your application and used to send you an award if chosen.
     </>
 )

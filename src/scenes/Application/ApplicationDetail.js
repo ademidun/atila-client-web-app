@@ -75,11 +75,19 @@ class ApplicationDetail extends  React.Component{
             userProfileForRegistration: null,
             pageNumber: 1,
             isScholarshipDeadlinePassed: false,
+            applicationWalletError: null,
         }
     }
 
     componentDidMount() {
         this.getApplication();
+    }
+    componentWillUnmount() {
+        if(window.ethereum) {
+            console.log("componentWillUnmount");
+            window.ethereum.removeListener('accountsChanged', this.handleAccountsChanged);
+            console.log("componentWillUnmount removed listener");
+        }
     }
 
     getApplication = () => {
@@ -97,7 +105,11 @@ class ApplicationDetail extends  React.Component{
                 // If the scholarship has expired, set the pageNumber to the last page, else, set it to the current page in state.
                 const pageNumber = isScholarshipDeadlinePassed ? applicationPages.length : this.state.pageNumber;
 
-                this.setState({application, scholarship, isScholarshipDeadlinePassed, pageNumber});
+                this.setState({application, scholarship, isScholarshipDeadlinePassed, pageNumber}, () => {
+                    if (application.wallet_detail) {
+                        this.verifyCorrectWalletAddres();
+                    }
+                });
                 if (application.user_scores) {
                     const applicationScore = application.user_scores[userProfile.user] ?
                         application.user_scores[userProfile.user]["score"] : null;
@@ -286,6 +298,44 @@ class ApplicationDetail extends  React.Component{
                 this.setState({isLoadingApplication: false});
             })
     };
+
+    verifyCorrectWalletAddres = () => {
+        const { application } = this.state;
+        if (!application.wallet_detail) {
+            return
+        }
+        if (!window.ethereum) {
+            this.setState({applicationWalletError: "This application is connected with a crypto wallet. You must use a web browser that supports crypto wallets to continue."});
+            return
+        }
+        window.ethereum.on('accountsChanged', this.handleAccountsChanged);
+        window.ethereum
+        .request({ method: 'eth_accounts' })
+        .then(this.handleAccountsChanged)
+        .catch((err) => {
+            // Some unexpected error.
+            // For backwards compatibility reasons, if no accounts are available,
+            // eth_accounts will return an empty array.
+            console.error(err);
+        });
+        
+    }
+
+    handleAccountsChanged = (accounts) => {
+        console.log("handleAccountsChanged", {accounts})
+        const { application } = this.state;
+        this.setState({applicationWalletError: null});
+        if (accounts.length === 0) {
+            this.setState({applicationWalletError: "This application is connected with a crypto wallet. The wallet must be connected to the application before you can submit your applicaiton."+
+            "Your crypto wallet is either locked or the user has not connected any accounts"})
+        } else {
+            const accountAddress = accounts[0];
+            if (accountAddress !== application.wallet_detail.address) {
+                this.setState({applicationWalletError: `The wallet address in your application is ${application.wallet_detail.address}`+
+                ` but your current connected crypto wallet is ${accountAddress}. Switch to the correct wallet.`});
+            }
+        }
+    }
 
     submitApplicationRemotely = () => {
         let { application } = this.state;
@@ -481,7 +531,7 @@ class ApplicationDetail extends  React.Component{
         const { application, isLoadingApplication, scholarship, isSavingApplication, isSubmittingApplication,
             scholarshipUserProfileQuestionsFormConfig, scholarshipQuestionsFormConfig,
             isUsingLocalApplication, promptRegisterBeforeSubmitting,
-            applicationScore, applicationNotes, pageNumber, isScholarshipDeadlinePassed } = this.state;
+            applicationScore, applicationNotes, pageNumber, isScholarshipDeadlinePassed, applicationWalletError } = this.state;
 
         const applicationSteps =
             (<Steps current={pageNumber-1} onChange={(current) => this.changePage(current+1)}>
@@ -585,7 +635,7 @@ class ApplicationDetail extends  React.Component{
         }
 
         let scholarshipDateString = moment(scholarship.deadline).format('dddd, MMMM DD, YYYY');
-        let disableSubmit = isMissingProfilePicture||isMissingSecurityQuestionAnswer || isSubmittingApplication;
+        let disableSubmit = isMissingProfilePicture||isMissingSecurityQuestionAnswer || isSubmittingApplication || applicationWalletError;
         let submitContent = (
                     <div className={"float-right col-md-6"}>
                         You must have an account to submit locally saved applications.
@@ -613,6 +663,18 @@ class ApplicationDetail extends  React.Component{
             );
         }
 
+        let applicationWalletDisplay;
+
+        if (application.wallet) {
+            applicationWalletDisplay = (<>
+                <div className="my-3">
+                    <h2>Application Wallet:</h2>
+                    <label><CryptoScholarshipWalletExplanation/></label><br/>
+                    <WalletDisplay wallet={application.wallet_detail} />
+                </div>
+            </>)
+        }
+
         let applicationForm = (<>
             <ApplicationViewPreviousApplications currentApplicationID={applicationID} userProfile={userProfile} />
             <br />
@@ -623,14 +685,7 @@ class ApplicationDetail extends  React.Component{
                          inputConfigs=
                              {scholarshipUserProfileQuestionsFormConfig}
             />
-            {application.wallet && 
-            <div className="my-3">
-                <h2>Application Wallet:</h2>
-                <label><CryptoScholarshipWalletExplanation/></label><br/>
-                <WalletDisplay wallet={application.wallet_detail} />
-            </div>
-            }
-
+            {applicationWalletDisplay}
             <h2>Scholarship Questions</h2>
             {dateModified}
             <ApplicationWordCountExplainer />
@@ -764,8 +819,8 @@ class ApplicationDetail extends  React.Component{
                                             }
                                         </>
                                         }
-                                        {pageNumber > 1 && !isScholarshipDeadlinePassed  && (isMissingProfilePicture || isMissingSecurityQuestionAnswer) &&
-                                        <div className="text-muted float-right">
+                                        {pageNumber > 1 && !isScholarshipDeadlinePassed  && (isMissingProfilePicture || isMissingSecurityQuestionAnswer || applicationWalletError) &&
+                                        <div className="text-muted float-right mt-3">
 
                                             {isMissingSecurityQuestionAnswer &&
                                             <p>
@@ -775,6 +830,11 @@ class ApplicationDetail extends  React.Component{
                                             {isMissingProfilePicture &&
                                             <p>
                                                 Add a picture of yourself before you can submit.
+                                            </p>
+                                            }
+                                            {applicationWalletError &&
+                                            <p>
+                                                {applicationWalletError}
                                             </p>
                                             }
                                         </div>
