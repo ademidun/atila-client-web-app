@@ -82,9 +82,7 @@ class ApplicationDetail extends  React.Component{
     }
     componentWillUnmount() {
         if(window.ethereum) {
-            console.log("componentWillUnmount");
             window.ethereum.removeListener('accountsChanged', this.handleAccountsChanged);
-            console.log("componentWillUnmount removed listener");
         }
     }
 
@@ -286,7 +284,6 @@ class ApplicationDetail extends  React.Component{
     }
 
     handleAccountsChanged = (accounts) => {
-        console.log("handleAccountsChanged", {accounts})
         const { application } = this.state;
         this.setState({applicationWalletError: null});
         if (accounts.length === 0) {
@@ -629,7 +626,7 @@ class ApplicationDetail extends  React.Component{
 
         let applicationWalletDisplay;
 
-        if (application.wallet) {
+        if (application.wallet_detail) {
             applicationWalletDisplay = (<>
                 <div className="my-3">
                     <h2>Application Wallet:</h2>
@@ -675,7 +672,7 @@ class ApplicationDetail extends  React.Component{
                 <h2>Profile Questions</h2> <br/>
                 {scholarship.is_blind_applications && <BlindApplicationsExplanationMessage />}
                 {this.viewForm(scholarship.user_profile_questions, application.user_profile_responses, isOwnerOfApplication)}
-                <br />
+                {applicationWalletDisplay}
                 <h2>Scholarship Questions</h2>
                 {this.viewForm(scholarship.specific_questions, application.scholarship_responses, isOwnerOfApplication)}
         </>);
@@ -819,7 +816,7 @@ class ApplicationDetail extends  React.Component{
                                     <>
                                         <hr/>
                                         <div id="publish" className="row col-12 my-3">
-                                            <h2>Publish your Application as an Essay</h2>
+                                            <h2>Optional: Publish your Application as an Essay</h2>
                                             <ApplicationEssayAddEdit application={application} />
                                         </div>
                                 </>
