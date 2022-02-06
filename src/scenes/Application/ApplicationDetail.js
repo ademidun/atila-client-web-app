@@ -15,7 +15,6 @@ import FormDynamic from "../../components/Form/FormDynamic";
 import {Link} from "react-router-dom";
 import {Button, Popconfirm, Steps} from "antd";
 import { getErrorMessage, handleError, prettifyKeys, scrollToElement } from "../../services/utils";
-import Register from "../../components/Register";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import SecurityQuestionAndAnswer from "./SecurityQuestionAndAnswer";
 import {
@@ -71,7 +70,6 @@ class ApplicationDetail extends  React.Component{
             scholarshipUserProfileQuestionsFormConfig: null,
             scholarshipQuestionsFormConfig: null,
             isUsingLocalApplication: pathname.includes("/local/"),
-            promptRegisterBeforeSubmitting: false,
             userProfileForRegistration: null,
             pageNumber: 1,
             isScholarshipDeadlinePassed: false,
@@ -264,40 +262,6 @@ class ApplicationDetail extends  React.Component{
             toastNotify(handleError(err))
         })
     }
-    submitApplication = () => {
-        const { userProfile } = this.props;
-        if (userProfile) {
-            this.submitApplicationRemotely();
-        } else {
-            this.setState({promptRegisterBeforeSubmitting: true})
-        }
-    };
-
-    createApplicationAfterRegistration = (userProfile) => {
-        const { application, scholarship } = this.state;
-        const { scholarship_responses, user_profile_responses } = addQuestionDetailToApplicationResponses(application, scholarship);
-
-        this.setState({isLoadingApplication: true});
-        ApplicationsAPI
-            .getOrCreate({scholarship_responses, user_profile_responses, scholarship: scholarship.id, user: userProfile.user})
-            .then(res=>{
-                const { application } = res.data
-
-                this.props.history.push(`/application/${application.id}`)
-                window.location.reload()
-                /* Instead of setting all the state variables manually to work for a real application,
-                   it's cleaner to just refresh, and all of that will be taken care of automatically.
-                   This is better for maintanability as well because when adding new state variables, they don't
-                   need to be considered to be updated here.*/
-            })
-            .catch(err => {
-                console.log({err});
-                toastNotify(`🙁 An error occurred`, 'error');
-            })
-            .finally(() => {
-                this.setState({isLoadingApplication: false});
-            })
-    };
 
     verifyCorrectWalletAddres = () => {
         const { application } = this.state;
@@ -337,7 +301,7 @@ class ApplicationDetail extends  React.Component{
         }
     }
 
-    submitApplicationRemotely = () => {
+    submitApplication = () => {
         let { application } = this.state;
         const { scholarship } = this.state;
         const { userProfile } = this.props;
@@ -530,8 +494,8 @@ class ApplicationDetail extends  React.Component{
         const { match : { params : { applicationID }}, userProfile } = this.props;
         const { application, isLoadingApplication, scholarship, isSavingApplication, isSubmittingApplication,
             scholarshipUserProfileQuestionsFormConfig, scholarshipQuestionsFormConfig,
-            isUsingLocalApplication, promptRegisterBeforeSubmitting,
-            applicationScore, applicationNotes, pageNumber, isScholarshipDeadlinePassed, applicationWalletError } = this.state;
+            isUsingLocalApplication, applicationScore, applicationNotes, pageNumber,
+            isScholarshipDeadlinePassed, applicationWalletError } = this.state;
 
         const applicationSteps =
             (<Steps current={pageNumber-1} onChange={(current) => this.changePage(current+1)}>
@@ -847,29 +811,8 @@ class ApplicationDetail extends  React.Component{
                                 {!inViewMode && !userProfile &&
                                     <>
                                         {applicationForm}
-                                        {!promptRegisterBeforeSubmitting &&
-                                        submitContent
-                                        }
+                                        {submitContent}
                                     </>
-                                }
-                                {promptRegisterBeforeSubmitting &&
-                                <>
-                                    <br />
-                                    <br />
-                                    <h3>Create a username and password to access your application later
-                                    and review your application once more before submitting</h3>
-                                    {/*
-                                        One subtle thing to notice here is that user_profile_responses can either be in the format of:
-                                        {key: value, key: value} or in the format of {key:{key: "", response: "", type: "", question:""}}
-                                        So this code operates under the assumption that application.user_profile_responses is using the first format of simple key:value,
-                                        This assumption holds because this form renders when promptRegisterBeforeSubmitting is True so application.user_profile_responses has
-                                        not been transformed into the nested dictionary at this point.
-                                    */}
-                                    <Register location={this.props.location}
-                                              userProfile={application.user_profile_responses}
-                                              disableRedirect={true}
-                                              onRegistrationFinished={this.createApplicationAfterRegistration} />
-                                </>
                                 }
                                 {inViewMode && viewModeContent}
                                 {inViewMode && isOwnerOfApplication &&
