@@ -59,7 +59,7 @@ class ApplicationDetail extends  React.Component{
         const { location : { pathname } } = this.props;
 
         this.state = {
-            application: {},
+            application: null,
             applicationScore: null,
             applicationNotes: "",
             scholarship: null,
@@ -88,6 +88,9 @@ class ApplicationDetail extends  React.Component{
     getApplication = () => {
 
         const { match : { params : { applicationID }}, location, userProfile } = this.props;
+        if (!userProfile) {
+            return
+        }
 
         this.setState({isLoadingApplication: true});
         ApplicationsAPI.get(applicationID)
@@ -477,6 +480,39 @@ class ApplicationDetail extends  React.Component{
             isUsingLocalApplication, applicationScore, applicationNotes, pageNumber,
             isScholarshipDeadlinePassed, applicationWalletError } = this.state;
 
+        const seoContent = {
+            ...defaultSeoContent,
+            title: `Scholarship Application${scholarship? ` for ${scholarship.name}`:""}`
+        };
+
+        if (isLoadingApplication) {
+            return (
+                <div className="container mt-5">
+                    <HelmetSeo content={seoContent}/>
+                    <div className="card shadow p-3">
+                        <Loading  title="Loading Application..."/>
+                    </div>
+                </div>
+            );
+        }
+
+        if (!isLoadingApplication && !application) {
+            return (
+                <div className="container mt-5">
+                    <HelmetSeo content={seoContent}/>
+                    <div className="card shadow p-3">
+                        <h1>Application not found</h1>
+                        {!userProfile &&
+                        <h5 className="center-block text-muted">
+                            Try <Link to={`/login?redirect=application/${applicationID}`}>
+                            logging in</Link> to view this page if your application is here.
+                        </h5>
+                        }
+                    </div>
+                </div>
+            )
+        }
+
         const applicationSteps =
             (<Steps current={pageNumber-1} onChange={(current) => this.changePage(current+1)}>
             { applicationPages.map(item => {
@@ -497,38 +533,6 @@ class ApplicationDetail extends  React.Component{
             dateModified =  (<div className="text-muted float-left col-12">
                 Start typing and your application will automatically save
             </div>)
-        }
-        let seoContent = {
-            ...defaultSeoContent,
-            title: `Scholarship Application${scholarship? ` for ${scholarship.name}`:""}`
-        };
-
-        if (isLoadingApplication) {
-            return (
-                <div className="container mt-5">
-                    <HelmetSeo content={seoContent}/>
-                    <div className="card shadow p-3">
-                        <Loading  title="Loading Application..."/>
-                    </div>
-                </div>
-            );
-        }
-
-        if (!isLoadingApplication && !scholarship) {
-            return (
-                <div className="container mt-5">
-                    <HelmetSeo content={seoContent}/>
-                    <div className="card shadow p-3">
-                        <h1>Application not found</h1>
-                        {!userProfile &&
-                        <h5 className="center-block text-muted">
-                            Try <Link to={`/login?redirect=application/${applicationID}`}>
-                            logging in</Link> to view this page if your application is here.
-                        </h5>
-                        }
-                    </div>
-                </div>
-            )
         }
 
         let isMissingProfilePicture = false;
