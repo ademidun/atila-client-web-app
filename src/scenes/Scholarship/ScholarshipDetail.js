@@ -16,7 +16,6 @@ import { Alert, Button, message, Tag, Row, Col } from 'antd';
 import verifiedBadge from '../../components/assets/verified.png';
 import { AtilaDirectApplicationsPopover, BlindApplicationsExplanationMessage, ReferralBonusScholarshipExplanationMessage } from "../../models/Scholarship";
 import ScholarshipFinalists, { UserProfilesCards } from "./ScholarshipFinalists";
-import ApplicationsLocal from '../Application/ApplicationsLocal';
 import ReportIncorrectInfo from "../../components/ReportIncorrectInfo";
 import AwardDetail from "../Award/AwardDetail";
 import { addStyleClasstoTables, openAllLinksInNewTab } from "../../services/utils";
@@ -295,7 +294,6 @@ class ScholarshipDetail extends React.Component {
                             <div>
                                 <hr />
                                 <ScholarshipShareSaveButtons scholarship={scholarship} />
-                                {scholarship && <ApplicationsLocal scholarship={scholarship} />}
                                 {scholarship.is_blind_applications && <BlindApplicationsExplanationMessage />}
                                 {scholarship.is_referral_bonus_eligible && <ReferralBonusScholarshipExplanationMessage />}
                             </div>

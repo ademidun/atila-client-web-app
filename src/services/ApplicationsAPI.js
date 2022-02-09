@@ -124,20 +124,6 @@ class ApplicationsAPI {
         return apiCompletionPromise
     };
 
-    static saveApplicationLocally = (application) => {
-
-
-        const { scholarship } = application;
-
-        const localApplicationID = `local_application_scholarship_id_${scholarship.id}`;
-
-        const applicationData = JSON.stringify(application);
-
-        localStorage.setItem(localApplicationID, applicationData);
-
-        return applicationData;
-    }
-
     static resendVerificationEmail = (id, data) => {
 
         const apiCompletionPromise = request({

@@ -29,7 +29,6 @@ import UserProfileAPI from "../../services/UserProfileAPI";
 import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import ApplicationDetailHeader from "./ApplicationDetailHeader";
 import {BlindApplicationsExplanationMessage} from "../../models/Scholarship";
-import ApplicationsLocal from './ApplicationsLocal';
 import { Alert } from 'antd';
 import ApplicationViewPreviousApplications from "./ApplicationViewPreviousApplications";
 import ApplicationWordCountExplainer from "./ApplicationWordCountExplainer";
@@ -135,21 +134,12 @@ class ApplicationDetail extends  React.Component{
 
         const { scholarship_responses, user_profile_responses } = addQuestionDetailToApplicationResponses(application, scholarship);
 
-        if (userProfile) {
-            const verification_email = user_profile_responses.email ? user_profile_responses.email.response : userProfile.email;
-            this.saveApplicationRemotely( {scholarship_responses, user_profile_responses, verification_email}, application.id);
-        } else {
-            this.saveApplicationLocally({scholarship_responses, user_profile_responses, scholarship }, scholarship);
-        }
-    };
-
-    saveApplicationRemotely = (applicationData, applicationID) => {
-
+        const verification_email = user_profile_responses.email ? user_profile_responses.email.response : userProfile.email;
 
         this.setState({isSavingApplication: true});
 
         ApplicationsAPI
-            .patch(applicationID, applicationData)
+            .patch(application.id, {scholarship_responses, user_profile_responses, verification_email})
             .then(res=>{
                 const { data: updatedApplication } = res;
                 let { application } = this.state;
@@ -172,13 +162,6 @@ class ApplicationDetail extends  React.Component{
             .finally(() => {
                 this.setState({isSavingApplication: false});
             })
-    };
-
-    saveApplicationLocally = (application, scholarship) => {
-
-        application.date_modified = new Date();
-        ApplicationsAPI.saveApplicationLocally(application);
-        this.afterSaveApplication(application, scholarship);
     };
 
     /**
@@ -689,7 +672,6 @@ class ApplicationDetail extends  React.Component{
                         </Link>
                         </h1>
                         }
-                        {scholarship && <ApplicationsLocal scholarship={scholarship} />}
                         <ApplicationDetailHeader application={application} scholarship={scholarship} isOwnerOfApplication={isOwnerOfApplication}/>
                         <div>
                             {scholarshipUserProfileQuestionsFormConfig && scholarshipQuestionsFormConfig &&
