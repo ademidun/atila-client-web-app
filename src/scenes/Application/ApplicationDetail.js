@@ -583,7 +583,31 @@ class ApplicationDetail extends  React.Component{
         }
 
         let scholarshipDateString = moment(scholarship.deadline).format('dddd, MMMM DD, YYYY');
-        let disableSubmit = isMissingProfilePicture||isMissingSecurityQuestionAnswer || isSubmittingApplication || applicationWalletError;
+        let applicationHasErrorsPreventSubmission = isMissingProfilePicture || isMissingSecurityQuestionAnswer || applicationWalletError;
+        let disableSubmit =  isSubmittingApplication || applicationHasErrorsPreventSubmission;
+        let applicationErrors;
+        if (applicationHasErrorsPreventSubmission) {
+            let applicationErrorsContent = (<>
+                {isMissingSecurityQuestionAnswer &&
+                    <p>
+                        Add a security question and answer before you can submit.
+                    </p>
+                    }
+                    {isMissingProfilePicture &&
+                    <p>
+                        Add a picture of yourself before you can submit.
+                    </p>
+                    }
+                    {applicationWalletError &&
+                    <p>
+                        {applicationWalletError}
+                    </p>
+                }
+            </>
+            )
+            applicationErrors = <Alert type="error" className="float-right mt-3" message={applicationErrorsContent} />;
+        }
+
         let submitContent = (
                     <div className={"float-right col-md-6"}>
                         You must have an account to submit locally saved applications.
@@ -766,26 +790,10 @@ class ApplicationDetail extends  React.Component{
                                             }
                                         </>
                                         }
-                                        {pageNumber > 1 && !isScholarshipDeadlinePassed  && (isMissingProfilePicture || isMissingSecurityQuestionAnswer || applicationWalletError) &&
-                                        <div className="text-muted float-right mt-3">
-
-                                            {isMissingSecurityQuestionAnswer &&
-                                            <p>
-                                                Add a security question and answer before you can submit.
-                                            </p>
-                                            }
-                                            {isMissingProfilePicture &&
-                                            <p>
-                                                Add a picture of yourself before you can submit.
-                                            </p>
-                                            }
-                                            {applicationWalletError &&
-                                            <p>
-                                                {applicationWalletError}
-                                            </p>
-                                            }
-                                        </div>
-
+                                        {pageNumber > 1 && !isScholarshipDeadlinePassed  && applicationHasErrorsPreventSubmission &&
+                                            <>
+                                                {applicationErrors}
+                                            </>
                                         }
 
                                     </div>
