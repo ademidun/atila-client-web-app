@@ -45,14 +45,15 @@ export function genericItemTransform (item) {
         case 'scholarship':
             item = {
                 ...item,
+                title: item.name,
                 slug: `/scholarship/${item.slug}/`,
                 image: item.img_url,
-                title: item.name,
             };
             break;
         case 'essay':
             item = {
                 ...item,
+                title: item.title,
                 slug: user ? `/essay/${user.username}/${item.slug}/` : "",
                 image: user ? `${user.profile_pic_url}` : "",
             };
@@ -60,6 +61,7 @@ export function genericItemTransform (item) {
         case 'blog':
             item = {
                 ...item,
+                title: item.title,
                 image: item.header_image_url,
                 slug: user ? `/blog/${user.username}/${item.slug}/` : "",
             };
@@ -85,7 +87,7 @@ export function getItemType(item) {
     else if (item.hasOwnProperty('header_image_url')) {
         itemType = 'blog'
     }
-    else if (item.hasOwnProperty('essay_source_url')) {
+    else if (item.hasOwnProperty('essay_source_url') || item.hasOwnProperty('is_anonymous_essay')) {
         itemType = 'essay'
     }
     return itemType;
@@ -279,19 +281,14 @@ export function scrollToElement(elementSelector) {
  */
 export function getErrorMessage(error, stringifyError=true) {
 
-    let formattedMessage = "";
-    if (error.response && error.response.status === 500) {
-        formattedMessage = "Internal server error. Please contact us."
-    } else if(error.response && error.response.data ) {
-        if(error.response.data.error && error.response.data.error.message) {
-            formattedMessage = error.response.data.error.message
-        } else if (error.response.data.error) {
-            formattedMessage = error.response.data.error
-        } else if(error.response.data) {
-            formattedMessage = error.response.data
-        }
-    } else {
-        formattedMessage = error.message ? error.message : error;
+    let formattedMessage = error?.message || error;
+
+    if(error.response ) {
+        if (error.response.status === 500) {
+            formattedMessage = "Internal server error. Please contact us using the blue chat icon in the bottom right or visit atila.ca/contact."
+        } else {
+            formattedMessage = error?.response?.data?.error?.message || error?.response?.data?.error || error?.response?.data || error.response
+        }    
     }
 
     if (stringifyError) {

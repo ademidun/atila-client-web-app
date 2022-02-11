@@ -206,7 +206,7 @@ export function UserProfilesCards({userProfiles, userKey="username"}) {
                         </div>
                     </div>
                     <div className='tag'>
-                        {user.is_winner && <Tag color="gold">{' '}Winner</Tag>}
+                        {user.is_winner && <Tag color="green">{' '}Winner</Tag>}
                         {user.is_owner && <Tag color="green">{' '}Creator</Tag>}
                     </div>
                     {user.is_anonymous || !user.username ? 

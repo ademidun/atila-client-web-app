@@ -22,39 +22,29 @@ export default HowItWorks;
 
 const howItWorksStudent = [
     {
-        title: "Create Account",
+        title: "Find Scholarships",
         body: <React.Fragment>
-            <Link to="register">Register</Link> for a free account in 15 seconds.<br/>
-
-            Tell us your school, program, etc. to get matched
-            with the right scholarships for you.
-
+            Get matched with scholarships based on your school, program, extracurricular activities, future career and more.
         </React.Fragment>,
         // commenting out instead of deleting images because might use them again soon
-        // image: "https://imgur.com/JqjjyCm.jpg",
+        image: "https://i.imgur.com/MZoyXgJ.png",
         gif: "https://s3.gifyu.com/images/create-account.gif"
     },
     {
         title: "Apply for Scholarships",
         body: <React.Fragment>
-            Apply for multiple scholarships all from one site.
+            Apply for multiple scholarships all from one platform and easily reuse your past answers to save time.
             {/* TODO uncomment this line when we add this feature */}
             {/* Autofill similar responses used in past scholarships to save time. */}
         </React.Fragment>,
-        // image: "https://imgur.com/EG5zKAT.jpg",
+        image: "https://i.imgur.com/qw9Zz7o.png",
         gif: "https://s3.gifyu.com/images/My-Movie-4.gif"
 
     },
     {
         title: "Get Funded",
         body: <React.Fragment>
-            Scholarship funding is directly deposited to your bank account
-            within 24 hours of accepting award<sup>*</sup>.
-            <br/>
-            <small>
-                <sup>*</sup>
-            Only currently available for students with Canadian or American Bank Accounts.
-            </small>
+            Accept scholarship award through Atila portal. Scholarship funds are deposited to your account within 1-3 days.
         </React.Fragment>,
         image: "https://imgur.com/1HufdyP.jpg"
     }
@@ -71,7 +61,7 @@ export const howItWorksSponsorItems = [
             Who's eligible?{' '}
             Any short answer or essay questions?{' '} etc.
         </React.Fragment>,
-        // image: "https://imgur.com/HgIoMJ9.jpg",
+        image: "https://imgur.com/HgIoMJ9.jpg",
         gif: "https://s3.gifyu.com/images/Add-A-Scholarship-Final-Gif.gif"
     },
     {
@@ -122,7 +112,7 @@ export function HowItWorksStudent() {
                 <Link to="/apply"> How to Get Scholarships </Link>
             </h1>
             <h2 className="col-sm-12 text-center">
-                <Link to="/register">Create Profile.</Link>{' '}
+                <Link to="/register">Find Scholarships.</Link>{' '}
                 <Link to="/scholarship">Apply for Scholarships.</Link>{' '}
                 <Link to="/finalists">Get Funded.</Link>{' '}
             
@@ -213,7 +203,7 @@ export function DescriptionWithScreenshot({item, index=null})   {
         <React.Fragment key={item.title}>
             <div className="card shadow m-3 p-3 col-lg-4 col-sm-12">
                 <h3 className="m-3 text-muted strong">
-                    {index ? `${index+1}. ` : null} {item.title}
+                    {index !== null ? `${index+1}. ` : null} {item.title}
                 </h3>
                 <div className="m-3">
                     {item.body}

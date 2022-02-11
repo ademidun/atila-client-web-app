@@ -7,7 +7,7 @@ import {Link, withRouter} from "react-router-dom";
 import AutoComplete from "../../components/AutoComplete";
 import {MASTER_LIST_EVERYTHING_UNDERSCORE} from "../../models/ConstantsForm";
 import {slugify} from "../../services/utils";
-import bannerImage from "./assets/landing-cover-big-scholarship.png";
+import bannerImage from "./assets/landing-cover-big-scholarship-gradient-logo.png";
 
 const loop = {
   duration: 3000,
@@ -83,7 +83,7 @@ class Banner extends React.Component {
             </h1>
             <h2 key="h2">
 
-              The best way to <br/> start and get scholarships.
+              The best way to <br/> start and get scholarships <br/> using fiat and crypto.
             </h2>
             <form className="col-sm-12"
                   onSubmit={this.onSubmit}

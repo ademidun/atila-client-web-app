@@ -1,5 +1,5 @@
 .ContentCard{
-    height: 575px;
+    height: 600px;
     background: white;
     border-radius: 10px;
     overflow: hidden;
@@ -7,9 +7,11 @@
     margin-left: auto;
     margin-right: auto;
     .title {
-        height: 110px;
+        height: 150px;
         font-size: 25px;
         padding: 5px;
+        padding-left: 10px;
+        padding-right: 10px;
     }
 
     .body {

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from "prop-types";
 import ButtonModal from "./ButtonModal";
 import { Radio, Input} from 'antd';
 import ScholarshipsAPI from "../services/ScholarshipsAPI";
@@ -77,6 +78,8 @@ class ReportIncorrectInfo extends React.Component {
 
     render() {
         const { infoOptionsLabel, additionalInfo, updatedDeadline } = this.state;
+        const { className } = this.props;
+
         const radioStyle = {
             display: 'block',
             lineHeight: '30px',
@@ -117,8 +120,8 @@ class ReportIncorrectInfo extends React.Component {
         )
 
         return (
-            <>
-                <ButtonModal
+            <ButtonModal
+                    className={className}
                     showModalButtonSize={"medium"}
                     showModalButtonDanger={true}
                     showModalButtonType={""}
@@ -128,7 +131,6 @@ class ReportIncorrectInfo extends React.Component {
                     submitText={"Send Report"}
                     onSubmit={this.sendReport}
                 />
-            </>
         )
     }
 
@@ -144,6 +146,7 @@ const findValueWithLabel = label => {
 
 ReportIncorrectInfo.propTypes = {
     scholarship: ScholarshipPropType.isRequired,
+    className: PropTypes.string,
 }
 
 export default ReportIncorrectInfo

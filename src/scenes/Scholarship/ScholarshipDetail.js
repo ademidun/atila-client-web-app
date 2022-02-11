@@ -9,7 +9,6 @@ import { connect } from "react-redux";
 import AnalyticsService from "../../services/AnalyticsService";
 import ScholarshipShareSaveButtons from "./ScholarshipShareSaveButtons";
 import HelmetSeo from "../../components/HelmetSeo";
-import ApplicationsAPI from "../../services/ApplicationsAPI";
 import AtilaPointsPaywallModal from "../../components/AtilaPointsPaywallModal";
 import ScholarshipExtraCriteria from "./ScholarshipExtraCriteria";
 import ScholarshipDeadlineWithTags from "../../components/ScholarshipDeadlineWithTags";
@@ -17,7 +16,6 @@ import { Alert, Button, message, Tag, Row, Col } from 'antd';
 import verifiedBadge from '../../components/assets/verified.png';
 import { AtilaDirectApplicationsPopover, BlindApplicationsExplanationMessage, ReferralBonusScholarshipExplanationMessage } from "../../models/Scholarship";
 import ScholarshipFinalists, { UserProfilesCards } from "./ScholarshipFinalists";
-import ApplicationsLocal from '../Application/ApplicationsLocal';
 import ReportIncorrectInfo from "../../components/ReportIncorrectInfo";
 import AwardDetail from "../Award/AwardDetail";
 import { addStyleClasstoTables, openAllLinksInNewTab } from "../../services/utils";
@@ -26,6 +24,7 @@ import './ScholarshipDetail.scss';
 import $ from "jquery";
 import ContentBody, { CONTENT_BODY_CLASS_NAME } from '../../components/ContentDetail/ContentBody/ContentBody';
 import CurrencyDisplay from '@atila/web-components-library.ui.currency-display';
+import ScholarshipApplyButton from './ScholarshipApplyButton';
 
 class ScholarshipDetail extends React.Component {
 
@@ -92,8 +91,6 @@ class ScholarshipDetail extends React.Component {
                     if (location && location.hash) {
                         scrollToElement(location.hash);
                     }
-
-                    this.findExistingApplication();
                 });
 
                 const { is_not_available } = scholarship;
@@ -140,76 +137,12 @@ class ScholarshipDetail extends React.Component {
             });
     };
 
-    findExistingApplication = () => {
-        const { userProfile } = this.props;
-        const { scholarship } = this.state;
-
-        if(!userProfile || !scholarship.is_atila_direct_application) {
-            return
-        }
-
-        this.setState({ isLoadingApplication: true });
-        ApplicationsAPI
-            .doesApplicationExist(userProfile.user, scholarship.id)
-            .then(res => {
-                const { data: { exists, application } } = res;
-                if (exists) {
-                    this.setState({ currentUserScholarshipApplication: application });
-                }
-            })
-            .catch((err) => {
-                console.log({ err });
-            })
-            .finally(() => {
-                this.setState({ isLoadingApplication: false });
-            });
-    };
-
-    getOrCreateApplication = () => {
-        const { userProfile } = this.props;
-
-        if (userProfile) {
-            this.getOrCreateApplicationRemotely();
-        } else {
-            this.getOrCreateApplicationLocally();
-        }
-    };
-
-
-    getOrCreateApplicationRemotely = () => {
-        const { userProfile } = this.props;
-        const { scholarship } = this.state;
-        ApplicationsAPI.getOrCreate({ scholarship: scholarship.id, user: userProfile.user })
-            .then(res => {
-
-                const { data: { application } } = res;
-
-                this.props.history.push(`/application/${application.id}`);
-            })
-            .catch(err => {
-                console.log({ err });
-            })
-
-    };
-
-
-    getOrCreateApplicationLocally = () => {
-        const { scholarship } = this.state;
-
-        ApplicationsAPI.getOrCreateLocally(scholarship);
-
-        this.props.history.push(`/application/local/scholarship_${scholarship.id}`);
-
-    };
-
-
     render() {
 
         const { isLoadingScholarship, scholarship, awards,
             errorLoadingScholarship, scholarshipUserProfile,
-            pageViews, currentUserScholarshipApplication, isLoadingApplication, contributors } = this.state;
+            pageViews, contributors } = this.state;
         const { userProfile } = this.props;
-        const { location: { pathname } } = this.props;
 
         if (errorLoadingScholarship) {
             return errorLoadingScholarship;
@@ -226,36 +159,6 @@ class ScholarshipDetail extends React.Component {
 
         let scholarshipDateMoment = moment(deadline);
         const isScholarshipDeadlinePassed = scholarshipDateMoment.diff(moment()) < 0;
-
-        let applyToScholarshipButton = null;
-        if (isScholarshipDeadlinePassed && !currentUserScholarshipApplication) {
-            applyToScholarshipButton = null;
-        } else if (!userProfile) {
-            applyToScholarshipButton = (<Button type="primary" size="large"
-                disabled={isLoadingApplication}>
-                <Link to={`/register?redirect=${pathname}&applyNow=1`}>
-                    Apply Now
-                </Link>
-            </Button>)
-        } else {
-            applyToScholarshipButton = (<Button type="primary" size="large"
-                onClick={this.getOrCreateApplication}
-                disabled={isLoadingApplication}>
-                {isLoadingApplication ? "Checking for existing Application..." : "Apply Now"}
-            </Button>);
-
-            if (currentUserScholarshipApplication) {
-                applyToScholarshipButton = (
-                    <Button type="primary" size="large" disabled={isLoadingApplication}>
-                        <Link to={`/application/${currentUserScholarshipApplication.id}`}>
-                            {currentUserScholarshipApplication.is_submitted ||
-                                isScholarshipDeadlinePassed ? "View Application" : "Continue Application"}
-                        </Link>
-                    </Button>)
-            } else if (scholarshipUserProfile && userProfile.user === scholarshipUserProfile.user) {
-                applyToScholarshipButton = null;
-            }
-        }
 
         let redditUrlComponent;
         if (scholarship.reddit_url) {
@@ -344,9 +247,7 @@ class ScholarshipDetail extends React.Component {
 
                                 {scholarship.is_atila_direct_application &&
                                     <React.Fragment>
-                                        {applyToScholarshipButton && <React.Fragment>
-                                            {applyToScholarshipButton}
-                                        </React.Fragment>}
+                                        <ScholarshipApplyButton scholarship={scholarship} />
 
                                         <Button size="large">
                                             <Link to={`/scholarship/${slug}/questions`}>
@@ -393,7 +294,6 @@ class ScholarshipDetail extends React.Component {
                             <div>
                                 <hr />
                                 <ScholarshipShareSaveButtons scholarship={scholarship} />
-                                {scholarship && <ApplicationsLocal scholarship={scholarship} />}
                                 {scholarship.is_blind_applications && <BlindApplicationsExplanationMessage />}
                                 {scholarship.is_referral_bonus_eligible && <ReferralBonusScholarshipExplanationMessage />}
                             </div>
@@ -402,14 +302,31 @@ class ScholarshipDetail extends React.Component {
                             <div className="font-weight-bold">
                                 <ScholarshipDeadlineWithTags scholarship={scholarship} addDeadlineToCalendar={true} />
                                 <br />
-                                <ReportIncorrectInfo scholarship={scholarship} />
+                                <ReportIncorrectInfo scholarship={scholarship} className="mb-3" />
                             </div>
 
                             {redditUrlComponent}
 
                             <div className="font-weight-bold">
 
-                                {scholarshipUserProfile &&
+                                    <div className="mb-3">
+                                    Total Funding: <CurrencyDisplay amount={scholarship.funding_amount} inputCurrency={scholarship.currency||"CAD"} outputCurrency="USD" />
+                                    </div>
+                                    <AwardDetail awards={awards} />
+                                    {
+                                        scholarship.is_atila_direct_application && !isScholarshipDeadlinePassed &&
+                                        <div className="mb-3">
+                                            <Button type="primary" size="large" className="mt-3"
+                                                style={{ fontSize: "18px", width: "150px", height: "75px" }}>
+                                                <Link to={`/scholarship/${slug}/contribute`}>
+                                                    Contribute
+                                                </Link>
+                                            </Button><br /><br />
+                                        </div>
+                                    }
+                            </div>
+
+                            {scholarshipUserProfile &&
                                     <React.Fragment>
                                         Added by:
                                         <div className="bg-light mb-3 p-1" style={{ width: '500px' }}>
@@ -423,22 +340,8 @@ class ScholarshipDetail extends React.Component {
                                             </Link>&nbsp;
                                             {contributors.is_owner === scholarshipUserProfile.is_owner && <Tag color="green">{' '}Creator</Tag>}
                                         </div>
-
-                                        Total Funding: <CurrencyDisplay amount={scholarship.funding_amount} inputCurrency={scholarship.currency||"CAD"} outputCurrency="USD" />
-                                        <AwardDetail awards={awards} />
-                                        {scholarship.is_atila_direct_application && !isScholarshipDeadlinePassed &&
-                                            <div className="mb-3">
-                                                <Button type="primary" size="large" className="mt-3"
-                                                    style={{ fontSize: "18px", width: "150px", height: "75px" }}>
-                                                    <Link to={`/scholarship/${slug}/contribute`}>
-                                                        Contribute
-                                                    </Link>
-                                                </Button><br /><br />
-                                            </div>
-                                        }
                                     </React.Fragment>
-                                }
-                            </div>
+                            }
 
                             {contributors && contributors.length > 1 &&
                                 

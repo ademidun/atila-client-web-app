@@ -15,9 +15,7 @@ import FormDynamic from "../../components/Form/FormDynamic";
 import {Link} from "react-router-dom";
 import {Button, Popconfirm, Steps} from "antd";
 import { getErrorMessage, handleError, prettifyKeys, scrollToElement } from "../../services/utils";
-import Register from "../../components/Register";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
-import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import SecurityQuestionAndAnswer from "./SecurityQuestionAndAnswer";
 import {
     addQuestionDetailToApplicationResponses,
@@ -31,10 +29,11 @@ import UserProfileAPI from "../../services/UserProfileAPI";
 import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import ApplicationDetailHeader from "./ApplicationDetailHeader";
 import {BlindApplicationsExplanationMessage} from "../../models/Scholarship";
-import ApplicationsLocal from './ApplicationsLocal';
 import { Alert } from 'antd';
 import ApplicationViewPreviousApplications from "./ApplicationViewPreviousApplications";
 import ApplicationWordCountExplainer from "./ApplicationWordCountExplainer";
+import WalletDisplay from "../../components/Payments/WalletDisplay";
+import { CryptoScholarshipWalletExplanation } from "../../models/ConstantsPayments";
 
 const { Step } = Steps;
 
@@ -60,7 +59,7 @@ class ApplicationDetail extends  React.Component{
         const { location : { pathname } } = this.props;
 
         this.state = {
-            application: {},
+            application: null,
             applicationScore: null,
             applicationNotes: "",
             scholarship: null,
@@ -70,31 +69,28 @@ class ApplicationDetail extends  React.Component{
             scholarshipUserProfileQuestionsFormConfig: null,
             scholarshipQuestionsFormConfig: null,
             isUsingLocalApplication: pathname.includes("/local/"),
-            promptRegisterBeforeSubmitting: false,
             userProfileForRegistration: null,
             pageNumber: 1,
             isScholarshipDeadlinePassed: false,
+            applicationWalletError: null,
         }
     }
 
     componentDidMount() {
         this.getApplication();
     }
+    componentWillUnmount() {
+        if(window.ethereum) {
+            window.ethereum.removeListener('accountsChanged', this.handleAccountsChanged);
+        }
+    }
 
     getApplication = () => {
-        const { userProfile, location : { pathname } } = this.props;
-        const { isUsingLocalApplication } = this.state;
-
-        if (userProfile && !pathname.includes("/local/")) {
-            this.getApplicationRemotely();
-        } else if (isUsingLocalApplication) {
-            this.getApplicationLocally();
-        }
-    };
-
-    getApplicationRemotely = () => {
 
         const { match : { params : { applicationID }}, location, userProfile } = this.props;
+        if (!userProfile) {
+            return
+        }
 
         this.setState({isLoadingApplication: true});
         ApplicationsAPI.get(applicationID)
@@ -107,7 +103,11 @@ class ApplicationDetail extends  React.Component{
                 // If the scholarship has expired, set the pageNumber to the last page, else, set it to the current page in state.
                 const pageNumber = isScholarshipDeadlinePassed ? applicationPages.length : this.state.pageNumber;
 
-                this.setState({application, scholarship, isScholarshipDeadlinePassed, pageNumber});
+                this.setState({application, scholarship, isScholarshipDeadlinePassed, pageNumber}, () => {
+                    if (application.wallet_detail) {
+                        this.verifyCorrectWalletAddres();
+                    }
+                });
                 if (application.user_scores) {
                     const applicationScore = application.user_scores[userProfile.user] ?
                         application.user_scores[userProfile.user]["score"] : null;
@@ -127,32 +127,6 @@ class ApplicationDetail extends  React.Component{
             .finally(() => {
                 this.setState({isLoadingApplication: false});
             })
-
-    };
-
-    getApplicationLocally = () => {
-
-        const { match : { params : { scholarshipID }} } = this.props;
-        this.setState({isLoadingApplication: true});
-        ScholarshipsAPI
-            .get(scholarshipID)
-            .then(res => {
-                const {data: scholarship} = res;
-                const application = ApplicationsAPI.getOrCreateLocally({id: scholarshipID});
-                // TODO load scholarship from remote database
-                this.setState({application, scholarship});
-                this.makeScholarshipQuestionsForm(application, scholarship);
-            })
-            .catch((err) => {
-                console.log({err});
-            })
-            .finally(() => {
-                this.setState({isLoadingApplication: false});
-            });
-
-
-
-
     };
 
     saveApplication = () => {
@@ -163,21 +137,12 @@ class ApplicationDetail extends  React.Component{
 
         const { scholarship_responses, user_profile_responses } = addQuestionDetailToApplicationResponses(application, scholarship);
 
-        if (userProfile) {
-            const verification_email = user_profile_responses.email ? user_profile_responses.email.response : userProfile.email;
-            this.saveApplicationRemotely( {scholarship_responses, user_profile_responses, verification_email}, application.id);
-        } else {
-            this.saveApplicationLocally({scholarship_responses, user_profile_responses, scholarship }, scholarship);
-        }
-    };
-
-    saveApplicationRemotely = (applicationData, applicationID) => {
-
+        const verification_email = user_profile_responses.email ? user_profile_responses.email.response : userProfile.email;
 
         this.setState({isSavingApplication: true});
 
         ApplicationsAPI
-            .patch(applicationID, applicationData)
+            .patch(application.id, {scholarship_responses, user_profile_responses, verification_email})
             .then(res=>{
                 const { data: updatedApplication } = res;
                 let { application } = this.state;
@@ -200,13 +165,6 @@ class ApplicationDetail extends  React.Component{
             .finally(() => {
                 this.setState({isSavingApplication: false});
             })
-    };
-
-    saveApplicationLocally = (application, scholarship) => {
-
-        application.date_modified = new Date();
-        ApplicationsAPI.saveApplicationLocally(application);
-        this.afterSaveApplication(application, scholarship);
     };
 
     /**
@@ -288,42 +246,45 @@ class ApplicationDetail extends  React.Component{
             toastNotify(handleError(err))
         })
     }
-    submitApplication = () => {
-        const { userProfile } = this.props;
-        if (userProfile) {
-            this.submitApplicationRemotely();
-        } else {
-            this.setState({promptRegisterBeforeSubmitting: true})
+
+    verifyCorrectWalletAddres = () => {
+        const { application } = this.state;
+        if (!application.wallet_detail) {
+            return
         }
-    };
+        if (!window.ethereum) {
+            this.setState({applicationWalletError: "This application is connected with a crypto wallet. You must use a web browser that supports crypto wallets to continue."});
+            return
+        }
+        window.ethereum.on('accountsChanged', this.handleAccountsChanged);
+        window.ethereum
+        .request({ method: 'eth_accounts' })
+        .then(this.handleAccountsChanged)
+        .catch((err) => {
+            // Some unexpected error.
+            // For backwards compatibility reasons, if no accounts are available,
+            // eth_accounts will return an empty array.
+            console.error(err);
+        });
+        
+    }
 
-    createApplicationAfterRegistration = (userProfile) => {
-        const { application, scholarship } = this.state;
-        const { scholarship_responses, user_profile_responses } = addQuestionDetailToApplicationResponses(application, scholarship);
+    handleAccountsChanged = (accounts) => {
+        const { application } = this.state;
+        this.setState({applicationWalletError: null});
+        if (accounts.length === 0) {
+            this.setState({applicationWalletError: "This application is connected with a crypto wallet. The wallet must be connected to the application before you can submit your applicaiton."+
+            "Your crypto wallet is either locked or the user has not connected any accounts"})
+        } else {
+            const accountAddress = accounts[0];
+            if (accountAddress !== application.wallet_detail.address) {
+                this.setState({applicationWalletError: `The wallet address in your application is ${application.wallet_detail.address}`+
+                ` but your current connected crypto wallet is ${accountAddress}. Switch to the correct wallet.`});
+            }
+        }
+    }
 
-        this.setState({isLoadingApplication: true});
-        ApplicationsAPI
-            .getOrCreate({scholarship_responses, user_profile_responses, scholarship: scholarship.id, user: userProfile.user})
-            .then(res=>{
-                const { application } = res.data
-
-                this.props.history.push(`/application/${application.id}`)
-                window.location.reload()
-                /* Instead of setting all the state variables manually to work for a real application,
-                   it's cleaner to just refresh, and all of that will be taken care of automatically.
-                   This is better for maintanability as well because when adding new state variables, they don't
-                   need to be considered to be updated here.*/
-            })
-            .catch(err => {
-                console.log({err});
-                toastNotify(`🙁 An error occurred`, 'error');
-            })
-            .finally(() => {
-                this.setState({isLoadingApplication: false});
-            })
-    };
-
-    submitApplicationRemotely = () => {
+    submitApplication = () => {
         let { application } = this.state;
         const { scholarship } = this.state;
         const { userProfile } = this.props;
@@ -516,8 +477,41 @@ class ApplicationDetail extends  React.Component{
         const { match : { params : { applicationID }}, userProfile } = this.props;
         const { application, isLoadingApplication, scholarship, isSavingApplication, isSubmittingApplication,
             scholarshipUserProfileQuestionsFormConfig, scholarshipQuestionsFormConfig,
-            isUsingLocalApplication, promptRegisterBeforeSubmitting,
-            applicationScore, applicationNotes, pageNumber, isScholarshipDeadlinePassed } = this.state;
+            isUsingLocalApplication, applicationScore, applicationNotes, pageNumber,
+            isScholarshipDeadlinePassed, applicationWalletError } = this.state;
+
+        const seoContent = {
+            ...defaultSeoContent,
+            title: `Scholarship Application${scholarship? ` for ${scholarship.name}`:""}`
+        };
+
+        if (isLoadingApplication) {
+            return (
+                <div className="container mt-5">
+                    <HelmetSeo content={seoContent}/>
+                    <div className="card shadow p-3">
+                        <Loading  title="Loading Application..."/>
+                    </div>
+                </div>
+            );
+        }
+
+        if (!isLoadingApplication && !application) {
+            return (
+                <div className="container mt-5">
+                    <HelmetSeo content={seoContent}/>
+                    <div className="card shadow p-3">
+                        <h1>Application not found</h1>
+                        {!userProfile &&
+                        <h5 className="center-block text-muted">
+                            Try <Link to={`/login?redirect=application/${applicationID}`}>
+                            logging in</Link> to view this page if your application is here.
+                        </h5>
+                        }
+                    </div>
+                </div>
+            )
+        }
 
         const applicationSteps =
             (<Steps current={pageNumber-1} onChange={(current) => this.changePage(current+1)}>
@@ -539,38 +533,6 @@ class ApplicationDetail extends  React.Component{
             dateModified =  (<div className="text-muted float-left col-12">
                 Start typing and your application will automatically save
             </div>)
-        }
-        let seoContent = {
-            ...defaultSeoContent,
-            title: `Scholarship Application${scholarship? ` for ${scholarship.name}`:""}`
-        };
-
-        if (isLoadingApplication) {
-            return (
-                <div className="container mt-5">
-                    <HelmetSeo content={seoContent}/>
-                    <div className="card shadow p-3">
-                        <Loading  title="Loading Application..."/>
-                    </div>
-                </div>
-            );
-        }
-
-        if (!isLoadingApplication && !scholarship) {
-            return (
-                <div className="container mt-5">
-                    <HelmetSeo content={seoContent}/>
-                    <div className="card shadow p-3">
-                        <h1>Application not found</h1>
-                        {!userProfile &&
-                        <h5 className="center-block text-muted">
-                            Try <Link to={`/login?redirect=application/${applicationID}`}>
-                            logging in</Link> to view this page if your application is here.
-                        </h5>
-                        }
-                    </div>
-                </div>
-            )
         }
 
         let isMissingProfilePicture = false;
@@ -621,7 +583,31 @@ class ApplicationDetail extends  React.Component{
         }
 
         let scholarshipDateString = moment(scholarship.deadline).format('dddd, MMMM DD, YYYY');
-        let disableSubmit = isMissingProfilePicture||isMissingSecurityQuestionAnswer || isSubmittingApplication;
+        let applicationHasErrorsPreventSubmission = isMissingProfilePicture || isMissingSecurityQuestionAnswer || applicationWalletError;
+        let disableSubmit =  isSubmittingApplication || applicationHasErrorsPreventSubmission;
+        let applicationErrors;
+        if (applicationHasErrorsPreventSubmission) {
+            let applicationErrorsContent = (<>
+                {isMissingSecurityQuestionAnswer &&
+                    <p>
+                        Add a security question and answer before you can submit.
+                    </p>
+                    }
+                    {isMissingProfilePicture &&
+                    <p>
+                        Add a picture of yourself before you can submit.
+                    </p>
+                    }
+                    {applicationWalletError &&
+                    <p>
+                        {applicationWalletError}
+                    </p>
+                }
+            </>
+            )
+            applicationErrors = <Alert type="error" className="float-right mt-3" message={applicationErrorsContent} />;
+        }
+
         let submitContent = (
                     <div className={"float-right col-md-6"}>
                         You must have an account to submit locally saved applications.
@@ -649,6 +635,18 @@ class ApplicationDetail extends  React.Component{
             );
         }
 
+        let applicationWalletDisplay;
+
+        if (application.wallet_detail) {
+            applicationWalletDisplay = (<>
+                <div className="my-3">
+                    <h2>Application Wallet:</h2>
+                    <label><CryptoScholarshipWalletExplanation/></label><br/>
+                    <WalletDisplay wallet={application.wallet_detail} />
+                </div>
+            </>)
+        }
+
         let applicationForm = (<>
             <ApplicationViewPreviousApplications currentApplicationID={applicationID} userProfile={userProfile} />
             <br />
@@ -659,7 +657,7 @@ class ApplicationDetail extends  React.Component{
                          inputConfigs=
                              {scholarshipUserProfileQuestionsFormConfig}
             />
-
+            {applicationWalletDisplay}
             <h2>Scholarship Questions</h2>
             {dateModified}
             <ApplicationWordCountExplainer />
@@ -685,7 +683,7 @@ class ApplicationDetail extends  React.Component{
                 <h2>Profile Questions</h2> <br/>
                 {scholarship.is_blind_applications && <BlindApplicationsExplanationMessage />}
                 {this.viewForm(scholarship.user_profile_questions, application.user_profile_responses, isOwnerOfApplication)}
-                <br />
+                {applicationWalletDisplay}
                 <h2>Scholarship Questions</h2>
                 {this.viewForm(scholarship.specific_questions, application.scholarship_responses, isOwnerOfApplication)}
         </>);
@@ -702,7 +700,6 @@ class ApplicationDetail extends  React.Component{
                         </Link>
                         </h1>
                         }
-                        {scholarship && <ApplicationsLocal scholarship={scholarship} />}
                         <ApplicationDetailHeader application={application} scholarship={scholarship} isOwnerOfApplication={isOwnerOfApplication}/>
                         <div>
                             {scholarshipUserProfileQuestionsFormConfig && scholarshipQuestionsFormConfig &&
@@ -793,21 +790,10 @@ class ApplicationDetail extends  React.Component{
                                             }
                                         </>
                                         }
-                                        {pageNumber > 1 && !isScholarshipDeadlinePassed  && (isMissingProfilePicture || isMissingSecurityQuestionAnswer) &&
-                                        <div className="text-muted float-right">
-
-                                            {isMissingSecurityQuestionAnswer &&
-                                            <p>
-                                                Add a security question and answer before you can submit.
-                                            </p>
-                                            }
-                                            {isMissingProfilePicture &&
-                                            <p>
-                                                Add a picture of yourself before you can submit.
-                                            </p>
-                                            }
-                                        </div>
-
+                                        {pageNumber > 1 && !isScholarshipDeadlinePassed  && applicationHasErrorsPreventSubmission &&
+                                            <>
+                                                {applicationErrors}
+                                            </>
                                         }
 
                                     </div>
@@ -816,36 +802,15 @@ class ApplicationDetail extends  React.Component{
                                 {!inViewMode && !userProfile &&
                                     <>
                                         {applicationForm}
-                                        {!promptRegisterBeforeSubmitting &&
-                                        submitContent
-                                        }
+                                        {submitContent}
                                     </>
-                                }
-                                {promptRegisterBeforeSubmitting &&
-                                <>
-                                    <br />
-                                    <br />
-                                    <h3>Create a username and password to access your application later
-                                    and review your application once more before submitting</h3>
-                                    {/*
-                                        One subtle thing to notice here is that user_profile_responses can either be in the format of:
-                                        {key: value, key: value} or in the format of {key:{key: "", response: "", type: "", question:""}}
-                                        So this code operates under the assumption that application.user_profile_responses is using the first format of simple key:value,
-                                        This assumption holds because this form renders when promptRegisterBeforeSubmitting is True so application.user_profile_responses has
-                                        not been transformed into the nested dictionary at this point.
-                                    */}
-                                    <Register location={this.props.location}
-                                              userProfile={application.user_profile_responses}
-                                              disableRedirect={true}
-                                              onRegistrationFinished={this.createApplicationAfterRegistration} />
-                                </>
                                 }
                                 {inViewMode && viewModeContent}
                                 {inViewMode && isOwnerOfApplication &&
                                     <>
                                         <hr/>
                                         <div id="publish" className="row col-12 my-3">
-                                            <h2>Publish your Application as an Essay</h2>
+                                            <h2>Optional: Publish your Application as an Essay</h2>
                                             <ApplicationEssayAddEdit application={application} />
                                         </div>
                                 </>

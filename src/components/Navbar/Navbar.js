@@ -12,6 +12,8 @@ import LogRocket from 'logrocket';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBars} from "@fortawesome/free-solid-svg-icons";
 
+import atilaLogo from "../../components/assets/atila-upway-logo-gradient-circle.png";
+
 const {SubMenu} = Menu;
 
 class Navbar extends React.Component {
@@ -60,6 +62,7 @@ class Navbar extends React.Component {
                     <Row>
                         <Col xxl={4} xl={5} lg={8} md={8} sm={8} xs={0}>
                             <h2 id="logo" className="text-center4">
+                                <img src={atilaLogo} alt="Atila.ca logo"/>
                                 <span>Atila</span>
                             </h2>
                         </Col>
@@ -211,8 +214,9 @@ class Navbar extends React.Component {
 
         const navbarLogo = (
             <h2 id="logo"
-                className="text-center">
+                className="text-center pt-2">
                 <Link to="/">
+                    <img src={atilaLogo} alt="Atila.ca logo"/>
                     <span>Atila</span>
                 </Link>
             </h2>

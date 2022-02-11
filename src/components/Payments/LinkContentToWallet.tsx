@@ -8,22 +8,28 @@ import UserProfileAPI from '../../services/UserProfileAPI';
 import Loading from '../Loading';
 import { getErrorMessage } from '../../services/utils';
 import BlogsApi from '../../services/BlogsAPI';
-import { Link } from 'react-router-dom';
+import { Application } from '../../models/Application.class';
+import ApplicationsAPI from '../../services/ApplicationsAPI';
+import ConnectWallet from './ConnectWallet';
+import { RouteComponentProps, withRouter } from 'react-router';
+import WalletDisplay from './WalletDisplay';
 
-export interface LinkContentToWalletPropTypes {
-    content: Blog, //TODO: add support for Application, Essay and other content types
-    userProfileLoggedIn: UserProfile
+export interface LinkContentToWalletPropTypes extends RouteComponentProps  {
+    content: Blog | Application,
+    contentType: "Blog" | "Application",
+    userProfileLoggedIn: UserProfile,
+    onContentLinked?: (content: Blog | Application) => void, 
 }
 
 const LinkContentToWallet = (props: LinkContentToWalletPropTypes) => {
 
 
-    const { userProfileLoggedIn, content } = props;
+    const { userProfileLoggedIn, content, contentType, onContentLinked } = props;
     // TODO add class for Wallet
     const [wallets, setWallets] = useState<Array<Wallet>>([]);
     const [error, setError] = useState("");
     const [loadingWallet, setLoadingWallet] = useState("");
-    const [contentWallet, setContentWallet] = useState(content.wallet);;
+    const [contentWallet, setContentWallet] = useState(content?.wallet);
     
     /**
      * If we weant to pass a function to useEffect we must memoize the function to prevent an infinite loop re-render.
@@ -56,18 +62,51 @@ const LinkContentToWallet = (props: LinkContentToWalletPropTypes) => {
       );
 
     const handleSelectWallet = (event: any) => {
-        const walletId = event.target.value; 
+        if(!content) {
+            return
+        }
+        const walletId = event.target.value;
+        if (contentType === "Blog") {
+            linkWalletToBlog(walletId)
+        } else if (contentType === "Application") {
+            linkWalletToApplication(walletId)
+        }
+    }
+
+    const linkWalletToBlog = (walletId: string) => {
+        setLoadingWallet("Linking wallet to your blog");
         BlogsApi.patch(content.id, {wallet:  walletId})
         .then(res => {
             setContentWallet(res.data.wallet);
+            onContentLinked?.(res.data);
         })
         .catch(error => {
             console.log({error});
             setError(getErrorMessage(error));
         })
-        .finally(()=> {
+        .finally(() => {
             setLoadingWallet("");
         })
+    }
+
+
+    const linkWalletToApplication = (walletId: string) => {
+
+        setLoadingWallet("Creating your application and linking the wallet to your application");
+        ApplicationsAPI.getOrCreate({ scholarship: (content as Application).scholarship, user: content.user, wallet: walletId })
+            .then((res: any) => {
+                
+                console.log({res});
+                const { data: { application: newApplication } } = res;
+                setContentWallet(newApplication.wallet);
+                onContentLinked?.(newApplication);
+            })
+            .catch((err: any) => {
+                console.log({ err });
+            })
+            .finally(() => {
+                setLoadingWallet("");
+            })
     }
 
     const handleUnlinkWallet = () => {
@@ -84,22 +123,27 @@ const LinkContentToWallet = (props: LinkContentToWalletPropTypes) => {
       }, [getWallets]);
     return (
         <div className="my-3">
-            Select Wallet to Link:
+            Select a wallet to link to your {contentType.toLowerCase()}:
             {loadingWallet && <Loading isLoading={loadingWallet} title={loadingWallet} />}
             {error && <Alert type="error" message={error} className="my-3" />}
-            {!loadingWallet && 
             <div>
-                <Radio.Group value={contentWallet || "Select a wallet"} onChange={handleSelectWallet} optionType="button" buttonStyle="solid">
+                <Radio.Group value={contentWallet || "Select a wallet"} onChange={handleSelectWallet} optionType="button" buttonStyle="solid" disabled={!!loadingWallet}>
                     {wallets.map(wallet => (
                         <Radio.Button value={wallet.id} key={wallet.id} className="mb-1">
-                            {wallet.label && <>{wallet.label}: </>} {`${wallet.address.substr(0,4)}...${wallet.address.substr(-4)}`}
+                            <WalletDisplay wallet={wallet} />
                         </Radio.Button>
                     ))}
                     <p className="text-muted">Wallet changes are automatically saved</p>
                 </Radio.Group>
-                {wallets.length === 0 && <div>No Wallets found. <Link to="/profile/edit">Visit  your profile </Link> to connect a wallet.</div>}
+                {wallets?.length === 0 &&
+                <>No wallets found. Connect a wallet below.</>
+                }
+                <hr/>
+                <div>
+                    <h5>Connect a new Wallet</h5>
+                    <ConnectWallet onSaveWallets={(wallets: Array<Wallet>) => setWallets(wallets)} />
+                </div>
             </div>
-            }
             {contentWallet && 
                 <Button onClick={handleUnlinkWallet} disabled={!!loadingWallet} >
                     Unlink Wallet
@@ -113,4 +157,4 @@ const mapStateToProps = (state: any) => {
     return { userProfileLoggedIn: state.data.user.loggedInUserProfile };
 };
 
-export default connect(mapStateToProps)(LinkContentToWallet)
+export default withRouter(connect(mapStateToProps)(LinkContentToWallet))
