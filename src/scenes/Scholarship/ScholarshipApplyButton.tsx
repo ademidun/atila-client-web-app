@@ -36,7 +36,7 @@ interface ModalFuncType {
 function ScholarshipApplyButton(props: ScholarshipApplyButtonPropTypes): JSX.Element | null {
     const { loggedInUserProfile, scholarship, history, location: { pathname } } = props;
 
-    const { owner_detail: scholarshipOwner } = scholarship;
+    const { owner_detail: scholarshipOwner, metadata } = scholarship;
     
     const [isLoadingApplication, setIsLoadingApplication] = useState<boolean>(false);
     const [application, setApplication] = useState<Application|undefined>(undefined);
@@ -159,6 +159,11 @@ function ScholarshipApplyButton(props: ScholarshipApplyButtonPropTypes): JSX.Ele
     }
     if (loggedInUserProfile && scholarshipOwner.user === loggedInUserProfile.user) {
         return null
+    }
+    if (metadata?.not_open_yet) {
+        return <Button disabled={true} size="large" className="ScholarshipApplyButton">
+        Scholarship is not open yet
+    </Button>
     }
     if(isScholarshipDeadlinePassed) {
         return application ? viewApplicationButton : null
