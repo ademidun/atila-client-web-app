@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import TweenOne from 'rc-tween-one';
 import ScrollParallax from 'rc-scroll-anim/lib/ScrollParallax';
-import bannerImage from "./assets/landing-cover-big-scholarship.png";
+import bannerImage from "./assets/landing-cover-big-scholarship-gradient-logo.png";
 import {Button} from "antd";
 import {Link} from "react-router-dom";
 import {getGreetingTime} from "../../services/utils";

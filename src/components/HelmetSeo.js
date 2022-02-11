@@ -4,8 +4,8 @@ import React from "react";
 import $ from 'jquery';
 
 export const defaultSeoContent = {
-    title: 'Atila - The best way to start and get scholarships.',
-    description: 'The best way to start and get scholarships.',
+    title: 'Atila - The best way to start and get scholarships using fiat and crypto.',
+    description: 'The best way to start and get scholarships using fiat and crypto.',
     image: 'https://i.imgur.com/DKsQITm.png',
     slug: ''
 };
