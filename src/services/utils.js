@@ -45,14 +45,15 @@ export function genericItemTransform (item) {
         case 'scholarship':
             item = {
                 ...item,
+                title: item.name,
                 slug: `/scholarship/${item.slug}/`,
                 image: item.img_url,
-                title: item.name,
             };
             break;
         case 'essay':
             item = {
                 ...item,
+                title: item.title,
                 slug: user ? `/essay/${user.username}/${item.slug}/` : "",
                 image: user ? `${user.profile_pic_url}` : "",
             };
@@ -60,6 +61,7 @@ export function genericItemTransform (item) {
         case 'blog':
             item = {
                 ...item,
+                title: item.title,
                 image: item.header_image_url,
                 slug: user ? `/blog/${user.username}/${item.slug}/` : "",
             };
@@ -85,7 +87,7 @@ export function getItemType(item) {
     else if (item.hasOwnProperty('header_image_url')) {
         itemType = 'blog'
     }
-    else if (item.hasOwnProperty('essay_source_url')) {
+    else if (item.hasOwnProperty('essay_source_url') || item.hasOwnProperty('is_anonymous_essay')) {
         itemType = 'essay'
     }
     return itemType;
