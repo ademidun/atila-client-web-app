@@ -31,30 +31,24 @@ const howItWorksStudent = [
 
         </React.Fragment>,
         // commenting out instead of deleting images because might use them again soon
-        // image: "https://imgur.com/JqjjyCm.jpg",
+        image: "https://i.imgur.com/MZoyXgJ.png",
         gif: "https://s3.gifyu.com/images/create-account.gif"
     },
     {
         title: "Apply for Scholarships",
         body: <React.Fragment>
-            Apply for multiple scholarships all from one site.
+            Apply for multiple scholarships all from one platform and easily reuse your past answers to save time.
             {/* TODO uncomment this line when we add this feature */}
             {/* Autofill similar responses used in past scholarships to save time. */}
         </React.Fragment>,
-        // image: "https://imgur.com/EG5zKAT.jpg",
+        image: "https://i.imgur.com/qw9Zz7o.png",
         gif: "https://s3.gifyu.com/images/My-Movie-4.gif"
 
     },
     {
         title: "Get Funded",
         body: <React.Fragment>
-            Scholarship funding is directly deposited to your bank account
-            within 24 hours of accepting award<sup>*</sup>.
-            <br/>
-            <small>
-                <sup>*</sup>
-            Only currently available for students with Canadian or American Bank Accounts.
-            </small>
+            Accept scholarship award through Atila portal. Scholarship funds are deposited to your account within 1-3 days.
         </React.Fragment>,
         image: "https://imgur.com/1HufdyP.jpg"
     }
@@ -71,7 +65,7 @@ export const howItWorksSponsorItems = [
             Who's eligible?{' '}
             Any short answer or essay questions?{' '} etc.
         </React.Fragment>,
-        // image: "https://imgur.com/HgIoMJ9.jpg",
+        image: "https://imgur.com/HgIoMJ9.jpg",
         gif: "https://s3.gifyu.com/images/Add-A-Scholarship-Final-Gif.gif"
     },
     {
