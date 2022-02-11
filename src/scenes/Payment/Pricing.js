@@ -112,7 +112,7 @@ export function PricingExample() {
                             Atila receives $90.00&nbsp;
                         </li>
                         <li>
-                            The Government of Canada receives $11.70
+                            Tax paid is $11.70
                         </li>
                     </ol>
                 </ol>

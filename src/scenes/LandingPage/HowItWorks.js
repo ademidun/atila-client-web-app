@@ -203,7 +203,7 @@ export function DescriptionWithScreenshot({item, index=null})   {
         <React.Fragment key={item.title}>
             <div className="card shadow m-3 p-3 col-lg-4 col-sm-12">
                 <h3 className="m-3 text-muted strong">
-                    {index ? `${index+1}. ` : null} {item.title}
+                    {index !== null ? `${index+1}. ` : null} {item.title}
                 </h3>
                 <div className="m-3">
                     {item.body}
