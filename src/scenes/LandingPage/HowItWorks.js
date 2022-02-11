@@ -22,13 +22,9 @@ export default HowItWorks;
 
 const howItWorksStudent = [
     {
-        title: "Create Account",
+        title: "Find Scholarships",
         body: <React.Fragment>
-            <Link to="register">Register</Link> for a free account in 15 seconds.<br/>
-
-            Tell us your school, program, etc. to get matched
-            with the right scholarships for you.
-
+            Get matched with scholarships based on your school, program, extracurricular activities, future career and more.
         </React.Fragment>,
         // commenting out instead of deleting images because might use them again soon
         image: "https://i.imgur.com/MZoyXgJ.png",
@@ -116,7 +112,7 @@ export function HowItWorksStudent() {
                 <Link to="/apply"> How to Get Scholarships </Link>
             </h1>
             <h2 className="col-sm-12 text-center">
-                <Link to="/register">Create Profile.</Link>{' '}
+                <Link to="/register">Find Scholarships.</Link>{' '}
                 <Link to="/scholarship">Apply for Scholarships.</Link>{' '}
                 <Link to="/finalists">Get Funded.</Link>{' '}
             
