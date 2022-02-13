@@ -26,7 +26,7 @@ export function ImageGif(props: ImageGifPropTypes) {
         <div style={{border: "none"}} className="cursor-pointer text-center" onClick={toggleActiveImageType}>
             <img src={imageUrl} width="100%" alt={title} style={{display: activeImageType === "image" ? "block": "none"}}/>
             <img src={gifUrl} width="100%" alt={title} style={{display: activeImageType === "gif" ? "block": "none"}}/>
-            {gifUrl && imageUrl && <label className="mt-2">Click to toggle between image and GIF demo</label>}
+            {gifUrl && imageUrl && <label className="mt-2">Click to play GIF demo</label>}
         </div>
     )
 }
