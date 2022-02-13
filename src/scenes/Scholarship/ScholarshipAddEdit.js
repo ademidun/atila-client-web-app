@@ -22,7 +22,7 @@ import {
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Link} from "react-router-dom";
-import {Steps, Tag, InputNumber, Button, Alert, Select} from "antd";
+import {Steps, Tag, InputNumber, Button, Alert, Select, Spin} from "antd";
 import ScholarshipQuestionBuilder, {ScholarshipUserProfileQuestionBuilder} from "./ScholarshipQuestionBuilder";
 import PaymentSend from "../Payment/PaymentSend/PaymentSend";
 import Environment from "../../services/Environment";
@@ -229,7 +229,8 @@ class ScholarshipAddEdit extends React.Component{
             scholarship: Object.assign({}, DEFAULT_SCHOLARSHIP),
             isAddScholarshipMode: false,
             scholarshipPostError: null,
-            isLoadingScholarship: true,
+            isLoadingScholarship: false,
+            isUpdatingScholarship: false,
             errorLoadingScholarship: false,
             pageNumber: 0,
             locationData: [],
@@ -267,7 +268,6 @@ class ScholarshipAddEdit extends React.Component{
 
         if ( path==='/scholarship/add' ) {
             this.setState({isAddScholarshipMode: true});
-            this.setState({isLoadingScholarship: false});
             const scholarship = this.state.scholarship;
             contributor.funding_amount = scholarship.funding_amount;
 
@@ -487,8 +487,16 @@ class ScholarshipAddEdit extends React.Component{
         const scholarship = ScholarshipsAPI.cleanScholarship(this.state.scholarship);
         this.setState({scholarship});
 
-        const { isAddScholarshipMode, locationData, awards } = this.state;
+
+        const { isAddScholarshipMode, locationData, awards, pageNumber } = this.state;
         const { userProfile } = this.props;
+        const pageTitle = this.scholarshipEditPages()[pageNumber].title;
+
+        const isUpdateScholarshipState = isAddScholarshipMode || pageTitle === "Awards";
+
+        if (isUpdateScholarshipState) {
+            this.setState({isUpdatingScholarship: "Updating scholarship"})
+        }
 
         if(!userProfile) {
             toastNotify(`⚠️ Warning, you must be logged in to add a scholarship`);
@@ -538,7 +546,11 @@ class ScholarshipAddEdit extends React.Component{
                 toastNotify(`🙁${scholarshipPostError}`, 'error');
 
             })
-            .finally(()=>{});
+            .finally(()=>{
+                if (isUpdateScholarshipState) {
+                    this.setState({isUpdatingScholarship: false})
+                }        
+            });
 
     };
 
@@ -693,7 +705,7 @@ class ScholarshipAddEdit extends React.Component{
 
     awardsPage = () => {
         // This should be moved into a separate component like AwardAddEdit.
-        const { scholarship, awards, isAddScholarshipMode, contributor } = this.state;
+        const { scholarship, awards, isAddScholarshipMode, contributor, isUpdatingScholarship } = this.state;
         const { currency } = contributor
 
         const renderAwards = awards.map((award, index) => (
@@ -738,11 +750,16 @@ class ScholarshipAddEdit extends React.Component{
 
         return (
             <div className={"my-3"}>
-                {/* After the scholarship has been created  if it's a crytpo scholarship it may have multiple currencies so we should defer to the scholarship.currency field
+                {/* After the scholarship has been created, if it's a crytpo scholarship it may have multiple currencies so we should defer to the scholarship.currency field
                  because it will usually be in USD which represents the aggregated value of all the awards after it has been converted */}
-                <h5>Total Funding Amount: {CryptoCurrencies.includes(currency) ? 
-                <CurrencyDisplay amount={totalAwardsAmount} inputCurrency={isAddScholarshipMode ? currency : scholarship.currency} outputCurrency={CAD.code} /> :  
-                `${formatCurrency(Number.parseFloat(totalAwardsAmount))} ${currency}`}</h5>
+                 <Spin tip={isUpdatingScholarship} spinning={isUpdatingScholarship}>
+                        <h5>
+                            Total Funding Amount: {CryptoCurrencies.includes(currency) ? 
+                            <CurrencyDisplay amount={totalAwardsAmount} inputCurrency={isAddScholarshipMode ? currency : scholarship.currency} outputCurrency={CAD.code} /> :  
+                            `${formatCurrency(Number.parseFloat(totalAwardsAmount))} ${currency}`}
+                        </h5>
+                 </Spin>
+                
                 <br />
                 {renderChangeCurrency}
                 <br />
@@ -805,6 +822,10 @@ class ScholarshipAddEdit extends React.Component{
             return errorLoadingScholarship;
         }
 
+        if (isLoadingScholarship) {
+            return <Loading  title="Loading Scholarship"/>
+        }
+
         const { is_atila_direct_application } = scholarship;
 
         let updatedAtDate;
@@ -847,7 +868,6 @@ class ScholarshipAddEdit extends React.Component{
                     <title>{helmetTitle} - Atila</title>
                 </Helmet>
                 <div className="container mt-5">
-                    {isLoadingScholarship && <Loading  title="Loading Scholarships..."/>}
                     <div className="card shadow p-3">
                         <h1>{title}: {scholarship.name}</h1>
                         {scholarship.slug && !isAddScholarshipMode &&
