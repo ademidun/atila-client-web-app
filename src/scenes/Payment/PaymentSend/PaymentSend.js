@@ -5,20 +5,19 @@ import PaymentSendForm from "./PaymentSendForm";
 import Environment from "../../../services/Environment";
 import {ScholarshipPropType} from "../../../models/Scholarship";
 import {Currencies} from "../../../models/ConstantsPayments";
+import ScholarshipCryptoPaymentForm from "../../Scholarship/ScholarshipCryptoPaymentForm";
 
 const { STRIPE_PUBLIC_KEY } = Environment;
 class PaymentSend extends React.Component {
 
     render() {
 
-        const { scholarship, onFundingComplete, contributor, contributorFundingAmount } = this.props;
+        const { scholarship, onFundingComplete, contributor, contributorFundingAmount, awards } = this.props;
         const { currency } = contributor
 
         if (Currencies[currency].is_crypto) {
             return (
-                <h1>
-                    To be implemented for crypto currencies
-                </h1>
+                <ScholarshipCryptoPaymentForm scholarship={scholarship} awards={awards} />
             )
         }
 
@@ -42,6 +41,7 @@ class PaymentSend extends React.Component {
 PaymentSend.propTypes = {
     onFundingComplete: PropTypes.func,
     scholarship: ScholarshipPropType,
+    awards: PropTypes.arrayOf({}),
     contributor: PropTypes.shape({}),
     contributorFundingAmount: PropTypes.number,
 };

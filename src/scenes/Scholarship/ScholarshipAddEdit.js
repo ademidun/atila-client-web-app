@@ -799,12 +799,13 @@ class ScholarshipAddEdit extends React.Component{
     }
 
     fundingPage = () => {
-        const { scholarship, contributor } = this.state;
+        const { scholarship, contributor, awards } = this.state;
 
         return (
             <div className="my-3">
                 <PaymentSend scholarship={scholarship}
                              onFundingComplete={this.onFundingComplete}
+                             awards={awards}
                              contributor={contributor}
                              contributorFundingAmount={Number.parseFloat(scholarship.funding_amount)} />
             </div>

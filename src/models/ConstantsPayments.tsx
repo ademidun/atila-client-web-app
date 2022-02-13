@@ -1,5 +1,12 @@
 import React, {  } from 'react';
 
+/**
+ * Atila's wallet address on all EVM chains
+ * see: https://etherscan.io/address/0x38103603feb199fba32be9b3a464877f28e659a7
+ * atilatech.eth
+ */
+export const ATILA_EVM_WALLET_ADDRESS = "0x38103603feb199fba32be9b3a464877f28e659a7";
+
 class Currency {
 
 name: string = "";
