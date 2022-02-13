@@ -11,7 +11,7 @@ import { UserProfile } from '../../models/UserProfile.class';
 import ApplicationsAPI from '../../services/ApplicationsAPI';
 import { CryptoScholarshipWalletExplanation } from '../../models/ConstantsPayments';
 import { ModalFuncProps } from 'antd/lib/modal';
-import LinkContentToWallet from '../../components/Payments/LinkContentToWallet';
+import LinkContentToWallet from '../../components/Crypto/LinkContentToWallet';
 import store from '../../redux/store';
 import './ScholarshipApplyButton.scss'
 
