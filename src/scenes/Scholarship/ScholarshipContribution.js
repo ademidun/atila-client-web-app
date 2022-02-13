@@ -13,7 +13,7 @@ import {DEFAULT_SCHOLARSHIP_CONTRIBUTOR, SCHOLARSHIP_CONTRIBUTION_EXAMPLE_IMAGE}
 import ScholarshipContributionProfilePictureChooser from "./ScholarshipContributionProfilePictureChooser";
 import {isValidEmail} from "../../services/utils";
 import ReferredByInput from "../../components/ReferredByInput";
-import {CryptoCurrencies, Currencies, CURRENCY_CODES} from "../../models/ConstantsPayments";
+import {CryptoCurrencies, Currencies, CURRENCY_CODES, ETH} from "../../models/ConstantsPayments";
 
 const { Step } = Steps;
 
@@ -69,12 +69,17 @@ class ScholarshipContribution extends React.Component {
 
     componentDidMount() {
         const { match : { params : { slug }}} = this.props;
+        const { contributor } = this.state;
+        const updatedContributor = Object.assign({}, contributor);
 
         ScholarshipsAPI
             .getSlug(slug)
             .then(res => {
                 const { scholarship, awards, owner_detail } = res.data;
-                this.setState({ scholarship, awards, scholarshipOwner: owner_detail });
+                if (scholarship.is_crypto) { // change default contribution currency to ETH for crypto scholarships
+                    updatedContributor.currency = ETH.code;
+                }
+                this.setState({ scholarship, awards, scholarshipOwner: owner_detail, contributor: updatedContributor });
                 if (awards.length > 0) {
                     // Default to contributing towards the top award.
                     const top_award_id = awards[0].id
@@ -244,14 +249,6 @@ class ScholarshipContribution extends React.Component {
                 {renderChangeCurrency}
                 <br />
                 <br />
-                {CryptoCurrencies.includes(currency) && 
-                <>
-                    <Alert message="Support for cryptocurrencies coming soon" />
-                    <br />
-                    <br />
-                </>
-                
-                }
                 <Button onClick={this.toggleShowCustomContribution}>Customize Contribution</Button>
                 {showCustomContribution &&
                 <>
@@ -463,8 +460,16 @@ class ScholarshipContribution extends React.Component {
     }
 
     render () {
-        const { isLoadingScholarship, scholarship, pageNumber, contributor,
-            invalidInput, fundingComplete } = this.state;
+        const { isLoadingScholarship, scholarship, pageNumber, contributor, fundingComplete } = this.state;
+        let { invalidInput } = this.state;
+
+        if (scholarship?.is_crypto && !CryptoCurrencies.includes(contributor.currency)) {
+            invalidInput = `This is a crypto scholarship. You must select one of the following currencies: ${CryptoCurrencies.join(', ')}`
+        }
+        if (CryptoCurrencies.includes(contributor.currency)) {
+            invalidInput = "Support for cryptocurrencies coming soon"
+        }
+        
 
         let paymentSend = null
         if (pageNumber >= 3) {
@@ -557,10 +562,16 @@ class ScholarshipContribution extends React.Component {
                     {scholarshipContributionPages[pageNumber].render()}
 
                     {invalidInput &&
+                    <div className="text-center col-12 mt-2">
+                    
+                    {CryptoCurrencies.includes(contributor.currency) ? 
+                    <Alert message={invalidInput} /> : (
                         <p className="text-danger">
                             {invalidInput}
                         </p>
-                    }
+                    ) }
+
+                    </div>}
                 </div>
 
                 {navigationButtons}

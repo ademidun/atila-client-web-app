@@ -9,4 +9,7 @@ export class Scholarship {
     is_atila_direct_application: boolean = false;
     is_crypto: boolean = false;
     owner_detail: UserProfile = new UserProfile();
+    metadata: {
+        not_open_yet?: boolean
+    } = {};
 }
