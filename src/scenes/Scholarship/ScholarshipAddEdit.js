@@ -6,6 +6,7 @@ import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import {connect} from "react-redux";
 import {
     displayLocalTimeZone,
+    formatCurrency,
     nestedFieldUpdate,
     prettifyKeys,
     slugify,
@@ -26,8 +27,9 @@ import ScholarshipQuestionBuilder, {ScholarshipUserProfileQuestionBuilder} from 
 import PaymentSend from "../Payment/PaymentSend/PaymentSend";
 import Environment from "../../services/Environment";
 import InviteScholarshipCollaborator from "../../components/InviteScholarshipCollaborator";
-import {CAD, CURRENCY_CODES} from "../../models/ConstantsPayments";
+import {CAD, CryptoCurrencies, CURRENCY_CODES} from "../../models/ConstantsPayments";
 import { DEFAULT_AWARD } from '../../models/Award.class';
+import CurrencyDisplay from '@atila/web-components-library.ui.currency-display';
 const { Step } = Steps;
 
 
@@ -214,6 +216,15 @@ class ScholarshipAddEdit extends React.Component{
         }
         contributor.funding_distribution = null;
 
+        const scholarship = Object.assign({}, DEFAULT_SCHOLARSHIP);
+        const awards = [Object.assign({}, DEFAULT_AWARD)];
+
+        // The funding_amount should be the sum of created awards in the frontend until the award has been saved after which it should use the source from the backend as the source of truth.
+        // returning an object contain a funding_amount property with the sum of the funding_amount properties of the parameters:
+        // https://stackoverflow.com/a/5732087/5405197
+        scholarship.funding_amount = awards.reduce((prevAward, currentAward) => 
+        ({funding_amount: prevAward.funding_amount + currentAward.funding_amount})).funding_amount
+
         this.state = {
             scholarship: Object.assign({}, DEFAULT_SCHOLARSHIP),
             isAddScholarshipMode: false,
@@ -286,7 +297,6 @@ class ScholarshipAddEdit extends React.Component{
                 let contributor = {...this.state.contributor}
                 contributor.currency = awards[0]?.currency || CAD.code
                 this.setState({ scholarship, awards, contributor }, () => {
-                    this.updateFundingAmount()
                     this.initializeLocations();
                 });
             })
@@ -510,8 +520,15 @@ class ScholarshipAddEdit extends React.Component{
                     toastNotify(successMessage, 'info', {position: 'bottom-right'});
                 }
                 const awards = res.data.awards;
-                this.setState({isAddScholarshipMode: false, awards});
-                this.setState({scholarshipPostError: null});
+                /**
+                 * We only want to update the funding_amount with the auto-updated values
+                 *  and the user knows the data was autosaved.
+                 */
+                 const updatedScholarship = {
+                    ...this.state.scholarship,
+                    funding_amount: res.data.scholarship.funding_amount,
+                };
+                this.setState({isAddScholarshipMode: false, awards, scholarshipPostError: null, scholarship: updatedScholarship});
             })
             .catch(err=> {
                 console.log({err});
@@ -648,6 +665,32 @@ class ScholarshipAddEdit extends React.Component{
         })
     }
 
+
+
+    scholarshipEditPages = () => [
+        {
+            title: 'Basic Info',
+            render: this.basicInfoPage,
+        },
+        {
+            title: 'Awards',
+            render: this.awardsPage,
+        },
+        {
+            title: 'Eligibility',
+            render: this.eligibilityPage,
+        },
+        {
+            title: 'Specific Questions',
+            render: this.specificQuestionsPage,
+        },
+        {
+            title: 'Funding',
+            render: this.fundingPage,
+        },
+    ]
+
+
     awardsPage = () => {
         // This should be moved into a separate component like AwardAddEdit.
         const { scholarship, awards, isAddScholarshipMode, contributor } = this.state;
@@ -675,7 +718,16 @@ class ScholarshipAddEdit extends React.Component{
             </div>
         ))
 
-        const currency_options = CURRENCY_CODES.map(code => {return {'label': code, 'value': code}})
+        const currency_options = CURRENCY_CODES.map(code => {return {'label': code, 'value': code}});
+
+        // The funding_amount should be the sum of created awards in the frontend until the award has been saved after which it should use the funding_amount from the backend 
+        // as the source of truth returning an object with a funding_amount property with the sum of the funding_amount properties of the parameters:
+        // https://stackoverflow.com/a/5732087/5405197
+        const totalAwardsAmount = isAddScholarshipMode ? awards.reduce((prevAward, currentAward) => 
+        ({funding_amount: prevAward.funding_amount + currentAward.funding_amount})).funding_amount : scholarship.funding_amount;
+
+        console.log({ scholarship, awards, isAddScholarshipMode, contributor, totalAwardsAmount });
+
 
         const renderChangeCurrency = (
             <>
@@ -686,7 +738,11 @@ class ScholarshipAddEdit extends React.Component{
 
         return (
             <div className={"my-3"}>
-                <h5>Total Funding Amount: {scholarship.funding_amount} {currency}</h5>
+                {/* After the scholarship has been created  if it's a crytpo scholarship it may have multiple currencies so we should defer to the scholarship.currency field
+                 because it will usually be in USD which represents the aggregated value of all the awards after it has been converted */}
+                <h5>Total Funding Amount: {CryptoCurrencies.includes(currency) ? 
+                <CurrencyDisplay amount={totalAwardsAmount} inputCurrency={isAddScholarshipMode ? currency : scholarship.currency} outputCurrency={CAD.code} /> :  
+                `${formatCurrency(Number.parseFloat(totalAwardsAmount))} ${currency}`}</h5>
                 <br />
                 {renderChangeCurrency}
                 <br />
@@ -743,6 +799,8 @@ class ScholarshipAddEdit extends React.Component{
             pageNumber, errorLoadingScholarship } = this.state;
         const { userProfile } = this.props;
 
+        let scholarshipEditPages = this.scholarshipEditPages();
+
         if (errorLoadingScholarship) {
             return errorLoadingScholarship;
         }
@@ -758,31 +816,6 @@ class ScholarshipAddEdit extends React.Component{
                 {updatedAtDate.toLocaleTimeString()}
             </p>)
         }
-
-
-        let scholarshipEditPages = [
-            {
-                title: 'Basic Info',
-                render: this.basicInfoPage,
-            },
-            {
-                title: 'Awards',
-                render: this.awardsPage,
-            },
-            {
-                title: 'Eligibility',
-                render: this.eligibilityPage,
-            },
-            {
-                title: 'Specific Questions',
-                render: this.specificQuestionsPage,
-            },
-            {
-                title: 'Funding',
-                render: this.fundingPage,
-            },
-        ];
-
         if (!is_atila_direct_application) {
             scholarshipEditPages = [scholarshipEditPages[0], scholarshipEditPages[2]]
         }
