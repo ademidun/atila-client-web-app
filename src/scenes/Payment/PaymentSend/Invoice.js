@@ -6,24 +6,30 @@ import moment from "moment";
 import {ScholarshipPropType} from "../../../models/Scholarship";
 import {formatCurrency} from "../../../services/utils";
 import './Invoice.scss'
-import {ATILA_SCHOLARSHIP_FEE, ATILA_SCHOLARSHIP_FEE_TAX} from "../../../models/ConstantsPayments";
+import {ATILA_SCHOLARSHIP_FEE, ATILA_SCHOLARSHIP_FEE_TAX, Currencies} from "../../../models/ConstantsPayments";
+import CurrencyDisplay from "@atila/web-components-library.ui.currency-display";
 
 // source: https://github.com/sparksuite/simple-html-invoice-template
 const logoImageData = "https://firebasestorage.googleapis.com/v0/b/atila-7.appspot.com/o/public%2Fatila-logo-right-way-circle-transparent.png?alt=media&token=c7b77a1a-9563-41ef-90e9-57025a7dbd87";
 function Invoice({ contributor, scholarship, contributorFundingAmount, cardHolderName }) {
 
-    const { email } = contributor;
+    const { email, currency } = contributor;
 
-    const fundingAmount = Number.parseInt(contributorFundingAmount);
+    // For crypto scholarships don't cast to int because the decimal places are important.
+    const fundingAmount = scholarship.is_crypto ? Number.parseFloat(contributorFundingAmount) : Number.parseInt(contributorFundingAmount);
     const atilaFee = contributorFundingAmount * ATILA_SCHOLARSHIP_FEE;
     const atilaFeeTax = atilaFee * ATILA_SCHOLARSHIP_FEE_TAX;
-    const totalAmount = fundingAmount + atilaFee + atilaFeeTax;
+    let totalAmount = fundingAmount + atilaFee;
+
+    if (!scholarship.is_crypto) {
+        totalAmount += atilaFeeTax;
+    }
 
 
 
     const todayString = moment(Date.now()).format('MMMM DD, YYYY');
     return (
-        <div className="invoice-box px-3">
+        <div className="Invoice card shadow p-3">
             <table cellPadding="0" cellSpacing="0">
                 <tbody>
                 <tr className="top">
@@ -77,7 +83,7 @@ function Invoice({ contributor, scholarship, contributorFundingAmount, cardHolde
                     </td>
 
                     <td>
-                        {formatCurrency(fundingAmount)}
+                        {formatCurrency(fundingAmount, false, false, currency)}
                     </td>
                 </tr>
 
@@ -87,32 +93,43 @@ function Invoice({ contributor, scholarship, contributorFundingAmount, cardHolde
                     </td>
 
                     <td>
-                        {formatCurrency(atilaFee)}
+                        {formatCurrency(atilaFee, false, false, currency)}
                     </td>
                 </tr>
 
+                {!scholarship.is_crypto && 
                 <tr className="item">
                     <td>
                         Atila Fee HST (13%)
                     </td>
 
                     <td>
-                        {formatCurrency(atilaFeeTax)}
+                        {formatCurrency(atilaFeeTax, false, false, currency)}
                     </td>
                 </tr>
+                }
 
                 <tr className="item total">
                     <td>
                         Total
                     </td>
                     <td>
-                        {formatCurrency(totalAmount)}
+                        {formatCurrency(totalAmount, false, false, currency)}
+                        
                     </td>
                 </tr>
                 </tbody>
             </table>
             <div className="my-3 p-1">
-                <small>Currency: Canadian Dollar (CAD)</small>
+                <small>
+                    Currency: {Currencies[currency].name}
+                    {Currencies[currency].is_crypto &&
+                        <>
+                        <br/>
+                        <CurrencyDisplay amount={totalAmount} inputCurrency={currency} />
+                        </>
+                    }    
+                </small>
             </div>
         </div>
     )

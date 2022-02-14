@@ -17,7 +17,7 @@ class PaymentSend extends React.Component {
 
         if (Currencies[currency].is_crypto) {
             return (
-                <ScholarshipCryptoPaymentForm scholarship={scholarship} awards={awards} />
+                <ScholarshipCryptoPaymentForm scholarship={scholarship} awards={awards} contributor={contributor} />
             )
         }
 

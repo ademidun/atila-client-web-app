@@ -129,14 +129,14 @@ export function toTitleCase(str) {
     return str;
 }
 
-export function formatCurrency(input, convertToInteger=false, decimalPlaces=false) {
+export function formatCurrency(input, convertToInteger=false, decimalPlaces=false, currency='CAD') {
     if (convertToInteger) {
         input = Number.parseInt(input);
     }
     if (decimalPlaces) {
         input = input.toFixed(decimalPlaces)
     }
-    return input.toLocaleString('en-ca', {style : 'currency', currency: 'CAD'});
+    return input.toLocaleString('en-ca', {style : 'currency', currency});
 }
 
 export function slugify(text, maxLength=null) {
