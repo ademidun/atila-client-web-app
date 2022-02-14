@@ -217,6 +217,7 @@ class HowToStartAScholarship extends React.Component {
                 <BackTop/>
 
                 <div className="container mt-5">
+                    {ScholarshipCTA}
                     <div className="card shadow p-3 how-to-start-scholarship-questions">
                         
                         {notionPagedata && 
