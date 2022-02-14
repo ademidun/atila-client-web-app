@@ -39,6 +39,8 @@ class PaymentSend extends React.Component {
 }
 
 PaymentSend.propTypes = {
+    // onFundingComplete Takes a contribution object
+    // TODO make this into a typescript file so we can specify the function type
     onFundingComplete: PropTypes.func,
     scholarship: ScholarshipPropType,
     awards: PropTypes.arrayOf({}),

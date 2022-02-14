@@ -113,6 +113,7 @@
     "@types/react-instantsearch-dom": "^6.12.2",
     "@types/react-router": "^5.1.18",
     "@types/react-router-dom": "^5.3.3",
+    "@types/react-stripe-elements": "^6.0.6",
     "axios-mock-adapter": "^1.19.0",
     "css-loader": "^6.5.1",
     "enzyme": "^3.10.0",
