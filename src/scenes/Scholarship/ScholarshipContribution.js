@@ -5,7 +5,7 @@ import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
 
 import {Alert, Button, Input, Radio, Select, Space, Steps} from "antd";
-import PaymentSend from "../Payment/PaymentSend/PaymentSend";
+import PaymentSend from "../Payment/ScholarshipPayment/ScholarshipPaymentForm";
 import {UserProfilePropType} from "../../models/UserProfile";
 import Register from "../../components/Register";
 import FileInput from "../../components/Form/FileInput";

@@ -24,7 +24,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Link} from "react-router-dom";
 import {Steps, Tag, InputNumber, Button, Alert, Select, Spin} from "antd";
 import ScholarshipQuestionBuilder, {ScholarshipUserProfileQuestionBuilder} from "./ScholarshipQuestionBuilder";
-import PaymentSend from "../Payment/PaymentSend/PaymentSend";
+import PaymentSend from "../Payment/ScholarshipPayment/ScholarshipPaymentForm";
 import Environment from "../../services/Environment";
 import InviteScholarshipCollaborator from "../../components/InviteScholarshipCollaborator";
 import {CAD, CryptoCurrencies, CURRENCY_CODES} from "../../models/ConstantsPayments";
@@ -737,9 +737,6 @@ class ScholarshipAddEdit extends React.Component{
         // https://stackoverflow.com/a/5732087/5405197
         const totalAwardsAmount = isAddScholarshipMode ? awards.reduce((prevAward, currentAward) => 
         ({funding_amount: prevAward.funding_amount + currentAward.funding_amount})).funding_amount : scholarship.funding_amount;
-
-        console.log({ scholarship, awards, isAddScholarshipMode, contributor, totalAwardsAmount });
-
 
         const renderChangeCurrency = (
             <>

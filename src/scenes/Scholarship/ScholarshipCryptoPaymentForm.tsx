@@ -5,7 +5,7 @@ import { Award } from '../../models/Award.class'
 import { ATILA_EVM_WALLET_ADDRESS, ATILA_SCHOLARSHIP_FEE } from '../../models/ConstantsPayments';
 import { Scholarship } from '../../models/Scholarship.class'
 import { Contributor } from "../../models/Contributor";
-import Invoice from '../Payment/PaymentSend/Invoice';
+import Invoice from '../Payment/ScholarshipPayment/Invoice';
 interface ScholarshipCryptoPaymentFormProps {
     scholarship: Scholarship,
     awards: Award[],
