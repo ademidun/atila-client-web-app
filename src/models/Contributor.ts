@@ -7,4 +7,7 @@ export class Contributor {
     email: string = "";
     user?: number;
     currency: string = CAD.code;
+    wallet_address?: string;
+    chain_id?: number;
+    transaction_hash?: string;
 }
