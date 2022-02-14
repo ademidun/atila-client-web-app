@@ -1,3 +1,4 @@
+import { Button } from 'antd';
 import React from 'react';
 import {Link} from "react-router-dom";
 import HelmetSeo from './HelmetSeo';
@@ -14,27 +15,37 @@ class BookDemo extends React.Component {
     }
 
     render() {
+        const title = "Try or Book a Demo";
+        const description = "Try the Atila demo for yourself or book a meeting to speak with a member of the Atila team.";
         const seoContent = {
             ...defaultSeoContent,
-            title: 'Book a Demo to learn more about Atila',
-            description: 'Interested in starting a scholarship on Atila? Book a demo to speak with a member of the team and learn more about how the process of starting a scholarship on Atila Works.',
+            title: `${title} to learn more about Atila`,
+            description: `Interested in starting a scholarship on Atila? ${description}`,
         };
 
         return (
             <div className="container mt-5">
                 <HelmetSeo content={seoContent} />
                 <div className="card shadow p-3">
-                    <h1>Book a Demo</h1>
-                    <h3 className="text-muted text-center">
-                        Interested in starting a scholarship on Atila?<br/>
-                        Book a demo to speak with a member of the team and learn more about how
-                        the process of starting a scholarship on Atila Works.
+                    <h1>{title}</h1>
+                    <h3 className="text-center">
+                        {description}
                     </h3>
-
-                    <h6 className="text-muted text-center">
-                        Before the meeting, read the <Link to="/start">How to start a scholarhip on Atila</Link> page.
-                    </h6>
+                    <hr/>
+                    <Button type="primary" className="pt-2" style={{height: "auto"}}>
+                        <a href="https://demo.atila.ca" target="_blank" rel="noopener noreferrer">
+                            <h3 className="text-white" style={{fontFamily: "initial"}}>
+                                Try Atila demo <br/> at demo.atila.ca
+                            </h3>
+                        </a>
+                    </Button>
                     
+                    <hr/>
+                    <h1>Book a meeting with the Atila team</h1>
+
+                    <h4 className="text-center">
+                        Before the meeting, read the <Link to="/start">How to start a scholarhip on Atila</Link> page.
+                    </h4>
                     <div id="schedule_form">
                     <div 
                         className="calendly-inline-widget"

@@ -45,7 +45,7 @@ function Footer({location, history}) {
                 <div className="footer-center">
                   <div>
                     <Link to={`/demo`}>
-                          Book a Demo{' '}
+                          Try Atila{' '}
                       <Tag color="green">new</Tag>
                     </Link>
                   </div>

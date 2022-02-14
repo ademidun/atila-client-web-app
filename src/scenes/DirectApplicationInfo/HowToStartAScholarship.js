@@ -190,7 +190,7 @@ class HowToStartAScholarship extends React.Component {
 
                 <Button type="primary" className="font-size-larger col-12 my-2" style={{fontSize: "25px"}}>
                     <Link to={`/demo`}>
-                        Step 1: Book a Demo (Optional)
+                        Step 1: Try a Demo (Optional)
                     </Link>
                 </Button>
                 <Button type="primary" className="font-size-larger col-12 mt-3 my-2" style={{fontSize: "25px"}}>
@@ -217,7 +217,7 @@ class HowToStartAScholarship extends React.Component {
                 <BackTop/>
 
                 <div className="container mt-5">
-                    {ScholarshipCTA}
+                {ScholarshipCTA}
                     <div className="card shadow p-3 how-to-start-scholarship-questions">
                         
                         {notionPagedata && 
