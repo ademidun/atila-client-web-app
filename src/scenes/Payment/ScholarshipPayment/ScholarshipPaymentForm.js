@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {Elements, StripeProvider} from "react-stripe-elements";
-import PaymentSendForm from "./ScholarshipPaymentFormCreditCard";
+import ScholarshipPaymentFormCreditCard from "./ScholarshipPaymentFormCreditCard";
 import Environment from "../../../services/Environment";
 import {ScholarshipPropType} from "../../../models/Scholarship";
 import {Currencies} from "../../../models/ConstantsPayments";
@@ -28,7 +28,7 @@ class PaymentSend extends React.Component {
             >
 
                 <Elements>
-                    <PaymentSendForm scholarship={scholarship}
+                    <ScholarshipPaymentFormCreditCard scholarship={scholarship}
                                      onFundingComplete={onFundingComplete}
                                      contributor={contributor}
                                      contributorFundingAmount={contributorFundingAmount} />
