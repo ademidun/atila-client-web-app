@@ -5,7 +5,6 @@ import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
 
 import {Alert, Button, Input, Radio, Select, Space, Steps} from "antd";
-import PaymentSend from "../Payment/ScholarshipPayment/ScholarshipPaymentForm";
 import {UserProfilePropType} from "../../models/UserProfile";
 import Register from "../../components/Register";
 import FileInput from "../../components/Form/FileInput";
@@ -14,6 +13,8 @@ import ScholarshipContributionProfilePictureChooser from "./ScholarshipContribut
 import {isValidEmail} from "../../services/utils";
 import ReferredByInput from "../../components/ReferredByInput";
 import {CryptoCurrencies, Currencies, CURRENCY_CODES, ETH} from "../../models/ConstantsPayments";
+import CurrencyDisplay from '@atila/web-components-library.ui.currency-display';
+import ScholarshipCryptoPaymentForm from './ScholarshipCryptoPaymentForm';
 
 const { Step } = Steps;
 
@@ -78,6 +79,7 @@ class ScholarshipContribution extends React.Component {
                 const { scholarship, awards, owner_detail } = res.data;
                 if (scholarship.is_crypto) { // change default contribution currency to ETH for crypto scholarships
                     updatedContributor.currency = ETH.code;
+                    updatedContributor.funding_amount = 0.01; //0.1 ETH is a more realistic starting contribution ($25)
                 }
                 this.setState({ scholarship, awards, scholarshipOwner: owner_detail, contributor: updatedContributor });
                 if (awards.length > 0) {
@@ -111,7 +113,8 @@ class ScholarshipContribution extends React.Component {
         const keyCode = event.code || event.key;
 
         if (eventName === "funding_amount") {
-            value = Number.parseInt(value)
+            // preserve decimal places when working with crypto values
+            value = Currencies[contributor.currency].is_crypto ? Number.parseFloat(value) : Number.parseInt(value);
         }
 
         if (eventName === "email") {
@@ -238,13 +241,14 @@ class ScholarshipContribution extends React.Component {
                        prefix={currency}
                        name="funding_amount"
                        placeholder="Funding Amount"
-                       className="col-12"
+                       className="col-12 mb-1"
                        type="number"
                        min="0"
                        step="1"
                        onChange={this.updateContributorInfo}/>
 
                 <br />
+                {Currencies[currency].is_crypto && <small className="float-left"><CurrencyDisplay amount={contributor.funding_amount} inputCurrency={currency} /></small>}
                 <br />
                 {renderChangeCurrency}
                 <br />
@@ -466,18 +470,16 @@ class ScholarshipContribution extends React.Component {
         if (scholarship?.is_crypto && !CryptoCurrencies.includes(contributor.currency)) {
             invalidInput = `This is a crypto scholarship. You must select one of the following currencies: ${CryptoCurrencies.join(', ')}`
         }
-        if (CryptoCurrencies.includes(contributor.currency)) {
-            invalidInput = "Support for cryptocurrencies coming soon"
-        }
         
 
         let paymentSend = null
         if (pageNumber >= 3) {
             // Only initialize this component on the necessary pages.
-            paymentSend = <PaymentSend scholarship={scholarship}
-                                       onFundingComplete={data => this.onFundingComplete(data, scholarshipContributionPages)}
-                                       contributorFundingAmount={contributor.funding_amount}
-                                       contributor={contributor} />
+            paymentSend = <ScholarshipCryptoPaymentForm 
+                                scholarship={scholarship}
+                                awards={[{funding_amount: contributor.funding_amount}]}
+                                onFundingComplete={data => this.onFundingComplete(data, scholarshipContributionPages)}
+                                contributor={contributor} />
         }
 
         let scholarshipContributionPages = [
@@ -547,8 +549,7 @@ class ScholarshipContribution extends React.Component {
                     disabled={invalidInput
                     || (pageNumber === 1 && !contributor.first_name)
                     || (pageNumber === 2 && !contributor.email)
-                    || (pageNumber === 3 && !fundingComplete)
-                    || CryptoCurrencies.includes(contributor.currency)}>
+                    || (pageNumber === 3 && !fundingComplete)}>
                 Next
             </Button>}
         </div>

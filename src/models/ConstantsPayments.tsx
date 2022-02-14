@@ -40,7 +40,7 @@ export const ETH: Currency = {
     name: "Ethereum",
     code: "ETH",
     minimum_funding_amount_contribute_new_award: 0.07,
-    minimum_funding_amount_contribute_scholarship: 0.02,
+    minimum_funding_amount_contribute_scholarship: 0.01,
     is_crypto: true,
 }
 
