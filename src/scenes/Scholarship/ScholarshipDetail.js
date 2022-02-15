@@ -15,7 +15,8 @@ import ScholarshipDeadlineWithTags from "../../components/ScholarshipDeadlineWit
 import { Alert, Button, message, Tag, Row, Col } from 'antd';
 import verifiedBadge from '../../components/assets/verified.png';
 import { AtilaDirectApplicationsPopover, BlindApplicationsExplanationMessage, ReferralBonusScholarshipExplanationMessage } from "../../models/Scholarship";
-import ScholarshipFinalists, { UserProfilesCards } from "./ScholarshipFinalists";
+import ScholarshipFinalists from "./ScholarshipFinalists";
+import { UserProfileCardsList } from "../UserProfile/UserProfileCard";
 import ReportIncorrectInfo from "../../components/ReportIncorrectInfo";
 import AwardDetail from "../Award/AwardDetail";
 import { addStyleClasstoTables, openAllLinksInNewTab } from "../../services/utils";
@@ -350,7 +351,7 @@ class ScholarshipDetail extends React.Component {
                                     <Row >
                                     <Col xs={24} md={40} style={{zoom:1.1}}>
                                     <div>
-                                    <UserProfilesCards userProfiles={contributors} userKey="id" />
+                                    <UserProfileCardsList userProfiles={contributors} userKey="id" />
                                     </div>
                                     </Col>
                                     </Row>
