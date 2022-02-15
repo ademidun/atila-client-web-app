@@ -267,13 +267,13 @@ class ScholarshipContribution extends React.Component {
                                 let numFundingAmount = Number.parseFloat(award.funding_amount)
 
                                 if (!contributor.funding_amount) {
-                                    return <Radio value={award.id}>
+                                    return <Radio value={award.id} key={award.id}>
                                         Increase the {numFundingAmount} {award.currency} award.
                                     </Radio>
                                 }
 
                                 let newAwardTotal = Number.parseFloat(award.funding_amount) + Number.parseFloat(contributor.funding_amount)
-                                return <Radio value={award.id}>
+                                return <Radio value={award.id} key={award.id}>
                                     Increase the {numFundingAmount} {award.currency} award to {newAwardTotal} {contributor.currency}
                                 </Radio>
                             })}
@@ -361,6 +361,9 @@ class ScholarshipContribution extends React.Component {
                 <h1>
                     Email to receive your funding confirmation
                 </h1>
+                <h3>
+                    Optional for crypto scholarships
+                </h3>
 
                 <Input value={contributor.email}
                        name="email"
@@ -548,7 +551,7 @@ class ScholarshipContribution extends React.Component {
                     onClick={() => this.changePage(pageNumber+1)}
                     disabled={invalidInput
                     || (pageNumber === 1 && !contributor.first_name)
-                    || (pageNumber === 2 && !contributor.email)
+                    || (pageNumber === 2 && !contributor.email && !Currencies[contributor.currency].is_crypto)
                     || (pageNumber === 3 && !fundingComplete)}>
                 Next
             </Button>}

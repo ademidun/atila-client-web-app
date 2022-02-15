@@ -16,12 +16,14 @@ function Invoice({ contributor, scholarship, contributorFundingAmount, cardHolde
     const { email, currency } = contributor;
 
     // For crypto scholarships don't cast to int because the decimal places are important.
-    const fundingAmount = scholarship.is_crypto ? Number.parseFloat(contributorFundingAmount) : Number.parseInt(contributorFundingAmount);
+    const isCrypto = Currencies[currency].is_crypto;
+    const fundingAmount = isCrypto ? Number.parseFloat(contributorFundingAmount) : Number.parseInt(contributorFundingAmount);
+    const decimalPlaces = isCrypto ? 4 : 2;
     const atilaFee = contributorFundingAmount * ATILA_SCHOLARSHIP_FEE;
     const atilaFeeTax = atilaFee * ATILA_SCHOLARSHIP_FEE_TAX;
     let totalAmount = fundingAmount + atilaFee;
 
-    if (!scholarship.is_crypto) {
+    if (!isCrypto) {
         totalAmount += atilaFeeTax;
     }
 
@@ -83,7 +85,7 @@ function Invoice({ contributor, scholarship, contributorFundingAmount, cardHolde
                     </td>
 
                     <td>
-                        {formatCurrency(fundingAmount, false, false, currency)}
+                        {formatCurrency(fundingAmount, false, decimalPlaces, currency)}
                     </td>
                 </tr>
 
@@ -93,18 +95,18 @@ function Invoice({ contributor, scholarship, contributorFundingAmount, cardHolde
                     </td>
 
                     <td>
-                        {formatCurrency(atilaFee, false, false, currency)}
+                        {formatCurrency(atilaFee, false, decimalPlaces, currency)}
                     </td>
                 </tr>
 
-                {!scholarship.is_crypto && 
+                {!isCrypto && 
                 <tr className="item">
                     <td>
                         Atila Fee HST (13%)
                     </td>
 
                     <td>
-                        {formatCurrency(atilaFeeTax, false, false, currency)}
+                        {formatCurrency(atilaFeeTax, false, decimalPlaces, currency)}
                     </td>
                 </tr>
                 }
@@ -114,7 +116,7 @@ function Invoice({ contributor, scholarship, contributorFundingAmount, cardHolde
                         Total
                     </td>
                     <td>
-                        {formatCurrency(totalAmount, false, false, currency)}
+                        {formatCurrency(totalAmount, false, decimalPlaces, currency)}
                         
                     </td>
                 </tr>
