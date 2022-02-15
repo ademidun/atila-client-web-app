@@ -60,7 +60,6 @@ class ScholarshipContribution extends React.Component {
             isLoadingScholarship: true,
             pageNumber: 0,
             contributor: defaultContributor,
-            invalidInput: !defaultContributor.funding_amount,
             showRegistrationForm: true,
             fundingComplete: false,
             referredByUserProfile: null,
@@ -107,52 +106,60 @@ class ScholarshipContribution extends React.Component {
             event.preventDefault();
         }
         let { contributor, pageNumber } = this.state;
-        let invalidInput = null;
         let value = event.target.value;
         let eventName = event.target.name;
         const keyCode = event.code || event.key;
 
-        if (eventName === "funding_amount") {
-            // preserve decimal places when working with crypto values
-            value = Currencies[contributor.currency].is_crypto ? Number.parseFloat(value) : Number.parseInt(value);
-        }
-
-        if (eventName === "email") {
-            if (value && !isValidEmail(value)) {
-                // Don't print a full invalid input statement because user might still be typing
-                invalidInput = true;
-            }
-        }
 
         contributor = {
             ...contributor,
             [eventName]: value
         };
+        if (eventName === "funding_amount") {
+            // preserve decimal places when working with crypto values
+            value = Currencies[contributor.currency].is_crypto ? Number.parseFloat(value) : Number.parseInt(value);
+        }
 
         // If the user types a first name or last name then that implies they are not anonymous.
         // If no first or last name then they're anonymous.
         contributor.is_anonymous = !(contributor.first_name || contributor.last_name)
 
-        if (!contributor.funding_amount) {
-            invalidInput = `Please enter a contribution amount.`
-        }
-
-        const currency = contributor.currency
-        if (contributor && contributor.funding_amount < Currencies[currency].minimum_funding_amount_contribute_scholarship
-            && contributor.funding_distribution !== "create") {
-            invalidInput = `Minimum contribution amount is ${Currencies[currency].minimum_funding_amount_contribute_scholarship}. ${currency}`;
-        }
-        if (contributor && contributor.funding_distribution === "create" &&
-            contributor.funding_amount < Currencies[currency].minimum_funding_amount_contribute_new_award) {
-            invalidInput = `Minimum contribution amount for starting a new award is ${Currencies[currency].minimum_funding_amount_contribute_new_award}. ${currency}`;
-        }
-
-        this.setState({ contributor, invalidInput }, () => {
-            if (!invalidInput && keyCode === 'Enter'){
+        this.setState({ contributor }, () => {
+            if (!this.getContributorError(contributor) && keyCode === 'Enter'){
                 this.changePage(pageNumber+1);
             }
         });
     };
+
+    getContributorError = (contributor) => {
+
+        const { scholarship } = this.state;
+        let contributorError;
+
+        if (scholarship?.is_crypto && !CryptoCurrencies.includes(contributor.currency)) {
+            contributorError = `This is a crypto scholarship. You must select one of the following currencies: ${CryptoCurrencies.join(', ')}`
+        }
+
+        if (contributor.email && !isValidEmail(contributor.email)) {
+            // Don't print a full invalid input statement because user might still be typing
+            contributorError = true;
+        }
+
+        const currency = contributor.currency;
+        if (!contributor.funding_amount) {
+            contributorError = `Please enter a contribution amount.`
+        }
+        if (contributor.funding_amount < Currencies[currency].minimum_funding_amount_contribute_scholarship
+            && contributor.funding_distribution !== "create") {
+            contributorError = `Minimum contribution amount is ${Currencies[currency].minimum_funding_amount_contribute_scholarship}. ${currency}`;
+        }
+        if (contributor.funding_distribution === "create" &&
+            contributor.funding_amount < Currencies[currency].minimum_funding_amount_contribute_new_award) {
+            contributorError = `Minimum contribution amount for starting a new award is ${Currencies[currency].minimum_funding_amount_contribute_new_award}. ${currency}`;
+        }
+
+        return contributorError;
+    }
 
     contributeAnonymously = () => {
 
@@ -468,11 +475,8 @@ class ScholarshipContribution extends React.Component {
 
     render () {
         const { isLoadingScholarship, scholarship, pageNumber, contributor, fundingComplete } = this.state;
-        let { invalidInput } = this.state;
 
-        if (scholarship?.is_crypto && !CryptoCurrencies.includes(contributor.currency)) {
-            invalidInput = `This is a crypto scholarship. You must select one of the following currencies: ${CryptoCurrencies.join(', ')}`
-        }
+        const contributorError = this.getContributorError(contributor)
         
 
         let paymentSend = null
@@ -511,15 +515,15 @@ class ScholarshipContribution extends React.Component {
         const scholarshipSteps = (<Steps current={pageNumber} onChange={(newPage) => this.changePage(newPage)}>
             { scholarshipContributionPages.map(item => {
 
-                let disableStep = invalidInput || (!fundingComplete && (["Payment", "Complete"].includes(item.title)
+                let disableStep = contributorError || (!fundingComplete && (["Payment", "Complete"].includes(item.title)
                     && !isValidEmail(contributor.email)));
 
                 if(item.title === "Complete") {
                     disableStep = !fundingComplete;
                 }
                 /*
-                * Cast explicitly to boolean for example if disableStep has the value of invalidInput,
-                * and invalidInput is a string, we need to cast it to boolean. Otherwise, ant design doesn't show
+                * Cast explicitly to boolean for example if disableStep has the value of contributorError,
+                * and contributorError is a string, we need to cast it to boolean. Otherwise, ant design doesn't show
                 * the disabled mouse cursor icon on hover over disabled steps.
                 * */
                 disableStep = !!disableStep;
@@ -549,7 +553,7 @@ class ScholarshipContribution extends React.Component {
             <Button className="float-right col-md-6 mb-3"
                     type="primary"
                     onClick={() => this.changePage(pageNumber+1)}
-                    disabled={invalidInput
+                    disabled={contributorError
                     || (pageNumber === 1 && !contributor.first_name)
                     || (pageNumber === 2 && !contributor.email && !Currencies[contributor.currency].is_crypto)
                     || (pageNumber === 3 && !fundingComplete)}>
@@ -565,13 +569,13 @@ class ScholarshipContribution extends React.Component {
 
                     {scholarshipContributionPages[pageNumber].render()}
 
-                    {invalidInput &&
+                    {contributorError &&
                     <div className="text-center col-12 mt-2">
                     
                     {CryptoCurrencies.includes(contributor.currency) ? 
-                    <Alert message={invalidInput} /> : (
+                    <Alert message={contributorError} /> : (
                         <p className="text-danger">
-                            {invalidInput}
+                            {contributorError}
                         </p>
                     ) }
 
