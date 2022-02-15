@@ -80,12 +80,9 @@ class ScholarshipContribution extends React.Component {
                     updatedContributor.currency = ETH.code;
                     updatedContributor.funding_amount = 0.01; //0.1 ETH is a more realistic starting contribution ($25)
                 }
-                this.setState({ scholarship, awards, scholarshipOwner: owner_detail, contributor: updatedContributor });
-                if (awards.length > 0) {
-                    // Default to contributing towards the top award.
-                    const top_award_id = awards[0].id
-                    this.setFundingDistribution(top_award_id)
-                }
+                this.setState({ scholarship, awards, scholarshipOwner: owner_detail, contributor: updatedContributor }, () => {
+                this.setFundingDistribution();
+                });
             })
             .catch(err => {
                 console.log({err})
@@ -207,14 +204,25 @@ class ScholarshipContribution extends React.Component {
         this.setState({showCustomContribution: !showCustomContribution});
     }
 
-    setFundingDistribution = (new_distribution) => {
-        const newContributor = { ...this.state.contributor, funding_distribution: new_distribution }
+    setFundingDistribution = () => {
+        const { contributor, awards } = this.state;
+
+        const matchingAwards = awards.filter(award => award.currency === contributor.currency);
+        let newDistribution = "create"
+        if (matchingAwards.length > 0) {
+            newDistribution = matchingAwards[0].id
+        }
+        const newContributor = { ...contributor, funding_distribution: newDistribution }
         this.setState({contributor: newContributor});
     }
 
     onCurrencyChange = (newCurrency) => {
-        const newContributor = { ...this.state.contributor, currency: newCurrency }
-        this.setState({contributor: newContributor});
+        const { contributor } = this.state;
+
+        const newContributor = { ...contributor, currency: newCurrency };
+        this.setState({contributor: newContributor}, () => {
+            this.setFundingDistribution();
+        });
     }
 
     amountPageRender = () => {
@@ -448,6 +456,7 @@ class ScholarshipContribution extends React.Component {
                             View Scholarship: {scholarship.name}
                         </Link>
                     </div>
+                    {paymentSend}
                     {!userProfile &&
                     <div className="col-12 text-center mb-3">
                         <h1>Optional: Create an Account</h1> <br/>
@@ -468,7 +477,6 @@ class ScholarshipContribution extends React.Component {
                     }
 
                 </div>
-                {paymentSend}
             </div>
         )
     }
@@ -570,16 +578,10 @@ class ScholarshipContribution extends React.Component {
                     {scholarshipContributionPages[pageNumber].render()}
 
                     {contributorError &&
-                    <div className="text-center col-12 mt-2">
-                    
-                    {CryptoCurrencies.includes(contributor.currency) ? 
-                    <Alert message={contributorError} /> : (
-                        <p className="text-danger">
-                            {contributorError}
-                        </p>
-                    ) }
-
-                    </div>}
+                        <div className="text-center col-12 mt-2">
+                            <Alert message={contributorError} type="error" />
+                        </div>
+                    }
                 </div>
 
                 {navigationButtons}

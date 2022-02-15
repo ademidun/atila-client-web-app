@@ -62,7 +62,7 @@ function ScholarshipCryptoPaymentForm(props: ScholarshipCryptoPaymentFormProps) 
       <Row gutter={[24, 24]}>
         <Col sm={24} md={12}>
           <Spin spinning={!!isResponseLoading} tip={isResponseLoading}>
-          <CryptoPaymentForm  className="card" amount={totalPaymentAmount} destinationAddress={ATILA_EVM_WALLET_ADDRESS} onSuccess={saveTransaction} />
+          <CryptoPaymentForm  className="card" amount={totalPaymentAmount} currency={contributor.currency} destinationAddress={ATILA_EVM_WALLET_ADDRESS} onSuccess={saveTransaction} />
           {errorMessage && <Alert message={errorMessage} type="error" /> }
           </Spin>
         </Col>
