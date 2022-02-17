@@ -8,7 +8,7 @@ import {Alert, Button, Input, Radio, Select, Space, Steps} from "antd";
 import {UserProfilePropType} from "../../models/UserProfile";
 import Register from "../../components/Register";
 import FileInput from "../../components/Form/FileInput";
-import {DEFAULT_SCHOLARSHIP_CONTRIBUTOR, SCHOLARSHIP_CONTRIBUTION_EXAMPLE_IMAGE} from "../../models/Scholarship";
+import {DEFAULT_SCHOLARSHIP_CONTRIBUTOR} from "../../models/Scholarship";
 import ScholarshipContributionProfilePictureChooser from "./ScholarshipContributionProfilePictureChooser";
 import {isValidEmail} from "../../services/utils";
 import ReferredByInput from "../../components/ReferredByInput";
@@ -424,33 +424,24 @@ class ScholarshipContribution extends React.Component {
                     <>
                         <div className="col-12">
                             <img src={contributor.funding_confirmation_image_url}
-                                 style={{width: "100%"}} alt={`Scholarship Contribution confirmation for ${contributor.first_name}`} />
+                                 style={{width: "100%"}} alt={`Scholarship Contribution confirmation for ${contributor.first_name || 'you'}`} />
                             {/*
                                                 After 3 seconds, hide the message that tells the user the image may take some time to load.
                                                 The images are generated using htmlcsstoimage.com which can take about 3 seconds to load.
+                                                So this means that even though contributor.funding_confirmation_image_url is truthy because the URL has loaded
+                                                The HTTP get request for contributor.funding_confirmation_image_url hasn't rendered the image on the screen yet.
                                                 This message lets the user know to stay on the page and not navigate away.
+                                                Sample image: Go to src/models/scholarhip.js and find SCHOLARSHIP_CONTRIBUTION_EXAMPLE_IMAGE
                                              */}
                             <p id="hide-after-3-seconds">Your confirmation image may take a few seconds to display, please wait...</p>
                         </div>
+                        <div className="col-12 text-center mb-3">
+                            <a target="_blank" rel="noopener noreferrer" href={contributor.funding_confirmation_image_url}>
+                                View Image (Right click or hold this link on mobile to save image)
+                            </a>
+                        </div>
                     </>
                     }
-                    {contributor.is_anonymous &&
-                    <div>
-                        <h6 className="text-muted text-center">
-                            No image to share since you're anonymous, but if you decide to share your name for future scholarships,
-                            you can get an image like this:
-                        </h6>
-                        <div className="col-12">
-                            <img src={SCHOLARSHIP_CONTRIBUTION_EXAMPLE_IMAGE}
-                                 style={{width: "70%"}} alt={`Scholarship Contribution confirmation for ${contributor.first_name}`} />
-                        </div>
-                    </div>
-                    }
-                    <div className="col-12 text-center mb-3">
-                        <a target="_blank" rel="noopener noreferrer" href={contributor.is_anonymous ? SCHOLARSHIP_CONTRIBUTION_EXAMPLE_IMAGE : contributor.funding_confirmation_image_url}>
-                            View Image (Right click or hold on mobile to save image)
-                        </a>
-                    </div>
                     <div className="col-12 text-center mb-3">
                         <Link to={`/scholarship/${scholarship.slug}`}>
                             View Scholarship: {scholarship.name}
