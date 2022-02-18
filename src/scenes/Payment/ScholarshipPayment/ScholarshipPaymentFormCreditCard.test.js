@@ -83,7 +83,7 @@ describe.skip('<PremiumCheckoutForm />', () => {
                 </Provider>
             </MemoryRouter>
         );
-        const checkoutTitle = "<h1>Student PaymentSend Checkout</h1>";
+        const checkoutTitle = "<h1>Student Scholarship PaymentForm Checkout</h1>";
 
         expect(wrapper.html()).toContain(checkoutTitle);
     });

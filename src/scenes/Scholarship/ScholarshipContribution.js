@@ -401,18 +401,18 @@ class ScholarshipContribution extends React.Component {
         )
     }
 
-    paymentPageRender = (paymentSend) => {
+    paymentPageRender = (scholarshipPaymentForm) => {
         return (
             <div className="col-12">
                 <h1>
                     Enter Payment Details
                 </h1>
-                {paymentSend}
+                {scholarshipPaymentForm}
             </div>
         )
     }
 
-    completePageRender = (paymentSend) => {
+    completePageRender = (scholarshipPaymentForm) => {
         const { userProfile } = this.props;
         const { scholarship, contributor, showRegistrationForm } = this.state;
 
@@ -447,7 +447,7 @@ class ScholarshipContribution extends React.Component {
                             View Scholarship: {scholarship.name}
                         </Link>
                     </div>
-                    {paymentSend}
+                    {scholarshipPaymentForm}
                     {!userProfile &&
                     <div className="col-12 text-center mb-3">
                         <h1>Optional: Create an Account</h1> <br/>
@@ -478,10 +478,10 @@ class ScholarshipContribution extends React.Component {
         const contributorError = this.getContributorError(contributor)
         
 
-        let paymentSend = null
+        let scholarshipPaymentForm = null
         if (pageNumber >= 3) {
             // Only initialize this component on the necessary pages.
-            paymentSend = <ScholarshipCryptoPaymentForm 
+            scholarshipPaymentForm = <ScholarshipCryptoPaymentForm 
                                 scholarship={scholarship}
                                 awards={[{funding_amount: contributor.funding_amount}]}
                                 onFundingComplete={data => this.onFundingComplete(data, scholarshipContributionPages)}
@@ -503,11 +503,11 @@ class ScholarshipContribution extends React.Component {
             },
             {
                 title: 'Payment',
-                render: () => this.paymentPageRender(paymentSend),
+                render: () => this.paymentPageRender(scholarshipPaymentForm),
             },
             {
                 title: 'Complete',
-                render: () => this.completePageRender(paymentSend),
+                render: () => this.completePageRender(scholarshipPaymentForm),
             },
         ];
 

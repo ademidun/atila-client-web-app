@@ -24,7 +24,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Link} from "react-router-dom";
 import {Steps, Tag, InputNumber, Button, Alert, Select, Spin} from "antd";
 import ScholarshipQuestionBuilder, {ScholarshipUserProfileQuestionBuilder} from "./ScholarshipQuestionBuilder";
-import PaymentSend from "../Payment/ScholarshipPayment/ScholarshipPaymentForm";
+import ScholarshipPaymentForm from "../Payment/ScholarshipPayment/ScholarshipPaymentForm";
 import Environment from "../../services/Environment";
 import InviteScholarshipCollaborator from "../../components/InviteScholarshipCollaborator";
 import {CAD, CryptoCurrencies, CURRENCY_CODES} from "../../models/ConstantsPayments";
@@ -800,7 +800,7 @@ class ScholarshipAddEdit extends React.Component{
 
         return (
             <div className="my-3">
-                <PaymentSend scholarship={scholarship}
+                <ScholarshipPaymentForm scholarship={scholarship}
                              onFundingComplete={this.onFundingComplete}
                              awards={awards}
                              contributor={contributor}

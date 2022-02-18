@@ -8,7 +8,7 @@ import {Currencies} from "../../../models/ConstantsPayments";
 import ScholarshipCryptoPaymentForm from "../../Scholarship/ScholarshipCryptoPaymentForm";
 
 const { STRIPE_PUBLIC_KEY } = Environment;
-class PaymentSend extends React.Component {
+class ScholarshipPaymentForm extends React.Component {
 
     render() {
 
@@ -38,7 +38,7 @@ class PaymentSend extends React.Component {
     }
 }
 
-PaymentSend.propTypes = {
+ScholarshipPaymentForm.propTypes = {
     // onFundingComplete Takes a contribution object
     // TODO make this into a typescript file so we can specify the function type
     onFundingComplete: PropTypes.func,
@@ -48,4 +48,4 @@ PaymentSend.propTypes = {
     contributorFundingAmount: PropTypes.number,
 };
 
-export default PaymentSend;
+export default ScholarshipPaymentForm;
