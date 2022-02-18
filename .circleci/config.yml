@@ -1,4 +1,4 @@
-version: 2.0
+version: 2.1
 # https://medium.com/@mannycodes/deploy-react-to-firebase-with-circleci-b8f16c17a28c
 jobs:
   build:
@@ -50,27 +50,30 @@ jobs:
       - run: # build react
           name: react-build
           command: export NODE_OPTIONS=--max_old_space_size=4096 ; npm run build
-      - run: # todo change -P to default, to deploy to prod on master branch
+      - run:
           name: Deploy Netlify Prod
-          filters:
-            branches:
-              only: master
-          command: ./node_modules/.bin/netlify deploy --dir=./build --prod --site $NETLIFY_SITE_ID_PROD -m "${CIRCLE_BRANCH} ${CIRCLE_SHA1} ${CIRCLE_PULL_REQUEST}"
-      - run: # todo change -P to default, to deploy to prod on master branch
+          when: 
+            condition:
+              equal: [ master, << pipeline.branch >> ]
+          steps:
+            - run: ./node_modules/.bin/netlify deploy --dir=./build --prod --site $NETLIFY_SITE_ID_PROD -m "${CIRCLE_BRANCH} ${CIRCLE_SHA1} ${CIRCLE_PULL_REQUEST}"
+      - run:
           name: Deploy Netlify Demo
-          filters:
-            branches:
-              only: demo
-          command: ./node_modules/.bin/netlify deploy --dir=./build --prod --site $NETLIFY_SITE_ID_DEMO -m "${CIRCLE_BRANCH} ${CIRCLE_SHA1} ${CIRCLE_PULL_REQUEST}"
-      - run: # todo change -P to default, to deploy to prod on master branch
+          when: 
+            condition:
+              equal: [ demo, << pipeline.branch >> ]
+          steps:
+            - run: ./node_modules/.bin/netlify deploy --dir=./build --prod --site $NETLIFY_SITE_ID_DEMO -m "${CIRCLE_BRANCH} ${CIRCLE_SHA1} ${CIRCLE_PULL_REQUEST}"
+      - run:
           name: Deploy Netlify Staging
-          filters:
-            branches:
-              ignore: 
-               - master
-               - demo
-          command: ./node_modules/.bin/netlify deploy --dir=./build --prod --site $NETLIFY_SITE_ID_STAGING -m "${CIRCLE_BRANCH} ${CIRCLE_SHA1} ${CIRCLE_PULL_REQUEST}"
-
+          when: 
+            and:
+              - not:
+                  - equal: [ master, << pipeline.branch >> ]
+              - not:
+                  - equal: [ demo, << pipeline.branch >> ]
+          steps:
+            - run: ./node_modules/.bin/netlify deploy --dir=./build --prod --site $NETLIFY_SITE_ID_STAGING -m "${CIRCLE_BRANCH} ${CIRCLE_SHA1} ${CIRCLE_PULL_REQUEST}"
 workflows:
   version: 2
   build-and-deploy:
@@ -79,3 +82,17 @@ workflows:
       - deploy: # perform second
           requires:
             - build
+
+#  TODO Use deploy-stage instead of the complex filtering logic statements: https://circleci.com/docs/2.0/configuration-reference/#logic-statements
+# - deploy-stage:
+#           requires:
+#             - build
+#           filters:
+#             branches:
+#               only: staging
+#       - deploy-prod:
+#           requires:
+#             - build
+#           filters:
+#             branches:
+#               only: main
