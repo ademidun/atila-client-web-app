@@ -51,15 +51,25 @@ jobs:
           name: react-build
           command: export NODE_OPTIONS=--max_old_space_size=4096 ; npm run build
       - run: # todo change -P to default, to deploy to prod on master branch
-          name: Deploy Netlify
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-                echo 'deploying to prod';
-                ./node_modules/.bin/netlify deploy --dir=./build --prod --site $NETLIFY_SITE_ID_PROD -m "${CIRCLE_BRANCH} ${CIRCLE_SHA1} ${CIRCLE_PULL_REQUEST}"
-            else
-                echo 'deploying to staging';
-                ./node_modules/.bin/netlify deploy --dir=./build --prod --site $NETLIFY_SITE_ID_STAGING -m "${CIRCLE_BRANCH} ${CIRCLE_SHA1} ${CIRCLE_PULL_REQUEST}"
-            fi
+          name: Deploy Netlify Prod
+          filters:
+            branches:
+              only: master
+          command: ./node_modules/.bin/netlify deploy --dir=./build --prod --site $NETLIFY_SITE_ID_PROD -m "${CIRCLE_BRANCH} ${CIRCLE_SHA1} ${CIRCLE_PULL_REQUEST}"
+      - run: # todo change -P to default, to deploy to prod on master branch
+          name: Deploy Netlify Demo
+          filters:
+            branches:
+              only: demo
+          command: ./node_modules/.bin/netlify deploy --dir=./build --prod --site $NETLIFY_SITE_ID_DEMO -m "${CIRCLE_BRANCH} ${CIRCLE_SHA1} ${CIRCLE_PULL_REQUEST}"
+      - run: # todo change -P to default, to deploy to prod on master branch
+          name: Deploy Netlify Staging
+          filters:
+            branches:
+              ignore: 
+               - master
+               - demo
+          command: ./node_modules/.bin/netlify deploy --dir=./build --prod --site $NETLIFY_SITE_ID_STAGING -m "${CIRCLE_BRANCH} ${CIRCLE_SHA1} ${CIRCLE_PULL_REQUEST}"
 
 workflows:
   version: 2
