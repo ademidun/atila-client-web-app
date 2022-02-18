@@ -5,6 +5,7 @@ export class Scholarship {
     name: string = "";
     description: string = "";
     scholarship_url: string = "";
+    slug: string = "";
     funding_amount: string | number = 0;
     deadline: string = "";
     is_atila_direct_application: boolean = false;
