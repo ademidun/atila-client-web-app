@@ -56,7 +56,7 @@ jobs:
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
                 echo 'deploying to prod';
                 ./node_modules/.bin/netlify deploy --dir=./build --prod --site $NETLIFY_SITE_ID_PROD -m "${CIRCLE_BRANCH} ${CIRCLE_SHA1} ${CIRCLE_PULL_REQUEST}"
-            eliif [ "${CIRCLE_BRANCH}" == "demo" ]; then
+            elif [ "${CIRCLE_BRANCH}" == "demo" ]; then
                 echo 'deploying to demo';
                 ./node_modules/.bin/netlify deploy --dir=./build --prod --site $NETLIFY_SITE_ID_DEMO -m "${CIRCLE_BRANCH} ${CIRCLE_SHA1} ${CIRCLE_PULL_REQUEST}"
             else
