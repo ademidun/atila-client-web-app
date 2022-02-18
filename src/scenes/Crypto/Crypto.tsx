@@ -2,13 +2,14 @@ import { Button, Col, Row } from 'antd'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import HelmetSeo, { defaultSeoContent } from '../../components/HelmetSeo';
+import NotionPage from '../../components/Notion/NotionPage';
 import Environment from '../../services/Environment';
 import "./Crypto.scss";
 
 function Crypto() {
 
 
-    const isDemoMode = Environment.name === "demo";
+    const isDemoMode = Environment.name !== "prod";
 
     const cryptoDemoUrl = "https://demo.atila.ca/crypto";
     const cryptoProdUrl = "https://atila.ca/crypto";
@@ -48,8 +49,7 @@ function Crypto() {
             </h1>
             <Row gutter={[24, 24]}>
                {onboardOptions.map(option => 
-                // give Col a width of 8 in isDemoMode because there are only 3 buttons and 24/8=3
-                <Col xs={24} sm={24} md={isDemoMode ? 8 : 6} key={option.title}>
+                <Col xs={24} sm={24} md={6} key={option.title}>
                     <Button>
                         {option.url && <a href={option.url} target="_blank" rel="noopener noreferrer">{option.title}</a>}
                         {option.internal_link && <Link to={option.internal_link}>{option.title}</Link>}
@@ -69,6 +69,8 @@ function Crypto() {
             <h1>
                 How it works
             </h1>
+
+            <NotionPage pageId="60119453e2564fe0b5cc6e6fa05984a2" showTableOfContents={false} />
         </div>
         <div className="card shadow m-5 p-3">
             <h1>
