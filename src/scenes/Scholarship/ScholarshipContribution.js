@@ -376,9 +376,9 @@ class ScholarshipContribution extends React.Component {
                 <h1>
                     Email to receive your funding confirmation
                 </h1>
-                <h3>
+                <h4>
                     Optional for crypto scholarships
-                </h3>
+                </h4>
 
                 <Input value={contributor.email}
                        name="email"

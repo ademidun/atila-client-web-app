@@ -212,7 +212,7 @@ class ScholarshipDetail extends React.Component {
                             <img
                                 style={{ maxHeight: '300px', width: 'auto' }}
                                 src={img_url}
-                                className="center-block"
+                                className="center-block col-12"
                                 alt={name} />
                             <hr />
                         </div>
