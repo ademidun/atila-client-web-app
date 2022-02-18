@@ -107,6 +107,8 @@ This project deploys to 3 environemtns using [Netlify](https://app.netlify.com/t
 - `demo` deploys to [demo.atila.ca](https://demo.atila.ca)
 - All other branches that are not `master` or `demo` deploy to [staging.atila.ca](https://staging.atila.ca)
 
+- To push to `demo` branch and trigger a deploy to `demo.atla.ca` from CI run: `git push origin <local_branch_name>:demo`
+
 - The environment variables for these domains are in circleci: https://app.circleci.com/settings/project/github/ademidun/atila-client-web-app/environment-variables
 
 ## Troubleshooting
