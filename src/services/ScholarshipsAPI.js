@@ -72,9 +72,11 @@ class ScholarshipsAPI {
 
         const apiCompletionPromise = request({
             method: 'put',
-            data: {scholarship: ScholarshipsAPI.cleanScholarship(scholarship),
-                    locationData,
-                    awards},
+            data: {
+                scholarship: ScholarshipsAPI.cleanScholarship(scholarship),
+                locationData,
+                awards
+            },
             url: `${ScholarshipsAPI.scholarshipsApiUrl}/${id}/`,
         });
 

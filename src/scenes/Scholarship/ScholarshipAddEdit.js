@@ -348,7 +348,8 @@ class ScholarshipAddEdit extends React.Component{
         if(isAddScholarshipMode) {
             postResponsePromise = ScholarshipsAPI.create(scholarship,locationData, awards)
         } else {
-            postResponsePromise = ScholarshipsAPI.put(scholarship.id, scholarship, locationData, awards);
+            // only update the awards object if user is on the awards page
+            postResponsePromise = ScholarshipsAPI.put(scholarship.id, scholarship, locationData, pageTitle === "Awards" ? awards : null);
         }
         postResponsePromise
             .then(res => {
