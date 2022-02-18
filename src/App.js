@@ -36,6 +36,9 @@ const Scholarship = loadable(() => import("./scenes/Scholarship/Scholarship"), {
 const Application = loadable(() => import("./scenes/Application/Application"), {
   fallback: <Loading />,
 });
+const Crypto = loadable(() => import("./scenes/Crypto/Crypto"), {
+  fallback: <Loading />,
+});
 const HowToStartAScholarship = loadable(() => import("./scenes/DirectApplicationInfo/HowToStartAScholarship"), {
   fallback: <Loading />,
 });
@@ -202,6 +205,7 @@ class App extends React.Component {
                 path='/p/:pageId'
                 component={GoogleAnalyticsTracker(NotionPage)}
               />
+              <Route path='/crypto' component={GoogleAnalyticsTracker(Crypto)} />
               <Route
                 path='/search-old'
                 component={GoogleAnalyticsTracker(SearchAtila)}
