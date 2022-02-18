@@ -29,6 +29,12 @@ export const EnvironmentStaging = {
     clientUrl: 'https://staging.atila.ca',
 };
 
+export const EnvironmentDemo = {
+    ...EnvironmentStaging,
+    name: "demo",
+    clientUrl: 'https://demo.atila.ca',
+}
+
 export const EnvironmentProd = {
     name: 'prod',
     production: true,
@@ -51,6 +57,8 @@ if (window.location.host.includes('localhost')) {
     Environment = EnvironmentDev;
 } else if (window.location.host.includes('staging')) {
     Environment = EnvironmentStaging;
+} else if (window.location.host.includes('demo')) {
+    Environment = EnvironmentDemo;
 }
 else if(window.location.host.includes('atila.ca')){
     Environment =  EnvironmentProd;
