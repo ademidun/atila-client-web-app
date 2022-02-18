@@ -317,8 +317,8 @@ class ScholarshipDetail extends React.Component {
                                     {
                                         scholarship.is_atila_direct_application && !isScholarshipDeadlinePassed &&
                                         <div className="mb-3">
-                                            <Button type="primary" size="large" className="mt-3"
-                                                style={{ fontSize: "18px", width: "150px", height: "75px" }}>
+                                            <Button type="primary" size="large" className="mt-3 col-md-6 col-sm-12"
+                                                style={{ fontSize: "18px", height: "75px" }}>
                                                 <Link to={`/scholarship/${slug}/contribute`}>
                                                     Contribute
                                                 </Link>
@@ -330,7 +330,7 @@ class ScholarshipDetail extends React.Component {
                             {scholarshipUserProfile &&
                                     <React.Fragment>
                                         Added by:
-                                        <div className="bg-light mb-3 p-1" style={{ width: '500px' }}>
+                                        <div className="bg-light mb-3 p-1 col-md-6 col-sm-12">
                                             <Link to={`/profile/${scholarshipUserProfile.username}`}>
                                                 <img
                                                     alt="user profile"

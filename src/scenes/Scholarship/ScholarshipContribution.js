@@ -462,7 +462,8 @@ class ScholarshipContribution extends React.Component {
                         {showRegistrationForm &&
                         <Register location={this.props.location}
                                   userProfile={contributor}
-                                  disableRedirect={true}/>
+                                  disableRedirect={true}
+                                  className=""/>
                         }
                     </div>
                     }
