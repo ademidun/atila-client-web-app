@@ -102,7 +102,7 @@ We use [axios-mock-adapter](https://github.com/ctimmerm/axios-mock-adapter) for 
 
 ## Deployment
 
-This project deploys to 3 environemtns using [Netlify](https://app.netlify.com/teams/atila/overview)
+This project deploys to 3 environments using [Netlify](https://app.netlify.com/teams/atila/overview)
 - `master` deploys to [atila.ca](https://atila.ca)
 - `demo` deploys to [demo.atila.ca](https://demo.atila.ca)
 - All other branches that are not `master` or `demo` deploy to [staging.atila.ca](https://staging.atila.ca)
