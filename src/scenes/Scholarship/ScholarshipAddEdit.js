@@ -548,7 +548,10 @@ class ScholarshipAddEdit extends React.Component{
     awardsPage = () => {
         // This should be moved into a separate component like AwardAddEdit.
         const { scholarship, awards, isAddScholarshipMode, contributor, isUpdatingScholarship } = this.state;
-        const { currency } = contributor
+        const { currency } = contributor;
+        
+        // TODO find a way to disable all inputs on page without having to manually add disabled={disableEditingAwards} to each input
+        const disableEditingAwards = scholarship.is_funded;
 
         const renderAwards = awards.map((award, index) => (
             <div key={index}>
@@ -560,10 +563,12 @@ class ScholarshipAddEdit extends React.Component{
                              // formatter={value => `${currency} ${value}`}
                              keyboard={false}
                              stringMode={true}
+                             disabled={disableEditingAwards}
                 />
 
                             <Button danger
                             onClick={()=>this.removeAward(index)}
+                            disabled={disableEditingAwards}
                             style={{float: "right"}}>
                                 Remove
                             </Button>
@@ -583,7 +588,7 @@ class ScholarshipAddEdit extends React.Component{
         const renderChangeCurrency = (
             <>
                 Currency:{' '}
-                <Select value={currency} options={currency_options} onChange={this.onCurrencyChange} />
+                <Select value={currency} options={currency_options} onChange={this.onCurrencyChange} disabled={disableEditingAwards} />
             </>
         )
 
@@ -598,13 +603,16 @@ class ScholarshipAddEdit extends React.Component{
                             `${formatCurrency(Number.parseFloat(totalAwardsAmount))} ${currency}`}
                         </h5>
                  </Spin>
+                 {disableEditingAwards && 
+                    <Alert message="Once the scholarship has been funded, awards cannot be changed. Visit the contribution page to add or increase awards." />
+                 }
                 
                 <br />
                 {renderChangeCurrency}
                 <br />
                 <br />
                 {renderAwards}
-                <Button type="primary" onClick={this.addAward} >Add Award</Button>
+                <Button type="primary" onClick={this.addAward} disabled={disableEditingAwards}>Add Award</Button>
                 <br />
                 <br />
                 <InviteScholarshipCollaborator
