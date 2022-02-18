@@ -516,7 +516,12 @@ class ScholarshipContribution extends React.Component {
             { scholarshipContributionPages.map(item => {
 
                 let disableStep = contributorError || (!fundingComplete && (["Payment", "Complete"].includes(item.title)
-                    && !isValidEmail(contributor.email)));
+                    // Disable if scholarship is not a crypto scholarship the email is invalid
+                    // OR if it's a crypto scholarship and an email exists and the email is invalid
+                    // In other words only disable a crypto scholarship if there's an email and it's invalid, but allow blank emails
+                    && ((!scholarship?.is_crypto && !isValidEmail(contributor.email)) || (scholarship?.is_crypto && contributor.email && !isValidEmail(contributor.email)))
+                    
+                    ));
 
                 if(item.title === "Complete") {
                     disableStep = !fundingComplete;
