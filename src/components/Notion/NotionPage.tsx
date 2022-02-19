@@ -15,7 +15,7 @@ NotionPage.defaultProps = {
   className: "",
 }
 
-const notionPageContentClassName = ".NotionPage-content";
+const notionPageContentClassName = "NotionPage-content";
 function NotionPage(props: NotionPageProps) {
   
   const { className } = props;
