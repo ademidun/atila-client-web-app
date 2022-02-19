@@ -1,20 +1,20 @@
 import CryptoPaymentForm, { TransactionResponsePayment } from '@atila/web-components-library.ui.crypto-payment-form';
 import { Alert, Col, Row, Spin } from 'antd';
 import React, { useState } from 'react'
-import { Award } from '../../models/Award.class'
-import { ATILA_EVM_WALLET_ADDRESS, ATILA_SCHOLARSHIP_FEE } from '../../models/ConstantsPayments';
-import { Scholarship } from '../../models/Scholarship.class'
-import { Contributor } from "../../models/Contributor";
-import Invoice from '../Payment/ScholarshipPayment/Invoice';
-import ScholarshipsAPI from '../../services/ScholarshipsAPI';
-import { getErrorMessage } from '../../services/utils';
-interface ScholarshipCryptoPaymentFormProps {
+import { Award } from '../../../models/Award.class'
+import { ATILA_EVM_WALLET_ADDRESS, ATILA_SCHOLARSHIP_FEE } from '../../../models/ConstantsPayments';
+import { Scholarship } from '../../../models/Scholarship.class'
+import { Contributor } from "../../../models/Contributor";
+import Invoice from './Invoice';
+import ScholarshipsAPI from '../../../services/ScholarshipsAPI';
+import { getErrorMessage } from '../../../services/utils';
+interface ScholarshipPaymentFormCryptoProps {
     scholarship: Scholarship,
     awards: Award[],
     contributor: Contributor,
     onFundingComplete: (fundingData: {contribution: Contributor, scholarship: Scholarship}) => void;
 }
-function ScholarshipCryptoPaymentForm(props: ScholarshipCryptoPaymentFormProps) {
+function ScholarshipPaymentFormCrypto(props: ScholarshipPaymentFormCryptoProps) {
 
   const { scholarship, awards, contributor, onFundingComplete } = props;
   const [isResponseLoading, setIsResponseLoading] = useState("");
@@ -76,4 +76,4 @@ function ScholarshipCryptoPaymentForm(props: ScholarshipCryptoPaymentFormProps) 
   )
 }
 
-export default ScholarshipCryptoPaymentForm
+export default ScholarshipPaymentFormCrypto

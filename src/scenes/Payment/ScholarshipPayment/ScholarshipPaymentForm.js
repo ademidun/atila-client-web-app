@@ -5,7 +5,7 @@ import ScholarshipPaymentFormCreditCard from "./ScholarshipPaymentFormCreditCard
 import Environment from "../../../services/Environment";
 import {ScholarshipPropType} from "../../../models/Scholarship";
 import {Currencies} from "../../../models/ConstantsPayments";
-import ScholarshipCryptoPaymentForm from "../../Scholarship/ScholarshipCryptoPaymentForm";
+import ScholarshipPaymentFormCrypto from "./ScholarshipPaymentFormCrypto";
 
 const { STRIPE_PUBLIC_KEY } = Environment;
 class ScholarshipPaymentForm extends React.Component {
@@ -17,7 +17,7 @@ class ScholarshipPaymentForm extends React.Component {
 
         if (Currencies[currency].is_crypto) {
             return (
-                <ScholarshipCryptoPaymentForm scholarship={scholarship} awards={awards} contributor={contributor} onFundingComplete={onFundingComplete} />
+                <ScholarshipPaymentFormCrypto scholarship={scholarship} awards={awards} contributor={contributor} onFundingComplete={onFundingComplete} />
             )
         }
 

@@ -14,7 +14,7 @@ import {isValidEmail} from "../../services/utils";
 import ReferredByInput from "../../components/ReferredByInput";
 import {CryptoCurrencies, Currencies, CURRENCY_CODES, ETH} from "../../models/ConstantsPayments";
 import CurrencyDisplay from '@atila/web-components-library.ui.currency-display';
-import ScholarshipCryptoPaymentForm from './ScholarshipCryptoPaymentForm';
+import ScholarshipPaymentFormCrypto from '../Payment/ScholarshipPayment/ScholarshipPaymentFormCrypto';
 
 const { Step } = Steps;
 
@@ -482,7 +482,7 @@ class ScholarshipContribution extends React.Component {
         let scholarshipPaymentForm = null
         if (pageNumber >= 3) {
             // Only initialize this component on the necessary pages.
-            scholarshipPaymentForm = <ScholarshipCryptoPaymentForm 
+            scholarshipPaymentForm = <ScholarshipPaymentFormCrypto 
                                 scholarship={scholarship}
                                 awards={[{funding_amount: contributor.funding_amount}]}
                                 onFundingComplete={data => this.onFundingComplete(data, scholarshipContributionPages)}
