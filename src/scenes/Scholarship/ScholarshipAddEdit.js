@@ -25,7 +25,7 @@ import ScholarshipPaymentForm from "../Payment/ScholarshipPayment/ScholarshipPay
 import Environment from "../../services/Environment";
 import InviteScholarshipCollaborator from "../../components/InviteScholarshipCollaborator";
 import {CAD, CryptoCurrencies, CURRENCY_CODES} from "../../models/ConstantsPayments";
-import { DEFAULT_AWARD } from '../../models/Award.class';
+import { DEFAULT_AWARD } from '../../models/Award';
 import CurrencyDisplay from '@atila/web-components-library.ui.currency-display';
 import { additionalQuestions, scholarshipFormConfigsPage1 } from './ScholarshipAddEditFormConfig';
 const { Step } = Steps;

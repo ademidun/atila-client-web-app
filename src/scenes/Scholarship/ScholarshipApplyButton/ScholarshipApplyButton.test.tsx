@@ -1,12 +1,12 @@
 import React from "react";
 import ReactDOM from 'react-dom';
-import { configure, mount } from "enzyme";
+import { configure } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router";
 import Adapter from "enzyme-adapter-react-16";
 import configureStore from "redux-mock-store";
 import { initialReduxState, initialReduxStateLoggedIn } from "../../../models/Constants";
-import { ScholarshipDirectApplicationCrypto } from "../../../models/Scholarship.class";
+import { DEFAULT_CRYPTO_SCHOLARSHIP } from "../../../models/Scholarship.class";
 import { MockAPI } from "../../../services/mocks/MockAPI";
 import ScholarshipApplyButton from "./ScholarshipApplyButton";
 import { act } from 'react-dom/test-utils';
@@ -41,7 +41,7 @@ describe('<ScholarshipApplyButton />', () => {
         act(() => {    ReactDOM.render(<MemoryRouter>
             <Provider store={loggedInStore}>
             <ScholarshipApplyButton 
-                scholarship={ScholarshipDirectApplicationCrypto}
+                scholarship={DEFAULT_CRYPTO_SCHOLARSHIP}
                  />
             </Provider>
             </MemoryRouter>, container);  });
@@ -57,7 +57,7 @@ describe('<ScholarshipApplyButton />', () => {
         // Typescript keeps complaining when we try to pass the location props
         act(() => {    ReactDOM.render(<MemoryRouter>
             <Provider store={guestUserStore}>
-            <ScholarshipApplyButton scholarship={ScholarshipDirectApplicationCrypto} />
+            <ScholarshipApplyButton scholarship={DEFAULT_CRYPTO_SCHOLARSHIP} />
             </Provider>
             </MemoryRouter>, container);  });
         await runAllPromises();

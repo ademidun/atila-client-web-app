@@ -1,4 +1,5 @@
-import { CAD } from "./ConstantsPayments";
+import { DEFAULT_CRYPTO_AWARD } from "./Award";
+import { CAD, ETH } from "./ConstantsPayments";
 
 export class Contributor {
     is_anonymous: boolean = false;
@@ -14,4 +15,10 @@ export class Contributor {
     wallet_address?: string;
     chain_id?: number;
     transaction_hash?: string;
+}
+
+export const DEFAULT_CRYPTO_CONTRIBUTION: Contributor = {
+    ...new Contributor(),
+    currency: ETH.code,
+    funding_amount: DEFAULT_CRYPTO_AWARD.funding_amount as number,
 }

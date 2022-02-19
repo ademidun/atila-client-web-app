@@ -17,10 +17,10 @@ export class Scholarship {
     } = {};
 }
 
-export const ScholarshipDirectApplicationCrypto = {
+export const DEFAULT_CRYPTO_SCHOLARSHIP = {
     ...new Scholarship(),
-    name: 'Crypto Direct Application Scholarship',
-    slug: 'crypto-direct-app-scholarship',
+    name: 'Crypto Scholarship',
+    slug: 'crypto-scholarship',
     id: getRandomNumber(),
     funding_amount: 1000,
     // although this is a crypto scholarship, currency is USD, because all crypto scholarships are converted to a common currency of USD for consistency

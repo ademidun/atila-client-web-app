@@ -1,7 +1,7 @@
 import CryptoPaymentForm, { TransactionResponsePayment } from '@atila/web-components-library.ui.crypto-payment-form';
 import { Alert, Col, Row, Spin } from 'antd';
 import React, { useState } from 'react'
-import { Award } from '../../../models/Award.class'
+import { Award } from '../../../models/Award'
 import { ATILA_EVM_WALLET_ADDRESS, ATILA_SCHOLARSHIP_FEE } from '../../../models/ConstantsPayments';
 import { Scholarship } from '../../../models/Scholarship.class'
 import { Contributor } from "../../../models/Contributor";
@@ -12,8 +12,9 @@ interface ScholarshipPaymentFormCryptoProps {
     scholarship: Scholarship,
     awards: Award[],
     contributor: Contributor,
-    onFundingComplete: (fundingData: {contribution: Contributor, scholarship: Scholarship}) => void;
+    onFundingComplete?: (fundingData: {contribution: Contributor, scholarship: Scholarship}) => void;
 }
+
 function ScholarshipPaymentFormCrypto(props: ScholarshipPaymentFormCryptoProps) {
 
   const { scholarship, awards, contributor, onFundingComplete } = props;
@@ -35,7 +36,7 @@ function ScholarshipPaymentFormCrypto(props: ScholarshipPaymentFormCryptoProps) 
       .saveScholarshipContribution(scholarship.id, {contribution})
       .then(res => {
           console.log({res});
-          onFundingComplete(res.data)
+          onFundingComplete?.(res.data)
       })
       .catch(err => {
         console.log({err});
@@ -56,7 +57,6 @@ function ScholarshipPaymentFormCrypto(props: ScholarshipPaymentFormCryptoProps) 
   // totalPaymentAmount = contributorFundingAmount + (Atila 9% fee)
   const totalPaymentAmount = totalAwardsAmount  + (ATILA_SCHOLARSHIP_FEE * totalAwardsAmount);
 
-  console.log({ scholarship, awards, totalAwardsAmount });
   return (
     <div>
       <Row gutter={[24, 24]}>
