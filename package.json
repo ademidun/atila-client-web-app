@@ -72,6 +72,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build && echo '/*    /index.html   200' > build/_redirects",
+    "build:ci": "export NODE_OPTIONS=--max_old_space_size=4096 ; npm run build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006 -s public",
