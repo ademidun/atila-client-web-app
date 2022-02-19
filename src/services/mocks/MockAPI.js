@@ -155,7 +155,8 @@ export class MockAPI {
         
         let userProfileDetailUrl = new RegExp(`${userProfileAPIBaseUrl}/.+/$`);
         this.mock.onGet(userProfileDetailUrl).reply(200, UserProfileTomiwa);
-
+        let doesApplicationExistUrl = new RegExp(`${ApplicationsAPI.applicationsApiUrl}/does-application-exist/.+/$`);
+        this.mock.onGet(doesApplicationExistUrl).reply(200, {});
     }
 
     mockApplicationGet = (application = ApplicationFinalistSTEM, status= 200) => {

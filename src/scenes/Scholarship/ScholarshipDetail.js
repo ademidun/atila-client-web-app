@@ -25,7 +25,7 @@ import './ScholarshipDetail.scss';
 import $ from "jquery";
 import ContentBody, { CONTENT_BODY_CLASS_NAME } from '../../components/ContentDetail/ContentBody/ContentBody';
 import CurrencyDisplay from '@atila/web-components-library.ui.currency-display';
-import ScholarshipApplyButton from './ScholarshipApplyButton';
+import ScholarshipApplyButton from './ScholarshipApplyButton/ScholarshipApplyButton';
 
 class ScholarshipDetail extends React.Component {
 

@@ -432,6 +432,10 @@ export function getRandomString(maxLength=6) {
     return randomString;
 }
 
+export function getRandomNumber(min=1, max = 100) {
+    return Math.floor((Math.random() * max) + min);
+}
+
 export function getGuestUserId() {
 
     const guestUserIdName = 'guestUserId';
