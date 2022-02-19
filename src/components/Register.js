@@ -11,6 +11,9 @@ import {Link} from "react-router-dom";
 import {forbiddenCharacters, hasForbiddenCharacters} from "../models/Utils";
 import ReferredByInput from './ReferredByInput';
 import { toTitleCase } from '../services/utils';
+import Environment from '../services/Environment';
+import { autoGenerateUser } from '../models/UserProfile.class';
+import { DemoUserMessage } from '../services/DemoUtils';
 
 
 export const LOG_OUT_BEFORE_REGISTERING_HELP_TEXT = "A user is already logged in. Log out to create an account";
@@ -150,13 +153,18 @@ class Register extends React.Component {
         if (nextLocation==='/') {
             nextLocation = '/scholarship';
         }
+
+        const defaultUser = Environment.isDemoMode ? autoGenerateUser() : {
+            first_name: '',
+            last_name: '',
+            username: '',
+            email: '',
+            password: '',
+        };
+
         this.state = {
             userProfile: {
-                first_name: '',
-                last_name: '',
-                username: '',
-                email: '',
-                password: '',
+                ...defaultUser,
                 referred_by: referredBy,
                 referredByChecked: !!referredBy,
                 account_type: accountType,
@@ -383,6 +391,7 @@ class Register extends React.Component {
                 <div className="card shadow p-3 text-left">
                     <div>
                         <h1>Register</h1>
+                        <DemoUserMessage />
                         {redirectInstructions}
                         <div className="row p-3 form-group">
                             {first_name &&

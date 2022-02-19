@@ -418,7 +418,7 @@ export function getGreetingTime () {
     return greeting;
 }
 
-export function getRandomString(maxLength=null) {
+export function getRandomString(maxLength=6) {
     // https://gist.github.com/gordonbrander/2230317
     let randomString = '';
 

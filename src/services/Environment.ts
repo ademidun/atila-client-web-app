@@ -13,6 +13,7 @@ export const EnvironmentDev = {
     ALGOLIA_PUBLIC_KEY: '0bd3e798b8330dc08ba51ab519fd35e7',
     ALGOLIA_APP_ID: 'HH66ESLTOR',
     clientUrl: 'http://localhost:3000',
+    isDemoMode: false,
 };
 
 export const EnvironmentStaging = {
@@ -28,12 +29,14 @@ export const EnvironmentStaging = {
     ALGOLIA_PUBLIC_KEY: '0bd3e798b8330dc08ba51ab519fd35e7',
     ALGOLIA_APP_ID: 'HH66ESLTOR',
     clientUrl: 'https://staging.atila.ca',
+    isDemoMode: false,
 };
 
 export const EnvironmentDemo = {
     ...EnvironmentStaging,
     name: "demo",
     clientUrl: 'https://demo.atila.ca',
+    isDemoMode: true,
 }
 
 export const EnvironmentProd = {
@@ -49,6 +52,7 @@ export const EnvironmentProd = {
     ALGOLIA_PUBLIC_KEY: '0bd3e798b8330dc08ba51ab519fd35e7',
     ALGOLIA_APP_ID: 'HH66ESLTOR',
     clientUrl: 'https://atila.ca',
+    isDemoMode: false,
 };
 
 // set to EnvironmentDev as the default so we can use type hinting and the autocomplete feature
