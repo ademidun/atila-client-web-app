@@ -39,7 +39,7 @@ export class MockAPI {
 
         const atilaMockApiCallsLocalStorageValue = localStorage.getItem(MockAPI.ATILA_MOCK_API_CALLS);
 
-        if (Environment.name === "prod") {
+        if (["prod", "demo"].includes(Environment.name)) {
             if (atilaMockApiCallsLocalStorageValue === "true") {
                 console.log(`"User tried to use ATILA_MOCK_API_CALLS local storage setting in" ${Environment.name} environment.
                 This feature is only available in 'dev'`)
