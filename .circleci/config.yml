@@ -49,7 +49,7 @@ jobs:
             - ./node_modules
       - run: # build react
           name: react-build
-          command: npm run build:ci
+          command: export NODE_OPTIONS=--max_old_space_size=4096 ; npm run build
       - run: # todo change -P to default, to deploy to prod on master branch
           name: Deploy Netlify
           command: |
