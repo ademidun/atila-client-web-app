@@ -8,15 +8,17 @@ export interface NotionPageProps {
     pageId?: string;
     pageData?: BlockMapType;
     showTableOfContents: boolean;
+    className: string;
 }
 NotionPage.defaultProps = {
   showTableOfContents: true,
+  className: "",
 }
 
 const notionPageContentClassName = ".NotionPage-content";
 function NotionPage(props: NotionPageProps) {
   
-
+  const { className } = props;
   const [loading, setLoading] = useState<string|undefined>(undefined);
   const [pageData, setPageData] = useState<BlockMapType|undefined>(props.pageData);
 
@@ -51,7 +53,7 @@ function NotionPage(props: NotionPageProps) {
   
   return (
     
-    <div className="NotionPage p-5">
+    <div className={`NotionPage ${className}`}>
         <div className={`${notionPageContentClassName}`}>
             <Loading isLoading={!!loading} title={loading} />
             {pageData && <NotionRenderer blockMap={pageData} />}

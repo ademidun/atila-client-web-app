@@ -43,14 +43,14 @@ function Crypto() {
         <h1>{title}</h1>
         <hr />
 
-        <div className="card shadow m-5 p-3">
+        <div className="section card shadow">
             <h1>
                 I want to...
             </h1>
             <Row gutter={[24, 24]}>
                {onboardOptions.map(option => 
                 <Col xs={24} sm={24} md={6} key={option.title}>
-                    <Button>
+                    <Button className='shadow'>
                         {option.url && <a href={option.url} target="_blank" rel="noopener noreferrer">{option.title}</a>}
                         {option.internal_link && <Link to={option.internal_link}>{option.title}</Link>}
                     </Button>
@@ -60,19 +60,19 @@ function Crypto() {
             </Row>
 
         </div>
-        <div className="card shadow m-5 p-3">
+        <div className="section card shadow">
             <h1>
                 Crypto scholarships
             </h1>
         </div>
-        <div className="card shadow m-5 p-3">
+        <div className="section card shadow">
             <h1>
                 How it works
             </h1>
 
-            <NotionPage pageId="60119453e2564fe0b5cc6e6fa05984a2" showTableOfContents={false} />
+            <NotionPage pageId="60119453e2564fe0b5cc6e6fa05984a2" showTableOfContents={false} className="p-2" />
         </div>
-        <div className="card shadow m-5 p-3">
+        <div className="section card shadow">
             <h1>
                 Educational resources
             </h1>
