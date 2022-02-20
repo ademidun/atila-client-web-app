@@ -104,11 +104,6 @@ function Crypto() {
 
             <NotionPage pageId="60119453e2564fe0b5cc6e6fa05984a2" showTableOfContents={false} className="p-2" />
         </div>
-        <div className="section card shadow">
-            <h1>
-                Educational resources
-            </h1>
-        </div>
     </div>
   )
 }
