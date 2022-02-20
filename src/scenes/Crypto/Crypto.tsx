@@ -73,7 +73,7 @@ function Crypto() {
             </h1>
             <Row gutter={[24, 24]}>
                {onboardOptions.map(option => 
-                <Col xs={24} sm={24} md={6} key={option.title}>
+                <Col xs={24} sm={24} md={6} key={option.title} className="d-flex">
                     <Button className='shadow'>
                         {option.url && <a href={option.url} target="_blank" rel="noopener noreferrer">{option.title}</a>}
                         {option.internal_link && <Link to={option.internal_link}>{option.title}</Link>}
