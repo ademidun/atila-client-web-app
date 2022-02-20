@@ -15,7 +15,8 @@ import ScholarshipDeadlineWithTags from "../../components/ScholarshipDeadlineWit
 import { Alert, Button, message, Tag, Row, Col } from 'antd';
 import verifiedBadge from '../../components/assets/verified.png';
 import { AtilaDirectApplicationsPopover, BlindApplicationsExplanationMessage, ReferralBonusScholarshipExplanationMessage } from "../../models/Scholarship";
-import ScholarshipFinalists, { UserProfilesCards } from "./ScholarshipFinalists";
+import ScholarshipFinalists from "./ScholarshipFinalists";
+import { UserProfileCardsList } from "../UserProfile/UserProfileCard";
 import ReportIncorrectInfo from "../../components/ReportIncorrectInfo";
 import AwardDetail from "../Award/AwardDetail";
 import { addStyleClasstoTables, openAllLinksInNewTab } from "../../services/utils";
@@ -24,7 +25,7 @@ import './ScholarshipDetail.scss';
 import $ from "jquery";
 import ContentBody, { CONTENT_BODY_CLASS_NAME } from '../../components/ContentDetail/ContentBody/ContentBody';
 import CurrencyDisplay from '@atila/web-components-library.ui.currency-display';
-import ScholarshipApplyButton from './ScholarshipApplyButton';
+import ScholarshipApplyButton from './ScholarshipApplyButton/ScholarshipApplyButton';
 
 class ScholarshipDetail extends React.Component {
 
@@ -211,7 +212,7 @@ class ScholarshipDetail extends React.Component {
                             <img
                                 style={{ maxHeight: '300px', width: 'auto' }}
                                 src={img_url}
-                                className="center-block"
+                                className="center-block col-12"
                                 alt={name} />
                             <hr />
                         </div>
@@ -316,8 +317,8 @@ class ScholarshipDetail extends React.Component {
                                     {
                                         scholarship.is_atila_direct_application && !isScholarshipDeadlinePassed &&
                                         <div className="mb-3">
-                                            <Button type="primary" size="large" className="mt-3"
-                                                style={{ fontSize: "18px", width: "150px", height: "75px" }}>
+                                            <Button type="primary" size="large" className="mt-3 col-md-6 col-sm-12"
+                                                style={{ fontSize: "18px", height: "75px" }}>
                                                 <Link to={`/scholarship/${slug}/contribute`}>
                                                     Contribute
                                                 </Link>
@@ -329,7 +330,7 @@ class ScholarshipDetail extends React.Component {
                             {scholarshipUserProfile &&
                                     <React.Fragment>
                                         Added by:
-                                        <div className="bg-light mb-3 p-1" style={{ width: '500px' }}>
+                                        <div className="bg-light mb-3 p-1 col-md-6 col-sm-12">
                                             <Link to={`/profile/${scholarshipUserProfile.username}`}>
                                                 <img
                                                     alt="user profile"
@@ -343,14 +344,14 @@ class ScholarshipDetail extends React.Component {
                                     </React.Fragment>
                             }
 
-                            {contributors && contributors.length > 1 &&
+                            {contributors?.filter(contributor => !contributor.is_owner).length &&
                                 
                                 <div>
                                     <h3 className="text-left">Contributors</h3>
                                     <Row >
                                     <Col xs={24} md={40} style={{zoom:1.1}}>
                                     <div>
-                                    <UserProfilesCards userProfiles={contributors} userKey="id" />
+                                    <UserProfileCardsList userProfiles={contributors} userKey="id" />
                                     </div>
                                     </Col>
                                     </Row>

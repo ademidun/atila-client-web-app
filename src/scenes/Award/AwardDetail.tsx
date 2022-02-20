@@ -1,6 +1,6 @@
 import React from "react";
 import CurrencyDisplay from "@atila/web-components-library.ui.currency-display";
-import { Award } from "../../models/Award.class";
+import { Award } from "../../models/Award";
 
 interface AwardDetailPropTypes {
     awards: Array<Award>;

@@ -10,7 +10,7 @@ import {RESERVED_USERNAMES} from "../../models/Constants";
 import FileInput from "../../components/Form/FileInput";
 import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import UserProfileReferralManagement from './UserProfileReferralManagement';
-import ConnectWallet from '../../components/Payments/ConnectWallet';
+import ConnectWallet from '../../components/Crypto/ConnectWallet';
 import Environment from '../../services/Environment';
 
 class UserProfileView extends React.Component {

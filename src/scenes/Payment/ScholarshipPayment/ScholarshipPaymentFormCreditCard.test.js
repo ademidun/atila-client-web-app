@@ -6,7 +6,7 @@ import {
     PREMIUM_PRICE_BEFORE_TAX,
     PREMIUM_PRICE_WITH_TAX,
     PremiumCheckoutFormTest as PremiumCheckoutForm
-} from "./PaymentSendForm";
+} from "./ScholarshipPaymentFormCreditCard";
 import {MemoryRouter} from "react-router-dom";
 import {UserProfileTest1} from "../../../models/UserProfile";
 import {Provider} from "react-redux";
@@ -15,7 +15,7 @@ configure({ adapter: new Adapter() });
 jest.mock('react-stripe-elements', () => {
     return {
         injectStripe: () => {
-            const PremiumCheckoutFormTest2 = require('./PaymentSendForm').PremiumCheckoutFormTest;
+            const PremiumCheckoutFormTest2 = require('./ScholarshipPaymentFormCreditCard').PremiumCheckoutFormTest;
             return PremiumCheckoutFormTest2;
         },
         CardElement: () => {
@@ -83,7 +83,7 @@ describe.skip('<PremiumCheckoutForm />', () => {
                 </Provider>
             </MemoryRouter>
         );
-        const checkoutTitle = "<h1>Student PaymentSend Checkout</h1>";
+        const checkoutTitle = "<h1>Student Scholarship PaymentForm Checkout</h1>";
 
         expect(wrapper.html()).toContain(checkoutTitle);
     });

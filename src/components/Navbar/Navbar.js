@@ -99,7 +99,7 @@ class Navbar extends React.Component {
                 <Menu.Item key="demo" className="disable-ant-menu-item-active">
                     <Button type="primary" size="large">
                         <Link to={`/demo`}>
-                            Book a Demo
+                            Demo
                         </Link>
                     </Button>
                 </Menu.Item>
@@ -118,10 +118,10 @@ class Navbar extends React.Component {
                         key="more"
                         title="More"
                     >
-                    <Menu.Item key="rankings">
-                        <Link to="/rankings">
+                    <Menu.Item key="crypto">
+                        <Link to="/crypto">
                             <Tag color="green">new</Tag>{' '}
-                            Atila Points Rankings</Link>
+                            Crypto Scholarships</Link>
                     </Menu.Item>
                     <Menu.Item key="apply">
                         <Link to="/apply">

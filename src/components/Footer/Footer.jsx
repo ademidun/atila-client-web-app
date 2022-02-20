@@ -45,7 +45,7 @@ function Footer({location, history}) {
                 <div className="footer-center">
                   <div>
                     <Link to={`/demo`}>
-                          Book a Demo{' '}
+                          Try Atila{' '}
                       <Tag color="green">new</Tag>
                     </Link>
                   </div>
@@ -60,8 +60,9 @@ function Footer({location, history}) {
                     </Link>
                   </div>
                   <div>
-                    <Link to="/high-school">
-                      Advice for High School Students
+                    <Link to="/crypto">
+                       Crypto Scholarships{' '}
+                      <Tag color="green">new</Tag>
                     </Link>
                   </div>
                   <div>

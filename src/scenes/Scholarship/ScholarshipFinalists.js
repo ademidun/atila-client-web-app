@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Link, withRouter} from "react-router-dom";
-import {Row, Col, Tag} from "antd";
+import {Row, Col} from "antd";
 import ContentCard from "../../components/ContentCard";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
-import {formatCurrency, genericItemTransform} from "../../services/utils";
+import {genericItemTransform} from "../../services/utils";
 import ApplicationsAPI from "../../services/ApplicationsAPI";
+import { UserProfileCardsList } from '../UserProfile/UserProfileCard';
 const queryString = require('query-string');
 
 class ScholarshipFinalists extends React.Component {
@@ -106,7 +107,7 @@ class ScholarshipFinalists extends React.Component {
                                            isFiltered={isFilteredByScholarshipID}
                                            scholarships={scholarships} />
                 }
-                <UserProfilesCards userProfiles={scholarshipFinalistUserProfiles} />
+                <UserProfileCardsList userProfiles={scholarshipFinalistUserProfiles} />
                 {!showEssaysFirst &&
                 <ScholarshipFinalistEssays title={title}
                                            scholarshipFinalistEssays={scholarshipFinalistEssays}
@@ -178,64 +179,6 @@ export function ScholarshipFinalistEssays({ title, scholarshipFinalistEssays, is
 
 }
 
-
-export function UserProfilesCards({userProfiles, userKey="username"}) {
-    return (
-    
-    <Row gutter={[{ xs: 8, sm: 16}, 16]}>
-        {userProfiles.map((user, index) => {
-
-            const fundingAmount = <>
-                {user.funding_amount &&
-                    <strong>
-                        :{' '}{ formatCurrency(user.funding_amount, true) }
-                    </strong>
-                }
-            </>;
-
-            const userDisplay = (  
-                <div className='UserCard'>
-                    
-                    <div className='userUpper-container'>
-                        <div className='userImage-container'>
-                            <Link to={`/profile/${user.username}`}>
-                            <img id="avatar-pic"
-                                alt="user profile"
-                                src={user.profile_pic_url} />
-                            </Link>
-                        </div>
-                    </div>
-                    <div className='tag'>
-                        {user.is_winner && <Tag color="green">{' '}Winner</Tag>}
-                        {user.is_owner && <Tag color="green">{' '}Creator</Tag>}
-                    </div>
-                    {user.is_anonymous || !user.username ? 
-                
-                        <div className='userLower-container'>
-                            {user.is_anonymous ? "Anonymous" : `${user.first_name} ${user.last_name}`}{' '}{fundingAmount}
-                        </div>
-                        :
-                        <div className='userLower-container'>
-                        <Link to={`/profile/${user.username}`}>
-                        {user.first_name}{' '}{user.last_name} 
-                        {fundingAmount}
-                        </Link>
-                        </div>
-                    }
-                                
-                </div>  
-            );
-            return (
-                    <div key={index}>
-                        <br/><br/>
-                        {userDisplay}
-                    </div>)
-            })}
-
-    </Row>
-    )
-
-};
 
 ScholarshipFinalists.defaultProps = {
     className: '',

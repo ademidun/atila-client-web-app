@@ -175,18 +175,18 @@ class UserProfileEdit extends React.Component {
             <div className={className}>
                 {title}
                 {/*startingPageNumber is zero when user first registers*/}
-                {/*Don't show PaymentSend when first onboarding user. */}
+                {/*Don't show scholarshipPaymentForm when first onboarding user. */}
                 {/*{startingPageNumber !==0 &&*/}
                 {/*    <Row style={{textAlign: 'left'}}>*/}
                 {/*        <Col sm={24} md={12}>*/}
                 {/*            <span><strong> Account Type: </strong>*/}
-                {/*                Student {userProfile.is_atila_premium ? 'PaymentSend' : 'Free'}</span>*/}
+                {/*                Student {userProfile.is_atila_premium ? 'scholarshipPaymentForm' : 'Free'}</span>*/}
                 {/*            {!userProfile.is_atila_premium &&*/}
                 {/*            <Button style={{ marginTop: 16 }}*/}
                 {/*                    className="m-3"*/}
                 {/*                    type="primary">*/}
                 {/*                <Link to="/premium">*/}
-                {/*                    Go PaymentSend*/}
+                {/*                    Go ScholarshipPaymentForm*/}
                 {/*                </Link>*/}
                 {/*            </Button>*/}
                 {/*            }*/}

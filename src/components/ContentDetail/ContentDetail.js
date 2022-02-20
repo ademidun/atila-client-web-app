@@ -21,7 +21,7 @@ import {
 import { Button } from "antd";
 import AtilaPointsPaywallModal from "../AtilaPointsPaywallModal";
 import {UserProfilePreview} from "../ReferredByInput";
-import ContentPaymentForm from '../Payments/ContentPaymentForm';
+import ContentPaymentForm from '../Crypto/ContentPaymentForm';
 import EmbedResponsiveYoutubeVideo from "../../scenes/LandingPage/LandingPageLiveDemo";
 import ContentBody, { CONTENT_BODY_CLASS_NAME } from './ContentBody/ContentBody';
 

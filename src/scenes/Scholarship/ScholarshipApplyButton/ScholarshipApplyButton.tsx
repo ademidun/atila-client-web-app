@@ -4,16 +4,17 @@ import moment from 'moment';
 import { connect, Provider } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { BrowserRouter, Link } from 'react-router-dom';
-import Loading from '../../components/Loading';
-import { Application } from '../../models/Application.class';
-import { Scholarship } from '../../models/Scholarship.class';
-import { UserProfile } from '../../models/UserProfile.class';
-import ApplicationsAPI from '../../services/ApplicationsAPI';
-import { CryptoScholarshipWalletExplanation } from '../../models/ConstantsPayments';
-import { ModalFuncProps } from 'antd/lib/modal';
-import LinkContentToWallet from '../../components/Payments/LinkContentToWallet';
-import store from '../../redux/store';
+
 import './ScholarshipApplyButton.scss'
+import { ModalFuncProps } from 'antd/lib/modal';
+import LinkContentToWallet from '../../../components/Crypto/LinkContentToWallet';
+import Loading from '../../../components/Loading';
+import { CryptoScholarshipWalletExplanation } from '../../../models/ConstantsPayments';
+import store from '../../../redux/store';
+import ApplicationsAPI from '../../../services/ApplicationsAPI';
+import { UserProfile } from '../../../models/UserProfile.class';
+import { Scholarship } from '../../../models/Scholarship.class';
+import { Application } from '../../../models/Application.class';
 
 
 interface ScholarshipApplyButtonPropTypes extends RouteComponentProps {
@@ -33,7 +34,7 @@ interface ModalFuncType {
  * See flow for deciding which apply button to show: https://app.diagrams.net/#G1G_6VEkDXNARPZVo3UXao9gnfYlYDaLGH
  * or  https://i.imgur.com/YRLmfHy.png
  */
-function ScholarshipApplyButton(props: ScholarshipApplyButtonPropTypes): JSX.Element | null {
+function ScholarshipApplyButton(props: ScholarshipApplyButtonPropTypes) {
     const { loggedInUserProfile, scholarship, history, location: { pathname } } = props;
 
     const { owner_detail: scholarshipOwner, metadata } = scholarship;

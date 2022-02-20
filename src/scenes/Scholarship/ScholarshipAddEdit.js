@@ -5,189 +5,32 @@ import FormDynamic from "../../components/Form/FormDynamic";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import {connect} from "react-redux";
 import {
-    displayLocalTimeZone,
+    formatCurrency,
     nestedFieldUpdate,
     prettifyKeys,
     slugify,
     transformLocation
 } from "../../services/utils";
 import Loading from "../../components/Loading";
-import {MAJORS_LIST, SCHOOLS_LIST} from "../../models/ConstantsForm";
 import {scholarshipUserProfileSharedFormConfigs, toastNotify} from "../../models/Utils";
 import {
-    AtilaDirectApplicationsPopover,
     DEFAULT_SCHOLARSHIP, DEFAULT_SCHOLARSHIP_CONTRIBUTOR, ScholarshipDisableEditMessage
 } from "../../models/Scholarship";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Link} from "react-router-dom";
-import {Steps, Tag, InputNumber, Button, Alert, Select} from "antd";
+import {Steps, InputNumber, Button, Alert, Select, Spin} from "antd";
 import ScholarshipQuestionBuilder, {ScholarshipUserProfileQuestionBuilder} from "./ScholarshipQuestionBuilder";
-import PaymentSend from "../Payment/PaymentSend/PaymentSend";
+import ScholarshipPaymentForm from "../Payment/ScholarshipPayment/ScholarshipPaymentForm";
 import Environment from "../../services/Environment";
 import InviteScholarshipCollaborator from "../../components/InviteScholarshipCollaborator";
-import {CAD, CURRENCY_CODES} from "../../models/ConstantsPayments";
-import { DEFAULT_AWARD } from '../../models/Award.class';
+import {CAD, CryptoCurrencies, CURRENCY_CODES} from "../../models/ConstantsPayments";
+import { DEFAULT_AWARD } from '../../models/Award';
+import CurrencyDisplay from '@atila/web-components-library.ui.currency-display';
+import { additionalQuestions, scholarshipFormConfigsPage1 } from './ScholarshipAddEditFormConfig';
 const { Step } = Steps;
 
 
-let scholarshipFormConfigsPage1 = [
-    {
-        keyName: 'name',
-        placeholder: 'Scholarship Name',
-        type: 'text',
-        html: (model) => (
-            <p className="text-muted">{model.slug && `Slug: atila.ca/scholarship/${model.slug}`}</p>
-        )
-    },
-    {
-        keyName: 'description',
-        type: 'textarea',
-        placeholder: 'Scholarship Description',
-        html: () => (<label htmlFor="description">
-            Description (Eligibility): Who is eligible for this scholarship?
-        </label>),
-    },
-    {
-        keyName: 'is_atila_direct_application',
-        placeholder:(
-            <AtilaDirectApplicationsPopover children={<div>
-                Allow applicants to directly apply for scholarship through Atila?{' '}<small>Hover to learn more</small>
-                {' '}<Tag color="green">new</Tag>
-                </div>
-                } />
-            ),
-        type: 'checkbox',
-        className: 'font-weight-bold',
-    },
-    // Temporarily hide blind applications feature to prevent confusing the application process.
-    // We currently launched a bunch of new features and this might confuse new potential sponsors.
-    // We can make the blind applications feature available on a case-by-case basis if a scholarship sponsor wants it.
-/*     {
-        keyName: 'is_blind_applications',
-        placeholder:"Hide names of applicants until a winner is selected",
-        type: 'checkbox',
-        className: 'font-weight-bold',
-        isHidden: (scholarship) => (!scholarship.is_atila_direct_application),
-    }, */
-    {
-        keyName: 'criteria_info',
-        type: 'html_editor',
-        placeholder: 'Additional Information',
-        html: () => (<label htmlFor="description">
-            Everything else you want people to know about the scholarship, put it here. <br/>
-            For example:
-            What inspired you to start this scholarship? What types of students would you like to fund.
-            What would you like to see from the applicants? etc.
-            <span role="img" aria-label="pointing down emoji">
-            👇🏿
-            </span>
-        </label>),
-    },
-    {
-        keyName: 'learn_more_url',
-        placeholder: 'Optional: A URL to a place where others can learn more about you or your organization',
-        type: 'url',
-        isHidden: (scholarship) => (!scholarship.is_atila_direct_application),
-    },
-    {
-        keyName: 'learn_more_title',
-        placeholder: 'Title for the url: e.g. Learn more about Skateboards for Hope',
-        type: 'text',
-        isHidden: (scholarship) => (!scholarship.is_atila_direct_application),
-    },
-    {
-        keyName: 'scholarship_url',
-        placeholder: 'Scholarship Url',
-        type: 'url',
-        isHidden: (scholarship) => (scholarship.is_atila_direct_application),
-    },
-    {
-        keyName: 'form_url',
-        placeholder: 'Application Form URL',
-        type: 'url',
-        isHidden: (scholarship) => (scholarship.is_atila_direct_application),
-    },
-    {
-        keyName: 'img_url',
-        placeholder: 'Scholarship Image URL',
-        type: 'image',
-    },
-    {
-        keyName: 'deadline',
-        type: 'datepicker',
-        html: (scholarship) =>(<label htmlFor="deadline">
-            Deadline <span role="img" aria-label="clock emoji">🕐</span>
-            {scholarship.deadline && <small> We recommend picking a deadline within the next two months.
-            Using local timezone ({displayLocalTimeZone()}).
-            </small>}
-        </label>),
-    },
-
-     {
-         keyName: 'metadata.not_open_yet',
-         placeholder: 'Scholarship not open yet?',
-         type: 'checkbox',
-     },
-     {
-         keyName: 'open_date',
-         type: 'date',
-         isHidden: (scholarship) => (scholarship.metadata && !scholarship.metadata.not_open_yet),
-         html: () =>(<label htmlFor="open_date">
-             When does the scholarship open? <span role="img" aria-label="calendar emoji">🗓</span>
-         </label>),
-     },
-     {
-         keyName: 'is_not_available',
-         placeholder: 'Is not available?',
-         type: 'checkbox',
-     },
-     {
-         keyName: 'reddit_url',
-         placeholder: 'Reddit Help Thread URL',
-         type: 'url',
-         isHidden: (scholarship, userProfile) => (userProfile && !userProfile.is_atila_admin),
-     },
-];
-
-let additionalQuestions = [
-    {
-        keyName: 'location',
-        placeholder: 'Enter city, province, country 🌏',
-        html: () =>(<label htmlFor="location">
-            Is the scholarship limited to students in certain locations?
-            <span role="img" aria-label="globe emoji">🌏</span>
-        </label>),
-        type: 'location',
-    },
-    {
-        keyName: 'eligible_schools',
-        placeholder: 'Eligible Schools (leave blank for any) 🏫',
-        type: 'autocomplete',
-        suggestions: SCHOOLS_LIST
-    },
-    {
-        keyName: 'eligible_programs',
-        placeholder: 'Eligible Programs (leave blank for any) 📚',
-        type: 'autocomplete',
-        suggestions: MAJORS_LIST
-    },
-    {
-        keyName: 'female_only',
-        placeholder: 'Female Only? 🙍🏿',
-        type: 'checkbox',
-    },
-    {
-        keyName: 'international_students_eligible',
-        placeholder: 'International Students Eligible? 🌏',
-        type: 'checkbox',
-    },
-    {
-        keyName: 'email_contact',
-        placeholder: 'Email address for sending questions and submissions',
-        type: 'email',
-    },
-];
 let scholarshipFormConfigsPage2 = scholarshipUserProfileSharedFormConfigs
     .filter(question => !['eligible_schools', 'eligible_programs'].includes(question.keyName));
 
@@ -214,11 +57,21 @@ class ScholarshipAddEdit extends React.Component{
         }
         contributor.funding_distribution = null;
 
+        const scholarship = Object.assign({}, DEFAULT_SCHOLARSHIP);
+        const awards = [Object.assign({}, DEFAULT_AWARD)];
+
+        // The funding_amount should be the sum of created awards in the frontend until the award has been saved after which it should use the source from the backend as the source of truth.
+        // returning an object contain a funding_amount property with the sum of the funding_amount properties of the parameters:
+        // https://stackoverflow.com/a/5732087/5405197
+        scholarship.funding_amount = awards.reduce((prevAward, currentAward) => 
+        ({funding_amount: prevAward.funding_amount + currentAward.funding_amount})).funding_amount
+
         this.state = {
             scholarship: Object.assign({}, DEFAULT_SCHOLARSHIP),
             isAddScholarshipMode: false,
             scholarshipPostError: null,
-            isLoadingScholarship: true,
+            isLoadingScholarship: false,
+            isUpdatingScholarship: false,
             errorLoadingScholarship: false,
             pageNumber: 0,
             locationData: [],
@@ -256,7 +109,6 @@ class ScholarshipAddEdit extends React.Component{
 
         if ( path==='/scholarship/add' ) {
             this.setState({isAddScholarshipMode: true});
-            this.setState({isLoadingScholarship: false});
             const scholarship = this.state.scholarship;
             contributor.funding_amount = scholarship.funding_amount;
 
@@ -286,7 +138,6 @@ class ScholarshipAddEdit extends React.Component{
                 let contributor = {...this.state.contributor}
                 contributor.currency = awards[0]?.currency || CAD.code
                 this.setState({ scholarship, awards, contributor }, () => {
-                    this.updateFundingAmount()
                     this.initializeLocations();
                 });
             })
@@ -477,8 +328,16 @@ class ScholarshipAddEdit extends React.Component{
         const scholarship = ScholarshipsAPI.cleanScholarship(this.state.scholarship);
         this.setState({scholarship});
 
-        const { isAddScholarshipMode, locationData, awards } = this.state;
+
+        const { isAddScholarshipMode, locationData, awards, pageNumber } = this.state;
         const { userProfile } = this.props;
+        const pageTitle = this.scholarshipEditPages()[pageNumber].title;
+
+        const isUpdateScholarshipState = isAddScholarshipMode || pageTitle === "Awards";
+
+        if (isUpdateScholarshipState) {
+            this.setState({isUpdatingScholarship: "Updating scholarship"})
+        }
 
         if(!userProfile) {
             toastNotify(`⚠️ Warning, you must be logged in to add a scholarship`);
@@ -489,7 +348,8 @@ class ScholarshipAddEdit extends React.Component{
         if(isAddScholarshipMode) {
             postResponsePromise = ScholarshipsAPI.create(scholarship,locationData, awards)
         } else {
-            postResponsePromise = ScholarshipsAPI.put(scholarship.id, scholarship, locationData, awards);
+            // only update the awards object if user is on the awards page
+            postResponsePromise = ScholarshipsAPI.put(scholarship.id, scholarship, locationData, pageTitle === "Awards" ? awards : null);
         }
         postResponsePromise
             .then(res => {
@@ -510,8 +370,15 @@ class ScholarshipAddEdit extends React.Component{
                     toastNotify(successMessage, 'info', {position: 'bottom-right'});
                 }
                 const awards = res.data.awards;
-                this.setState({isAddScholarshipMode: false, awards});
-                this.setState({scholarshipPostError: null});
+                /**
+                 * We only want to update the funding_amount with the auto-updated values
+                 *  and the user knows the data was autosaved.
+                 */
+                 const updatedScholarship = {
+                    ...this.state.scholarship,
+                    funding_amount: res.data.scholarship.funding_amount,
+                };
+                this.setState({isAddScholarshipMode: false, awards, scholarshipPostError: null, scholarship: updatedScholarship});
             })
             .catch(err=> {
                 console.log({err});
@@ -521,7 +388,11 @@ class ScholarshipAddEdit extends React.Component{
                 toastNotify(`🙁${scholarshipPostError}`, 'error');
 
             })
-            .finally(()=>{});
+            .finally(()=>{
+                if (isUpdateScholarshipState) {
+                    this.setState({isUpdatingScholarship: false})
+                }        
+            });
 
     };
 
@@ -648,10 +519,39 @@ class ScholarshipAddEdit extends React.Component{
         })
     }
 
+
+
+    scholarshipEditPages = () => [
+        {
+            title: 'Basic Info',
+            render: this.basicInfoPage,
+        },
+        {
+            title: 'Awards',
+            render: this.awardsPage,
+        },
+        {
+            title: 'Eligibility',
+            render: this.eligibilityPage,
+        },
+        {
+            title: 'Specific Questions',
+            render: this.specificQuestionsPage,
+        },
+        {
+            title: 'Funding',
+            render: this.fundingPage,
+        },
+    ]
+
+
     awardsPage = () => {
         // This should be moved into a separate component like AwardAddEdit.
-        const { scholarship, awards, isAddScholarshipMode, contributor } = this.state;
-        const { currency } = contributor
+        const { scholarship, awards, isAddScholarshipMode, contributor, isUpdatingScholarship } = this.state;
+        const { currency } = contributor;
+        
+        // TODO find a way to disable all inputs on page without having to manually add disabled={disableEditingAwards} to each input
+        const disableEditingAwards = scholarship.is_funded;
 
         const renderAwards = awards.map((award, index) => (
             <div key={index}>
@@ -663,10 +563,12 @@ class ScholarshipAddEdit extends React.Component{
                              // formatter={value => `${currency} ${value}`}
                              keyboard={false}
                              stringMode={true}
+                             disabled={disableEditingAwards}
                 />
 
                             <Button danger
                             onClick={()=>this.removeAward(index)}
+                            disabled={disableEditingAwards}
                             style={{float: "right"}}>
                                 Remove
                             </Button>
@@ -675,24 +577,42 @@ class ScholarshipAddEdit extends React.Component{
             </div>
         ))
 
-        const currency_options = CURRENCY_CODES.map(code => {return {'label': code, 'value': code}})
+        const currency_options = CURRENCY_CODES.map(code => {return {'label': code, 'value': code}});
+
+        // The funding_amount should be the sum of created awards in the frontend until the award has been saved after which it should use the funding_amount from the backend 
+        // as the source of truth returning an object with a funding_amount property with the sum of the funding_amount properties of the parameters:
+        // https://stackoverflow.com/a/5732087/5405197
+        const totalAwardsAmount = isAddScholarshipMode ? awards.reduce((prevAward, currentAward) => 
+        ({funding_amount: prevAward.funding_amount + currentAward.funding_amount})).funding_amount : scholarship.funding_amount;
 
         const renderChangeCurrency = (
             <>
                 Currency:{' '}
-                <Select value={currency} options={currency_options} onChange={this.onCurrencyChange} />
+                <Select value={currency} options={currency_options} onChange={this.onCurrencyChange} disabled={disableEditingAwards} />
             </>
         )
 
         return (
             <div className={"my-3"}>
-                <h5>Total Funding Amount: {scholarship.funding_amount} {currency}</h5>
+                {/* After the scholarship has been created, if it's a crytpo scholarship it may have multiple currencies so we should defer to the scholarship.currency field
+                 because it will usually be in USD which represents the aggregated value of all the awards after it has been converted */}
+                 <Spin tip={isUpdatingScholarship} spinning={isUpdatingScholarship}>
+                        <h5>
+                            Total Funding Amount: {CryptoCurrencies.includes(currency) ? 
+                            <CurrencyDisplay amount={totalAwardsAmount} inputCurrency={isAddScholarshipMode ? currency : scholarship.currency} outputCurrency={CAD.code} /> :  
+                            `${formatCurrency(Number.parseFloat(totalAwardsAmount))} ${currency}`}
+                        </h5>
+                 </Spin>
+                 {disableEditingAwards && 
+                    <Alert message="Once the scholarship has been funded, awards cannot be changed. Visit the contribution page to add or increase awards." />
+                 }
+                
                 <br />
                 {renderChangeCurrency}
                 <br />
                 <br />
                 {renderAwards}
-                <Button type="primary" onClick={this.addAward} >Add Award</Button>
+                <Button type="primary" onClick={this.addAward} disabled={disableEditingAwards}>Add Award</Button>
                 <br />
                 <br />
                 <InviteScholarshipCollaborator
@@ -726,12 +646,13 @@ class ScholarshipAddEdit extends React.Component{
     }
 
     fundingPage = () => {
-        const { scholarship, contributor } = this.state;
+        const { scholarship, contributor, awards } = this.state;
 
         return (
             <div className="my-3">
-                <PaymentSend scholarship={scholarship}
+                <ScholarshipPaymentForm scholarship={scholarship}
                              onFundingComplete={this.onFundingComplete}
+                             awards={awards}
                              contributor={contributor}
                              contributorFundingAmount={Number.parseFloat(scholarship.funding_amount)} />
             </div>
@@ -743,8 +664,14 @@ class ScholarshipAddEdit extends React.Component{
             pageNumber, errorLoadingScholarship } = this.state;
         const { userProfile } = this.props;
 
+        let scholarshipEditPages = this.scholarshipEditPages();
+
         if (errorLoadingScholarship) {
             return errorLoadingScholarship;
+        }
+
+        if (isLoadingScholarship) {
+            return <Loading  title="Loading Scholarship"/>
         }
 
         const { is_atila_direct_application } = scholarship;
@@ -758,31 +685,6 @@ class ScholarshipAddEdit extends React.Component{
                 {updatedAtDate.toLocaleTimeString()}
             </p>)
         }
-
-
-        let scholarshipEditPages = [
-            {
-                title: 'Basic Info',
-                render: this.basicInfoPage,
-            },
-            {
-                title: 'Awards',
-                render: this.awardsPage,
-            },
-            {
-                title: 'Eligibility',
-                render: this.eligibilityPage,
-            },
-            {
-                title: 'Specific Questions',
-                render: this.specificQuestionsPage,
-            },
-            {
-                title: 'Funding',
-                render: this.fundingPage,
-            },
-        ];
-
         if (!is_atila_direct_application) {
             scholarshipEditPages = [scholarshipEditPages[0], scholarshipEditPages[2]]
         }
@@ -814,7 +716,6 @@ class ScholarshipAddEdit extends React.Component{
                     <title>{helmetTitle} - Atila</title>
                 </Helmet>
                 <div className="container mt-5">
-                    {isLoadingScholarship && <Loading  title="Loading Scholarships..."/>}
                     <div className="card shadow p-3">
                         <h1>{title}: {scholarship.name}</h1>
                         {scholarship.slug && !isAddScholarshipMode &&

@@ -1,12 +1,20 @@
 import React from 'react';
-import {EnvironmentDev, EnvironmentProd, EnvironmentStaging} from "./Environment";
+import {EnvironmentDemo, EnvironmentDev, EnvironmentProd, EnvironmentStaging} from "./Environment";
 
 describe('Environment', () => {
 
     it('renders the correct environment name', () => {
         expect(EnvironmentDev.name).toBe('dev');
         expect(EnvironmentStaging.name).toBe('staging');
+        expect(EnvironmentDemo.name).toBe('demo');
         expect(EnvironmentProd.name).toBe('prod');
+    });
+
+    it('renders the correct isDemoMode', () => {
+        expect(EnvironmentDev.isDemoMode).toBe(false);
+        expect(EnvironmentStaging.isDemoMode).toBe(false);
+        expect(EnvironmentDemo.isDemoMode).toBe(true);
+        expect(EnvironmentProd.isDemoMode).toBe(false);
     });
 
     it('renders the correct api url', () => {
@@ -14,7 +22,7 @@ describe('Environment', () => {
         for (let prop in EnvironmentDev) {
             if (Object.prototype.hasOwnProperty.call(EnvironmentDev, prop)) {
                 if (prop.toLowerCase().includes('api')) {
-                    expect(EnvironmentDev[prop].startsWith('http://127.0.0.1:')).toBeTruthy();
+                    expect((EnvironmentDev as any)[prop].startsWith('http://127.0.0.1:')).toBeTruthy();
                 }
             }
         }
@@ -22,7 +30,7 @@ describe('Environment', () => {
         for (let prop in EnvironmentStaging) {
             if (Object.prototype.hasOwnProperty.call(EnvironmentStaging, prop)) {
 
-                const propValue = EnvironmentStaging[prop];
+                const propValue = (EnvironmentStaging as any)[prop];
                 if (prop.toLowerCase().includes('api') && prop !== "apiUrlNotion") {
                     expect(propValue).toContain('staging');
                 }
@@ -36,7 +44,7 @@ describe('Environment', () => {
         for (let prop in EnvironmentProd) {
             if (Object.prototype.hasOwnProperty.call(EnvironmentProd, prop)) {
 
-                const propValue = EnvironmentProd[prop];
+                const propValue = (EnvironmentProd as any)[prop];
                 if (prop.toLowerCase().includes('api')) {
                     expect(propValue).not.toContain('127.0.0.1');
                     expect(propValue).not.toContain('staging');
@@ -89,7 +97,7 @@ describe('Environment', () => {
             for (let prop in environment) {
                 if (Object.prototype.hasOwnProperty.call(environment, prop)) {
                     if (prop.toLowerCase().includes('api')) {
-                        expect(environment[prop].endsWith('/')).toBe(false);
+                        expect((environment as any)[prop].endsWith('/')).toBe(false);
                     }
                 }
             }

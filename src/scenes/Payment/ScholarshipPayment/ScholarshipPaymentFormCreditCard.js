@@ -20,7 +20,7 @@ import {ATILA_SCHOLARSHIP_FEE, ATILA_SCHOLARSHIP_FEE_TAX, Currencies} from "../.
 
 export const PREMIUM_PRICE_BEFORE_TAX = 9;
 export const PREMIUM_PRICE_WITH_TAX = 10.17;
-class PaymentSendForm extends React.Component {
+class ScholarshipPaymentFormCreditCard extends React.Component {
 
     constructor(props) {
         super(props);
@@ -331,7 +331,7 @@ class PaymentSendForm extends React.Component {
     }
 }
 
-PaymentSendForm.defaultProps = {
+ScholarshipPaymentFormCreditCard.defaultProps = {
     userProfile: null,
     contributor: {
         "is_anonymous": false,
@@ -343,7 +343,7 @@ PaymentSendForm.defaultProps = {
     contributorFundingAmount: null,
 };
 
-PaymentSendForm.propTypes = {
+ScholarshipPaymentFormCreditCard.propTypes = {
     userProfile: UserProfilePropType,
     scholarship: ScholarshipPropType,
     onFundingComplete: PropTypes.func,
@@ -357,6 +357,6 @@ const mapDispatchToProps = {
 const mapStateToProps = state => {
     return { userProfile: state.data.user.loggedInUserProfile };
 };
-export default injectStripe(withRouter(connect(mapStateToProps, mapDispatchToProps)(PaymentSendForm)));
+export default injectStripe(withRouter(connect(mapStateToProps, mapDispatchToProps)(ScholarshipPaymentFormCreditCard)));
 
-export const  PremiumCheckoutFormTest = PaymentSendForm;
+export const  PremiumCheckoutFormTest = ScholarshipPaymentFormCreditCard;

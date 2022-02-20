@@ -32,7 +32,7 @@ import {BlindApplicationsExplanationMessage} from "../../models/Scholarship";
 import { Alert } from 'antd';
 import ApplicationViewPreviousApplications from "./ApplicationViewPreviousApplications";
 import ApplicationWordCountExplainer from "./ApplicationWordCountExplainer";
-import WalletDisplay from "../../components/Payments/WalletDisplay";
+import WalletDisplay from "../../components/Crypto/WalletDisplay";
 import { CryptoScholarshipWalletExplanation } from "../../models/ConstantsPayments";
 
 const { Step } = Steps;

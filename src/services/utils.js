@@ -129,14 +129,14 @@ export function toTitleCase(str) {
     return str;
 }
 
-export function formatCurrency(input, convertToInteger=false, decimalPlaces=false) {
+export function formatCurrency(input, convertToInteger=false, decimalPlaces=false, currency='CAD') {
     if (convertToInteger) {
         input = Number.parseInt(input);
     }
     if (decimalPlaces) {
         input = input.toFixed(decimalPlaces)
     }
-    return input.toLocaleString('en-ca', {style : 'currency', currency: 'CAD'});
+    return input.toLocaleString('en-ca', {style : 'currency', currency});
 }
 
 export function slugify(text, maxLength=null) {
@@ -418,7 +418,7 @@ export function getGreetingTime () {
     return greeting;
 }
 
-export function getRandomString(maxLength=null) {
+export function getRandomString(maxLength=6) {
     // https://gist.github.com/gordonbrander/2230317
     let randomString = '';
 
@@ -430,6 +430,10 @@ export function getRandomString(maxLength=null) {
     }
 
     return randomString;
+}
+
+export function getRandomNumber(min=1, max = 100) {
+    return Math.floor((Math.random() * max) + min);
 }
 
 export function getGuestUserId() {

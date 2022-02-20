@@ -36,10 +36,13 @@ const Scholarship = loadable(() => import("./scenes/Scholarship/Scholarship"), {
 const Application = loadable(() => import("./scenes/Application/Application"), {
   fallback: <Loading />,
 });
+const Crypto = loadable(() => import("./scenes/Crypto/Crypto"), {
+  fallback: <Loading />,
+});
 const HowToStartAScholarship = loadable(() => import("./scenes/DirectApplicationInfo/HowToStartAScholarship"), {
   fallback: <Loading />,
 });
-const NotionPage = loadable(() => import("./scenes/Notion/NotionPage"), {
+const Wiki = loadable(() => import("./scenes/Wiki/Wiki"), {
   fallback: <Loading />,
 });
 const HowToApplyForScholarships = loadable(() => import("./scenes/DirectApplicationInfo/HowToApplyForScholarships"), {
@@ -199,9 +202,10 @@ class App extends React.Component {
                 component={GoogleAnalyticsTracker(HowToApplyForScholarships)}
               />
               <Route
-                path='/p/:pageId'
-                component={GoogleAnalyticsTracker(NotionPage)}
+                path='/wiki/:pageId'
+                component={GoogleAnalyticsTracker(Wiki)}
               />
+              <Route path='/crypto' component={GoogleAnalyticsTracker(Crypto)} />
               <Route
                 path='/search-old'
                 component={GoogleAnalyticsTracker(SearchAtila)}

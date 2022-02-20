@@ -45,7 +45,7 @@ Repeated below for convenience:
 > jest.mock('react-stripe-elements', () => {
 >     return {
 >         injectStripe: () => {
->             const PremiumCheckoutFormTest2 = require('./PaymentSendForm').PremiumCheckoutFormTest;
+>             const PremiumCheckoutFormTest2 = require('./ScholarshipPaymentFormCreditCard').PremiumCheckoutFormTest;
 >             return PremiumCheckoutFormTest2;
 >         },
 >         CardElement: () => {

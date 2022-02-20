@@ -11,6 +11,9 @@ import {Link} from "react-router-dom";
 import {forbiddenCharacters, hasForbiddenCharacters} from "../models/Utils";
 import ReferredByInput from './ReferredByInput';
 import { toTitleCase } from '../services/utils';
+import Environment from '../services/Environment';
+import { autoGenerateUser } from '../models/UserProfile.class';
+import { DemoUserMessage } from '../services/DemoUtils';
 
 
 export const LOG_OUT_BEFORE_REGISTERING_HELP_TEXT = "A user is already logged in. Log out to create an account";
@@ -87,11 +90,11 @@ export class PasswordShowHide extends React.Component {
                        disabled={disabled}
                 />
                 {!disabled &&
-                <span
+                <div
                     onClick={this.togglePassword}
-                    className="text-muted font-size-xm cursor-pointer pl-2">
+                    className="text-muted font-size-xm cursor-pointer mt-2">
                                     {showPassword ? 'Hide ' : 'Show '} {placeholder}
-                                </span>
+                                </div>
                 }
             </div>)
     }
@@ -150,13 +153,18 @@ class Register extends React.Component {
         if (nextLocation==='/') {
             nextLocation = '/scholarship';
         }
+
+        const defaultUser = Environment.isDemoMode ? autoGenerateUser() : {
+            first_name: '',
+            last_name: '',
+            username: '',
+            email: '',
+            password: '',
+        };
+
         this.state = {
             userProfile: {
-                first_name: '',
-                last_name: '',
-                username: '',
-                email: '',
-                password: '',
+                ...defaultUser,
                 referred_by: referredBy,
                 referredByChecked: !!referredBy,
                 account_type: accountType,
@@ -339,7 +347,7 @@ class Register extends React.Component {
         const { first_name, last_name, username, email, password, referred_by,
             agreeTermsConditions, account_type, referredByChecked } = userProfile;
         
-        const { location: { search }, loggedInUserProfile } = this.props;
+        const { location: { search }, loggedInUserProfile, className } = this.props;
 
         if (loggedInUserProfile) {
             return (
@@ -379,10 +387,11 @@ class Register extends React.Component {
         }
 
         return (
-            <div className="container mt-5">
-                <div className="card shadow p-3">
+            <div className={className}>
+                <div className="card shadow p-3 text-left">
                     <div>
                         <h1>Register</h1>
+                        <DemoUserMessage />
                         {redirectInstructions}
                         <div className="row p-3 form-group">
                             {first_name &&
@@ -441,7 +450,7 @@ class Register extends React.Component {
                             <PasswordShowHide password={password} updateForm={this.updateForm} />
 
                             <label className='mr-3 mb-3'>Did someone refer you to Atila?</label>
-                            <input className={'mt-1'}
+                            <input className={'mb-3'}
                                    type="checkbox"
                                    name="referredByChecked"
                                    checked={referredByChecked}
@@ -459,14 +468,14 @@ class Register extends React.Component {
                                 <br/>
                                 <Select
                                     value={account_type}
-                                    style={{ width: 350 }} 
+                                    className="col-md-6 col-sm-12 pl-0" 
                                     options={accountTypes}
                                     onChange={account_type => this.setState({userProfile:
                                                 {...this.state.userProfile, account_type}})}
                                 />
                             </div>
 
-                            <div className="mb-3">
+                            <div className="my-3">
                                 <Modal
                                     title="Terms and Conditions"
                                     visible={isTermsConditionsModalVisible}
@@ -476,11 +485,11 @@ class Register extends React.Component {
                                     <TermsConditions />
                                 </Modal>
                                 <label htmlFor='agreeTermsConditions' className="mr-3">
-                                    Agree to the
-                                    <button className="btn-text btn-link"
+                                    Agree to the{' '}
+                                    <button className="btn-text btn-link p-0"
                                                          onClick={(event)=>this.showTermsConditionsModal(event, true)}>
                                     terms and conditions
-                                    </button>?
+                                    </button>
                                 </label>
                                 <input placeholder="Agree to the terms and conditions?"
                                        type="checkbox"
@@ -538,12 +547,14 @@ Register.defaultProps = {
     disableRedirect: false,
     userProfile: {},
     onRegistrationFinished: () => {},
+    className: "container mt-5"
 };
 
 Register.propTypes = {
     setLoggedInUserProfile: PropTypes.func.isRequired,
     onRegistrationFinished: PropTypes.func,
     disableRedirect: PropTypes.bool,
+    className: PropTypes.string,
     userProfile:PropTypes.shape({}),
 };
 

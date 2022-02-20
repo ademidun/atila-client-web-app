@@ -4,6 +4,7 @@ export const EnvironmentDev = {
     apiUrl: 'http://127.0.0.1:8000/api',
     //apiUrl: 'https://c3bff55a3fa0.ngrok.io/api',
     apiUrlNotion: 'http://127.0.0.1:8787',
+    // apiUrlNotion: 'https://notion-api-worker.atila.workers.dev',
     apiUrlNodeMicroservice: 'http://127.0.0.1:9000',
     apiUrlBillingMicroservice: 'http://127.0.0.1:9001',
     apiUrlRecommender: 'http://127.0.0.1:5000',
@@ -12,6 +13,7 @@ export const EnvironmentDev = {
     ALGOLIA_PUBLIC_KEY: '0bd3e798b8330dc08ba51ab519fd35e7',
     ALGOLIA_APP_ID: 'HH66ESLTOR',
     clientUrl: 'http://localhost:3000',
+    isDemoMode: false,
 };
 
 export const EnvironmentStaging = {
@@ -27,7 +29,15 @@ export const EnvironmentStaging = {
     ALGOLIA_PUBLIC_KEY: '0bd3e798b8330dc08ba51ab519fd35e7',
     ALGOLIA_APP_ID: 'HH66ESLTOR',
     clientUrl: 'https://staging.atila.ca',
+    isDemoMode: false,
 };
+
+export const EnvironmentDemo = {
+    ...EnvironmentStaging,
+    name: "demo",
+    clientUrl: 'https://demo.atila.ca',
+    isDemoMode: true,
+}
 
 export const EnvironmentProd = {
     name: 'prod',
@@ -42,6 +52,7 @@ export const EnvironmentProd = {
     ALGOLIA_PUBLIC_KEY: '0bd3e798b8330dc08ba51ab519fd35e7',
     ALGOLIA_APP_ID: 'HH66ESLTOR',
     clientUrl: 'https://atila.ca',
+    isDemoMode: false,
 };
 
 // set to EnvironmentDev as the default so we can use type hinting and the autocomplete feature
@@ -51,6 +62,8 @@ if (window.location.host.includes('localhost')) {
     Environment = EnvironmentDev;
 } else if (window.location.host.includes('staging')) {
     Environment = EnvironmentStaging;
+} else if (window.location.host.includes('demo')) {
+    Environment = EnvironmentDemo;
 }
 else if(window.location.host.includes('atila.ca')){
     Environment =  EnvironmentProd;

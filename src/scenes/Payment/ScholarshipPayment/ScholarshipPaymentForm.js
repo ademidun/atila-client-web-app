@@ -1,24 +1,23 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {Elements, StripeProvider} from "react-stripe-elements";
-import PaymentSendForm from "./PaymentSendForm";
+import ScholarshipPaymentFormCreditCard from "./ScholarshipPaymentFormCreditCard";
 import Environment from "../../../services/Environment";
 import {ScholarshipPropType} from "../../../models/Scholarship";
 import {Currencies} from "../../../models/ConstantsPayments";
+import ScholarshipPaymentFormCrypto from "./ScholarshipPaymentFormCrypto";
 
 const { STRIPE_PUBLIC_KEY } = Environment;
-class PaymentSend extends React.Component {
+class ScholarshipPaymentForm extends React.Component {
 
     render() {
 
-        const { scholarship, onFundingComplete, contributor, contributorFundingAmount } = this.props;
+        const { scholarship, onFundingComplete, contributor, contributorFundingAmount, awards } = this.props;
         const { currency } = contributor
 
         if (Currencies[currency].is_crypto) {
             return (
-                <h1>
-                    To be implemented for crypto currencies
-                </h1>
+                <ScholarshipPaymentFormCrypto scholarship={scholarship} awards={awards} contributor={contributor} onFundingComplete={onFundingComplete} />
             )
         }
 
@@ -29,7 +28,7 @@ class PaymentSend extends React.Component {
             >
 
                 <Elements>
-                    <PaymentSendForm scholarship={scholarship}
+                    <ScholarshipPaymentFormCreditCard scholarship={scholarship}
                                      onFundingComplete={onFundingComplete}
                                      contributor={contributor}
                                      contributorFundingAmount={contributorFundingAmount} />
@@ -39,11 +38,14 @@ class PaymentSend extends React.Component {
     }
 }
 
-PaymentSend.propTypes = {
+ScholarshipPaymentForm.propTypes = {
+    // onFundingComplete Takes a contribution object
+    // TODO make this into a typescript file so we can specify the function type
     onFundingComplete: PropTypes.func,
     scholarship: ScholarshipPropType,
+    awards: PropTypes.arrayOf({}),
     contributor: PropTypes.shape({}),
     contributorFundingAmount: PropTypes.number,
 };
 
-export default PaymentSend;
+export default ScholarshipPaymentForm;

@@ -5,15 +5,16 @@ import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
 
 import {Alert, Button, Input, Radio, Select, Space, Steps} from "antd";
-import PaymentSend from "../Payment/PaymentSend/PaymentSend";
 import {UserProfilePropType} from "../../models/UserProfile";
 import Register from "../../components/Register";
 import FileInput from "../../components/Form/FileInput";
-import {DEFAULT_SCHOLARSHIP_CONTRIBUTOR, SCHOLARSHIP_CONTRIBUTION_EXAMPLE_IMAGE} from "../../models/Scholarship";
+import {DEFAULT_SCHOLARSHIP_CONTRIBUTOR} from "../../models/Scholarship";
 import ScholarshipContributionProfilePictureChooser from "./ScholarshipContributionProfilePictureChooser";
 import {isValidEmail} from "../../services/utils";
 import ReferredByInput from "../../components/ReferredByInput";
 import {CryptoCurrencies, Currencies, CURRENCY_CODES, ETH} from "../../models/ConstantsPayments";
+import CurrencyDisplay from '@atila/web-components-library.ui.currency-display';
+import ScholarshipPaymentFormCrypto from '../Payment/ScholarshipPayment/ScholarshipPaymentFormCrypto';
 
 const { Step } = Steps;
 
@@ -59,7 +60,6 @@ class ScholarshipContribution extends React.Component {
             isLoadingScholarship: true,
             pageNumber: 0,
             contributor: defaultContributor,
-            invalidInput: !defaultContributor.funding_amount,
             showRegistrationForm: true,
             fundingComplete: false,
             referredByUserProfile: null,
@@ -78,13 +78,11 @@ class ScholarshipContribution extends React.Component {
                 const { scholarship, awards, owner_detail } = res.data;
                 if (scholarship.is_crypto) { // change default contribution currency to ETH for crypto scholarships
                     updatedContributor.currency = ETH.code;
+                    updatedContributor.funding_amount = 0.01; //0.1 ETH is a more realistic starting contribution ($25)
                 }
-                this.setState({ scholarship, awards, scholarshipOwner: owner_detail, contributor: updatedContributor });
-                if (awards.length > 0) {
-                    // Default to contributing towards the top award.
-                    const top_award_id = awards[0].id
-                    this.setFundingDistribution(top_award_id)
-                }
+                this.setState({ scholarship, awards, scholarshipOwner: owner_detail, contributor: updatedContributor }, () => {
+                this.setFundingDistribution();
+                });
             })
             .catch(err => {
                 console.log({err})
@@ -105,51 +103,60 @@ class ScholarshipContribution extends React.Component {
             event.preventDefault();
         }
         let { contributor, pageNumber } = this.state;
-        let invalidInput = null;
         let value = event.target.value;
         let eventName = event.target.name;
         const keyCode = event.code || event.key;
 
-        if (eventName === "funding_amount") {
-            value = Number.parseInt(value)
-        }
-
-        if (eventName === "email") {
-            if (value && !isValidEmail(value)) {
-                // Don't print a full invalid input statement because user might still be typing
-                invalidInput = true;
-            }
-        }
 
         contributor = {
             ...contributor,
             [eventName]: value
         };
+        if (eventName === "funding_amount") {
+            // preserve decimal places when working with crypto values
+            value = Currencies[contributor.currency].is_crypto ? Number.parseFloat(value) : Number.parseInt(value);
+        }
 
         // If the user types a first name or last name then that implies they are not anonymous.
         // If no first or last name then they're anonymous.
         contributor.is_anonymous = !(contributor.first_name || contributor.last_name)
 
-        if (!contributor.funding_amount) {
-            invalidInput = `Please enter a contribution amount.`
-        }
-
-        const currency = contributor.currency
-        if (contributor && contributor.funding_amount < Currencies[currency].minimum_funding_amount_contribute_scholarship
-            && contributor.funding_distribution !== "create") {
-            invalidInput = `Minimum contribution amount is ${Currencies[currency].minimum_funding_amount_contribute_scholarship}. ${currency}`;
-        }
-        if (contributor && contributor.funding_distribution === "create" &&
-            contributor.funding_amount < Currencies[currency].minimum_funding_amount_contribute_new_award) {
-            invalidInput = `Minimum contribution amount for starting a new award is ${Currencies[currency].minimum_funding_amount_contribute_new_award}. ${currency}`;
-        }
-
-        this.setState({ contributor, invalidInput }, () => {
-            if (!invalidInput && keyCode === 'Enter'){
+        this.setState({ contributor }, () => {
+            if (!this.getContributorError(contributor) && keyCode === 'Enter'){
                 this.changePage(pageNumber+1);
             }
         });
     };
+
+    getContributorError = (contributor) => {
+
+        const { scholarship } = this.state;
+        let contributorError;
+
+        if (scholarship?.is_crypto && !CryptoCurrencies.includes(contributor.currency)) {
+            contributorError = `This is a crypto scholarship. You must select one of the following currencies: ${CryptoCurrencies.join(', ')}`
+        }
+
+        if (contributor.email && !isValidEmail(contributor.email)) {
+            // Don't print a full invalid input statement because user might still be typing
+            contributorError = true;
+        }
+
+        const currency = contributor.currency;
+        if (!contributor.funding_amount) {
+            contributorError = `Please enter a contribution amount.`
+        }
+        if (contributor.funding_amount < Currencies[currency].minimum_funding_amount_contribute_scholarship
+            && contributor.funding_distribution !== "create") {
+            contributorError = `Minimum contribution amount is ${Currencies[currency].minimum_funding_amount_contribute_scholarship}. ${currency}`;
+        }
+        if (contributor.funding_distribution === "create" &&
+            contributor.funding_amount < Currencies[currency].minimum_funding_amount_contribute_new_award) {
+            contributorError = `Minimum contribution amount for starting a new award is ${Currencies[currency].minimum_funding_amount_contribute_new_award}. ${currency}`;
+        }
+
+        return contributorError;
+    }
 
     contributeAnonymously = () => {
 
@@ -197,14 +204,25 @@ class ScholarshipContribution extends React.Component {
         this.setState({showCustomContribution: !showCustomContribution});
     }
 
-    setFundingDistribution = (new_distribution) => {
-        const newContributor = { ...this.state.contributor, funding_distribution: new_distribution }
+    setFundingDistribution = () => {
+        const { contributor, awards } = this.state;
+
+        const matchingAwards = awards.filter(award => award.currency === contributor.currency);
+        let newDistribution = "create"
+        if (matchingAwards.length > 0) {
+            newDistribution = matchingAwards[0].id
+        }
+        const newContributor = { ...contributor, funding_distribution: newDistribution }
         this.setState({contributor: newContributor});
     }
 
     onCurrencyChange = (newCurrency) => {
-        const newContributor = { ...this.state.contributor, currency: newCurrency }
-        this.setState({contributor: newContributor});
+        const { contributor } = this.state;
+
+        const newContributor = { ...contributor, currency: newCurrency };
+        this.setState({contributor: newContributor}, () => {
+            this.setFundingDistribution();
+        });
     }
 
     amountPageRender = () => {
@@ -238,13 +256,14 @@ class ScholarshipContribution extends React.Component {
                        prefix={currency}
                        name="funding_amount"
                        placeholder="Funding Amount"
-                       className="col-12"
+                       className="col-12 mb-1"
                        type="number"
                        min="0"
                        step="1"
                        onChange={this.updateContributorInfo}/>
 
                 <br />
+                {Currencies[currency].is_crypto && <small className="float-left"><CurrencyDisplay amount={contributor.funding_amount} inputCurrency={currency} /></small>}
                 <br />
                 {renderChangeCurrency}
                 <br />
@@ -263,13 +282,13 @@ class ScholarshipContribution extends React.Component {
                                 let numFundingAmount = Number.parseFloat(award.funding_amount)
 
                                 if (!contributor.funding_amount) {
-                                    return <Radio value={award.id}>
+                                    return <Radio value={award.id} key={award.id}>
                                         Increase the {numFundingAmount} {award.currency} award.
                                     </Radio>
                                 }
 
                                 let newAwardTotal = Number.parseFloat(award.funding_amount) + Number.parseFloat(contributor.funding_amount)
-                                return <Radio value={award.id}>
+                                return <Radio value={award.id} key={award.id}>
                                     Increase the {numFundingAmount} {award.currency} award to {newAwardTotal} {contributor.currency}
                                 </Radio>
                             })}
@@ -357,6 +376,9 @@ class ScholarshipContribution extends React.Component {
                 <h1>
                     Email to receive your funding confirmation
                 </h1>
+                <h4>
+                    Optional for crypto scholarships
+                </h4>
 
                 <Input value={contributor.email}
                        name="email"
@@ -379,18 +401,18 @@ class ScholarshipContribution extends React.Component {
         )
     }
 
-    paymentPageRender = (paymentSend) => {
+    paymentPageRender = (scholarshipPaymentForm) => {
         return (
             <div className="col-12">
                 <h1>
                     Enter Payment Details
                 </h1>
-                {paymentSend}
+                {scholarshipPaymentForm}
             </div>
         )
     }
 
-    completePageRender = (paymentSend) => {
+    completePageRender = (scholarshipPaymentForm) => {
         const { userProfile } = this.props;
         const { scholarship, contributor, showRegistrationForm } = this.state;
 
@@ -402,38 +424,30 @@ class ScholarshipContribution extends React.Component {
                     <>
                         <div className="col-12">
                             <img src={contributor.funding_confirmation_image_url}
-                                 style={{width: "100%"}} alt={`Scholarship Contribution confirmation for ${contributor.first_name}`} />
+                                 style={{width: "100%"}} alt={`Scholarship Contribution confirmation for ${contributor.first_name || 'you'}`} />
                             {/*
                                                 After 3 seconds, hide the message that tells the user the image may take some time to load.
                                                 The images are generated using htmlcsstoimage.com which can take about 3 seconds to load.
+                                                So this means that even though contributor.funding_confirmation_image_url is truthy because the URL has loaded
+                                                The HTTP get request for contributor.funding_confirmation_image_url hasn't rendered the image on the screen yet.
                                                 This message lets the user know to stay on the page and not navigate away.
+                                                Sample image: Go to src/models/scholarhip.js and find SCHOLARSHIP_CONTRIBUTION_EXAMPLE_IMAGE
                                              */}
                             <p id="hide-after-3-seconds">Your confirmation image may take a few seconds to display, please wait...</p>
                         </div>
+                        <div className="col-12 text-center mb-3">
+                            <a target="_blank" rel="noopener noreferrer" href={contributor.funding_confirmation_image_url}>
+                                View Image (Right click or hold this link on mobile to save image)
+                            </a>
+                        </div>
                     </>
                     }
-                    {contributor.is_anonymous &&
-                    <div>
-                        <h6 className="text-muted text-center">
-                            No image to share since you're anonymous, but if you decide to share your name for future scholarships,
-                            you can get an image like this:
-                        </h6>
-                        <div className="col-12">
-                            <img src={SCHOLARSHIP_CONTRIBUTION_EXAMPLE_IMAGE}
-                                 style={{width: "70%"}} alt={`Scholarship Contribution confirmation for ${contributor.first_name}`} />
-                        </div>
-                    </div>
-                    }
-                    <div className="col-12 text-center mb-3">
-                        <a target="_blank" rel="noopener noreferrer" href={contributor.is_anonymous ? SCHOLARSHIP_CONTRIBUTION_EXAMPLE_IMAGE : contributor.funding_confirmation_image_url}>
-                            View Image (Right click or hold on mobile to save image)
-                        </a>
-                    </div>
                     <div className="col-12 text-center mb-3">
                         <Link to={`/scholarship/${scholarship.slug}`}>
                             View Scholarship: {scholarship.name}
                         </Link>
                     </div>
+                    {scholarshipPaymentForm}
                     {!userProfile &&
                     <div className="col-12 text-center mb-3">
                         <h1>Optional: Create an Account</h1> <br/>
@@ -448,36 +462,31 @@ class ScholarshipContribution extends React.Component {
                         {showRegistrationForm &&
                         <Register location={this.props.location}
                                   userProfile={contributor}
-                                  disableRedirect={true}/>
+                                  disableRedirect={true}
+                                  className=""/>
                         }
                     </div>
                     }
 
                 </div>
-                {paymentSend}
             </div>
         )
     }
 
     render () {
         const { isLoadingScholarship, scholarship, pageNumber, contributor, fundingComplete } = this.state;
-        let { invalidInput } = this.state;
 
-        if (scholarship?.is_crypto && !CryptoCurrencies.includes(contributor.currency)) {
-            invalidInput = `This is a crypto scholarship. You must select one of the following currencies: ${CryptoCurrencies.join(', ')}`
-        }
-        if (CryptoCurrencies.includes(contributor.currency)) {
-            invalidInput = "Support for cryptocurrencies coming soon"
-        }
+        const contributorError = this.getContributorError(contributor)
         
 
-        let paymentSend = null
+        let scholarshipPaymentForm = null
         if (pageNumber >= 3) {
             // Only initialize this component on the necessary pages.
-            paymentSend = <PaymentSend scholarship={scholarship}
-                                       onFundingComplete={data => this.onFundingComplete(data, scholarshipContributionPages)}
-                                       contributorFundingAmount={contributor.funding_amount}
-                                       contributor={contributor} />
+            scholarshipPaymentForm = <ScholarshipPaymentFormCrypto 
+                                scholarship={scholarship}
+                                awards={[{funding_amount: contributor.funding_amount}]}
+                                onFundingComplete={data => this.onFundingComplete(data, scholarshipContributionPages)}
+                                contributor={contributor} />
         }
 
         let scholarshipContributionPages = [
@@ -495,26 +504,31 @@ class ScholarshipContribution extends React.Component {
             },
             {
                 title: 'Payment',
-                render: () => this.paymentPageRender(paymentSend),
+                render: () => this.paymentPageRender(scholarshipPaymentForm),
             },
             {
                 title: 'Complete',
-                render: () => this.completePageRender(paymentSend),
+                render: () => this.completePageRender(scholarshipPaymentForm),
             },
         ];
 
         const scholarshipSteps = (<Steps current={pageNumber} onChange={(newPage) => this.changePage(newPage)}>
             { scholarshipContributionPages.map(item => {
 
-                let disableStep = invalidInput || (!fundingComplete && (["Payment", "Complete"].includes(item.title)
-                    && !isValidEmail(contributor.email)));
+                let disableStep = contributorError || (!fundingComplete && (["Payment", "Complete"].includes(item.title)
+                    // Disable if scholarship is not a crypto scholarship the email is invalid
+                    // OR if it's a crypto scholarship and an email exists and the email is invalid
+                    // In other words only disable a crypto scholarship if there's an email and it's invalid, but allow blank emails
+                    && ((!scholarship?.is_crypto && !isValidEmail(contributor.email)) || (scholarship?.is_crypto && contributor.email && !isValidEmail(contributor.email)))
+                    
+                    ));
 
                 if(item.title === "Complete") {
                     disableStep = !fundingComplete;
                 }
                 /*
-                * Cast explicitly to boolean for example if disableStep has the value of invalidInput,
-                * and invalidInput is a string, we need to cast it to boolean. Otherwise, ant design doesn't show
+                * Cast explicitly to boolean for example if disableStep has the value of contributorError,
+                * and contributorError is a string, we need to cast it to boolean. Otherwise, ant design doesn't show
                 * the disabled mouse cursor icon on hover over disabled steps.
                 * */
                 disableStep = !!disableStep;
@@ -544,11 +558,10 @@ class ScholarshipContribution extends React.Component {
             <Button className="float-right col-md-6 mb-3"
                     type="primary"
                     onClick={() => this.changePage(pageNumber+1)}
-                    disabled={invalidInput
+                    disabled={contributorError
                     || (pageNumber === 1 && !contributor.first_name)
-                    || (pageNumber === 2 && !contributor.email)
-                    || (pageNumber === 3 && !fundingComplete)
-                    || CryptoCurrencies.includes(contributor.currency)}>
+                    || (pageNumber === 2 && !contributor.email && !Currencies[contributor.currency].is_crypto)
+                    || (pageNumber === 3 && !fundingComplete)}>
                 Next
             </Button>}
         </div>
@@ -561,17 +574,11 @@ class ScholarshipContribution extends React.Component {
 
                     {scholarshipContributionPages[pageNumber].render()}
 
-                    {invalidInput &&
-                    <div className="text-center col-12 mt-2">
-                    
-                    {CryptoCurrencies.includes(contributor.currency) ? 
-                    <Alert message={invalidInput} /> : (
-                        <p className="text-danger">
-                            {invalidInput}
-                        </p>
-                    ) }
-
-                    </div>}
+                    {contributorError &&
+                        <div className="text-center col-12 mt-2">
+                            <Alert message={contributorError} type="error" />
+                        </div>
+                    }
                 </div>
 
                 {navigationButtons}
