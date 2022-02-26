@@ -205,7 +205,6 @@ class App extends React.Component {
                 path='/wiki/:pageId'
                 component={GoogleAnalyticsTracker(Wiki)}
               />
-              <Route path='/crypto' component={GoogleAnalyticsTracker(Crypto)} />
               <Route path='/crypto/:action' component={GoogleAnalyticsTracker(Crypto)} />
               <Route
                 path='/search-old'

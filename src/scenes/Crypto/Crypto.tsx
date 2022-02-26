@@ -28,7 +28,7 @@ function Crypto(props: RouteComponentProps<RouteParams>) {
             <TabPane tab="Start Here" key="start">
                 <CryptoIntro />
             </TabPane>
-            <TabPane tab="Add Blockchains" key="add-blockchain">
+            <TabPane tab="Add Blockchains" key="add-blockchains">
                 <div className="section card shadow">
                     <AddBlockChains />
                 </div>
