@@ -53,6 +53,9 @@ export const BNB: Currency = {
     is_crypto: true,
 }
 
+export const BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID = 56;
+export const BINANCE_SMART_CHAIN_TESTNET_CHAIN_ID = 97;
+
 export const Currencies: {[key: string]: Currency} = {
     "CAD": CAD, "USD": USD, "ETH": ETH, "BNB": BNB
 }

@@ -21,8 +21,8 @@ describe('Environment', () => {
 
         for (let prop in EnvironmentDev) {
             if (Object.prototype.hasOwnProperty.call(EnvironmentDev, prop)) {
-                if (prop.toLowerCase().includes('api')) {
-                    expect((EnvironmentDev as any)[prop].startsWith('http://127.0.0.1:')).toBeTruthy();
+                if (prop.toLowerCase().includes('api') && !prop.toLowerCase().includes('api')) {
+                    expect((EnvironmentDev as any)[prop]).toMatch(new RegExp(`^http://127.0.0.1:?`));
                 }
             }
         }

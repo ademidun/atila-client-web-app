@@ -10,12 +10,6 @@ prod: [![Netlify Status](https://api.netlify.com/api/v1/badges/837e9c44-3040-446
 
 staging: [![Netlify Status](https://api.netlify.com/api/v1/badges/ed4f5b21-da47-4094-8e41-89e49a620f55/deploy-status)](https://app.netlify.com/sites/atila-staging/deploys)
 
-## How to Create a Pull Request
-
-- Read/Watch: [How we Write Frontend React Code and Create Pull Requests at Atila](https://atila.ca/blog/tomiwa/how-we-write-frontend-react-code-and-create-pull-requests-at-atila)
-
-- Watch: [How to Get the Unique Deploy URL for a Code Push](https://www.loom.com/share/e1e5c02eeb0d47b08def5aa5b81cc0e7)
-
 ## Getting Started
 
 `npm install; npm start`
@@ -46,7 +40,17 @@ Taken from [PR #8](https://github.com/ademidun/atila-client-web-app/pull/8/files
 
 To test a specific file: `npm test FileName` for example: `npm test Register`
 
-## Mocking API Data
+## External APIs
+
+This client-web app is connected to multiple external APIs
+- `Environment.apiUrl`: [atila-django: main server](https://github.com/ademidun/atila-django/)
+- `Environment.apiUrlNotion`: [notion-api-worker: get Wiki content from Notion](https://github.com/ademidun/notion-api-worker)
+- etc.
+
+In order to use these APIs you can either follow the instructions in the linked repos to start the service, use staging APIs instead of localhost (make sure to uncomment before pushing to avoid failed tests in CI) or mock API data (see next section).
+
+
+## Mock API Data
 
 If you can't or don't want to use the actual backend API you can mock the responses.
 
@@ -98,7 +102,12 @@ We use [axios-mock-adapter](https://github.com/ctimmerm/axios-mock-adapter) for 
 - Learn more here: 
     - https://storybook.js.org/docs/react/get-started/introduction
     - https://storybook.js.org/docs/react/writing-stories/introduction
-    
+
+## How to Create a Pull Request
+
+- Read/Watch: [How we Write Frontend React Code and Create Pull Requests at Atila](https://atila.ca/blog/tomiwa/how-we-write-frontend-react-code-and-create-pull-requests-at-atila)
+
+- Watch: [How to Get the Unique Deploy URL for a Code Push](https://www.loom.com/share/e1e5c02eeb0d47b08def5aa5b81cc0e7)
 
 ## Deployment
 
