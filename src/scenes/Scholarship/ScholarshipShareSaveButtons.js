@@ -104,10 +104,10 @@ class ScholarshipShareSaveButtons extends React.Component {
         const { scholarship } = this.props;
 
         return (
-            <div className="mb-3 d-inline" style={{"fontSize": "18px", minHeight: "75px"}}>
+            <div style={{"fontSize": "18px", minHeight: "75px"}}>
                 <Button disabled={isSavedScholarship}
-                        className="col-md-3 col-sm-12"
-                        style={{"fontSize": "18px", minHeight: "75px"}}
+                        className="w-100"
+                        style={{"fontSize": "18px", minHeight: "75px", minWidth: "250px"}} //hacky fix to solve the fact that col-md-3 is not working as expected when used inside a card on mobile devices
                         onClick={this.saveScholarship}>
                             {isSavedScholarship ? "You've already saved this scholarship": "Save Scholarship"}
                 </Button>

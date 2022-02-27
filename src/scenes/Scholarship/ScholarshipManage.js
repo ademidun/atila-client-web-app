@@ -13,6 +13,7 @@ import ApplicationsTable from './ApplicationsTable';
 import AssignReviewers from './AssignReviewers';
 import InviteScholarshipCollaborator from "../../components/InviteScholarshipCollaborator";
 import {toastNotify} from "../../models/Utils";
+import SendApplicationAwards from './SendApplicationAwards';
 
 
 class AssignReviewerRadioSelect extends React.Component {
@@ -115,7 +116,6 @@ class ScholarshipManage extends React.Component {
         ScholarshipsAPI.getPendingInvites(scholarshipID)
             .then(res => {
                 const { invites: pending_invites } =  res.data;
-                console.log(pending_invites)
                 this.setState({ pending_invites });
             })
             .finally(() => {
@@ -420,7 +420,7 @@ class ScholarshipManage extends React.Component {
             </>
         )
 
-        const { collaborators, owner_detail } = scholarship;
+        const { collaborators, owner_detail, is_atila_direct_application, is_crypto } = scholarship;
 
         const reviewers = [owner_detail, ...collaborators]
 
@@ -442,6 +442,8 @@ class ScholarshipManage extends React.Component {
             </>
         ))
 
+        const sendApplicationAwards = is_atila_direct_application && is_crypto && userProfile.is_atila_admin;
+
         return (
             <div className="container mt-5">
                 <HelmetSeo  content={seoContent}/>
@@ -459,6 +461,9 @@ class ScholarshipManage extends React.Component {
                 {(isScholarshipOwner || userProfile.is_atila_admin) &&
                 <>
 
+                    {sendApplicationAwards &&
+                        <SendApplicationAwards awards={awards} />
+                    }
                     <br />
                     <Link to={`/scholarship/edit/${scholarship.slug}`} className="text-center">
                         Edit Scholarship

@@ -303,7 +303,9 @@ class ScholarshipDetail extends React.Component {
                             </div>
                             <div>
                                 <hr />
-                                <ScholarshipShareSaveButtons scholarship={scholarship} />
+                                <div className="col-md-6 col-sm-12 p-0">
+                                    <ScholarshipShareSaveButtons scholarship={scholarship} />
+                                </div>
                                 {scholarship.is_blind_applications && <BlindApplicationsExplanationMessage />}
                                 {scholarship.is_referral_bonus_eligible && <ReferralBonusScholarshipExplanationMessage />}
                             </div>
