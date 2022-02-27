@@ -22,17 +22,17 @@ function SendApplicationAwards(props: SendApplicationAwardsProps) {
         <Radio.Group defaultValue={activeAward} buttonStyle="solid" onChange={(e) => setActiveAward(e.target.value)}>
             {awards.map(award => (
                 <Radio.Button value={award} key={award.id}>
-                    {award.id}{' '}{award.recipient?.wallet_address && `Wallet: ${award.recipient?.wallet_address}`}
+                    {award.id}{' '}{award.recipient_wallet?.address && `Wallet: ${award.recipient_wallet?.address}`}
                     </Radio.Button>
             ))}
         </Radio.Group>
 
-        {activeAward.recipient?.wallet_address && 
+        {activeAward.recipient_wallet?.address && 
             <CryptoPaymentForm 
                 amount={Number.parseFloat(activeAward.funding_amount as string)}
-                className="mt-1"
+                className="mt-3"
                 currency={activeAward.currency} 
-                destinationAddress={activeAward.recipient?.wallet_address} />
+                destinationAddress={activeAward.recipient_wallet?.address} />
         }
 
 
