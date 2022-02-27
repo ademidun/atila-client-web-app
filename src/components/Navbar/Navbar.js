@@ -12,7 +12,7 @@ import LogRocket from 'logrocket';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBars} from "@fortawesome/free-solid-svg-icons";
 
-import atilaLogo from "../../components/assets/atila-upway-logo-gradient-circle.png";
+import atilaLogo from "../../components/assets/atila-upway-logo-gradient-circle-border.png";
 
 const {SubMenu} = Menu;
 

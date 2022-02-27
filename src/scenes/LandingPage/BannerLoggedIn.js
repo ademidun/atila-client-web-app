@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import TweenOne from 'rc-tween-one';
 import ScrollParallax from 'rc-scroll-anim/lib/ScrollParallax';
-import bannerImage from "./assets/landing-cover-big-scholarship-gradient-logo.png";
 import {Button} from "antd";
 import {Link} from "react-router-dom";
 import {getGreetingTime} from "../../services/utils";
 import {connect} from "react-redux";
+import BannerImage from './BannerImage';
 
 const loop = {
     duration: 3000,
@@ -63,8 +63,7 @@ class BannerLoggedIn extends React.Component {
                         </div>      
         </div>
         <div className="col-lg-6 col-md-6 col-sm-12 text-center" key="image">
-            <img src={bannerImage}
-                className="col-12" alt="Big cheque" />
+            <BannerImage />
         </div>
         </div>
       </div>

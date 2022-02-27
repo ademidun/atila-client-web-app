@@ -7,7 +7,7 @@ import {Link, withRouter} from "react-router-dom";
 import AutoComplete from "../../components/AutoComplete";
 import {MASTER_LIST_EVERYTHING_UNDERSCORE} from "../../models/ConstantsForm";
 import {slugify} from "../../services/utils";
-import bannerImage from "./assets/landing-cover-big-scholarship-gradient-logo.png";
+import BannerImage from './BannerImage';
 
 const loop = {
   duration: 3000,
@@ -134,8 +134,7 @@ class Banner extends React.Component {
             </form>
           </div>
           <div className="col-lg-6 col-md-6 col-sm-12 text-center" key="image">
-            <img src={bannerImage}
-                 className="col-12" alt="Big cheque" />
+            <BannerImage />
           </div>
         </div>
       </div>
