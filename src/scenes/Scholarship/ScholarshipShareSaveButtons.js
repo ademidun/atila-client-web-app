@@ -2,17 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {connect} from "react-redux";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faBookmark, faQuestionCircle} from "@fortawesome/free-solid-svg-icons";
 import {toastNotify} from "../../models/Utils";
 import NotificationsService from "../../services/NotificationsService";
 import {Link} from "react-router-dom";
-import {Tooltip} from "antd";
 import {addToMyScholarshipHelper} from "../../models/UserProfile";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import {handleError} from "../../services/utils";
 import {updateLoggedInUserProfile} from "../../redux/actions/user";
-import {message} from 'antd';
+import { Button, message } from 'antd';
 
 class ScholarshipShareSaveButtons extends React.Component {
 
@@ -42,7 +39,7 @@ class ScholarshipShareSaveButtons extends React.Component {
         }
 
         if (isSavedScholarship) {
-            toastNotify("You've already saved this scholarship 👌🏿");
+            toastNotify("You've already saved this scholarship");
             return;
         }
 
@@ -50,8 +47,7 @@ class ScholarshipShareSaveButtons extends React.Component {
 
         this.setState({isSavedScholarship: !isSavedScholarship});
         UserProfileAPI
-            .update({userProfile: updatedUserProfile},
-                userProfile.user)
+            .patch({saved_scholarships_ids: updatedUserProfile.saved_scholarships}, userProfile.user)
             .then(res=>{
                 toastNotify('😃 Scholarship successfully saved!');
                 updateLoggedInUserProfile(res.data);
@@ -105,28 +101,19 @@ class ScholarshipShareSaveButtons extends React.Component {
 
     render () {
         const { isSavedScholarship } = this.state;
+        const { scholarship } = this.props;
 
         return (
-            <div className="mb-3 d-inline">
-                <Tooltip placement="right"
-                         title={isSavedScholarship?
-                             "You've already saved this scholarship 👌🏿": 'Save Scholarship'}>
-                    <button className={`btn ${isSavedScholarship ? 'btn-primary' : 'btn-outline-primary'}`}
-                            onClick={this.saveScholarship}
-                            title={isSavedScholarship?
-                                "You've already saved this scholarship 👌🏿": 'Save Scholarship'} >
-                        <FontAwesomeIcon className="ml-1" icon={faBookmark}/>
-                    </button>
-                </Tooltip>
-                <Tooltip placement="right"
-                         title="Save scholarship and get an email reminder 1 week and 1 day before the deadline.">
-                    <FontAwesomeIcon className="ml-1 btn-outline-primary" icon={faQuestionCircle}/>
-                </Tooltip>
+            <div className="mb-3 d-inline" style={{"fontSize": "18px", minHeight: "75px"}}>
+                <Button disabled={isSavedScholarship}
+                        className="col-md-3 col-sm-12"
+                        style={{"fontSize": "18px", minHeight: "75px"}}
+                        onClick={this.saveScholarship}>
+                            {isSavedScholarship ? "You've already saved this scholarship": "Save Scholarship"}
+                </Button>
                 <br/>
-                <p className="text-muted" style={{"fontSize": "medium"}}>
-                <span role="img" className="text-dark" aria-label="backhand index finger pointing up emoji">👆🏿</span>
-                    {' '}
-                    Save scholarship to get a reminder before the deadline.
+                <p className="text-muted mt-1">
+                    Save scholarship to get a reminder before the deadline{' '} {scholarship.is_atila_direct_application && " and when it opens"}.
                 </p>
 
 

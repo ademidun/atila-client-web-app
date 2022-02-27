@@ -187,7 +187,7 @@ class ScholarshipDetail extends React.Component {
                 {pageViews &&
                     <AtilaPointsPaywallModal pageViews={pageViews} />
                 }
-                <div className="container mt-5">
+                <div className="container mt-3">
                     <div className="row">
                         <div className="col-12">
                             <h1>
@@ -207,10 +207,19 @@ class ScholarshipDetail extends React.Component {
                                         </div>
                                     </>
                                 }
+                                
+                            {is_not_available && 
+                                <Alert
+                                    type="error"
+                                    message="This scholarship is no longer being offered."
+                                    className="mb-3"
+                                    style={{ fontSize: 'x-large' }}
+                                />
+                            }
                             </h1>
 
                             <img
-                                style={{ maxHeight: '500px', width: 'auto' }}
+                                style={{ maxHeight: '350px', width: 'auto' }}
                                 src={img_url}
                                 className="center-block col-12"
                                 alt={name} />
@@ -303,7 +312,7 @@ class ScholarshipDetail extends React.Component {
                             <div className="font-weight-bold">
                                 <ScholarshipDeadlineWithTags scholarship={scholarship} addDeadlineToCalendar={true} />
                                 <br />
-                                <ReportIncorrectInfo scholarship={scholarship} className="mb-3" />
+                                <ReportIncorrectInfo scholarship={scholarship} className="my-3" />
                             </div>
 
                             {redditUrlComponent}
@@ -357,14 +366,6 @@ class ScholarshipDetail extends React.Component {
                                     </Row>
                                 </div> 
 
-                            }
-                            {is_not_available &&
-                                <Alert
-                                    type="error"
-                                    message="This scholarship is no longer being offered."
-                                    className="mb-3"
-                                    style={{ maxWidth: '300px' }}
-                                />
                             }
                             {isScholarshipDeadlinePassed &&
                                 <React.Fragment>

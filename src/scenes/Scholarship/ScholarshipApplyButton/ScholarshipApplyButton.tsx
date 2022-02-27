@@ -37,7 +37,7 @@ interface ModalFuncType {
 function ScholarshipApplyButton(props: ScholarshipApplyButtonPropTypes) {
     const { loggedInUserProfile, scholarship, history, location: { pathname } } = props;
 
-    const { owner_detail: scholarshipOwner, metadata } = scholarship;
+    const { owner_detail: scholarshipOwner, open_date, is_atila_direct_application, is_funded } = scholarship;
     
     const [isLoadingApplication, setIsLoadingApplication] = useState<boolean>(false);
     const [application, setApplication] = useState<Application|undefined>(undefined);
@@ -45,6 +45,9 @@ function ScholarshipApplyButton(props: ScholarshipApplyButtonPropTypes) {
 
 
     let scholarshipDateMoment = moment(scholarship.deadline);
+    const todayMoment = moment(Date.now());
+    const otherTodayMoment = moment(Date.now());
+    console.log({ todayMoment, otherTodayMoment });
     const isScholarshipDeadlinePassed = scholarshipDateMoment.diff(moment()) < 0;
 
     const findExistingApplication = useCallback(
@@ -161,9 +164,14 @@ function ScholarshipApplyButton(props: ScholarshipApplyButtonPropTypes) {
     if (loggedInUserProfile && scholarshipOwner.user === loggedInUserProfile.user) {
         return null
     }
-    if (metadata?.not_open_yet) {
+    if (open_date && open_date > todayMoment.toISOString()) {
         return <Button disabled={true} size="large" className="ScholarshipApplyButton">
         Scholarship is not open yet
+    </Button>
+    }
+    if (is_atila_direct_application && !is_funded) {
+        return <Button disabled={true} size="large" className="ScholarshipApplyButton">
+        Scholarship must be funded
     </Button>
     }
     if(isScholarshipDeadlinePassed) {

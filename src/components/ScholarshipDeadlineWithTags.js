@@ -12,7 +12,7 @@ const DEFAULT_OPEN_DATE = "2022-12-31";
 
 function ScholarshipDeadlineWithTags({scholarship, datePrefix, addDeadlineToCalendar}) {
 
-    const { deadline, open_date, date_time_created, metadata } = scholarship;
+    const { deadline, open_date, date_time_created } = scholarship;
 
     let showCalendar = addDeadlineToCalendar;
 
@@ -21,7 +21,7 @@ function ScholarshipDeadlineWithTags({scholarship, datePrefix, addDeadlineToCale
     let color = null;
 
     let scholarshipDateMoment = moment(deadline);
-    if (metadata?.not_open_yet && open_date && open_date > todayMoment.toISOString() && !open_date.includes("2022-12-31")) {
+    if (open_date && open_date > todayMoment.toISOString()) {
         scholarshipDateMoment = moment(open_date);
         tagPrefix = 'opens';
         datePrefix = 'Opens: ';
