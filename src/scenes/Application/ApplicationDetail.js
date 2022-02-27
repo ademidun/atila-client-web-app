@@ -595,7 +595,7 @@ class ApplicationDetail extends  React.Component{
                     }
                     {isMissingProfilePicture &&
                     <p>
-                        Add a picture of yourself before you can submit.
+                        Add a picture to your profile
                     </p>
                     }
                     {applicationWalletError &&
@@ -721,18 +721,17 @@ class ApplicationDetail extends  React.Component{
                                     }
                                     {(pageNumber === 2) &&
                                         <>
-                                            <h2>Upload Profile Picture</h2>
+                                            <h2>Optional: Upload Profile Picture</h2>
 
                                             <h6 className="text-muted">
-                                                As part of account verification and to
-                                                ensure a community of real students
-                                                you must upload a picture of yourself. <br/>
-                                                This picture will also be displayed on your profile.
+                                                It can be of yourself, a cartoon or emoji version of you, your favorite tv or movie character, a cute dog, anything. <br/>
+                                                This picture will also be displayed on your profile. <br/>
+                                                To prevent unconcscious bias, this picture won't be visible to the reviewers until after the finalists have been selected.
                                             </h6>
 
                                             {!isMissingProfilePicture &&
                                                 <>
-                                                <p className="text-muted">Picture upload step complete</p>
+                                                <Alert type="success" message="Picture upload step complete. You may upload a different picture below" />
                                                     <img
                                                     alt="user profile"
                                                     style={{ height: '250px', width: 'auto' }}
@@ -741,8 +740,7 @@ class ApplicationDetail extends  React.Component{
                                                     />
                                                 </>
                                             }
-                                            {isMissingProfilePicture &&
-                                            <FileInput title={"Profile Picture"}
+                                            {<FileInput title={"Profile Picture"}
                                                        type={"image"}
                                                        keyName={"profile_pic_url"}
                                                        filePath={`user-profile-pictures/${userProfile.user}`}
