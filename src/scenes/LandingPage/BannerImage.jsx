@@ -21,12 +21,15 @@ function useInterval(callback, delay) {
 
   // Set up the interval.
   useEffect(() => {
-    let id = setInterval(() => {
+    function tick() {
       savedCallback.current();
-    }, delay);
-    return () => clearInterval(id);
+    }
+    if (delay !== null) {
+      let id = setInterval(tick, delay);
+      return () => clearInterval(id);
+    }
   }, [delay]);
-};
+}
 
 export default function BannerImage() {
 
@@ -51,7 +54,7 @@ export default function BannerImage() {
     if (isLoopImages) {
       setActiveImageIndex(prevImageIndex =>  prevImageIndex + 1);
     }
-  }, activeImageIndex < images.length ? 1500 : 5000) // set interval on first loop to be 1.5 seconds instead of 5 seconds so user can see the other images before they scroll away
+  }, isLoopImages ? (activeImageIndex < images.length ? 1500 : 5000) : null) // set interval on first loop to be 1.5 seconds instead of 5 seconds so user can see the other images before they scroll away
 
   const activeImage = images[activeImageIndex % images.length];
   return (
