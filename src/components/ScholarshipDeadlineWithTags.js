@@ -7,9 +7,6 @@ import AddDeadlineToCalendar from "./AddDeadlineToCalendar";
 
 const todayMoment = moment(Date.now());
 
-const DEFAULT_DEADLINE = "2022-01-01";
-const DEFAULT_OPEN_DATE = "2022-12-31";
-
 function ScholarshipDeadlineWithTags({scholarship, datePrefix, addDeadlineToCalendar}) {
 
     const { deadline, open_date, date_time_created } = scholarship;
@@ -43,7 +40,7 @@ function ScholarshipDeadlineWithTags({scholarship, datePrefix, addDeadlineToCale
     }
 
 
-    if (deadline.includes(DEFAULT_DEADLINE) && (!open_date || open_date.includes(DEFAULT_OPEN_DATE))) {
+    if (deadline >= ((new Date()).getFullYear() + 2) ) { // if deadline is 2 or more years away, assume it's TBA
         scholarshipDateString = "TBA";
         tag = null;
         showCalendar = false;
