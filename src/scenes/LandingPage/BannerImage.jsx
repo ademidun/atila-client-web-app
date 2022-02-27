@@ -5,6 +5,12 @@ import bannerImageIndia from "./assets/landing-cover-india.png";
 import bannerImageNigeria from "./assets/landing-cover-nigeria.png";
 import "./BannerImage.scss";
 
+/**
+ * See: https://overreacted.io/making-setinterval-declarative-with-react-hooks/#just-show-me-the-code
+ * See: https://stackoverflow.com/a/53395342/5405197
+ * @param {*} callback 
+ * @param {*} delay 
+ */
 function useInterval(callback, delay) {
   const savedCallback = useRef();
 
@@ -42,10 +48,8 @@ export default function BannerImage() {
   const [isLoopImages, setIsLoopImages] = useState(true)
   
   useInterval(()=> {
-    if (isLoopImages) {
-      setActiveImageIndex(prevImageIndex =>  prevImageIndex + 1);
-    }
-  }, 5000)
+    setActiveImageIndex(prevImageIndex =>  prevImageIndex + 1);
+  }, isLoopImages ? ( activeImageIndex < images.length ? 1500 : 5000) : null) // set interval on first loop to be 1.5 seconds instead of 5 seconds so user can see the other images before they scroll away
 
   const activeImage = images[activeImageIndex % images.length];
   return (
