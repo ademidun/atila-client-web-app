@@ -1,35 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 
 import bannerImage from "./assets/landing-cover-default.png";
 import bannerImageIndia from "./assets/landing-cover-india.png";
 import bannerImageNigeria from "./assets/landing-cover-nigeria.png";
 import "./BannerImage.scss";
-
-/**
- * See: https://overreacted.io/making-setinterval-declarative-with-react-hooks/#just-show-me-the-code
- * See: https://stackoverflow.com/a/53395342/5405197
- * @param {*} callback 
- * @param {*} delay 
- */
-function useInterval(callback, delay) {
-  const savedCallback = useRef();
-
-  // Remember the latest callback.
-  useEffect(() => {
-    savedCallback.current = callback;
-  }, [callback]);
-
-  // Set up the interval.
-  useEffect(() => {
-    function tick() {
-      savedCallback.current();
-    }
-    if (delay !== null) {
-      let id = setInterval(tick, delay);
-      return () => clearInterval(id);
-    }
-  }, [delay]);
-}
+import { useInterval } from '../../services/utils/HookUtils';
 
 export default function BannerImage() {
 
