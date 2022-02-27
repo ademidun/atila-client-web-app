@@ -48,8 +48,10 @@ export default function BannerImage() {
   const [isLoopImages, setIsLoopImages] = useState(true)
   
   useInterval(()=> {
-    setActiveImageIndex(prevImageIndex =>  prevImageIndex + 1);
-  }, isLoopImages ? ( activeImageIndex < images.length ? 1500 : 5000) : null) // set interval on first loop to be 1.5 seconds instead of 5 seconds so user can see the other images before they scroll away
+    if (isLoopImages) {
+      setActiveImageIndex(prevImageIndex =>  prevImageIndex + 1);
+    }
+  }, activeImageIndex < images.length ? 1500 : 5000) // set interval on first loop to be 1.5 seconds instead of 5 seconds so user can see the other images before they scroll away
 
   const activeImage = images[activeImageIndex % images.length];
   return (
