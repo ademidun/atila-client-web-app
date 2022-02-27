@@ -190,6 +190,18 @@ class ApplicationsAPI {
 
         return apiCompletionPromise
     }
+
+    static sendScholarshipAwardPaymentConfirmation = (id, award_id, transaction) => {
+        let data = { award: {id: award_id}, transaction };
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data,
+            url: `${this.applicationsApiUrl}/${id}/send-award-payment-confirmation/`
+        });
+
+        return apiCompletionPromise
+    }
 }
 
 export default ApplicationsAPI;
