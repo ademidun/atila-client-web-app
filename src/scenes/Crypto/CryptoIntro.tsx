@@ -75,9 +75,9 @@ function CryptoIntro() {
                 Crypto scholarships
             </h1>
             {loadingScholarships && <Loading title="Loading Scholarships" />}
-            <Row gutter={[24, 24]}>
+            <Row gutter={[12, 12]}>
                {scholarships.map(scholarship => 
-                <Col xs={24} sm={24} md={8} key={scholarship.id}>
+                <Col xs={24} sm={24} md={12} lg={8} key={scholarship.id}>
                     <ScholarshipCard scholarship={scholarship} isOneColumn={true}/>
                 </Col>
             )}
