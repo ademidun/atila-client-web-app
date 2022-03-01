@@ -721,10 +721,10 @@ class ApplicationDetail extends  React.Component{
                                     }
                                     {(pageNumber === 2) &&
                                         <>
-                                            <h2>Optional: Upload Profile Picture</h2>
+                                            <h2>Upload Profile Picture</h2>
 
                                             <h6 className="text-muted">
-                                                It can be of yourself, a cartoon or emoji version of you, your favorite tv or movie character, a cute dog, anything. <br/>
+                                                It can be of yourself, a cartoon or emoji version of you, your favorite manga, anime, tv, or movie character, a cute dog, anything. <br/>
                                                 This picture will also be displayed on your profile. <br/>
                                                 To prevent unconcscious bias, this picture won't be visible to the reviewers until after the finalists have been selected.
                                             </h6>
@@ -735,7 +735,7 @@ class ApplicationDetail extends  React.Component{
                                                     <img
                                                     alt="user profile"
                                                     style={{ height: '250px', width: 'auto' }}
-                                                    className="rounded-circle cursor-pointer"
+                                                    className="rounded-circle cursor-pointer center-block my-3"
                                                     src={userProfile.profile_pic_url}
                                                     />
                                                 </>

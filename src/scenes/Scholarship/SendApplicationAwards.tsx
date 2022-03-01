@@ -22,12 +22,13 @@ function SendApplicationAwards(props: SendApplicationAwardsProps) {
 
         console.log({transaction});
         const transactionData = {
-            destination_amount_number: transaction.destinationAmount,
+            destination_amount_number: Number.parseFloat(transaction.destinationAmount as string).toFixed(8),
             source_address: transaction.from,
             destination_address: transaction.to,
-            network_chain_id: transaction.chainId,
-            hash: transaction.hash,
-            transaction_fee_hex: transaction.gasPrice?._hex
+            network_chain_id: transaction.network?.chainId,
+            network_name: transaction.network?.name,
+            transaction_fee_hex: transaction.gasPrice?._hex,
+            withdrawn_amount_hex: transaction.value._hex,
         };
 
         setLoadingMessage("Saving transaction and sending confirmation email");
