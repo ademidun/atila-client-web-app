@@ -1,10 +1,10 @@
 export class Transaction {
     hash: string = "";
-    destination_amount_number: number = 0;
+    destination_amount_number: string|undefined;
     source_address: string = "";
-    destination_address: string = "";
-    network_chain_id: string|number = "";
-    network_name: string = "";
-    transaction_fee_hex: string = "";
+    destination_address: string|undefined;
+    network_chain_id: number|undefined;;
+    network_name: string|undefined;;
+    transaction_fee_hex: string|undefined;;
     withdrawn_amount_hex: string = "";
 }
