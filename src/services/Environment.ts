@@ -3,8 +3,8 @@ export const EnvironmentDev = {
     production: false,
     apiUrl: 'http://127.0.0.1:8000/api',
     //apiUrl: 'https://c3bff55a3fa0.ngrok.io/api',
-    apiUrlNotion: 'http://127.0.0.1:8787',
-    // apiUrlNotion: 'https://notion-api-worker.atila.workers.dev',
+    // apiUrlNotion: 'http://127.0.0.1:8787', // use prod API by default since this is mostly a read-only API and dev is rarely used
+    apiUrlNotion: 'https://notion-api-worker.atila.workers.dev',
     apiUrlNodeMicroservice: 'http://127.0.0.1:9000',
     apiUrlBillingMicroservice: 'http://127.0.0.1:9001',
     apiUrlRecommender: 'http://127.0.0.1:5000',

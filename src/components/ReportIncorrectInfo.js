@@ -143,7 +143,6 @@ const findValueWithLabel = label => {
         }
     }
 }
-
 ReportIncorrectInfo.propTypes = {
     scholarship: ScholarshipPropType.isRequired,
     className: PropTypes.string,

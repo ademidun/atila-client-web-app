@@ -66,7 +66,7 @@ class ScholarshipCard extends React.Component {
                 {(interpolatingStyle)=>
                 <div className={`${className} card shadow my-4`}
                         style={{...scholarshipCardStyle,...interpolatingStyle}} >
-                    <div className="row no-gutters">
+                    <div className="row no-gutters d-block">
                         <div className={`card-img-container ${isOneColumn ? "" : "col-md-4"}`}>
                             <img src={img_url}
                                  className="card-img mt-4"

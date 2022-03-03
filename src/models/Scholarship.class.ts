@@ -9,7 +9,9 @@ export class Scholarship {
     slug: string = "";
     funding_amount: string | number = 0;
     deadline: string = "";
+    open_date: string = "";
     is_atila_direct_application: boolean = false;
+    is_funded: boolean = true;
     is_crypto: boolean = false;
     owner_detail: UserProfile = new UserProfile();
     metadata: {

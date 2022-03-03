@@ -8,6 +8,7 @@ import { Contributor } from "../../../models/Contributor";
 import Invoice from './Invoice';
 import ScholarshipsAPI from '../../../services/ScholarshipsAPI';
 import { getErrorMessage } from '../../../services/utils';
+import Environment from '../../../services/Environment';
 interface ScholarshipPaymentFormCryptoProps {
     scholarship: Scholarship,
     awards: Award[],
@@ -62,7 +63,11 @@ function ScholarshipPaymentFormCrypto(props: ScholarshipPaymentFormCryptoProps) 
       <Row gutter={[24, 24]}>
         <Col sm={24} md={12}>
           <Spin spinning={!!isResponseLoading} tip={isResponseLoading}>
-          <CryptoPaymentForm  className="card" amount={totalPaymentAmount} currency={contributor.currency} destinationAddress={ATILA_EVM_WALLET_ADDRESS} onSuccess={saveTransaction} />
+          <CryptoPaymentForm  className="card" 
+          amount={totalPaymentAmount} 
+          currency={contributor.currency}
+          isTestNet={Environment.name !== "prod"}
+          destinationAddress={ATILA_EVM_WALLET_ADDRESS} onSuccess={saveTransaction} />
           {errorMessage && <Alert message={errorMessage} type="error" /> }
           </Spin>
         </Col>

@@ -1,8 +1,13 @@
+import { Application } from "./Application.class";
 import { CAD, ETH } from "./ConstantsPayments";
+import { Wallet } from "./Wallet.class";
 
 export class Award {
+    id?: string = "";
     funding_amount: number | string = 0;
     currency: string = "";
+    recipient?: Application;
+    recipient_wallet?: Wallet;
 }
 
 export const DEFAULT_AWARD: Award = {

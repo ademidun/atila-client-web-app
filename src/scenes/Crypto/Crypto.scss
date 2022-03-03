@@ -1,3 +1,5 @@
+@import "../../index.scss";
+
 .Crypto {
     .call-to-action {
         button {
@@ -11,14 +13,21 @@
             }
         }
     }
-
+    .ant-tabs-tab {
+        font-size: 1rem;
+    }
+    .ant-tabs-nav {
+        margin-left: 4rem; // 3 rem  margin + 1 rem padding to match .section (same logic for @media (max-width: $small-device-width))
+        margin-right: 4rem;
+        @media (max-width: $small-device-width) {
+            margin: 2rem;
+        }
+    }
     .section {
         margin: 3rem;
         padding: 1rem;
-        @media (max-width: 576px) {
-            margin: 0.5rem;
-            padding: 0.5rem;
+        @media (max-width: $small-device-width) {
+            margin: 1rem;
         }
-        
     }
 }
