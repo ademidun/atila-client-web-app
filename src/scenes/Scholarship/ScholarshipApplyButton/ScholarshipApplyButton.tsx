@@ -46,8 +46,6 @@ function ScholarshipApplyButton(props: ScholarshipApplyButtonPropTypes) {
 
     let scholarshipDateMoment = moment(scholarship.deadline);
     const todayMoment = moment(Date.now());
-    const otherTodayMoment = moment();
-    console.log({ todayMoment, otherTodayMoment });
     const isScholarshipDeadlinePassed = scholarshipDateMoment.diff(moment()) < 0;
 
     const findExistingApplication = useCallback(

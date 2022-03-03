@@ -21,7 +21,6 @@ function SendApplicationAwards(props: SendApplicationAwardsProps) {
 
     const saveSentAward = (transaction: TransactionResponsePayment) => {
 
-        console.log({transaction});
         const transactionData: Transaction = {
             hash: transaction.hash,
             destination_amount_number: Number.parseFloat(transaction.destinationAmount as string).toFixed(8),
@@ -38,7 +37,6 @@ function SendApplicationAwards(props: SendApplicationAwardsProps) {
         ApplicationsAPI
         .sendScholarshipAwardPaymentConfirmation(activeAward.recipient?.id, activeAward.id, transactionData)
         .then(res => {
-            console.log({res});
         })
         .catch(err=> {
             console.log({err});
