@@ -36,8 +36,6 @@ export const renderFinalistOrWinnerButton = (application, scholarship, selectFin
     }
 
     if (application.is_winner) {
-        console.log(application)
-        console.log(awards)
         let application_award = awards.find(award => application.id === award?.recipient?.id)
         return (
             <div>
