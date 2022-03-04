@@ -28,6 +28,7 @@ import {CAD, CryptoCurrencies, CURRENCY_CODES} from "../../models/ConstantsPayme
 import { DEFAULT_AWARD } from '../../models/Award';
 import CurrencyDisplay from '@atila/web-components-library.ui.currency-display';
 import { additionalQuestions, scholarshipFormConfigsPage1 } from './ScholarshipAddEditFormConfig';
+import ImportContent from '../../components/ImportContent';
 const { Step } = Steps;
 
 
@@ -405,11 +406,12 @@ class ScholarshipAddEdit extends React.Component{
     };
 
     basicInfoPage = () => {
-        const { scholarship, scholarshipPostError } = this.state;
+        const { scholarship, scholarshipPostError, isAddScholarshipMode } = this.state;
         const { userProfile } = this.props;
 
         return (
             <div className="my-3">
+                {isAddScholarshipMode && <ImportContent contentType="scholarships" />}
                 <FormDynamic model={scholarship}
                              loggedInUserProfile={userProfile}
                              inputConfigs={scholarshipFormConfigsPage1}

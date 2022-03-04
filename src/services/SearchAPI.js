@@ -23,11 +23,11 @@ class SearchApi {
         return apiCompletionPromise;
     };
 
-    static search = (searchQuery) => {
+    static search = (searchQuery, detailed= false) => {
 
         const apiCompletionPromise = request({
             method: 'get',
-            url: `${SearchApi.searchUrl}/?q=${searchQuery}`,
+            url: `${SearchApi.searchUrl}/?q=${searchQuery}${detailed? '&detailed=1': ''}`,
         });
 
         return apiCompletionPromise;

@@ -6,6 +6,8 @@ export class Scholarship {
     name: string = "";
     description: string = "";
     scholarship_url: string = "";
+    img_url: string = "";
+    date_created: string = "";
     slug: string = "";
     funding_amount: string | number = 0;
     deadline: string = "";
