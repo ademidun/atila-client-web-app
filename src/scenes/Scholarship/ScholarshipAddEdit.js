@@ -433,7 +433,11 @@ class ScholarshipAddEdit extends React.Component{
 
         return (
             <div className="my-3">
-                {isAddScholarshipMode && <ImportContent contentType="scholarships" onSelectContent={this.handleImportScholarship} />}
+                {isAddScholarshipMode && 
+                <div className="px-3">
+                    <ImportContent contentType="scholarships" onSelectContent={this.handleImportScholarship} />
+                </div>
+                }
                 <FormDynamic model={scholarship}
                              loggedInUserProfile={userProfile}
                              inputConfigs={scholarshipFormConfigsPage1}
