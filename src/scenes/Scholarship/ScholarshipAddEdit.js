@@ -29,6 +29,7 @@ import { DEFAULT_AWARD } from '../../models/Award';
 import CurrencyDisplay from '@atila/web-components-library.ui.currency-display';
 import { additionalQuestions, scholarshipFormConfigsPage1 } from './ScholarshipAddEditFormConfig';
 import ImportContent from '../../components/ImportContent';
+import { ALL_DEMOGRAPHICS } from '../../models/ConstantsForm';
 const { Step } = Steps;
 
 
@@ -405,13 +406,34 @@ class ScholarshipAddEdit extends React.Component{
         this.setState({locationData});
     };
 
+    handleImportScholarship = importedScholarship => {
+
+        const { name, description, criteria_info,
+             img_url, specific_questions,
+             is_atila_direct_application, user_profile_questions, awards  } = importedScholarship;
+
+        const newScholarship = {
+            ...this.state.scholarship,
+            name, description, criteria_info, img_url,
+            specific_questions, is_atila_direct_application, user_profile_questions,
+        };
+
+        Object.keys(ALL_DEMOGRAPHICS).forEach(key => {
+            newScholarship[key] = importedScholarship[key]
+        })
+
+        const newAwards = awards.map(award => ({funding_amount: award.funding_amount, currency: award.curency}))
+        this.setState({scholarship: newScholarship, awards: newAwards});
+
+    }
+
     basicInfoPage = () => {
         const { scholarship, scholarshipPostError, isAddScholarshipMode } = this.state;
         const { userProfile } = this.props;
 
         return (
             <div className="my-3">
-                {isAddScholarshipMode && <ImportContent contentType="scholarships" />}
+                {isAddScholarshipMode && <ImportContent contentType="scholarships" onSelectContent={this.handleImportScholarship} />}
                 <FormDynamic model={scholarship}
                              loggedInUserProfile={userProfile}
                              inputConfigs={scholarshipFormConfigsPage1}

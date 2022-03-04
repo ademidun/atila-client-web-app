@@ -17,10 +17,12 @@ function ImportContent(props: ImportContentProps) {
   const [searchResults, setSearchResults] = useState<Scholarship[]>([]);
   const [searchTerm, setSearchTerm] = useState(defaultSearchTerm||"");
   const [loading, setLoading] = useState("");
+  const [receivedResponse, setReceivedResponse] = useState(false)
 
   const searchContent = () => {
 
     setLoading(`Searching for ${contentType}`);
+    setReceivedResponse(false);
     if (contentType === "scholarships") {
         SearchApi.search(searchTerm, true)
         .then(res => {
@@ -29,6 +31,7 @@ function ImportContent(props: ImportContentProps) {
         })
         .finally( () => {
             setLoading("");
+            setReceivedResponse(true);
         }
         )
     }
@@ -37,11 +40,12 @@ function ImportContent(props: ImportContentProps) {
   
   return (
     <div>
-            <Input placeholder={`Search for ${contentType}`} onChange={e=>setSearchTerm(e.target.value)} onPressEnter={searchContent} />
+            <Input placeholder={`Search existing ${contentType} to import`} onChange={e=>setSearchTerm(e.target.value)} onPressEnter={searchContent} />
 
             <Spin spinning={!!loading} tip={loading}>
             <List
                 className="demo-loadmore-list"
+                style={{display: receivedResponse ? 'block': 'none'}}
                 loading={!!loading}
                 itemLayout="horizontal"
                 dataSource={searchResults}
