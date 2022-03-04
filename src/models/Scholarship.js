@@ -125,7 +125,7 @@ export let DEFAULT_SCHOLARSHIP = {
     user_profile_questions: scholarshipUserProfileQuestionOptions.slice(0,3).map(question => ({key: question})),
     form_url: '',
     deadline: defaultDeadline,
-    open_date: '',
+    open_date: null,
     funding_amount: '',
     stripe_payment_intent_id: '',
     number_available_scholarships: 1,
