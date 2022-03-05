@@ -19,6 +19,16 @@ export class Scholarship {
     metadata: {
         not_open_yet?: boolean
     } = {};
+    city?: Array<Location>;
+    province?: Array<Location>;
+    country?: Array<Location>;
+}
+
+export class Location {
+    city?: string;
+    province?: string;
+    country?: string;
+    name?: string;
 }
 
 export const DEFAULT_CRYPTO_SCHOLARSHIP = {

@@ -30,6 +30,7 @@ import CurrencyDisplay from '@atila/web-components-library.ui.currency-display';
 import { additionalQuestions, scholarshipFormConfigsPage1 } from './ScholarshipAddEditFormConfig';
 import ImportContent from '../../components/ImportContent';
 import { ALL_DEMOGRAPHICS } from '../../models/ConstantsForm';
+import { ScholarshipUtils } from '../../services/utils/ScholarshipUtils';
 const { Step } = Steps;
 
 
@@ -140,7 +141,9 @@ class ScholarshipAddEdit extends React.Component{
                 let contributor = {...this.state.contributor}
                 contributor.currency = awards[0]?.currency || CAD.code
                 this.setState({ scholarship, awards, contributor }, () => {
-                    this.initializeLocations();
+                    this.setState({
+                        locationData: ScholarshipUtils.initializeLocations(this.state.scholarship, [])
+                    });
                 });
             })
             .catch(err => {
@@ -161,42 +164,6 @@ class ScholarshipAddEdit extends React.Component{
                 this.setState({ isLoadingScholarship: false });
                 this.setState({ prevSlug: slug });
             });
-    };
-
-    // https://github.com/ademidun/atila-angular/blob/dfe3cbdd5d9a5870e095c089d85394ba934718b5/src/app/scholarship/add-scholarship/add-scholarship.component.ts#L681
-    initializeLocations = () => {
-        // See createLocations() int edit-scholarship or add-scholarship.component.ts
-        const { scholarship, locationData } = this.state;
-
-        for (let index = 0; index <scholarship.country.length; index++) {
-            let element =scholarship.country[index];
-            locationData.push({
-                'country': element.name
-            });
-        }
-
-        for (let index = 0; index <scholarship.province.length; index++) {
-            let element =scholarship.province[index];
-            locationData.push({
-                'country': element.country,
-                'province':element.name
-            });
-        }
-
-        for (let index = 0; index <scholarship.city.length; index++) {
-            let element =scholarship.city[index];
-            locationData.push({
-                'country': element.country,
-                'province':element.province,
-                'city': element.name,
-            });
-        }
-
-        this.setState({
-            locationData
-        });
-
-
     };
 
     /**
@@ -408,22 +375,31 @@ class ScholarshipAddEdit extends React.Component{
 
     handleImportScholarship = importedScholarship => {
 
-        const { name, description, criteria_info,
-             img_url, specific_questions,
-             is_atila_direct_application, user_profile_questions, awards  } = importedScholarship;
+        const { awards: importedAwards } = importedScholarship;
+        const newScholarship = Object.assign({}, this.state.scholarship);
+        let fieldsToImport = [...scholarshipFormConfigsPage1.map(field=> field.keyName), ...additionalQuestions.map(field=> field.keyName)];
 
-        const newScholarship = {
-            ...this.state.scholarship,
-            name, description, criteria_info, img_url,
-            specific_questions, is_atila_direct_application, user_profile_questions,
-        };
+        const locationFields = ['city', 'province', 'country'];
+        fieldsToImport = [...fieldsToImport, ...locationFields, ...Object.keys(ALL_DEMOGRAPHICS)];
 
-        Object.keys(ALL_DEMOGRAPHICS).forEach(key => {
+        const fieldsToExcludeFromImport = ['metadata.not_open_yet', 'open_date', 'location'];
+
+        fieldsToImport.filter(key => !fieldsToExcludeFromImport.includes(key)).forEach(key => {
             newScholarship[key] = importedScholarship[key]
         })
 
-        const newAwards = awards.map(award => ({funding_amount: award.funding_amount, currency: award.curency}))
-        this.setState({scholarship: newScholarship, awards: newAwards});
+        let newAwards = [...this.state.awards];
+        if(importedAwards?.length > 0) {
+            newAwards = importedScholarship.awards.map(award => ({funding_amount: award.funding_amount, currency: award.curency}))
+        }
+
+        const locationData = ScholarshipUtils.initializeLocations(newScholarship, []);
+
+        // delete the city, province, country fields sicne we'll be using locationData as the source of truth for location information
+        locationFields.forEach(locationField => {
+            delete newScholarship[locationField];
+        })
+        this.setState({scholarship: newScholarship, awards: newAwards, locationData});
 
     }
 
