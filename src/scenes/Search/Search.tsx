@@ -21,7 +21,7 @@ const NOW_TIMESTAMP = Date.now();
 // https://www.algolia.com/doc/guides/building-search-ui/going-further/conditional-requests/react/
 const searchClient = {
   ...algoliaClient,
-  search(requests: any) {
+  search(requests: any) {// requests is actually of type MultipleQueriesQuery[], but importing the type isn't working
     if (requests.every(({ params }: { params: any}) => !params.query || params.query.length < MINIMUM_CHARACTER_LENGTH)) {
       return Promise.resolve({
         results: requests.map(() => ({
@@ -33,6 +33,11 @@ const searchClient = {
         })),
       });
     }
+
+    // replace hyphens with spaces so search terms like atila.ca/s/stem-scholarship return relevant results
+    requests.forEach((indexRequest: any) => {
+      indexRequest.params.query = indexRequest.params.query.replace('-', ' ');
+    });
 
     return algoliaClient.search(requests);
   },
