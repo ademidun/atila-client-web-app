@@ -5,7 +5,7 @@ import { Scholarship } from '../models/Scholarship.class';
 import SearchApi from '../services/SearchAPI';
 
 export interface ImportContentProps {
-    contentType: "scholarships", // in future add support for other contentTypes scholarship | "blog" |
+    contentType: "scholarships", // in future add support for other contentTypes. E.g. "scholarships" | "blogs" |
     defaultSearchTerm?: string,
     onSelectContent: (content: Scholarship) => void,
 }
@@ -17,7 +17,8 @@ function ImportContent(props: ImportContentProps) {
   const [searchResults, setSearchResults] = useState<Scholarship[]>([]);
   const [searchTerm, setSearchTerm] = useState(defaultSearchTerm||"");
   const [loading, setLoading] = useState("");
-  const [receivedResponse, setReceivedResponse] = useState(false)
+  const [receivedResponse, setReceivedResponse] = useState(false);
+  const [showResults, setShowResults] = useState(true)
 
   const searchContent = () => {
 
@@ -40,12 +41,15 @@ function ImportContent(props: ImportContentProps) {
   
   return (
     <div>
-            <Input placeholder={`Search existing ${contentType} to import`} onChange={e=>setSearchTerm(e.target.value)} onPressEnter={searchContent} />
+            <Input placeholder={`Search existing ${contentType} to import`} value={searchTerm} onChange={e=>setSearchTerm(e.target.value)} onPressEnter={searchContent} />
 
+            {receivedResponse && <Button type="link" key="import" onClick={() => setShowResults(!showResults)}>
+                {showResults ? 'Hide Results': 'Show Results'}
+            </Button>}
             <Spin spinning={!!loading} tip={loading}>
             <List
                 className="demo-loadmore-list"
-                style={{display: receivedResponse ? 'block': 'none'}}
+                style={{display: receivedResponse && showResults ? 'block': 'none'}}
                 loading={!!loading}
                 itemLayout="horizontal"
                 dataSource={searchResults}

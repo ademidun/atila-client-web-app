@@ -380,7 +380,8 @@ class ScholarshipAddEdit extends React.Component{
         let fieldsToImport = [...scholarshipFormConfigsPage1.map(field=> field.keyName), ...additionalQuestions.map(field=> field.keyName)];
 
         const locationFields = ['city', 'province', 'country'];
-        fieldsToImport = [...fieldsToImport, ...locationFields, ...Object.keys(ALL_DEMOGRAPHICS)];
+        const scholarshipApplicationQuestions = ['user_profile_questions', 'specific_questions', 'country'];
+        fieldsToImport = [...fieldsToImport, ...scholarshipApplicationQuestions, ...locationFields, ...Object.keys(ALL_DEMOGRAPHICS)];
 
         const fieldsToExcludeFromImport = ['metadata.not_open_yet', 'open_date', 'location'];
 
@@ -411,7 +412,7 @@ class ScholarshipAddEdit extends React.Component{
             <div className="my-3">
                 {isAddScholarshipMode && 
                 <div className="px-3">
-                    <ImportContent contentType="scholarships" onSelectContent={this.handleImportScholarship} />
+                    <ImportContent contentType="scholarships" onSelectContent={this.handleImportScholarship}/>
                 </div>
                 }
                 <FormDynamic model={scholarship}
