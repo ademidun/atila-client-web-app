@@ -6,34 +6,38 @@ import Environment from "../../../services/Environment";
 import {ScholarshipPropType} from "../../../models/Scholarship";
 import {Currencies} from "../../../models/ConstantsPayments";
 import ScholarshipPaymentFormCrypto from "./ScholarshipPaymentFormCrypto";
+import { Link } from "react-router-dom";
 
 const { STRIPE_PUBLIC_KEY } = Environment;
 class ScholarshipPaymentForm extends React.Component {
 
     render() {
 
-        const { scholarship, onFundingComplete, contributor, contributorFundingAmount, awards } = this.props;
+        const { scholarship, onFundingComplete, contributor, contributorFundingAmount } = this.props;
         const { currency } = contributor
 
-        if (Currencies[currency].is_crypto) {
-            return (
-                <ScholarshipPaymentFormCrypto scholarship={scholarship} awards={awards} contributor={contributor} onFundingComplete={onFundingComplete} />
-            )
-        }
-
         return (
-            // ...
-            <StripeProvider
-                apiKey={STRIPE_PUBLIC_KEY}
-            >
+            <div className="ScholarshipPaymentForm">
+
+            {Currencies[currency].is_crypto ?
+            <ScholarshipPaymentFormCrypto scholarship={scholarship} contributorFundingAmount={contributorFundingAmount} contributor={contributor} onFundingComplete={onFundingComplete} /> :
+
+            <StripeProvider apiKey={STRIPE_PUBLIC_KEY} >
 
                 <Elements>
                     <ScholarshipPaymentFormCreditCard scholarship={scholarship}
-                                     onFundingComplete={onFundingComplete}
-                                     contributor={contributor}
-                                     contributorFundingAmount={contributorFundingAmount} />
+                                    onFundingComplete={onFundingComplete}
+                                    contributor={contributor}
+                                    contributorFundingAmount={contributorFundingAmount} />
                 </Elements>
             </StripeProvider>
+            }
+
+            <h3 className="my-3">
+                If you want to pay by cheque: <Link to="/contact">contact us</Link>
+            </h3>
+
+            </div>
         )
     }
 }

@@ -265,7 +265,7 @@ class ScholarshipPaymentFormCreditCard extends React.Component {
 
                                         <CardElement style={{base: {fontSize: '18px'}}} ref={this.cardElementRef} />
 
-                                        {["dev", "staging"].includes(Environment.name) &&
+                                        {Environment.name !== "prod" &&
                                         <p className="my-3">
                                             Test with: 4000001240000000
                                         </p>
@@ -276,8 +276,9 @@ class ScholarshipPaymentFormCreditCard extends React.Component {
                                 <Fragment>
                                         <Checkbox checked={agreeSponsorAgreement}
                                                   onChange={(e)=>{this.setState({agreeSponsorAgreement: e.target.checked})}}
+                                                  className="mr-2"
                                         />
-                                        &nbsp;&nbsp;I agree to the
+                                        I agree to the
                                         <ButtonModal
                                                 showModalText={"Scholarship Sponsor Agreement"}
                                                 showModalButtonType={"link"}

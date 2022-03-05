@@ -29,7 +29,7 @@ describe('<ScholarshipPaymentFormCrypto />', () => {
         const wrapper = shallow(
             <MemoryRouter>
                 <Provider store={guestUserStore}>
-                <ScholarshipPaymentFormCrypto scholarship={DEFAULT_CRYPTO_SCHOLARSHIP} awards={[DEFAULT_CRYPTO_AWARD]} contributor={DEFAULT_CRYPTO_CONTRIBUTION} />
+                <ScholarshipPaymentFormCrypto scholarship={DEFAULT_CRYPTO_SCHOLARSHIP} contributorFundingAmount={Number.parseFloat(DEFAULT_CRYPTO_AWARD.funding_amount as string)} contributor={DEFAULT_CRYPTO_CONTRIBUTION} />
                 </Provider>
             </MemoryRouter>
         );
@@ -41,7 +41,7 @@ describe('<ScholarshipPaymentFormCrypto />', () => {
         const wrapper = shallow(
             <MemoryRouter>
                 <Provider store={loggedInStore}>
-                <ScholarshipPaymentFormCrypto scholarship={DEFAULT_CRYPTO_SCHOLARSHIP} awards={[DEFAULT_CRYPTO_AWARD]} contributor={DEFAULT_CRYPTO_CONTRIBUTION} />
+                <ScholarshipPaymentFormCrypto scholarship={DEFAULT_CRYPTO_SCHOLARSHIP} contributorFundingAmount={Number.parseFloat(DEFAULT_CRYPTO_AWARD.funding_amount as string)} contributor={DEFAULT_CRYPTO_CONTRIBUTION} />
                 </Provider>
             </MemoryRouter>
         );
@@ -54,7 +54,7 @@ describe('<ScholarshipPaymentFormCrypto />', () => {
         const wrapper = mount(
             <MemoryRouter>
                 <Provider store={loggedInStore}>
-                <ScholarshipPaymentFormCrypto scholarship={DEFAULT_CRYPTO_SCHOLARSHIP} awards={[DEFAULT_CRYPTO_AWARD]} contributor={DEFAULT_CRYPTO_CONTRIBUTION} />
+                <ScholarshipPaymentFormCrypto scholarship={DEFAULT_CRYPTO_SCHOLARSHIP} contributorFundingAmount={Number.parseFloat(DEFAULT_CRYPTO_AWARD.funding_amount as string)} contributor={DEFAULT_CRYPTO_CONTRIBUTION} />
                 </Provider>
             </MemoryRouter>
         );

@@ -653,13 +653,28 @@ class ScholarshipAddEdit extends React.Component{
     fundingPage = () => {
         const { scholarship, contributor, awards } = this.state;
 
+
+        if (scholarship.is_funded) {
+            return <h1>
+                This scholarship has been funded.<br/>
+                Visit <Link to={`/scholarship/${scholarship.slug}/contribute`}>scholarship contribution page</Link> to add more awards
+            </h1>
+        }
+
+        // The funding_amount should be the sum of created awards in the frontend until the award has been saved after which it should use the funding_amount from the backend 
+        // as the source of truth returning an object with a funding_amount property with the sum of the funding_amount properties of the parameters:
+        // https://stackoverflow.com/a/5732087/5405197
+        let totalAwardsAmount = awards.reduce((prevAward, currentAward) => 
+        ({funding_amount: Number.parseFloat(prevAward.funding_amount) + Number.parseFloat(currentAward.funding_amount), currency: currentAward.currency})).funding_amount;
+
+        totalAwardsAmount = Number.parseFloat(totalAwardsAmount);
         return (
             <div className="my-3">
                 <ScholarshipPaymentForm scholarship={scholarship}
                              onFundingComplete={this.onFundingComplete}
                              awards={awards}
                              contributor={contributor}
-                             contributorFundingAmount={Number.parseFloat(scholarship.funding_amount)} />
+                             contributorFundingAmount={totalAwardsAmount} />
             </div>
         )
     }
