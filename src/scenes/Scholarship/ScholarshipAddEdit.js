@@ -19,7 +19,7 @@ import {
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Link} from "react-router-dom";
-import {Steps, InputNumber, Button, Alert, Select, Spin} from "antd";
+import {Steps, InputNumber, Button, Alert, Select, Spin } from "antd";
 import ScholarshipQuestionBuilder, {ScholarshipUserProfileQuestionBuilder} from "./ScholarshipQuestionBuilder";
 import ScholarshipPaymentForm from "../Payment/ScholarshipPayment/ScholarshipPaymentForm";
 import Environment from "../../services/Environment";
@@ -400,7 +400,9 @@ class ScholarshipAddEdit extends React.Component{
         locationFields.forEach(locationField => {
             delete newScholarship[locationField];
         })
-        this.setState({scholarship: newScholarship, awards: newAwards, locationData});
+        this.setState({scholarship: newScholarship, awards: newAwards, locationData}, () => {
+            this.updateFundingAmount();
+        });
 
     }
 
@@ -652,14 +654,6 @@ class ScholarshipAddEdit extends React.Component{
 
     fundingPage = () => {
         const { scholarship, contributor, awards } = this.state;
-
-
-        if (scholarship.is_funded) {
-            return <h1>
-                This scholarship has been funded.<br/>
-                Visit <Link to={`/scholarship/${scholarship.slug}/contribute`}>scholarship contribution page</Link> to add more awards
-            </h1>
-        }
 
         // The funding_amount should be the sum of created awards in the frontend until the award has been saved after which it should use the funding_amount from the backend 
         // as the source of truth returning an object with a funding_amount property with the sum of the funding_amount properties of the parameters:

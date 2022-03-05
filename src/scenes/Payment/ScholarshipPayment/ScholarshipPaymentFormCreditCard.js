@@ -237,7 +237,7 @@ class ScholarshipPaymentFormCreditCard extends React.Component {
                                 <div className="checkout-form-container">
                                     <Result
                                         status="success"
-                                        title="Scholarship Contribution was Successful 🙂"
+                                        title="Scholarship Contribution was Successful"
                                         subTitle="Check your email for your receipt."
                                         extra={[
                                             <Link to={`/scholarship/${scholarship.slug}`} key="view">
