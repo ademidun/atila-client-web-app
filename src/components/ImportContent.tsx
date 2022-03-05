@@ -5,7 +5,7 @@ import { Scholarship } from '../models/Scholarship.class';
 import SearchApi from '../services/SearchAPI';
 
 export interface ImportContentProps {
-    contentType: "scholarships", // in future add support for other contentTypes. E.g. "scholarships" | "blogs" |
+    contentType: "scholarships", // in the future, add support for other contentTypes. E.g. "scholarships" | "blogs"
     defaultSearchTerm?: string,
     onSelectContent: (content: Scholarship) => void,
 }
@@ -27,8 +27,10 @@ function ImportContent(props: ImportContentProps) {
     if (contentType === "scholarships") {
         SearchApi.search(searchTerm, true)
         .then(res => {
-            console.log({res});
             setSearchResults(res.data[contentType]);
+        })
+        .catch(err=> {
+            console.log({err});
         })
         .finally( () => {
             setLoading("");
