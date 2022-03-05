@@ -102,8 +102,14 @@ function SearchAlgolia({ location, history }: { location: any, history: any }) {
     description: `Scholarships, Blogs, and Essays search results${searchState.query ? ` for ${searchState.query}`: ''}`,
     slug: `/search?query=${searchState.query}`
   };
-  const scholarshipIndex = `${Environment.name}_scholarship_index`;
-  const blogIndex = `${Environment.name}_blog_index`;
+  // Use the Algolia staging index for the demo environment (demo.atila.ca)
+  let algoliaIndexPrefix = Environment.name;
+  if (algoliaIndexPrefix === "demo") {
+    algoliaIndexPrefix = "staging";
+  }
+
+  const scholarshipIndex = `${algoliaIndexPrefix}_scholarship_index`;
+  const blogIndex = `${algoliaIndexPrefix}_blog_index`;
   const scholarshipConfiguration: any = {};
   if (!showExpiredScholarships) {
     // the deadline is saved in seconds in our index so we have to convert the current date from milliseconds to seconds;

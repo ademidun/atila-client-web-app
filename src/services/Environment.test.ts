@@ -6,7 +6,7 @@ describe('Environment', () => {
     it('renders the correct environment name', () => {
         expect(EnvironmentDev.name).toBe('dev');
         expect(EnvironmentStaging.name).toBe('staging');
-        expect(EnvironmentDemo.name).toBe('demo');
+        expect(EnvironmentDemo.name).toBe('staging');
         expect(EnvironmentProd.name).toBe('prod');
     });
 
