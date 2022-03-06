@@ -2,7 +2,7 @@ import React from 'react'
 import { RouteComponentProps, withRouter } from 'react-router';
 import HelmetSeo, { defaultSeoContent } from '../../components/HelmetSeo';
 import NotionPage from '../../components/Notion/NotionPage';
-import { toTitleCase } from '../../services/utils';
+import { prettifyKeys } from '../../services/utils';
 
 
 interface RouteParams {pageId: string};
@@ -17,7 +17,7 @@ function Wiki(props: RouteComponentProps<RouteParams>) {
 
   const seoContent = {
     ...defaultSeoContent,
-    title: `Wiki - ${toTitleCase(pageId)}`,
+    title: `Wiki - ${prettifyKeys(pageId)}`,
   }
 
   return (
@@ -26,7 +26,7 @@ function Wiki(props: RouteComponentProps<RouteParams>) {
       <>
         <HelmetSeo content={seoContent} />
         <h1>
-            {toTitleCase(pageId)}
+            {prettifyKeys(pageId)}
         </h1>
       </>
         
