@@ -355,7 +355,7 @@ class ScholarshipDetail extends React.Component {
                                     </React.Fragment>
                             }
 
-                            {contributors?.filter(contributor => !contributor.is_owner).length &&
+                            {contributors?.filter(contributor => !contributor.is_owner).length > 0 &&
                                 
                                 <div>
                                     <h3 className="text-left">Contributors</h3>

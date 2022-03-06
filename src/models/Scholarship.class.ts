@@ -6,10 +6,12 @@ export class Scholarship {
     name: string = "";
     description: string = "";
     scholarship_url: string = "";
+    img_url: string = "";
+    date_created: string = "";
     slug: string = "";
     funding_amount: string | number = 0;
     deadline: string = "";
-    open_date: string = "";
+    open_date?: string;
     is_atila_direct_application: boolean = false;
     is_funded: boolean = true;
     is_crypto: boolean = false;
@@ -17,6 +19,16 @@ export class Scholarship {
     metadata: {
         not_open_yet?: boolean
     } = {};
+    city?: Array<Location>;
+    province?: Array<Location>;
+    country?: Array<Location>;
+}
+
+export class Location {
+    city?: string;
+    province?: string;
+    country?: string;
+    name?: string;
 }
 
 export const DEFAULT_CRYPTO_SCHOLARSHIP = {

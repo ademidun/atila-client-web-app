@@ -19,7 +19,7 @@ import {
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Link} from "react-router-dom";
-import {Steps, InputNumber, Button, Alert, Select, Spin} from "antd";
+import {Steps, InputNumber, Button, Alert, Select, Spin } from "antd";
 import ScholarshipQuestionBuilder, {ScholarshipUserProfileQuestionBuilder} from "./ScholarshipQuestionBuilder";
 import ScholarshipPaymentForm from "../Payment/ScholarshipPayment/ScholarshipPaymentForm";
 import Environment from "../../services/Environment";
@@ -28,6 +28,9 @@ import {CAD, CryptoCurrencies, CURRENCY_CODES} from "../../models/ConstantsPayme
 import { DEFAULT_AWARD } from '../../models/Award';
 import CurrencyDisplay from '@atila/web-components-library.ui.currency-display';
 import { additionalQuestions, scholarshipFormConfigsPage1 } from './ScholarshipAddEditFormConfig';
+import ImportContent from '../../components/ImportContent';
+import { ALL_DEMOGRAPHICS } from '../../models/ConstantsForm';
+import { ScholarshipUtils } from '../../services/utils/ScholarshipUtils';
 const { Step } = Steps;
 
 
@@ -138,7 +141,9 @@ class ScholarshipAddEdit extends React.Component{
                 let contributor = {...this.state.contributor}
                 contributor.currency = awards[0]?.currency || CAD.code
                 this.setState({ scholarship, awards, contributor }, () => {
-                    this.initializeLocations();
+                    this.setState({
+                        locationData: ScholarshipUtils.initializeLocations(this.state.scholarship, [])
+                    });
                 });
             })
             .catch(err => {
@@ -159,42 +164,6 @@ class ScholarshipAddEdit extends React.Component{
                 this.setState({ isLoadingScholarship: false });
                 this.setState({ prevSlug: slug });
             });
-    };
-
-    // https://github.com/ademidun/atila-angular/blob/dfe3cbdd5d9a5870e095c089d85394ba934718b5/src/app/scholarship/add-scholarship/add-scholarship.component.ts#L681
-    initializeLocations = () => {
-        // See createLocations() int edit-scholarship or add-scholarship.component.ts
-        const { scholarship, locationData } = this.state;
-
-        for (let index = 0; index <scholarship.country.length; index++) {
-            let element =scholarship.country[index];
-            locationData.push({
-                'country': element.name
-            });
-        }
-
-        for (let index = 0; index <scholarship.province.length; index++) {
-            let element =scholarship.province[index];
-            locationData.push({
-                'country': element.country,
-                'province':element.name
-            });
-        }
-
-        for (let index = 0; index <scholarship.city.length; index++) {
-            let element =scholarship.city[index];
-            locationData.push({
-                'country': element.country,
-                'province':element.province,
-                'city': element.name,
-            });
-        }
-
-        this.setState({
-            locationData
-        });
-
-
     };
 
     /**
@@ -404,12 +373,50 @@ class ScholarshipAddEdit extends React.Component{
         this.setState({locationData});
     };
 
+    handleImportScholarship = importedScholarship => {
+
+        const { awards: importedAwards } = importedScholarship;
+        const newScholarship = Object.assign({}, this.state.scholarship);
+        let fieldsToImport = [...scholarshipFormConfigsPage1.map(field=> field.keyName), ...additionalQuestions.map(field=> field.keyName)];
+
+        const locationFields = ['city', 'province', 'country'];
+        const scholarshipApplicationQuestions = ['user_profile_questions', 'specific_questions', 'country'];
+        fieldsToImport = [...fieldsToImport, ...scholarshipApplicationQuestions, ...locationFields, ...Object.keys(ALL_DEMOGRAPHICS)];
+
+        const fieldsToExcludeFromImport = ['metadata.not_open_yet', 'open_date', 'location'];
+
+        fieldsToImport.filter(key => !fieldsToExcludeFromImport.includes(key)).forEach(key => {
+            newScholarship[key] = importedScholarship[key]
+        })
+
+        let newAwards = [...this.state.awards];
+        if(importedAwards?.length > 0) {
+            newAwards = importedScholarship.awards.map(award => ({funding_amount: award.funding_amount, currency: award.curency}))
+        }
+
+        const locationData = ScholarshipUtils.initializeLocations(newScholarship, []);
+
+        // delete the city, province, country fields sicne we'll be using locationData as the source of truth for location information
+        locationFields.forEach(locationField => {
+            delete newScholarship[locationField];
+        })
+        this.setState({scholarship: newScholarship, awards: newAwards, locationData}, () => {
+            this.updateFundingAmount();
+        });
+
+    }
+
     basicInfoPage = () => {
-        const { scholarship, scholarshipPostError } = this.state;
+        const { scholarship, scholarshipPostError, isAddScholarshipMode } = this.state;
         const { userProfile } = this.props;
 
         return (
             <div className="my-3">
+                {isAddScholarshipMode && 
+                <div className="px-3">
+                    <ImportContent contentType="scholarships" onSelectContent={this.handleImportScholarship}/>
+                </div>
+                }
                 <FormDynamic model={scholarship}
                              loggedInUserProfile={userProfile}
                              inputConfigs={scholarshipFormConfigsPage1}
@@ -648,13 +655,20 @@ class ScholarshipAddEdit extends React.Component{
     fundingPage = () => {
         const { scholarship, contributor, awards } = this.state;
 
+        // The funding_amount should be the sum of created awards in the frontend until the award has been saved after which it should use the funding_amount from the backend 
+        // as the source of truth returning an object with a funding_amount property with the sum of the funding_amount properties of the parameters:
+        // https://stackoverflow.com/a/5732087/5405197
+        let totalAwardsAmount = awards.reduce((prevAward, currentAward) => 
+        ({funding_amount: Number.parseFloat(prevAward.funding_amount) + Number.parseFloat(currentAward.funding_amount), currency: currentAward.currency})).funding_amount;
+
+        totalAwardsAmount = Number.parseFloat(totalAwardsAmount);
         return (
             <div className="my-3">
                 <ScholarshipPaymentForm scholarship={scholarship}
                              onFundingComplete={this.onFundingComplete}
                              awards={awards}
                              contributor={contributor}
-                             contributorFundingAmount={Number.parseFloat(scholarship.funding_amount)} />
+                             contributorFundingAmount={totalAwardsAmount} />
             </div>
         )
     }
