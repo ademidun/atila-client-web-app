@@ -5,12 +5,11 @@ import ScholarshipCard from "./ScholarshipCard";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import {connect} from "react-redux";
 import {isCompleteUserProfile} from "../../models/UserProfile";
-import UserProfileEdit from "../UserProfile/UserProfileEdit";
 import {Link} from "react-router-dom";
 import ResponseDisplay from "../../components/ResponseDisplay";
 import ScholarshipsListFilter from "./ScholarshipsListFilter";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
-import {Button} from "antd";
+import {Alert, Button} from "antd";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import AnalyticsService from "../../services/AnalyticsService";
 
@@ -46,7 +45,6 @@ class ScholarshipsList extends React.Component {
             pageNumber: 1,
             totalScholarshipsCount: 0,
             totalFunding: null,
-            isCompleteProfile: !userProfile || isCompleteUserProfile(userProfile),
             isViewingDirectApplications: pathname.includes("/scholarship/direct")
         }
     }
@@ -185,14 +183,6 @@ class ScholarshipsList extends React.Component {
         })
     };
 
-    afterProfileEdit = () => {
-        // scroll to the top of page so that the user can look at scholarship's list from the top
-        window.scrollTo(0, 0);
-        const { userProfile } = this.props;
-
-        this.setState({ isCompleteProfile: !userProfile || isCompleteUserProfile(userProfile) });
-    };
-
     onUpdateStateHandler = (event) => {
         this.setState({
             [event.target.name]: event.target.value
@@ -311,7 +301,7 @@ class ScholarshipsList extends React.Component {
 
         const { scholarships, isLoadingScholarships,
             totalScholarshipsCount, totalFunding,
-            errorGettingScholarships, isCompleteProfile, searchPayload,
+            errorGettingScholarships, searchPayload,
             pageNumber, viewAsUserString, viewAsUserProfile, viewAsUserError, scholarshipsScoreBreakdown} = this.state;
 
         let loadMoreScholarshipsOrRegisterCTA = null;
@@ -360,39 +350,33 @@ class ScholarshipsList extends React.Component {
             </div>);
         }
 
-        if (userProfile && userProfile.account_type === "student" && !isCompleteProfile) {
+        let missingSections = null;
 
-            let missingSections = null;
+        if (userProfile && !isCompleteUserProfile(userProfile)) {
+        
+            const missingSectionsDescription = (
+            <div>
 
-            if (!userProfile.post_secondary_school || !userProfile.major) {
-                missingSections = (<ul>
-                    The following fields are missing:
-                    {! userProfile.major &&
-                    <li><strong>Major: </strong>What program are you currently or interested in pursuing?</li>
-                    }
-                    {! userProfile.post_secondary_school &&
-                    <li><strong>Post Secondary School</strong>: What school are you currently or interested in attending?</li>
-                    }
+            <Link to="/profile/edit">Edit your profile</Link> to see better scholarship matches
+            <ul>
+                The following fields are missing:
+                {! userProfile.major &&
+                <li><strong>Major: </strong>What program are you currently or interested in pursuing?</li>
+                }
+                {! userProfile.post_secondary_school &&
+                <li><strong>Post Secondary School</strong>: What school are you currently or interested in attending?</li>
+                }
 
-                </ul>)
-            }
-            const title = (<React.Fragment>
-                <h1 className="text-center">
-                    Final Step
-                </h1>
-                <h1 className="text-center font-weight-bold">
-                    Complete Your Profile to see all eligible scholarships
-                </h1>
-                {missingSections}
-                </React.Fragment>
-                );
-            return <UserProfileEdit title={title}
-                                    className={"container mt-5"}
-                                    afterSubmitSuccess={this.afterProfileEdit}
-                                    startingPageNumber={0}
-                                    submitButtonText="Save and See Scholarships"
-                                    showSecurityQA={false}
-            />
+            </ul>
+            </div>
+            );
+
+           missingSections =  (<Alert
+            message = "Warning: Missing school and profile information"
+            description={missingSectionsDescription}
+            type="warning"
+            showIcon
+        />);
         }
 
         const seoContent = {
@@ -418,6 +402,7 @@ class ScholarshipsList extends React.Component {
                     isLoadingResponse={isLoadingScholarships}
                     loadingTitle={"Loading Scholarships..."}
                 />
+                {missingSections}
                 {scholarships &&
                     <div className="text-center">
                         <h1>
