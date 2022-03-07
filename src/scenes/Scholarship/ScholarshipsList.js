@@ -360,7 +360,7 @@ class ScholarshipsList extends React.Component {
             </div>);
         }
 
-        if (userProfile && userProfile.account_type !== "sponsor" && !isCompleteProfile) {
+        if (userProfile && userProfile.account_type === "student" && !isCompleteProfile) {
 
             let missingSections = null;
 

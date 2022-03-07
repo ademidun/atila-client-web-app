@@ -17,11 +17,12 @@ export class UserProfile {
 
 export const autoGenerateUser = () => {
     const randomSuffix = getRandomString();
+    let username = `auto_user_${randomSuffix}`;
     return {
         first_name: `FirstName_${randomSuffix}`,
         last_name: `LastName_${randomSuffix}`,
-        username: `auto_user_${randomSuffix}`,
+        username,
         email: `auto_user+${randomSuffix}@atila.ca`,
-        password: getRandomString(),
+        password: username,
     }
 }

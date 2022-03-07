@@ -5,7 +5,7 @@ import Environment from "./Environment";
 
 export function DemoUserMessage (){
 
-    if (!Environment.isDemoMode) {
+    if (Environment.name === "prod") {
         return null
     } else {
         const demoMessage = <div className="font-size-larger">
