@@ -448,12 +448,14 @@ class Register extends React.Component {
                                    required
                             />
                             <PasswordShowHide password={password} updateForm={this.updateForm} />
-                            {username === password && Environment.name === "prod" &&
-                            <Alert
-                                message = "Warning: Username and password must be different"
-                                type="warning"
-                                showIcon
-                            />
+                            {Environment.name === "prod" && username && password && username === password &&
+                            <div className="w-100 mb-3">
+                                <Alert
+                                    message = "Warning: Username and password must be different"
+                                    type="warning"
+                                    showIcon
+                                />
+                            </div>
                             }
 
                             <label className='mr-3 mb-3'>Did someone refer you to Atila?</label>
