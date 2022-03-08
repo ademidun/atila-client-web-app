@@ -154,7 +154,7 @@ class Register extends React.Component {
             nextLocation = '/scholarship';
         }
 
-        const defaultUser = Environment.isDemoMode ? autoGenerateUser() : {
+        const defaultUser = Environment.name !== "prod" ? autoGenerateUser() : {
             first_name: '',
             last_name: '',
             username: '',
@@ -448,6 +448,13 @@ class Register extends React.Component {
                                    required
                             />
                             <PasswordShowHide password={password} updateForm={this.updateForm} />
+                            {username === password && Environment.name === "prod" &&
+                            <Alert
+                                message = "Warning: Username and password must be different"
+                                type="warning"
+                                showIcon
+                            />
+                            }
 
                             <label className='mr-3 mb-3'>Did someone refer you to Atila?</label>
                             <input className={'mb-3'}
