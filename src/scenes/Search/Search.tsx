@@ -19,7 +19,8 @@ const NOW_TIMESTAMP = Date.now();
 
 // customize search client to prevent sending a search on initial load
 // https://www.algolia.com/doc/guides/building-search-ui/going-further/conditional-requests/react/
-const searchClient = {
+const createSearchClient = (resultsCB: any) => {
+  return {
   ...algoliaClient,
   search(requests: any) {// requests is actually of type MultipleQueriesQuery[], but importing the type isn't working
     if (requests.every(({ params }: { params: any}) => !params.query || params.query.length < MINIMUM_CHARACTER_LENGTH)) {
@@ -38,9 +39,11 @@ const searchClient = {
     requests.forEach((indexRequest: any) => {
       indexRequest.params.query = indexRequest.params.query.replace('-', ' ');
     });
-
-    return algoliaClient.search(requests);
+    let res = algoliaClient.search(requests);
+    res.then(response => resultsCB(response.results))
+    return res
   },
+}
 };
 
 
@@ -71,11 +74,18 @@ const urlToSearchState = ({ search}: { search: any}) => {
 };
 
 
+interface SearchAlgoliaProps {
+  location: any,
+  history: any,
+  showScholarshipsOny: boolean,
+  resultsCB: any
+}
+
 function SearchAlgolia({ location,
                          history,
                          showScholarshipsOny = false,
-                         setScholarshipsCB = () => {},
-                       }: { location: any, history: any, showScholarshipsOny: boolean, setScholarshipsCB: any }) {
+                         resultsCB = () => {},
+                       }: SearchAlgoliaProps) {
 
   const [searchState, setSearchState] = useState(urlToSearchState(location));
   const [showExpiredScholarships, setshowExpiredScholarships] = useState(false);
@@ -125,10 +135,12 @@ function SearchAlgolia({ location,
     const nowTimestampInSeconds = Math.round( NOW_TIMESTAMP / 1000 );
     scholarshipConfiguration.filters = `deadline >= ${nowTimestampInSeconds}`;
   }
+
+  let searchClient = createSearchClient(resultsCB)
   return (
     <div className="Search container p-md-5">
     <HelmetSeo content={seoContent} />    
-    <InstantSearch searchClient={searchClient} 
+    <InstantSearch searchClient={searchClient}
                    indexName={scholarshipIndex} 
                    searchState={searchState} 
                    onSearchStateChange={onSearchStateChange}

@@ -8,6 +8,7 @@ import {Link} from "react-router-dom";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import SearchAlgolia from "../Search/Search";
 import {Button} from "antd";
+import equal from "fast-deep-equal";
 
 class ScholarshipsList extends React.Component {
 
@@ -18,20 +19,42 @@ class ScholarshipsList extends React.Component {
 
         this.state = {
             algoliaScholarships: [],
-            totalFunding: 1,
             isViewingDirectApplications: pathname.includes("/scholarship/direct")
         }
     }
 
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
+        const { algoliaScholarships: prevScholarships } = this.state;
+        const { algoliaScholarships: nextScholarships } = nextState;
+
+        if (equal(prevScholarships, nextScholarships)){
+            return false
+        }
+        return true
+    }
+
+    parseResults = (results) => {
+        const algoliaScholarships = results[0].hits
+        console.log({algoliaScholarships})
+        this.setState({algoliaScholarships})
+    }
+
+    calculateTotalFunding = algoliaScholarships =>  {
+        let totalFunding = 0
+        algoliaScholarships.forEach(scholarship => totalFunding += scholarship.funding_amount)
+        return totalFunding
+    }
+
     render () {
         const {
-            match : { params : { searchString: searchStringRaw } },
-            userProfile, location, history
+            match : { params : { searchString: searchStringRaw } }, location, history
         } = this.props;
 
         const searchString = unSlugify(searchStringRaw);
 
-        const { algoliaScholarships, totalFunding } = this.state;
+        const { algoliaScholarships } = this.state;
+        const totalFunding = this.calculateTotalFunding(algoliaScholarships)
+
         let totalScholarshipsCount = algoliaScholarships.length
 
         const seoContent = {
@@ -59,7 +82,7 @@ class ScholarshipsList extends React.Component {
                     </h1>
 
                     <h2 className="text-muted">
-                        {totalFunding && `${totalFunding} in funding`}
+                        {totalFunding && `$${totalFunding} in funding`}
                     </h2>
 
                 </div>
@@ -72,7 +95,7 @@ class ScholarshipsList extends React.Component {
                 <SearchAlgolia location={location}
                                history={history}
                                showScholarshipsOny={true}
-                               setScholarshipsCB={scholarships => this.setState({scholarships})}
+                               resultsCB={results => this.parseResults(results)}
                 />
             </div>
         );
