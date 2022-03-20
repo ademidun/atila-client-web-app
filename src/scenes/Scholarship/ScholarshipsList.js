@@ -28,8 +28,7 @@ class ScholarshipsList extends React.Component {
             match : { params : { searchString: searchStringRaw } },
             userProfile, location, history
         } = this.props;
-        console.log({location})
-        console.log({history})
+
         const searchString = unSlugify(searchStringRaw);
 
         const { algoliaScholarships, totalFunding } = this.state;
@@ -53,19 +52,18 @@ class ScholarshipsList extends React.Component {
         return (
             <div className="container mt-5">
                 <HelmetSeo content={seoContent} />
-                {algoliaScholarships.length > 0 &&
-                    <div className="text-center">
-                        <h1>
-                            {dynamicTitle}
-                            <br />
-                        </h1>
+                <div className="text-center">
+                    <h1>
+                        {dynamicTitle}
+                        <br />
+                    </h1>
 
-                        <h2 className="text-muted">
-                            {totalFunding && `${totalFunding} in funding`}
-                        </h2>
+                    <h2 className="text-muted">
+                        {totalFunding && `${totalFunding} in funding`}
+                    </h2>
 
-                    </div>
-                }
+                </div>
+
                 <Link to={`/scholarship/add`}>
                     <Button type={"primary"}>
                         Add a Scholarship
