@@ -71,7 +71,11 @@ const urlToSearchState = ({ search}: { search: any}) => {
 };
 
 
-function SearchAlgolia({ location, history }: { location: any, history: any }) {
+function SearchAlgolia({ location,
+                         history,
+                         showScholarshipsOny = false,
+                         setScholarshipsCB = () => {},
+                       }: { location: any, history: any, showScholarshipsOny: boolean, setScholarshipsCB: any }) {
 
   const [searchState, setSearchState] = useState(urlToSearchState(location));
   const [showExpiredScholarships, setshowExpiredScholarships] = useState(false);
@@ -148,13 +152,15 @@ function SearchAlgolia({ location, history }: { location: any, history: any }) {
           <Pagination  className="my-3" />
         </Index>
 
-        <Index indexName={blogIndex}>
-          <Configure hitsPerPage={HITS_PER_PAGE} />
-          <SearchResults title="Blogs">
-            <Hits hitComponent={SearchResultHit} />
-          </SearchResults>
-          <Pagination  className="my-3" />
-        </Index>
+      {!showScholarshipsOny &&
+      <Index indexName={blogIndex}>
+        <Configure hitsPerPage={HITS_PER_PAGE}/>
+        <SearchResults title="Blogs">
+          <Hits hitComponent={SearchResultHit}/>
+        </SearchResults>
+        <Pagination className="my-3"/>
+      </Index>
+      }
         <PoweredBy  className="mb-3 mt-5" />
     </InstantSearch>
     </div>
