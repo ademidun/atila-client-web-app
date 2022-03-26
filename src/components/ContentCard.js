@@ -15,6 +15,7 @@ class ContentCard extends React.Component {
 
         this.state = {
             showPreview: false,
+            insights: props.insights,
         }
     }
 
@@ -26,7 +27,15 @@ class ContentCard extends React.Component {
 
     };
 
-
+    sendAlgoliaAnalyticsEvent = () => {
+        if (this.state.insights !== undefined) {
+            console.log('sending event to algolia');
+            this.state.insights('clickedObjectIDsAfterSearch', {
+              eventName: 'Content Clicked'
+            })
+            console.log('event sent');
+        }
+    }
 
     render() {
 
@@ -88,7 +97,7 @@ class ContentCard extends React.Component {
                     }
                     <div className='lower-container'>
                         <div className="title">
-                            <Link title={title} to={slug}>
+                            <Link title={title} to={slug} onClick={this.sendAlgoliaAnalyticsEvent}>
                                 <h3> {title} </h3>
                             </Link>
                         </div>

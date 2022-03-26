@@ -21,11 +21,11 @@ export function SearchResultHit(props: any) {
   }
     return (
         <>
-            {itemType === "scholarship" ? 
+            {itemType === "scholarship" ?
             <ScholarshipCard scholarship={hit} className="col-12" insights={insights}/> :
-            <ContentCard content={genericItemTransform(hit)} />}
+            <ContentCard insights={insights} content={genericItemTransform(hit)}/>}
         </>
-      
+
     );
   }
 

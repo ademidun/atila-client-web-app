@@ -18,7 +18,7 @@ aa('init', {
   useCookie: true,
 })
 
-const ScholarshipHitsWithInsights = connectHitInsights(aa)(SearchResultHit);
+const SearchResultHitsWithInsights = connectHitInsights(aa)(SearchResultHit);
 const MINIMUM_CHARACTER_LENGTH = 3;
 const DEBOUNCE_TIME = 400;
 const HITS_PER_PAGE = 5;
@@ -163,7 +163,7 @@ function SearchAlgolia({ location, history }: { location: any, history: any }) {
             buttonStyle="solid"
           />
           <SearchResults title="Scholarships">
-            <Hits hitComponent={ScholarshipHitsWithInsights} />
+            <Hits hitComponent={SearchResultHitsWithInsights} />
           </SearchResults>
           <Pagination  className="my-3" />
         </Index>
@@ -171,7 +171,7 @@ function SearchAlgolia({ location, history }: { location: any, history: any }) {
         <Index indexName={blogIndex}>
           <Configure hitsPerPage={HITS_PER_PAGE} />
           <SearchResults title="Blogs">
-            <Hits hitComponent={SearchResultHit} />
+            <Hits hitComponent={SearchResultHitsWithInsights} />
           </SearchResults>
           <Pagination  className="my-3" />
         </Index>
