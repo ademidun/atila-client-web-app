@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import algoliasearch from 'algoliasearch/lite';
-import { InstantSearch, Hits, PoweredBy, Pagination, SearchBox, Configure, Index } from 'react-instantsearch-dom';
+import { InstantSearch, Hits, PoweredBy, Pagination, SearchBox, Configure, Index, connectHitInsights } from 'react-instantsearch-dom';
 import 'instantsearch.css/themes/satellite.css'; //algolia instant search styling
 import Environment from '../../services/Environment';
 import qs from 'qs';
@@ -8,9 +8,17 @@ import HelmetSeo from '../../components/HelmetSeo';
 import { SearchResults, SearchResultHit } from './SearchResults';
 import './Search.scss'
 import { Radio } from 'antd';
+import aa from 'search-insights';
 
 const algoliaClient = algoliasearch(Environment.ALGOLIA_APP_ID, Environment.ALGOLIA_PUBLIC_KEY);
 
+aa('init', {
+  appId: Environment.ALGOLIA_APP_ID,
+  apiKey: Environment.ALGOLIA_PUBLIC_KEY,
+  useCookie: true,
+})
+
+const ScholarshipHitsWithInsights = connectHitInsights(aa)(SearchResultHit);
 const MINIMUM_CHARACTER_LENGTH = 3;
 const DEBOUNCE_TIME = 400;
 const HITS_PER_PAGE = 5;
@@ -75,6 +83,7 @@ function SearchAlgolia({ location, history }: { location: any, history: any }) {
 
   const [searchState, setSearchState] = useState(urlToSearchState(location));
   const [showExpiredScholarships, setshowExpiredScholarships] = useState(false);
+  const [algoliaUserToken, setAlgoliaUserToken] = useState('');
 
   const showExpiredScholarshipsOptions = [
     { label: 'Show Expired Scholarships', value: true },
@@ -99,6 +108,16 @@ function SearchAlgolia({ location, history }: { location: any, history: any }) {
   useEffect(() => {
     setSearchState(urlToSearchState(location));
   }, [location, showExpiredScholarships]);
+
+  useEffect(() => {
+    aa('getUserToken', null, (err, userToken) => {
+      if (err) {
+        console.error(err);
+      }
+      console.log(`algolia user token ${userToken}`)
+      setAlgoliaUserToken(userToken);
+    });
+  }, [algoliaUserToken])
 
   const seoContent = {
     title: searchState.query ? `${searchState.query} - Search`: 'Search',
@@ -129,7 +148,8 @@ function SearchAlgolia({ location, history }: { location: any, history: any }) {
                    searchState={searchState} 
                    onSearchStateChange={onSearchStateChange}
                    createURL={createURL}>
-        <SearchBox  className="mb-3" 
+        <Configure clickAnalytics />
+        <SearchBox  className="mb-3"
                     searchAsYouType={false} 
                     showLoadingIndicator />
         <Index indexName={scholarshipIndex}>
@@ -143,7 +163,7 @@ function SearchAlgolia({ location, history }: { location: any, history: any }) {
             buttonStyle="solid"
           />
           <SearchResults title="Scholarships">
-            <Hits hitComponent={SearchResultHit} />
+            <Hits hitComponent={ScholarshipHitsWithInsights} />
           </SearchResults>
           <Pagination  className="my-3" />
         </Index>

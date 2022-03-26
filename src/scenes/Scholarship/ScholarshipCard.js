@@ -20,6 +20,7 @@ class ScholarshipCard extends React.Component {
             showPreview: false,
             scholarshipHideStart: false,
             scholarshipHideFinish: false,
+            insights: props.insights,
         }
     }
 
@@ -37,6 +38,14 @@ class ScholarshipCard extends React.Component {
     onHideScholarshipFinished = () => {
         this.setState({ scholarshipHideFinish: true });
     };
+
+    sendAlgoliaAnalyticsEvent = () => {
+        console.log('sending event to algolia');
+        this.state.insights('clickedObjectIDsAfterSearch', {
+          eventName: 'Scholarship Clicked'
+        })
+        console.log('event sent');
+    }
 
     render() {
 
@@ -80,7 +89,7 @@ class ScholarshipCard extends React.Component {
                         <div className={isOneColumn ? null: "col-md-8"}>
                             <div className="card-body" style={{maxHeight: '500px', overflow: 'auto'}}>
                                 <h1 className="card-title text-left">
-                                <Link to={`/scholarship/${slug}`}>
+                                <Link to={`/scholarship/${slug}`} onClick={this.sendAlgoliaAnalyticsEvent}>
                                         {name}
                                 </Link>{' '}
                                     {scholarship.is_atila_direct_application &&
