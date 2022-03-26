@@ -1,8 +1,8 @@
-import React from 'react'
-import CryptoPaymentWidget from '../../components/Crypto/CryptoPaymentWidget';
+import React from 'react';
 import HelmetSeo, { defaultSeoContent } from '../../components/HelmetSeo';
+import AtlasPayment from './AtlasPayment/AtlasPayment';
 
-function Crypto() {
+function Atlas() {
 
     const title = "Atila Atlas - A search engine built for crypto";
     const seoContent = {
@@ -16,11 +16,11 @@ function Crypto() {
         <h3 className="text-center">A search engine built for crypto.</h3>
 
         <div className="m-3 text-center">
-            <CryptoPaymentWidget amount={1} />
+            <AtlasPayment />
         </div>
         
     </div>
   )
 }
 
-export default Crypto
+export default Atlas

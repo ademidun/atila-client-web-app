@@ -1,6 +1,7 @@
 import React from 'react'
 import DePayWidgets from '@depay/widgets';
 import { Button } from 'antd';
+import TextUtils from '../../services/utils/TextUtils';
 
 interface CryptoPaymentWidgetProps {
 
@@ -47,7 +48,7 @@ function CryptoPaymentWidget(props: CryptoPaymentWidgetProps) {
   return (
     <div>
       <Button onClick={()=> {startPayment()}} size="large">
-         Pay
+         Pay with Crypto{' '}({TextUtils.formatCurrency(amount)} USD)
       </Button>
     </div>
   )
