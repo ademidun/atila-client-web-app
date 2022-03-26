@@ -10,10 +10,6 @@ import {MemoryRouter} from "react-router-dom";
 
 configure({ adapter: new Adapter() });
 
-jest.mock('../services/EssaysAPI');
-
-EssaysApi.list.mockImplementation(() => Promise.resolve({ data: { results: [EssayIveyApplication] } } ));
-
 describe('<ContentList />', () => {
 
     it('renders without crashing', () => {
