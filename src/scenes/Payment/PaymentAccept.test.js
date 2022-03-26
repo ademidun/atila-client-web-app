@@ -1,6 +1,6 @@
 import {configure, mount, shallow} from "enzyme";
 import React from "react";
-import Adapter from 'enzyme-adapter-react-16';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import {MemoryRouter} from "react-router-dom";
 import PaymentAccept from "./PaymentAccept";
 import configureStore from "redux-mock-store";
