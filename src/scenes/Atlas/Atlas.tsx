@@ -15,7 +15,9 @@ function Crypto() {
         <h1>Atlas</h1>
         <h3 className="text-center">A search engine built for crypto.</h3>
 
-        <CryptoPaymentWidget />
+        <div className="m-3 text-center">
+            <CryptoPaymentWidget amount={1} />
+        </div>
         
     </div>
   )

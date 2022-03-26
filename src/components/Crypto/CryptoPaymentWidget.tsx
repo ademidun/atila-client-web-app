@@ -2,11 +2,19 @@ import React from 'react'
 import DePayWidgets from '@depay/widgets';
 import { Button } from 'antd';
 
-function CryptoPaymentWidget() {
+interface CryptoPaymentWidgetProps {
+
+  /** Amount that wallet will receive in USD */
+  amount: number;
+}
+
+function CryptoPaymentWidget(props: CryptoPaymentWidgetProps) {
 
   const ETH_BLOCKCHAIN_USDC_TOKEN_ADDRESS = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48';
   const ATILATECH_PAYMENTS_ADDRESS = '0x96a5e54a47521e76dd46b8ecf0fef2d23140fbf2';
   const BSC_BLOCKCHAIN_BUSD_TOKEN_ADDRESS = '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56';
+
+  const { amount } = props;
 
   const startPayment = async () => {
     
@@ -14,13 +22,13 @@ function CryptoPaymentWidget() {
       accept:[
         {
           blockchain: 'ethereum',
-          amount: 10,
+          amount,
           token: ETH_BLOCKCHAIN_USDC_TOKEN_ADDRESS,
           receiver: ATILATECH_PAYMENTS_ADDRESS
         },
         {
           blockchain: 'bsc',
-          amount: 10,
+          amount,
           token: BSC_BLOCKCHAIN_BUSD_TOKEN_ADDRESS,
           receiver: ATILATECH_PAYMENTS_ADDRESS
         }
@@ -38,7 +46,7 @@ function CryptoPaymentWidget() {
   
   return (
     <div>
-      <Button onClick={()=> {startPayment()}}>
+      <Button onClick={()=> {startPayment()}} size="large">
          Pay
       </Button>
     </div>
