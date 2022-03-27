@@ -114,7 +114,7 @@ function SearchAlgolia({ location, history }: { location: any, history: any }) {
       if (err) {
         console.error(err);
       }
-      console.log(`algolia user token ${userToken}`)
+
       setAlgoliaUserToken(userToken);
     });
   }, [algoliaUserToken])
