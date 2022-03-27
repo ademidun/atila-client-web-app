@@ -40,11 +40,13 @@ class ScholarshipCard extends React.Component {
     };
 
     sendAlgoliaAnalyticsEvent = () => {
-        console.log('sending event to algolia');
-        this.state.insights('clickedObjectIDsAfterSearch', {
-          eventName: 'Scholarship Clicked'
-        })
-        console.log('event sent');
+        if (this.state.insights !== undefined) {
+            console.log('sending event to algolia');
+            this.state.insights('clickedObjectIDsAfterSearch', {
+              eventName: 'Scholarship Clicked'
+            })
+            console.log('event sent');
+        }
     }
 
     render() {

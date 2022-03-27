@@ -12,6 +12,8 @@ export const EnvironmentDev = {
     STRIPE_PUBLIC_KEY: 'pk_test_AxhlK7IudWRlQCa4azz4WElP00QVVE6SNM',
     ALGOLIA_PUBLIC_KEY: '0bd3e798b8330dc08ba51ab519fd35e7',
     ALGOLIA_APP_ID: 'HH66ESLTOR',
+    ALGOLIA_SCHOLARSHIP_INDEX: 'dev_scholarship_index',
+    ALGOLIA_BLOG_INDEX: 'dev_blog_index',
     clientUrl: 'http://localhost:3000',
     isDemoMode: false,
 };
@@ -28,6 +30,8 @@ export const EnvironmentStaging = {
     STRIPE_PUBLIC_KEY: 'pk_test_AxhlK7IudWRlQCa4azz4WElP00QVVE6SNM',
     ALGOLIA_PUBLIC_KEY: '0bd3e798b8330dc08ba51ab519fd35e7',
     ALGOLIA_APP_ID: 'HH66ESLTOR',
+    ALGOLIA_SCHOLARSHIP_INDEX: 'staging_scholarship_index',
+    ALGOLIA_BLOG_INDEX: 'staging_blog_index',
     clientUrl: 'https://staging.atila.ca',
     isDemoMode: false,
 };
@@ -51,6 +55,8 @@ export const EnvironmentProd = {
     STRIPE_PUBLIC_KEY: 'pk_live_AgHuMdhPDSk5eKrlwoHCnZnR00uIrfIHkM',
     ALGOLIA_PUBLIC_KEY: '0bd3e798b8330dc08ba51ab519fd35e7',
     ALGOLIA_APP_ID: 'HH66ESLTOR',
+    ALGOLIA_SCHOLARSHIP_INDEX: 'prod_scholarship_index',
+    ALGOLIA_BLOG_INDEX: 'prod_blog_index',
     clientUrl: 'https://atila.ca',
     isDemoMode: false,
 };
