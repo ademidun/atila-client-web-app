@@ -6,7 +6,15 @@ import './Footer/Footer.scss';
 import { ProfilePicPreview, UserProfilePreview } from "./ReferredByInput";
 import './ContentCard.scss'
 import { Button } from "antd";
+import aa from "search-insights";
+import Environment from "../services/Environment";
+import { getAlogliaIndexName } from "../services/utils";
 
+aa('init', {
+  appId: Environment.ALGOLIA_APP_ID,
+  apiKey: Environment.ALGOLIA_PUBLIC_KEY,
+  useCookie: true,
+})
 
 class ContentCard extends React.Component {
 
@@ -16,7 +24,20 @@ class ContentCard extends React.Component {
         this.state = {
             showPreview: false,
             insights: props.insights,
+            algoliaUserToken: '',
+            contentType: props.content.type,
+            id: props.content.id.toString()
         }
+    }
+
+    componentDidMount() {
+        aa('getUserToken', null, (err, userToken) => {
+            if (err) {
+                console.error(err);
+            }
+
+            this.setState({algoliaUserToken: userToken});
+        });
     }
 
     togglePreview = (event) => {
@@ -28,13 +49,22 @@ class ContentCard extends React.Component {
     };
 
     sendAlgoliaAnalyticsEvent = () => {
+        console.log('sending event to algolia');
         if (this.state.insights !== undefined) {
-            console.log('sending event to algolia');
+            // sending algolia analytics event under the search context
             this.state.insights('clickedObjectIDsAfterSearch', {
-              eventName: 'Content Clicked'
+              eventName: `${this.state.contentType} clicked`,
             })
-            console.log('event sent');
+        } else {
+            // sending click events (from recommended)
+            aa('clickedObjectIDs', {
+              userToken: this.state.algoliaUserToken,
+              index: getAlogliaIndexName(this.state.contentType),
+              eventName: `recommended ${this.state.contentType} clicked`,
+              objectIDs: [this.state.id]
+            });
         }
+        console.log('event sent');
     }
 
     render() {
