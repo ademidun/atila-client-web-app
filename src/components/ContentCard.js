@@ -53,14 +53,14 @@ class ContentCard extends React.Component {
         if (this.state.insights !== undefined) {
             // sending algolia analytics event under the search context
             this.state.insights('clickedObjectIDsAfterSearch', {
-              eventName: `${this.state.contentType} clicked`,
+              eventName: `${this.state.contentType}_clicked`,
             })
         } else {
             // sending click events (from recommended)
             aa('clickedObjectIDs', {
               userToken: this.state.algoliaUserToken,
               index: getAlogliaIndexName(this.state.contentType),
-              eventName: `recommended ${this.state.contentType} clicked`,
+              eventName: `${this.state.contentType}_clicked`,
               objectIDs: [this.state.id]
             });
         }

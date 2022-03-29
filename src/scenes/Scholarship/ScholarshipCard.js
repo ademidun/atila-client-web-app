@@ -43,7 +43,7 @@ class ScholarshipCard extends React.Component {
         if (this.state.insights !== undefined) {
             console.log('sending event to algolia');
             this.state.insights('clickedObjectIDsAfterSearch', {
-              eventName: 'scholarship clicked'
+              eventName: 'scholarship_clicked'
             })
             console.log('event sent');
         }
