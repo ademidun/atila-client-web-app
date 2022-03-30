@@ -10,11 +10,31 @@ import {MemoryRouter} from "react-router-dom";
 import {EssayIveyApplication} from "../models/Essay";
 import {relatedItems} from "../models/Constants";
 
-
 configure({ adapter: new Adapter() });
 
-jest.mock('../services/SearchAPI');
-SearchApi.relatedItems.mockImplementation(() => Promise.resolve({ data: { items: relatedItems } } ));
+const mockRelatedProducts = `
+<div>
+    <div>
+        <h3>${relatedItems[0].title}</h3>  
+        <h4>${relatedItems[0].slug}</h4>
+        <p>${relatedItems[0].description}</p>  
+    </div>
+    <div>
+        <h3>${relatedItems[1].title}</h3>  
+        <h4>${relatedItems[1].slug}</h4>
+        <p>${relatedItems[1].description}</p>  
+    </div>
+    <div>
+        <h3>${relatedItems[2].title}</h3>  
+        <h4>${relatedItems[2].slug}</h4>
+        <p>${relatedItems[2].description}</p>  
+    </div>
+</div>
+`;
+
+jest.mock('@algolia/recommend-react', () => ({
+    RelatedProducts: () => mockRelatedProducts
+}));
 
 
 describe('<RelatedItems />', () => {
@@ -35,14 +55,9 @@ describe('<RelatedItems />', () => {
             </MemoryRouter>
         );
 
-        let childWrapper = wrapper.find(RelatedItems);
-        childWrapper.instance().setState({ relatedItems: relatedItems, isLoadingRelatedItems: false });
-        childWrapper.update();
-
         expect(wrapper.find(RelatedItems).html()).toContain(BlogWhatIsAtila.title);
         expect(wrapper.find(RelatedItems).html()).toContain(ScholarshipEngineering.description);
         expect(wrapper.find(RelatedItems).html()).toContain(EssayIveyApplication.slug);
-
     });
 
 });

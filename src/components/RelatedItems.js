@@ -40,7 +40,6 @@ class RelatedItems extends React.Component {
         super(props);
 
         this.state = {
-            relatedItems: [],
             id: props.id.toString(),
         }
     }
