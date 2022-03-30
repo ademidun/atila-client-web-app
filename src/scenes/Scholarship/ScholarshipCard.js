@@ -6,6 +6,7 @@ import ScholarshipShareSaveButtons from "./ScholarshipShareSaveButtons";
 import ScholarshipExtraCriteria from "./ScholarshipExtraCriteria";
 import ScholarshipDeadlineWithTags from "../../components/ScholarshipDeadlineWithTags";
 import "./ScholarshipCard.scss";
+import { initializeLoggedInUserProfile } from "../../redux/actions/user";
 
 import {Motion, spring} from 'react-motion';
 import {AtilaDirectApplicationsPopover} from "../../models/Scholarship";
@@ -39,12 +40,25 @@ class ScholarshipCard extends React.Component {
         this.setState({ scholarshipHideFinish: true });
     };
 
+    buildAlgoliaAnalyticsEvent = () => {
+        const userId = localStorage.getItem('userId');
+        let insightEvent = {
+            eventName: 'scholarship_clicked'
+        }
+
+        if (userId !== null) {
+            insightEvent = {...insightEvent, userToken: userId}
+        }
+
+        return insightEvent;
+    }
+
     sendAlgoliaAnalyticsEvent = () => {
+        const insightEvent = this.buildAlgoliaAnalyticsEvent();
+
         if (this.state.insights !== undefined) {
             console.log('sending event to algolia');
-            this.state.insights('clickedObjectIDsAfterSearch', {
-              eventName: 'scholarship_clicked'
-            })
+            this.state.insights('clickedObjectIDsAfterSearch', insightEvent)
             console.log('event sent');
         }
     }

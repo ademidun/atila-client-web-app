@@ -83,7 +83,6 @@ function SearchAlgolia({ location, history }: { location: any, history: any }) {
 
   const [searchState, setSearchState] = useState(urlToSearchState(location));
   const [showExpiredScholarships, setshowExpiredScholarships] = useState(false);
-  const [algoliaUserToken, setAlgoliaUserToken] = useState('');
 
   const showExpiredScholarshipsOptions = [
     { label: 'Show Expired Scholarships', value: true },
@@ -108,16 +107,6 @@ function SearchAlgolia({ location, history }: { location: any, history: any }) {
   useEffect(() => {
     setSearchState(urlToSearchState(location));
   }, [location, showExpiredScholarships]);
-
-  useEffect(() => {
-    aa('getUserToken', null, (err, userToken) => {
-      if (err) {
-        console.error(err);
-      }
-
-      setAlgoliaUserToken(userToken);
-    });
-  }, [algoliaUserToken])
 
   const seoContent = {
     title: searchState.query ? `${searchState.query} - Search`: 'Search',

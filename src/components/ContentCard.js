@@ -48,21 +48,34 @@ class ContentCard extends React.Component {
 
     };
 
+    buildAlgoliaAnalyticsEvent = () => {
+        const userId = localStorage.getItem('userId');
+        let insightEvent = {
+            eventName: `${this.state.contentType}_clicked`
+        }
+
+        if (userId !== null) {
+            insightEvent = {...insightEvent, userToken: userId}
+        }
+
+        return insightEvent;
+    }
+
     sendAlgoliaAnalyticsEvent = () => {
+        let insightEvent = this.buildAlgoliaAnalyticsEvent();
+
         console.log('sending event to algolia');
         if (this.state.insights !== undefined) {
             // sending algolia analytics event under the search context
-            this.state.insights('clickedObjectIDsAfterSearch', {
-              eventName: `${this.state.contentType}_clicked`,
-            })
+            this.state.insights('clickedObjectIDsAfterSearch', insightEvent)
         } else {
             // sending click events (from recommended)
-            aa('clickedObjectIDs', {
-              userToken: this.state.algoliaUserToken,
-              index: getAlogliaIndexName(this.state.contentType),
-              eventName: `${this.state.contentType}_clicked`,
-              objectIDs: [this.state.id]
-            });
+            insightEvent = {
+                ...insightEvent,
+                index: getAlogliaIndexName(this.state.contentType),
+                objectIDs: [this.state.id]
+            }
+            aa('clickedObjectIDs', insightEvent);
         }
         console.log('event sent');
     }
