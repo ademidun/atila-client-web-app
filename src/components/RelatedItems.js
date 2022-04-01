@@ -40,7 +40,7 @@ class RelatedItems extends React.Component {
         super(props);
 
         this.state = {
-            id: props.id.toString(),
+            id: props.id,
         }
     }
 
@@ -52,7 +52,7 @@ class RelatedItems extends React.Component {
         return (
             <div className={`${className}`}>
                 <RelatedProducts
-                    objectIDs={[id]}
+                    objectIDs={[id.toString()]}
                     recommendClient={recommendClient}
                     indexName={getAlogliaIndexName(itemType)}
                     itemComponent={RelatedItem}

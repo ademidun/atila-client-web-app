@@ -25,7 +25,7 @@ class ContentCard extends React.Component {
             showPreview: false,
             insights: props.insights,
             contentType: props.content.type,
-            id: props.content.id.toString()
+            id: props.content.id
         }
     }
 
@@ -62,7 +62,7 @@ class ContentCard extends React.Component {
             insightEvent = {
                 ...insightEvent,
                 index: getAlogliaIndexName(this.state.contentType),
-                objectIDs: [this.state.id]
+                objectIDs: [this.state.id.toString()]
             }
             aa('clickedObjectIDs', insightEvent);
         }
