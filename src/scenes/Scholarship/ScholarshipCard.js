@@ -6,7 +6,6 @@ import ScholarshipShareSaveButtons from "./ScholarshipShareSaveButtons";
 import ScholarshipExtraCriteria from "./ScholarshipExtraCriteria";
 import ScholarshipDeadlineWithTags from "../../components/ScholarshipDeadlineWithTags";
 import "./ScholarshipCard.scss";
-import { initializeLoggedInUserProfile } from "../../redux/actions/user";
 
 import {Motion, spring} from 'react-motion';
 import {AtilaDirectApplicationsPopover} from "../../models/Scholarship";

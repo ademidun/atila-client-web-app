@@ -24,20 +24,9 @@ class ContentCard extends React.Component {
         this.state = {
             showPreview: false,
             insights: props.insights,
-            algoliaUserToken: '',
             contentType: props.content.type,
             id: props.content.id.toString()
         }
-    }
-
-    componentDidMount() {
-        aa('getUserToken', null, (err, userToken) => {
-            if (err) {
-                console.error(err);
-            }
-
-            this.setState({algoliaUserToken: userToken});
-        });
     }
 
     togglePreview = (event) => {
