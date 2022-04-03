@@ -12,6 +12,7 @@ import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import {Alert, Button} from "antd";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import AnalyticsService from "../../services/AnalyticsService";
+import SearchAlgolia from "../Search/Search";
 
 class ScholarshipsList extends React.Component {
 
@@ -26,6 +27,7 @@ class ScholarshipsList extends React.Component {
         const searchString = unSlugify(searchStringRaw);
 
         this.state = {
+            algoliaSearchQuery: {query: ""},
             model: null,
             scholarships: null,
             searchPayload: {
@@ -295,11 +297,11 @@ class ScholarshipsList extends React.Component {
     render () {
         const {
             match : { params : { searchString: searchStringRaw } },
-            userProfile,
+            userProfile, location, history
         } = this.props;
         const searchString = unSlugify(searchStringRaw);
 
-        const { scholarships, isLoadingScholarships,
+        const { scholarships, isLoadingScholarships, algoliaSearchQuery,
             totalScholarshipsCount, totalFunding,
             errorGettingScholarships, searchPayload,
             pageNumber, viewAsUserString, viewAsUserProfile, viewAsUserError, scholarshipsScoreBreakdown} = this.state;
@@ -468,9 +470,11 @@ class ScholarshipsList extends React.Component {
                     </Button>
                 </div>
                 }
-                <ScholarshipsListFilter model={userProfile} updateFilterOrSortBy={this.updateFilterOrSort} />
-
-                    {scholarships &&
+                <SearchAlgolia showScholarshipsOnly={true}
+                               searchQueryCB={query => {console.log({query}); this.setState({algoliaSearchQuery: query})}}
+                               location={location}
+                               history={history} />
+                {scholarships && algoliaSearchQuery?.query?.length === 0 &&
                     <div className="mt-3">
                         {scholarships.map( scholarship =>
                             <ScholarshipCard
@@ -481,7 +485,7 @@ class ScholarshipsList extends React.Component {
                                         matchScoreBreakdown={scholarshipsScoreBreakdown &&
                                         scholarshipsScoreBreakdown[scholarship.id]} />)}
                     </div>
-                    }
+                }
                 {loadMoreScholarshipsOrRegisterCTA}
                 {pageNumber > 1 &&
                 <ResponseDisplay

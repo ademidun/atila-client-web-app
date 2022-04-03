@@ -8,6 +8,7 @@ import HelmetSeo from '../../components/HelmetSeo';
 import { SearchResults, SearchResultHit } from './SearchResults';
 import './Search.scss'
 import { Radio } from 'antd';
+import equal from "fast-deep-equal";
 
 const algoliaClient = algoliasearch(Environment.ALGOLIA_APP_ID, Environment.ALGOLIA_PUBLIC_KEY);
 
@@ -77,18 +78,21 @@ const urlToSearchState = ({ search}: { search: any}) => {
 interface SearchAlgoliaProps {
   location: any,
   history: any,
-  showScholarshipsOny: boolean,
-  resultsCB: any
+  showScholarshipsOnly?: boolean,
+  resultsCB?: any,
+  searchQueryCB?: any,
 }
 
 function SearchAlgolia({ location,
                          history,
-                         showScholarshipsOny = false,
+                         showScholarshipsOnly = false,
                          resultsCB = () => {},
+                         searchQueryCB = () => {},
                        }: SearchAlgoliaProps) {
 
   const [searchState, setSearchState] = useState(urlToSearchState(location));
   const [showExpiredScholarships, setshowExpiredScholarships] = useState(false);
+  const [results, setResults] = useState([{'hits': []}])
 
   const showExpiredScholarshipsOptions = [
     { label: 'Show Expired Scholarships', value: true },
@@ -108,6 +112,7 @@ function SearchAlgolia({ location,
     }, DEBOUNCE_TIME);
 
     setSearchState(updatedSearchState);
+    searchQueryCB(updatedSearchState)
   }
 
   useEffect(() => {
@@ -136,7 +141,17 @@ function SearchAlgolia({ location,
     scholarshipConfiguration.filters = `deadline >= ${nowTimestampInSeconds}`;
   }
 
-  let searchClient = createSearchClient(resultsCB)
+  const searchResultsCB = (searchResults: any) => {
+    console.log("res ", searchResults)
+    resultsCB(searchResults)
+    if (!equal(results, searchResults)) {
+      setResults(searchResults)
+    }
+  }
+
+  const noScholarhipsShown = results[0].hits.length === 0 || searchState.query?.length === 0
+
+  let searchClient = createSearchClient(searchResultsCB)
   return (
     <div className="Search container p-md-5">
     <HelmetSeo content={seoContent} />    
@@ -145,26 +160,30 @@ function SearchAlgolia({ location,
                    searchState={searchState} 
                    onSearchStateChange={onSearchStateChange}
                    createURL={createURL}>
+      <PoweredBy  className="mb-3 mt-5" />
         <SearchBox  className="mb-3" 
                     searchAsYouType={false} 
                     showLoadingIndicator />
         <Index indexName={scholarshipIndex}>
           <Configure hitsPerPage={HITS_PER_PAGE} {...scholarshipConfiguration} />
-          <Radio.Group
-            className="mb-3"
-            options={showExpiredScholarshipsOptions}
-            onChange={event => setshowExpiredScholarships(event.target.value)}
-            value={showExpiredScholarships}
-            optionType="button"
-            buttonStyle="solid"
-          />
-          <SearchResults title="Scholarships">
-            <Hits hitComponent={SearchResultHit} />
-          </SearchResults>
-          <Pagination  className="my-3" />
+          {!noScholarhipsShown &&
+          <>
+            <Radio.Group
+                className="mb-3"
+                options={showExpiredScholarshipsOptions}
+                onChange={event => setshowExpiredScholarships(event.target.value)}
+                value={showExpiredScholarships}
+                optionType="button"
+                buttonStyle="solid"
+            />
+            <SearchResults title="Scholarships">
+              <Hits hitComponent={SearchResultHit} />
+            </SearchResults>
+            <Pagination  className="my-3" />
+          </>}
         </Index>
 
-      {!showScholarshipsOny &&
+      {!showScholarshipsOnly &&
       <Index indexName={blogIndex}>
         <Configure hitsPerPage={HITS_PER_PAGE}/>
         <SearchResults title="Blogs">
@@ -173,7 +192,7 @@ function SearchAlgolia({ location,
         <Pagination className="my-3"/>
       </Index>
       }
-        <PoweredBy  className="mb-3 mt-5" />
+
     </InstantSearch>
     </div>
   )
