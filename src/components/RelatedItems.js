@@ -2,65 +2,51 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import ContentCard from "./ContentCard";
+import Loading from "./Loading";
 import { genericItemTransform, getAlogliaIndexName } from "../services/utils";
 import Environment from '../services/Environment';
-import { RelatedProducts } from '@algolia/recommend-react';
+import { useRelatedProducts } from '@algolia/recommend-react';
 import recommend from '@algolia/recommend';
 
 const recommendClient = recommend(Environment.ALGOLIA_APP_ID, Environment.ALGOLIA_PUBLIC_KEY);
 
-const RelatedItem = ({item}) => {
-    item = genericItemTransform(item);
+const RelatedProduct = ({recommendation}) => {
+    recommendation = genericItemTransform(recommendation);
     return (
-            <ContentCard key={item.slug} content={item} className="mb-3" />
+        <ContentCard key={recommendation.slug} content={recommendation} className="mb-3" />
     )
 }
 
-const ListView = (props) => {
-  return (
-      <>
-          {props.items.map(item => (
-            <props.itemComponent item={item} key={item.id}/>
-          ))}
-      </>
-  );
+const RelatedProducts = ({recommendations}) => {
+    return <>
+        <h3 className="text-center">Related</h3>
+        {recommendations.map(item => (
+            <RelatedProduct recommendation={item} key={item.id} />
+        ))}
+    </>
 }
 
-const HeaderComponent = () => {
-    return <h3 className="text-center">Related</h3>
-}
+const RelatedItems = (props) => {
 
-const FallBackComponent = () => {
-    return <p>No related content found</p>
-}
+    const { recommendations, status } = useRelatedProducts({
+        indexName:  getAlogliaIndexName(props.itemType),
+        maxRecommendations: 3,
+        objectIDs: [props.id.toString()],
+        recommendClient: recommendClient
+    })
 
-class RelatedItems extends React.Component {
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            id: props.id,
-        }
-    }
-
-    render () {
-
-        const { id } = this.state;
-        const { className, itemType } = this.props;
-
+    if (status !== 'idle') {
         return (
-            <div className={`${className}`}>
-                <RelatedProducts
-                    objectIDs={[id.toString()]}
-                    recommendClient={recommendClient}
-                    indexName={getAlogliaIndexName(itemType)}
-                    itemComponent={RelatedItem}
-                    view={ListView}
-                    headerComponent={HeaderComponent}
-                    fallbackComponent={FallBackComponent}
-                    maxRecommendations={3}
-                 />
+            <div className={`${props.className}`}>
+                <Loading
+                    isLoading={status !== 'idle'}
+                    title={'Loading Related Items..'} />
+            </div>
+        );
+    } else {
+        return (
+            <div className={`${props.className}`}>
+                <RelatedProducts recommendations={recommendations} />
             </div>
         )
     }
