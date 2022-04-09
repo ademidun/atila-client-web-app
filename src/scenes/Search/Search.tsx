@@ -121,8 +121,8 @@ function SearchAlgolia({ location, history }: { location: any, history: any }) {
     algoliaIndexPrefix = "staging";
   }
 
-  const scholarshipIndex = `${algoliaIndexPrefix}_scholarship_index`;
-  const blogIndex = `${algoliaIndexPrefix}_blog_index`;
+  const scholarshipIndex = Environment.ALGOLIA_SCHOLARSHIP_INDEX;
+  const blogIndex = Environment.ALGOLIA_BLOG_INDEX;
   const scholarshipConfiguration: any = {};
   if (!showExpiredScholarships) {
     // the deadline is saved in seconds in our index so we have to convert the current date from milliseconds to seconds;

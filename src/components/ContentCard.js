@@ -112,7 +112,7 @@ class ContentCard extends React.Component {
             <div className='ContentCard shadow mb-3'>
                     {!hideImage && image && 
                     <div className='upper-container'>
-                        <Link title={title} to={slug}>
+                        <Link title={title} to={slug} onClick={this.sendAlgoliaAnalyticsEvent}>
                             {type === "blog" &&
                             <div className='upper-container-2'>
                                 <img src={image}
