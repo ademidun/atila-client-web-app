@@ -11,6 +11,10 @@ import "./ScholarshipCard.scss";
 import {Motion, spring} from 'react-motion';
 import {AtilaDirectApplicationsPopover} from "../../models/Scholarship";
 import verifiedBadge from "../../components/assets/verified.png";
+import aa from "search-insights";
+import Environment from "../../services/Environment";
+
+const scholarshipIndex = Environment.ALGOLIA_SCHOLARSHIP_INDEX;
 
 class ScholarshipCard extends React.Component {
 
@@ -23,6 +27,7 @@ class ScholarshipCard extends React.Component {
             scholarshipHideFinish: false,
             insights: props.insights,
             loggedInUserProfile: null,
+            scholarship_id: props.scholarship.id,
         }
     }
 
@@ -61,10 +66,17 @@ class ScholarshipCard extends React.Component {
     }
 
     sendAlgoliaAnalyticsEvent = () => {
-        const insightEvent = this.buildAlgoliaAnalyticsEvent();
+        let insightEvent = this.buildAlgoliaAnalyticsEvent();
 
         if (this.state.insights !== undefined) {
             this.state.insights('clickedObjectIDsAfterSearch', insightEvent)
+        } else {
+            insightEvent = {
+                ...insightEvent,
+                index: scholarshipIndex,
+                objectIDs: [this.state.scholarship_id.toString()]
+            }
+            aa('clickedObjectIDs', insightEvent);
         }
     }
 
