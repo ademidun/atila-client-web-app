@@ -9,6 +9,7 @@ import { Button } from "antd";
 import aa from "search-insights";
 import Environment from "../services/Environment";
 import { getAlogliaIndexName } from "../services/utils";
+import { connect } from "react-redux";
 
 aa('init', {
   appId: Environment.ALGOLIA_APP_ID,
@@ -20,12 +21,19 @@ class ContentCard extends React.Component {
 
     constructor(props) {
         super(props);
-
         this.state = {
             showPreview: false,
             insights: props.insights,
             contentType: props.content.type,
-            id: props.content.id
+            id: props.content.id,
+            loggedInUserProfile: null,
+        }
+    }
+
+    componentDidMount() {
+        const { loggedInUserProfile } = this.props;
+        if (loggedInUserProfile) {
+            this.setState({ loggedInUserProfile: loggedInUserProfile });
         }
     }
 
@@ -38,13 +46,12 @@ class ContentCard extends React.Component {
     };
 
     buildAlgoliaAnalyticsEvent = () => {
-        const userId = localStorage.getItem('userId');
         let insightEvent = {
             eventName: `${this.state.contentType}_clicked`
         }
 
-        if (userId !== null) {
-            insightEvent = {...insightEvent, userToken: userId}
+        if (this.state.loggedInUserProfile !== null) {
+            insightEvent = {...insightEvent, userToken: this.state.loggedInUserProfile.user.toString()}
         }
 
         return insightEvent;
@@ -52,13 +59,11 @@ class ContentCard extends React.Component {
 
     sendAlgoliaAnalyticsEvent = () => {
         let insightEvent = this.buildAlgoliaAnalyticsEvent();
-
-        console.log('sending event to algolia');
         if (this.state.insights !== undefined) {
             // sending algolia analytics event under the search context
             this.state.insights('clickedObjectIDsAfterSearch', insightEvent)
         } else {
-            // sending click events (from recommended)
+            // sending click events (from recommended and regular blogs)
             insightEvent = {
                 ...insightEvent,
                 index: getAlogliaIndexName(this.state.contentType),
@@ -66,7 +71,6 @@ class ContentCard extends React.Component {
             }
             aa('clickedObjectIDs', insightEvent);
         }
-        console.log('event sent');
     }
 
     render() {
@@ -158,7 +162,12 @@ ContentCard.propTypes = {
     hideImage: PropTypes.bool,
     className: PropTypes.string,
     content: PropTypes.shape({}),
-    customStyle: PropTypes.shape({})
+    customStyle: PropTypes.shape({}),
+    insights: PropTypes.func
 };
 
-export default ContentCard;
+const mapStateToProps = state => {
+    return { loggedInUserProfile: state.data.user.loggedInUserProfile };
+};
+
+export default connect(mapStateToProps)(ContentCard);

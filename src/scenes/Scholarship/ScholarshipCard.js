@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 import {formatCurrency} from "../../services/utils";
 import ScholarshipShareSaveButtons from "./ScholarshipShareSaveButtons";
 import ScholarshipExtraCriteria from "./ScholarshipExtraCriteria";
@@ -21,6 +22,14 @@ class ScholarshipCard extends React.Component {
             scholarshipHideStart: false,
             scholarshipHideFinish: false,
             insights: props.insights,
+            loggedInUserProfile: null,
+        }
+    }
+
+    componentDidMount() {
+        const { loggedInUserProfile } = this.props;
+        if (loggedInUserProfile) {
+            this.setState({ loggedInUserProfile: loggedInUserProfile });
         }
     }
 
@@ -40,13 +49,12 @@ class ScholarshipCard extends React.Component {
     };
 
     buildAlgoliaAnalyticsEvent = () => {
-        const userId = localStorage.getItem('userId');
         let insightEvent = {
             eventName: 'scholarship_clicked'
         }
 
-        if (userId !== null) {
-            insightEvent = {...insightEvent, userToken: userId}
+        if (this.state.loggedInUserProfile !== null) {
+            insightEvent = {...insightEvent, userToken: this.state.loggedInUserProfile.user.toString()}
         }
 
         return insightEvent;
@@ -56,9 +64,7 @@ class ScholarshipCard extends React.Component {
         const insightEvent = this.buildAlgoliaAnalyticsEvent();
 
         if (this.state.insights !== undefined) {
-            console.log('sending event to algolia');
             this.state.insights('clickedObjectIDsAfterSearch', insightEvent)
-            console.log('event sent');
         }
     }
 
@@ -159,6 +165,11 @@ ScholarshipCard.propTypes = {
     scholarship: PropTypes.shape({}),
     viewAsUserProfile: PropTypes.shape({}),
     matchScoreBreakdown: PropTypes.shape({}),
+    insights: PropTypes.func,
 };
 
-export default ScholarshipCard;
+const mapStateToProps = state => {
+    return { loggedInUserProfile: state.data.user.loggedInUserProfile };
+};
+
+export default connect(mapStateToProps)(ScholarshipCard);
