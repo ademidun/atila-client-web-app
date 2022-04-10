@@ -300,18 +300,24 @@ class ScholarshipsList extends React.Component {
             userProfile, location, history
         } = this.props;
         const searchString = unSlugify(searchStringRaw);
+        let algoliaSearchString = ""
+        if (searchString) {
+            algoliaSearchString = searchString
+        }
 
         const { scholarships, isLoadingScholarships, algoliaSearchQuery,
             totalScholarshipsCount, totalFunding,
             errorGettingScholarships, searchPayload,
             pageNumber, viewAsUserString, viewAsUserProfile, viewAsUserError, scholarshipsScoreBreakdown} = this.state;
 
+        const isUsingAtila = algoliaSearchQuery?.query?.length === 0 || !algoliaSearchString
         let loadMoreScholarshipsOrRegisterCTA = null;
 
         if(userProfile) {
             loadMoreScholarshipsOrRegisterCTA = (<React.Fragment>
                 {
                     scholarships && scholarships.length < totalScholarshipsCount
+                    && isUsingAtila
                     &&
                     <button className="btn btn-primary center-block font-size-xl"
                             onClick={this.loadMoreScholarships}
@@ -321,7 +327,7 @@ class ScholarshipsList extends React.Component {
                 }
                 {
                     scholarships && scholarships.length >= totalScholarshipsCount
-                    &&
+                    && isUsingAtila &&
                     <h4 className="text-center">
                         All Caught up {' '}
                         <span role="img" aria-label="happy face emoji">🙂</span>
@@ -333,7 +339,7 @@ class ScholarshipsList extends React.Component {
             loadMoreScholarshipsOrRegisterCTA = (<div className="font-size-xl">
                 {
                     scholarships
-                    &&
+                    && isUsingAtila &&
                         <Button type="primary" className="font-size-larger col-12 mt-1" style={{fontSize: "25px"}}>
                             <Link to="/register">
                                     Register for free to see
@@ -473,8 +479,10 @@ class ScholarshipsList extends React.Component {
                 <SearchAlgolia showScholarshipsOnly={true}
                                searchQueryCB={query => {console.log({query}); this.setState({algoliaSearchQuery: query})}}
                                location={location}
-                               history={history} />
-                {scholarships && algoliaSearchQuery?.query?.length === 0 &&
+                               history={history}
+                               initialSearch={algoliaSearchString}
+                />
+                {scholarships && isUsingAtila &&
                     <div className="mt-3">
                         {scholarships.map( scholarship =>
                             <ScholarshipCard

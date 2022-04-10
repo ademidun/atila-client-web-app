@@ -9,6 +9,7 @@ import { SearchResults, SearchResultHit } from './SearchResults';
 import './Search.scss'
 import { Radio } from 'antd';
 import equal from "fast-deep-equal";
+import {Scholarship} from "../../models/Scholarship.class";
 
 const algoliaClient = algoliasearch(Environment.ALGOLIA_APP_ID, Environment.ALGOLIA_PUBLIC_KEY);
 
@@ -78,15 +79,17 @@ const urlToSearchState = ({ search}: { search: any}) => {
 interface SearchAlgoliaProps {
   location: any,
   history: any,
+  initialSearch?: string,
   showScholarshipsOnly?: boolean,
-  resultsCB?: any,
+  onResultsLoaded?: (results: any) => void,
   searchQueryCB?: any,
 }
 
 function SearchAlgolia({ location,
                          history,
+                         initialSearch = "",
                          showScholarshipsOnly = false,
-                         resultsCB = () => {},
+                         onResultsLoaded = () => {},
                          searchQueryCB = () => {},
                        }: SearchAlgoliaProps) {
 
@@ -116,6 +119,14 @@ function SearchAlgolia({ location,
   }
 
   useEffect(() => {
+    if (initialSearch) {
+      let newSearchState = {...searchState}
+      newSearchState.query = initialSearch
+      onSearchStateChange(newSearchState)
+    }
+  }, [])
+
+  useEffect(() => {
     setSearchState(urlToSearchState(location));
   }, [location, showExpiredScholarships]);
 
@@ -142,8 +153,7 @@ function SearchAlgolia({ location,
   }
 
   const searchResultsCB = (searchResults: any) => {
-    console.log("res ", searchResults)
-    resultsCB(searchResults)
+    onResultsLoaded(searchResults)
     if (!equal(results, searchResults)) {
       setResults(searchResults)
     }
