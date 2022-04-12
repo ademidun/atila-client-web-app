@@ -327,7 +327,6 @@ class ScholarshipsList extends React.Component {
             pageNumber, viewAsUserString, viewAsUserProfile, viewAsUserError, scholarshipsScoreBreakdown} = this.state;
 
         const isUsingAtila = algoliaSearchQuery?.query?.length === 0 && !algoliaSearchString
-        console.log({isUsingAtila})
         let loadMoreScholarshipsOrRegisterCTA = null;
 
         if(userProfile) {
