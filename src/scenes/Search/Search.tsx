@@ -1,15 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import algoliasearch from 'algoliasearch/lite';
-import { InstantSearch, Hits, PoweredBy, Pagination, SearchBox, Configure, Index } from 'react-instantsearch-dom';
+import {Configure, Hits, Index, InstantSearch, Pagination, PoweredBy, SearchBox} from 'react-instantsearch-dom';
 import 'instantsearch.css/themes/satellite.css'; //algolia instant search styling
 import Environment from '../../services/Environment';
 import qs from 'qs';
 import HelmetSeo from '../../components/HelmetSeo';
-import { SearchResults, SearchResultHit } from './SearchResults';
+import {SearchResultHit, SearchResults} from './SearchResults';
 import './Search.scss'
-import { Radio } from 'antd';
+import {Radio} from 'antd';
 import equal from "fast-deep-equal";
-import {Scholarship} from "../../models/Scholarship.class";
 
 const algoliaClient = algoliasearch(Environment.ALGOLIA_APP_ID, Environment.ALGOLIA_PUBLIC_KEY);
 
@@ -81,8 +80,8 @@ interface SearchAlgoliaProps {
   history: any,
   initialSearch?: string,
   showScholarshipsOnly?: boolean,
-  onResultsLoaded?: (results: any) => void,
-  searchQueryCB?: any,
+  onResultsLoaded?: (results: Array<{ items: any, num_items: number }>) => void,
+  searchQueryCB?: (searchQuery: any) => void,
 }
 
 function SearchAlgolia({ location,
@@ -102,8 +101,6 @@ function SearchAlgolia({ location,
     { label: 'Hide Expired Scholarships', value: false },
   ];
 
-  // TODO find a way to get searchResults and use it in the HelmetSEO
-  // const [searchResults, _setSearchResults] = useState<any>({});
   const debouncedSetStateRef = useRef<null|any>(null);
 
   function onSearchStateChange(updatedSearchState: any) {
@@ -155,13 +152,12 @@ function SearchAlgolia({ location,
   }
 
   const algoliaResultsToOnResultsLoaded = (searchResults: any) => {
-    let result = searchResults.map((res: any) => {
+    return searchResults.map((res: any) => {
       return {
         items: res.hits,
         num_items: res.nbHits,
       }
     })
-    return result
   }
 
   const searchResultsCB = (searchResults: any) => {

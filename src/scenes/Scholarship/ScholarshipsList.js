@@ -7,13 +7,11 @@ import {connect} from "react-redux";
 import {isCompleteUserProfile} from "../../models/UserProfile";
 import {Link} from "react-router-dom";
 import ResponseDisplay from "../../components/ResponseDisplay";
-import ScholarshipsListFilter from "./ScholarshipsListFilter";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import {Alert, Button} from "antd";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import AnalyticsService from "../../services/AnalyticsService";
 import SearchAlgolia from "../Search/Search";
-import {equal} from "fast-deep-equal";
 
 class ScholarshipsList extends React.Component {
 
