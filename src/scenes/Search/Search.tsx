@@ -81,7 +81,7 @@ interface SearchAlgoliaProps {
   initialSearch?: string,
   showScholarshipsOnly?: boolean,
   onResultsLoaded?: (results: Array<{ items: any, num_items: number }>) => void,
-  searchQueryCB?: (searchQuery: any) => void,
+  onSearchQueryChanged?: (searchQuery: any) => void,
 }
 
 function SearchAlgolia({ location,
@@ -89,7 +89,7 @@ function SearchAlgolia({ location,
                          initialSearch = "",
                          showScholarshipsOnly = false,
                          onResultsLoaded = () => {},
-                         searchQueryCB = () => {},
+                         onSearchQueryChanged = () => {},
                        }: SearchAlgoliaProps) {
 
   const [searchState, setSearchState] = useState(urlToSearchState(location));
@@ -112,7 +112,7 @@ function SearchAlgolia({ location,
     }, DEBOUNCE_TIME);
 
     setSearchState(updatedSearchState);
-    searchQueryCB(updatedSearchState)
+    onSearchQueryChanged(updatedSearchState)
   }
 
   useEffect(() => {
@@ -121,7 +121,7 @@ function SearchAlgolia({ location,
       newSearchState.query = initialSearch
       onSearchStateChange(newSearchState)
     } else {
-      searchQueryCB(searchState)
+      onSearchQueryChanged(searchState)
     }
   }, [])
 

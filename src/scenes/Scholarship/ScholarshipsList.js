@@ -491,7 +491,7 @@ class ScholarshipsList extends React.Component {
                 </div>
                 }
                 <SearchAlgolia showScholarshipsOnly={true}
-                               searchQueryCB={query => {console.log({query}); this.setState({algoliaSearchQuery: query})}}
+                               onSearchQueryChanged={query => {console.log({query}); this.setState({algoliaSearchQuery: query})}}
                                location={location}
                                history={history}
                                initialSearch={algoliaSearchString}
