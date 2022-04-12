@@ -152,8 +152,19 @@ function SearchAlgolia({ location,
     scholarshipConfiguration.filters = `deadline >= ${nowTimestampInSeconds}`;
   }
 
+  const algoliaResultsToOnResultsLoaded = (searchResults: any) => {
+    let result = searchResults.map((res: any) => {
+      return {
+        items: res.hits,
+        num_items: res.nbHits,
+      }
+    })
+    return result
+  }
+
   const searchResultsCB = (searchResults: any) => {
-    onResultsLoaded(searchResults)
+    let callBackResults = algoliaResultsToOnResultsLoaded(searchResults)
+    onResultsLoaded(callBackResults)
     if (!equal(results, searchResults)) {
       setResults(searchResults)
     }

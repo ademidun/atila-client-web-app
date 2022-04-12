@@ -13,6 +13,7 @@ import {Alert, Button} from "antd";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import AnalyticsService from "../../services/AnalyticsService";
 import SearchAlgolia from "../Search/Search";
+import {equal} from "fast-deep-equal";
 
 class ScholarshipsList extends React.Component {
 
@@ -294,6 +295,22 @@ class ScholarshipsList extends React.Component {
         }
     };
 
+    onAlgoliaResultsLoaded = results => {
+        console.log(results)
+        let scholarships = results[0].items
+        let totalScholarshipsCount = results[0].num_items
+        let totalFunding = 0
+        scholarships.forEach(scholarship => totalFunding += scholarship.funding_amount)
+        totalFunding = Math.round(totalFunding)
+        totalFunding = `$${totalFunding}`
+        if (totalFunding !== this.state.totalFunding) {
+            this.setState({totalFunding})
+        }
+        if (totalScholarshipsCount !== this.state.totalScholarshipsCount) {
+            this.setState({totalScholarshipsCount})
+        }
+    }
+
     render () {
         const {
             match : { params : { searchString: searchStringRaw } },
@@ -306,11 +323,12 @@ class ScholarshipsList extends React.Component {
         }
 
         const { scholarships, isLoadingScholarships, algoliaSearchQuery,
-            totalScholarshipsCount, totalFunding,
+            totalScholarshipsCount, totalFunding, numScholarships,
             errorGettingScholarships, searchPayload,
             pageNumber, viewAsUserString, viewAsUserProfile, viewAsUserError, scholarshipsScoreBreakdown} = this.state;
 
         const isUsingAtila = algoliaSearchQuery?.query?.length === 0 || !algoliaSearchString
+        console.log({isUsingAtila})
         let loadMoreScholarshipsOrRegisterCTA = null;
 
         if(userProfile) {
@@ -481,6 +499,7 @@ class ScholarshipsList extends React.Component {
                                location={location}
                                history={history}
                                initialSearch={algoliaSearchString}
+                               onResultsLoaded={this.onAlgoliaResultsLoaded}
                 />
                 {scholarships && isUsingAtila &&
                     <div className="mt-3">
