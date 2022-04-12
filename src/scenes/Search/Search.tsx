@@ -123,6 +123,8 @@ function SearchAlgolia({ location,
       let newSearchState = {...searchState}
       newSearchState.query = initialSearch
       onSearchStateChange(newSearchState)
+    } else {
+      searchQueryCB(searchState)
     }
   }, [])
 

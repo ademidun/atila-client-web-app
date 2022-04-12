@@ -296,7 +296,6 @@ class ScholarshipsList extends React.Component {
     };
 
     onAlgoliaResultsLoaded = results => {
-        console.log(results)
         let scholarships = results[0].items
         let totalScholarshipsCount = results[0].num_items
         let totalFunding = 0
@@ -323,11 +322,11 @@ class ScholarshipsList extends React.Component {
         }
 
         const { scholarships, isLoadingScholarships, algoliaSearchQuery,
-            totalScholarshipsCount, totalFunding, numScholarships,
+            totalScholarshipsCount, totalFunding,
             errorGettingScholarships, searchPayload,
             pageNumber, viewAsUserString, viewAsUserProfile, viewAsUserError, scholarshipsScoreBreakdown} = this.state;
 
-        const isUsingAtila = algoliaSearchQuery?.query?.length === 0 || !algoliaSearchString
+        const isUsingAtila = algoliaSearchQuery?.query?.length === 0 && !algoliaSearchString
         console.log({isUsingAtila})
         let loadMoreScholarshipsOrRegisterCTA = null;
 
