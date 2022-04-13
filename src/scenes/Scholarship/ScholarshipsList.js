@@ -363,12 +363,11 @@ class ScholarshipsList extends React.Component {
         } else if (!userProfile) {
             loadMoreScholarshipsOrRegisterCTA = (<div className="font-size-xl">
                 {
-                    (scholarships || scholarshipSearchResults)
-                    && isUsingAtila &&
+                    (scholarships || scholarshipSearchResults) &&
                         <Button type="primary" className="font-size-larger col-12 mt-1" style={{fontSize: "25px"}}>
                             <Link to="/register">
                                     Register for free and see
-                                    {isUsingAtila && scholarships.length < totalScholarshipsCount ?
+                                    {isUsingAtila && scholarships?.length < totalScholarshipsCount ?
                                         ` all ${totalScholarshipsCount} ` : " more "}
                                     scholarships
                             </Link>
