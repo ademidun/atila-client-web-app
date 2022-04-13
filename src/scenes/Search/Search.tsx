@@ -1,13 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import algoliasearch from 'algoliasearch/lite';
-import { InstantSearch, Hits, PoweredBy, Pagination, SearchBox, Configure, Index } from 'react-instantsearch-dom';
+import {Configure, Hits, Index, InstantSearch, Pagination, PoweredBy, SearchBox} from 'react-instantsearch-dom';
 import 'instantsearch.css/themes/satellite.css'; //algolia instant search styling
 import Environment from '../../services/Environment';
 import qs from 'qs';
 import HelmetSeo from '../../components/HelmetSeo';
-import { SearchResults, SearchResultHit } from './SearchResults';
+import {SearchResultHit, SearchResults} from './SearchResults';
 import './Search.scss'
-import { Radio } from 'antd';
+import {Radio} from 'antd';
+import equal from "fast-deep-equal";
+import { RouteComponentProps, useHistory, withRouter } from 'react-router';
 
 const algoliaClient = algoliasearch(Environment.ALGOLIA_APP_ID, Environment.ALGOLIA_PUBLIC_KEY);
 
@@ -19,7 +21,8 @@ const NOW_TIMESTAMP = Date.now();
 
 // customize search client to prevent sending a search on initial load
 // https://www.algolia.com/doc/guides/building-search-ui/going-further/conditional-requests/react/
-const searchClient = {
+const createSearchClient = (resultsCB: any) => {
+  return {
   ...algoliaClient,
   search(requests: any) {// requests is actually of type MultipleQueriesQuery[], but importing the type isn't working
     if (requests.every(({ params }: { params: any}) => !params.query || params.query.length < MINIMUM_CHARACTER_LENGTH)) {
@@ -38,9 +41,11 @@ const searchClient = {
     requests.forEach((indexRequest: any) => {
       indexRequest.params.query = indexRequest.params.query.replace('-', ' ');
     });
-
-    return algoliaClient.search(requests);
+    let res = algoliaClient.search(requests);
+    res.then(response => resultsCB(response.results))
+    return res
   },
+}
 };
 
 
@@ -71,31 +76,65 @@ const urlToSearchState = ({ search}: { search: any}) => {
 };
 
 
-function SearchAlgolia({ location, history }: { location: any, history: any }) {
+interface SearchAlgoliaProps extends RouteComponentProps {
+  className: string,
+  renderSeo: boolean,
+  location: any,
+  initialSearch?: string,
+  showScholarshipsOnly?: boolean,
+  onResultsLoaded?: (results: Array<{ items: any, num_items: number }>) => void,
+  onSearchQueryChanged?: (searchQuery: any) => void,
+}
+
+function SearchAlgolia({ className = "p-md-5",
+                         renderSeo = true,
+                         location,
+                         initialSearch = "",
+                         showScholarshipsOnly = false,
+                         onResultsLoaded = () => {},
+                         onSearchQueryChanged = () => {},
+                       }: SearchAlgoliaProps) {
 
   const [searchState, setSearchState] = useState(urlToSearchState(location));
   const [showExpiredScholarships, setshowExpiredScholarships] = useState(false);
+  const [results, setResults] = useState([{'hits': []}]);
+  const { push } = useHistory();
 
   const showExpiredScholarshipsOptions = [
     { label: 'Show Expired Scholarships', value: true },
     { label: 'Hide Expired Scholarships', value: false },
   ];
 
-  // TODO find a way to get searchResults and use it in the HelmetSEO
-  // const [searchResults, _setSearchResults] = useState<any>({});
   const debouncedSetStateRef = useRef<null|any>(null);
 
-  function onSearchStateChange(updatedSearchState: any) {
+  const handleSearchStateChange = useCallback(
+    (updatedSearchState: any) => {
+        
     clearTimeout(debouncedSetStateRef.current);
 
     debouncedSetStateRef.current = setTimeout(() => {
-      history.push(searchStateToUrl(updatedSearchState));
+      push(searchStateToUrl(updatedSearchState));
       window.scrollTo(0,0)
     }, DEBOUNCE_TIME);
 
     setSearchState(updatedSearchState);
-  }
+    onSearchQueryChanged(updatedSearchState)
+    },
+    [push, onSearchQueryChanged]
+  );
 
+  /**
+   * If a search string was passed in as a prop, update the search state
+   */
+  useEffect(() => {
+    if (initialSearch) {
+      handleSearchStateChange({query: initialSearch})
+    }
+  }, [initialSearch, handleSearchStateChange])
+
+  /**
+   * Everytime the url changes or the showExpiredScholarships option is toggled, update the searchstate based on what's in the URL
+   */
   useEffect(() => {
     setSearchState(urlToSearchState(location));
   }, [location, showExpiredScholarships]);
@@ -121,44 +160,71 @@ function SearchAlgolia({ location, history }: { location: any, history: any }) {
     const nowTimestampInSeconds = Math.round( NOW_TIMESTAMP / 1000 );
     scholarshipConfiguration.filters = `deadline >= ${nowTimestampInSeconds}`;
   }
+
+  const algoliaResultsToOnResultsLoaded = (searchResults: any) => {
+    return searchResults.map((res: any) => {
+      return {
+        items: res.hits,
+        num_items: res.nbHits,
+      }
+    })
+  }
+
+  const handleSearchResultsChange = (searchResults: any) => {
+    let callBackResults = algoliaResultsToOnResultsLoaded(searchResults)
+    onResultsLoaded(callBackResults)
+    if (!equal(results, searchResults)) {
+      setResults(searchResults)
+    }
+  }
+
+  const noScholarhipsShown = results[0].hits.length === 0 || searchState.query?.length === 0
+
+  let searchClient = createSearchClient(handleSearchResultsChange)
   return (
-    <div className="Search container p-md-5">
-    <HelmetSeo content={seoContent} />    
-    <InstantSearch searchClient={searchClient} 
+    <div className={`Search container ${className}`}>
+    {renderSeo && <HelmetSeo content={seoContent} />}
+    <InstantSearch searchClient={searchClient}
                    indexName={scholarshipIndex} 
                    searchState={searchState} 
-                   onSearchStateChange={onSearchStateChange}
+                   onSearchStateChange={handleSearchStateChange}
                    createURL={createURL}>
+      <PoweredBy  className="mb-3" />
         <SearchBox  className="mb-3" 
                     searchAsYouType={false} 
                     showLoadingIndicator />
         <Index indexName={scholarshipIndex}>
           <Configure hitsPerPage={HITS_PER_PAGE} {...scholarshipConfiguration} />
-          <Radio.Group
-            className="mb-3"
-            options={showExpiredScholarshipsOptions}
-            onChange={event => setshowExpiredScholarships(event.target.value)}
-            value={showExpiredScholarships}
-            optionType="button"
-            buttonStyle="solid"
-          />
-          <SearchResults title="Scholarships">
-            <Hits hitComponent={SearchResultHit} />
-          </SearchResults>
-          <Pagination  className="my-3" />
+          {!noScholarhipsShown &&
+          <>
+            <Radio.Group
+                className="mb-3"
+                options={showExpiredScholarshipsOptions}
+                onChange={event => setshowExpiredScholarships(event.target.value)}
+                value={showExpiredScholarships}
+                optionType="button"
+                buttonStyle="solid"
+            />
+            <SearchResults title="Scholarships">
+              <Hits hitComponent={SearchResultHit} />
+            </SearchResults>
+            <Pagination  className="my-3" />
+          </>}
         </Index>
 
-        <Index indexName={blogIndex}>
-          <Configure hitsPerPage={HITS_PER_PAGE} />
-          <SearchResults title="Blogs">
-            <Hits hitComponent={SearchResultHit} />
-          </SearchResults>
-          <Pagination  className="my-3" />
-        </Index>
-        <PoweredBy  className="mb-3 mt-5" />
+      {!showScholarshipsOnly &&
+      <Index indexName={blogIndex}>
+        <Configure hitsPerPage={HITS_PER_PAGE}/>
+        <SearchResults title="Blogs">
+          <Hits hitComponent={SearchResultHit}/>
+        </SearchResults>
+        <Pagination className="my-3"/>
+      </Index>
+      }
+
     </InstantSearch>
     </div>
   )
 }
 
-export default SearchAlgolia
+export default withRouter(SearchAlgolia);

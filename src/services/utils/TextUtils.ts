@@ -10,13 +10,15 @@ class TextUtils {
     }
 
     static formatCurrency = (input : number, currency = "CAD", convertToInteger= false) => {
+        let minimumFractionDigits = 2;
         if (convertToInteger) {
             input = Math.round(input);
+            minimumFractionDigits = 0;
         }
         if (["ETH", "BNB"].includes(currency)) {
             return `${currency} ${input.toFixed(6)}`
         }
-        return input.toLocaleString('en-ca', {style : 'currency', currency });
+        return input.toLocaleString('en-ca', {style : 'currency', currency, minimumFractionDigits });
     }
 }
 

@@ -1,4 +1,4 @@
-import React, {  } from 'react';
+import React from 'react';
 import { connectStateResults } from 'react-instantsearch-dom';
 import 'instantsearch.css/themes/satellite.css'; //algolia instant search styling
 import ScholarshipCard from '../Scholarship/ScholarshipCard';

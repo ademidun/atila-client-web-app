@@ -129,6 +129,7 @@ export function toTitleCase(str) {
     return str;
 }
 
+// TODO usages of this function can be replaced with TextUtils.formatCurrency
 export function formatCurrency(input, convertToInteger=false, decimalPlaces=false, currency='CAD') {
     if (convertToInteger) {
         input = Number.parseInt(input);
