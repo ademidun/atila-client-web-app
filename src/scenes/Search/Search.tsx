@@ -123,6 +123,9 @@ function SearchAlgolia({ className = "p-md-5",
     [push, onSearchQueryChanged]
   );
 
+  /**
+   * If a search string was passed in as a prop, update the search state
+   */
   useEffect(() => {
     if (initialSearch) {
       handleSearchStateChange({query: initialSearch})
