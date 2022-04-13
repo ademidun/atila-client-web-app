@@ -9,6 +9,7 @@ import {SearchResultHit, SearchResults} from './SearchResults';
 import './Search.scss'
 import {Radio} from 'antd';
 import equal from "fast-deep-equal";
+import { RouteComponentProps, useHistory, withRouter } from 'react-router';
 
 const algoliaClient = algoliasearch(Environment.ALGOLIA_APP_ID, Environment.ALGOLIA_PUBLIC_KEY);
 
@@ -75,11 +76,10 @@ const urlToSearchState = ({ search}: { search: any}) => {
 };
 
 
-interface SearchAlgoliaProps {
+interface SearchAlgoliaProps extends RouteComponentProps {
   className: string,
   renderSeo: boolean,
   location: any,
-  history: any,
   initialSearch?: string,
   showScholarshipsOnly?: boolean,
   onResultsLoaded?: (results: Array<{ items: any, num_items: number }>) => void,
@@ -89,7 +89,6 @@ interface SearchAlgoliaProps {
 function SearchAlgolia({ className = "p-md-5",
                          renderSeo = true,
                          location,
-                         history,
                          initialSearch = "",
                          showScholarshipsOnly = false,
                          onResultsLoaded = () => {},
@@ -98,7 +97,8 @@ function SearchAlgolia({ className = "p-md-5",
 
   const [searchState, setSearchState] = useState(urlToSearchState(location));
   const [showExpiredScholarships, setshowExpiredScholarships] = useState(false);
-  const [results, setResults] = useState([{'hits': []}])
+  const [results, setResults] = useState([{'hits': []}]);
+  const { push } = useHistory();
 
   const showExpiredScholarshipsOptions = [
     { label: 'Show Expired Scholarships', value: true },
@@ -113,26 +113,25 @@ function SearchAlgolia({ className = "p-md-5",
     clearTimeout(debouncedSetStateRef.current);
 
     debouncedSetStateRef.current = setTimeout(() => {
-      history.push(searchStateToUrl(updatedSearchState));
+      push(searchStateToUrl(updatedSearchState));
       window.scrollTo(0,0)
     }, DEBOUNCE_TIME);
 
     setSearchState(updatedSearchState);
     onSearchQueryChanged(updatedSearchState)
     },
-    []
+    [push, onSearchQueryChanged]
   );
 
   useEffect(() => {
     if (initialSearch) {
-      let newSearchState = {...searchState}
-      newSearchState.query = initialSearch
-      handleSearchStateChange(newSearchState)
-    } else {
-      onSearchQueryChanged(searchState)
+      handleSearchStateChange({query: initialSearch})
     }
-  }, [])
+  }, [initialSearch, handleSearchStateChange])
 
+  /**
+   * Everytime the url changes or the showExpiredScholarships option is toggled, update the searchstate based on what's in the URL
+   */
   useEffect(() => {
     setSearchState(urlToSearchState(location));
   }, [location, showExpiredScholarships]);
@@ -225,4 +224,4 @@ function SearchAlgolia({ className = "p-md-5",
   )
 }
 
-export default SearchAlgolia
+export default withRouter(SearchAlgolia);

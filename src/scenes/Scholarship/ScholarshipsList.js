@@ -327,9 +327,7 @@ class ScholarshipsList extends React.Component {
     }
 
     render () {
-        const {
-            userProfile, location, history
-        } = this.props;
+        const { userProfile } = this.props;
 
         const { scholarships, scholarshipSearchResults, isLoadingScholarships,
             totalScholarshipsCount, totalFunding,
@@ -507,8 +505,6 @@ class ScholarshipsList extends React.Component {
                 }
                 <SearchAlgolia showScholarshipsOnly={true}
                                onSearchQueryChanged={this.handleSearchQueryChanged}
-                               location={location}
-                               history={history}
                                initialSearch={initialSearchString}
                                onResultsLoaded={this.handleSearchResultsLoaded}
                                className=""
