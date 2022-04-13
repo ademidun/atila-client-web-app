@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import algoliasearch from 'algoliasearch/lite';
 import {Configure, Hits, Index, InstantSearch, Pagination, PoweredBy, SearchBox} from 'react-instantsearch-dom';
 import 'instantsearch.css/themes/satellite.css'; //algolia instant search styling
@@ -103,7 +103,9 @@ function SearchAlgolia({ location,
 
   const debouncedSetStateRef = useRef<null|any>(null);
 
-  function onSearchStateChange(updatedSearchState: any) {
+  const handleSearchStateChange = useCallback(
+    (updatedSearchState: any) => {
+        
     clearTimeout(debouncedSetStateRef.current);
 
     debouncedSetStateRef.current = setTimeout(() => {
@@ -113,13 +115,15 @@ function SearchAlgolia({ location,
 
     setSearchState(updatedSearchState);
     onSearchQueryChanged(updatedSearchState)
-  }
+    },
+    []
+  );
 
   useEffect(() => {
     if (initialSearch) {
       let newSearchState = {...searchState}
       newSearchState.query = initialSearch
-      onSearchStateChange(newSearchState)
+      handleSearchStateChange(newSearchState)
     } else {
       onSearchQueryChanged(searchState)
     }
@@ -160,7 +164,7 @@ function SearchAlgolia({ location,
     })
   }
 
-  const searchResultsCB = (searchResults: any) => {
+  const handleSearchResultsChange = (searchResults: any) => {
     let callBackResults = algoliaResultsToOnResultsLoaded(searchResults)
     onResultsLoaded(callBackResults)
     if (!equal(results, searchResults)) {
@@ -170,14 +174,14 @@ function SearchAlgolia({ location,
 
   const noScholarhipsShown = results[0].hits.length === 0 || searchState.query?.length === 0
 
-  let searchClient = createSearchClient(searchResultsCB)
+  let searchClient = createSearchClient(handleSearchResultsChange)
   return (
     <div className="Search container p-md-5">
     <HelmetSeo content={seoContent} />    
     <InstantSearch searchClient={searchClient}
                    indexName={scholarshipIndex} 
                    searchState={searchState} 
-                   onSearchStateChange={onSearchStateChange}
+                   onSearchStateChange={handleSearchStateChange}
                    createURL={createURL}>
       <PoweredBy  className="mb-3 mt-5" />
         <SearchBox  className="mb-3" 
