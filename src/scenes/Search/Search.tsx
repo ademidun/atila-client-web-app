@@ -76,6 +76,8 @@ const urlToSearchState = ({ search}: { search: any}) => {
 
 
 interface SearchAlgoliaProps {
+  className: string,
+  renderSeo: boolean,
   location: any,
   history: any,
   initialSearch?: string,
@@ -84,7 +86,9 @@ interface SearchAlgoliaProps {
   onSearchQueryChanged?: (searchQuery: any) => void,
 }
 
-function SearchAlgolia({ location,
+function SearchAlgolia({ className = "p-md-5",
+                         renderSeo = true,
+                         location,
                          history,
                          initialSearch = "",
                          showScholarshipsOnly = false,
@@ -176,14 +180,14 @@ function SearchAlgolia({ location,
 
   let searchClient = createSearchClient(handleSearchResultsChange)
   return (
-    <div className="Search container p-md-5">
-    <HelmetSeo content={seoContent} />    
+    <div className={`Search container ${className}`}>
+    {renderSeo && <HelmetSeo content={seoContent} />}
     <InstantSearch searchClient={searchClient}
                    indexName={scholarshipIndex} 
                    searchState={searchState} 
                    onSearchStateChange={handleSearchStateChange}
                    createURL={createURL}>
-      <PoweredBy  className="mb-3 mt-5" />
+      <PoweredBy  className="mb-3" />
         <SearchBox  className="mb-3" 
                     searchAsYouType={false} 
                     showLoadingIndicator />
