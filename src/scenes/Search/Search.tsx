@@ -201,6 +201,7 @@ function SearchAlgolia({ className = "p-md-5",
         <SearchBox  className="mb-3"
                     searchAsYouType={false} 
                     showLoadingIndicator />
+        <PoweredBy  className="mb-3" />
         <Index indexName={scholarshipIndex}>
           <Configure hitsPerPage={HITS_PER_PAGE} {...scholarshipConfiguration} />
           {!noScholarhipsShown &&
