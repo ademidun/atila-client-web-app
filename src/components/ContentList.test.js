@@ -7,8 +7,15 @@ import {BlogWhatIsAtila} from "../models/Blog";
 import EssaysApi from "../services/EssaysAPI";
 import {EssayIveyApplication} from "../models/Essay";
 import {MemoryRouter} from "react-router-dom";
+import configureStore from "redux-mock-store";
+import { Provider } from "react-redux";
+import { initialReduxState } from "../models/Constants";
+
 
 configure({ adapter: new Adapter() });
+
+const mockStore = configureStore();
+const guestUserStore = mockStore(initialReduxState);
 
 jest.mock('../services/EssaysAPI');
 
@@ -30,7 +37,9 @@ describe('<ContentList />', () => {
 
         const wrapper = mount(
             <MemoryRouter>
-                <ContentList ContentAPI={EssaysApi} contentType={'essay'} />
+                <Provider store={guestUserStore}>
+                    <ContentList ContentAPI={EssaysApi} contentType={'essay'} />
+                </Provider>
             </MemoryRouter>
             );
         let childWrapper = wrapper.find(ContentList);

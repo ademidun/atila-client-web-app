@@ -3,6 +3,7 @@ import {toastNotify} from "../models/Utils";
 import {MAX_BLOG_PAGE_VIEWS, MAX_ESSAY_PAGE_VIEWS, MAX_SCHOLARSHIP_PAGE_VIEWS} from "../models/Constants";
 import moment from "moment";
 import { message } from 'antd';
+import Environment from "./Environment";
 /*import { element } from 'prop-types';*/
 
 export function makeXHRRequestAsPromise (method, url, data) {
@@ -91,6 +92,25 @@ export function getItemType(item) {
         itemType = 'essay'
     }
     return itemType;
+}
+
+const scholarshipIndexName = Environment.ALGOLIA_SCHOLARSHIP_INDEX;
+const blogIndexName = Environment.ALGOLIA_BLOG_INDEX;
+
+export function getAlogliaIndexName(itemType) {
+    let indexName = '';
+    switch (itemType) {
+        case "scholarship":
+            indexName = scholarshipIndexName
+            break;
+        case "blog":
+            indexName = blogIndexName;
+            break;
+        default:
+            break;
+    }
+
+    return indexName;
 }
 
 // https://github.com/ademidun/atila-angular/blob/9cb6dbbe8e2c1f0f4d7812740c1a06c6d811e331/src/app/_shared/utils.ts#L3

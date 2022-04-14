@@ -1,18 +1,26 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import algoliasearch from 'algoliasearch/lite';
-import {Configure, Hits, Index, InstantSearch, Pagination, PoweredBy, SearchBox} from 'react-instantsearch-dom';
+import { InstantSearch, Hits, PoweredBy, Pagination, SearchBox, Configure, Index, connectHitInsights } from 'react-instantsearch-dom';
 import 'instantsearch.css/themes/satellite.css'; //algolia instant search styling
 import Environment from '../../services/Environment';
 import qs from 'qs';
 import HelmetSeo from '../../components/HelmetSeo';
 import {SearchResultHit, SearchResults} from './SearchResults';
 import './Search.scss'
-import {Radio} from 'antd';
+import { Radio } from 'antd';
+import aa from 'search-insights';
 import equal from "fast-deep-equal";
 import { RouteComponentProps, useHistory, withRouter } from 'react-router';
 
 const algoliaClient = algoliasearch(Environment.ALGOLIA_APP_ID, Environment.ALGOLIA_PUBLIC_KEY);
 
+aa('init', {
+  appId: Environment.ALGOLIA_APP_ID,
+  apiKey: Environment.ALGOLIA_PUBLIC_KEY,
+  useCookie: true,
+})
+
+const SearchResultHitsWithInsights = connectHitInsights(aa)(SearchResultHit);
 const MINIMUM_CHARACTER_LENGTH = 3;
 const DEBOUNCE_TIME = 400;
 const HITS_PER_PAGE = 5;
@@ -152,8 +160,8 @@ function SearchAlgolia({ className = "p-md-5",
     algoliaIndexPrefix = "staging";
   }
 
-  const scholarshipIndex = `${algoliaIndexPrefix}_scholarship_index`;
-  const blogIndex = `${algoliaIndexPrefix}_blog_index`;
+  const scholarshipIndex = Environment.ALGOLIA_SCHOLARSHIP_INDEX;
+  const blogIndex = Environment.ALGOLIA_BLOG_INDEX;
   const scholarshipConfiguration: any = {};
   if (!showExpiredScholarships) {
     // the deadline is saved in seconds in our index so we have to convert the current date from milliseconds to seconds;
@@ -189,10 +197,11 @@ function SearchAlgolia({ className = "p-md-5",
                    searchState={searchState} 
                    onSearchStateChange={handleSearchStateChange}
                    createURL={createURL}>
-      <PoweredBy  className="mb-3" />
-        <SearchBox  className="mb-3" 
+        <Configure clickAnalytics />
+        <SearchBox  className="mb-3"
                     searchAsYouType={false} 
                     showLoadingIndicator />
+        <PoweredBy  className="mb-3" />
         <Index indexName={scholarshipIndex}>
           <Configure hitsPerPage={HITS_PER_PAGE} {...scholarshipConfiguration} />
           {!noScholarhipsShown &&
@@ -206,7 +215,7 @@ function SearchAlgolia({ className = "p-md-5",
                 buttonStyle="solid"
             />
             <SearchResults title="Scholarships">
-              <Hits hitComponent={SearchResultHit} />
+              <Hits hitComponent={SearchResultHitsWithInsights} />
             </SearchResults>
             <Pagination  className="my-3" />
           </>}
@@ -216,7 +225,7 @@ function SearchAlgolia({ className = "p-md-5",
       <Index indexName={blogIndex}>
         <Configure hitsPerPage={HITS_PER_PAGE}/>
         <SearchResults title="Blogs">
-          <Hits hitComponent={SearchResultHit}/>
+          <Hits hitComponent={SearchResultHitsWithInsights}/>
         </SearchResults>
         <Pagination className="my-3"/>
       </Index>

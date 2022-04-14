@@ -9,7 +9,7 @@ import ContentCard from '../../components/ContentCard';
 
 export function SearchResultHit(props: any) {
 
-    const { hit } = props;
+    const { hit, insights } = props;
     const itemType = getItemType(hit);
 
     if (hit.deadline && Number.isInteger(hit.deadline)) {
@@ -21,11 +21,11 @@ export function SearchResultHit(props: any) {
   }
     return (
         <>
-            {itemType === "scholarship" ? 
-            <ScholarshipCard scholarship={hit} className="col-12" /> :
-            <ContentCard content={genericItemTransform(hit)} />}
+            {itemType === "scholarship" ?
+            <ScholarshipCard scholarship={hit} className="col-12" insights={insights}/> :
+            <ContentCard insights={insights} content={genericItemTransform(hit)}/>}
         </>
-      
+
     );
   }
 
