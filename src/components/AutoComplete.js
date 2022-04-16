@@ -2,7 +2,6 @@ import React from 'react';
 import Autosuggest from 'react-autosuggest';
 import './AutoComplete.scss';
 import PropTypes from "prop-types";
-import {emojiDictionary} from "../models/Constants";
 import { Highlight, connectAutoComplete } from "react-instantsearch-dom";
 
 const defaultTheme = {
