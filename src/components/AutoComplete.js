@@ -3,6 +3,7 @@ import Autosuggest from 'react-autosuggest';
 import './AutoComplete.scss';
 import PropTypes from "prop-types";
 import {emojiDictionary} from "../models/Constants";
+import { Highlight, connectAutoComplete } from "react-instantsearch-dom";
 
 const defaultTheme = {
     container: 'react-autosuggest__container col-12 p-0 mb-3',
@@ -25,29 +26,21 @@ class AutoCompleteHelper {
     // When suggestion is clicked, Autosuggest needs to populate the input
     // based on the clicked suggestion. Teach Autosuggest how to calculate the
     // input value for every given suggestion.
-    static getSuggestionValue = suggestion => suggestion;
-
-    static renderSuggestion = suggestion => (
-        <p className="suggestion-item cursor-pointer">
-            <span>{emojiDictionary[suggestion.toLowerCase()] && emojiDictionary[suggestion.toLowerCase()]} </span>
-            {suggestion}
-        </p>
-    );
+    static getSuggestionValue = hit => hit.query;
+    static renderSuggestion = hit => <Highlight attribute="query" hit={hit} tagName="mark" />;
 }
 class AutoComplete extends React.Component {
     constructor(props) {
         super(props);
-
         // Autosuggest is a controlled component.
         // This means that you need to provide an input value
         // and an onChange handler that updates this value (see below).
         // Suggestions also need to be provided to the Autosuggest,
         // and they are initially empty because the Autosuggest is closed.
-        const { value, suggestions } = this.props;
+        const { value } = this.props;
 
         this.state = {
-            value,
-            suggestions
+            value
         };
     }
 
@@ -67,44 +60,23 @@ class AutoComplete extends React.Component {
     };
 
     onKeyPress = (event) => {
-
         if (event.key === "Enter") {
             event.preventDefault();
-            this.onSuggestionSelected(event, {suggestionValue: event.target.value, method: 'click'});
+            this.props.onSuggestionSelected(event, {suggestion: { query: this.state.value}})
         }
     };
-
-
 
     // Autosuggest will call this function every time you need to update suggestions.
     // You already implemented this logic above, so just use it.
     onSuggestionsFetchRequested = ({ value }) => {
-        this.setState({
-            suggestions: this.getSuggestions(value)
-        });
+        const { refine } = this.props;
+        refine(value);
     };
 
     // Autosuggest will call this function every time you need to clear suggestions.
     onSuggestionsClearRequested = () => {
-        this.setState({
-            suggestions: []
-        });
-    };
-
-    onSuggestionSelected = ( event, suggestionArguments ) => {
-        // leaving this comment so you can easily see the available properties of suggestionArguments
-        // const { suggestion, suggestionValue, suggestionIndex, sectionIndex, method } = suggestionArguments;
-
-        const { suggestionValue, method } = suggestionArguments;
-        event.preventDefault();
-
-        const { onSelected, keyName } = this.props;
-        if( method==='click' ) {
-            event.target.value = suggestionValue;
-            event.target.name = keyName;
-        }
-        onSelected(event);
-        this.props.onSuggestionSelected(event, suggestionArguments);
+        const { refine } = this.props;
+        refine();
     };
 
     getSuggestions = value => {
@@ -126,8 +98,8 @@ class AutoComplete extends React.Component {
     };
 
     render() {
-        const { value, suggestions } = this.state;
-        const { keyName, placeholder, customTheme, getSuggestionValue, renderSuggestion } = this.props;
+        const { value } = this.state;
+        const { hits, keyName, placeholder, customTheme, getSuggestionValue, renderSuggestion, onSuggestionSelected } = this.props;
 
         // Autosuggest will pass through all these props to the input.
         const inputProps = {
@@ -143,14 +115,14 @@ class AutoComplete extends React.Component {
             <Autosuggest
                 id={keyName}
                 theme={{...defaultTheme, ...customTheme}}
-                suggestions={suggestions}
+                suggestions={hits}
                 onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
                 onSuggestionsClearRequested={this.onSuggestionsClearRequested}
                 getSuggestionValue={getSuggestionValue}
                 renderSuggestion={renderSuggestion}
                 inputProps={inputProps}
                 renderInputComponent={this.renderInputComponent}
-                onSuggestionSelected={this.onSuggestionSelected}
+                onSuggestionSelected={onSuggestionSelected}
             />
         );
     }
@@ -170,7 +142,6 @@ AutoComplete.defaultProps = {
 
 AutoComplete.propTypes = {
     value: PropTypes.string,
-    suggestions: PropTypes.array.isRequired,
     onChange: PropTypes.func,
     onSelected: PropTypes.func,
     keyName: PropTypes.string.isRequired,
@@ -182,4 +153,4 @@ AutoComplete.propTypes = {
     inputToSuggestion: PropTypes.func.isRequired,
 };
 
-export default AutoComplete
+export default connectAutoComplete(AutoComplete);
