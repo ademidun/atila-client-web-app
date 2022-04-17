@@ -78,24 +78,6 @@ class AutoComplete extends React.Component {
         refine();
     };
 
-    getSuggestions = value => {
-
-        const { suggestions, getSuggestionValue, inputToSuggestion} = this.props;
-        const inputValue = value.trim().toLowerCase();
-        const inputLength = inputValue.length;
-
-        const filteredSuggestions = inputLength === 0 ? [] : suggestions.filter(suggestion => {
-            suggestion = getSuggestionValue(suggestion)
-            return suggestion.toLowerCase().includes(inputValue)
-        })
-
-        // Value is a string but the items in the suggestions might be objects.
-        const inputSuggestion = inputToSuggestion(value.trim());
-        filteredSuggestions.unshift(inputSuggestion);
-
-        return filteredSuggestions;
-    };
-
     render() {
         const { value } = this.state;
         const { hits, keyName, placeholder, customTheme, getSuggestionValue, renderSuggestion, onSuggestionSelected } = this.props;
