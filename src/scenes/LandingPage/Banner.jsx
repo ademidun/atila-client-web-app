@@ -39,12 +39,6 @@ class Banner extends React.Component {
     className: 'banner',
   };
 
-  onSubmit = event => {
-    event.preventDefault();
-    const { searchQuery } = this.state;
-    this.props.history.push(`/scholarship/s/${slugify(searchQuery)}`);
-  };
-
   onSearchSuggestionSelected = (event, { suggestion }) => {
     event.persist();
     event.preventDefault();
@@ -104,7 +98,8 @@ class Banner extends React.Component {
                                 placeholder={"Search by school, city, program, ethnicity or more"}
                                 onSuggestionSelected={this.onSearchSuggestionSelected}
                                 value={searchQuery}
-                                keyName={'searchString'}/>
+                                keyName={'searchString'}
+                                algoliaPowered={true}/>
                   </InstantSearch>
                 </div>
                 <div className="col-sm-12">
