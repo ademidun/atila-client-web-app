@@ -3,7 +3,7 @@ import { configure, mount } from "enzyme";
 import {MemoryRouter} from "react-router-dom";
 import configureStore from "redux-mock-store";
 import {Provider} from "react-redux";
-import Adapter from "enzyme-adapter-react-16";
+import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
 import ApplicationDetail from "./ApplicationDetail";
 import {initialReduxState, initialReduxStateLoggedIn} from "../../models/Constants";
 import { MockAPI } from "../../services/mocks/MockAPI";

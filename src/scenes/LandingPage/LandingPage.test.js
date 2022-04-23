@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 import Banner from './Banner';
 import LandingPage from './LandingPage';
 import {initialReduxState, initialReduxStateLoggedIn} from "../../models/Constants";
-import Adapter from 'enzyme-adapter-react-16';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import {MemoryRouter} from "react-router-dom";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import {scholarshipsListMockData} from "../../models/Scholarship";

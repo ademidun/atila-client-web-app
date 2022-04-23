@@ -1,6 +1,6 @@
 import React from 'react';
 import {configure, shallow, mount} from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import "core-js/stable";
 import {
     PREMIUM_PRICE_BEFORE_TAX,
