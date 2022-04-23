@@ -4,6 +4,7 @@ import request from "axios";
 class PaymentAPI {
 
     static apiUrlPayment = `${Environment.apiUrl}/payment`;
+    static apiUrlKeyCredits = `${PaymentAPI.apiUrlPayment}/api-key-credits`;
     static apiUrlTransactions = `${PaymentAPI.apiUrlPayment}/transactions`;
     static apiUrlWallets = `${PaymentAPI.apiUrlPayment}/wallets`;
 
@@ -54,8 +55,25 @@ class PaymentAPI {
     static getAPIKeyCreditByPublicKey = (publicKey) => {
 
         const apiCompletionPromise = request({
-            url: `${PaymentAPI.apiUrlPayment}/api-key-credits/public-key/?public_key=${publicKey}/`,
+            url: `${PaymentAPI.apiUrlKeyCredits}/public-key/?public_key=${publicKey}/`,
             method: 'GET',
+        });
+
+        return apiCompletionPromise;
+    };
+
+    static buyCredits = (publicKey, creditsAmount, transactionId, chainId) => {
+
+        const apiCompletionPromise = request({
+            url: `${PaymentAPI.apiUrlKeyCredits}/buy-credits/`,
+            method: 'POST',
+            data: {
+                api_key_credit_public_key: publicKey,
+                credits_amount: creditsAmount,
+                credits_type: "search",
+                transaction_hash: transactionId,
+                chain_id: chainId,
+            },
         });
 
         return apiCompletionPromise;

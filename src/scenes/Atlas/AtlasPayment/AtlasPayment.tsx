@@ -5,6 +5,7 @@ import { RadioChangeEvent } from 'antd/lib/radio';
 import TextUtils from '../../../services/utils/TextUtils';
 import { APIKeyCredit } from '../../../models/APIKeyCredit';
 import PaymentAPI from '../../../services/PaymentAPI';
+import { BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID } from '../../../models/ConstantsPayments';
 
 const PRICING_TIER_1 = 1;
 const PRICING_TIER_2 = 10;
@@ -78,6 +79,23 @@ function AtlasPayment() {
     [apiKeyCredit.public_key]
   );
 
+  const handlePaymentSent = (transaction: any) => {
+    console.log({transaction});
+    let chainId = 1;
+    if (transaction.blockchain === "bsc") {
+      chainId = BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID;
+    }
+    PaymentAPI.buyCredits(apiKeyCredit.public_key, apiCredits, transaction.id, chainId)
+      .then(res => {
+        console.log({res});
+        const { data: { api_key_credit } } = res;
+        setApiKeyCredit(api_key_credit);
+      })
+      .catch(err => {
+        console.log({err});
+      })
+  }
+
   const keyDownHandler: KeyboardEventHandler<HTMLInputElement> = (event) => {
     if(event.currentTarget.name === "public_key" && event.key === "Enter" && event.shiftKey === false) {
       event.preventDefault();
@@ -114,7 +132,7 @@ function AtlasPayment() {
           }
         </div>
       <div className="text-center">
-        <CryptoPaymentWidget amount={paymentAmount} />
+        <CryptoPaymentWidget amount={paymentAmount} onTransactionSent={handlePaymentSent} />
       </div>
         
     </div>
