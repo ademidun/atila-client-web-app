@@ -7,7 +7,7 @@ interface CryptoPaymentWidgetProps {
 
   /** Amount that wallet will receive in USD */
   amount: number;
-  onTransactionSent?: (transaction: any) => void
+  onTransactionConfirmed?: (transaction: any) => void
 }
 
 function CryptoPaymentWidget(props: CryptoPaymentWidgetProps) {
@@ -16,7 +16,7 @@ function CryptoPaymentWidget(props: CryptoPaymentWidgetProps) {
   const ATILATECH_PAYMENTS_ADDRESS = '0xd60271b10861145D2b26d27cb1E59Dd6d367959C';
   const BSC_BLOCKCHAIN_BUSD_TOKEN_ADDRESS = '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56';
 
-  const { amount, onTransactionSent } = props;
+  const { amount, onTransactionConfirmed } = props;
 
   const startPayment = async () => {
     
@@ -41,9 +41,9 @@ function CryptoPaymentWidget(props: CryptoPaymentWidgetProps) {
       error: (error: any)=> {
         console.log({error});
       },
-      sent: (transaction: any)=> {
-        if (onTransactionSent) {
-          onTransactionSent(transaction);
+      confirmed: (transaction: any)=> {
+        if (onTransactionConfirmed) {
+          onTransactionConfirmed(transaction);
         }
         
       },

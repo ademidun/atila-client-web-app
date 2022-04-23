@@ -79,7 +79,7 @@ function AtlasPayment() {
     [apiKeyCredit.public_key]
   );
 
-  const handlePaymentSent = (transaction: any) => {
+  const handlePaymentConfirmed = (transaction: any) => {
     console.log({transaction});
     let chainId = 1;
     if (transaction.blockchain === "bsc") {
@@ -132,7 +132,7 @@ function AtlasPayment() {
           }
         </div>
       <div className="text-center">
-        <CryptoPaymentWidget amount={paymentAmount} onTransactionSent={handlePaymentSent} />
+        <CryptoPaymentWidget amount={paymentAmount} onTransactionConfirmed={handlePaymentConfirmed} />
       </div>
         
     </div>
