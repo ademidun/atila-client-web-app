@@ -42,12 +42,10 @@ function CryptoPaymentWidget(props: CryptoPaymentWidgetProps) {
       }
     });
   }
-
-  console.log({startPayment});
   
   return (
     <div>
-      <Button onClick={()=> {startPayment()}} size="large">
+      <Button onClick={()=> {startPayment()}} size="large" type="primary">
          Pay with Crypto{' '}({TextUtils.formatCurrency(amount)} USD)
       </Button>
     </div>

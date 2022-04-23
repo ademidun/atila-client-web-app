@@ -51,6 +51,16 @@ class PaymentAPI {
         return apiCompletionPromise;
     };
 
+    static getAPIKeyCreditByPublicKey = (publicKey) => {
+
+        const apiCompletionPromise = request({
+            url: `${PaymentAPI.apiUrlPayment}/api-key-credits/public-key/?public_key=${publicKey}/`,
+            method: 'GET',
+        });
+
+        return apiCompletionPromise;
+    };
+
 }
 
 export default PaymentAPI;
