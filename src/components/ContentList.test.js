@@ -18,10 +18,6 @@ configure({ adapter: new Adapter() });
 const mockStore = configureStore();
 const guestUserStore = mockStore(initialReduxState);
 
-jest.mock('../services/EssaysAPI');
-
-EssaysApi.list.mockImplementation(() => Promise.resolve({ data: { results: [EssayIveyApplication] } } ));
-
 describe('<ContentList />', () => {
 
     it('renders without crashing', () => {
