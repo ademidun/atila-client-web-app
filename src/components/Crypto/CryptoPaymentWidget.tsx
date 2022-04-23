@@ -7,7 +7,12 @@ interface CryptoPaymentWidgetProps {
 
   /** Amount that wallet will receive in USD */
   amount: number;
+  disabled: boolean;
   onTransactionConfirmed?: (transaction: any) => void
+}
+
+CryptoPaymentWidget.defaultProps = {
+  disabled: false,
 }
 
 function CryptoPaymentWidget(props: CryptoPaymentWidgetProps) {
@@ -16,7 +21,7 @@ function CryptoPaymentWidget(props: CryptoPaymentWidgetProps) {
   const ATILATECH_PAYMENTS_ADDRESS = '0xd60271b10861145D2b26d27cb1E59Dd6d367959C';
   const BSC_BLOCKCHAIN_BUSD_TOKEN_ADDRESS = '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56';
 
-  const { amount, onTransactionConfirmed } = props;
+  const { amount, disabled, onTransactionConfirmed } = props;
 
   const startPayment = async () => {
     
@@ -52,7 +57,7 @@ function CryptoPaymentWidget(props: CryptoPaymentWidgetProps) {
   
   return (
     <div>
-      <Button onClick={()=> {startPayment()}} size="large" type="primary">
+      <Button onClick={()=> {startPayment()}} size="large" type="primary" disabled={disabled}>
          Pay with Crypto{' '}({TextUtils.formatCurrency(amount)} USD)
       </Button>
     </div>
