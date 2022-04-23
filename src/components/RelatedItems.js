@@ -3,88 +3,52 @@ import PropTypes from 'prop-types';
 
 import ContentCard from "./ContentCard";
 import Loading from "./Loading";
-import {genericItemTransform} from "../services/utils";
-import ScholarshipsAPI from "../services/ScholarshipsAPI";
-import BlogsApi from "../services/BlogsAPI";
-import EssaysApi from "../services/EssaysAPI";
+import { genericItemTransform, getAlogliaIndexName } from "../services/utils";
+import Environment from '../services/Environment';
+import { useRelatedProducts } from '@algolia/recommend-react';
+import recommend from '@algolia/recommend';
 
-class RelatedItems extends React.Component {
+const recommendClient = recommend(Environment.ALGOLIA_APP_ID, Environment.ALGOLIA_PUBLIC_KEY);
 
-    constructor(props) {
-        super(props);
+const RelatedProduct = ({recommendation}) => {
+    recommendation = genericItemTransform(recommendation);
+    return (
+        <ContentCard key={recommendation.slug} content={recommendation} className="mb-3" />
+    )
+}
 
-        this.state = {
-            relatedItems: [],
-            isLoadingRelatedItems: false,
-            errorLoadingRelatedItems: false,
-        }
-    }
-    componentDidMount() {
+const RelatedProducts = ({recommendations}) => {
+    return <>
+        <h3 className="text-center">Related</h3>
+        {recommendations.map(item => (
+            <RelatedProduct recommendation={item} key={item.id} />
+        ))}
+    </>
+}
 
-        const { id, itemType } = this.props;
-        this.setState({ isLoadingRelatedItems: true });
+const RelatedItems = (props) => {
 
-        let ContentAPI;
-        switch (itemType) {
-            case "scholarship":
-                ContentAPI = ScholarshipsAPI;
-                break;
-            case "blog":
-                ContentAPI = BlogsApi;
-                break;
-            case "essay":
-                ContentAPI = EssaysApi;
-                break;
-            default:
-                ContentAPI = ScholarshipsAPI;
-                break;
-        }
+    const { recommendations, status } = useRelatedProducts({
+        indexName:  getAlogliaIndexName(props.itemType),
+        maxRecommendations: 3,
+        objectIDs: [props.id.toString()],
+        recommendClient: recommendClient
+    })
 
-        let relatedItemsPromise;
-        relatedItemsPromise = ContentAPI
-            .relatedItems(`${id}`)
-            .then(res => {
-                let relatedItems = [];
-                if (res.data.results) {
-                    relatedItems = res.data.results.slice(0,3);
-                }
-                this.setState({ relatedItems });
-            });
-
-        relatedItemsPromise
-            .catch(err => {
-                console.log({ err});
-            })
-            .finally(() => {
-                this.setState({ isLoadingRelatedItems: false });
-            });
-    }
-
-    render () {
-
-        const { relatedItems, isLoadingRelatedItems  } = this.state;
-        const { className } = this.props;
-
-        if (isLoadingRelatedItems) {
-            return (
-                <div className={`${className}`}>
-                    <Loading
-                        isLoading={isLoadingRelatedItems}
-                        title={'Loading Related Items..'} />
-                </div>);
-        }
-
+    if (status !== 'idle') {
         return (
-            <div className={`${className}`}>
-                <h3 className="text-center">Related</h3>
-                {relatedItems.map(item => {
-                    item = genericItemTransform(item);
-                    return (<ContentCard key={item.slug}
-                                         content={item}
-                                         className="mb-3" />)
-                })}
+            <div className={`${props.className}`}>
+                <Loading
+                    isLoading={status !== 'idle'}
+                    title={'Loading Related Items..'} />
             </div>
         );
+    } else {
+        return (
+            <div className={`${props.className}`}>
+                <RelatedProducts recommendations={recommendations} />
+            </div>
+        )
     }
 }
 

@@ -1,3 +1,8 @@
+/**
+    The `ScholarhipsList` component displays a list of scholarships based on the user's profile or a searched string.
+    If no search term is entered the scholarships list is retrieved from the atila-django API.
+    However, if a search term is entered the scholarships list is retrieved from the Algolia API.
+ */
 import React from 'react';
 
 import {myJoin, prettifyKeys, toTitleCase, transformFilterDisplay, unSlugify} from "../../services/utils";
@@ -7,11 +12,13 @@ import {connect} from "react-redux";
 import {isCompleteUserProfile} from "../../models/UserProfile";
 import {Link} from "react-router-dom";
 import ResponseDisplay from "../../components/ResponseDisplay";
-import ScholarshipsListFilter from "./ScholarshipsListFilter";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import {Alert, Button} from "antd";
 import UserProfileAPI from "../../services/UserProfileAPI";
 import AnalyticsService from "../../services/AnalyticsService";
+import SearchAlgolia from "../Search/Search";
+import equal from "fast-deep-equal";
+import TextUtils from '../../services/utils/TextUtils';
 
 class ScholarshipsList extends React.Component {
 
@@ -24,10 +31,12 @@ class ScholarshipsList extends React.Component {
         } = props;
 
         const searchString = unSlugify(searchStringRaw);
+        console.log({searchString});
 
         this.state = {
             model: null,
             scholarships: null,
+            scholarshipSearchResults: null,
             searchPayload: {
                 searchString ,
                 previewMode: userProfile && !searchString ? null : 'universalSearch',
@@ -35,6 +44,7 @@ class ScholarshipsList extends React.Component {
                 sort_by: 'relevance_new'
             },
             searchString,
+            initialSearchString: searchString,
             viewAsUserString: '',
             viewAsUserProfile: null,
             viewAsUserError: null,
@@ -292,24 +302,47 @@ class ScholarshipsList extends React.Component {
         }
     };
 
-    render () {
-        const {
-            match : { params : { searchString: searchStringRaw } },
-            userProfile,
-        } = this.props;
-        const searchString = unSlugify(searchStringRaw);
+    handleSearchResultsLoaded = results => {
+        let scholarshipSearchResults = results[0].items
+        let totalScholarshipsCount = results[0].num_items
+        let totalFunding = 0
+        scholarshipSearchResults.forEach(scholarship => totalFunding += scholarship.funding_amount)
+        totalFunding = TextUtils.formatCurrency(totalFunding, "CAD", true);
+        console.log({scholarships: scholarshipSearchResults, totalFunding, totalScholarshipsCount});
+        if (totalFunding !== this.state.totalFunding) {
+            this.setState({totalFunding});
+        }
+        if (totalScholarshipsCount !== this.state.totalScholarshipsCount) {
+            this.setState({totalScholarshipsCount})
+        }
+        if (!equal(scholarshipSearchResults, this.state.scholarshipSearchResults)) {
+            this.setState({scholarshipSearchResults});
+        }
+    }
 
-        const { scholarships, isLoadingScholarships,
+    handleSearchQueryChanged = (updatedSearchString) => {
+
+        console.log({updatedSearchString});
+        this.setState({searchString: updatedSearchString.query});
+    }
+
+    render () {
+        const { userProfile } = this.props;
+
+        const { scholarships, scholarshipSearchResults, isLoadingScholarships,
             totalScholarshipsCount, totalFunding,
             errorGettingScholarships, searchPayload,
+            searchString, initialSearchString,
             pageNumber, viewAsUserString, viewAsUserProfile, viewAsUserError, scholarshipsScoreBreakdown} = this.state;
 
+        const isUsingAtila = !searchString;
         let loadMoreScholarshipsOrRegisterCTA = null;
 
         if(userProfile) {
             loadMoreScholarshipsOrRegisterCTA = (<React.Fragment>
                 {
                     scholarships && scholarships.length < totalScholarshipsCount
+                    && isUsingAtila
                     &&
                     <button className="btn btn-primary center-block font-size-xl"
                             onClick={this.loadMoreScholarships}
@@ -319,7 +352,7 @@ class ScholarshipsList extends React.Component {
                 }
                 {
                     scholarships && scholarships.length >= totalScholarshipsCount
-                    &&
+                    && isUsingAtila &&
                     <h4 className="text-center">
                         All Caught up {' '}
                         <span role="img" aria-label="happy face emoji">🙂</span>
@@ -330,12 +363,11 @@ class ScholarshipsList extends React.Component {
         } else if (!userProfile) {
             loadMoreScholarshipsOrRegisterCTA = (<div className="font-size-xl">
                 {
-                    scholarships
-                    &&
+                    (scholarships || scholarshipSearchResults) &&
                         <Button type="primary" className="font-size-larger col-12 mt-1" style={{fontSize: "25px"}}>
                             <Link to="/register">
-                                    Register for free to see
-                                    {scholarships.length < totalScholarshipsCount ?
+                                    Register for free and see
+                                    {isUsingAtila && scholarships?.length < totalScholarshipsCount ?
                                         ` all ${totalScholarshipsCount} ` : " more "}
                                     scholarships
                             </Link>
@@ -383,7 +415,7 @@ class ScholarshipsList extends React.Component {
             ...defaultSeoContent
         };
         let dynamicTitle = '';
-        if (scholarships) {
+        if (!Number.isNaN(totalScholarshipsCount) && totalFunding) {
             dynamicTitle = `${totalScholarshipsCount} Scholarship${totalScholarshipsCount === 1 ? '' :'s'}
              ${searchString ? `for ${toTitleCase(searchString)} ` : ''}found`;
             seoContent.title = `${dynamicTitle}${totalFunding !== '$0'? ` and ${totalFunding} in funding` : ''}`;
@@ -393,6 +425,7 @@ class ScholarshipsList extends React.Component {
             seoContent.slug = `/scholarship/s/${searchString}`
         }
 
+        console.log({userProfile, searchString});
 
         return (
             <div className="container mt-5">
@@ -403,7 +436,7 @@ class ScholarshipsList extends React.Component {
                     loadingTitle={"Loading Scholarships..."}
                 />
                 {missingSections}
-                {scholarships &&
+                {(scholarships || scholarshipSearchResults) &&
                     <div className="text-center">
                         <h1>
                             {dynamicTitle}
@@ -447,11 +480,12 @@ class ScholarshipsList extends React.Component {
                         }
                     </div>
                 }
-                <div className="w-100 mb-3">
+                {/* TEMP: hide Add a Scholarship. It's rarely used by most users and add clutter to scholarships list page */}
+                {/* <div className="w-100 mb-3">
                     <Link to={`/scholarship/add`} className="btn btn-outline-primary">
                         Add a Scholarship
                     </Link>
-                </div>
+                </div> */}
 
                 {userProfile && userProfile.is_atila_admin &&
                 <div style={{maxWidth: '250px'}} className="my-3">
@@ -468,9 +502,14 @@ class ScholarshipsList extends React.Component {
                     </Button>
                 </div>
                 }
-                <ScholarshipsListFilter model={userProfile} updateFilterOrSortBy={this.updateFilterOrSort} />
-
-                    {scholarships &&
+                <SearchAlgolia showScholarshipsOnly={true}
+                               onSearchQueryChanged={this.handleSearchQueryChanged}
+                               initialSearch={initialSearchString}
+                               onResultsLoaded={this.handleSearchResultsLoaded}
+                               className=""
+                               renderSeo={false}
+                />
+                {scholarships && isUsingAtila &&
                     <div className="mt-3">
                         {scholarships.map( scholarship =>
                             <ScholarshipCard
@@ -481,7 +520,7 @@ class ScholarshipsList extends React.Component {
                                         matchScoreBreakdown={scholarshipsScoreBreakdown &&
                                         scholarshipsScoreBreakdown[scholarship.id]} />)}
                     </div>
-                    }
+                }
                 {loadMoreScholarshipsOrRegisterCTA}
                 {pageNumber > 1 &&
                 <ResponseDisplay

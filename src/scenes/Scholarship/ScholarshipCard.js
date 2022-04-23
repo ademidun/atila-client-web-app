@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 import {formatCurrency} from "../../services/utils";
 import ScholarshipShareSaveButtons from "./ScholarshipShareSaveButtons";
 import ScholarshipExtraCriteria from "./ScholarshipExtraCriteria";
@@ -10,6 +11,10 @@ import "./ScholarshipCard.scss";
 import {Motion, spring} from 'react-motion';
 import {AtilaDirectApplicationsPopover} from "../../models/Scholarship";
 import verifiedBadge from "../../components/assets/verified.png";
+import aa from "search-insights";
+import Environment from "../../services/Environment";
+
+const scholarshipIndex = Environment.ALGOLIA_SCHOLARSHIP_INDEX;
 
 class ScholarshipCard extends React.Component {
 
@@ -20,6 +25,16 @@ class ScholarshipCard extends React.Component {
             showPreview: false,
             scholarshipHideStart: false,
             scholarshipHideFinish: false,
+            insights: props.insights,
+            loggedInUserProfile: null,
+            scholarship_id: props.scholarship.id,
+        }
+    }
+
+    componentDidMount() {
+        const { loggedInUserProfile } = this.props;
+        if (loggedInUserProfile) {
+            this.setState({ loggedInUserProfile: loggedInUserProfile });
         }
     }
 
@@ -37,6 +52,33 @@ class ScholarshipCard extends React.Component {
     onHideScholarshipFinished = () => {
         this.setState({ scholarshipHideFinish: true });
     };
+
+    buildAlgoliaAnalyticsEvent = () => {
+        let insightEvent = {
+            eventName: 'scholarship_clicked'
+        }
+
+        if (this.state.loggedInUserProfile !== null) {
+            insightEvent = {...insightEvent, userToken: this.state.loggedInUserProfile.user.toString()}
+        }
+
+        return insightEvent;
+    }
+
+    sendAlgoliaAnalyticsEvent = () => {
+        let insightEvent = this.buildAlgoliaAnalyticsEvent();
+
+        if (this.state.insights !== undefined) {
+            this.state.insights('clickedObjectIDsAfterSearch', insightEvent)
+        } else {
+            insightEvent = {
+                ...insightEvent,
+                index: scholarshipIndex,
+                objectIDs: [this.state.scholarship_id.toString()]
+            }
+            aa('clickedObjectIDs', insightEvent);
+        }
+    }
 
     render() {
 
@@ -80,7 +122,7 @@ class ScholarshipCard extends React.Component {
                         <div className={isOneColumn ? null: "col-md-8"}>
                             <div className="card-body" style={{maxHeight: '500px', overflow: 'auto'}}>
                                 <h1 className="card-title text-left">
-                                <Link to={`/scholarship/${slug}`}>
+                                <Link to={`/scholarship/${slug}`} onClick={this.sendAlgoliaAnalyticsEvent}>
                                         {name}
                                 </Link>{' '}
                                     {scholarship.is_atila_direct_application &&
@@ -135,6 +177,11 @@ ScholarshipCard.propTypes = {
     scholarship: PropTypes.shape({}),
     viewAsUserProfile: PropTypes.shape({}),
     matchScoreBreakdown: PropTypes.shape({}),
+    insights: PropTypes.func,
 };
 
-export default ScholarshipCard;
+const mapStateToProps = state => {
+    return { loggedInUserProfile: state.data.user.loggedInUserProfile };
+};
+
+export default connect(mapStateToProps)(ScholarshipCard);
