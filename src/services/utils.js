@@ -67,6 +67,13 @@ export function genericItemTransform (item) {
                 slug: user ? `/blog/${user.username}/${item.slug}/` : "",
             };
             break;
+        case 'content':
+            item = {
+                ...item,
+                title: item.title,
+                image: item.header_image_url,
+            };
+            break;
         default:
         // code block
     }
@@ -90,6 +97,9 @@ export function getItemType(item) {
     }
     else if (item.hasOwnProperty('essay_source_url') || item.hasOwnProperty('is_anonymous_essay')) {
         itemType = 'essay'
+    }
+    else if (item.hasOwnProperty('url')) {
+        itemType = 'content'
     }
     return itemType;
 }

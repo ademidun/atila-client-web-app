@@ -77,7 +77,7 @@ class ContentCard extends React.Component {
 
         const { content, hideImage } = this.props;
         const { showPreview } = this.state;
-        const { title, description, image, slug, type} = content;
+        const { title, description, image, slug, type, url} = content;
         let { contributors, contributors_json, user, user_json } = content;
 
         contributors = contributors || contributors_json;
@@ -108,12 +108,8 @@ class ContentCard extends React.Component {
             )
         }
 
-        return (
-            <div className='ContentCard shadow mb-3'>
-                    {!hideImage && image && 
-                    <div className='upper-container'>
-                        <Link title={title} to={slug} onClick={this.sendAlgoliaAnalyticsEvent}>
-                            {type === "blog" &&
+        const upperContainerContent = <>
+        {type === "blog" &&
                             <div className='upper-container-2'>
                                 <img src={image}
                                     alt={title}
@@ -128,14 +124,31 @@ class ContentCard extends React.Component {
                                 />
                             </div>
                             }
+        </>;
+
+        return (
+            <div className='ContentCard shadow mb-3'>
+                    {!hideImage && image && 
+                    <div className='upper-container'>
+                        {!slug && url ? 
+                        <a href={url} target="_blank" rel="noreferrer">
+                                {upperContainerContent}
+                        </a> : <Link title={title} to={slug} onClick={this.sendAlgoliaAnalyticsEvent}>
+                            {upperContainerContent}
                         </Link>
+                        }
+                        
                     </div>
                     }
                     <div className='lower-container'>
                         <div className="title">
-                            <Link title={title} to={slug} onClick={this.sendAlgoliaAnalyticsEvent}>
+                        {!slug && url ? 
+                        <a href={url} target="_blank" rel="noreferrer">
+                                <h3> {title} </h3>
+                        </a> : <Link title={title} to={slug} onClick={this.sendAlgoliaAnalyticsEvent}>
                                 <h3> {title} </h3>
                             </Link>
+                        }   
                         </div>
                         {authorsComponent}
                         <p className="body"> 
