@@ -28,6 +28,10 @@ function Atlas() {
             </a>
             
           </Button>
+
+          <p>
+            You automatically 20 free credits when you Install Atlas
+          </p>
           
         </div>
 

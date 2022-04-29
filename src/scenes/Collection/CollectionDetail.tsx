@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router';
+import { Link } from 'react-router-dom';
 import ContentListDisplay from '../../components/ContentListDisplay';
 import HelmetSeo from '../../components/HelmetSeo';
 import Loading from '../../components/Loading';
@@ -62,6 +63,10 @@ function CollectionDetail(props: CollectionDetailProps) {
             {collection.title}
         </h1>
         <ContentListDisplay contentList={collection.contents.map(collectionContent => collectionContent.content)} />
+
+        <p>
+            Make your own collection with <Link to="/atlas">Atlas</Link>
+        </p>
     </div>
   )
 }
