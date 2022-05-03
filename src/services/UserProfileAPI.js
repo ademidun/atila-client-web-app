@@ -61,6 +61,27 @@ class UserProfileAPI {
 
         return apiCompletionPromise;
     };
+
+    /**
+     * Make a POST request to a given user detail path
+     * @param {*} userId 
+     * @param {*} path 
+     * @param {*} data 
+     * @returns 
+     */
+    static performAction = (userId, path, data) => {
+
+        if (userId) {
+            userId = `${userId}/`
+        }
+        const apiCompletionPromise = request({
+            method: 'post',
+            url: `${this.userProfileEndPoint}/${userId}${path}/`,
+            data,
+        });
+
+        return apiCompletionPromise;
+    };
     /**
      * Used for paths that exist at the list level.
      * @param {*} pathName 

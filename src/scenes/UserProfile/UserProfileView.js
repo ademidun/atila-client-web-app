@@ -12,6 +12,7 @@ import {updateLoggedInUserProfile} from "../../redux/actions/user";
 import UserProfileReferralManagement from './UserProfileReferralManagement';
 import ConnectWallet from '../../components/Crypto/ConnectWallet';
 import Environment from '../../services/Environment';
+import UserProfileAPIKeyCredits from './UserProfileAPIKeyCredits';
 
 class UserProfileView extends React.Component {
 
@@ -184,6 +185,12 @@ class UserProfileView extends React.Component {
                             }
                             {isProfileEditable && 
                             <>
+                            {loggedInUserProfile?.user === userProfile?.user &&
+                                <>
+                                    <hr/>
+                                    <UserProfileAPIKeyCredits />
+                                </>
+                            }
                             {(loggedInUserProfile?.is_atila_admin || (Environment.name !== "prod" && loggedInUserProfile && loggedInUserProfile?.user === userProfile?.user)) && 
                             <>
                                 <hr/>
