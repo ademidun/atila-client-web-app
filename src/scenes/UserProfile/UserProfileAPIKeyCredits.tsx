@@ -101,7 +101,7 @@ function UserProfileAPIKeyCredits(props: UserProfileAPIKeyCreditsProps) {
               API Keys linked to your account
           </h4>
           {existingApiKeyCredits.map (existingApiKeyCredit => (
-              <div>
+              <div key={existingApiKeyCredit.id}>
                 <p>
                     Public Key: {existingApiKeyCredit.public_key}
                 </p>
