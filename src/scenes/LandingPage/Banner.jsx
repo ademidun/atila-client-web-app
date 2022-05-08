@@ -5,15 +5,20 @@ import ScrollParallax from 'rc-scroll-anim/lib/ScrollParallax';
 import {Button} from "antd";
 import {Link, withRouter} from "react-router-dom";
 import AutoComplete from "../../components/AutoComplete";
-import {MASTER_LIST_EVERYTHING_UNDERSCORE} from "../../models/ConstantsForm";
 import {slugify} from "../../services/utils";
 import BannerImage from './BannerImage';
+import algoliasearch from "algoliasearch/lite";
+import Environment from "../../services/Environment";
+import { InstantSearch } from 'react-instantsearch-dom';
 
 const loop = {
   duration: 3000,
   yoyo: true,
   repeat: -1,
 };
+
+const algoliaClient = algoliasearch(Environment.ALGOLIA_APP_ID, Environment.ALGOLIA_PUBLIC_KEY);
+const algoliaQuerySuggestionIndexName = Environment.ALGOLIA_SCHOLARSHIP_QUERY_SUGGESTION_INDEX_NAME;
 
 class Banner extends React.Component {
 
@@ -34,22 +39,18 @@ class Banner extends React.Component {
     className: 'banner',
   };
 
-  onSubmit = event => {
-    event.preventDefault();
-    const { searchQuery } = this.state;
-    this.props.history.push(`/scholarship/s/${slugify(searchQuery)}`);
-  };
-
-  updateSearch = event => {
-    event.preventDefault();
+  onSearchSuggestionSelected = (event, { suggestion }) => {
     event.persist();
-    this.setState({searchQuery: event.target.value});
+    event.preventDefault();
+
+    this.setState({
+      searchQuery: suggestion.query,
+    });
 
     if (event.key === 'Enter' || event.type === 'click') {
       // the only click event that can trigger updateSearch is when autocomplete item is selected
-      this.props.history.push(`/scholarship/s/${slugify(event.target.value)}`);
+      this.props.history.push(`/scholarship/s/${slugify(suggestion.query)}`);
     }
-
   };
 
   render() {
@@ -86,19 +87,20 @@ class Banner extends React.Component {
               The best way to <br/> start and get scholarships <br/> using fiat and crypto.
             </h2>
             <form className="col-sm-12"
-                  onSubmit={this.onSubmit}
                   style={{ height: '300px'}}>
               <div className="row">
                 <div className="col-sm-12 input-field">
                   <label className="active" id="typeahead-label"
                          style={{ fontSize: '30px' }}
                   />
-
-                  <AutoComplete suggestions={MASTER_LIST_EVERYTHING_UNDERSCORE}
+                  <InstantSearch searchClient={algoliaClient} indexName={algoliaQuerySuggestionIndexName}>
+                    <AutoComplete
                                 placeholder={"Search by school, city, program, ethnicity or more"}
-                                onSelected={this.updateSearch}
+                                onSuggestionSelected={this.onSearchSuggestionSelected}
                                 value={searchQuery}
-                                keyName={'searchString'}/>
+                                keyName={'searchString'}
+                                algoliaPowered={true}/>
+                  </InstantSearch>
                 </div>
                 <div className="col-sm-12">
                   <p className="mb-0">Sample Searches:{' '}

@@ -3,6 +3,7 @@ import Autosuggest from 'react-autosuggest';
 import './AutoComplete.scss';
 import PropTypes from "prop-types";
 import {emojiDictionary} from "../models/Constants";
+import { Highlight, connectAutoComplete } from "react-instantsearch-dom";
 
 const defaultTheme = {
     container: 'react-autosuggest__container col-12 p-0 mb-3',
@@ -21,33 +22,20 @@ const defaultTheme = {
     sectionTitle: 'react-autosuggest__section-title'
 };
 
-class AutoCompleteHelper {
-    // When suggestion is clicked, Autosuggest needs to populate the input
-    // based on the clicked suggestion. Teach Autosuggest how to calculate the
-    // input value for every given suggestion.
-    static getSuggestionValue = suggestion => suggestion;
-
-    static renderSuggestion = suggestion => (
-        <p className="suggestion-item cursor-pointer">
-            <span>{emojiDictionary[suggestion.toLowerCase()] && emojiDictionary[suggestion.toLowerCase()]} </span>
-            {suggestion}
-        </p>
-    );
-}
 class AutoComplete extends React.Component {
     constructor(props) {
         super(props);
-
         // Autosuggest is a controlled component.
         // This means that you need to provide an input value
         // and an onChange handler that updates this value (see below).
         // Suggestions also need to be provided to the Autosuggest,
         // and they are initially empty because the Autosuggest is closed.
-        const { value, suggestions } = this.props;
+        const { value, suggestions, algoliaPowered } = this.props;
 
         this.state = {
             value,
-            suggestions
+            suggestions,
+            algoliaPowered
         };
     }
 
@@ -61,34 +49,64 @@ class AutoComplete extends React.Component {
         );
     };
 
+    getSuggestionValue = hit => {
+        if (this.state.algoliaPowered) {
+            return hit.query;
+        } else {
+            return hit;
+        }
+    }
+
+    renderSuggestion = hit => {
+        if (this.state.algoliaPowered) {
+            return <Highlight attribute="query" hit={hit} tagName="mark" />
+        } else {
+            return <p className="suggestion-item cursor-pointer">
+                    <span>{emojiDictionary[hit.toLowerCase()] && emojiDictionary[hit.toLowerCase()]} </span>
+                    {hit}
+                </p>
+        }
+    }
+
     onChange = (event, { newValue }) => {
         event.preventDefault();
         this.setState({value: newValue});
     };
 
     onKeyPress = (event) => {
-
         if (event.key === "Enter") {
             event.preventDefault();
-            this.onSuggestionSelected(event, {suggestionValue: event.target.value, method: 'click'});
+            if (this.state.algoliaPowered) {
+                this.props.onSuggestionSelected(event, {suggestion: { query: this.state.value}});
+            } else {
+               this.onSuggestionSelected(event, {suggestionValue: event.target.value, method: 'click'});
+            }
         }
     };
-
-
 
     // Autosuggest will call this function every time you need to update suggestions.
     // You already implemented this logic above, so just use it.
     onSuggestionsFetchRequested = ({ value }) => {
-        this.setState({
-            suggestions: this.getSuggestions(value)
-        });
+        if (this.state.algoliaPowered) {
+            const { refine } = this.props;
+            refine(value);
+        } else {
+            this.setState({
+                suggestions: this.getSuggestions(value)
+            });
+        }
     };
 
     // Autosuggest will call this function every time you need to clear suggestions.
     onSuggestionsClearRequested = () => {
-        this.setState({
-            suggestions: []
-        });
+        if (this.state.algoliaPowered) {
+            const { refine } = this.props;
+            refine();
+        } else {
+            this.setState({
+                suggestions: []
+            });
+        }
     };
 
     onSuggestionSelected = ( event, suggestionArguments ) => {
@@ -126,8 +144,8 @@ class AutoComplete extends React.Component {
     };
 
     render() {
-        const { value, suggestions } = this.state;
-        const { keyName, placeholder, customTheme, getSuggestionValue, renderSuggestion } = this.props;
+        const { value, algoliaPowered } = this.state;
+        const { hits, keyName, placeholder, customTheme, onSuggestionSelected, suggestions } = this.props;
 
         // Autosuggest will pass through all these props to the input.
         const inputProps = {
@@ -143,14 +161,14 @@ class AutoComplete extends React.Component {
             <Autosuggest
                 id={keyName}
                 theme={{...defaultTheme, ...customTheme}}
-                suggestions={suggestions}
+                suggestions={algoliaPowered ? hits : suggestions}
                 onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
                 onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-                getSuggestionValue={getSuggestionValue}
-                renderSuggestion={renderSuggestion}
+                getSuggestionValue={this.getSuggestionValue}
+                renderSuggestion={this.renderSuggestion}
                 inputProps={inputProps}
                 renderInputComponent={this.renderInputComponent}
-                onSuggestionSelected={this.onSuggestionSelected}
+                onSuggestionSelected={algoliaPowered? onSuggestionSelected : this.onSuggestionSelected}
             />
         );
     }
@@ -163,23 +181,21 @@ AutoComplete.defaultProps = {
     onSuggestionSelected: (event, suggestionArguments) => {},
     placeholder: '',
     customTheme: {},
-    getSuggestionValue: (suggestion) => (AutoCompleteHelper.getSuggestionValue(suggestion)),
-    renderSuggestion: (suggestion) => (AutoCompleteHelper.renderSuggestion(suggestion)),
     inputToSuggestion: value => value,
+    algoliaPowered: false,
 };
 
 AutoComplete.propTypes = {
     value: PropTypes.string,
-    suggestions: PropTypes.array.isRequired,
+    suggestions: PropTypes.array,
     onChange: PropTypes.func,
     onSelected: PropTypes.func,
     keyName: PropTypes.string.isRequired,
     placeholder: PropTypes.string,
     customTheme: PropTypes.shape({}),
-    getSuggestionValue: PropTypes.func.isRequired,
-    renderSuggestion: PropTypes.func.isRequired,
     onSuggestionSelected: PropTypes.func.isRequired,
     inputToSuggestion: PropTypes.func.isRequired,
+    algoliaPowered: PropTypes.bool,
 };
 
-export default AutoComplete
+export default connectAutoComplete(AutoComplete);
