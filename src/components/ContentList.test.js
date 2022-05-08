@@ -1,6 +1,6 @@
 import React from 'react';
 import {configure, mount, shallow} from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import "core-js/stable";
 import ContentList from "./ContentList";
 import {BlogWhatIsAtila} from "../models/Blog";
@@ -14,12 +14,9 @@ import { initialReduxState } from "../models/Constants";
 
 configure({ adapter: new Adapter() });
 
+
 const mockStore = configureStore();
 const guestUserStore = mockStore(initialReduxState);
-
-jest.mock('../services/EssaysAPI');
-
-EssaysApi.list.mockImplementation(() => Promise.resolve({ data: { results: [EssayIveyApplication] } } ));
 
 describe('<ContentList />', () => {
 

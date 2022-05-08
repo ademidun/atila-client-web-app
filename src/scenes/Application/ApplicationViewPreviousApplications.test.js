@@ -1,7 +1,7 @@
 import React from "react";
 import { configure, shallow } from "enzyme";
 import ApplicationViewPreviousApplications from "./ApplicationViewPreviousApplications";
-import Adapter from "enzyme-adapter-react-16";
+import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
 import { UserProfileTest1 } from "../../models/UserProfile";
 import { ApplicationsListMockData } from "../../models/Application";
 

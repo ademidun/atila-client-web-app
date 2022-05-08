@@ -1,11 +1,12 @@
 import { Col, Row } from 'antd';
 import React from 'react';
 import { Blog } from '../models/Blog';
+import { Content } from '../models/Content';
 import { genericItemTransform } from '../services/utils';
 import ContentCard from './ContentCard';
 
 type Props = {
-    contentList: Blog[], // TODO add support for Essay and Scholarship types as well
+    contentList: Array<Blog|Content>,
 }
 
 function ContentListDisplay(props: Props) {

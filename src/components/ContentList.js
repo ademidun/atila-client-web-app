@@ -43,7 +43,6 @@ class ContentList extends React.Component {
         }
 
         this.setState({ isLoadingContent: true });
-
         ContentAPI.list(page)
             .then(res => {
                 const contentResults = contentItems;

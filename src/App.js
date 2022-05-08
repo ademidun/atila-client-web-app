@@ -39,6 +39,12 @@ const Application = loadable(() => import("./scenes/Application/Application"), {
 const Crypto = loadable(() => import("./scenes/Crypto/Crypto"), {
   fallback: <Loading />,
 });
+const CollectionDetail = loadable(() => import("./scenes/Collection/CollectionDetail"), {
+  fallback: <Loading />,
+});
+const Atlas = loadable(() => import("./scenes/Atlas/Atlas"), {
+  fallback: <Loading />,
+});
 const HowToStartAScholarship = loadable(() => import("./scenes/DirectApplicationInfo/HowToStartAScholarship"), {
   fallback: <Loading />,
 });
@@ -207,6 +213,8 @@ class App extends React.Component {
               />
               <Route path='/crypto/:action' component={GoogleAnalyticsTracker(Crypto)} />
               <Route path='/crypto' component={GoogleAnalyticsTracker(Crypto)} />
+              <Route path='/collection/:slug' component={GoogleAnalyticsTracker(CollectionDetail)} />
+              <Route path='/atlas' component={GoogleAnalyticsTracker(Atlas)} />
               <Route
                 path='/search-old'
                 component={GoogleAnalyticsTracker(SearchAtila)}

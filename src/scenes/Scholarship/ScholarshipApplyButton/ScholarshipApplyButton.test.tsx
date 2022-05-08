@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { configure } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router";
-import Adapter from "enzyme-adapter-react-16";
+import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
 import configureStore from "redux-mock-store";
 import { initialReduxState, initialReduxStateLoggedIn } from "../../../models/Constants";
 import { DEFAULT_CRYPTO_SCHOLARSHIP } from "../../../models/Scholarship.class";
