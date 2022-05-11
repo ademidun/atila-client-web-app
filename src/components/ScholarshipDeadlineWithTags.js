@@ -9,7 +9,7 @@ const todayMoment = moment(Date.now());
 
 function ScholarshipDeadlineWithTags({scholarship, datePrefix, addDeadlineToCalendar}) {
 
-    const { deadline, open_date, date_time_created } = scholarship;
+    const { deadline, open_date, date_time_created, metadata } = scholarship;
 
     let showCalendar = addDeadlineToCalendar;
 
@@ -18,7 +18,7 @@ function ScholarshipDeadlineWithTags({scholarship, datePrefix, addDeadlineToCale
     let color = null;
 
     let scholarshipDateMoment = moment(deadline);
-    if (open_date && open_date > todayMoment.toISOString()) {
+    if (open_date && open_date > todayMoment.toISOString() && metadata?.not_open_yet) {
         scholarshipDateMoment = moment(open_date);
         tagPrefix = 'opens';
         datePrefix = 'Opens: ';

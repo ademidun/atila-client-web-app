@@ -236,6 +236,8 @@ class ScholarshipDetail extends React.Component {
                                 <ScholarshipExtraCriteria scholarship={scholarship} />
                             </div>
                             <hr />
+                            <h4>Scholarship ID: {scholarship.id}</h4>
+                            <hr />
                             {((scholarshipUserProfile && userProfile &&
                                 userProfile.user === scholarshipUserProfile.user)
                                 || (userProfile && userProfile.is_atila_admin))

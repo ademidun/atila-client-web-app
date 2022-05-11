@@ -40,6 +40,13 @@ let scholarshipFormConfigsPage2 = scholarshipUserProfileSharedFormConfigs
 scholarshipFormConfigsPage2 = [...additionalQuestions, ...scholarshipFormConfigsPage2];
 
 let autoSaveTimeoutId;
+
+const BASIC_INFO_PAGE_TITLE = 'Basic Info';
+const AWARDS_PAGE_TITLE = 'Awards';
+const ELIGIBILITY_PAGE_TITLE = 'Eligibility';
+const SPECIFIC_QUESTIONS_PAGE_TITLE = 'Specific Questions';
+const FUNDING_PAGE_TITLE = 'Funding';
+
 class ScholarshipAddEdit extends React.Component{
 
     constructor(props) {
@@ -530,23 +537,23 @@ class ScholarshipAddEdit extends React.Component{
 
     scholarshipEditPages = () => [
         {
-            title: 'Basic Info',
+            title: BASIC_INFO_PAGE_TITLE,
             render: this.basicInfoPage,
         },
         {
-            title: 'Awards',
+            title: AWARDS_PAGE_TITLE,
             render: this.awardsPage,
         },
         {
-            title: 'Eligibility',
+            title: ELIGIBILITY_PAGE_TITLE,
             render: this.eligibilityPage,
         },
         {
-            title: 'Specific Questions',
+            title: SPECIFIC_QUESTIONS_PAGE_TITLE,
             render: this.specificQuestionsPage,
         },
         {
-            title: 'Funding',
+            title: FUNDING_PAGE_TITLE,
             render: this.fundingPage,
         },
     ]
@@ -700,7 +707,8 @@ class ScholarshipAddEdit extends React.Component{
             </p>)
         }
         if (!is_atila_direct_application) {
-            scholarshipEditPages = [scholarshipEditPages[0], scholarshipEditPages[2]]
+            const validPageTitles = [BASIC_INFO_PAGE_TITLE, AWARDS_PAGE_TITLE, ELIGIBILITY_PAGE_TITLE];
+            scholarshipEditPages = scholarshipEditPages.filter(page => validPageTitles.includes(page.title))
         }
 
         const scholarshipSteps = (
