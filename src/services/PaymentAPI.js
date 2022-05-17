@@ -79,6 +79,17 @@ class PaymentAPI {
         return apiCompletionPromise;
     };
 
+    static sendApiKeyCredit = (data) => {
+
+        const apiCompletionPromise = request({
+            method: 'post',
+            data,
+            url: `${PaymentAPI.apiUrlKeyCredits}/send-api-key/`,
+        });
+
+        return apiCompletionPromise;
+    };
+
 }
 
 export default PaymentAPI;
