@@ -1,6 +1,6 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {SyntheticEvent, useCallback, useEffect, useRef, useState} from 'react';
 import algoliasearch from 'algoliasearch/lite';
-import { InstantSearch, Hits, PoweredBy, Pagination, SearchBox, Configure, Index, connectHitInsights } from 'react-instantsearch-dom';
+import { InstantSearch, Hits, PoweredBy, Pagination, SearchBox, Configure, Index, connectHitInsights, connectSearchBox } from 'react-instantsearch-dom';
 import 'instantsearch.css/themes/satellite.css'; //algolia instant search styling
 import Environment from '../../services/Environment';
 import qs from 'qs';
@@ -11,8 +11,13 @@ import { Radio } from 'antd';
 import aa from 'search-insights';
 import equal from "fast-deep-equal";
 import { RouteComponentProps, useHistory, withRouter } from 'react-router';
+import AutoComplete from "../../components/AutoComplete";
+import {slugify} from "../../services/utils";
 
 const algoliaClient = algoliasearch(Environment.ALGOLIA_APP_ID, Environment.ALGOLIA_PUBLIC_KEY);
+const algoliaQuerySuggestionIndexName = Environment.ALGOLIA_SCHOLARSHIP_QUERY_SUGGESTION_INDEX_NAME;
+
+const VirtualSearchBox = connectSearchBox(() => null);
 
 aa('init', {
   appId: Environment.ALGOLIA_APP_ID,
@@ -106,6 +111,7 @@ function SearchAlgolia({ className = "p-md-5",
   const [searchState, setSearchState] = useState(urlToSearchState(location));
   const [showExpiredScholarships, setshowExpiredScholarships] = useState(false);
   const [results, setResults] = useState([{'hits': []}]);
+  const [searchQuery, setSearchQuery] = useState("");
   const { push } = useHistory();
 
   const showExpiredScholarshipsOptions = [
@@ -117,7 +123,7 @@ function SearchAlgolia({ className = "p-md-5",
 
   const handleSearchStateChange = useCallback(
     (updatedSearchState: any) => {
-        
+      console.log("[grace] search state change");
     clearTimeout(debouncedSetStateRef.current);
 
     debouncedSetStateRef.current = setTimeout(() => {
@@ -126,10 +132,17 @@ function SearchAlgolia({ className = "p-md-5",
     }, DEBOUNCE_TIME);
 
     setSearchState(updatedSearchState);
+    setSearchQuery(updatedSearchState.query);
     onSearchQueryChanged(updatedSearchState)
     },
     [push, onSearchQueryChanged]
   );
+
+  const handleAutoCompleteStateChange = useCallback((updatedSearchState: any) => {
+    console.log("[grace] auto complete state change");
+    console.log({updatedSearchState});
+    setSearchState(updatedSearchState);
+  }, [])
 
   /**
    * If a search string was passed in as a prop, update the search state
@@ -186,52 +199,77 @@ function SearchAlgolia({ className = "p-md-5",
     }
   }
 
+  const onSearchSuggestionSelected = (event: SyntheticEvent, { suggestion }: any) => {
+    event.persist();
+    event.preventDefault();
+    setSearchQuery(suggestion.query);
+
+    console.log("[grace] suggestion query is " + suggestion.query);
+    setSearchState(prevState => ({
+      ...prevState,
+      query: suggestion.query,
+    }));
+    onSearchQueryChanged(searchState);
+  };
+
   const noScholarhipsShown = results[0].hits.length === 0 || searchState.query?.length === 0
 
   let searchClient = createSearchClient(handleSearchResultsChange)
   return (
     <div className={`Search container ${className}`}>
     {renderSeo && <HelmetSeo content={seoContent} />}
-    <InstantSearch searchClient={searchClient}
-                   indexName={scholarshipIndex} 
-                   searchState={searchState} 
-                   onSearchStateChange={handleSearchStateChange}
-                   createURL={createURL}>
-        <Configure clickAnalytics />
-        <SearchBox  className="mb-3"
-                    searchAsYouType={false} 
-                    showLoadingIndicator />
-        <PoweredBy  className="mb-3" />
-        <Index indexName={scholarshipIndex}>
-          <Configure hitsPerPage={HITS_PER_PAGE} {...scholarshipConfiguration} />
-          {!noScholarhipsShown &&
-          <>
-            <Radio.Group
-                className="mb-3"
-                options={showExpiredScholarshipsOptions}
-                onChange={event => setshowExpiredScholarships(event.target.value)}
-                value={showExpiredScholarships}
-                optionType="button"
-                buttonStyle="solid"
-            />
-            <SearchResults title="Scholarships">
-              <Hits hitComponent={SearchResultHitsWithInsights} />
-            </SearchResults>
-            <Pagination  className="my-3" />
-          </>}
+      {/*<InstantSearch searchClient={algoliaClient}*/}
+      {/*               indexName={algoliaQuerySuggestionIndexName}*/}
+      {/*               searchState={searchState}*/}
+      {/*               onSearchStateChange={handleAutoCompleteStateChange}>*/}
+      {/*  <AutoComplete*/}
+      {/*              placeholder={"Search by school, city, program, ethnicity or more"}*/}
+      {/*              onSuggestionSelected={onSearchSuggestionSelected}*/}
+      {/*              value={searchQuery}*/}
+      {/*              keyName={'searchString'}*/}
+      {/*              algoliaPowered={true}/>*/}
+      {/*</InstantSearch>*/}
+      <InstantSearch searchClient={searchClient}
+                     indexName={scholarshipIndex}
+                     searchState={searchState}
+                     onSearchStateChange={handleSearchStateChange}
+                     createURL={createURL}>
+          <Configure clickAnalytics />
+          <SearchBox  className="mb-3"
+                      searchAsYouType={false}
+                      showLoadingIndicator />
+          {/*<VirtualSearchBox defaultRefinement={searchQuery} />*/}
+          <PoweredBy  className="mb-3" />
+          <Index indexName={scholarshipIndex}>
+            <Configure hitsPerPage={HITS_PER_PAGE} {...scholarshipConfiguration} />
+            {!noScholarhipsShown &&
+            <>
+              <Radio.Group
+                  className="mb-3"
+                  options={showExpiredScholarshipsOptions}
+                  onChange={event => setshowExpiredScholarships(event.target.value)}
+                  value={showExpiredScholarships}
+                  optionType="button"
+                  buttonStyle="solid"
+              />
+              <SearchResults title="Scholarships">
+                <Hits hitComponent={SearchResultHitsWithInsights} />
+              </SearchResults>
+              <Pagination  className="my-3" />
+            </>}
+          </Index>
+
+        {!showScholarshipsOnly &&
+        <Index indexName={blogIndex}>
+          <Configure hitsPerPage={HITS_PER_PAGE}/>
+          <SearchResults title="Blogs">
+            <Hits hitComponent={SearchResultHitsWithInsights}/>
+          </SearchResults>
+          <Pagination className="my-3"/>
         </Index>
+        }
 
-      {!showScholarshipsOnly &&
-      <Index indexName={blogIndex}>
-        <Configure hitsPerPage={HITS_PER_PAGE}/>
-        <SearchResults title="Blogs">
-          <Hits hitComponent={SearchResultHitsWithInsights}/>
-        </SearchResults>
-        <Pagination className="my-3"/>
-      </Index>
-      }
-
-    </InstantSearch>
+      </InstantSearch>
     </div>
   )
 }
