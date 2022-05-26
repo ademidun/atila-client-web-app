@@ -321,8 +321,6 @@ class ScholarshipsList extends React.Component {
     }
 
     handleSearchQueryChanged = (updatedSearchString) => {
-
-        console.log({updatedSearchString});
         this.setState({searchString: updatedSearchString.query});
     }
 

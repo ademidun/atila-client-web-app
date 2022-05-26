@@ -60,9 +60,6 @@ const createSearchClient = (resultsCB: any) => {
 }
 };
 
-
-
-
 const createURL = (state: any) => `?${qs.stringify(state)}`;
 
 const searchStateToUrl = (searchState: any) =>{
@@ -113,10 +110,6 @@ function SearchAlgolia({ className = "p-md-5",
   const { push } = useHistory();
   const [searchQuery, setSearchQuery] = useState("");
 
-  useEffect(() => {
-    onSearchQueryChanged(searchState);
-  }, [searchState, onSearchQueryChanged]);
-
   const showExpiredScholarshipsOptions = [
     { label: 'Show Expired Scholarships', value: true },
     { label: 'Hide Expired Scholarships', value: false },
@@ -124,10 +117,14 @@ function SearchAlgolia({ className = "p-md-5",
 
   const debouncedSetStateRef = useRef<null|any>(null);
 
+  useEffect(() => {
+    onSearchQueryChanged(searchState);
+  }, [searchState, onSearchQueryChanged]);
+
   const handleSearchStateChange = useCallback(
     (updatedSearchState: any) => {
     clearTimeout(debouncedSetStateRef.current);
-
+    console.log("[grace] handle search state change");
     debouncedSetStateRef.current = setTimeout(() => {
       push(searchStateToUrl(updatedSearchState));
       window.scrollTo(0,0)
@@ -135,9 +132,9 @@ function SearchAlgolia({ className = "p-md-5",
 
     setSearchState(updatedSearchState);
     setSearchQuery(updatedSearchState.query);
-    onSearchQueryChanged(updatedSearchState)
+    // onSearchQueryChanged(updatedSearchState)
     },
-    [push, onSearchQueryChanged]
+    [push]
   );
 
   /**
@@ -198,6 +195,7 @@ function SearchAlgolia({ className = "p-md-5",
   const onSearchSuggestionSelected = (event: SyntheticEvent, { suggestion }: any) => {
     event.persist();
     event.preventDefault();
+    console.log("[grace] search suggestion selected");
     setSearchQuery(suggestion.query);
     setSearchState((prevState) => ({
       ...prevState,
