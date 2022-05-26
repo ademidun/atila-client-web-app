@@ -12,7 +12,6 @@ import aa from 'search-insights';
 import equal from "fast-deep-equal";
 import { RouteComponentProps, useHistory, withRouter } from 'react-router';
 import AutoComplete from "../../components/AutoComplete";
-import {slugify} from "../../services/utils";
 
 const algoliaClient = algoliasearch(Environment.ALGOLIA_APP_ID, Environment.ALGOLIA_PUBLIC_KEY);
 const algoliaQuerySuggestionIndexName = Environment.ALGOLIA_SCHOLARSHIP_QUERY_SUGGESTION_INDEX_NAME;
@@ -62,14 +61,14 @@ const createSearchClient = (resultsCB: any) => {
 };
 
 
-	
+
 
 const createURL = (state: any) => `?${qs.stringify(state)}`;
 
 const searchStateToUrl = (searchState: any) =>{
   const searchStateCopy = Object.assign({}, searchState);
   // TODO remove hits per page configuration from showing in the url so that the URLs look clean and simple
-  // otherwise, your URL looks like: 
+  // otherwise, your URL looks like:
   // http://localhost:3000/search?query=canada&page=2&configure%5BhitsPerPage%5D=8
   // http://localhost:3000/search?query=scholarship&page=1&indices%5Bdev_scholarship_index%5D%5Bconfigure%5D%5BhitsPerPage%5D=8&indices%5Bdev_scholarship_index%5D%5Bpage%5D=2&indices%5Bdev_blog_index%5D%5Bconfigure%5D%5BhitsPerPage%5D=8&indices%5Bdev_blog_index%5D%5Bpage%5D=1
   // Alternate example without encoding: http://localhost:3000/search?query=canada&page=2&configure[hitsPerPage]=8
@@ -111,8 +110,12 @@ function SearchAlgolia({ className = "p-md-5",
   const [searchState, setSearchState] = useState(urlToSearchState(location));
   const [showExpiredScholarships, setshowExpiredScholarships] = useState(false);
   const [results, setResults] = useState([{'hits': []}]);
-  const [searchQuery, setSearchQuery] = useState("");
   const { push } = useHistory();
+  const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    onSearchQueryChanged(searchState);
+  }, [searchState, onSearchQueryChanged]);
 
   const showExpiredScholarshipsOptions = [
     { label: 'Show Expired Scholarships', value: true },
@@ -123,7 +126,6 @@ function SearchAlgolia({ className = "p-md-5",
 
   const handleSearchStateChange = useCallback(
     (updatedSearchState: any) => {
-      console.log("[grace] search state change");
     clearTimeout(debouncedSetStateRef.current);
 
     debouncedSetStateRef.current = setTimeout(() => {
@@ -137,12 +139,6 @@ function SearchAlgolia({ className = "p-md-5",
     },
     [push, onSearchQueryChanged]
   );
-
-  const handleAutoCompleteStateChange = useCallback((updatedSearchState: any) => {
-    console.log("[grace] auto complete state change");
-    console.log({updatedSearchState});
-    setSearchState(updatedSearchState);
-  }, [])
 
   /**
    * If a search string was passed in as a prop, update the search state
@@ -203,13 +199,10 @@ function SearchAlgolia({ className = "p-md-5",
     event.persist();
     event.preventDefault();
     setSearchQuery(suggestion.query);
-
-    console.log("[grace] suggestion query is " + suggestion.query);
-    setSearchState(prevState => ({
+    setSearchState((prevState) => ({
       ...prevState,
       query: suggestion.query,
     }));
-    onSearchQueryChanged(searchState);
   };
 
   const noScholarhipsShown = results[0].hits.length === 0 || searchState.query?.length === 0
@@ -218,27 +211,22 @@ function SearchAlgolia({ className = "p-md-5",
   return (
     <div className={`Search container ${className}`}>
     {renderSeo && <HelmetSeo content={seoContent} />}
-      {/*<InstantSearch searchClient={algoliaClient}*/}
-      {/*               indexName={algoliaQuerySuggestionIndexName}*/}
-      {/*               searchState={searchState}*/}
-      {/*               onSearchStateChange={handleAutoCompleteStateChange}>*/}
-      {/*  <AutoComplete*/}
-      {/*              placeholder={"Search by school, city, program, ethnicity or more"}*/}
-      {/*              onSuggestionSelected={onSearchSuggestionSelected}*/}
-      {/*              value={searchQuery}*/}
-      {/*              keyName={'searchString'}*/}
-      {/*              algoliaPowered={true}/>*/}
-      {/*</InstantSearch>*/}
+      <InstantSearch searchClient={algoliaClient}
+                     indexName={algoliaQuerySuggestionIndexName}>
+        <AutoComplete
+                    placeholder={"Search by school, city, program, ethnicity or more"}
+                    onSuggestionSelected={onSearchSuggestionSelected}
+                    value={searchQuery}
+                    keyName={'searchString'}
+                    algoliaPowered={true}/>
+      </InstantSearch>
       <InstantSearch searchClient={searchClient}
                      indexName={scholarshipIndex}
                      searchState={searchState}
                      onSearchStateChange={handleSearchStateChange}
                      createURL={createURL}>
           <Configure clickAnalytics />
-          <SearchBox  className="mb-3"
-                      searchAsYouType={false}
-                      showLoadingIndicator />
-          {/*<VirtualSearchBox defaultRefinement={searchQuery} />*/}
+          <VirtualSearchBox defaultRefinement={searchQuery} />
           <PoweredBy  className="mb-3" />
           <Index indexName={scholarshipIndex}>
             <Configure hitsPerPage={HITS_PER_PAGE} {...scholarshipConfiguration} />
