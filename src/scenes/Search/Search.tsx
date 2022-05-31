@@ -1,6 +1,6 @@
 import React, {SyntheticEvent, useCallback, useEffect, useRef, useState} from 'react';
 import algoliasearch from 'algoliasearch/lite';
-import { InstantSearch, Hits, PoweredBy, Pagination, SearchBox, Configure, Index, connectHitInsights, connectSearchBox } from 'react-instantsearch-dom';
+import { InstantSearch, Hits, PoweredBy, Pagination, Configure, Index, connectHitInsights, connectSearchBox } from 'react-instantsearch-dom';
 import 'instantsearch.css/themes/satellite.css'; //algolia instant search styling
 import Environment from '../../services/Environment';
 import qs from 'qs';
