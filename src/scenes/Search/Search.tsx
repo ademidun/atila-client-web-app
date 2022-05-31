@@ -117,32 +117,26 @@ function SearchAlgolia({ className = "p-md-5",
 
   const debouncedSetStateRef = useRef<null|any>(null);
 
-  useEffect(() => {
-    onSearchQueryChanged(searchState);
-  }, [searchState, onSearchQueryChanged]);
-
-  const handleSearchStateChange = useCallback(
-    (updatedSearchState: any) => {
+  const handleSearchStateChange = useCallback((query: any) => {
     clearTimeout(debouncedSetStateRef.current);
-    console.log("[grace] handle search state change");
+    console.log("[grace] search suggestion selected");
+    const updatedSearchState = Object.assign({}, searchState, { query: query });
+    setSearchQuery(query);
+    setSearchState(updatedSearchState);
+
     debouncedSetStateRef.current = setTimeout(() => {
+      console.log("[grace] debounce");
       push(searchStateToUrl(updatedSearchState));
       window.scrollTo(0,0)
     }, DEBOUNCE_TIME);
-
-    setSearchState(updatedSearchState);
-    setSearchQuery(updatedSearchState.query);
-    // onSearchQueryChanged(updatedSearchState)
-    },
-    [push]
-  );
+  }, [searchState, push]);
 
   /**
    * If a search string was passed in as a prop, update the search state
    */
   useEffect(() => {
     if (initialSearch) {
-      handleSearchStateChange({query: initialSearch})
+      handleSearchStateChange(initialSearch)
     }
   }, [initialSearch, handleSearchStateChange])
 
@@ -192,16 +186,16 @@ function SearchAlgolia({ className = "p-md-5",
     }
   }
 
-  const onSearchSuggestionSelected = (event: SyntheticEvent, { suggestion }: any) => {
+  const onSearchQuerySelected = (event: SyntheticEvent, { suggestion }: any) => {
     event.persist();
     event.preventDefault();
-    console.log("[grace] search suggestion selected");
-    setSearchQuery(suggestion.query);
-    setSearchState((prevState) => ({
-      ...prevState,
-      query: suggestion.query,
-    }));
+    handleSearchStateChange(suggestion.query);
   };
+
+  useEffect(() => {
+    console.log("[grace] user effect");
+    onSearchQueryChanged(searchState);
+  }, [searchState, onSearchQueryChanged, push]);
 
   const noScholarhipsShown = results[0].hits.length === 0 || searchState.query?.length === 0
 
@@ -213,7 +207,7 @@ function SearchAlgolia({ className = "p-md-5",
                      indexName={algoliaQuerySuggestionIndexName}>
         <AutoComplete
                     placeholder={"Search by school, city, program, ethnicity or more"}
-                    onSuggestionSelected={onSearchSuggestionSelected}
+                    onSuggestionSelected={onSearchQuerySelected}
                     value={searchQuery}
                     keyName={'searchString'}
                     algoliaPowered={true}/>
@@ -221,7 +215,7 @@ function SearchAlgolia({ className = "p-md-5",
       <InstantSearch searchClient={searchClient}
                      indexName={scholarshipIndex}
                      searchState={searchState}
-                     onSearchStateChange={handleSearchStateChange}
+                     onSearchStateChange={() => {}}
                      createURL={createURL}>
           <Configure clickAnalytics />
           <VirtualSearchBox defaultRefinement={searchQuery} />
