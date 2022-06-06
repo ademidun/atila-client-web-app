@@ -119,13 +119,11 @@ function SearchAlgolia({ className = "p-md-5",
 
   const handleSearchStateChange = useCallback((query: any) => {
     clearTimeout(debouncedSetStateRef.current);
-    console.log("[grace] search suggestion selected");
     const updatedSearchState = Object.assign({}, searchState, { query: query });
     setSearchQuery(query);
     setSearchState(updatedSearchState);
 
     debouncedSetStateRef.current = setTimeout(() => {
-      console.log("[grace] debounce");
       push(searchStateToUrl(updatedSearchState));
       window.scrollTo(0,0)
     }, DEBOUNCE_TIME);
@@ -193,7 +191,6 @@ function SearchAlgolia({ className = "p-md-5",
   };
 
   useEffect(() => {
-    console.log("[grace] user effect");
     onSearchQueryChanged(searchState);
   }, [searchState, onSearchQueryChanged, push]);
 
