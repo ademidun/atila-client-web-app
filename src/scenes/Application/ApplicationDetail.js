@@ -375,6 +375,8 @@ class ApplicationDetail extends  React.Component{
         if (event.stopPropagation) {
             event.stopPropagation(); // https://github.com/facebook/react/issues/3446#issuecomment-82751540
         }
+        console.log('[grace] application detail update form');
+        console.log({event});
 
         let { application } = this.state;
         const name = event.target.name;

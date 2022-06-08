@@ -29,6 +29,7 @@ export function transformScholarshipQuestionsToApplicationForm(questions) {
             placeholder: question.question,
             label: question.question,
             type: SCHOLARSHIP_QUESTIONS_TYPES_TO_FORM_TYPES[question.type],
+            ...(question.hasOwnProperty('options')) && {options: question.options},
             html: (application) => (
                 <React.Fragment>
                     {["medium_answer", "long_answer"].includes(question.type)? <p>Word Count: {TextUtils.countWords(application[question.key])}</p> : "" }

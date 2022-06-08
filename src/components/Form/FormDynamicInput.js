@@ -1,6 +1,6 @@
 import {nestedFieldGet, prettifyKeys, transformListToValueLabelList} from "../../services/utils";
 import React from "react";
-import {DatePicker, Select, AutoComplete} from 'antd';
+import {DatePicker, Select, AutoComplete, Checkbox, Radio} from 'antd';
 import PropTypes from "prop-types";
 import {InputConfigPropType} from "../../models/Utils";
 import LocationSearchInput from "../LocationSearchInput/LocationSearchInput";
@@ -48,6 +48,8 @@ function FormDynamicInput({model, onUpdateForm, inputConfig, loggedInUserProfile
 
     const { type, keyName, html, suggestions, className,
         options, valueDisplay, isHidden, hideLabel, label, disabled, skipPrettifyKeys, renderOption } = inputConfig;
+    console.log('[grace] input config: ');
+    console.log({inputConfig});
     let {placeholder} = inputConfig;
     let inputForm = null;
 
@@ -120,6 +122,40 @@ function FormDynamicInput({model, onUpdateForm, inputConfig, loggedInUserProfile
                     />
                 </div>
             );
+            break;
+        case 'checkbox_group':
+            inputForm = (
+                <div className="mb-3">
+                    {placeholder && <label htmlFor={keyName}>
+                        {placeholder}
+                    </label>}
+                    <br />
+                    <Checkbox.Group options={options} onChange={(checkedValues => {
+                        const syntheticEvent = {
+                            target: {
+                                value: checkedValues,
+                                name: "checkbox_group_values"
+                            }
+                        }
+                        onUpdateForm(syntheticEvent);
+                    })}/>
+                </div>
+            )
+            break;
+        case 'radio_group':
+            inputForm = (
+                <div className="mb-3">
+                    {placeholder && <label htmlFor={keyName}>
+                        {placeholder}
+                    </label>}
+                    <br />
+                    <Radio.Group onChange={onUpdateForm}>
+                        {options.map((option, index) => {
+                            return <Radio key={index} value={option}>{option}</Radio>
+                        })}
+                    </Radio.Group>
+                </div>
+            )
             break;
         case 'select':
             inputForm = (
@@ -231,6 +267,19 @@ function FormDynamicInput({model, onUpdateForm, inputConfig, loggedInUserProfile
             );
             break;
         case 'file':
+            inputForm = (<div className="mb-3">
+                            {placeholder && <label htmlFor={keyName}>
+                                {placeholder}
+                            </label>}
+                            <FileInput
+                                title={placeholder}
+                                type={"image,pdf"}
+                                keyName={keyName}
+                                filePath={`test`}
+                                onChangeHandler={() => {console.log("file uploaded")}}
+                            />
+                        </div>)
+            break;
         case 'image':
             inputForm = (<div className="col-12 my-3">
                 {placeholder && <label htmlFor={keyName}>

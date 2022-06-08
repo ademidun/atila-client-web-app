@@ -10,6 +10,9 @@ export const questionTypesLabel = {
     "medium_answer": "Medium Answer (Under 300 words)",
     "long_answer": "Long Answer (Over 300 words)",
     "checkbox": "Checkbox",
+    "file": "File Upload",
+    "multi_select": "Multi-Select",
+    "single_select" : "Single-Select",
 };
 
 const defaultSpecificQuestion = {
@@ -18,6 +21,7 @@ const defaultSpecificQuestion = {
     type: 'long_answer',
 };
 
+const selectOptionsInputPlaceHolder = 'What are the options for this question?'
 
 const questionTypes = Object.keys(questionTypesLabel);
 
@@ -165,6 +169,19 @@ export default class ScholarshipQuestionBuilder extends React.Component {
 
                                     </Col>
                             </Row>
+                            {(specificQuestion.type === "single_select" || specificQuestion.type === "multi_select") &&
+                                <Row className="mb-3" gutter={[{ xs: 8, sm: 16}, 16]} justify="end">
+                                    <Col sm={24} md={24} lg={8}>
+                                        <Select mode="tags" style={{ width: '100%' }}
+                                                value={specificQuestion.options}
+                                                placeholder={selectOptionsInputPlaceHolder}
+                                                notFoundContent={<div>Start typing to enter an option</div>}
+                                                onChange={(event) =>
+                                                   this.updateQuestions(event,'options', index)}
+                                        />
+                                    </Col>
+                                </Row>
+                            }
                             <hr/>
                         </div>
                     ))}
