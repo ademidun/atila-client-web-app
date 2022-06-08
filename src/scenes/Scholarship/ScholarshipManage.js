@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
-import {Alert, Button, Input, Popconfirm, Radio, Tag} from "antd";
+import {Alert, Button, Input, Popconfirm, Radio, Switch, Tag} from "antd";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
 import {BlindApplicationsExplanationMessage, WINNER_SELECTED_MESSAGE} from "../../models/Scholarship";
@@ -14,6 +14,7 @@ import AssignReviewers from './AssignReviewers';
 import InviteScholarshipCollaborator from "../../components/InviteScholarshipCollaborator";
 import {toastNotify} from "../../models/Utils";
 import SendApplicationAwards from './SendApplicationAwards';
+import ViewApplicationsTable from "./ViewApplicationsTable";
 
 
 class AssignReviewerRadioSelect extends React.Component {
@@ -80,6 +81,7 @@ class ScholarshipManage extends React.Component {
             emailSubject: "",
             emailBody: "",
             pending_invites: [],
+            viewApplicationsTable: false,
         }
     }
 
@@ -346,7 +348,7 @@ class ScholarshipManage extends React.Component {
         const { userProfile } = this.props;
         const { scholarship, applications, awards, isLoadingApplications,
             unsubmittedApplications, responseMessage, applicationTypeToEmail, isLoadingMessage,
-             emailSubject, emailBody, pending_invites } = this.state;
+             emailSubject, emailBody, pending_invites, viewApplicationsTable } = this.state;
 
         const { location: { pathname } } = this.props;
         const todayDate = new Date().toISOString();
@@ -581,13 +583,25 @@ class ScholarshipManage extends React.Component {
                 }
 
                 {scholarship.is_blind_applications && <BlindApplicationsExplanationMessage />}
-                <ApplicationsTable applications={allApplications}
-                                   scholarship={scholarship}
-                                   awards={awards}
-                                   selectFinalistOrWinner={this.selectFinalistOrWinner}
-                                   isScholarshipOwner={isScholarshipOwner}
-                                   assignReviewerButton={this.assignReviewerButton}
+
+                View all application responses
+                <Switch checked={viewApplicationsTable}
+                        onChange={newChecked => this.setState({viewApplicationsTable: newChecked})}
                 />
+                <br/><br />
+
+                {!viewApplicationsTable &&
+                <ApplicationsTable    applications={allApplications}
+                                      scholarship={scholarship}
+                                      awards={awards}
+                                      selectFinalistOrWinner={this.selectFinalistOrWinner}
+                                      isScholarshipOwner={isScholarshipOwner}
+                                      assignReviewerButton={this.assignReviewerButton}
+                />
+                }
+                {viewApplicationsTable &&
+                <ViewApplicationsTable applications={allApplications} scholarship={scholarship} />
+                }
             </div>
         )
     }
