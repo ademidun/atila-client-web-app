@@ -50,6 +50,8 @@ function FormDynamicInput({model, onUpdateForm, inputConfig, loggedInUserProfile
         options, valueDisplay, isHidden, hideLabel, label, disabled, skipPrettifyKeys, renderOption } = inputConfig;
     console.log('[grace] input config: ');
     console.log({inputConfig});
+    console.log("[grace] model: ");
+    console.log({model});
     let {placeholder} = inputConfig;
     let inputForm = null;
 
@@ -130,11 +132,11 @@ function FormDynamicInput({model, onUpdateForm, inputConfig, loggedInUserProfile
                         {placeholder}
                     </label>}
                     <br />
-                    <Checkbox.Group options={options} onChange={(checkedValues => {
+                    <Checkbox.Group value={modelValue} options={options} onChange={(checkedValues => {
                         const syntheticEvent = {
                             target: {
                                 value: checkedValues,
-                                name: "checkbox_group_values"
+                                name: keyName
                             }
                         }
                         onUpdateForm(syntheticEvent);
@@ -149,7 +151,17 @@ function FormDynamicInput({model, onUpdateForm, inputConfig, loggedInUserProfile
                         {placeholder}
                     </label>}
                     <br />
-                    <Radio.Group onChange={onUpdateForm}>
+                    <Radio.Group value={modelValue} onChange={(checkedValue => {
+                        console.log("[grace] checkedValue: ");
+                        console.log({checkedValue});
+                        const syntheticEvent = {
+                            target: {
+                                value: checkedValue.target.value,
+                                name: keyName
+                            }
+                        }
+                        onUpdateForm(syntheticEvent);
+                    })}>
                         {options.map((option, index) => {
                             return <Radio key={index} value={option}>{option}</Radio>
                         })}
