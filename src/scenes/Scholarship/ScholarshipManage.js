@@ -590,7 +590,6 @@ class ScholarshipManage extends React.Component {
                 />
                 <br/><br />
 
-                {!viewApplicationResponses &&
                 <ApplicationsTable    applications={allApplications}
                                       scholarship={scholarship}
                                       awards={awards}
@@ -599,10 +598,6 @@ class ScholarshipManage extends React.Component {
                                       assignReviewerButton={this.assignReviewerButton}
                                       viewApplicationResponses={viewApplicationResponses}
                 />
-                }
-                {viewApplicationResponses &&
-                <ViewApplicationsTable applications={allApplications} scholarship={scholarship} />
-                }
             </div>
         )
     }
