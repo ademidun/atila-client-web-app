@@ -81,7 +81,7 @@ class ScholarshipManage extends React.Component {
             emailSubject: "",
             emailBody: "",
             pending_invites: [],
-            viewApplicationsTable: false,
+            viewApplicationResponses: false,
         }
     }
 
@@ -348,7 +348,7 @@ class ScholarshipManage extends React.Component {
         const { userProfile } = this.props;
         const { scholarship, applications, awards, isLoadingApplications,
             unsubmittedApplications, responseMessage, applicationTypeToEmail, isLoadingMessage,
-             emailSubject, emailBody, pending_invites, viewApplicationsTable } = this.state;
+             emailSubject, emailBody, pending_invites, viewApplicationResponses } = this.state;
 
         const { location: { pathname } } = this.props;
         const todayDate = new Date().toISOString();
@@ -585,21 +585,22 @@ class ScholarshipManage extends React.Component {
                 {scholarship.is_blind_applications && <BlindApplicationsExplanationMessage />}
 
                 View all application responses
-                <Switch checked={viewApplicationsTable}
-                        onChange={newChecked => this.setState({viewApplicationsTable: newChecked})}
+                <Switch checked={viewApplicationResponses}
+                        onChange={newChecked => this.setState({viewApplicationResponses: newChecked})}
                 />
                 <br/><br />
 
-                {!viewApplicationsTable &&
+                {!viewApplicationResponses &&
                 <ApplicationsTable    applications={allApplications}
                                       scholarship={scholarship}
                                       awards={awards}
                                       selectFinalistOrWinner={this.selectFinalistOrWinner}
                                       isScholarshipOwner={isScholarshipOwner}
                                       assignReviewerButton={this.assignReviewerButton}
+                                      viewApplicationResponses={viewApplicationResponses}
                 />
                 }
-                {viewApplicationsTable &&
+                {viewApplicationResponses &&
                 <ViewApplicationsTable applications={allApplications} scholarship={scholarship} />
                 }
             </div>
