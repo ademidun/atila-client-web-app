@@ -14,7 +14,6 @@ import AssignReviewers from './AssignReviewers';
 import InviteScholarshipCollaborator from "../../components/InviteScholarshipCollaborator";
 import {toastNotify} from "../../models/Utils";
 import SendApplicationAwards from './SendApplicationAwards';
-import ViewApplicationsTable from "./ViewApplicationsTable";
 
 
 class AssignReviewerRadioSelect extends React.Component {
