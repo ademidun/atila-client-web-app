@@ -1,6 +1,6 @@
 import {nestedFieldGet, prettifyKeys, transformListToValueLabelList} from "../../services/utils";
 import React from "react";
-import {DatePicker, Select, AutoComplete} from 'antd';
+import {DatePicker, Select, AutoComplete, Checkbox, Radio} from 'antd';
 import PropTypes from "prop-types";
 import {InputConfigPropType} from "../../models/Utils";
 import LocationSearchInput from "../LocationSearchInput/LocationSearchInput";
@@ -48,6 +48,10 @@ function FormDynamicInput({model, onUpdateForm, inputConfig, loggedInUserProfile
 
     const { type, keyName, html, suggestions, className,
         options, valueDisplay, isHidden, hideLabel, label, disabled, skipPrettifyKeys, renderOption } = inputConfig;
+    console.log('[grace] input config: ');
+    console.log({inputConfig});
+    console.log("[grace] model: ");
+    console.log({model});
     let {placeholder} = inputConfig;
     let inputForm = null;
 
@@ -120,6 +124,50 @@ function FormDynamicInput({model, onUpdateForm, inputConfig, loggedInUserProfile
                     />
                 </div>
             );
+            break;
+        case 'checkbox_group':
+            inputForm = (
+                <div className="mb-3">
+                    {placeholder && <label htmlFor={keyName}>
+                        {placeholder}
+                    </label>}
+                    <br />
+                    <Checkbox.Group value={modelValue} options={options} onChange={(checkedValues => {
+                        const syntheticEvent = {
+                            target: {
+                                value: checkedValues,
+                                name: keyName
+                            }
+                        }
+                        onUpdateForm(syntheticEvent);
+                    })}/>
+                </div>
+            )
+            break;
+        case 'radio_group':
+            inputForm = (
+                <div className="mb-3">
+                    {placeholder && <label htmlFor={keyName}>
+                        {placeholder}
+                    </label>}
+                    <br />
+                    <Radio.Group value={modelValue} onChange={(checkedValue => {
+                        console.log("[grace] checkedValue: ");
+                        console.log({checkedValue});
+                        const syntheticEvent = {
+                            target: {
+                                value: checkedValue.target.value,
+                                name: keyName
+                            }
+                        }
+                        onUpdateForm(syntheticEvent);
+                    })}>
+                        {options.map((option, index) => {
+                            return <Radio key={index} value={option}>{option}</Radio>
+                        })}
+                    </Radio.Group>
+                </div>
+            )
             break;
         case 'select':
             inputForm = (
@@ -230,18 +278,24 @@ function FormDynamicInput({model, onUpdateForm, inputConfig, loggedInUserProfile
                 </div>
             );
             break;
-        case 'file':
         case 'image':
+        case 'file':
             inputForm = (<div className="col-12 my-3">
                 {placeholder && <label htmlFor={keyName}>
                     {placeholder}
                 </label>}
+                {modelValue &&
+                    <div className="my-2">
+                        <a href={modelValue} target="_blank"  rel="noopener noreferrer">
+                            View File
+                        </a> or upload a new file below
+                    </div>
+                }
                 <FileInput title={placeholder} keyName={keyName}
                            onChangeHandler={onUpdateForm}
-                           type={type} uploadHint={`You can also paste the ${type} url in the text box below`} />
-                {type === "image" && <img src={modelValue} alt={placeholder} width="250" className="card center-block my-3"/> }
-
-                <div className="floating mb-3">
+                           type="image,pdf"
+                           uploadHint={`You can also paste the ${type} url in the text box below`} />
+                <div className="floating my-3">
                     <input placeholder={placeholder}
                      disabled={disabled}
                            className="col-12 form-control floating__input"
@@ -256,6 +310,7 @@ function FormDynamicInput({model, onUpdateForm, inputConfig, loggedInUserProfile
                             </span>
                     </label>
                 </div>
+                {type === "image" && <img src={modelValue} alt={placeholder} width="250" className="card center-block my-3"/> }
             </div>);
             break;
         default:
