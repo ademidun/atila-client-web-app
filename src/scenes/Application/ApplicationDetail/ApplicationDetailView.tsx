@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Application } from '../../../models/Application.class'
 import { Scholarship, ScholarshipQuestion } from '../../../models/Scholarship.class'
 import { UserProfile } from '../../../models/UserProfile.class';
-import { prettifyKeys } from '../../../services/utils';
+import { joinListGrammatically, prettifyKeys } from '../../../services/utils';
 
 export interface ApplicationDetailViewProps {
     scholarship: Scholarship,
@@ -53,15 +53,29 @@ function ApplicationDetailView(props: ApplicationDetailViewProps) {
             if (question.key === "email" && !isOwnerOfApplication) {
                 return <></>;
             }
+            let responseDisplay = responses[question.key];
+            switch (question.type) {
+                case 'long_answer':
+                    responseDisplay = <div className="my-1" dangerouslySetInnerHTML={{__html: responses[question.key]}}/>
+                    break;
+                case 'checkbox':
+                    responseDisplay = responses[question.key] ? "Yes" : "No"
+                    break;
+                case 'file':
+                    responseDisplay = <a href={responses[question.key]} target="_blank"  rel="noopener noreferrer">
+                            View File
+                        </a> 
+                    break;
+                case 'multi_select':
+                    responseDisplay = joinListGrammatically(responses[question.key])
+                    break;
+                default:
+                    break;
+            }
             return (<div key={question.key}>
                 <div className="white-space-pre-wrap">
                     <b>{question.question || prettifyKeys(question.key)}:</b><br/>
-      
-                    {question.type === "long_answer" ?
-                        <div className="my-1" dangerouslySetInnerHTML={{__html: responses[question.key]}}/>
-                        : question.type === "checkbox" ?
-                            responses[question.key] ? "Yes" : "No"
-                            : responses[question.key]}
+                    {responseDisplay}
                 </div>
             </div>)})
     }
