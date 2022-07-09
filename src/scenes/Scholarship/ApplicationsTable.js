@@ -169,39 +169,40 @@ class ApplicationsTable extends  React.Component {
     }
 
     getViewResponsesDataSource = () => {
-        const { filteredApplications } = this.state
+        const { filteredApplications } = this.state;
+        const { scholarship } = this.props;
 
-        let scholarshipKeyToResponses = filteredApplications.map(application => {
-            let questionDict = application.scholarship_responses
-            let newDict = {...application}
-            for (let [questionKey, questionInfo] of Object.entries(questionDict)) {
-                newDict[questionKey] = questionInfo.response
-            }
-            return newDict
-        })
+        const { specific_questions } = scholarship;
 
         const columns = []
 
-        if (filteredApplications.length === 0) {
-            return [columns, scholarshipKeyToResponses]
-        }
-
-        // Get columns from first entry
-        let counter = 1
-        for (let [questionKey, questionInfo] of Object.entries(filteredApplications[0].scholarship_responses)) {
+        for (let [questionKey, questionInfo] of Object.entries(specific_questions)) {
             const question = questionInfo.question
 
             columns.push({
                 title: <b>{question}</b>,
                 dataIndex: questionKey,
-                key: counter,
+                key: questionKey,
                 render: (response) => {
                     return <div dangerouslySetInnerHTML={{__html: response}} />
                 }
             })
-            counter += 1
         }
-        return [columns, scholarshipKeyToResponses]
+
+        let applicationResponses = filteredApplications.map(application => {
+            console.log({scholarship, application});
+            let {scholarship_responses} = application;
+            let applicationWithResponses = {...application}
+            for (let questionKey of Object.keys(specific_questions)) {
+                applicationWithResponses[questionKey] = scholarship_responses? scholarship_responses[questionKey] : "";
+            }
+            return applicationWithResponses
+        })
+
+        if (filteredApplications.length === 0) {
+            return [columns, applicationResponses]
+        }
+        return [columns, applicationResponses]
     }
 
     render () {

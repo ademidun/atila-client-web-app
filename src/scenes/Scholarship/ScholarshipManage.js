@@ -583,7 +583,7 @@ class ScholarshipManage extends React.Component {
 
                 {scholarship.is_blind_applications && <BlindApplicationsExplanationMessage />}
 
-                View all application responses
+                View all application responses{' '}
                 <Switch checked={viewApplicationResponses}
                         onChange={newChecked => this.setState({viewApplicationResponses: newChecked})}
                 />
