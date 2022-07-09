@@ -278,31 +278,24 @@ function FormDynamicInput({model, onUpdateForm, inputConfig, loggedInUserProfile
                 </div>
             );
             break;
-        case 'file':
-            inputForm = (<div className="mb-3">
-                            {placeholder && <label htmlFor={keyName}>
-                                {placeholder}
-                            </label>}
-                            <FileInput
-                                title={placeholder}
-                                type={"image,pdf"}
-                                keyName={keyName}
-                                filePath={`test`}
-                                onChangeHandler={() => {console.log("file uploaded")}}
-                            />
-                        </div>)
-            break;
         case 'image':
+        case 'file':
             inputForm = (<div className="col-12 my-3">
                 {placeholder && <label htmlFor={keyName}>
                     {placeholder}
                 </label>}
+                {modelValue &&
+                    <div className="my-2">
+                        <a href={modelValue} target="_blank"  rel="noopener noreferrer">
+                            View File
+                        </a> or upload a new file below
+                    </div>
+                }
                 <FileInput title={placeholder} keyName={keyName}
                            onChangeHandler={onUpdateForm}
-                           type={type} uploadHint={`You can also paste the ${type} url in the text box below`} />
-                {type === "image" && <img src={modelValue} alt={placeholder} width="250" className="card center-block my-3"/> }
-
-                <div className="floating mb-3">
+                           type="image,pdf"
+                           uploadHint={`You can also paste the ${type} url in the text box below`} />
+                <div className="floating my-3">
                     <input placeholder={placeholder}
                      disabled={disabled}
                            className="col-12 form-control floating__input"
@@ -317,6 +310,7 @@ function FormDynamicInput({model, onUpdateForm, inputConfig, loggedInUserProfile
                             </span>
                     </label>
                 </div>
+                {type === "image" && <img src={modelValue} alt={placeholder} width="250" className="card center-block my-3"/> }
             </div>);
             break;
         default:
