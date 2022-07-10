@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { joinListGrammatically, stripHtml } from '../../services/utils';
 import { Input } from 'antd';
 import { searchApplications, findOccurencesOfSearchTerm } from './ApplicationUtils';
+import { ApplicationResponseDisplay } from './ApplicationDetail/ApplicationDetailView';
 
 
 export class ApplicationsSearch extends React.Component {
@@ -78,35 +78,24 @@ export function ApplicationPreview({ application, searchTerm }){
         applicationResponse = longAnswerResponses[0]
     }
 
-    let applicationResponsePreview = applicationResponse.response;
-
-    // if check is needed here for backwards compatiblity with old application responses that were strings
-    // and not dictionaries so they didn't have .type attributes
-    if (applicationResponse && applicationResponse.type) {
-        switch (applicationResponse.type) {
-            case "long_answer":
-                applicationResponsePreview =  stripHtml(applicationResponsePreview)
-                break;
-            case "multi_select":
-                applicationResponsePreview =  joinListGrammatically(applicationResponsePreview)
-                break;
-            default:
-                break;
-        }
-        applicationResponsePreview = applicationResponsePreview.substring(0, 140);
-    }
-
+    let matchingSnippets;
     // Only start highlighting the text when the search term has 3 characters or more.
     // Otherwise, you would return too many noisy results if you match on just 1 or 2 characters.
     if (searchTerm && searchTerm.length >= 3) {
-        let matchingSnippets = findOccurencesOfSearchTerm(application, searchTerm);
-        applicationResponsePreview = matchingSnippets.map(snippet => <p key= {snippet.value}>{snippet.html}</p>)
+        matchingSnippets = findOccurencesOfSearchTerm(application, searchTerm);
+        matchingSnippets = matchingSnippets.map(snippet => <p key= {snippet.value}>{snippet.html}</p>)
     }
 
     return (<div>
         Preview ({searchTerm}): 
             <div className="text-muted">
-            {applicationResponsePreview}
+                {
+                    matchingSnippets || 
+                    <ApplicationResponseDisplay 
+                        question={applicationResponse} 
+                        responses={{[applicationResponse.key]: applicationResponse.response}} 
+                        previewMode={true} />
+                }
             </div>
     </div>)
 }

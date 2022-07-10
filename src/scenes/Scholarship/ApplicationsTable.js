@@ -10,6 +10,7 @@ import { convertApplicationsToCSVFormat, maxApplicationScoreDifference } from '.
 import { ApplicationsSearch, ApplicationPreview } from '../Application/ApplicationsSearch';
 import EmailModal from "../../components/EmailModal";
 import { CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
+import { ApplicationResponseDisplay } from '../Application/ApplicationDetail/ApplicationDetailView';
 
 
 // Show a warning
@@ -176,25 +177,28 @@ class ApplicationsTable extends  React.Component {
 
         const columns = []
 
-        for (let [questionKey, questionInfo] of Object.entries(specific_questions)) {
+        for (let questionInfo of specific_questions) {
             const question = questionInfo.question
 
             columns.push({
                 title: <b>{question}</b>,
-                dataIndex: questionKey,
-                key: questionKey,
-                render: (response) => {
-                    return <div dangerouslySetInnerHTML={{__html: response}} />
+                dataIndex: questionInfo.key,
+                key: questionInfo.key,
+                render: (response, application, etc) => {
+                    console.log({response, application})
+                    return <ApplicationResponseDisplay 
+                    question={response} 
+                    responses={{[response.key]: response.response}} 
+                    previewMode={true} />
                 }
             })
         }
 
         let applicationResponses = filteredApplications.map(application => {
-            console.log({scholarship, application});
             let {scholarship_responses} = application;
             let applicationWithResponses = {...application}
-            for (let questionKey of Object.keys(specific_questions)) {
-                applicationWithResponses[questionKey] = scholarship_responses? scholarship_responses[questionKey] : "";
+            for (let questionInfo of specific_questions) {
+                applicationWithResponses[questionInfo.key] = scholarship_responses? scholarship_responses[questionInfo.key] : "";
             }
             return applicationWithResponses
         })
@@ -231,7 +235,7 @@ class ApplicationsTable extends  React.Component {
                 'value': possibleScore
             };
         });
-    
+
         let applicationsAsCSV = convertApplicationsToCSVFormat(filteredApplications);
     
         const selectWinnerColumn = {

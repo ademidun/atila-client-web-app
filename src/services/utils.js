@@ -616,8 +616,8 @@ export function stripHtml(html) {
 }
 
 export function joinListGrammatically(lst) {
-    if (!lst) {
-        return "";
+    if (!lst || !Array.isArray(lst)) {
+        return lst;
     }
 
     if (lst.length === 0) {
