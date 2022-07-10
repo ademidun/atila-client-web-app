@@ -25,3 +25,21 @@ export function useInterval(callback: any, delay: any) {
     }
   }, [delay]);
 }
+/**
+ * https://stackoverflow.com/a/34425083/5405197
+ * @param url 
+ */
+export const useScript = (url: string) => {
+  useEffect(() => {
+    const script = document.createElement('script');
+
+    script.src = url;
+    script.async = true;
+
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    }
+  }, [url]);
+};
