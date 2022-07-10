@@ -57,6 +57,7 @@ class EmailModal extends React.Component {
     render() {
         const { emailSubject, emailBody, loading, responseMessage } = this.state;
         const { showModalButtonSize, showModalText, modalTitle } = this.props;
+        console.log({showModalButtonSize});
 
         let emailModalBody = (
             <>

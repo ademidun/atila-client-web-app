@@ -178,13 +178,12 @@ class ApplicationsTable extends  React.Component {
         const columns = []
 
         for (let questionInfo of specific_questions) {
-            const question = questionInfo.question
-
-            columns.push({
-                title: <b>{question}</b>,
+            
+            let column = {
+                title: <b>{questionInfo.question}</b>,
                 dataIndex: questionInfo.key,
                 key: questionInfo.key,
-                render: (response, application, etc) => {
+                render: (response, application) => {
                     console.log({response, application})
 
                     return response && response.key ? <ApplicationResponseDisplay 
@@ -192,7 +191,33 @@ class ApplicationsTable extends  React.Component {
                     responses={{[response.key]: response.response}} 
                     previewMode={true} /> : null
                 }
-            })
+            };
+            if(["single_select", "multi_select"].includes(questionInfo.type)) {
+                const columnFilterOptions = {
+                    filters: questionInfo.options.map(option => ({
+                        text: option,
+                        value: option
+                    })),
+                      filterMode: 'tree',
+                      filterSearch: true,
+                      onFilter: (filterValue, application) => {
+                        
+                        console.log({filterValue, application, });
+                        if (!application?.scholarship_responses?.[questionInfo.key]?.response) {
+                            return false
+                        }
+                        return application?.scholarship_responses[questionInfo.key]?.response?.includes(filterValue);
+                      },
+                      width: '30%',
+                };
+                column = {
+                    ...column,
+                    ...columnFilterOptions
+                }
+            }
+            console.log("question.type", questionInfo.type, column, questionInfo);
+            console.log('["single_select", "multi_select"].includes(question.type)', ["single_select", "multi_select"].includes(questionInfo.type));
+            columns.push(column);
         }
 
         let applicationResponses = filteredApplications.map(application => {
