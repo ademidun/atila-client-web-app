@@ -186,10 +186,11 @@ class ApplicationsTable extends  React.Component {
                 key: questionInfo.key,
                 render: (response, application, etc) => {
                     console.log({response, application})
-                    return <ApplicationResponseDisplay 
+
+                    return response && response.key ? <ApplicationResponseDisplay 
                     question={response} 
                     responses={{[response.key]: response.response}} 
-                    previewMode={true} />
+                    previewMode={true} /> : null
                 }
             })
         }
