@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
-import {Alert, Button, Input, Popconfirm, Radio, Tag} from "antd";
+import {Alert, Button, Input, Popconfirm, Radio, Switch, Tag} from "antd";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
 import {BlindApplicationsExplanationMessage, WINNER_SELECTED_MESSAGE} from "../../models/Scholarship";
@@ -80,6 +80,7 @@ class ScholarshipManage extends React.Component {
             emailSubject: "",
             emailBody: "",
             pending_invites: [],
+            viewApplicationResponses: false,
         }
     }
 
@@ -346,7 +347,7 @@ class ScholarshipManage extends React.Component {
         const { userProfile } = this.props;
         const { scholarship, applications, awards, isLoadingApplications,
             unsubmittedApplications, responseMessage, applicationTypeToEmail, isLoadingMessage,
-             emailSubject, emailBody, pending_invites } = this.state;
+             emailSubject, emailBody, pending_invites, viewApplicationResponses } = this.state;
 
         const { location: { pathname } } = this.props;
         const todayDate = new Date().toISOString();
@@ -581,12 +582,20 @@ class ScholarshipManage extends React.Component {
                 }
 
                 {scholarship.is_blind_applications && <BlindApplicationsExplanationMessage />}
-                <ApplicationsTable applications={allApplications}
-                                   scholarship={scholarship}
-                                   awards={awards}
-                                   selectFinalistOrWinner={this.selectFinalistOrWinner}
-                                   isScholarshipOwner={isScholarshipOwner}
-                                   assignReviewerButton={this.assignReviewerButton}
+
+                View application responses{' '}
+                <Switch checked={viewApplicationResponses}
+                        onChange={newChecked => this.setState({viewApplicationResponses: newChecked})}
+                />
+                <br/><br />
+
+                <ApplicationsTable    applications={allApplications}
+                                      scholarship={scholarship}
+                                      awards={awards}
+                                      selectFinalistOrWinner={this.selectFinalistOrWinner}
+                                      isScholarshipOwner={isScholarshipOwner}
+                                      assignReviewerButton={this.assignReviewerButton}
+                                      viewApplicationResponses={viewApplicationResponses}
                 />
             </div>
         )

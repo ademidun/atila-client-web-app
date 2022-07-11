@@ -1,3 +1,4 @@
+import { ScholarshipQuestion } from "./Scholarship.class";
 import { UserProfile } from "./UserProfile.class";
 
 export class Application {

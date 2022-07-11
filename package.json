@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@algolia/recommend": "^4.13.0",
+    "@algolia/recommend": "^4.13.1",
     "@algolia/recommend-react": "^1.2.0",
     "@ant-design/icons": "~4.2.2",
     "@atila/web-components-library.ui.add-or-switch-blockchain": "0.0.3",

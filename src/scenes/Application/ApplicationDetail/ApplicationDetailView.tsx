@@ -3,14 +3,14 @@ import { connect } from 'react-redux';
 import { Application } from '../../../models/Application.class'
 import { Scholarship, ScholarshipQuestion } from '../../../models/Scholarship.class'
 import { UserProfile } from '../../../models/UserProfile.class';
-import { joinListGrammatically, prettifyKeys } from '../../../services/utils';
+import { joinListGrammatically, prettifyKeys, stripHtml } from '../../../services/utils';
 
 export interface ApplicationDetailViewProps {
     scholarship: Scholarship,
     application: Application,
     userProfileLoggedIn: UserProfile,
     questions: ScholarshipQuestion[],
-    responses: any,
+    responses: any;
 }
 
 /**
@@ -27,6 +27,42 @@ export interface ApplicationDetailViewProps {
     * first_name: "FirstName"
     * last_name: "LastName"
 */
+
+
+export function ApplicationResponseDisplay({question, responses, previewMode = false} :
+     {question: ScholarshipQuestion, responses: any, previewMode?: boolean}) {
+
+    let responseDisplay = responses[question.key];
+    switch (question.type) {
+        case 'long_answer':
+        case "medium_answer":
+        case "short_answer":
+            if (previewMode) {
+                responseDisplay =  stripHtml(responses[question.key]).substring(0, 140);
+            } else {
+                responseDisplay = <div className="my-1" dangerouslySetInnerHTML={{__html: responses[question.key]}}/>
+            }
+            
+            break;
+        case 'checkbox':
+            responseDisplay = responses[question.key] ? "Yes" : "No"
+            break;
+        case 'file':
+            responseDisplay = <a href={responses[question.key]} target="_blank"  rel="noopener noreferrer">
+                    View File
+                </a> 
+            break;
+        case 'multi_select':
+            responseDisplay = joinListGrammatically(responses[question.key])
+            break;
+        default:
+            break;
+    }
+
+    // added || null fallback return because it was giving an error that this function returned nothing
+    // However, the cause might be something different, so we might be able to remove this.
+    return responseDisplay || null
+}
 
 function ApplicationDetailView(props: ApplicationDetailViewProps) {
 
@@ -53,34 +89,16 @@ function ApplicationDetailView(props: ApplicationDetailViewProps) {
             if (question.key === "email" && !isOwnerOfApplication) {
                 return <></>;
             }
-            let responseDisplay = responses[question.key];
-            switch (question.type) {
-                case 'long_answer':
-                    responseDisplay = <div className="my-1" dangerouslySetInnerHTML={{__html: responses[question.key]}}/>
-                    break;
-                case 'checkbox':
-                    responseDisplay = responses[question.key] ? "Yes" : "No"
-                    break;
-                case 'file':
-                    responseDisplay = <a href={responses[question.key]} target="_blank"  rel="noopener noreferrer">
-                            View File
-                        </a> 
-                    break;
-                case 'multi_select':
-                    responseDisplay = joinListGrammatically(responses[question.key])
-                    break;
-                default:
-                    break;
-            }
             return (<div key={question.key}>
                 <div className="white-space-pre-wrap">
                     <b>{question.question || prettifyKeys(question.key)}:</b><br/>
-                    {responseDisplay}
+                    <ApplicationResponseDisplay question={question} responses={responses} />
                 </div>
             </div>)})
     }
   </>);
 }
+
 const mapStateToProps = (state: any) => {
     return { userProfileLoggedIn: state.data.user.loggedInUserProfile };
 };

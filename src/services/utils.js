@@ -594,8 +594,6 @@ export function openAllLinksInNewTab(parentSelector=""){
 export function makeImagesCards(parentSelector=""){
     let element;
     const selectors = `${parentSelector} img`;
-    console.log("makeImagesCards");
-    console.log({parentSelector, selectors, element});
 
     $(selectors).each(function() {
 
@@ -616,8 +614,8 @@ export function stripHtml(html) {
 }
 
 export function joinListGrammatically(lst) {
-    if (!lst) {
-        return "";
+    if (!lst || !Array.isArray(lst)) {
+        return lst;
     }
 
     if (lst.length === 0) {

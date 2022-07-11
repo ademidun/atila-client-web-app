@@ -260,8 +260,6 @@ export const findOccurencesOfSearchTerm = ( application, searchTerm, contextSize
         }
     }
 
-    console.log({application, questionResponses});
-
     for (const questionResponse of questionResponses) {
         const responseText = questionResponse.type === "long_answer" ? stripHtml(questionResponse.response) : questionResponse.response;
 

@@ -10,7 +10,7 @@ import {ATILA_SCHOLARSHIP_FEE, ATILA_SCHOLARSHIP_FEE_TAX, Currencies} from "../.
 import CurrencyDisplay from "@atila/web-components-library.ui.currency-display";
 
 // source: https://github.com/sparksuite/simple-html-invoice-template
-const logoImageData = "https://firebasestorage.googleapis.com/v0/b/atila-7.appspot.com/o/public%2Fatila-logo-right-way-circle-transparent.png?alt=media&token=c7b77a1a-9563-41ef-90e9-57025a7dbd87";
+const logoImageData = "https://i.imgur.com/Mez2Qdd.png";
 function Invoice({ contributor, scholarship, contributorFundingAmount, cardHolderName }) {
 
     const { email, currency } = contributor;

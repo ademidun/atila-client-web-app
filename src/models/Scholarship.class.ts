@@ -31,7 +31,8 @@ export class Scholarship {
 export interface ScholarshipQuestion {
     key: string,
     question: string,
-    type: QuestionType
+    type: QuestionType,
+    options?: string[],
 }
 
 declare const QuestionTypes: ["short_answer", "medium_answer", "long_answer", "checkbox", "file", "multi_select", "single_select"];

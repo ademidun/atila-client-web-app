@@ -142,10 +142,6 @@ class ApplicationDetail extends  React.Component{
 
         this.setState({isSavingApplication: true});
 
-        console.log("[grace] saving application: ");
-        console.log({application});
-        console.log({scholarship_responses});
-
         ApplicationsAPI
             .patch(application.id, {scholarship_responses, user_profile_responses, verification_email})
             .then(res=>{
@@ -380,9 +376,6 @@ class ApplicationDetail extends  React.Component{
         if (event.stopPropagation) {
             event.stopPropagation(); // https://github.com/facebook/react/issues/3446#issuecomment-82751540
         }
-        console.log('[grace] application detail update form');
-        console.log({event});
-        console.log({applicationResponseType});
 
         let { application } = this.state;
         const name = event.target.name;

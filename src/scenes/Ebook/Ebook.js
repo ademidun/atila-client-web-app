@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import EbookLandingBanner from "./EbookLandingBanner";
 import HelmetSeo from "../../components/HelmetSeo";
 import EmailSignUp from "./EmailSignUp";
@@ -12,76 +12,64 @@ import {scrollToElement, unSlugify} from "../../services/utils";
 import {EBOOK_AUDIENCE_IMAGES} from "../../models/Constants";
 import EbookFAQ from "./EbookFAQ";
 import EbookChapter from './EbookChapter';
+import { useScript } from "../../services/utils/HookUtils";
 
-class Ebook extends React.Component {
+function Ebook(props) {
 
-    constructor(props) {
-        super(props);
-        const {location: {search}} = props;
-        const params = new URLSearchParams(search);
-        let audience = unSlugify(params.get('audience') || '1');
+    useScript("https://gumroad.com/js/gumroad.js");
 
-        if (EBOOK_AUDIENCE_IMAGES[audience]===undefined) {
-            audience = '1';
-        }
+    const {location: {search}} = props;
+    const params = new URLSearchParams(search);
+    let audience = unSlugify(params.get('audience') || '1');
 
-        this.state = {
-            audience,
-        }
-
+    if (EBOOK_AUDIENCE_IMAGES[audience]===undefined) {
+        audience = '1';
     }
 
-    componentDidMount(){
-        const { location } = this.props;
+    useEffect(() => {
 
-        if (location && location.hash) {
+        if (props?.location?.hash) {
             setTimeout(() => {
-                scrollToElement(location.hash);
+                scrollToElement(props.location.hash);
             }, 500);
         }
-    }
+    }, [props?.location?.hash]);
 
+    const seoContent = {
+        title:
+            "Atila Schools and Jobs Guide | The Best Canadian Universities for the Best Jobs",
+        description:
+            "A guide to the best Canadian universities for getting jobs at Goldman Sachs, Google, McKinsey, Pfizer and more.",
+        image: EBOOK_AUDIENCE_IMAGES[audience].seoImage,
+        slug: "/schools",
+    };
 
-    render() {
-
-        const {audience} = this.state;
-
-        const seoContent = {
-            title:
-                "Atila Schools and Jobs Guide | The Best Canadian Universities for the Best Jobs",
-            description:
-                "A guide to the best Canadian universities for getting jobs at Goldman Sachs, Google, McKinsey, Pfizer and more.",
-            image: EBOOK_AUDIENCE_IMAGES[audience].seoImage,
-            slug: "/schools",
-        };
-
-        return (
-            <React.Fragment>
-                <div>
-                    <HelmetSeo content={seoContent}/>
-                    <BackTop/>
-                    <EbookLandingBanner audience={audience} />
-                    <hr/>
-                    <EmailSignUp audience={audience} />
-                    <hr/>
-                    <EbookPreview/>
-                    <hr/>
-                    <EbookChapter />
-                    <hr/>
-                    <TableauGraphsEmbed/>
-                    <hr/>
-                    <EbookInterviews/>
-                    <hr/>
-                    <EbookFAQ />
-                    <hr/>
-                    <PremiumDescription/>
-                    <hr/>
-                    <EbookVideoEmbed/>
-                    <hr/>
-                </div>
-            </React.Fragment>
-        );
-    }
+    return (
+        <React.Fragment>
+            <div>
+                <HelmetSeo content={seoContent}/>
+                <BackTop/>
+                <EbookLandingBanner audience={audience} />
+                <hr/>
+                <EmailSignUp audience={audience} />
+                <hr/>
+                <EbookPreview/>
+                <hr/>
+                <EbookChapter />
+                <hr/>
+                <TableauGraphsEmbed/>
+                <hr/>
+                <EbookInterviews/>
+                <hr/>
+                <EbookFAQ />
+                <hr/>
+                <PremiumDescription/>
+                <hr/>
+                <EbookVideoEmbed/>
+                <hr/>
+            </div>
+        </React.Fragment>
+    );
 }
 
 export default Ebook;

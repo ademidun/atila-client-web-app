@@ -69,7 +69,6 @@ import { convertQueryListToDynamicQuery, DEFAULT_SAMPLE_SEARCHES, getDefaultQuer
 
     convertQueryListToUrl = () => {
         let queryUrl = `${window.location.origin}${window.location.pathname}`;
-        console.log({queryUrl});
 
         const { allQueries } = this.state;
         
@@ -85,7 +84,6 @@ import { convertQueryListToDynamicQuery, DEFAULT_SAMPLE_SEARCHES, getDefaultQuer
             queryAsParam = index === 0 ? `?${queryAsParam}` : `&${queryAsParam}`;
             queryUrl = `${queryUrl}${queryAsParam}`;
         });
-        console.log({queryUrl, window});
         // replaces all instances of " " with "+"
         queryUrl = queryUrl.replace(/ /g, "+")
         return queryUrl
@@ -182,7 +180,6 @@ import { convertQueryListToDynamicQuery, DEFAULT_SAMPLE_SEARCHES, getDefaultQuer
         return (
             <div>
                 {allQueries.map((query, index) => {
-                    console.log("query.queryData", query.queryData)
                     const queryValue =  Object.keys(query.queryData).length > 0 ? query.queryData[Object.keys(query.queryData)[0]] : ""; 
                     const queryKey =  Object.keys(query.queryData).length > 0 ? Object.keys(query.queryData)[0] : ""; 
 
