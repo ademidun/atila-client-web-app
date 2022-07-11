@@ -48,10 +48,6 @@ function FormDynamicInput({model, onUpdateForm, inputConfig, loggedInUserProfile
 
     const { type, keyName, html, suggestions, className,
         options, valueDisplay, isHidden, hideLabel, label, disabled, skipPrettifyKeys, renderOption } = inputConfig;
-    console.log('[grace] input config: ');
-    console.log({inputConfig});
-    console.log("[grace] model: ");
-    console.log({model});
     let {placeholder} = inputConfig;
     let inputForm = null;
 
@@ -152,8 +148,6 @@ function FormDynamicInput({model, onUpdateForm, inputConfig, loggedInUserProfile
                     </label>}
                     <br />
                     <Radio.Group value={modelValue} onChange={(checkedValue => {
-                        console.log("[grace] checkedValue: ");
-                        console.log({checkedValue});
                         const syntheticEvent = {
                             target: {
                                 value: checkedValue.target.value,

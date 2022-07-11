@@ -183,14 +183,12 @@ class ApplicationsTable extends  React.Component {
                 title: <b>{questionInfo.question}</b>,
                 dataIndex: questionInfo.key,
                 key: questionInfo.key,
-                render: (response, application) => {
-                    console.log({response, application})
-
-                    return response && response.key ? <ApplicationResponseDisplay 
+                render: (response) => (
+                    response && response.key ? <ApplicationResponseDisplay 
                     question={response} 
                     responses={{[response.key]: response.response}} 
                     previewMode={true} /> : null
-                }
+                )
             };
             if(["single_select", "multi_select"].includes(questionInfo.type)) {
                 const columnFilterOptions = {
@@ -201,8 +199,6 @@ class ApplicationsTable extends  React.Component {
                       filterMode: 'tree',
                       filterSearch: true,
                       onFilter: (filterValue, application) => {
-                        
-                        console.log({filterValue, application, });
                         if (!application?.scholarship_responses?.[questionInfo.key]?.response) {
                             return false
                         }
@@ -215,8 +211,6 @@ class ApplicationsTable extends  React.Component {
                     ...columnFilterOptions
                 }
             }
-            console.log("question.type", questionInfo.type, column, questionInfo);
-            console.log('["single_select", "multi_select"].includes(question.type)', ["single_select", "multi_select"].includes(questionInfo.type));
             columns.push(column);
         }
 

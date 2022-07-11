@@ -308,7 +308,6 @@ class ScholarshipsList extends React.Component {
         let totalFunding = 0
         scholarshipSearchResults.forEach(scholarship => totalFunding += scholarship.funding_amount)
         totalFunding = TextUtils.formatCurrency(totalFunding, "CAD", true);
-        console.log({scholarships: scholarshipSearchResults, totalFunding, totalScholarshipsCount});
         if (totalFunding !== this.state.totalFunding) {
             this.setState({totalFunding});
         }
@@ -321,8 +320,6 @@ class ScholarshipsList extends React.Component {
     }
 
     handleSearchQueryChanged = (updatedSearchString) => {
-
-        console.log({updatedSearchString});
         this.setState({searchString: updatedSearchString.query});
     }
 
@@ -424,8 +421,6 @@ class ScholarshipsList extends React.Component {
             seoContent.description = seoContent.title;
             seoContent.slug = `/scholarship/s/${searchString}`
         }
-
-        console.log({userProfile, searchString});
 
         return (
             <div className="container mt-5">

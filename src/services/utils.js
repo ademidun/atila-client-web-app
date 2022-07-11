@@ -594,8 +594,6 @@ export function openAllLinksInNewTab(parentSelector=""){
 export function makeImagesCards(parentSelector=""){
     let element;
     const selectors = `${parentSelector} img`;
-    console.log("makeImagesCards");
-    console.log({parentSelector, selectors, element});
 
     $(selectors).each(function() {
 

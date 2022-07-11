@@ -51,8 +51,6 @@ class TableUtils {
                         let clickDetailsA = a.email_analytics.click_details ||[]
                         let clickDetailsB = b.email_analytics.click_details ||[]
 
-                        console.log({a,b, clickDetailsA, clickDetailsB});
-
                         return  clickDetailsA.length < clickDetailsB.length ? -1 : clickDetailsA.length > clickDetailsB.length  ? 1 : 0
                     }
                     columnSetting.render = (email_analytics, item) => (
