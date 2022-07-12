@@ -22,7 +22,7 @@ import {
     transformProfileQuestionsToApplicationForm,
     transformScholarshipQuestionsToApplicationForm
 } from "./ApplicationUtils";
-import ApplicationEssayAddEdit from "./ApplicationEssayAddEdit";
+// import ApplicationEssayAddEdit from "./ApplicationEssayAddEdit";
 import FileInput from "../../components/Form/FileInput";
 import {DEFAULT_USER_PROFILE_PICTURE_URL} from "../../models/UserProfile";
 import UserProfileAPI from "../../services/UserProfileAPI";
@@ -765,7 +765,9 @@ class ApplicationDetail extends  React.Component{
                                     </>
                                 }
                                 {inViewMode && viewModeContent}
-                                {inViewMode && isOwnerOfApplication &&
+                                {/* Temporarily hide option to publish application as an essay
+                                too confusing since we are not currently actiely promoting it. */}
+                                {/* {inViewMode && isOwnerOfApplication &&
                                     <>
                                         <hr/>
                                         <div id="publish" className="row col-12 my-3">
@@ -773,7 +775,7 @@ class ApplicationDetail extends  React.Component{
                                             <ApplicationEssayAddEdit application={application} />
                                         </div>
                                 </>
-                                }
+                                } */}
                             </div>
                             }
 

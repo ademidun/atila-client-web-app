@@ -112,7 +112,10 @@ ButtonModal.propTypes = {
     showModalButtonSize: PropTypes.string,
     showModalButtonDanger: PropTypes.bool,
     showModalText: PropTypes.string,
-    modalTitle: PropTypes.string,
+    modalTitle: PropTypes.oneOfType([
+        PropTypes.shape({}),
+        PropTypes.string,
+    ]),
     modalBody: PropTypes.node,
     submitText: PropTypes.string,
     addPopConfirm: PropTypes.bool,

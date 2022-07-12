@@ -108,14 +108,15 @@ class ScholarshipContribution extends React.Component {
         const keyCode = event.code || event.key;
 
 
-        contributor = {
-            ...contributor,
-            [eventName]: value
-        };
         if (eventName === "funding_amount") {
             // preserve decimal places when working with crypto values
             value = Currencies[contributor.currency].is_crypto ? Number.parseFloat(value) : Number.parseInt(value);
         }
+
+        contributor = {
+            ...contributor,
+            [eventName]: value
+        };
 
         // If the user types a first name or last name then that implies they are not anonymous.
         // If no first or last name then they're anonymous.
