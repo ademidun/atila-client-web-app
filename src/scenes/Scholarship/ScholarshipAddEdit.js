@@ -669,6 +669,7 @@ class ScholarshipAddEdit extends React.Component{
         ({funding_amount: Number.parseFloat(prevAward.funding_amount) + Number.parseFloat(currentAward.funding_amount), currency: currentAward.currency})).funding_amount;
 
         totalAwardsAmount = Number.parseFloat(totalAwardsAmount);
+        contributor.funding_amount = totalAwardsAmount;
         return (
             <div className="my-3">
                 <ScholarshipPaymentForm scholarship={scholarship}
