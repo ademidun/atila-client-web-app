@@ -47,7 +47,7 @@ ScholarshipPaymentForm.propTypes = {
     // TODO make this into a typescript file so we can specify the function type
     onFundingComplete: PropTypes.func,
     scholarship: ScholarshipPropType,
-    awards: PropTypes.arrayOf({}),
+    awards: PropTypes.arrayOf(PropTypes.shape({})),
     contributor: PropTypes.shape({}),
     contributorFundingAmount: PropTypes.number,
 };
