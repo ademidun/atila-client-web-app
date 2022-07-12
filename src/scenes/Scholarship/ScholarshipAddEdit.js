@@ -114,6 +114,8 @@ class ScholarshipAddEdit extends React.Component{
 
         const { userProfile } = this.props;
         const { contributor } = this.state;
+        console.log("this.props", this.props);
+        console.log("this.props.match", this.props.match);
 
         const { match : { path }} = this.props;
 
