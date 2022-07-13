@@ -44,10 +44,10 @@ const datePickerChange = (name, moment, updateForm) => {
     updateForm(newEvent);
 }
 
-function FormDynamicInput({model, onUpdateForm, inputConfig, loggedInUserProfile}) {
-
+function FormDynamicInput({model, onUpdateForm, inputConfig, loggedInUserProfile, context}) {
     const { type, keyName, html, suggestions, className,
         options, valueDisplay, isHidden, hideLabel, label, disabled, skipPrettifyKeys, renderOption } = inputConfig;
+    const { applicationID, scholarshipID } = context || {}
     let {placeholder} = inputConfig;
     let inputForm = null;
 
@@ -288,6 +288,7 @@ function FormDynamicInput({model, onUpdateForm, inputConfig, loggedInUserProfile
                 <FileInput title={placeholder} keyName={keyName}
                            onChangeHandler={onUpdateForm}
                            type="image,pdf"
+                           filePath={`scholarships/${scholarshipID}/application-files/${keyName}/${applicationID}`}
                            uploadHint={`You can also paste the ${type} url in the text box below`} />
                 <div className="floating my-3">
                     <input placeholder={placeholder}

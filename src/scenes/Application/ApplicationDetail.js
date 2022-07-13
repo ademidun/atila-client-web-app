@@ -600,6 +600,11 @@ class ApplicationDetail extends  React.Component{
             </>)
         }
 
+        let applicationFormContext = {
+            applicationID: applicationID,
+            scholarshipID: scholarship.id
+        }
+
         let applicationForm = (<>
             <ApplicationViewPreviousApplications currentApplicationID={applicationID} userProfile={userProfile} />
             <br />
@@ -619,6 +624,7 @@ class ApplicationDetail extends  React.Component{
                          model={application.scholarship_responses}
                          inputConfigs=
                              {scholarshipQuestionsFormConfig}
+                         context={applicationFormContext}
             />
             </>);
 
