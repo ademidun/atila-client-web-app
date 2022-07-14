@@ -235,10 +235,11 @@ class ContentDetail extends React.Component {
                     <div className="row">
 
                         {contentToDisplay}
+                        {contentType !== 'essay' && 
                         <RelatedItems
                             className="col-md-4"
                             id={id}
-                            itemType={contentType} />
+                            itemType={contentType} />}
                     </div>
 
             </div>
