@@ -14,11 +14,9 @@ import {
     genericItemTransform,
     guestPageViewsIncrement,
     scrollToElement,
-    toTitleCase,
     openAllLinksInNewTab,
     makeImagesCards
 } from "../../services/utils";
-import { Button } from "antd";
 import AtilaPointsPaywallModal from "../AtilaPointsPaywallModal";
 import {UserProfilePreview} from "../ReferredByInput";
 import ContentPaymentForm from '../Crypto/ContentPaymentForm';
@@ -138,8 +136,6 @@ class ContentDetail extends React.Component {
         const canEditContent = userProfile && (userProfile.user === content.user.id ||
             userProfile.is_atila_admin || isContributor);
 
-        let contentToDisplay = null;
-
         const contentPaymentForm = (
             <>
                     {content.wallet && content.wallet_detail &&
@@ -151,41 +147,21 @@ class ContentDetail extends React.Component {
             </>
         )
 
-        if(!userProfile && contentType === 'essay') {
-            contentToDisplay = (
-                <div className=" col-md-8 ContentBody">
-                    <div className={`${className} paywall-border`}
-                         dangerouslySetInnerHTML={{__html: body}} />
-                    <div className="card shadow p-3">
-                        <p>
-                            Register to Read Full {toTitleCase(contentType)}
-                        </p>
-                        <Button type="primary">
-                            <Link to="/register">
-                                Register
-                            </Link>
-                        </Button>
-                    </div>
-                </div>
-            );
-
-        } else {
-            contentToDisplay = (
-                <div className={`${className} col-md-8`}>
-                    {contentPaymentForm}
-                    {video_url && <EmbedResponsiveYoutubeVideo youtubeVideoUrl={video_url} title={title} />}
-                    {slides_url && slides_url.startsWith("https://docs.google.com") && <div className="responsive-google-slides">
-                        <iframe 
-                            title={title}
-                            src={slides_url}>
-                        </iframe>
-                    </div>}
-                        <ContentBody body={body} bodyType={body_type} />
-                        <hr />
-                    {contentPaymentForm}
-                </div>
-            )
-        }
+        const contentToDisplay = (
+            <div className={`${className} col-md-8`}>
+                {contentPaymentForm}
+                {video_url && <EmbedResponsiveYoutubeVideo youtubeVideoUrl={video_url} title={title} />}
+                {slides_url && slides_url.startsWith("https://docs.google.com") && <div className="responsive-google-slides">
+                    <iframe 
+                        title={title}
+                        src={slides_url}>
+                    </iframe>
+                </div>}
+                    <ContentBody body={body} bodyType={body_type} />
+                    <hr />
+                {contentPaymentForm}
+            </div>
+        )
 
         let authors = [user]
         if (contributors) {
