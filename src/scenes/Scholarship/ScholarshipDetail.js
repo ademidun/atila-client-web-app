@@ -190,6 +190,13 @@ class ScholarshipDetail extends React.Component {
                 <div className="container mt-3">
                     <div className="row">
                         <div className="col-12">
+                            {scholarship.is_atila_direct_application && !scholarship.is_funded && 
+                                <Alert className='mb-3'
+                                    message={<h6 className='text-center pt-3'>
+                                        This scholarship can't receive any applications until it has been funded.
+                                    </h6>}
+                                    type="warning" />
+                            }
                             <h1>
                                 {name}{' '}
                                 {scholarship.is_atila_direct_application &&
