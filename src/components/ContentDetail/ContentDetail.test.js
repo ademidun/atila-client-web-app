@@ -165,28 +165,4 @@ describe('<ContentDetail />', () => {
 
     });
 
-    it('renders Partial Essay if Not Logged In', () => {
-
-        const wrapper = mount(
-            <MemoryRouter>
-                <Provider store={guestUserStore}>
-                <ContentDetail contentType={'essay'}
-                               contentSlug={'atila/what-is-atila'}
-                               ContentAPI={BlogsApi}
-                />
-                </Provider>
-            </MemoryRouter>
-        );
-        wrapper.find(ContentDetail).setState({ content: BlogWhatIsAtila });
-        wrapper.update();
-        let childWrapper = wrapper.find('.ContentBody');
-
-        expect(childWrapper
-            .find('div.paywall-border').exists()).toBeTruthy();
-        const registerPrompt = "<p>Register to Read Full Essay</p>";
-
-        expect(childWrapper.html()).toContain(registerPrompt);
-
-    });
-
 });
