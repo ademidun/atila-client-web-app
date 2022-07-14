@@ -34,7 +34,7 @@ class ScholarshipPaymentForm extends React.Component {
             }
 
             <h3 className="my-3">
-                If you want to pay by cheque: <Link to="/contact">contact us</Link>
+                If you want to pay by cheque or other payment methods: <Link to="/contact">contact us</Link>
             </h3>
 
             </div>
