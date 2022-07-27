@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 import {  MASTER_LIST_WITH_CATEGORY_LABEL, MASTER_LIST_WITH_CATEGORY_LABEL_ADMIN, MASTER_LIST_WITH_CATEGORY_LABEL_USER_PROFILE } from '../../models/ConstantsForm';
-import AutoComplete from '../AutoComplete';
+// import AutoComplete from '../AutoComplete';
 import { Tag, Radio, Input, Button } from 'antd';
 import { prettifyKeys } from '../../services/utils';
 
@@ -165,14 +165,17 @@ export class QueryItem extends React.Component {
                 }
 
                 {queryInputType === queryBuilder &&
-                    <AutoComplete   suggestions={suggestions}
-                    placeholder={placeHolder||"Search by school, program, ethnicity, activity, industry, or more"}
-                    value={searchQuery}
-                    getSuggestionValue={suggestion => suggestion.value}
-                    renderSuggestion={this.renderSuggestion}
-                    onSuggestionSelected={this.onSuggestionSelected}
-                    inputToSuggestion={this.inputToSuggestion}
-                    keyName={'searchString'}/>
+                <>
+                {/* <AutoComplete   suggestions={suggestions}
+                placeholder={placeHolder||"Search by school, program, ethnicity, activity, industry, or more"}
+                value={searchQuery}
+                getSuggestionValue={suggestion => suggestion.value}
+                renderSuggestion={this.renderSuggestion}
+                onSuggestionSelected={this.onSuggestionSelected}
+                inputToSuggestion={this.inputToSuggestion}
+                keyName={'searchString'}/> */}
+
+                </>
                 }
                 
 
