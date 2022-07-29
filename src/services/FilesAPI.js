@@ -1,7 +1,9 @@
 import firebase from 'firebase/app';
 import 'firebase/storage';
-import {firebaseConfig} from "../firebase.config";
+import Environment from "./Environment"
 import {getRandomString} from "./utils";
+
+let firebaseConfig = Environment.firebaseConfig;
 firebase.initializeApp(firebaseConfig);
 
 export class FilesAPI {

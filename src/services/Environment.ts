@@ -17,6 +17,15 @@ export const EnvironmentDev = {
     ALGOLIA_SCHOLARSHIP_QUERY_SUGGESTION_INDEX_NAME: 'dev_scholarship_index_query_suggestions',
     clientUrl: 'http://localhost:3000',
     isDemoMode: false,
+    firebaseConfig: {
+        apiKey: "AIzaSyBs2IY45dhKUuBB-UPRQSnZhR3rYwWZDh0",
+        authDomain: "atila-staging.firebaseapp.com",
+        projectId: "atila-staging",
+        storageBucket: "atila-staging.appspot.com",
+        messagingSenderId: "18755881177",
+        appId: "1:18755881177:web:c92bf2617638d6f335d6c8",
+        measurementId: "G-14BCQBGB75"
+    }
 };
 
 export const EnvironmentStaging = {
@@ -36,6 +45,15 @@ export const EnvironmentStaging = {
     ALGOLIA_BLOG_INDEX: 'staging_blog_index',
     clientUrl: 'https://staging.atila.ca',
     isDemoMode: false,
+    firebaseConfig: {
+        apiKey: "AIzaSyBs2IY45dhKUuBB-UPRQSnZhR3rYwWZDh0",
+        authDomain: "atila-staging.firebaseapp.com",
+        projectId: "atila-staging",
+        storageBucket: "atila-staging.appspot.com",
+        messagingSenderId: "18755881177",
+        appId: "1:18755881177:web:c92bf2617638d6f335d6c8",
+        measurementId: "G-14BCQBGB75"
+    }
 };
 
 export const EnvironmentDemo = {
@@ -62,6 +80,16 @@ export const EnvironmentProd = {
     ALGOLIA_BLOG_INDEX: 'prod_blog_index',
     clientUrl: 'https://atila.ca',
     isDemoMode: false,
+    firebaseConfig: {
+        apiKey: "AIzaSyDRzVs9AS04fCm73H4gTWJ7QHjs0BzGcF4",
+        authDomain: "atila-prod.firebaseapp.com",
+        databaseURL: "https://atila-prod.firebaseio.com",
+        projectId: "atila-prod",
+        storageBucket: "atila-prod.appspot.com",
+        messagingSenderId: "197634361177",
+        appId: "1:197634361177:web:1f0788af961daa0cea2e48",
+        measurementId: "G-NP11XV66XS"
+    }
 };
 
 // set to EnvironmentDev as the default so we can use type hinting and the autocomplete feature

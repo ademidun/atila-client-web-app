@@ -3,14 +3,15 @@ import PropTypes from 'prop-types';
 import {InputConfigPropType} from "../../models/Utils";
 import FormDynamicInput from "./FormDynamicInput";
 
-function FormDynamic({model, loggedInUserProfile, onUpdateForm, inputConfigs, onSubmit, formError}) {
+function FormDynamic({model, loggedInUserProfile, onUpdateForm, inputConfigs, onSubmit, formError, context}) {
     return (
         <form className="row p-3 form-group text-left" onSubmit={onSubmit}>
             {inputConfigs.map(config => <FormDynamicInput key={config.keyName}
                                                           model={model}
                                                           inputConfig={config}
                                                           onUpdateForm={onUpdateForm}
-                                                          loggedInUserProfile={loggedInUserProfile} /> )}
+                                                          loggedInUserProfile={loggedInUserProfile}
+                                                          context={context}/> )}
 
             {formError &&
             <div className="text-danger">
