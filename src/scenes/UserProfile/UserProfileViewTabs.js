@@ -14,6 +14,8 @@ import UserProfileApplications from "./UserProfileApplications";
 import UserProfileCreatedScholarships from "./UserProfileCreatedScholarships";
 import {Link} from "react-router-dom";
 import UserProfileAdmin from './UserProfileAdmin';
+import UserProfileReferralManagement from './UserProfileReferralManagement';
+import ConnectWallet from '../../components/Crypto/ConnectWallet';
 
 class UserProfileViewTabs extends React.Component {
 
@@ -85,6 +87,16 @@ class UserProfileViewTabs extends React.Component {
                         <UserProfileEdit />
                     </Tab>
                     }
+                    {loggedInUserProfile && loggedInUserProfile.is_atila_admin &&
+                        <Tab eventKey='wallet' title='Wallet'>
+                            <ConnectWallet /> 
+                        </Tab>
+                    }
+                    {isProfileEditable && 
+                        <Tab eventKey='referrals' title='Referrals'>
+                            <UserProfileReferralManagement /> 
+                        </Tab>
+                    }       
                     {isProfileEditable &&
                     <Tab eventKey='applications' title='My Applications'>
                         <UserProfileApplications />

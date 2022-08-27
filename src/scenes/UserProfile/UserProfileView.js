@@ -9,9 +9,6 @@ import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import {RESERVED_USERNAMES} from "../../models/Constants";
 import FileInput from "../../components/Form/FileInput";
 import {updateLoggedInUserProfile} from "../../redux/actions/user";
-import UserProfileReferralManagement from './UserProfileReferralManagement';
-import ConnectWallet from '../../components/Crypto/ConnectWallet';
-import Environment from '../../services/Environment';
 
 class UserProfileView extends React.Component {
 
@@ -172,29 +169,7 @@ class UserProfileView extends React.Component {
                             }
                         </div>
                         <div className="col-md-6 col-sm-12">
-                                <h1>{ userProfileView.first_name }{' '}{ userProfileView.last_name }</h1>
-                            {userProfileView.public_metadata && userProfileView.public_metadata.profile_link_url &&
-                            <a href={userProfileView.public_metadata.profile_link_url}
-                               target="_blank"
-                               rel="noopener noreferrer"
-                               className="btn btn-primary"
-                            >
-                                {userProfileView.public_metadata.profile_link_name}
-                            </a>
-                            }
-                            {isProfileEditable && 
-                            <>
-                            {(loggedInUserProfile?.is_atila_admin || (Environment.name !== "prod" && loggedInUserProfile && loggedInUserProfile?.user === userProfile?.user)) && 
-                            <>
-                                <hr/>
-                                <ConnectWallet /> 
-                             </>
-                            }
-                            <hr/>
-                            <UserProfileReferralManagement /> 
-                            </>
-                            }
-                            <hr/>
+                            <h1>{ userProfileView.first_name }{' '}{ userProfileView.last_name }</h1>
                         </div>
                     </div>
                 </div>
