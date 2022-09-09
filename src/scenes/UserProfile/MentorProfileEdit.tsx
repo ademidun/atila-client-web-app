@@ -1,8 +1,11 @@
 import { Button } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react'
 import {connect} from "react-redux";
+import FormDynamic from '../../components/Form/FormDynamic';
 import Loading from '../../components/Loading';
+import { Mentor, mentorProfileFormConfig } from '../../models/Mentor';
 import { UserProfile } from '../../models/UserProfile.class';
+import MentorshipAPI from '../../services/MentorshipAPI';
 import UserProfileAPI from '../../services/UserProfileAPI';
 import { getErrorMessage } from '../../services/utils';
 
@@ -14,7 +17,7 @@ function MentorProfileEdit(props: MentorProfileEditPropTypes) {
 
     const { userProfileLoggedIn } = props;
     
-    const [mentor, setMentor] = useState({});
+    const [mentor, setMentor] = useState<Mentor>();
     const [loadingUI, setLoadingUI] = useState({message: "", type: ""});
 
     const loadMentor = useCallback(
@@ -24,6 +27,8 @@ function MentorProfileEdit(props: MentorProfileEditPropTypes) {
         UserProfileAPI.getUserContent(userProfileLoggedIn?.user, "mentor")
         .then((res: any) => {
             const { data } = res;
+            console.log({res});
+            setMentor(data);
         })
         .catch(error => {
             console.log({error});
@@ -38,7 +43,20 @@ function MentorProfileEdit(props: MentorProfileEditPropTypes) {
       );
 
     const createMentorProfile = () => {
-
+        setLoadingUI({message: "Creating your Mentor profile", type: "info"});
+        MentorshipAPI.create(userProfileLoggedIn?.user!)
+        .then((res: any) => {
+            const { data } = res;
+            console.log({res});
+            setMentor(data);
+        })
+        .catch(error => {
+            console.log({error});
+            setLoadingUI({message: getErrorMessage(error), type: "error"});
+        })
+        .finally(()=> {
+            setLoadingUI({message: "", type: ""});
+        })
     }
 
     useEffect(() => {
@@ -46,21 +64,34 @@ function MentorProfileEdit(props: MentorProfileEditPropTypes) {
             loadMentor();
         }
         
-    }, [loadMentor, userProfileLoggedIn])
+    }, [loadMentor, userProfileLoggedIn]);
+
+    console.log({mentor});
 
   return (
     <div className='m-3'>
-        <h1></h1>Edit Mentor Profile
+        <h1>Edit Mentor Profile</h1>
         {!mentor && 
-            <Button>
+            <Button onClick={createMentorProfile} disabled={!!loadingUI.message}>
                 Create New Mentor Profile
             </Button>}
 
         {mentor && 
-            <Button>
-                Create New Mentor Profile
-            </Button>}
+            <>
+                <FormDynamic onUpdateForm={()=>{}}
+                             model={mentor}
+                             inputConfigs=
+                                 {mentorProfileFormConfig}
+                                 loggedInUserProfile={userProfileLoggedIn}
+                />
 
+                <FormDynamic onUpdateForm={()=>{}}
+                                            model={mentor}
+                                            inputConfigs=
+                                                {mentorProfileFormConfig}
+                                                loggedInUserProfile={userProfileLoggedIn} />
+            </>
+        }
             {loadingUI.message && <Loading isLoading={loadingUI.message} title={loadingUI.message} />}
         </div>
   )
