@@ -28,7 +28,7 @@ import {CAD, CryptoCurrencies, CURRENCY_CODES} from "../../models/ConstantsPayme
 import { DEFAULT_AWARD } from '../../models/Award';
 import CurrencyDisplay from '@atila/web-components-library.ui.currency-display';
 import { additionalQuestions, scholarshipFormConfigsPage1 } from './ScholarshipAddEditFormConfig';
-import ImportContent from '../UserProfile/ImportContent';
+import ImportContent from '../../components/ImportContent';
 import { ALL_DEMOGRAPHICS } from '../../models/ConstantsForm';
 import { ScholarshipUtils } from '../../services/utils/ScholarshipUtils';
 const { Step } = Steps;

@@ -12,4 +12,7 @@ export const mentorProfileFormConfig = [
     {
         keyName: 'bio',
     },
+    {
+        keyName: 'mentorship_topics',
+    }
 ];

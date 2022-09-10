@@ -8,6 +8,7 @@ import { UserProfile } from '../../../models/UserProfile.class';
 import MentorshipAPI from '../../../services/MentorshipAPI';
 import UserProfileAPI from '../../../services/UserProfileAPI';
 import { getErrorMessage } from '../../../services/utils';
+import { scholarshipUserProfileSharedFormConfigs } from '../../../models/Utils';
 
 export interface MentorProfileEditPropTypes {
     userProfileLoggedIn?: UserProfile,
@@ -88,7 +89,7 @@ function MentorProfileEdit(props: MentorProfileEditPropTypes) {
                 <FormDynamic onUpdateForm={()=>{}}
                                             model={mentor}
                                             inputConfigs=
-                                                {mentorProfileFormConfig}
+                                                {scholarshipUserProfileSharedFormConfigs}
                                                 loggedInUserProfile={userProfileLoggedIn} />
             </>
         }

@@ -52,7 +52,7 @@ class UserProfileViewTabs extends React.Component {
     render() {
 
         const { blogs, essays, contributions } = this.state;
-        const { isProfileEditable, loggedInUserProfile } = this.props;
+        const { isProfileEditable, loggedInUserProfile, userProfile: {user : userIdInView} } = this.props;
         let { match : { params : { tab, username }} } = this.props;
         let defaultActiveKey = isProfileEditable ? 'edit' : 'blogs';
 
@@ -90,7 +90,7 @@ class UserProfileViewTabs extends React.Component {
                     }
                     {isProfileEditable &&
                     <Tab eventKey='mentorship' title='Mentorship'>
-                        <UserProfileMentorship />
+                        <UserProfileMentorship userIdInView={userIdInView} />
                     </Tab>
                     }
                     {loggedInUserProfile && loggedInUserProfile.is_atila_admin &&
