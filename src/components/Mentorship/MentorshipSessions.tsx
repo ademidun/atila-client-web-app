@@ -1,7 +1,7 @@
 import { Table } from 'antd'
 import React from 'react'
 
-function MentorSessions() {
+function MentorshipSessions() {
   return (
     <div>
         <Table />
@@ -9,4 +9,4 @@ function MentorSessions() {
   )
 }
 
-export default MentorSessions
+export default MentorshipSessions

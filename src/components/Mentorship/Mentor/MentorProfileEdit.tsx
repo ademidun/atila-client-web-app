@@ -1,13 +1,13 @@
 import { Button } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react'
 import {connect} from "react-redux";
-import FormDynamic from '../../components/Form/FormDynamic';
-import Loading from '../../components/Loading';
-import { Mentor, mentorProfileFormConfig } from '../../models/Mentor';
-import { UserProfile } from '../../models/UserProfile.class';
-import MentorshipAPI from '../../services/MentorshipAPI';
-import UserProfileAPI from '../../services/UserProfileAPI';
-import { getErrorMessage } from '../../services/utils';
+import FormDynamic from '../../Form/FormDynamic';
+import Loading from '../../Loading';
+import { Mentor, mentorProfileFormConfig } from '../../../models/Mentor';
+import { UserProfile } from '../../../models/UserProfile.class';
+import MentorshipAPI from '../../../services/MentorshipAPI';
+import UserProfileAPI from '../../../services/UserProfileAPI';
+import { getErrorMessage } from '../../../services/utils';
 
 export interface MentorProfileEditPropTypes {
     userProfileLoggedIn?: UserProfile,

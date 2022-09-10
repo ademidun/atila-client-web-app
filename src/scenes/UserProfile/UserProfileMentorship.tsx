@@ -1,6 +1,6 @@
 import React from 'react'
 import {Tab, Tabs} from 'react-bootstrap';
-import MentorSessions from '../../components/Mentor/MentorSessions';
+import MentorshipSessions from '../../components/Mentorship/MentorshipSessions';
 import MentorProfileEdit from './MentorProfileEdit';
 
 function UserProfileMentorship() {
@@ -8,7 +8,7 @@ function UserProfileMentorship() {
     <div>
         <Tabs defaultActiveKey={"sessions"} transition={false} id="UserProfileViewTabs">
             <Tab eventKey='sessions' title='Sessions'>
-                <MentorSessions />
+                <MentorshipSessions />
             </Tab>
             <Tab eventKey='edit' title='Edit Mentor Profile'>
                 <MentorProfileEdit />
