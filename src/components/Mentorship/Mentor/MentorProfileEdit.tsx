@@ -1,5 +1,5 @@
-import { Button } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react'
+import { Button, message } from 'antd';
 import {connect} from "react-redux";
 import FormDynamic from '../../Form/FormDynamic';
 import Loading from '../../Loading';
@@ -8,8 +8,9 @@ import { UserProfile } from '../../../models/UserProfile.class';
 import MentorshipAPI from '../../../services/MentorshipAPI';
 import UserProfileAPI from '../../../services/UserProfileAPI';
 import { getErrorMessage } from '../../../services/utils';
-import { scholarshipUserProfileSharedFormConfigs } from '../../../models/Utils';
+import { toastNotify } from '../../../models/Utils';
 
+let autoSaveTimeoutId: any;
 export interface MentorProfileEditPropTypes {
     userProfileLoggedIn?: UserProfile,
 }
@@ -29,7 +30,7 @@ function MentorProfileEdit(props: MentorProfileEditPropTypes) {
         .then((res: any) => {
             const { data } = res;
             console.log({res});
-            setMentor(data);
+            setMentor(data.mentor);
         })
         .catch(error => {
             console.log({error});
@@ -45,7 +46,7 @@ function MentorProfileEdit(props: MentorProfileEditPropTypes) {
 
     const createMentorProfile = () => {
         setLoadingUI({message: "Creating your Mentor profile", type: "info"});
-        MentorshipAPI.create(userProfileLoggedIn?.user!)
+        MentorshipAPI.createMentor(userProfileLoggedIn?.user!)
         .then((res: any) => {
             const { data } = res;
             console.log({res});
@@ -60,6 +61,61 @@ function MentorProfileEdit(props: MentorProfileEditPropTypes) {
         })
     }
 
+    const updateForm = (event: any) => {
+
+        if (event.stopPropagation) {
+            event.stopPropagation();
+        }
+
+        if (!mentor){
+            return
+        }
+
+        const value = event.target.value;
+
+        let updatedmentor;
+        let newValue = (mentor as any)[event.target.name];
+            if ( Array.isArray((mentor as any)[event.target.name]) && !Array.isArray(value) ) {
+                newValue.push(value);
+            } else {
+                newValue =value;
+            }
+            updatedmentor = {
+                ...mentor,
+                [event.target.name]: newValue
+            };
+
+            console.log({updatedmentor, mentor});
+
+            setMentor(updatedmentor);
+
+            if (autoSaveTimeoutId) {
+                clearTimeout(autoSaveTimeoutId);
+            }
+            autoSaveTimeoutId = setTimeout(() => {
+                // Runs 1 second (1000 ms) after the last change
+                submitForm({});
+            }, 1000);
+    };
+
+    const submitForm = (event: any) => {
+
+        if (event.preventDefault) {
+            event.preventDefault();
+        }
+
+        MentorshipAPI
+            .patchMentor({data: mentor!, id: mentor!.id})
+            .then(res=>{
+                message.success('Mentor Profile successfully saved!');
+            })
+            .catch(err=> {
+                let postError = err.response && err.response.data;
+                postError = JSON.stringify(postError, null, 4);
+                toastNotify(`${postError}`, 'error');
+        });
+    };
+
     useEffect(() => {
         if (userProfileLoggedIn) {
             loadMentor();
@@ -72,6 +128,9 @@ function MentorProfileEdit(props: MentorProfileEditPropTypes) {
   return (
     <div className='m-3'>
         <h1>Edit Mentor Profile</h1>
+        <label>
+            Changes are automatically saved
+        </label>
         {!mentor && 
             <Button onClick={createMentorProfile} disabled={!!loadingUI.message}>
                 Create New Mentor Profile
@@ -79,18 +138,18 @@ function MentorProfileEdit(props: MentorProfileEditPropTypes) {
 
         {mentor && 
             <>
-                <FormDynamic onUpdateForm={()=>{}}
+                <FormDynamic onUpdateForm={updateForm}
                              model={mentor}
                              inputConfigs=
                                  {mentorProfileFormConfig}
                                  loggedInUserProfile={userProfileLoggedIn}
                 />
 
-                <FormDynamic onUpdateForm={()=>{}}
+                {/* <FormDynamic onUpdateForm={()=>{}}
                                             model={mentor}
                                             inputConfigs=
                                                 {scholarshipUserProfileSharedFormConfigs}
-                                                loggedInUserProfile={userProfileLoggedIn} />
+                                                loggedInUserProfile={userProfileLoggedIn} /> */}
             </>
         }
             {loadingUI.message && <Loading isLoading={loadingUI.message} title={loadingUI.message} />}

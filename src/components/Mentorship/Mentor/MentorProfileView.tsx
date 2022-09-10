@@ -23,8 +23,7 @@ export const MentorProfileView = (props: MentorProfileViewProps) => {
         UserProfileAPI.getUserContent(userId, "mentor")
         .then((res: any) => {
             const { data } = res;
-            console.log({res});
-            setMentor(data);
+            setMentor(data.mentor);
         })
         .catch(error => {
             console.log({error});
@@ -52,11 +51,11 @@ export const MentorProfileView = (props: MentorProfileViewProps) => {
                 <h3>
                     About me:
                 </h3>
-                <ContentBody body={mentor?.bio} bodyType="html" />
+                <ContentBody body={mentor.bio} bodyType="html" />
                 <h3>
                     Things I can mentor about
                 </h3>
-                <ContentBody body={mentor?.mentorship_topics} bodyType="html" />
+                <ContentBody body={mentor.mentorship_topics} bodyType="html" />
             </>
         }
     </div>
