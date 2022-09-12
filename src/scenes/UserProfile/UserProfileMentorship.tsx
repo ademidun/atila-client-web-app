@@ -19,7 +19,7 @@ function UserProfileMentorship(props: UserProfileMentorshipPropTypes) {
   
   return (
     <div>
-      {userProfileLoggedIn ?
+      {userProfileLoggedIn && userIdInView === userProfileLoggedIn.user ?
         <Tabs defaultActiveKey="sessions" transition={false} id="UserProfileViewTabs">
           <Tab eventKey='sessions' title='Sessions'>
               <MentorshipSessions />
