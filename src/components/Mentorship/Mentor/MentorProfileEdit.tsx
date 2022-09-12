@@ -126,8 +126,6 @@ function MentorProfileEdit(props: MentorProfileEditPropTypes) {
         
     }, [loadMentor, userProfileLoggedIn]);
 
-    console.log({mentor});
-
   return (
     <div className='m-3'>
         <h1>Edit Mentor Profile</h1>

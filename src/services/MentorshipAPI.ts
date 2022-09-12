@@ -27,6 +27,15 @@ class MentorshipAPI {
 
         return apiCompletionPromise;
     };
+
+    static listMentors = () => {
+        const apiCompletionPromise = request({
+            method: 'get',
+            url: `${MentorshipAPI.mentorshipAPIUrl}/mentors/`,
+        });
+
+        return apiCompletionPromise;
+    };
 }
 
 export default MentorshipAPI;
