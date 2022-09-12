@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Mentor } from '../../../models/Mentor';
-import MentorshipAPI from '../../../services/MentorshipAPI';
 import UserProfileAPI from '../../../services/UserProfileAPI';
 import { getErrorMessage } from '../../../services/utils';
 import ContentBody from '../../ContentDetail/ContentBody/ContentBody';
+import DemographicsDisplay from '../../DemographicsDisplay';
+import Loading from '../../Loading';
 
 interface MentorProfileViewProps {
     userId: number
@@ -48,14 +49,20 @@ export const MentorProfileView = (props: MentorProfileViewProps) => {
         {
             mentor && 
             <>
+
+                <DemographicsDisplay model={mentor} />
+                <hr/>
                 <h3>
                     About me:
                 </h3>
+                <hr/>
                 <ContentBody body={mentor.bio} bodyType="html" />
                 <h3>
                     Things I can mentor about
                 </h3>
+                <hr/>
                 <ContentBody body={mentor.mentorship_topics} bodyType="html" />
+                {loadingUI.message && <Loading isLoading={loadingUI.message} title={loadingUI.message} />}
             </>
         }
     </div>

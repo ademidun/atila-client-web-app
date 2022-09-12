@@ -1,0 +1,15 @@
+export interface Demographic {
+    eligible_schools: Array<string>,
+    eligible_programs: Array<string>,
+    ethnicity: Array<string>,
+    sports: Array<string>,
+    religion: Array<string>,
+    industries: Array<string>,
+    occupations: Array<string>,
+    other_demographic: Array<string>,
+    activities: Array<string>,
+    heritage: Array<string>,
+    language: Array<string>,
+    disability: Array<string>,
+    citizenship: Array<string>,
+}

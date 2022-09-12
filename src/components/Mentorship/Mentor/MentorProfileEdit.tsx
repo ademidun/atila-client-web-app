@@ -1,14 +1,15 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Button, message } from 'antd';
 import {connect} from "react-redux";
 import FormDynamic from '../../Form/FormDynamic';
 import Loading from '../../Loading';
-import { Mentor, mentorProfileFormConfig } from '../../../models/Mentor';
+import { Mentor } from '../../../models/Mentor';
+import { mentorProfileFormConfig } from "../../../models/MentorConfig";
 import { UserProfile } from '../../../models/UserProfile.class';
 import MentorshipAPI from '../../../services/MentorshipAPI';
 import UserProfileAPI from '../../../services/UserProfileAPI';
 import { getErrorMessage } from '../../../services/utils';
-import { toastNotify } from '../../../models/Utils';
+import { scholarshipUserProfileSharedFormConfigs, toastNotify } from '../../../models/Utils';
 
 let autoSaveTimeoutId: any;
 export interface MentorProfileEditPropTypes {
@@ -21,6 +22,7 @@ function MentorProfileEdit(props: MentorProfileEditPropTypes) {
     
     const [mentor, setMentor] = useState<Mentor>();
     const [loadingUI, setLoadingUI] = useState({message: "", type: ""});
+    const isMentorset = useRef(false);
 
     const loadMentor = useCallback(
         () => {
@@ -31,6 +33,7 @@ function MentorProfileEdit(props: MentorProfileEditPropTypes) {
             const { data } = res;
             console.log({res});
             setMentor(data.mentor);
+            isMentorset.current = true;
         })
         .catch(error => {
             console.log({error});
@@ -88,24 +91,23 @@ function MentorProfileEdit(props: MentorProfileEditPropTypes) {
             console.log({updatedmentor, mentor});
 
             setMentor(updatedmentor);
-
-            if (autoSaveTimeoutId) {
-                clearTimeout(autoSaveTimeoutId);
-            }
-            autoSaveTimeoutId = setTimeout(() => {
-                // Runs 1 second (1000 ms) after the last change
-                submitForm({});
-            }, 1000);
     };
 
-    const submitForm = (event: any) => {
+    useEffect(() => {
 
-        if (event.preventDefault) {
-            event.preventDefault();
+        if ( !isMentorset.current ) {
+            return;
+          }
+
+        if (autoSaveTimeoutId) {
+            clearTimeout(autoSaveTimeoutId);
         }
 
-        MentorshipAPI
-            .patchMentor({data: mentor!, id: mentor!.id})
+        // Runs 1 second (1000 ms) after the last change
+        autoSaveTimeoutId = setTimeout(() => {
+            
+            MentorshipAPI
+            .patchMentor({mentor: mentor!})
             .then(res=>{
                 message.success('Mentor Profile successfully saved!');
             })
@@ -113,8 +115,9 @@ function MentorProfileEdit(props: MentorProfileEditPropTypes) {
                 let postError = err.response && err.response.data;
                 postError = JSON.stringify(postError, null, 4);
                 toastNotify(`${postError}`, 'error');
-        });
-    };
+            });
+        }, 1000);
+    }, [mentor]);
 
     useEffect(() => {
         if (userProfileLoggedIn) {
@@ -128,16 +131,20 @@ function MentorProfileEdit(props: MentorProfileEditPropTypes) {
   return (
     <div className='m-3'>
         <h1>Edit Mentor Profile</h1>
-        <label>
-            Changes are automatically saved
-        </label>
         {!mentor && 
-            <Button onClick={createMentorProfile} disabled={!!loadingUI.message}>
-                Create New Mentor Profile
-            </Button>}
+            <div className='text-center'>
+            <h3>You must first create a mentor profile</h3>
+                <Button onClick={createMentorProfile} disabled={!!loadingUI.message} type="primary">
+                    Create Mentor Profile
+                </Button>
+            </div>
+            }
 
         {mentor && 
             <>
+            <label>
+                Changes are automatically saved
+            </label>
                 <FormDynamic onUpdateForm={updateForm}
                              model={mentor}
                              inputConfigs=
@@ -145,11 +152,11 @@ function MentorProfileEdit(props: MentorProfileEditPropTypes) {
                                  loggedInUserProfile={userProfileLoggedIn}
                 />
 
-                {/* <FormDynamic onUpdateForm={()=>{}}
+                <FormDynamic onUpdateForm={updateForm}
                                             model={mentor}
                                             inputConfigs=
                                                 {scholarshipUserProfileSharedFormConfigs}
-                                                loggedInUserProfile={userProfileLoggedIn} /> */}
+                                                loggedInUserProfile={userProfileLoggedIn} />
             </>
         }
             {loadingUI.message && <Loading isLoading={loadingUI.message} title={loadingUI.message} />}

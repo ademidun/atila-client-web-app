@@ -15,11 +15,10 @@ class MentorshipAPI {
         return apiCompletionPromise;
     };
 
-    static patchMentor = ({data, id}: ({data: Partial<Mentor>, id: string})) => {
+    static patchMentor = ({mentor}: ({mentor: Partial<Mentor>})) => {
         
         // user and id shouldn't be passed in the patch request
-        delete data.id; 
-        delete data.user;
+        const { id, user, ...data } = mentor;
         const apiCompletionPromise = request({
             method: 'patch',
             data,
