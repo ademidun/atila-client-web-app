@@ -19,22 +19,21 @@ function UserProfileMentorship(props: UserProfileMentorshipPropTypes) {
   
   return (
     <div>
-        <Tabs defaultActiveKey={userProfileLoggedIn ? "sessions" : "view"} transition={false} id="UserProfileViewTabs">
-            {userProfileLoggedIn && 
-              <Tab eventKey='edit' title='Edit Mentor Profile'>
-                  <MentorProfileEdit />
-              </Tab>
-            }
-            {userProfileLoggedIn && 
-              <Tab eventKey='sessions' title='Sessions'>
-                  <MentorshipSessions />
-              </Tab>
-            }
+      {userProfileLoggedIn ?
+        <Tabs defaultActiveKey="sessions" transition={false} id="UserProfileViewTabs">
+          <Tab eventKey='sessions' title='Sessions'>
+              <MentorshipSessions />
+          </Tab>
+          <Tab eventKey='edit' title='Edit Mentor Profile'>
+              <MentorProfileEdit />
+          </Tab>
             <Tab eventKey='view' title='View Mentor Profile'>
                 <MentorProfileView userId={userIdInView} />
             </Tab>
         </Tabs>
-
+        :
+        <MentorProfileView userId={userIdInView} />
+      }
     </div>
   )
 }

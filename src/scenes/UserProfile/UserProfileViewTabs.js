@@ -88,11 +88,9 @@ class UserProfileViewTabs extends React.Component {
                         <UserProfileEdit />
                     </Tab>
                     }
-                    {isProfileEditable &&
                     <Tab eventKey='mentorship' title='Mentorship'>
                         <UserProfileMentorship userIdInView={userIdInView} />
                     </Tab>
-                    }
                     {loggedInUserProfile && loggedInUserProfile.is_atila_admin &&
                         <Tab eventKey='wallet' title='Wallet'>
                             <ConnectWallet /> 
