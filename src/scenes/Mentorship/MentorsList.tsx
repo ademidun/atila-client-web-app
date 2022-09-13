@@ -1,11 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Row, Col } from 'antd';
 import Loading from '../../components/Loading';
 import MentorshipAPI from '../../services/MentorshipAPI';
 import { getErrorMessage } from '../../services/utils';
-import MentorCard from './MentorCard';
 import { Mentor } from '../../models/Mentor';
 import HelmetSeo, { defaultSeoContent } from '../../components/HelmetSeo';
+import ContentListDisplay from '../../components/ContentListDisplay';
 
 function MentorsList() {
 
@@ -51,13 +50,7 @@ function MentorsList() {
         Mentors
       </h1>
 
-      <Row gutter={{ xs: 8, sm: 16, md: 24}}>
-          {mentors.map((mentor) =>   
-          <Col xs={24} md={12} lg={8} key={mentor.id}>
-            <MentorCard mentor={mentor} />
-          </Col> 
-          )}
-      </Row>
+      <ContentListDisplay contentList={mentors} />
 
         {loadingUI.message && <Loading isLoading={loadingUI.message} title={loadingUI.message} />}
     </div>

@@ -51,6 +51,15 @@ export function genericItemTransform (item) {
                 image: item.img_url,
             };
             break;
+        case 'mentor':
+            item = {
+                ...item,
+                title: `${user.first_name} ${user.last_name}`,
+                description: stripHtml(item.bio),
+                slug: user ? `/mentorship/session/new?mentor=${user.username}`: "",
+                image: user ? `${user.profile_pic_url}` : "",
+            };
+            break;
         case 'essay':
             item = {
                 ...item,
@@ -77,7 +86,7 @@ export function genericItemTransform (item) {
         default:
         // code block
     }
-
+    console.log({item});
     return item;
 
 }
@@ -88,6 +97,9 @@ export function getItemType(item) {
     let itemType = '';
     if (item.hasOwnProperty('deadline')) {
         itemType = 'scholarship'
+    }
+    else if (item.hasOwnProperty('mentorship_topics')) {
+        itemType = 'mentor'
     }
     else if (item.hasOwnProperty('starting_comment')) {
         itemType = 'forum'
@@ -101,6 +113,8 @@ export function getItemType(item) {
     else if (item.hasOwnProperty('url')) {
         itemType = 'content'
     }
+
+    console.log({item, itemType});
     return itemType;
 }
 
