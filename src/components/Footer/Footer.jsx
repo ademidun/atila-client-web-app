@@ -44,6 +44,12 @@ function Footer({location, history}) {
               <Col md={6} sm={12} xs={24}>
                 <div className="footer-center">
                   <div>
+                    <Link to="/mentorship">
+                      Mentorship{' '}
+                      <Tag color="green">new</Tag>
+                    </Link>
+                  </div>
+                  <div>
                     <Link to={`/demo`}>
                           Try Atila{' '}
                       <Tag color="green">new</Tag>
@@ -60,9 +66,8 @@ function Footer({location, history}) {
                     </Link>
                   </div>
                   <div>
-                    <Link to="/crypto">
-                       Crypto Scholarships{' '}
-                      <Tag color="green">new</Tag>
+                    <Link to="/high-school">
+                       Advice for high school students{' '}
                     </Link>
                   </div>
                   <div>
@@ -93,12 +98,6 @@ function Footer({location, history}) {
                   <div>
                     <Link to="/search">
                       Search
-                    </Link>
-                  </div>
-                  <div>
-                    <Link to="/rankings">
-                      Atila Points Rankings{' '}
-                      <Tag color="green">new</Tag>
                     </Link>
                   </div>
                 </div>
