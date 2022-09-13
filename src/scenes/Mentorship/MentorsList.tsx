@@ -5,6 +5,7 @@ import MentorshipAPI from '../../services/MentorshipAPI';
 import { getErrorMessage } from '../../services/utils';
 import MentorCard from './MentorCard';
 import { Mentor } from '../../models/Mentor';
+import HelmetSeo, { defaultSeoContent } from '../../components/HelmetSeo';
 
 function MentorsList() {
 
@@ -37,9 +38,15 @@ function MentorsList() {
     loadMentors();  
   }, [loadMentors]);
 
+  const seoContent = {
+    ...defaultSeoContent,
+    title: 'Atila Mentorship - Connecting students with mentors'
+};
+
   
   return (
     <div className='container m-3 p-3'>
+      <HelmetSeo content={seoContent} />
       <h1>
         Mentors
       </h1>
