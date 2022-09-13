@@ -18,7 +18,6 @@ function MentorsList() {
     MentorshipAPI.listMentors()
     .then((res: any) => {
         const { data } = res;
-        console.log({res});
         setMentors(data.results);
     })
     .catch(error => {

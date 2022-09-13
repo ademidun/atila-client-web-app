@@ -31,7 +31,6 @@ function MentorProfileEdit(props: MentorProfileEditPropTypes) {
         UserProfileAPI.getUserContent(userProfileLoggedIn?.user, "mentor")
         .then((res: any) => {
             const { data } = res;
-            console.log({res});
             setMentor(data.mentor);
             isMentorset.current = true;
         })
@@ -52,7 +51,6 @@ function MentorProfileEdit(props: MentorProfileEditPropTypes) {
         MentorshipAPI.createMentor(userProfileLoggedIn?.user!)
         .then((res: any) => {
             const { data } = res;
-            console.log({res});
             setMentor(data);
         })
         .catch(error => {
@@ -87,8 +85,6 @@ function MentorProfileEdit(props: MentorProfileEditPropTypes) {
                 ...mentor,
                 [event.target.name]: newValue
             };
-
-            console.log({updatedmentor, mentor});
 
             setMentor(updatedmentor);
     };
