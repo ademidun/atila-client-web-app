@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { UserProfile } from '../../../models/UserProfile.class';
 import { Button, Steps } from 'antd';
+import SelectMentor from './SelectMentor';
 
 const { Step } = Steps;
 
@@ -9,9 +10,7 @@ const { Step } = Steps;
 const mentorshipSessionSteps = [
     {
       title: 'Select',
-      content: ()=> <div>
-        Select Mentor
-      </div>,
+      content: ()=> <SelectMentor />,
       disabled: () => false,
     },
     {
@@ -52,14 +51,14 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
     const [currentSessionStep, setCurrentSessionStep] = useState(1);
 
   return (
-    <div className='container card m-3 p-3'>
+    <div className='container card shadow m-3 p-3'>
       <Steps current={currentSessionStep} onChange={current => setCurrentSessionStep(current)}>
         {mentorshipSessionSteps.map(item => (
           <Step key={item.title} title={item.title} disabled={item.disabled()} />
         ))}
       </Steps>
 
-      <div>
+      <div className='container card shadow m-3 p-3'>
         {mentorshipSessionSteps[currentSessionStep].content()}
       </div>
 
