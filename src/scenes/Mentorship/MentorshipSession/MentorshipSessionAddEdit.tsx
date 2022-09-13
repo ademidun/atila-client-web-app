@@ -4,6 +4,7 @@ import { UserProfile } from '../../../models/UserProfile.class';
 import { Button, Steps } from 'antd';
 import SelectMentor from './SelectMentor';
 import { MentorshipSession } from '../../../models/MentorshipSession';
+import MentorshipSessionPayment from './MentorshipSessionPayment/MentorshipSessionPayment';
 
 const { Step } = Steps;
 
@@ -26,7 +27,7 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
         {
           title: 'Pay',
           content: ()=> <div>
-            Pay for Mentor
+            <MentorshipSessionPayment />
           </div>,
           disabled: () => false,
         },
