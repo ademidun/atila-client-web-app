@@ -95,8 +95,6 @@ const LinkContentToWallet = (props: LinkContentToWalletPropTypes) => {
         setLoadingWallet("Creating your application and linking the wallet to your application");
         ApplicationsAPI.getOrCreate({ scholarship: (content as Application).scholarship, user: content.user, wallet: walletId })
             .then((res: any) => {
-                
-                console.log({res});
                 const { data: { application: newApplication } } = res;
                 setContentWallet(newApplication.wallet);
                 onContentLinked?.(newApplication);

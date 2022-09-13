@@ -36,6 +36,7 @@ function ContentBody(props: ContentBodyPropTypes) {
                 dangerouslySetInnerHTML={{__html: body}} />
                 );
     }
+    console.log({body, bodyType, className, bodyContent})
     return (
         <>
         {bodyContent}

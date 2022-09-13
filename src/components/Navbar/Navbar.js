@@ -74,9 +74,9 @@ class Navbar extends React.Component {
         const menuItems = (mode="inline") => (
             <Menu id="nav" key="nav" mode={mode}
                   style={{float: "none"}}>
-                <Menu.Item key="start">
-                    <Link to="/start">
-                        Start a Scholarship
+                <Menu.Item key="mentorship">
+                    <Link to="/mentorship">
+                        Mentorship
                     </Link>
                 </Menu.Item>
                 <Menu.Item key="scholarships">
@@ -118,10 +118,10 @@ class Navbar extends React.Component {
                         key="more"
                         title="More"
                     >
-                    <Menu.Item key="crypto">
-                        <Link to="/crypto">
-                            <Tag color="green">new</Tag>{' '}
-                            Crypto Scholarships</Link>
+                    <Menu.Item key="start">
+                        <Link to="/start">
+                            Start a Scholarship
+                        </Link>
                     </Menu.Item>
                     <Menu.Item key="apply">
                         <Link to="/apply">

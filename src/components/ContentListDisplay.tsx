@@ -2,11 +2,12 @@ import { Col, Row } from 'antd';
 import React from 'react';
 import { Blog } from '../models/Blog';
 import { Content } from '../models/Content';
+import { Mentor } from '../models/Mentor';
 import { genericItemTransform } from '../services/utils';
 import ContentCard from './ContentCard';
 
 type Props = {
-    contentList: Array<Blog|Content>,
+    contentList: Array<Blog|Content|Mentor>,
 }
 
 function ContentListDisplay(props: Props) {

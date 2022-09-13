@@ -14,6 +14,9 @@ import UserProfileApplications from "./UserProfileApplications";
 import UserProfileCreatedScholarships from "./UserProfileCreatedScholarships";
 import {Link} from "react-router-dom";
 import UserProfileAdmin from './UserProfileAdmin';
+import UserProfileReferralManagement from './UserProfileReferralManagement';
+import ConnectWallet from '../../components/Crypto/ConnectWallet';
+import UserProfileMentorship from './UserProfileMentorship';
 
 class UserProfileViewTabs extends React.Component {
 
@@ -49,9 +52,9 @@ class UserProfileViewTabs extends React.Component {
     render() {
 
         const { blogs, essays, contributions } = this.state;
-        const { isProfileEditable, loggedInUserProfile } = this.props;
+        const { isProfileEditable, loggedInUserProfile, userProfile: {user : userIdInView} } = this.props;
         let { match : { params : { tab, username }} } = this.props;
-        let defaultActiveKey = isProfileEditable ? 'edit' : 'blogs';
+        let defaultActiveKey = isProfileEditable ? 'edit' : 'mentorship';
 
         if (RESERVED_USERNAMES.includes(username)) {
             defaultActiveKey = username;
@@ -85,6 +88,19 @@ class UserProfileViewTabs extends React.Component {
                         <UserProfileEdit />
                     </Tab>
                     }
+                    <Tab eventKey='mentorship' title='Mentorship'>
+                        <UserProfileMentorship userIdInView={userIdInView} />
+                    </Tab>
+                    {loggedInUserProfile && loggedInUserProfile.is_atila_admin &&
+                        <Tab eventKey='wallet' title='Wallet'>
+                            <ConnectWallet /> 
+                        </Tab>
+                    }
+                    {isProfileEditable && 
+                        <Tab eventKey='referrals' title='Referrals'>
+                            <UserProfileReferralManagement /> 
+                        </Tab>
+                    }       
                     {isProfileEditable &&
                     <Tab eventKey='applications' title='My Applications'>
                         <UserProfileApplications />
