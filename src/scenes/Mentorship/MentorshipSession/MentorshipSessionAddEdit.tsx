@@ -3,45 +3,10 @@ import { connect } from 'react-redux'
 import { UserProfile } from '../../../models/UserProfile.class';
 import { Button, Steps } from 'antd';
 import SelectMentor from './SelectMentor';
+import { MentorshipSession } from '../../../models/MentorshipSession';
 
 const { Step } = Steps;
 
-
-const mentorshipSessionSteps = [
-    {
-      title: 'Select',
-      content: ()=> <SelectMentor />,
-      disabled: () => false,
-    },
-    {
-      title: 'Pay',
-      content: ()=> <div>
-        Pay for Mentor
-      </div>,
-      disabled: () => false,
-    },
-    {
-      title: 'Schedule',
-      content: ()=> <div>
-        Pick a time that works for you
-      </div>,
-      disabled: () => true,
-    },
-    {
-      title: 'Prepare',
-      content: ()=> <div>
-       Fill out an intake form for what you want from the session
-      </div>,
-      disabled: () => true,
-    },
-    {
-      title: 'Attend',
-      content: ()=> <div>
-        Details of your mentorship session
-      </div>,
-      disabled: () => true,
-    },
-];
 
 export interface MentorshipSessionAddEditProps {
     userProfileLoggedIn?: UserProfile,
@@ -49,7 +14,44 @@ export interface MentorshipSessionAddEditProps {
 
 export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) => {
     const [currentSessionStep, setCurrentSessionStep] = useState(1);
+    const [mentorshipSession, setMentorshipSession] = useState<MentorshipSession>()
 
+
+    const mentorshipSessionSteps = [
+        {
+          title: 'Select',
+          content: ()=> <SelectMentor onSelectMentor={mentor => mentorshipSession ? setMentorshipSession({...mentorshipSession, mentor: mentor.id}) : null } />,
+          disabled: () => false,
+        },
+        {
+          title: 'Pay',
+          content: ()=> <div>
+            Pay for Mentor
+          </div>,
+          disabled: () => false,
+        },
+        {
+          title: 'Schedule',
+          content: ()=> <div>
+            Pick a time that works for you
+          </div>,
+          disabled: () => true,
+        },
+        {
+          title: 'Prepare',
+          content: ()=> <div>
+           Fill out an intake form for what you want from the session
+          </div>,
+          disabled: () => true,
+        },
+        {
+          title: 'Attend',
+          content: ()=> <div>
+            Details of your mentorship session
+          </div>,
+          disabled: () => true,
+        },
+    ];
   return (
     <div className='container card shadow m-3 p-3'>
       <Steps current={currentSessionStep} onChange={current => setCurrentSessionStep(current)}>

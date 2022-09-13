@@ -12,7 +12,7 @@ const columns: ColumnsType<Mentor> = [
   {
     title: 'Name',
     dataIndex: 'name',
-    render: (_, mentor: Mentor) => <UserProfilePreview userProfile={mentor.user} />,
+    render: (_, mentor: Mentor) => <UserProfilePreview userProfile={mentor.user} linkProfile={true} />,
   },
   {
     title: 'Description',
@@ -21,7 +21,11 @@ const columns: ColumnsType<Mentor> = [
   },
 ];
 
-function SelectMentor() {
+export interface SelectMentorProps {
+  onSelectMentor?: (mentor: Mentor) => void
+}
+
+function SelectMentor(props: SelectMentorProps) {
 
     const [mentors, setMentors] = useState<Mentor[]>([]);
     const [loadingUI, setLoadingUI] = useState({message: "", type: ""});
@@ -53,7 +57,8 @@ function SelectMentor() {
     // rowSelection object indicates the need for row selection
     const rowSelection = {
         onChange: (selectedRowKeys: React.Key[], selectedRows: Mentor[]) => {
-        console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+          props.onSelectMentor?.(selectedRows[0]);
+          console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
         },
         getCheckboxProps: (record: Mentor) => ({
         name: `${record.user.first_name} ${record.user.last_name}`,
