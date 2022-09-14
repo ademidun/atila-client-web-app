@@ -10,7 +10,7 @@ import {ATILA_SCHOLARSHIP_FEE, ATILA_SCHOLARSHIP_FEE_TAX, Currencies} from "../.
 import CurrencyDisplay from "@atila/web-components-library.ui.currency-display";
 
 // source: https://github.com/sparksuite/simple-html-invoice-template
-const logoImageData = "https://i.imgur.com/Mez2Qdd.png";
+export const ATIlA_LOGO_URL = "https://i.imgur.com/Mez2Qdd.png";
 function Invoice({ contributor, scholarship, contributorFundingAmount, cardHolderName }) {
 
     const { email, currency } = contributor;
@@ -40,7 +40,7 @@ function Invoice({ contributor, scholarship, contributorFundingAmount, cardHolde
                             <tbody>
                             <tr>
                                 <td className="title">
-                                    <img src={logoImageData}
+                                    <img src={ATIlA_LOGO_URL}
                                          style={{maxHeight:'75px'}} alt="atila logo" />
                                 </td>
                                 <td>

@@ -14,7 +14,7 @@ function MentorshipSessionPayment(props: MentorshipSessionPaymentFormProps) {
   const { session } = props;
 
   return (
-    <div>
+    <div className='MentorshipSessionPayment'>
       <StripeProvider apiKey={STRIPE_PUBLIC_KEY} >
 
       <Elements>
