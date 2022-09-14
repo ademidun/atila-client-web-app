@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import { UserProfile } from '../../../models/UserProfile.class';
 import { Button, Steps } from 'antd';
 import SelectMentor from './SelectMentor';
 import { MentorshipSession } from '../../../models/MentorshipSession';
@@ -8,46 +7,43 @@ import MentorshipSessionPayment from './MentorshipSessionPayment/MentorshipSessi
 
 const { Step } = Steps;
 
+export const MentorshipSessionAddEdit = () => {
 
-export interface MentorshipSessionAddEditProps {
-    userProfileLoggedIn?: UserProfile,
-}
-
-export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) => {
-    const [currentSessionStep, setCurrentSessionStep] = useState(1);
-    const [mentorshipSession, setMentorshipSession] = useState<MentorshipSession>()
+    const [currentSessionStep, setCurrentSessionStep] = useState(0);
+    const [mentorshipSession, setMentorshipSession] = useState<MentorshipSession>();
 
 
     const mentorshipSessionSteps = [
         {
           title: 'Select',
-          content: ()=> <SelectMentor onSelectMentor={mentor => mentorshipSession ? setMentorshipSession({...mentorshipSession, mentor: mentor.id}) : null } />,
+          content: (session: MentorshipSession)=> 
+          <SelectMentor onSelectMentor={mentor => setMentorshipSession({...mentorshipSession, mentor}) } />,
           disabled: () => false,
         },
         {
           title: 'Pay',
-          content: ()=> <div>
-            <MentorshipSessionPayment />
+          content: (session: MentorshipSession)=> <div>
+            <MentorshipSessionPayment session={session} />
           </div>,
-          disabled: () => false,
+          disabled: () => !mentorshipSession?.mentor,
         },
         {
           title: 'Schedule',
-          content: ()=> <div>
+          content: (session: MentorshipSession)=> <div>
             Pick a time that works for you
           </div>,
           disabled: () => true,
         },
         {
           title: 'Prepare',
-          content: ()=> <div>
+          content: (session: MentorshipSession)=> <div>
            Fill out an intake form for what you want from the session
           </div>,
           disabled: () => true,
         },
         {
           title: 'Attend',
-          content: ()=> <div>
+          content: (session: MentorshipSession)=> <div>
             Details of your mentorship session
           </div>,
           disabled: () => true,
@@ -62,7 +58,7 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
       </Steps>
 
       <div className='container card shadow m-3 p-3'>
-        {mentorshipSessionSteps[currentSessionStep].content()}
+        {mentorshipSessionSteps[currentSessionStep].content(mentorshipSession!)}
       </div>
 
       <div>
@@ -74,7 +70,7 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
             Next
           </Button>
         )}
-        {currentSessionStep > 1 && (
+        {currentSessionStep > 0 && (
           <Button className="btn btn-outline-primary float-right col-md-6"
             onClick={() => setCurrentSessionStep(currentSessionStep - 1)} >
             Previous

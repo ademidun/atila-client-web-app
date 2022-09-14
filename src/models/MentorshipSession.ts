@@ -2,7 +2,8 @@ import { Mentor } from "./Mentor";
 import { UserProfile } from "./UserProfile.class";
 
 export interface MentorshipSession {
-    id: string,
-    mentor: Mentor | string, // mentor can either be the Mentor object or the mentor ID
-    mentee: UserProfile | number, // mentor can either be the Mentor object or the mentor ID
+    id?: string,
+    mentor?: Mentor,
+    mentee?: UserProfile,
+    stripe_payment_intent_id?: string, // mentee can either be the Mentor object or the mentor ID
 }
