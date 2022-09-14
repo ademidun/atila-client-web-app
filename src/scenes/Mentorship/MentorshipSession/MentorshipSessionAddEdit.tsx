@@ -23,7 +23,8 @@ export const MentorshipSessionAddEdit = () => {
         {
           title: 'Pay',
           content: (session: MentorshipSession)=> <div>
-            <MentorshipSessionPayment session={session} />
+            <MentorshipSessionPayment session={session} onPaymentComplete={session => 
+              setMentorshipSession({...mentorshipSession, id: session.id, stripe_payment_intent_id: session.stripe_payment_intent_id}) }  />
           </div>,
           disabled: () => !mentorshipSession?.mentor,
         },
@@ -32,21 +33,21 @@ export const MentorshipSessionAddEdit = () => {
           content: (session: MentorshipSession)=> <div>
             Pick a time that works for you
           </div>,
-          disabled: () => true,
+          disabled: () => !mentorshipSession?.stripe_payment_intent_id,
         },
         {
           title: 'Prepare',
           content: (session: MentorshipSession)=> <div>
            Fill out an intake form for what you want from the session
           </div>,
-          disabled: () => true,
+          disabled: () => !mentorshipSession?.stripe_payment_intent_id,
         },
         {
           title: 'Attend',
           content: (session: MentorshipSession)=> <div>
             Details of your mentorship session
           </div>,
-          disabled: () => true,
+          disabled: () => !mentorshipSession?.stripe_payment_intent_id,
         },
     ];
   return (

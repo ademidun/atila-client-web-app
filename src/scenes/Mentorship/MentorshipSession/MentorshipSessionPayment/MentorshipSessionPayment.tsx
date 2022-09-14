@@ -7,18 +7,19 @@ import MentorshipSessionPaymentForm from './MentorshipSessionPaymentForm';
 const { STRIPE_PUBLIC_KEY } = Environment;
 interface MentorshipSessionPaymentFormProps {
   session: MentorshipSession,
+  onPaymentComplete: (paymentDetails: any) => void,
 }
 
 function MentorshipSessionPayment(props: MentorshipSessionPaymentFormProps) {
 
-  const { session } = props;
+  const { session, onPaymentComplete } = props;
 
   return (
     <div className='MentorshipSessionPayment'>
       <StripeProvider apiKey={STRIPE_PUBLIC_KEY} >
 
       <Elements>
-          <MentorshipSessionPaymentForm session={session} />
+          <MentorshipSessionPaymentForm session={session} stripe={null} elements={null} onPaymentComplete={onPaymentComplete}  />
       </Elements>
       </StripeProvider>
     </div>

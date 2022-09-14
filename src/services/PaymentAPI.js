@@ -19,6 +19,17 @@ class PaymentAPI {
         return apiCompletionPromise;
     };
 
+    static getClientSecretMentorshipSession = (paymentData) => {
+
+        const apiCompletionPromise = request({
+            url: `${PaymentAPI.apiUrlPayment}/get-client-secret-mentorship-session/`,
+            method: 'post',
+            data: paymentData,
+        });
+
+        return apiCompletionPromise;
+    };
+
     static saveTransaction = (postData) => {
 
         const apiCompletionPromise = request({
