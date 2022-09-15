@@ -7,7 +7,7 @@ import MentorshipSessionPaymentForm from './MentorshipSessionPaymentForm';
 const { STRIPE_PUBLIC_KEY } = Environment;
 interface MentorshipSessionPaymentFormProps {
   session: MentorshipSession,
-  onPaymentComplete: (paymentDetails: any) => void,
+  onPaymentComplete: (session: MentorshipSession) => void,
 }
 
 function MentorshipSessionPayment(props: MentorshipSessionPaymentFormProps) {

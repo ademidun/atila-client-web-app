@@ -4,6 +4,7 @@ import { Button, Steps } from 'antd';
 import SelectMentor from './SelectMentor';
 import { MentorshipSession } from '../../../models/MentorshipSession';
 import MentorshipSessionPayment from './MentorshipSessionPayment/MentorshipSessionPayment';
+import FormDynamic from '../../../components/Form/FormDynamic';
 
 const { Step } = Steps;
 
@@ -24,7 +25,7 @@ export const MentorshipSessionAddEdit = () => {
           title: 'Pay',
           content: (session: MentorshipSession)=> <div>
             <MentorshipSessionPayment session={session} onPaymentComplete={session => 
-              setMentorshipSession({...mentorshipSession, id: session.id, stripe_payment_intent_id: session.stripe_payment_intent_id}) }  />
+              setMentorshipSession({...mentorshipSession, ...session}) }  />
           </div>,
           disabled: () => !mentorshipSession?.mentor,
         },
@@ -37,9 +38,29 @@ export const MentorshipSessionAddEdit = () => {
         },
         {
           title: 'Prepare',
-          content: (session: MentorshipSession)=> <div>
-           Fill out an intake form for what you want from the session
-          </div>,
+          content: (session: MentorshipSession)=> {
+            const sessionIntakeInputConfigs = [
+              {
+                keyName: 'notes',
+                type: 'html_editor',
+                html: () => (<label htmlFor="notes">
+                    Fill notes before your session.<br/> Tip: Copy-paste and edit these notes in a seperate document like {' '}
+                    <a href="https://docs.new" target="_blank" rel="noopener noreferrer">
+                     Google docs</a> then copy-paste them back here.
+                </label>),
+                }
+            ]
+            return (
+              <div>
+                <FormDynamic onUpdateForm={(event: any) =>
+                                            setMentorshipSession({...mentorshipSession, [event.target.name]: event.target.value})}
+                                            model={session}
+                                            inputConfigs=
+                                                {sessionIntakeInputConfigs}
+                                                loggedInUserProfile={{}} />
+              </div>
+            )
+          },
           disabled: () => !mentorshipSession?.stripe_payment_intent_id,
         },
         {

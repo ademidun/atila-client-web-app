@@ -23,21 +23,22 @@ function MentorshipSessionPaymentForm(props: MentorshipSessionPaymentFormProps) 
     const cardElementRef = useRef(null);
     const [cardHolderName, setCardHolderName] = useState("");
     const [cardHolderEmail, setCardHolderEmail] = useState("");
-    if (!session?.mentor) {
+    let mentorShipSession = session; // should we just change session to a let?
+    if (!mentorShipSession?.mentor) {
         return null
     }
 
-    const mentorshipTax =  Number.parseFloat(session.mentor.price) * ATILA_SCHOLARSHIP_FEE_TAX;
-    const totalPaymentAmount =  Number.parseFloat(session.mentor.price) + mentorshipTax;
+    const mentorshipTax =  Number.parseFloat(mentorShipSession.mentor.price) * ATILA_SCHOLARSHIP_FEE_TAX;
+    const totalPaymentAmount =  Number.parseFloat(mentorShipSession.mentor.price) + mentorshipTax;
 
     const handleSubmit = async (event: FormEvent) => {
         event.preventDefault();
 
-        if (!session?.id) {
+        if (!mentorShipSession?.id) {
             const createMentorshipSessionResponse = await MentorshipSesssionAPI
-            .createMentorshipSession({mentee: userProfileLoggedIn!.user, mentor: session.mentor!.id});
+            .createMentorshipSession({mentee: userProfileLoggedIn!.user, mentor: mentorShipSession.mentor!.id});
             const {data: createdSession} = createMentorshipSessionResponse;
-            session.id = createdSession.id;
+            mentorShipSession = createdSession;
         }
         const billing_details = {
             name: cardHolderName,
@@ -46,7 +47,7 @@ function MentorshipSessionPaymentForm(props: MentorshipSessionPaymentFormProps) 
         const paymentData = {
             total_payment_amount: totalPaymentAmount,
             billing_details,
-            mentorship_session: {id: session.id}
+            mentorship_session: {id: mentorShipSession.id}
         };
         console.log('cardElementRef.current', cardElementRef.current);
         try{
@@ -70,8 +71,8 @@ function MentorshipSessionPaymentForm(props: MentorshipSessionPaymentFormProps) 
                     // The payment has been processed!
                     if (cardPaymentResult.paymentIntent.status === 'succeeded') {
                         
-                        session.stripe_payment_intent_id = cardPaymentResult.paymentIntent.id;
-                        onPaymentComplete({stripe_payment_intent_id: cardPaymentResult.paymentIntent.id, id: session.id})
+                        mentorShipSession.stripe_payment_intent_id = cardPaymentResult.paymentIntent.id;
+                        onPaymentComplete(mentorShipSession)
                     }
                 }
 
