@@ -5,6 +5,7 @@ import MentorshipSessions from '../../components/Mentorship/MentorshipSessions';
 import MentorProfileEdit from '../../components/Mentorship/Mentor/MentorProfileEdit';
 import MentorProfileView from '../../components/Mentorship/Mentor/MentorProfileView';
 import { UserProfile } from '../../models/UserProfile.class';
+import MentorScheduleEdit from '../../components/Mentorship/Mentor/MentorScheduleEdit';
 
 
 export interface UserProfileMentorshipPropTypes {
@@ -27,6 +28,9 @@ function UserProfileMentorship(props: UserProfileMentorshipPropTypes) {
           <Tab eventKey='edit' title='Edit Mentor Profile'>
               <MentorProfileEdit />
           </Tab>
+            <Tab eventKey='schedule' title='Edit Mentor Schedule'>
+                <MentorScheduleEdit />
+            </Tab>
             <Tab eventKey='view' title='View Mentor Profile'>
                 <MentorProfileView userId={userIdInView} />
             </Tab>
