@@ -15,13 +15,15 @@ function MentorScheduleEdit(props: RouteComponentProps<RouteParams>) {
   const params = new URLSearchParams(search);
   let urlCalendarAuthCode = params.get('code');
 
-  if (urlCalendarAuthCode) {
-    localStorage.setItem('calendarAuthCode', urlCalendarAuthCode);
-  }
-
   const [calendarAuthCode, setCalendarAuthCode] = useState(urlCalendarAuthCode || localStorage.getItem('calendarAuthCode')||'');
 
   const [calendarAccessToken, setCalendarAccessToken] = useState(localStorage.getItem('calendarAccessToken')||'');
+
+  if (urlCalendarAuthCode) {
+    localStorage.setItem('calendarAuthCode', urlCalendarAuthCode);
+    setCalendarAuthCode(urlCalendarAuthCode);
+  }
+
 
     useEffect(() => {
       if (calendarAuthCode) {

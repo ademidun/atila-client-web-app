@@ -5,13 +5,14 @@ import SelectMentor from './SelectMentor';
 import { MentorshipSession } from '../../../models/MentorshipSession';
 import MentorshipSessionPayment from './MentorshipSessionPayment/MentorshipSessionPayment';
 import FormDynamic from '../../../components/Form/FormDynamic';
+import MentorshipSessionSchedule from './MentorshipSessionSchedule';
 
 const { Step } = Steps;
 
 export const MentorshipSessionAddEdit = () => {
 
     const [currentSessionStep, setCurrentSessionStep] = useState(0);
-    const [mentorshipSession, setMentorshipSession] = useState<MentorshipSession>();
+    const [mentorshipSession, setMentorshipSession] = useState<MentorshipSession>({notes: ''});
 
 
     const mentorshipSessionSteps = [
@@ -32,9 +33,13 @@ export const MentorshipSessionAddEdit = () => {
         {
           title: 'Schedule',
           content: (session: MentorshipSession)=> <div>
+            <h1>
             Pick a time that works for you
+            </h1>
+
+            <MentorshipSessionSchedule />
           </div>,
-          disabled: () => !mentorshipSession?.stripe_payment_intent_id,
+          disabled: () => false
         },
         {
           title: 'Prepare',
@@ -61,14 +66,14 @@ export const MentorshipSessionAddEdit = () => {
               </div>
             )
           },
-          disabled: () => !mentorshipSession?.stripe_payment_intent_id,
+          disabled: () => false
         },
         {
           title: 'Attend',
           content: (session: MentorshipSession)=> <div>
             Details of your mentorship session
           </div>,
-          disabled: () => !mentorshipSession?.stripe_payment_intent_id,
+          disabled: () => false
         },
     ];
   return (

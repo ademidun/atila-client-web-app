@@ -5,6 +5,8 @@ import { getErrorMessage } from '../../services/utils';
 import { Mentor } from '../../models/Mentor';
 import HelmetSeo, { defaultSeoContent } from '../../components/HelmetSeo';
 import ContentListDisplay from '../../components/ContentListDisplay';
+import { Button } from 'antd';
+import { Link } from 'react-router-dom';
 
 function MentorsList() {
 
@@ -48,6 +50,13 @@ function MentorsList() {
       <h1>
         Mentors
       </h1>
+      <div className='text-center'>
+        <Link to="/mentorship/about">
+          <Button>
+            Learn More
+          </Button>
+        </Link>
+      </div>
 
       <ContentListDisplay contentList={mentors} />
 
