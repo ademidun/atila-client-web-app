@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "antd";
 
-export class UserProfileAudioMessage extends React.Component {
+export class AudioMessage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
