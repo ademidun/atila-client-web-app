@@ -15,6 +15,7 @@ import {scrollToElement, transformLocation} from "../../services/utils";
 import SecurityQuestionAndAnswer from "../Application/SecurityQuestionAndAnswer";
 import FileInput from "../../components/Form/FileInput";
 import { message } from 'antd';
+import { UserProfileAudioMessage } from './UserProfileAudioMessage'
 
 let autoSaveTimeoutId;
 
@@ -271,6 +272,9 @@ class UserProfileEdit extends React.Component {
                         <SecurityQuestionAndAnswer setAnswer={true} verifyAnswer={true}/>
                     </div>
                 }
+                <div>
+                    <UserProfileAudioMessage/>
+                </div>
             </div>
         );
     }
