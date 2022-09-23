@@ -22,7 +22,7 @@ class ScheduleAPI {
             method: 'get',
             url: `${ScheduleAPI.calendlyApiUrl}/event_types?user=${userId}`,
             headers:{
-                'Authorization': `Bearer: ${accessToken}`
+                'Authorization': `Bearer ${accessToken}`
             }
         });
 

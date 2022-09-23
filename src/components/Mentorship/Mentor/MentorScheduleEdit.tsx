@@ -1,7 +1,7 @@
 /**
  * See: docs/mentorship/README.md
  */
-import { Button, List } from 'antd'
+import { Button, List, Tag } from 'antd'
 import React, { useEffect, useRef, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router';
 import Environment from '../../../services/Environment'
@@ -24,17 +24,17 @@ interface MentorScheduleEditProps extends RouteComponentProps<RouteParams>  {
 const calendarAccessTokenKeyName = 'calendarAccessToken';
 function MentorScheduleEdit(props: MentorScheduleEditProps) {
     
-  const {location: {search}, mentor}  = props;
-      
-  const params = new URLSearchParams(search);
+    const {location: {search}, mentor}  = props;
 
-  console.log('params', params);
-  console.log("(params.get('code')", params.get('code'));
+    const params = new URLSearchParams(search);
 
-  const [calendarAuthCode, setCalendarAuthCode] = useState(params.get('code') || '');
-  const [calendarAccessToken, setCalendarAccessToken] = useState(JSON.parse(localStorage.getItem(calendarAccessTokenKeyName)||'{}'));
-  const [mentorEventTypes, setMentorEventTypes] = useState(MentorEventTypes.collection);
-  const isFirstRender = useRef(true);
+    console.log('params', params);
+    console.log("(params.get('code')", params.get('code'));
+
+    const [calendarAuthCode, setCalendarAuthCode] = useState(params.get('code') || '');
+    const [calendarAccessToken, setCalendarAccessToken] = useState(JSON.parse(localStorage.getItem(calendarAccessTokenKeyName)||'{}'));
+    const [mentorEventTypes, setMentorEventTypes] = useState(MentorEventTypes.collection);
+    const isFirstRender = useRef(true);
 
     useEffect(() => {
 
@@ -64,7 +64,7 @@ function MentorScheduleEdit(props: MentorScheduleEditProps) {
 
         let getEventTypesResponse = await ScheduleAPI.getEventTypes(owner, access_token);
         console.log({getEventTypesResponse});
-        setMentorEventTypes(getEventTypesResponse.data);
+        setMentorEventTypes(getEventTypesResponse.data.collection);
       }
       catch( getEventTypesResponseError: any) {
         console.log({getEventTypesResponseError});
@@ -99,6 +99,7 @@ function MentorScheduleEdit(props: MentorScheduleEditProps) {
 
     const setMentorSchedule =  async (mentorEventType: any) => {
       try {
+        console.log({mentorEventType});
         const setMentorScheduleResponse = await MentorshipAPI.patchMentor({mentor: {
           schedule_url: mentorEventType.scheduling_url,
           id: mentor.id,
@@ -109,11 +110,12 @@ function MentorScheduleEdit(props: MentorScheduleEditProps) {
       }
     }
 
+  console.log({mentorEventTypes});
 
   return (
+    
     <div>
-      {
-      mentorEventTypes.length === 0 && 
+
         <>
           {calendarAuthCode?
 
@@ -123,30 +125,33 @@ function MentorScheduleEdit(props: MentorScheduleEditProps) {
             :
             <a href={CALENDLY_AUTH_URL}>
                 <Button type="primary">
-                        Login To Calendly
+                  Login To Calendly
                 </Button>
             </a>
         
         }
         </>
-      }
 
-      <List
+        <List
         header={<h1>Available Events</h1>}
         bordered
         dataSource={mentorEventTypes}
-        renderItem={mentorEventType => (
-          <List.Item>
-            <h3>
-              {mentorEventType.name}
-            </h3>
-            
-            <Button type="primary" onClick={(mentorEventType) => setMentorSchedule(mentorEventType)}>
-              Set Mentorship Schedule
-          </Button> 
+        renderItem={mentorEventType => {
 
-          </List.Item>
-        )}
+          const activeSchedule = mentor.schedule_url === mentorEventType.scheduling_url;
+          return (
+            <List.Item>
+              <h3>
+                {mentorEventType.name} {activeSchedule && <Tag color="green">Active Schedule</Tag>}
+              </h3>
+              
+              <Button type="primary" onClick={() => setMentorSchedule(mentorEventType)} disabled={activeSchedule}>
+                Set Mentorship Schedule
+            </Button> 
+  
+            </List.Item>
+          )
+        }}
       />
 
     </div>
