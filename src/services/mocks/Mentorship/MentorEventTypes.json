@@ -1,0 +1,223 @@
+{
+    "collection": [
+      {
+        "active": false,
+        "booking_method": "instant",
+        "color": "#f8e436",
+        "created_at": "2018-12-07T19:48:11.396426Z",
+        "custom_questions": [],
+        "deleted_at": null,
+        "description_html": null,
+        "description_plain": null,
+        "duration": 15,
+        "internal_note": null,
+        "kind": "solo",
+        "name": "15 Minute Meeting",
+        "pooling_type": null,
+        "profile": {
+          "name": "Tomiwa Ademidun",
+          "owner": "https://api.calendly.com/users/FDDHFIY6J3S6C7WG",
+          "type": "User"
+        },
+        "scheduling_url": "https://calendly.com/tomiwa1a/15min",
+        "secret": false,
+        "slug": "15min",
+        "type": "StandardEventType",
+        "updated_at": "2022-09-16T00:10:45.782742Z",
+        "uri": "https://api.calendly.com/event_types/AEEDT55BQMTQ4V6C"
+      },
+      {
+        "active": false,
+        "booking_method": "instant",
+        "color": "#8247f5",
+        "created_at": "2018-12-07T19:48:11.424449Z",
+        "custom_questions": [],
+        "deleted_at": null,
+        "description_html": null,
+        "description_plain": null,
+        "duration": 30,
+        "internal_note": null,
+        "kind": "solo",
+        "name": "30 Minute Meeting",
+        "pooling_type": null,
+        "profile": {
+          "name": "Tomiwa Ademidun",
+          "owner": "https://api.calendly.com/users/FDDHFIY6J3S6C7WG",
+          "type": "User"
+        },
+        "scheduling_url": "https://calendly.com/tomiwa1a/30min",
+        "secret": false,
+        "slug": "30min",
+        "type": "StandardEventType",
+        "updated_at": "2022-09-16T00:10:45.782742Z",
+        "uri": "https://api.calendly.com/event_types/CGHAS4ZARIUW3W2O"
+      },
+      {
+        "active": false,
+        "booking_method": "instant",
+        "color": "#ff4f00",
+        "created_at": "2018-12-07T19:48:11.452786Z",
+        "custom_questions": [],
+        "deleted_at": null,
+        "description_html": null,
+        "description_plain": null,
+        "duration": 60,
+        "internal_note": null,
+        "kind": "solo",
+        "name": "60 Minute Meeting",
+        "pooling_type": null,
+        "profile": {
+          "name": "Tomiwa Ademidun",
+          "owner": "https://api.calendly.com/users/FDDHFIY6J3S6C7WG",
+          "type": "User"
+        },
+        "scheduling_url": "https://calendly.com/tomiwa1a/60min",
+        "secret": false,
+        "slug": "60min",
+        "type": "StandardEventType",
+        "updated_at": "2022-09-16T00:10:45.782742Z",
+        "uri": "https://api.calendly.com/event_types/BAHGS76HQLSR5TYT"
+      },
+      {
+        "active": false,
+        "booking_method": "instant",
+        "color": "#0ae8f0",
+        "created_at": "2018-12-07T19:51:47.398996Z",
+        "custom_questions": [],
+        "deleted_at": null,
+        "description_html": "<p>Conduct an interview for the Atila TV podcast at https://appear.in/hi-tomiwa.\nPlease download the anchor app (https://anchor.fm/)</p>",
+        "description_plain": "Conduct an interview for the Atila TV podcast at https://appear.in/hi-tomiwa. Please download the anchor app (https://anchor.fm/)",
+        "duration": 90,
+        "internal_note": null,
+        "kind": "solo",
+        "name": "Atila TV Interview",
+        "pooling_type": null,
+        "profile": {
+          "name": "Tomiwa Ademidun",
+          "owner": "https://api.calendly.com/users/FDDHFIY6J3S6C7WG",
+          "type": "User"
+        },
+        "scheduling_url": "https://calendly.com/tomiwa1a/atila-tv-interview",
+        "secret": false,
+        "slug": "atila-tv-interview",
+        "type": "StandardEventType",
+        "updated_at": "2022-09-16T00:10:45.782742Z",
+        "uri": "https://api.calendly.com/event_types/EHAFS25ESLQ7FYFN"
+      },
+      {
+        "active": false,
+        "booking_method": "instant",
+        "color": "#8247f5",
+        "created_at": "2020-10-14T11:51:08.598416Z",
+        "custom_questions": [
+          {
+            "answer_choices": [],
+            "enabled": true,
+            "include_other": false,
+            "name": "Please share anything that will help prepare for our meeting.",
+            "position": 0,
+            "required": false,
+            "type": "text"
+          }
+        ],
+        "deleted_at": null,
+        "description_html": "<p>Hey Everyone,</p><p><br></p><p>Congratulations on being shortlisted for the Atila internship.</p><p><br></p><p>As per the instructions from WMA, please select your availability in the provided Calendly link.</p><p><br></p><p>(make sure to scroll to bottom to see full description and links)</p><p><br></p><p>Zoom link:  <a href=\"https://zoom.us/j/4238375635?pwd=QnVveGhtZ2VpUEdKNlJESHlkYi9Cdz09\" target=\"_blank\">https://zoom.us/j/4238375635?pwd=QnVveGhtZ2VpUEdKNlJESHlkYi9Cdz09</a></p><p><br></p><p>During the coffee chat we will talk about:</p><p>- what types of things are you interested in and what do you want to learn more about?</p><p>- If you could do anything with your life what would you do?</p><p>- What is Atila, what is our vision and what types of projects will you be working on?</p><p>- Why do you want to intern with Atila?</p><p>- Any questions you have about me, Atila, the internship experience?</p><p>- What is your time availability? How much time do you have to work on Atila each week?</p><p>- Any feedback you have from visiting the website?</p><p><br></p><p>We recently pivoted our business model so I encourage you to checkout the new site:</p><p><br></p><p><a href=\"https://atila.ca/\" target=\"_blank\">https://atila.ca/</a> </p><p><br></p><p>To learn more about the internship I recommend checking out the following links to read about other intern's experiences:</p><p><br></p><p><a href=\"https://www.linkedin.com/feed/update/urn:li:activity:6706622902030139393\" target=\"_blank\">https://www.linkedin.com/feed/update/urn:li:activity:6706622902030139393</a></p><p><br></p><p><a href=\"https://www.linkedin.com/feed/update/urn:li:activity:6706402611181993984/\" target=\"_blank\">https://www.linkedin.com/feed/update/urn:li:activity:6706402611181993984/</a></p><p><br></p><p><a href=\"https://www.linkedin.com/feed/update/urn:li:activity:6706551841448091648/\" target=\"_blank\">https://www.linkedin.com/feed/update/urn:li:activity:6706551841448091648/</a></p><p><br></p><p>You can see more here:</p><p><a href=\"https://atila.ca/search?q=intern\" target=\"_blank\">https://atila.ca/search?q=intern</a></p><p><a href=\"https://www.linkedin.com/company/atila-tech/\" target=\"_blank\">https://www.linkedin.com/company/atila-tech/</a></p><p><br></p><p><br></p><p>Finally you can check out our socials (there's more links on the footer of the website):</p><p><a href=\"https://www.instagram.com/atilatech/\" target=\"_blank\">https://www.instagram.com/atilatech/</a></p><p><a href=\"https://twitter.com/atilatech\" target=\"_blank\">https://twitter.com/atilatech</a></p><p><a href=\"https://www.youtube.com/channel/UCG2iWiYgJYkjBl4EdYGI5mw/\" target=\"_blank\">https://www.youtube.com/channel/UCG2iWiYgJYkjBl4EdYGI5mw/</a></p><p><br></p><p>Looking forward to meeting you all in the next couple of days.</p><p><br></p><p>If you have any questions you can message me as well :)</p>",
+        "description_plain": "Hey Everyone,\n\n\nCongratulations on being shortlisted for the Atila internship.\n\n\nAs per the instructions from WMA, please select your availability in the provided C…",
+        "duration": 15,
+        "internal_note": null,
+        "kind": "solo",
+        "name": "Atila x WMA Coffee Chat ",
+        "pooling_type": null,
+        "profile": {
+          "name": "Tomiwa Ademidun",
+          "owner": "https://api.calendly.com/users/FDDHFIY6J3S6C7WG",
+          "type": "User"
+        },
+        "scheduling_url": "https://calendly.com/tomiwa1a/atila-wma-coffee-chat",
+        "secret": false,
+        "slug": "atila-wma-coffee-chat",
+        "type": "StandardEventType",
+        "updated_at": "2022-09-16T00:10:45.782742Z",
+        "uri": "https://api.calendly.com/event_types/EFHURDBD3TIYELSN"
+      },
+      {
+        "active": true,
+        "booking_method": "instant",
+        "color": "#8247f5",
+        "created_at": "2021-01-30T00:48:04.344127Z",
+        "custom_questions": [
+          {
+            "answer_choices": [],
+            "enabled": true,
+            "include_other": false,
+            "name": "What's the reason for this meeting? Please include any links or details to help me prepare for the meeting.",
+            "position": 0,
+            "required": true,
+            "type": "text"
+          }
+        ],
+        "deleted_at": null,
+        "description_html": "<p>The meeting will be either a Zoom call or a phone call.</p><p><br></p><ul>\n<li>Zoom: Link will be displayed after confirmation.</li>\n<li>Phone: Please provide your number and I will call you.</li>\n</ul>",
+        "description_plain": "The meeting will be either a Zoom call or a phone call.\n\n\n* Zoom: Link will be displayed after confirmation.\n* Phone: Please provide your number and I will call you.",
+        "duration": 30,
+        "internal_note": null,
+        "kind": "solo",
+        "name": "Tomiwa Ademidun: 30 minutes",
+        "pooling_type": null,
+        "profile": {
+          "name": "Tomiwa Ademidun",
+          "owner": "https://api.calendly.com/users/FDDHFIY6J3S6C7WG",
+          "type": "User"
+        },
+        "scheduling_url": "https://calendly.com/tomiwa1a/meeting",
+        "secret": false,
+        "slug": "meeting",
+        "type": "StandardEventType",
+        "updated_at": "2022-09-16T00:10:45.782742Z",
+        "uri": "https://api.calendly.com/event_types/ACC7CBQJD7OAAEKP"
+      },
+      {
+        "active": false,
+        "booking_method": "instant",
+        "color": "#8247f5",
+        "created_at": "2022-09-16T00:10:45.690471Z",
+        "custom_questions": [
+          {
+            "answer_choices": [],
+            "enabled": true,
+            "include_other": false,
+            "name": "Please share anything that will help prepare for our meeting.",
+            "position": 0,
+            "required": false,
+            "type": "text"
+          }
+        ],
+        "deleted_at": null,
+        "description_html": null,
+        "description_plain": null,
+        "duration": 30,
+        "internal_note": null,
+        "kind": "solo",
+        "name": "vbnv",
+        "pooling_type": null,
+        "profile": {
+          "name": "Tomiwa Ademidun",
+          "owner": "https://api.calendly.com/users/FDDHFIY6J3S6C7WG",
+          "type": "User"
+        },
+        "scheduling_url": "https://calendly.com/tomiwa1a/ncnvbb",
+        "secret": false,
+        "slug": "ncnvbb",
+        "type": "StandardEventType",
+        "updated_at": "2022-09-16T00:10:45.690471Z",
+        "uri": "https://api.calendly.com/event_types/78e64c92-d5ec-4727-9d13-94c592386bad"
+      }
+    ],
+    "pagination": {
+      "count": 7,
+      "next_page": null,
+      "next_page_token": null,
+      "previous_page": null,
+      "previous_page_token": null
+    }
+  }

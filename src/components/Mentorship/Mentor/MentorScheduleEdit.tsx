@@ -1,11 +1,13 @@
 /**
  * See: docs/mentorship/README.md
  */
-import { Button } from 'antd'
+import { Button, List } from 'antd'
 import React, { useEffect, useRef, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router';
 import Environment from '../../../services/Environment'
 import ScheduleAPI from '../../../services/ScheduleAPI';
+import MentorEventTypes from '../../../services/mocks/Mentorship/MentorEventTypes.json';
+import MentorshipAPI from '../../../services/MentorshipAPI';
 
 export const CALENDLY_AUTH_URL = `https://auth.calendly.com/oauth/authorize?client_id=${Environment.CALENDLY_CLIENT_ID}&response_type=code&redirect_uri=https://atila.ca/profile`
 
@@ -23,6 +25,7 @@ function MentorScheduleEdit(props: RouteComponentProps<RouteParams>) {
 
   const [calendarAuthCode, setCalendarAuthCode] = useState(params.get('code') || '');
   const [calendarAccessToken, setCalendarAccessToken] = useState(JSON.parse(localStorage.getItem(calendarAccessTokenKeyName)||'{}'));
+  const [mentorEventTypes, setMentorEventTypes] = useState(MentorEventTypes.collection);
   const isFirstRender = useRef(true);
 
     useEffect(() => {
@@ -40,6 +43,7 @@ function MentorScheduleEdit(props: RouteComponentProps<RouteParams>) {
 
       // either get the current calendarAccessToken or fetch it from the API
       // if it returns an empty string, then exit this call as the required credentials does not exist
+      console.log('getUserSchedule', calendarAccessToken);
       let localCalendarAccessToken = calendarAccessToken.access_token ?  calendarAccessToken : await getAccessToken();
       console.log('localCalendarAccessToken', localCalendarAccessToken);
       if (!localCalendarAccessToken.access_token) {
@@ -49,14 +53,14 @@ function MentorScheduleEdit(props: RouteComponentProps<RouteParams>) {
       try {
 
         const { access_token, owner } = localCalendarAccessToken;
-        const ownerUri = owner.split("/").pop();
 
-        let getEventTypesResponse = await ScheduleAPI.getEventTypes(ownerUri, access_token);
+        let getEventTypesResponse = await ScheduleAPI.getEventTypes(owner, access_token);
         console.log({getEventTypesResponse});
+        setMentorEventTypes(getEventTypesResponse.data);
       }
-      catch( getUserResponseError: any) {
-        console.log({getUserResponseError});
-        if(getUserResponseError?.response?.data?.title === "Unauthenticated") {
+      catch( getEventTypesResponseError: any) {
+        console.log({getEventTypesResponseError});
+        if(getEventTypesResponseError?.response?.data?.title === "Unauthenticated") {
           // if the response says the access token is unauthenticated, then clear the values in local storage
           setCalendarAccessToken({});
           localStorage.removeItem(calendarAccessTokenKeyName);
@@ -84,25 +88,55 @@ function MentorScheduleEdit(props: RouteComponentProps<RouteParams>) {
         }
       }
     }
-    
+
+    const setMentorSchedule =  async (mentorEventType: any) => {
+      try {
+        const setMentorScheduleResponse = await MentorshipAPI.patchMentor({mentor: {schedule_url: mentorEventType.scheduling_url}});
+        console.log({setMentorScheduleResponse});
+      } catch (setMentorScheduleError: any) {
+        console.log({setMentorScheduleError});
+      }
+    }
+
 
   return (
     <div>
-        {calendarAuthCode ?
+      {
+      mentorEventTypes.length === 0 && 
+        <>
+          {calendarAuthCode?
 
-          <Button type="primary" onClick={getUserSchedule}>
-              Get Available Events
-          </Button> 
-          
-          :
-
-          <a href={CALENDLY_AUTH_URL}>
-              <Button type="primary">
-                      Login To Calendly
-              </Button>
-          </a>
-      
+            <Button type="primary" onClick={getUserSchedule}>
+                Get Available Events
+            </Button> 
+            :
+            <a href={CALENDLY_AUTH_URL}>
+                <Button type="primary">
+                        Login To Calendly
+                </Button>
+            </a>
+        
+        }
+        </>
       }
+
+      <List
+        header={<h1>Available Events</h1>}
+        bordered
+        dataSource={mentorEventTypes}
+        renderItem={mentorEventType => (
+          <List.Item>
+            <h3>
+              {mentorEventType.name}
+            </h3>
+            
+            <Button type="primary" onClick={(mentorEventType) => setMentorSchedule(mentorEventType)}>
+              Set Mentorship Schedule
+          </Button> 
+
+          </List.Item>
+        )}
+      />
 
     </div>
   )
