@@ -1,11 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Divider, Table } from 'antd';
+import { Col, Divider, Row, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { Mentor } from '../../../models/Mentor';
 import { UserProfilePreview } from '../../../components/ReferredByInput';
 import { getErrorMessage, stripHtml, truncate } from '../../../services/utils';
 import MentorshipAPI from '../../../services/MentorshipAPI';
 import Loading from '../../../components/Loading';
+import MentorProfileView from '../../../components/Mentorship/Mentor/MentorProfileView';
+import MentorshipSessionSchedule from './MentorshipSessionSchedule';
 
 
 const columns: ColumnsType<Mentor> = [
@@ -28,6 +30,7 @@ export interface SelectMentorProps {
 function SelectMentor(props: SelectMentorProps) {
 
     const [mentors, setMentors] = useState<Mentor[]>([]);
+    const [selectedMentor, setSelectedMentor] = useState<Mentor>()
     const [loadingUI, setLoadingUI] = useState({message: "", type: ""});
   
     const loadMentors = useCallback(
@@ -58,6 +61,7 @@ function SelectMentor(props: SelectMentorProps) {
     const rowSelection = {
         onChange: (selectedRowKeys: React.Key[], selectedRows: Mentor[]) => {
           props.onSelectMentor?.(selectedRows[0]);
+          setSelectedMentor(selectedRows[0]);
           console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
         },
         getCheckboxProps: (record: Mentor) => ({
@@ -66,6 +70,7 @@ function SelectMentor(props: SelectMentorProps) {
         columnTitle: 'Select Mentor'
     };
 
+    console.log({selectedMentor});
     return (
         <div>
             <h1>Select Mentor</h1> 
@@ -80,6 +85,32 @@ function SelectMentor(props: SelectMentorProps) {
             dataSource={mentors}
             rowKey='id'
         />
+
+          
+          {
+            selectedMentor && 
+              <Row gutter={16}>
+
+                <Col sm={24} md={12}>
+                    <div className="col-md-5 col-sm-12 text-center">
+                         <img
+                            alt="user profile"
+                            style={{ height: '250px', width: 'auto' }}
+                            className="rounded-circle cursor-pointer"
+                            src={selectedMentor.user.profile_pic_url}
+                         />
+                    </div>
+                    <div className="col-md-6 col-sm-12">
+                      <h1>{ selectedMentor.user.first_name }{' '}{ selectedMentor.user.last_name }</h1>
+                    </div>
+                  <MentorshipSessionSchedule />
+                </Col>
+                <Col sm={24} md={12}>
+                  <MentorProfileView mentor={selectedMentor} />
+                </Col>
+
+              </Row>
+          }
         {loadingUI.message && <Loading isLoading={loadingUI.message} title={loadingUI.message} />}
         </div>
     );
