@@ -56,6 +56,10 @@ export const MentorProfileView = (props: MentorProfileViewProps) => {
                     About me:
                 </h3>
                 <hr/>
+                <p>
+                    {mentor.description}
+                </p>
+                <br/>
                 <ContentBody body={mentor.bio} bodyType="html" />
                 <h3>
                     Things I can mentor about
