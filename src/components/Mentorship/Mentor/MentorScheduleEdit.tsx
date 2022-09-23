@@ -8,15 +8,23 @@ import Environment from '../../../services/Environment'
 import ScheduleAPI from '../../../services/ScheduleAPI';
 import MentorEventTypes from '../../../services/mocks/Mentorship/MentorEventTypes.json';
 import MentorshipAPI from '../../../services/MentorshipAPI';
+import { Mentor } from '../../../models/Mentor';
 
 export const CALENDLY_AUTH_URL = `https://auth.calendly.com/oauth/authorize?client_id=${Environment.CALENDLY_CLIENT_ID}&response_type=code&redirect_uri=https://atila.ca/profile`
 
+
+
+
+
 interface RouteParams {pageId: string};
+interface MentorScheduleEditProps extends RouteComponentProps<RouteParams>  {
+  mentor: Mentor
+}
 
 const calendarAccessTokenKeyName = 'calendarAccessToken';
-function MentorScheduleEdit(props: RouteComponentProps<RouteParams>) {
+function MentorScheduleEdit(props: MentorScheduleEditProps) {
     
-  const {location: {search}}  = props;
+  const {location: {search}, mentor}  = props;
       
   const params = new URLSearchParams(search);
 
@@ -91,7 +99,10 @@ function MentorScheduleEdit(props: RouteComponentProps<RouteParams>) {
 
     const setMentorSchedule =  async (mentorEventType: any) => {
       try {
-        const setMentorScheduleResponse = await MentorshipAPI.patchMentor({mentor: {schedule_url: mentorEventType.scheduling_url}});
+        const setMentorScheduleResponse = await MentorshipAPI.patchMentor({mentor: {
+          schedule_url: mentorEventType.scheduling_url,
+          id: mentor.id,
+        }});
         console.log({setMentorScheduleResponse});
       } catch (setMentorScheduleError: any) {
         console.log({setMentorScheduleError});

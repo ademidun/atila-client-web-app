@@ -24,6 +24,7 @@ import UserProfileReferrals from './UserProfile/UserProfileReferrals.json';
 import UserProfileApplications from './UserProfile/UserProfileApplications.json';
 import MentorEventTypes from './Mentorship/MentorEventTypes.json';
 import CalendlyAccessToken from './Mentorship/CalendlyAccessToken.json';
+import MentorProfile from './Mentorship/MentorProfile.json';
 
 import EssaysPage1 from './Essay/EssaysPage1.json';
 import ApplicationsAPI from '../ApplicationsAPI';
@@ -149,6 +150,7 @@ export class MockAPI {
             contributions: UserProfileContributions,
             scholarships: {scholarships: ScholarshipsPreview1.data},
             created_scholarships: {created_scholarships: ScholarshipsPreview1.data},
+            mentor: {mentor: MentorProfile},
         }
         for (const [userProfileRoute, response] of Object.entries(userProfileContentMap)) {
             let userProfileDetailAttributeUrl = new RegExp(`${userProfileAPIBaseUrl}/.+/${userProfileRoute}/`);

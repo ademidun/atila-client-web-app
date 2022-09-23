@@ -86,7 +86,6 @@ export function genericItemTransform (item) {
         default:
         // code block
     }
-    console.log({item});
     return item;
 
 }
@@ -114,7 +113,6 @@ export function getItemType(item) {
         itemType = 'content'
     }
 
-    console.log({item, itemType});
     return itemType;
 }
 
