@@ -16,26 +16,13 @@ class ScheduleAPI {
         return apiCompletionPromise;
     };
 
-    static getUser = (userId: string) => {
+    static getEventTypes = (userId: string, accessToken: string) => {
 
         const apiCompletionPromise = request({
             method: 'get',
-            url: `${ScheduleAPI.calendlyApiUrl}/users/${userId}`,
+            url: `${ScheduleAPI.calendlyApiUrl}/event_types?user=${userId}`,
             headers:{
-                'Authorization': `Bearer: ${localStorage.getItem('calendarAccessToken')||''}`
-            }
-        });
-
-        return apiCompletionPromise;
-    };
-
-    static getEventTypes = (userId: string) => {
-
-        const apiCompletionPromise = request({
-            method: 'get',
-            url: `${ScheduleAPI.calendlyApiUrl}/event_types/users/${userId}`,
-            headers:{
-                'Authorization': `Bearer: ${localStorage.getItem('calendarAccessToken')||''}`
+                'Authorization': `Bearer: ${accessToken}`
             }
         });
 
