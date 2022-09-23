@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { Button, Steps } from 'antd';
 import SelectMentor from './SelectMentor';
@@ -14,6 +14,37 @@ export const MentorshipSessionAddEdit = () => {
     const [currentSessionStep, setCurrentSessionStep] = useState(0);
     const [mentorshipSession, setMentorshipSession] = useState<MentorshipSession>({notes: ''});
 
+    // TODO move this inside MentorshipSessionSchedule
+    const isCalendlyEvent = (e: any) => {
+      return e.data.event &&
+             e.data.event.indexOf('calendly') === 0;
+    };
+
+    const handleCalendlyEvent = (e: any) => {
+      if (isCalendlyEvent(e)) {
+        console.log(e);
+        console.log(e.data);
+        if (e.data.event === "calendly.date_and_time_selected") {
+          // change the page when the date and time is selected
+          setCurrentSessionStep(currentSessionStep + 1);
+        }
+      }
+    };
+     
+    useEffect(() => {
+      window.addEventListener(
+        'message',
+        handleCalendlyEvent 
+      );
+    
+      return () => {
+        window.removeEventListener(
+          'message',
+          handleCalendlyEvent 
+        );
+      }
+    }, )
+    
 
     const mentorshipSessionSteps = [
         {
