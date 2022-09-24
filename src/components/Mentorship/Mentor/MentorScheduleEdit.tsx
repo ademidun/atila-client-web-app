@@ -6,7 +6,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router';
 import Environment from '../../../services/Environment'
 import ScheduleAPI from '../../../services/ScheduleAPI';
-import MentorEventTypes from '../../../services/mocks/Mentorship/MentorEventTypes.json';
+// import MentorEventTypes from '../../../services/mocks/Mentorship/MentorEventTypes.json';
 import MentorshipAPI from '../../../services/MentorshipAPI';
 import { Mentor } from '../../../models/Mentor';
 
@@ -33,7 +33,7 @@ function MentorScheduleEdit(props: MentorScheduleEditProps) {
 
     const [calendarAuthCode, setCalendarAuthCode] = useState(params.get('code') || '');
     const [calendarAccessToken, setCalendarAccessToken] = useState(JSON.parse(localStorage.getItem(calendarAccessTokenKeyName)||'{}'));
-    const [mentorEventTypes, setMentorEventTypes] = useState(MentorEventTypes.collection);
+    const [mentorEventTypes, setMentorEventTypes] = useState<any[]>([]);
     const isFirstRender = useRef(true);
 
     useEffect(() => {
@@ -116,7 +116,7 @@ function MentorScheduleEdit(props: MentorScheduleEditProps) {
     
     <div>
 
-        <>
+        <div className='text-center p-3 m-3'>
           {calendarAuthCode?
 
             <Button type="primary" onClick={getUserSchedule}>
@@ -130,25 +130,34 @@ function MentorScheduleEdit(props: MentorScheduleEditProps) {
             </a>
         
         }
-        </>
+        </div>
 
         <List
-        header={<h1>Available Events</h1>}
+        header={
+        <div>
+          <h1>Available Events</h1><br/>  
+          <a href='https://calendly.com/event_types/user/me' target="_blank" rel="noreferrer">
+            Edit Calendar Events
+          </a>
+        </div>
+        }
         bordered
         dataSource={mentorEventTypes}
         renderItem={mentorEventType => {
-
           const activeSchedule = mentor.schedule_url === mentorEventType.scheduling_url;
+          let invalidEventType = `${mentorEventType.duration !== 60 ? "Event duration must be 60 minutes. ":""}${ !mentorEventType.active ? "Event must be active." : ""}`;
           return (
             <List.Item>
               <h3>
                 {mentorEventType.name} {activeSchedule && <Tag color="green">Active Schedule</Tag>}
               </h3>
               
-              <Button type="primary" onClick={() => setMentorSchedule(mentorEventType)} disabled={activeSchedule}>
+              {invalidEventType ? <p className='text-danger'>
+                {invalidEventType}
+              </p> :
+              <Button type="primary" onClick={() => setMentorSchedule(mentorEventType)} disabled={activeSchedule||!!invalidEventType}>
                 Set Mentorship Schedule
-            </Button> 
-  
+            </Button> }
             </List.Item>
           )
         }}
