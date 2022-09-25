@@ -76,6 +76,11 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
     useEffect(() => {
       loadMentor();  
     }, [loadMentor]);
+
+    const registerProps = { // make sure all required component's inputs/Props keys&types match
+      disableRedirect: true,
+      onRegistrationFinished: () => window.scrollTo(0,0)
+    }
     
 
     const mentorshipSessionSteps = [
@@ -107,7 +112,13 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
 
               <div>
               <h1>Create an Account or Login to book a session</h1> <br/>
-              <Register disableRedirect={true} className=""/>
+              {/*
+              
+                Assign register props using spread operator
+                Needed to resolve the following error: Type '{ disableRedirect: boolean; }' is not assignable to type 'IntrinsicAttributes & ... 
+              
+              */}
+              <Register {...registerProps} />
                         
               </div>
             }

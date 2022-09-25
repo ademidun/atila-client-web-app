@@ -7,7 +7,7 @@ import {setLoggedInUserProfile} from "../redux/actions/user";
 import {connect} from "react-redux";
 import TermsConditions from "./TermsConditions";
 import { Alert, Select, Modal, Button } from "antd";
-import {Link} from "react-router-dom";
+import { Link, withRouter} from "react-router-dom";
 import {forbiddenCharacters, hasForbiddenCharacters} from "../models/Utils";
 import ReferredByInput from './ReferredByInput';
 import { toTitleCase } from '../services/utils';
@@ -567,4 +567,4 @@ Register.propTypes = {
     userProfile:PropTypes.shape({}),
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Register);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Register));
