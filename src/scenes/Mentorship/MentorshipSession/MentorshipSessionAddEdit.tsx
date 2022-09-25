@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { Button, Steps } from 'antd';
-import SelectMentor from './SelectMentor';
 import { MentorshipSession } from '../../../models/MentorshipSession';
 import MentorshipSessionPayment from './MentorshipSessionPayment/MentorshipSessionPayment';
 import FormDynamic from '../../../components/Form/FormDynamic';
 import MentorshipSessionSchedule from './MentorshipSessionSchedule';
+import MentorshipAPI from '../../../services/MentorshipAPI';
+import { getErrorMessage } from '../../../services/utils';
+import Loading from '../../../components/Loading';
+import TextUtils from '../../../services/utils/TextUtils';
 
 const { Step } = Steps;
 
@@ -13,44 +16,63 @@ export const MentorshipSessionAddEdit = () => {
 
     const [currentSessionStep, setCurrentSessionStep] = useState(0);
     const [mentorshipSession, setMentorshipSession] = useState<MentorshipSession>({notes: ''});
+    const [loadingUI, setLoadingUI] = useState({message: "", type: ""});
+  
+    const loadMentor = useCallback(
+      () => {
+  
+      setLoadingUI({message: "Loading Mentor profile", type: "info"});
+      MentorshipAPI.listMentors()
+      .then((res: any) => {
+          const { data: {results: mentors } } = res;
+          setMentorshipSession(session => ({...session, mentor: mentors[0]}))
+      })
+      .catch(error => {
+          console.log({error});
+          setLoadingUI({message: getErrorMessage(error), type: "error"});
+      })
+      .finally(()=> {
+          setLoadingUI({message: "", type: ""});
+      })
+        return ;// code that references a prop
+      },
+      []
+    );
 
-    // TODO move this inside MentorshipSessionSchedule
-    const isCalendlyEvent = (e: any) => {
-      return e.data.event &&
-             e.data.event.indexOf('calendly') === 0;
-    };
-
-    const handleCalendlyEvent = (e: any) => {
-      if (isCalendlyEvent(e)) {
-        console.log(e);
-        console.log(e.data);
-        if (e.data.event === "calendly.date_and_time_selected") {
-          // change the page when the date and time is selected
-          setCurrentSessionStep(currentSessionStep + 1);
-        }
+    const handleCalendarEventViewed = (session: MentorshipSession) => {
+      if (!session.stripe_payment_intent_id) { // if session has not been payed for yet
+        // if the current step is on the preview page (currentSessionStep === 0) then go to the next step which is payment currentSessionStep + 1
+        // else, go to the previous step which should also be payment.
+        setCurrentSessionStep( currentSessionStep === 0 ? currentSessionStep + 1 : currentSessionStep - 1);
       }
-    };
-     
+    }
+  
+    // when the currentSessionStep changes, scroll back to the top of the page
     useEffect(() => {
-      window.addEventListener(
-        'message',
-        handleCalendlyEvent 
-      );
-    
-      return () => {
-        window.removeEventListener(
-          'message',
-          handleCalendlyEvent 
-        );
-      }
-    }, )
+      window.scrollTo(0,0); 
+    }, [currentSessionStep]);
+  
+    useEffect(() => {
+      loadMentor();  
+    }, [loadMentor]);
     
 
     const mentorshipSessionSteps = [
         {
-          title: 'Select',
+          title: 'Preview',
           content: (session: MentorshipSession)=> 
-          <SelectMentor onSelectMentor={mentor => setMentorshipSession({...mentorshipSession, mentor}) } />,
+          <div>
+            <div className='text-center'>
+              <h1>
+              Preview {session.mentor ? `${TextUtils.dynamicPossessive(session.mentor.user.first_name)}` : "mentor's" } schedule and find a time that works for you
+              </h1>
+              <h3>
+                You can confirm this time after payment.
+              </h3>
+            </div>
+
+            <MentorshipSessionSchedule session={session} onDateAndTimeSelected={handleCalendarEventViewed} />
+          </div>,
           disabled: () => false,
         },
         {
@@ -65,10 +87,10 @@ export const MentorshipSessionAddEdit = () => {
           title: 'Schedule',
           content: (session: MentorshipSession)=> <div>
             <h1>
-            Pick a time that works for you
+            Schedule a time{session.mentor ? ` with ${session.mentor.user.first_name} ` : " " }that works for you
             </h1>
 
-            <MentorshipSessionSchedule />
+            <MentorshipSessionSchedule session={session} onDateAndTimeSelected={handleCalendarEventViewed} />
           </div>,
           disabled: () => false
         },
@@ -116,6 +138,7 @@ export const MentorshipSessionAddEdit = () => {
       </Steps>
 
       <div className='container card shadow m-3 p-3'>
+        {loadingUI.message && <Loading isLoading={loadingUI.message} title={loadingUI.message} />}
         {mentorshipSessionSteps[currentSessionStep].content(mentorshipSession!)}
       </div>
 

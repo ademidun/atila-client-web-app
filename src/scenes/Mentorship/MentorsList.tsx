@@ -50,7 +50,7 @@ function MentorsList() {
       <h1>
         Mentors
       </h1>
-      <div className='text-center'>
+      <div className='text-center m-3'>
         <Link to="/mentorship/about">
           <Button>
             Learn More

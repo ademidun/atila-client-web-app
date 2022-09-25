@@ -20,6 +20,17 @@ class TextUtils {
         }
         return input.toLocaleString('en-ca', {style : 'currency', currency, minimumFractionDigits });
     }
+
+    /**
+     * Dynamically display the possessive name. E.g. Determine if the value should be Alice's or Stones'.
+     * @param input string
+     * @returns 
+     */
+    static dynamicPossessive = (input: string) => {
+        
+        console.log({input});
+        return (`${input}${input.slice(-1)[0].toLowerCase()=== "s" ? "'": "'s"}`)
+    }
 }
 
 /**
