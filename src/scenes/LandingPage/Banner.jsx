@@ -85,7 +85,7 @@ class Banner extends React.Component {
             <h2 key="h2">
 
               Connecting students <br/> 
-              to scholarships and mentorship
+              with scholarships and mentorship
             </h2>
             <form className="col-sm-12"
                   style={{ height: '300px'}}>
