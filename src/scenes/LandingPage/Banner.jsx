@@ -84,7 +84,8 @@ class Banner extends React.Component {
             </h1>
             <h2 key="h2">
 
-              The best way to <br/> start and get scholarships <br/> using fiat and crypto.
+              Connecting students <br/> 
+              to scholarships and mentorship
             </h2>
             <form className="col-sm-12"
                   style={{ height: '300px'}}>
