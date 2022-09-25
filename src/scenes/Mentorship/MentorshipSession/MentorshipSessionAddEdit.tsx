@@ -9,23 +9,44 @@ import MentorshipAPI from '../../../services/MentorshipAPI';
 import { getErrorMessage } from '../../../services/utils';
 import Loading from '../../../components/Loading';
 import TextUtils from '../../../services/utils/TextUtils';
+import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
+import HelmetSeo, { defaultSeoContent } from '../../../components/HelmetSeo';
+import { UserProfile } from '../../../models/UserProfile.class';
+import Register from '../../../components/Register';
 
 const { Step } = Steps;
 
-export const MentorshipSessionAddEdit = () => {
+interface CollectionDetailRouteParams {
+  mentorUsername: string
+};
+
+export interface MentorshipSessionAddEditProps extends RouteComponentProps<CollectionDetailRouteParams>  {
+  userProfileLoggedIn?: UserProfile,
+}
+
+export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) => {
+
+
+    const { match: {params: { mentorUsername }}, userProfileLoggedIn } = props;
 
     const [currentSessionStep, setCurrentSessionStep] = useState(0);
     const [mentorshipSession, setMentorshipSession] = useState<MentorshipSession>({notes: ''});
     const [loadingUI, setLoadingUI] = useState({message: "", type: ""});
+    const [seoContent, setSeoContent] = useState({
+      ...defaultSeoContent,
+      title: "Book a Mentorship session",
+  })
   
     const loadMentor = useCallback(
       () => {
   
       setLoadingUI({message: "Loading Mentor profile", type: "info"});
-      MentorshipAPI.listMentors()
+      MentorshipAPI.listMentors(`?username=${mentorUsername}`)
       .then((res: any) => {
           const { data: {results: mentors } } = res;
-          setMentorshipSession(session => ({...session, mentor: mentors[0]}))
+          const mentor = mentors[0];
+          setMentorshipSession(session => ({...session, mentor}))
+          setSeoContent(content => ({...content, title: `Book a mentorship session with ${mentor.user.first_name}`}))
       })
       .catch(error => {
           console.log({error});
@@ -36,7 +57,7 @@ export const MentorshipSessionAddEdit = () => {
       })
         return ;// code that references a prop
       },
-      []
+      [mentorUsername]
     );
 
     const handleCalendarEventViewed = (session: MentorshipSession) => {
@@ -64,12 +85,13 @@ export const MentorshipSessionAddEdit = () => {
           <div>
             <div className='text-center'>
               <h1>
-              Preview {session.mentor ? `${TextUtils.dynamicPossessive(session.mentor.user.first_name)}` : "mentor's" } schedule and find a time that works for you
+              Preview {session.mentor ? `${TextUtils.dynamicPossessive(session.mentor.user.first_name)}` : "mentor's" } schedule
               </h1>
-              <h3>
+              <h3 className='text-muted'>
                 You can confirm this time after payment.
               </h3>
             </div>
+            <hr/>
 
             <MentorshipSessionSchedule session={session} onDateAndTimeSelected={handleCalendarEventViewed} />
           </div>,
@@ -78,8 +100,18 @@ export const MentorshipSessionAddEdit = () => {
         {
           title: 'Pay',
           content: (session: MentorshipSession)=> <div>
+
+            { userProfileLoggedIn ? 
             <MentorshipSessionPayment session={session} onPaymentComplete={session => 
-              setMentorshipSession({...mentorshipSession, ...session}) }  />
+              setMentorshipSession({...mentorshipSession, ...session}) }  /> : 
+
+              <div>
+              <h1>Create an Account or Login to book a session</h1> <br/>
+              <Register disableRedirect={true} className=""/>
+                        
+              </div>
+            }
+            
           </div>,
           disabled: () => !mentorshipSession?.mentor,
         },
@@ -92,7 +124,7 @@ export const MentorshipSessionAddEdit = () => {
 
             <MentorshipSessionSchedule session={session} onDateAndTimeSelected={handleCalendarEventViewed} />
           </div>,
-          disabled: () => false
+          disabled: () => !mentorshipSession?.stripe_payment_intent_id
         },
         {
           title: 'Prepare',
@@ -119,44 +151,52 @@ export const MentorshipSessionAddEdit = () => {
               </div>
             )
           },
-          disabled: () => false
+          disabled: () => !mentorshipSession?.stripe_payment_intent_id
         },
         {
           title: 'Attend',
           content: (session: MentorshipSession)=> <div>
             Details of your mentorship session
           </div>,
-          disabled: () => false
+          disabled: () => !mentorshipSession?.stripe_payment_intent_id
         },
     ];
   return (
-    <div className='container card shadow m-3 p-3'>
+    <div className='card shadow m-3 p-3'>
+      <HelmetSeo content={seoContent}/>
       <Steps current={currentSessionStep} onChange={current => setCurrentSessionStep(current)}>
         {mentorshipSessionSteps.map(item => (
           <Step key={item.title} title={item.title} disabled={item.disabled()} />
         ))}
       </Steps>
 
-      <div className='container card shadow m-3 p-3'>
+      <div className='m-3 p-3'>
         {loadingUI.message && <Loading isLoading={loadingUI.message} title={loadingUI.message} />}
         {mentorshipSessionSteps[currentSessionStep].content(mentorshipSession!)}
       </div>
 
       <div>
         {currentSessionStep < mentorshipSessionSteps.length - 1 && (
-          <Button type="primary" className="btn btn-outline-primary float-right col-md-6"
+          <Button type="primary" className="float-right col-md-6"
 
           disabled={mentorshipSessionSteps[currentSessionStep + 1].disabled()}
             onClick={() => setCurrentSessionStep(currentSessionStep + 1)}>
             Next
           </Button>
         )}
-        {currentSessionStep > 0 && (
-          <Button className="btn btn-outline-primary float-right col-md-6"
+        {currentSessionStep > 0 ? (
+          <Button className="float-right col-md-6"
             onClick={() => setCurrentSessionStep(currentSessionStep - 1)} >
             Previous
           </Button>
-        )}
+        ): 
+        <Link to="/mentorship">
+          <Button className="float-right col-md-6">
+            View all Mentors
+          </Button>
+          
+        </Link>
+        }
       </div>
     </div>
   );
@@ -167,5 +207,4 @@ const mapStateToProps = (state: any) => {
 };
 
 const mapDispatchToProps = {}
-
-export default connect(mapStateToProps, mapDispatchToProps)(MentorshipSessionAddEdit)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MentorshipSessionAddEdit))

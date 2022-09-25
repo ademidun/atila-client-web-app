@@ -56,7 +56,7 @@ export function genericItemTransform (item) {
                 ...item,
                 title: `${user.first_name} ${user.last_name}`,
                 description: stripHtml(item.bio),
-                slug: user ? `/mentorship/session/new?mentor=${user.username}`: "",
+                slug: user ? `/mentorship/session/new/${user.username}`: "",
                 image: user ? `${user.profile_pic_url}` : "",
             };
             break;

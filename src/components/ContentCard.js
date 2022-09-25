@@ -151,6 +151,13 @@ class ContentCard extends React.Component {
                         }   
                         </div>
                         {authorsComponent}
+                        {type === "mentor" && 
+                        <div>
+                            <Link to={slug} onClick={this.sendAlgoliaAnalyticsEvent}>
+                                <Button type='primary'>Book Mentor</Button>
+                            </Link>
+                        </div>
+                        }
                         <p className="body"> 
                             {descriptionText}
                         </p>

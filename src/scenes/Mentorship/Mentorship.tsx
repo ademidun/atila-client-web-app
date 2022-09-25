@@ -8,7 +8,7 @@ function Mentorship({ match }: { match: any}) {
     return (
         <Switch>
             <Route path={`${match.path}/about`} component={MentorshipAbout} />
-            <Route path={`${match.path}/session/new`} component={MentorshipSessionAddEdit} />
+            <Route path={`${match.path}/session/new/:mentorUsername`} component={MentorshipSessionAddEdit} />
             <Route path={`${match.path}/session/:sessionId`} component={MentorshipSessionAddEdit} />
             <Route
                 exact

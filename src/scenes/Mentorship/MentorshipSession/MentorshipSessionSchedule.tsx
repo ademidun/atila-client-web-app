@@ -22,6 +22,20 @@ function MentorshipSessionSchedule(props: MentorshipSessionScheduleProps) {
 
   const { session, session: { mentor }, onDateAndTimeSelected, onEventTypeViewed } = props;
   const [loadingCalendar, setLoadingCalendar] = useState("Loading calendar");
+
+  const [width, setWidth] = useState<number>(window.innerWidth);
+
+  function handleWindowSizeChange() {
+      setWidth(window.innerWidth);
+  }
+  useEffect(() => {
+      window.addEventListener('resize', handleWindowSizeChange);
+      return () => {
+          window.removeEventListener('resize', handleWindowSizeChange);
+      }
+  }, []);
+
+  const isMobile = width <= 768;
   
 
     useEffect(() => {
@@ -94,27 +108,16 @@ function MentorshipSessionSchedule(props: MentorshipSessionScheduleProps) {
               <Row gutter={16}>
 
                 <Col sm={24} md={12}>
-                    <div className="col-md-5 col-sm-12 text-center">
-                         <img
-                            alt="user profile"
-                            style={{ height: '250px', width: 'auto' }}
-                            className="rounded-circle cursor-pointer"
-                            src={mentor.user.profile_pic_url}
-                         />
-                    </div>
-                    <div className="col-md-6 col-sm-12">
-                      <h1>{ mentor.user.first_name }{' '}{ mentor.user.last_name }</h1>
-                    </div>
                     {loadingCalendar && <Loading title={loadingCalendar} />}
-                    <div id={calendarDivId}>
+                    <div id={calendarDivId} className='card shadow'>
                     <div 
                         className="calendly-inline-widget"
                         data-url={mentor.schedule_url}
-                        style={{ minWidth: '320px', height: '1250px' }} />
+                        style={{ minWidth: isMobile ? '400px' : "550px", height: isMobile ? '650px' : "1000px" }} />
                     </div>
                 </Col>
                 <Col sm={24} md={12}>
-                  <MentorProfileView mentor={mentor} />
+                  <MentorProfileView mentor={mentor} showProfilePic={true} />
                 </Col>
 
               </Row>}
