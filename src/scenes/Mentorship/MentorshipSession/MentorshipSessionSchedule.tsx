@@ -1,5 +1,6 @@
 import { Row, Col } from 'antd';
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom';
 import Loading from '../../../components/Loading';
 import MentorProfileView from '../../../components/Mentorship/Mentor/MentorProfileView';
 import { MentorshipSession } from '../../../models/MentorshipSession';
@@ -101,20 +102,34 @@ function MentorshipSessionSchedule(props: MentorshipSessionScheduleProps) {
       }
     }, );
     
-    
+
   return (
     <div>
         {mentor && 
               <Row gutter={16}>
 
                 <Col sm={24} md={12}>
-                    {loadingCalendar && <Loading title={loadingCalendar} />}
+                    
+                    
                     <div id={calendarDivId} className='card shadow'>
+                    { mentor.schedule_url ? 
+                    <div>
+                      {loadingCalendar && <Loading title={loadingCalendar} />}
                     <div 
                         className="calendly-inline-widget"
                         data-url={mentor.schedule_url}
                         style={{ minWidth: isMobile ? '400px' : "550px", height: isMobile ? '650px' : "1000px" }} />
-                    </div>
+                    </div> :
+
+                        <div className='text-center p-3'>
+                          <h5>
+                            No available times for this mentor: <Link to="/mentorship">View all Mentors</Link>
+                          </h5>
+                        </div>
+
+                      }
+                      </div>
+                    
                 </Col>
                 <Col sm={24} md={12}>
                   <MentorProfileView mentor={mentor} showProfilePic={true} />
