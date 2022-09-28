@@ -1,7 +1,9 @@
 import React from "react";
-import { Button } from "antd";
+import { Button, Spin } from "antd";
+import { DeleteOutlined } from '@ant-design/icons';
 import { FilesAPI } from "../../services/FilesAPI";
 import { AudioPlay } from "./AudioPlay";
+import PropTypes from "prop-types";
 
 export class AudioRecord extends React.Component {
     constructor(props) {
@@ -11,10 +13,11 @@ export class AudioRecord extends React.Component {
             recorder: null,
             audioChunks: [],
             stream: null,
+            uploadRef: null,
             audioPath: this.props.audioPath,
             audioUrl: this.props.value,
-            uploadRef: null,
             recording: false,
+            saving: false,
         }
     }
 
@@ -39,6 +42,8 @@ export class AudioRecord extends React.Component {
     stopAudioRecording = () => {
         try {
             if (this.state.recorder) {
+                this.setState({saving: true});
+
                 this.state.recorder.addEventListener('stop', () => {
                     const audioBlob = new Blob(this.state.audioChunks, { type: 'audio/mp3'});
                     this.saveRecording(audioBlob);
@@ -50,7 +55,10 @@ export class AudioRecord extends React.Component {
         } catch (err) {
             console.log("error stopping recording: " + err);
         } finally {
-            this.setState({recording: false});
+            this.setState({
+                recording: false,
+                saving: false
+            });
         }
     }
 
@@ -85,13 +93,25 @@ export class AudioRecord extends React.Component {
         }
     }
 
+    deleteAudioRecording = () => {
+        this.props.onAudioSaved({url: ''});
+        this.setState({
+            audioUrl: ''
+        })
+    }
+
     renderContent() {
-        const {audioUrl, recording} = this.state;
+        const {audioUrl, recording, saving} = this.state;
 
         if (audioUrl !== '') {
-            return <AudioPlay audioUrl={this.state.audioUrl} />;
+            return <div style={{display: 'flex', alignItems: 'center'}}>
+                <AudioPlay audioUrl={this.state.audioUrl} />
+                <Button onClick={this.deleteAudioRecording} className='ml-1 mb-2' type="primary" danger shape="circle" icon={<DeleteOutlined/>} />
+            </div>;
         } else if (recording) {
             return <Button type="primary" onClick={this.stopAudioRecording}>Stop and save</Button>;
+        } else if (saving) {
+            return <Spin />
         } else {
             return <Button type="primary" className="mr-2" onClick={this.startAudioRecording}>Record an audio message</Button>;
         }
@@ -104,4 +124,9 @@ export class AudioRecord extends React.Component {
             </div>
         )
     }
+}
+
+AudioRecord.propTypes = {
+    audioPath: PropTypes.string,
+    audioUrl: PropTypes.string,
 }
