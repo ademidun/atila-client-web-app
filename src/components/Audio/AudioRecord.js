@@ -41,9 +41,8 @@ export class AudioRecord extends React.Component {
 
     stopAudioRecording = () => {
         try {
+            this.setState({saving: true});
             if (this.state.recorder) {
-                this.setState({saving: true});
-
                 this.state.recorder.addEventListener('stop', () => {
                     const audioBlob = new Blob(this.state.audioChunks, { type: 'audio/mp3'});
                     this.saveRecording(audioBlob);
@@ -54,11 +53,9 @@ export class AudioRecord extends React.Component {
             }
         } catch (err) {
             console.log("error stopping recording: " + err);
+            this.setState({saving: false});
         } finally {
-            this.setState({
-                recording: false,
-                saving: false
-            });
+            this.setState({recording: false});
         }
     }
 
@@ -68,7 +65,7 @@ export class AudioRecord extends React.Component {
             console.log("audio uploading error: " + error);
         }, () => {
             uploadRef.getDownloadURL().then(url => {
-                this.setState({audioUrl: url});
+                this.setState({audioUrl: url, saving: false});
                 this.props.onAudioSaved({url: url});
             })
         })
@@ -108,10 +105,10 @@ export class AudioRecord extends React.Component {
                 <AudioPlay audioUrl={this.state.audioUrl} />
                 <Button onClick={this.deleteAudioRecording} className='ml-1 mb-2' type="primary" danger shape="circle" icon={<DeleteOutlined/>} />
             </div>;
-        } else if (recording) {
-            return <Button type="primary" onClick={this.stopAudioRecording}>Stop and save</Button>;
         } else if (saving) {
             return <Spin />
+        } else if (recording) {
+            return <Button type="primary" onClick={this.stopAudioRecording}>Stop and save</Button>;
         } else {
             return <Button type="primary" className="mr-2" onClick={this.startAudioRecording}>Record an audio message</Button>;
         }
@@ -129,4 +126,5 @@ export class AudioRecord extends React.Component {
 AudioRecord.propTypes = {
     audioPath: PropTypes.string,
     audioUrl: PropTypes.string,
+    onAudioSaved: PropTypes.func,
 }
