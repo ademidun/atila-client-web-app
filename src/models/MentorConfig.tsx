@@ -15,5 +15,10 @@ export const mentorProfileFormConfig = [
         html: () => (<label htmlFor="mentorship_topics">
             What topics can you give mentorship about?
         </label>),
+    },
+    {
+        keyName: 'audio_message_url',
+        type: 'audio',
+        label: 'Short audio clip:',
     }
 ];
