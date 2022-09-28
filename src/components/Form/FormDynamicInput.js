@@ -48,7 +48,7 @@ const datePickerChange = (name, moment, updateForm) => {
 function FormDynamicInput({model, onUpdateForm, inputConfig, loggedInUserProfile}) {
 
     const { type, keyName, html, suggestions, className,
-        options, valueDisplay, isHidden, hideLabel, label, disabled, skipPrettifyKeys, renderOption } = inputConfig;
+        options, valueDisplay, isHidden, hideLabel, label, disabled, skipPrettifyKeys, renderOption, filePath } = inputConfig;
     let {placeholder} = inputConfig;
     let inputForm = null;
 
@@ -314,7 +314,7 @@ function FormDynamicInput({model, onUpdateForm, inputConfig, loggedInUserProfile
                     {label && <label htmlFor={keyName}>
                         {label}
                     </label>}
-                    <AudioRecord value={modelValue} audioPath="user-profile-audio" onAudioSaved={({url}) => {
+                    <AudioRecord value={modelValue} audioPath={filePath} onAudioSaved={({url}) => {
                         const syntheticEvent = {
                             target: {
                                 value: url,

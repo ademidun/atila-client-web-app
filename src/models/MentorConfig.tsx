@@ -20,5 +20,6 @@ export const mentorProfileFormConfig = [
         keyName: 'audio_message_url',
         type: 'audio',
         label: 'Short audio clip:',
+        filePath: 'mentor-profile-audio'
     }
 ];
