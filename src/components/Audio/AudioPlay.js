@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from "prop-types";
-import {AudioRecord} from "./AudioRecord";
 
 export class AudioPlay extends React.Component {
     constructor(props) {

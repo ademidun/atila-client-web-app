@@ -1,8 +1,10 @@
 import React from "react";
 import { Button, Spin } from "antd";
-import { DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined, CheckOutlined, AudioOutlined} from '@ant-design/icons';
 import { FilesAPI } from "../../services/FilesAPI";
 import { AudioPlay } from "./AudioPlay";
+import AudioTimer from "./AudioTimer";
+import PulsingRedDot  from "./PulsingRedDot";
 import PropTypes from "prop-types";
 
 export class AudioRecord extends React.Component {
@@ -18,21 +20,19 @@ export class AudioRecord extends React.Component {
             audioUrl: this.props.value,
             recording: false,
             saving: false,
+            stopTimer: false,
         }
     }
 
     startAudioRecording = async () => {
         try {
-            this.setState({recording: true});
-
-            if (!this.state.recorder) {
-                let recorder = await this.getMediaRecorder();
-                this.setState({
-                    recorder: recorder
-                })
-            }
+            let recorder = await this.getMediaRecorder();
+            this.setState({
+                recorder: recorder
+            })
 
             this.state.recorder.start();
+            this.setState({recording: true, stopTimer: false});
         } catch(err) {
             console.log("error starting recording: " + err);
             this.setState({recording: false});
@@ -43,11 +43,7 @@ export class AudioRecord extends React.Component {
         try {
             this.setState({saving: true});
             if (this.state.recorder) {
-                this.state.recorder.addEventListener('stop', () => {
-                    const audioBlob = new Blob(this.state.audioChunks, { type: 'audio/mp3'});
-                    this.saveRecording(audioBlob);
-                })
-
+                this.setState({stopTimer: true});
                 this.state.stream.getTracks().forEach((track) => track.stop());
                 this.state.recorder.stop();
             }
@@ -83,6 +79,11 @@ export class AudioRecord extends React.Component {
                     })
                 })
 
+                mediaRecorder.addEventListener('stop', () => {
+                    const audioBlob = new Blob(this.state.audioChunks, { type: 'audio/mp3'});
+                    this.saveRecording(audioBlob);
+                })
+
                 resolve(mediaRecorder);
             })
         } catch(err) {
@@ -98,7 +99,7 @@ export class AudioRecord extends React.Component {
     }
 
     renderContent() {
-        const {audioUrl, recording, saving} = this.state;
+        const {audioUrl, recording, saving, stopTimer} = this.state;
 
         if (audioUrl !== '') {
             return <div style={{display: 'flex', alignItems: 'center'}}>
@@ -108,9 +109,22 @@ export class AudioRecord extends React.Component {
         } else if (saving) {
             return <Spin />
         } else if (recording) {
-            return <Button type="primary" onClick={this.stopAudioRecording}>Stop and save</Button>;
+            return <div style={{display: 'flex', alignItems: 'center', gap: '0.5rem'}}>
+                <PulsingRedDot/>
+                <AudioTimer stopped={stopTimer}/>
+                <Button style={{backgroundColor: '#0BDA51', borderColor: '#0BDA51'}}
+                        onClick={this.stopAudioRecording}
+                        type="primary"
+                        shape="circle"
+                        icon={<CheckOutlined />}
+                />
+            </div>;
         } else {
-            return <Button type="primary" className="mr-2" onClick={this.startAudioRecording}>Record an audio message</Button>;
+            return <Button type="primary" className="mr-2" onClick={this.startAudioRecording}>
+                <span style={{display: 'flex', alignItems: 'center', gap: '0.2rem'}}>
+                Record <AudioOutlined/>
+                </span>
+            </Button>;
         }
     }
 
