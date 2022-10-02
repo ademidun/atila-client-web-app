@@ -17,7 +17,7 @@ export const mentorProfileFormConfig = [
         </label>),
     },
     {
-        keyName: 'audio_message_url',
+        keyName: 'bio_recording_url',
         type: 'audio',
         label: 'Short audio clip:',
         filePath: 'mentor-profile-audio'

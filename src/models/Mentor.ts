@@ -3,7 +3,7 @@ import { UserProfile } from "./UserProfile.class";
 
 export interface Mentor extends Demographic {
     [key: string]: string | UserProfile| Array<string>;
-    audio_message_url: string,
+    bio_recording_url: string,
     id: string,
     user: UserProfile,
     bio: string,
