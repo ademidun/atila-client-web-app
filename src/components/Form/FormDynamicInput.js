@@ -11,6 +11,7 @@ import FileInput from "./FileInput";
 import {emojiDictionary} from "../../models/Constants";
 import moment from "moment";
 import FormInputConstants from "../../models/FormInputConstants";
+import {AudioRecord} from "../Audio/AudioRecord";
 
 const { Option } = Select;
 
@@ -47,7 +48,7 @@ const datePickerChange = (name, moment, updateForm) => {
 function FormDynamicInput({model, onUpdateForm, inputConfig, loggedInUserProfile}) {
 
     const { type, keyName, html, suggestions, className,
-        options, valueDisplay, isHidden, hideLabel, label, disabled, skipPrettifyKeys, renderOption } = inputConfig;
+        options, valueDisplay, isHidden, hideLabel, label, disabled, skipPrettifyKeys, renderOption, filePath } = inputConfig;
     let {placeholder} = inputConfig;
     let inputForm = null;
 
@@ -306,6 +307,24 @@ function FormDynamicInput({model, onUpdateForm, inputConfig, loggedInUserProfile
                 </div>
                 {type === "image" && <img src={modelValue} alt={placeholder} width="250" className="card center-block my-3"/> }
             </div>);
+            break;
+        case 'audio':
+            inputForm = (
+                <div className="mb-3">
+                    {label && <label htmlFor={keyName}>
+                        {label}
+                    </label>}
+                    <AudioRecord value={modelValue} audioPath={filePath} onAudioSaved={({url}) => {
+                        const syntheticEvent = {
+                            target: {
+                                value: url,
+                                name: keyName
+                            }
+                        }
+                        onUpdateForm(syntheticEvent);
+                    }} />
+                </div>
+            )
             break;
         default:
             inputForm = (

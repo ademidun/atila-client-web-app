@@ -18,9 +18,10 @@ export class FilesAPI {
         const storage = firebase.storage();
         const storageRef = storage.ref();
         // Add a random suffix to each file to prevent files with the same name from overriding each other
-        const fileKey = `${getRandomString(8)}-${file.name}`;
+        // Notes that not all file types contain a file object, an example is the audio file type.
+        let fileKey = file ? `${getRandomString(8)}-${file.name}` : `${getRandomString(8)}`
         const uploadRef = storageRef.child(`user-uploads/${filePath}/${fileKey}`);
-        const uploadTask = uploadRef.put(file);
+        const uploadTask = uploadRef.put(fileData);
 
         return {
             uploadTask,

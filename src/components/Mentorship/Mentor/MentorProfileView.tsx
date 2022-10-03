@@ -1,5 +1,6 @@
 import React from 'react';
 import { Mentor } from '../../../models/Mentor';
+import AudioPlay from '../../Audio/AudioPlay';
 import ContentBody from '../../ContentDetail/ContentBody/ContentBody';
 import DemographicsDisplay from '../../DemographicsDisplay';
 
@@ -34,18 +35,27 @@ export const MentorProfileView = (props: MentorProfileViewProps) => {
                     </div>
                 </div>
                 }
-
-                <DemographicsDisplay model={mentor} />
                 <hr/>
                 <h3>
                     About me:
                 </h3>
+                {mentor.bio_recording_url && 
+                    <>
+                        <hr/>
+                        <h5>
+                            Listen to a voice note about me
+                        </h5>
+                        <AudioPlay audioUrl={mentor.bio_recording_url} />
+                    </>
+                }
                 <hr/>
                 <p>
                     {mentor.description}
                 </p>
                 <br/>
                 <ContentBody body={mentor.bio} bodyType="html" />
+                <hr/>
+                <DemographicsDisplay model={mentor} />
                 <h3>
                     Things I can mentor about
                 </h3>

@@ -25,5 +25,11 @@ export const mentorProfileFormConfig = [
                     <a href="https://docs.new" target="_blank" rel="noopener noreferrer">
                      Google docs</a> then copy-paste them back here.
         </label>),
+    },
+    {
+        keyName: 'bio_recording_url',
+        type: 'audio',
+        label: 'Record a voice note about yourself:',
+        filePath: 'mentor-profile-audio'
     }
 ];
