@@ -56,7 +56,7 @@ export function genericItemTransform (item) {
                 ...item,
                 title: `${user.first_name} ${user.last_name}`,
                 description: stripHtml(item.bio),
-                slug: user ? `/mentorship/session/new?mentor=${user.username}`: "",
+                slug: user ? `/mentorship/session/new/${user.username}`: "",
                 image: user ? `${user.profile_pic_url}` : "",
             };
             break;
@@ -86,7 +86,6 @@ export function genericItemTransform (item) {
         default:
         // code block
     }
-    console.log({item});
     return item;
 
 }
@@ -114,7 +113,6 @@ export function getItemType(item) {
         itemType = 'content'
     }
 
-    console.log({item, itemType});
     return itemType;
 }
 

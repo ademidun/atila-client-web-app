@@ -28,10 +28,10 @@ class MentorshipAPI {
         return apiCompletionPromise;
     };
 
-    static listMentors = () => {
+    static listMentors = (path='') => {
         const apiCompletionPromise = request({
             method: 'get',
-            url: `${MentorshipAPI.mentorshipAPIUrl}/mentors/`,
+            url: `${MentorshipAPI.mentorshipAPIUrl}/mentors/${path}`,
         });
 
         return apiCompletionPromise;

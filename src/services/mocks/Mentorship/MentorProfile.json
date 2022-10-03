@@ -1,0 +1,39 @@
+{
+    "id": "dw42yf8uq9xlg8ef",
+    "user": {
+        "first_name": "Tomiwa",
+        "last_name": "Ademidun",
+        "username": "tomiwa",
+        "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-prod.appspot.com/o/user-uploads%2Fuser-profile-pictures%2F2%2Fq3mlrn3q-2d738ad3-0d62-46d6-a6f2-fe484061c3a8_400x400.jpg?alt=media&token=6afcffb0-c49f-42f2-be65-b20f1e2e7df9",
+        "id": 2
+    },
+    "description": "Founder of Atila. ex-Wealthsimple. Software engineering and business Ivey Busines School.",
+    "bio": "<ul><li>Studied software engineering and business at Ivey Business School in the dual degree program</li><li>Got a scholarship to play on the varsity soccer team</li></ul>",
+    "mentorship_topics": "<ul><li>Getting admission into the Ivey Business School software engineering and business dual degree program</li><li>Getting a scholarship to play a varsity sport</li><li>Getting a job at a tech company</li></ul>",
+    "price": "50.00000000",
+    "schedule_url": "",
+    "eligible_schools": [],
+    "eligible_programs": [],
+    "ethnicity": [
+        "Black"
+    ],
+    "sports": [
+        "Soccer"
+    ],
+    "religion": [],
+    "industries": [
+        "Computer Software"
+    ],
+    "occupations": [
+        "Software Developer",
+        "Software Engineer"
+    ],
+    "other_demographic": [],
+    "activities": [],
+    "heritage": [
+        "Nigeria"
+    ],
+    "language": [],
+    "disability": [],
+    "citizenship": []
+}

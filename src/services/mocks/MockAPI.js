@@ -22,11 +22,15 @@ import UserProfileBlogs from './UserProfile/UserProfileBlogs.json';
 import UserProfileEssays from './UserProfile/UserProfileEssays.json';
 import UserProfileReferrals from './UserProfile/UserProfileReferrals.json';
 import UserProfileApplications from './UserProfile/UserProfileApplications.json';
+import MentorEventTypes from './Mentorship/MentorEventTypes.json';
+import CalendlyAccessToken from './Mentorship/CalendlyAccessToken.json';
+import MentorProfile from './Mentorship/MentorProfile.json';
 
 import EssaysPage1 from './Essay/EssaysPage1.json';
 import ApplicationsAPI from '../ApplicationsAPI';
 import AnalyticsService from '../AnalyticsService';
 import { toastNotify } from '../../models/Utils';
+import ScheduleAPI from '../ScheduleAPI';
 
 var axios = require("axios");
 var MockAdapter = require("axios-mock-adapter");
@@ -146,6 +150,7 @@ export class MockAPI {
             contributions: UserProfileContributions,
             scholarships: {scholarships: ScholarshipsPreview1.data},
             created_scholarships: {created_scholarships: ScholarshipsPreview1.data},
+            mentor: {mentor: MentorProfile},
         }
         for (const [userProfileRoute, response] of Object.entries(userProfileContentMap)) {
             let userProfileDetailAttributeUrl = new RegExp(`${userProfileAPIBaseUrl}/.+/${userProfileRoute}/`);
@@ -157,6 +162,15 @@ export class MockAPI {
         this.mock.onGet(userProfileDetailUrl).reply(200, UserProfileTomiwa);
         let doesApplicationExistUrl = new RegExp(`${ApplicationsAPI.applicationsApiUrl}/does-application-exist/.+/$`);
         this.mock.onGet(doesApplicationExistUrl).reply(200, {});
+
+
+        this.mock.onAny(`${ScheduleAPI.apiUrl}/get-calendly-access-token/`).reply(200, CalendlyAccessToken);
+
+        // When using RegExp the variable needs to be separated from the regex part (TODO: check git blame or internet for why this change was necessary)
+        // TODO this regex doesn't actually work, FIX IT
+        let calendlyApiUrl = `${ScheduleAPI.calendlyApiUrl}/event_types`
+        let scheduleEventTypesUrl = new RegExp(`${calendlyApiUrl}/\\?user=.+`);
+        this.mock.onGet(scheduleEventTypesUrl).reply(200, MentorEventTypes);
     }
 
     mockApplicationGet = (application = ApplicationFinalistSTEM, status= 200) => {

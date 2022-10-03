@@ -12,6 +12,7 @@ export const EnvironmentDev = {
     STRIPE_PUBLIC_KEY: 'pk_test_AxhlK7IudWRlQCa4azz4WElP00QVVE6SNM',
     ALGOLIA_PUBLIC_KEY: '0bd3e798b8330dc08ba51ab519fd35e7',
     ALGOLIA_APP_ID: 'HH66ESLTOR',
+    CALENDLY_CLIENT_ID: 'YGxuYb7-9tV_PYR7Da9-a1BonREDJJSTg8XB1kdL5pY',
     ALGOLIA_SCHOLARSHIP_INDEX: 'dev_scholarship_index',
     ALGOLIA_BLOG_INDEX: 'dev_blog_index',
     ALGOLIA_SCHOLARSHIP_QUERY_SUGGESTION_INDEX_NAME: 'dev_scholarship_index_query_suggestions',
@@ -35,6 +36,7 @@ export const EnvironmentStaging = {
     ALGOLIA_SCHOLARSHIP_INDEX: 'staging_scholarship_index',
     ALGOLIA_BLOG_INDEX: 'staging_blog_index',
     clientUrl: 'https://staging.atila.ca',
+    CALENDLY_CLIENT_ID: 'YGxuYb7-9tV_PYR7Da9-a1BonREDJJSTg8XB1kdL5pY',
     isDemoMode: false,
 };
 
@@ -61,6 +63,7 @@ export const EnvironmentProd = {
     ALGOLIA_SCHOLARSHIP_INDEX: 'prod_scholarship_index',
     ALGOLIA_BLOG_INDEX: 'prod_blog_index',
     clientUrl: 'https://atila.ca',
+    CALENDLY_CLIENT_ID: 'YGxuYb7-9tV_PYR7Da9-a1BonREDJJSTg8XB1kdL5pY',
     isDemoMode: false,
 };
 
