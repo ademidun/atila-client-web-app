@@ -71,10 +71,10 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
       setNetworkResponse({title: "Loading session details", type: "loading"});
       MentorshipAPI.getSession(sessionId)
       .then((res: any) => {
-          const { data } = res;
+          const { data }: { data: MentorshipSession} = res;
           setMentorshipSession(data)
-          setSeoContent(content => ({...content, title: `Book a mentorship session with ${data.mentor.user.first_name}`}))
-          setCurrentSessionStep(2);
+          setSeoContent(content => ({...content, title: `Book a mentorship session with ${data.mentor!.user.first_name}`}))
+          setCurrentSessionStep(data.event_scheduled ? 3 : 2);
       })
       .catch(error => {
           console.log({error});
@@ -94,6 +94,24 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
         // else, go to the previous step which should also be payment.
         setCurrentSessionStep( currentSessionStep === 0 ? currentSessionStep + 1 : currentSessionStep - 1);
       }
+    }
+
+    const handleCalendarEventScheduled = (session: MentorshipSession, eventDetails: any) => {
+
+      setNetworkResponse({title: "Saving event details.", type: "loading"});
+      MentorshipAPI.patchSession({id: session.id, event_scheduled: true, event_details: eventDetails})
+      .then(res => {
+        const { data } = res;
+        console.log({data});
+        setMentorshipSession(data);
+      })
+      .catch(error => {
+        console.log({error});
+        setNetworkResponse({title: getErrorMessage(error), type: "error"});
+      })
+      .finally(()=> {
+        setNetworkResponse({title: "", type: null});
+      })
     }
 
     const handlePaymentComplete = (session: MentorshipSession) => {
@@ -189,7 +207,8 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
               <Alert type="success" message="Payment succesfully completed" className='mb-3'/>
             }
 
-            <MentorshipSessionSchedule session={session} onDateAndTimeSelected={handleCalendarEventViewed} />
+            <MentorshipSessionSchedule session={session} onDateAndTimeSelected={handleCalendarEventViewed} 
+            onEventScheduled={handleCalendarEventScheduled} />
           </div>,
           disabled: () => !mentorshipSession?.stripe_payment_intent_id
         },
