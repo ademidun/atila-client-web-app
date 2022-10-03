@@ -20,7 +20,7 @@ function AudioTimer(props: any) {
         return () => {
             clearInterval(interval);
         }
-    }, [duration])
+    }, [duration, props.stopped])
 
     const formatTime = (time: number) => {
         return new Date(time).toISOString().slice(time > 1000 * 60 * 60 ? 11 : 14,22);
