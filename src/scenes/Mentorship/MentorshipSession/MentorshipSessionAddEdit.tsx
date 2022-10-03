@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { Button, Steps } from 'antd';
+import { Alert, Button, Steps } from 'antd';
 import { MentorshipSession } from '../../../models/MentorshipSession';
 import MentorshipSessionPayment from './MentorshipSessionPayment/MentorshipSessionPayment';
 import FormDynamic from '../../../components/Form/FormDynamic';
@@ -17,7 +17,8 @@ import Register from '../../../components/Register';
 const { Step } = Steps;
 
 interface CollectionDetailRouteParams {
-  mentorUsername: string
+  mentorUsername: string,
+  sessionId: string,
 };
 
 export interface MentorshipSessionAddEditProps extends RouteComponentProps<CollectionDetailRouteParams>  {
@@ -27,7 +28,11 @@ export interface MentorshipSessionAddEditProps extends RouteComponentProps<Colle
 export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) => {
 
 
-    const { match: {params: { mentorUsername }}, userProfileLoggedIn } = props;
+    const { location: { search }, match: {params: { mentorUsername, sessionId }}, userProfileLoggedIn } = props;
+
+    const searchParams = new URLSearchParams(search);
+
+    const paymentComplete = searchParams.get('paymentComplete');
 
     const [currentSessionStep, setCurrentSessionStep] = useState(0);
     const [mentorshipSession, setMentorshipSession] = useState<MentorshipSession>({notes: ''});
@@ -59,6 +64,29 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
       },
       [mentorUsername]
     );
+  
+    const loadSession = useCallback(
+      () => {
+  
+      setLoadingUI({message: "Loading session details", type: "info"});
+      MentorshipAPI.getSession(sessionId)
+      .then((res: any) => {
+          const { data } = res;
+          setMentorshipSession(data)
+          setSeoContent(content => ({...content, title: `Book a mentorship session with ${data.mentor.user.first_name}`}))
+          setCurrentSessionStep(2);
+      })
+      .catch(error => {
+          console.log({error});
+          setLoadingUI({message: getErrorMessage(error), type: "error"});
+      })
+      .finally(()=> {
+          setLoadingUI({message: "", type: ""});
+      })
+        return ;// code that references a prop
+      },
+      [sessionId]
+    );
 
     const handleCalendarEventViewed = (session: MentorshipSession) => {
       if (!session.stripe_payment_intent_id) { // if session has not been payed for yet
@@ -67,6 +95,12 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
         setCurrentSessionStep( currentSessionStep === 0 ? currentSessionStep + 1 : currentSessionStep - 1);
       }
     }
+
+    const handlePaymentComplete = (session: MentorshipSession) => {
+      setMentorshipSession(currentSession => ({...currentSession, ...session}));
+      setCurrentSessionStep(currentSessionStep+1);
+      props.history.push(`/mentorship/session/${session.id}?paymentComplete=true`);
+    }
   
     // when the currentSessionStep changes, scroll back to the top of the page
     useEffect(() => {
@@ -74,8 +108,13 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
     }, [currentSessionStep]);
   
     useEffect(() => {
-      loadMentor();  
-    }, [loadMentor]);
+      if (props.location.pathname.includes('/session/new')) {
+        loadMentor(); 
+      } else {
+        loadSession();
+      }
+       
+    }, [loadMentor, loadSession, props.location.pathname]);
 
     const registerProps = { // make sure all required component's inputs/Props keys&types match
       disableRedirect: true,
@@ -107,8 +146,7 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
           content: (session: MentorshipSession)=> <div>
 
             { userProfileLoggedIn ? 
-            <MentorshipSessionPayment session={session} onPaymentComplete={session => 
-              setMentorshipSession({...mentorshipSession, ...session}) }  /> : 
+            <MentorshipSessionPayment session={session} onPaymentComplete={handlePaymentComplete}  /> : 
 
               <div>
               <h1>Create an Account or Login to book a session</h1> <br/>
@@ -124,7 +162,7 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
             }
             
           </div>,
-          disabled: () => !mentorshipSession?.mentor,
+          disabled: () => !mentorshipSession?.mentor || !mentorshipSession?.mentor.schedule_url,
         },
         {
           title: 'Schedule',
@@ -132,6 +170,10 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
             <h1>
             Schedule a time{session.mentor ? ` with ${session.mentor.user.first_name} ` : " " }that works for you
             </h1>
+
+            {paymentComplete &&
+              <Alert type="success" message="Payment succesfully completed" />
+            }
 
             <MentorshipSessionSchedule session={session} onDateAndTimeSelected={handleCalendarEventViewed} />
           </div>,

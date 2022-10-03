@@ -36,6 +36,15 @@ class MentorshipAPI {
 
         return apiCompletionPromise;
     };
+
+    static getSession = (sessionId: string) => {
+        const apiCompletionPromise = request({
+            method: 'get',
+            url: `${MentorshipAPI.mentorshipAPIUrl}/sessions/${sessionId}`,
+        });
+
+        return apiCompletionPromise;
+    };
 }
 
 export default MentorshipAPI;

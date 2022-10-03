@@ -1,5 +1,5 @@
 import React, { FormEvent, useRef, useState } from 'react';
-import { Button, Col, Row } from 'antd';
+import { Alert, Button, Col, Row } from 'antd';
 import { connect } from 'react-redux';
 import {CardElement, injectStripe, ReactStripeElements} from 'react-stripe-elements';
 import { ATILA_SCHOLARSHIP_FEE_TAX } from '../../../../models/ConstantsPayments';
@@ -23,6 +23,7 @@ function MentorshipSessionPaymentForm(props: MentorshipSessionPaymentFormProps) 
     const cardElementRef = useRef(null);
     const [cardHolderName, setCardHolderName] = useState("");
     const [cardHolderEmail, setCardHolderEmail] = useState("");
+    const [paymentComplete, setPaymentComplete] = useState(false);
     let mentorShipSession = session; // should we just change session to a let?
     if (!mentorShipSession?.mentor) {
         return null
@@ -72,7 +73,8 @@ function MentorshipSessionPaymentForm(props: MentorshipSessionPaymentFormProps) 
                     if (cardPaymentResult.paymentIntent.status === 'succeeded') {
                         
                         mentorShipSession.stripe_payment_intent_id = cardPaymentResult.paymentIntent.id;
-                        onPaymentComplete(mentorShipSession)
+                        onPaymentComplete(mentorShipSession);
+                        setPaymentComplete(true);
                     }
                 }
 
@@ -92,6 +94,9 @@ function MentorshipSessionPaymentForm(props: MentorshipSessionPaymentFormProps) 
 
     return (
         <div className='MentorshipSessionPaymentForm container'>
+            {paymentComplete &&
+              <Alert type="success" message="Payment succesfully completed" />
+            }
             <Row gutter={16}>
 
                 <Col sm={24} md={12}>
