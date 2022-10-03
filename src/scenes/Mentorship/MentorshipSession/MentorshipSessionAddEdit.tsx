@@ -172,7 +172,7 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
             </h1>
 
             {paymentComplete &&
-              <Alert type="success" message="Payment succesfully completed" />
+              <Alert type="success" message="Payment succesfully completed" className='mb-3'/>
             }
 
             <MentorshipSessionSchedule session={session} onDateAndTimeSelected={handleCalendarEventViewed} />
@@ -206,13 +206,13 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
           },
           disabled: () => !mentorshipSession?.stripe_payment_intent_id
         },
-        {
-          title: 'Attend',
-          content: (session: MentorshipSession)=> <div>
-            Details of your mentorship session
-          </div>,
-          disabled: () => !mentorshipSession?.stripe_payment_intent_id
-        },
+        // { // TODO find way to pull event details to Atila database
+        //   title: 'Attend',
+        //   content: (session: MentorshipSession)=> <div>
+        //     Details of your mentorship session
+        //   </div>,
+        //   disabled: () => !mentorshipSession?.stripe_payment_intent_id
+        // },
     ];
   return (
     <div className='card shadow m-3 p-3'>

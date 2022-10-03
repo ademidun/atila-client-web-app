@@ -1,5 +1,5 @@
 import React, { FormEvent, useRef, useState } from 'react';
-import { Alert, Button, Col, Row } from 'antd';
+import { Button, Col, Row } from 'antd';
 import { connect } from 'react-redux';
 import {CardElement, injectStripe, ReactStripeElements} from 'react-stripe-elements';
 import { ATILA_SCHOLARSHIP_FEE_TAX } from '../../../../models/ConstantsPayments';
@@ -10,6 +10,7 @@ import { formatCurrency, getErrorMessage } from '../../../../services/utils';
 import Environment from '../../../../services/Environment';
 import MentorshipSessionInvoice from './MentorshipSessionInvoice';
 import PaymentAPI from '../../../../services/PaymentAPI';
+import { NetworkResponse, NetworkResponseDisplay } from '../../../../components/NetworkResponse';
 
 interface MentorshipSessionPaymentFormProps extends ReactStripeElements.InjectedStripeProps {
     session: MentorshipSession,
@@ -23,7 +24,7 @@ function MentorshipSessionPaymentForm(props: MentorshipSessionPaymentFormProps) 
     const cardElementRef = useRef(null);
     const [cardHolderName, setCardHolderName] = useState("");
     const [cardHolderEmail, setCardHolderEmail] = useState("");
-    const [paymentComplete, setPaymentComplete] = useState(false);
+    const [networkResponse, setNetworkResponse] = useState<NetworkResponse>({title: "", type: null})
     let mentorShipSession = session; // should we just change session to a let?
     if (!mentorShipSession?.mentor) {
         return null
@@ -36,6 +37,7 @@ function MentorshipSessionPaymentForm(props: MentorshipSessionPaymentFormProps) 
         event.preventDefault();
 
         if (!mentorShipSession?.id) {
+            setNetworkResponse({title: "Creating mentorship session", type: "loading"});
             const createMentorshipSessionResponse = await MentorshipSesssionAPI
             .createMentorshipSession({mentee: userProfileLoggedIn!.user, mentor: mentorShipSession.mentor!.id});
             const {data: createdSession} = createMentorshipSessionResponse;
@@ -52,6 +54,7 @@ function MentorshipSessionPaymentForm(props: MentorshipSessionPaymentFormProps) 
         };
         console.log('cardElementRef.current', cardElementRef.current);
         try{
+            setNetworkResponse({title: "Processing payment", type: "loading"});
             const {data: clientSecretData} = await PaymentAPI.getClientSecretMentorshipSession(paymentData);
             try {
                 const cardPaymentResult = await stripe!.confirmCardPayment(clientSecretData.client_secret, {
@@ -62,6 +65,7 @@ function MentorshipSessionPaymentForm(props: MentorshipSessionPaymentFormProps) 
                 });
 
                 if (cardPaymentResult.error) {
+                    setNetworkResponse({title: getErrorMessage(cardPaymentResult.error), type: "loading"});
                     // Show error to your customer (e.g., insufficient funds)
                     // let isResponseErrorMessage = cardPaymentResult.error.message;
                     // if (cardPaymentResult.error.message?.includes("postal code is incomplete")) {
@@ -74,17 +78,19 @@ function MentorshipSessionPaymentForm(props: MentorshipSessionPaymentFormProps) 
                         
                         mentorShipSession.stripe_payment_intent_id = cardPaymentResult.paymentIntent.id;
                         onPaymentComplete(mentorShipSession);
-                        setPaymentComplete(true);
+                        setNetworkResponse({title: "Payment completed succesfully", type: "success"});
                     }
                 }
 
             } catch (confirmCardPaymentError) {
                 console.log({confirmCardPaymentError});
+                setNetworkResponse({title: getErrorMessage(confirmCardPaymentError), type: "error"});
                 console.log("getErrorMessage(confirmCardPaymentError)", getErrorMessage(confirmCardPaymentError));
             }
 
         } catch (getClientSecretError) {
             console.log({getClientSecretError});
+            setNetworkResponse({title: getErrorMessage(getClientSecretError), type: "error"});
             console.log("getErrorMessage(getClientSecretError)", getErrorMessage(getClientSecretError));
 
         }
@@ -94,9 +100,7 @@ function MentorshipSessionPaymentForm(props: MentorshipSessionPaymentFormProps) 
 
     return (
         <div className='MentorshipSessionPaymentForm container'>
-            {paymentComplete &&
-              <Alert type="success" message="Payment succesfully completed" />
-            }
+            <NetworkResponseDisplay response={networkResponse} />
             <Row gutter={16}>
 
                 <Col sm={24} md={12}>
