@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Spin } from "antd";
 import { DeleteOutlined, CheckOutlined, AudioOutlined} from '@ant-design/icons';
 import { FilesAPI } from "../../services/FilesAPI";
-import { AudioPlay } from "./AudioPlay";
+import AudioPlay from "./AudioPlay";
 import AudioTimer from "./AudioTimer";
 import PulsingRedDot  from "./PulsingRedDot";
 import PropTypes from "prop-types";
