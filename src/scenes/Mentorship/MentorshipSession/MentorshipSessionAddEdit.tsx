@@ -7,12 +7,12 @@ import FormDynamic from '../../../components/Form/FormDynamic';
 import MentorshipSessionSchedule from './MentorshipSessionSchedule';
 import MentorshipAPI from '../../../services/MentorshipAPI';
 import { getErrorMessage } from '../../../services/utils';
-import Loading from '../../../components/Loading';
 import TextUtils from '../../../services/utils/TextUtils';
 import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
 import HelmetSeo, { defaultSeoContent } from '../../../components/HelmetSeo';
 import { UserProfile } from '../../../models/UserProfile.class';
 import Register from '../../../components/Register';
+import { NetworkResponse, NetworkResponseDisplay } from '../../../components/NetworkResponse';
 
 const { Step } = Steps;
 
@@ -36,7 +36,7 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
 
     const [currentSessionStep, setCurrentSessionStep] = useState(0);
     const [mentorshipSession, setMentorshipSession] = useState<MentorshipSession>({notes: ''});
-    const [loadingUI, setLoadingUI] = useState({message: "", type: ""});
+    const [networkResponse, setNetworkResponse] = useState<NetworkResponse>({title: "", type: null})
     const [seoContent, setSeoContent] = useState({
       ...defaultSeoContent,
       title: "Book a Mentorship session",
@@ -45,7 +45,7 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
     const loadMentor = useCallback(
       () => {
   
-      setLoadingUI({message: "Loading Mentor profile", type: "info"});
+      setNetworkResponse({title: "Loading Mentor profile", type: "loading"});
       MentorshipAPI.listMentors(`?username=${mentorUsername}`)
       .then((res: any) => {
           const { data: {results: mentors } } = res;
@@ -54,11 +54,11 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
           setSeoContent(content => ({...content, title: `Book a mentorship session with ${mentor.user.first_name}`}))
       })
       .catch(error => {
-          console.log({error});
-          setLoadingUI({message: getErrorMessage(error), type: "error"});
+        console.log({error});
+        setNetworkResponse({title: getErrorMessage(error), type: "error"});
       })
       .finally(()=> {
-          setLoadingUI({message: "", type: ""});
+        setNetworkResponse({title: "", type: null});
       })
         return ;// code that references a prop
       },
@@ -68,7 +68,7 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
     const loadSession = useCallback(
       () => {
   
-      setLoadingUI({message: "Loading session details", type: "info"});
+      setNetworkResponse({title: "Loading session details", type: "loading"});
       MentorshipAPI.getSession(sessionId)
       .then((res: any) => {
           const { data } = res;
@@ -78,10 +78,10 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
       })
       .catch(error => {
           console.log({error});
-          setLoadingUI({message: getErrorMessage(error), type: "error"});
+          setNetworkResponse({title: getErrorMessage(error), type: "error"});
       })
       .finally(()=> {
-          setLoadingUI({message: "", type: ""});
+        setNetworkResponse({title: "", type: null});
       })
         return ;// code that references a prop
       },
@@ -97,9 +97,23 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
     }
 
     const handlePaymentComplete = (session: MentorshipSession) => {
-      setMentorshipSession(currentSession => ({...currentSession, ...session}));
-      setCurrentSessionStep(currentSessionStep+1);
-      props.history.push(`/mentorship/session/${session.id}?paymentComplete=true`);
+
+      setNetworkResponse({title: "Saving payment confirmation. Don't leave this page.", type: "loading"});
+      MentorshipAPI.patchSession({id: session.id, stripe_payment_intent_id: session.stripe_payment_intent_id})
+      .then(res => {
+        const { data } = res;
+        console.log({data});
+        setMentorshipSession(data);
+        setCurrentSessionStep(currentSessionStep+1);
+        props.history.push(`/mentorship/session/${session.id}?paymentComplete=true`);
+      })
+      .catch(error => {
+        console.log({error});
+        setNetworkResponse({title: getErrorMessage(error), type: "error"});
+      })
+      .finally(()=> {
+        setNetworkResponse({title: "", type: null});
+      })
     }
   
     // when the currentSessionStep changes, scroll back to the top of the page
@@ -224,7 +238,7 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
       </Steps>
 
       <div className='m-3 p-3'>
-        {loadingUI.message && <Loading isLoading={loadingUI.message} title={loadingUI.message} />}
+        <NetworkResponseDisplay response={networkResponse} />
         {mentorshipSessionSteps[currentSessionStep].content(mentorshipSession!)}
       </div>
 

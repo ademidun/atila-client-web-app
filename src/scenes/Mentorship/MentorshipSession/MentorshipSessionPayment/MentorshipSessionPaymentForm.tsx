@@ -22,8 +22,9 @@ function MentorshipSessionPaymentForm(props: MentorshipSessionPaymentFormProps) 
 
     const { session, userProfileLoggedIn, stripe, onPaymentComplete } = props;
     const cardElementRef = useRef(null);
-    const [cardHolderName, setCardHolderName] = useState("");
-    const [cardHolderEmail, setCardHolderEmail] = useState("");
+    const [cardHolderName, setCardHolderName] = useState(userProfileLoggedIn ?
+         `${userProfileLoggedIn.first_name} ${userProfileLoggedIn.last_name}`: "");
+    const [cardHolderEmail, setCardHolderEmail] = useState(userProfileLoggedIn?.email||"");
     const [networkResponse, setNetworkResponse] = useState<NetworkResponse>({title: "", type: null})
     let mentorShipSession = session; // should we just change session to a let?
     if (!mentorShipSession?.mentor) {
@@ -100,7 +101,6 @@ function MentorshipSessionPaymentForm(props: MentorshipSessionPaymentFormProps) 
 
     return (
         <div className='MentorshipSessionPaymentForm container'>
-            <NetworkResponseDisplay response={networkResponse} />
             <Row gutter={16}>
 
                 <Col sm={24} md={12}>
@@ -142,9 +142,13 @@ function MentorshipSessionPaymentForm(props: MentorshipSessionPaymentFormProps) 
                                     type="primary"
                                     size="large"
                                     style={{height: "auto"}}
+                                    disabled={networkResponse.type==="loading"}
                                     onClick={handleSubmit}>
                                 Create Session {formatCurrency(totalPaymentAmount)}
                             </Button>
+
+
+                            <NetworkResponseDisplay response={networkResponse} />
 
                         </Col>
                     </Row>
