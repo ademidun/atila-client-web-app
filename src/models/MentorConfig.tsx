@@ -29,7 +29,7 @@ export const mentorProfileFormConfig = [
     {
         keyName: 'bio_recording_url',
         type: 'audio',
-        label: 'Short audio clip:',
+        label: 'Record a voice note about yourself:',
         filePath: 'mentor-profile-audio'
     }
 ];
