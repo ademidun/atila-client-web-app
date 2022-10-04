@@ -18,6 +18,9 @@ staging: [![Netlify Status](https://api.netlify.com/api/v1/badges/ed4f5b21-da47-
 
 `npm install; npm start`
 
+## Open in Gitpod
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#[https://github.com/gitpod-io/create-react-app](https://github.com/ademidun/atila-client-web-app))
+
 ## Adding a Bit Component
 - We use the [atila-web-components-library](https://github.com/atilatech/atila-web-components-library) for some of our web components
 - You can add your desired component using: `npm install @orgName/componentScopeName.componentID`
