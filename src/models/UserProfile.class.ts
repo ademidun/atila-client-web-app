@@ -13,6 +13,7 @@ export class UserProfile {
     is_winner: boolean | null = null;
     is_owner: boolean = false;
     is_anonymous: boolean = false;
+    account_type: string = "student";
 }
 
 export const autoGenerateUser = () => {

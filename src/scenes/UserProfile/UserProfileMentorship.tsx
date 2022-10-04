@@ -53,9 +53,6 @@ function UserProfileMentorship(props: UserProfileMentorshipPropTypes) {
       }
       
   }, [loadMentor, userIdInView]);
-
-
-  console.log("mentor", {mentor});
   
   return (
     <div>
