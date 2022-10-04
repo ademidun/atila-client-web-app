@@ -81,8 +81,6 @@ class ContentCard extends React.Component {
         const { title, description, image, slug, type, url} = content;
         let { contributors, contributors_json, user, user_json } = content;
 
-        console.log({content});
-
         contributors = contributors || contributors_json;
         user = user || user_json;
 

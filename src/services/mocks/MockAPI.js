@@ -138,7 +138,6 @@ export class MockAPI {
         this.mock.onGet(essayRelatedApiUrl).reply(200, EssaysPage1);
 
         let mentorsApiUrl = `${Environment.apiUrl}/mentorship/mentors/`;
-        console.log({mentorsApiUrl});
         this.mock.onGet(mentorsApiUrl).reply(200, MentorsList);
 
         let notionPageUrl = `${NotionService.pageIdUrl}`;
