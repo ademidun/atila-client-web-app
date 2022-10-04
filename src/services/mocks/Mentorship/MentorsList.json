@@ -1,0 +1,378 @@
+{
+    "count": 18,
+    "next": "https://atila-7.herokuapp.com/api/mentorship/mentors/?format=json&page=2",
+    "previous": null,
+    "results": [
+        {
+            "id": "hhmfhfnwxidzophg",
+            "user": {
+                "first_name": "Julia",
+                "last_name": "Nguyen",
+                "username": "juliangyn",
+                "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-7.appspot.com/o/user-profiles%2Fgeneral-data%2Fdefault-profile-pic.png?alt=media&token=455c59f7-3a05-43f1-a79e-89abff1eae57",
+                "id": 4299
+            },
+            "description": null,
+            "bio": "",
+            "mentorship_topics": "",
+            "price": "50.00000000",
+            "schedule_url": "",
+            "bio_recording_url": "",
+            "eligible_schools": [],
+            "eligible_programs": [],
+            "ethnicity": [],
+            "sports": [],
+            "religion": [],
+            "industries": [],
+            "occupations": [],
+            "other_demographic": [],
+            "activities": [],
+            "heritage": [],
+            "language": [],
+            "disability": [],
+            "citizenship": []
+        },
+        {
+            "id": "ayddwz510cziiy29",
+            "user": {
+                "first_name": "Lara",
+                "last_name": "Tabbara",
+                "username": "Lara",
+                "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-prod.appspot.com/o/user-uploads%2Fuser-profile-pictures%2F4270%2Fzsnuywy6-Screen%20Shot%202022-09-27%20at%207.20.21%20PM.png?alt=media&token=edbf8e26-bf84-41bf-ae09-2e6c1ae9e5ef",
+                "id": 4270
+            },
+            "description": "Came to Canada for university from the Middle East, can help applying to Canadian business universities. Interned at Accenture and have experence recruiting for marketing and consulting positions.",
+            "bio": "<p>Student at Ivey Business School working in consulting and passionate about entrepreneurship!&nbsp;</p>",
+            "mentorship_topics": "",
+            "price": "50.00000000",
+            "schedule_url": "https://calendly.com/laratabbara/atila-mentorship",
+            "bio_recording_url": "",
+            "eligible_schools": [],
+            "eligible_programs": [],
+            "ethnicity": [
+                "Middle Eastern"
+            ],
+            "sports": [],
+            "religion": [],
+            "industries": [
+                "Management Consulting"
+            ],
+            "occupations": [],
+            "other_demographic": [],
+            "activities": [
+                "Baking"
+            ],
+            "heritage": [],
+            "language": [],
+            "disability": [],
+            "citizenship": []
+        },
+        {
+            "id": "ogomi43l3v0vq1tc",
+            "user": {
+                "first_name": "Divine",
+                "last_name": "Nwaokocha",
+                "username": "DivineNwaokocha",
+                "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-7.appspot.com/o/user-profiles%2Fgeneral-data%2Fdefault-profile-pic.png?alt=media&token=455c59f7-3a05-43f1-a79e-89abff1eae57",
+                "id": 4297
+            },
+            "description": null,
+            "bio": "",
+            "mentorship_topics": "",
+            "price": "50.00000000",
+            "schedule_url": "",
+            "bio_recording_url": "",
+            "eligible_schools": [],
+            "eligible_programs": [],
+            "ethnicity": [],
+            "sports": [],
+            "religion": [],
+            "industries": [],
+            "occupations": [],
+            "other_demographic": [],
+            "activities": [],
+            "heritage": [],
+            "language": [],
+            "disability": [],
+            "citizenship": []
+        },
+        {
+            "id": "6vntnul876degirb",
+            "user": {
+                "first_name": "Aymen",
+                "last_name": "Boujelben",
+                "username": "aymenboujelben",
+                "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-prod.appspot.com/o/user-uploads%2Fuser-profile-pictures%2F4179%2Fvtrs7xs6-14%20(1).JPG?alt=media&token=08e51f20-76c8-44b1-bfa6-58ee428ae2a2",
+                "id": 4179
+            },
+            "description": "I lived abroad most my life and came to Canada for university. I've interned in Advisory/Consulting and Real Estate in both established and boutique firms. I've experienced the struggles of applying for positions so I'd be happy to answer any questions with this or anything else to help you succeed!",
+            "bio": "<p>I'm a fourth year university student doing my Honours Business Administration and Masters of Science in Management (specifically Business Analytics) degrees at the Ivey Business School. I'm passionate about entrepreneurship, leadership, and making things happen!</p>",
+            "mentorship_topics": "<p>I can help with becoming comfortable in new environments, the application/interview process to land an internship or job, how to become more active in leadership, and how to get into desired programs (specifically at Ivey).</p>",
+            "price": "50.00000000",
+            "schedule_url": "https://calendly.com/aymenb/atila-mentorship",
+            "bio_recording_url": "",
+            "eligible_schools": [],
+            "eligible_programs": [],
+            "ethnicity": [],
+            "sports": [
+                "Soccer"
+            ],
+            "religion": [],
+            "industries": [],
+            "occupations": [],
+            "other_demographic": [],
+            "activities": [],
+            "heritage": [],
+            "language": [
+                "English",
+                "French",
+                "Arabic"
+            ],
+            "disability": [],
+            "citizenship": [
+                "Canada"
+            ]
+        },
+        {
+            "id": "aw7sz554vu3oa30j",
+            "user": {
+                "first_name": "Alice",
+                "last_name": "Besong",
+                "username": "AliceB",
+                "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-prod.appspot.com/o/user-uploads%2Fuser-profile-pictures%2F4255%2Fptw3k9aw-07B3C3BE-6D26-4584-AFC3-45C1D42880B0.jpeg?alt=media&token=d1b8b68e-dc16-4224-85b9-0d408f5ff785",
+                "id": 4255
+            },
+            "description": "Originally from Cameroon, I have lived in several countries over the last 13 years, including South Africa and Tunisia, so I know a thing or two about new beginnings. I am passionate about helping people and look forward to assisting you to the best of my ability.",
+            "bio": "<p>I am an international graduate student at Western University, having completed my bachelor’s degree in mechanical engineering at the University of Ottawa. My goal is to guide you as you embark on a new journey, and to provide you with the resources necessary for your success.</p>",
+            "mentorship_topics": "<p>find universities that offer your program</p><p>scholarship applications</p><p>budgeting</p><p>time management and organization</p><p>study permit and visa questions</p>",
+            "price": "50.00000000",
+            "schedule_url": "",
+            "bio_recording_url": "",
+            "eligible_schools": [
+                "University of Ottawa"
+            ],
+            "eligible_programs": [],
+            "ethnicity": [
+                "Black"
+            ],
+            "sports": [
+                "Badminton",
+                "Swimming"
+            ],
+            "religion": [
+                "Christianity"
+            ],
+            "industries": [],
+            "occupations": [],
+            "other_demographic": [
+                "Women"
+            ],
+            "activities": [],
+            "heritage": [],
+            "language": [
+                "English",
+                "French"
+            ],
+            "disability": [],
+            "citizenship": [
+                "Cameroon"
+            ]
+        },
+        {
+            "id": "lzdtqbfotwqzscb8",
+            "user": {
+                "first_name": "Fatimah",
+                "last_name": "Jessa",
+                "username": "Fatimah",
+                "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-prod.appspot.com/o/user-uploads%2Fuser-profile-pictures%2F4283%2Ffa3ujbeq-FullSizeRender%20(1).jpg?alt=media&token=a8efd594-98a5-46fc-9b55-ceb74540c4bd",
+                "id": 4283
+            },
+            "description": "Hey there :) I'm a fourth year student at McMaster University in the Biomedical Discovery and Commercialization (BDC) program! It's an interdisciplinary program combining Biochemistry and Commerce (think: the process of developing a drug, taking it to market, and everything in between)!",
+            "bio": "<p>Last year, I founded an instagram page called 'thesciencejourney\" (www.instagram.com/thesciencejourney/) to offer resources to science students and help people in their science journeys! I started off at McMaster in the Life Sciences program, specialized in the Biochemistry program in my second year, and further specialized into the BDC program in my third year! Throughout my time at McMaster I noticed how many science students (including myself) were clueless about their future and how difficult it can be to navigate university by yourself. I created thesciencejourney to help students and give them the advice that I would've liked to have going into university!</p>",
+            "mentorship_topics": "<ul><li>Life Sciences, Biochemistry and BDC at McMaster (application process and program itself)</li><li>Off-campus housing and living away from home</li><li>Joining clubs on campus</li><li>Study tips</li><li>Various science careers</li><li>Obtaining research positions</li></ul>",
+            "price": "50.00000000",
+            "schedule_url": "",
+            "bio_recording_url": "",
+            "eligible_schools": [],
+            "eligible_programs": [],
+            "ethnicity": [
+                "South-Asian"
+            ],
+            "sports": [],
+            "religion": [],
+            "industries": [],
+            "occupations": [],
+            "other_demographic": [],
+            "activities": [
+                "Design",
+                "Fashion",
+                "Volunteering"
+            ],
+            "heritage": [],
+            "language": [],
+            "disability": [],
+            "citizenship": []
+        },
+        {
+            "id": "gcl22la7gka73frw",
+            "user": {
+                "first_name": "Jacqueline",
+                "last_name": "Kerlovich",
+                "username": "jackykerlovich",
+                "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-prod.appspot.com/o/user-uploads%2Fuser-profile-pictures%2F4167%2Frt52fsqb-Screen%20Shot%202022-09-16%20at%203.36.48%20PM.png?alt=media&token=79f9970d-6b90-438c-b26c-81f60411a627",
+                "id": 4167
+            },
+            "description": "I created Booklyst, a marketplace app for uni students to buy and sell used textbooks. We got 5,000 downloads across Canada and I would love to share what I have learned along the way with you! I am also",
+            "bio": "<p>Student at Western Ivey who wants to help you on your school / career journey!</p>",
+            "mentorship_topics": "<ul><li>Applying to Ivey / Canadian business schools</li><li>How to prepare for university</li><li>General recruiting help</li><li>Creating an app (without knowing how to code)</li><li>Digital Marketing</li></ul>",
+            "price": "50.00000000",
+            "schedule_url": "",
+            "bio_recording_url": "",
+            "eligible_schools": [],
+            "eligible_programs": [],
+            "ethnicity": [
+                "White"
+            ],
+            "sports": [
+                "Volleyball"
+            ],
+            "religion": [],
+            "industries": [],
+            "occupations": [],
+            "other_demographic": [],
+            "activities": [
+                "Fashion"
+            ],
+            "heritage": [],
+            "language": [],
+            "disability": [],
+            "citizenship": []
+        },
+        {
+            "id": "6j8z64cayd2rnff8",
+            "user": {
+                "first_name": "Laura",
+                "last_name": "Zhao",
+                "username": "laurazhao",
+                "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-prod.appspot.com/o/user-uploads%2Fuser-profile-pictures%2F4272%2F52t3s9rg-headshot.jpg?alt=media&token=5861775f-2b8e-4503-9cc0-fd7a782bb4e8",
+                "id": 4272
+            },
+            "description": "Computer Science and Business Administration student at the Ivey Business School.",
+            "bio": "<p>A Computer Science and Business Administration student that loves to design! I'm passionate about graphic design, UI/UX design, and anything related to aesthetics.</p>",
+            "mentorship_topics": "<ul><li>Navigating university</li><li>Graphic Design</li><li>UI/UX Design</li><li>Marketing/Advertising</li><li>Karate</li><li>Swimming</li></ul>",
+            "price": "50.00000000",
+            "schedule_url": "",
+            "bio_recording_url": "",
+            "eligible_schools": [
+                "Ivey Business School",
+                "University of Western Ontario"
+            ],
+            "eligible_programs": [
+                "Computer Science",
+                "Business Administration"
+            ],
+            "ethnicity": [],
+            "sports": [
+                "Karate",
+                "Swimming",
+                "Competitive Lifesaving"
+            ],
+            "religion": [],
+            "industries": [],
+            "occupations": [],
+            "other_demographic": [
+                "Women"
+            ],
+            "activities": [
+                "Art",
+                "Karate",
+                "Competitive Lifesaving",
+                "Bujo",
+                "UI/UX Design",
+                "Graphic Design"
+            ],
+            "heritage": [],
+            "language": [],
+            "disability": [],
+            "citizenship": [
+                "Canada"
+            ]
+        },
+        {
+            "id": "tdi2fc3fwbvuhmq9",
+            "user": {
+                "first_name": "Adeolu",
+                "last_name": "Banjoko",
+                "username": "abanjoko",
+                "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-prod.appspot.com/o/user-uploads%2Fuser-profile-pictures%2F4269%2Ffuvzppoj-3A2EB362-3A2E-46E4-9A92-7062800E5B88%20copy.JPG?alt=media&token=b8730327-1701-4bc3-9ae2-76e7e0419900",
+                "id": 4269
+            },
+            "description": "UK Medical Graduate, Toronto OBGYN Resident, Passionate about research, global women's health, advocacy and mentorship.",
+            "bio": "<p>I was born and raised in Ontario, Canada. I am the daughter of Nigerian immigrants, which instilled in me a tireless motivation and a propensity to take risks. These attributes led to me moving across the world to study medicine in England in a six year program, where I also received my bachelor degree in clinical anatomy in addition to my medical degree.</p><p>I then began the tireless pursuit of training to become an OBGYN in Canada, and was blessed enough to receive a residency position at the University of Toronto. &nbsp;</p><p>I also have a passion for mentorship. I mentored prospective medical applicants from ethnic minorities and disadvantaged backgrounds throughout medical school, through my work with a charity called Birmingham Widening Access to Medicine. This charity strived to make studying medicine more accessible to underrepresented groups to increase diversity among physicians.</p><p>My passions include global health, women's health, research, advocacy, diversity and representation. I hope to continue to mentor and support those passionate about medicine or womens health, whether it be through examinations, interviews, personal statements, or anything in between,&nbsp;</p><p>&nbsp;</p>",
+            "mentorship_topics": "<p>I can mentor regarding medical school applications, residency applications, MCC exams, USMLE exams, interview prep, personal statement writing.&nbsp;</p>",
+            "price": "50.00000000",
+            "schedule_url": "",
+            "bio_recording_url": "",
+            "eligible_schools": [],
+            "eligible_programs": [],
+            "ethnicity": [
+                "Black"
+            ],
+            "sports": [],
+            "religion": [
+                "Christian"
+            ],
+            "industries": [],
+            "occupations": [
+                "Physician"
+            ],
+            "other_demographic": [],
+            "activities": [],
+            "heritage": [
+                "Nigeria"
+            ],
+            "language": [],
+            "disability": [],
+            "citizenship": [
+                "Canada"
+            ]
+        },
+        {
+            "id": "p2dxo2qopbn2ceih",
+            "user": {
+                "first_name": "Tomiwa",
+                "last_name": "Ademidun",
+                "username": "tomiwa",
+                "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-prod.appspot.com/o/user-uploads%2Fuser-profile-pictures%2F1%2Fljy9s5nm-Ezc5Hyf.jpg?alt=media&token=2391816e-c546-4b11-b232-0cc91f9f3547",
+                "id": 1
+            },
+            "description": "Founder of Atila. ex-Wealthsimple software engineer. Ivey Business School Software engineering and business dual degree. Varsity soccer team (scholarship).",
+            "bio": "<p>Founder of Atila. ex-Wealthsimple software engineer. Ivey Business School Software engineering and business dual degree. Varsity soccer team (scholarship).</p>",
+            "mentorship_topics": "<ul><li>Getting admission into the Ivey Business School software engineering and business dual degree program</li><li>Getting a scholarship to play a varsity sport</li><li>Getting a job at a tech company</li></ul>",
+            "price": "50.00000000",
+            "schedule_url": "https://calendly.com/tomiwa1a/atila-mentorship",
+            "bio_recording_url": "",
+            "eligible_schools": [
+                "University of Western Ontario",
+                "Ivey Business School"
+            ],
+            "eligible_programs": [
+                "Business",
+                "Software Engineering"
+            ],
+            "ethnicity": [],
+            "sports": [
+                "Soccer"
+            ],
+            "religion": [],
+            "industries": [],
+            "occupations": [],
+            "other_demographic": [],
+            "activities": [],
+            "heritage": [],
+            "language": [],
+            "disability": [],
+            "citizenship": []
+        }
+    ]
+}
