@@ -3,12 +3,15 @@ import { BlockMapType, NotionRenderer } from "react-notion";
 import Loading from "../Loading";
 import NotionService from "../../services/NotionService";
 import { createTableOfContents, openAllLinksInNewTab } from "../../services/utils";
+import { connect } from "react-redux";
+import { UserProfile } from "../../models/UserProfile.class";
 
 export interface NotionPageProps {
     pageId?: string;
     pageData?: BlockMapType;
     showTableOfContents: boolean;
     className: string;
+    userProfileLoggedIn: UserProfile,
 }
 NotionPage.defaultProps = {
   showTableOfContents: true,
@@ -18,7 +21,7 @@ NotionPage.defaultProps = {
 const notionPageContentClassName = "NotionPage-content";
 function NotionPage(props: NotionPageProps) {
   
-  const { className } = props;
+  const { className, userProfileLoggedIn, pageId } = props;
   const [loading, setLoading] = useState<string|undefined>(undefined);
   const [pageData, setPageData] = useState<BlockMapType|undefined>(props.pageData);
 
@@ -48,18 +51,28 @@ function NotionPage(props: NotionPageProps) {
     if (props.pageId) {
         loadPageData();
     }
-  }, [loadPageData, props.pageId])
-  
+  }, [loadPageData, props.pageId]);
   
   return (
     
     <div className={`NotionPage ${className}`}>
         <div className={`${notionPageContentClassName}`}>
             <Loading isLoading={!!loading} title={loading} />
+            {pageId && userProfileLoggedIn.is_atila_admin && 
+              <>
+                <a href={`https://notion.so/${pageId}`} target="_blank" rel="noreferrer">
+                  View on Notion
+                </a><br/>
+              </>
+            }
             {pageData && <NotionRenderer blockMap={pageData} />}
         </div>
     </div>
   )
 }
 
-export default NotionPage
+const mapStateToProps = (state: any) => {
+  return { userProfileLoggedIn: state.data.user.loggedInUserProfile };
+};
+
+export default connect(mapStateToProps)(NotionPage);

@@ -1,4 +1,4 @@
-import { Row, Col } from 'antd';
+import { Row, Col, Alert } from 'antd';
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import Loading from '../../../components/Loading';
@@ -12,16 +12,18 @@ interface MentorshipSessionScheduleProps {
   session: MentorshipSession,
   onDateAndTimeSelected: (session: MentorshipSession) => void,
   onEventTypeViewed: (session: MentorshipSession) => void,
+  onEventScheduled: (session: MentorshipSession, eventData: any) => void,
 }
 
 MentorshipSessionSchedule.defaultProps = {
   onDateAndTimeSelected: () => null,
   onEventTypeViewed: () => null,
+  onEventScheduled: () => null,
 }
 
 function MentorshipSessionSchedule(props: MentorshipSessionScheduleProps) {
 
-  const { session, session: { mentor }, onDateAndTimeSelected, onEventTypeViewed } = props;
+  const { session, session: { mentor }, onDateAndTimeSelected, onEventTypeViewed, onEventScheduled } = props;
   const [loadingCalendar, setLoadingCalendar] = useState("Loading calendar");
 
   const [width, setWidth] = useState<number>(window.innerWidth);
@@ -85,6 +87,10 @@ function MentorshipSessionSchedule(props: MentorshipSessionScheduleProps) {
           // change the page when the date and time is selected
           onDateAndTimeSelected(session);
         }
+        else if (e.data.event === "calendly.event_scheduled") {
+          // change the page when the event has been scheduled
+          onEventScheduled(session, e.data.payload);
+        }
       }
     };
      
@@ -115,6 +121,11 @@ function MentorshipSessionSchedule(props: MentorshipSessionScheduleProps) {
                     { mentor.schedule_url ? 
                     <div>
                       {loadingCalendar && <Loading title={loadingCalendar} />}
+                      {session.event_scheduled && 
+                        <Alert message="Note: You've already created an event for this session. 
+                        Check your calendar for event details."
+                         type='warning' />
+                      }
                     <div 
                         className="calendly-inline-widget"
                         data-url={mentor.schedule_url}

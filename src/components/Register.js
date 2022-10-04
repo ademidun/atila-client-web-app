@@ -112,16 +112,21 @@ PasswordShowHide.propTypes = {
     disabled: PropTypes.bool,
 };
 
+
+const defaultAccountType = "student";
+const mentorAccountType = "mentor";
+const menteeAccountType = "mentee";
+const sponsorAccountType = "sponsor";
+
 const accountTypes = [
-    { label: 'Student (Apply for Scholarships)', value: 'student' }, // default
-    { label: 'Sponsor (Create Scholarships)', value: 'sponsor' },
+    { label: 'Student (Apply for Scholarships)', value: defaultAccountType }, // default
+    { label: 'Mentee (Receive Mentorship)', value: menteeAccountType }, // default
+    { label: 'Mentor (Provide Mentorship)', value: mentorAccountType }, // default
+    { label: 'Sponsor (Create Scholarships)', value: sponsorAccountType },
     { label: 'Reviewer (Review Scholarships)', value: 'reviewer' },
-    { label: 'Educator (Help my students get scholarships)', value: 'teacher' },
+    { label: 'Educator (Help students get scholarships)', value: 'teacher' },
 ];
 
-
-const defaultAccountType = accountTypes[0].value
-const sponsorAccountType = accountTypes[1].value
 
 function checkValidEmailProviders(email) {
 	for (let domainIndex = 0; domainIndex < problematicEmailProviders.length; domainIndex++) {
@@ -276,8 +281,20 @@ class Register extends React.Component {
         }
 
         // If this is a sponsor account type, redirect to the add a scholarship page
-        if (account_type === sponsorAccountType && nextLocation === '/scholarship') {
-            nextLocation = "/scholarship/add"
+        if (nextLocation === '/scholarship') {
+            switch (account_type) {
+                case sponsorAccountType:
+                    nextLocation = "/scholarship/add"
+                    break;
+                case mentorAccountType:
+                    nextLocation = "/profile/edit"
+                    break;
+                case menteeAccountType:
+                    nextLocation = "/mentorship"
+                    break;
+                default:
+                    break;
+            }
         }
 
         let contactMessage = (<React.Fragment>

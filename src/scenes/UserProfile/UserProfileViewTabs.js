@@ -54,7 +54,8 @@ class UserProfileViewTabs extends React.Component {
         const { blogs, essays, contributions } = this.state;
         const { isProfileEditable, loggedInUserProfile, userProfile: {user : userIdInView} } = this.props;
         let { match : { params : { tab, username }} } = this.props;
-        let defaultActiveKey = isProfileEditable ? 'edit' : 'mentorship';
+        let defaultActiveKey = loggedInUserProfile?.account_type === "mentor" ? "mentorship" :
+         isProfileEditable ? 'edit' : 'mentorship';
 
         if (RESERVED_USERNAMES.includes(username)) {
             defaultActiveKey = username;

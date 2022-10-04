@@ -193,6 +193,7 @@ class App extends React.Component {
                 component={GoogleAnalyticsTracker(LandingPage)}
               />
               <Route path='/mentorship' component={GoogleAnalyticsTracker(Mentorship)} />
+              <Redirect from="/m/:mentorUsername" to="/mentorship/session/new/:mentorUsername/?j=:mentorUsername" />
               <Route path='/blog' component={GoogleAnalyticsTracker(Blog)} />
               <Route path='/essay' component={GoogleAnalyticsTracker(Essay)} />
               <Route

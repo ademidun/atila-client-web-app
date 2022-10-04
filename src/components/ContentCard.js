@@ -5,11 +5,12 @@ import { Link } from "react-router-dom";
 import './Footer/Footer.scss';
 import { ProfilePicPreview, UserProfilePreview } from "./ReferredByInput";
 import './ContentCard.scss'
-import { Button } from "antd";
+import { Button, Tooltip } from "antd";
 import aa from "search-insights";
 import Environment from "../services/Environment";
 import { getAlogliaIndexName } from "../services/utils";
 import { connect } from "react-redux";
+import { CalendarTwoTone } from '@ant-design/icons';
 
 aa('init', {
   appId: Environment.ALGOLIA_APP_ID,
@@ -156,6 +157,13 @@ class ContentCard extends React.Component {
                             <Link to={slug} onClick={this.sendAlgoliaAnalyticsEvent}>
                                 <Button type='primary'>Book Mentor</Button>
                             </Link>
+                            {content.schedule_url && 
+                            <>
+                                <Tooltip title="Mentor has available times">
+                                    <CalendarTwoTone twoToneColor="#52c41a" />
+                                </Tooltip>
+                            </>
+                            }
                         </div>
                         }
                         <p className="body"> 

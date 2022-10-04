@@ -1,5 +1,6 @@
 import request from 'axios';
 import { Mentor } from '../models/Mentor';
+import { MentorshipSession } from '../models/MentorshipSession';
 import Environment from './Environment'
 class MentorshipAPI {
 
@@ -32,6 +33,28 @@ class MentorshipAPI {
         const apiCompletionPromise = request({
             method: 'get',
             url: `${MentorshipAPI.mentorshipAPIUrl}/mentors/${path}`,
+        });
+
+        return apiCompletionPromise;
+    };
+
+
+
+    static patchSession = (session: Partial<MentorshipSession>) => {
+        
+        const apiCompletionPromise = request({
+            method: 'patch',
+            data: session,
+            url: `${MentorshipAPI.mentorshipAPIUrl}/sessions/${session.id}/`,
+        });
+
+        return apiCompletionPromise;
+    };
+
+    static getSession = (sessionId: string) => {
+        const apiCompletionPromise = request({
+            method: 'get',
+            url: `${MentorshipAPI.mentorshipAPIUrl}/sessions/${sessionId}/`,
         });
 
         return apiCompletionPromise;
