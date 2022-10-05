@@ -58,7 +58,7 @@ function NotionPage(props: NotionPageProps) {
     <div className={`NotionPage ${className}`}>
         <div className={`${notionPageContentClassName}`}>
             <Loading isLoading={!!loading} title={loading} />
-            {pageId && userProfileLoggedIn.is_atila_admin && 
+            {pageId && userProfileLoggedIn && userProfileLoggedIn.is_atila_admin && 
               <>
                 <a href={`https://notion.so/${pageId}`} target="_blank" rel="noreferrer">
                   View on Notion
