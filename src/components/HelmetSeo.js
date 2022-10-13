@@ -4,8 +4,8 @@ import React from "react";
 import $ from 'jquery';
 
 export const defaultSeoContent = {
-    title: 'Atila - Connecting students with scholarships and mentorship.',
-    description: 'Connecting students with scholarships and mentorship.',
+    title: 'Atila - Connecting students with mentorships and scholarships.',
+    description: 'Connecting students with mentorships and scholarships.',
     image: 'https://i.imgur.com/DKsQITm.png',
     slug: ''
 };

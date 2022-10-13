@@ -46,16 +46,18 @@ const howItWorksMentee = [
             Tell your mentor your goals for the session. Mentor prepares a mentorship package with advice for you.
             <a href={mentorshipPackageExample} target="_blank" rel="noreferrer">Sample mentorship package</a>
         </React.Fragment>,
-        image: "https://i.imgur.com/FBZWBuV.png",
-        // gif: "https://s3.gifyu.com/images/My-Movie-4.gif"
+        // image: "https://i.imgur.com/FBZWBuV.png",
+        image: "https://s4.gifyu.com/images/chrome-capture-2022-9-13.gif",
+        // gif: "https://s4.gifyu.com/images/chrome-capture-2022-9-13.gif"
 
     },
     {
         title: "Meet with Mentor",
         body: <React.Fragment>
-            Meet with Mentor virtually to go over mentorship package, advice, ask questions and get answers.
+            Meet with Mentor virtually to go over mentorship package, ask questions and get answers and advice.
         </React.Fragment>,
-        image: "https://i.imgur.com/S0gu4Vn.png"
+        image: "https://i.imgur.com/S0gu4Vn.png",
+        // gif: "https://s4.gifyu.com/images/chrome-capture-2022-9-13.gif"
     }
 ];
 

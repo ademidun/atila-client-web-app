@@ -4,21 +4,14 @@ import TweenOne from 'rc-tween-one';
 import ScrollParallax from 'rc-scroll-anim/lib/ScrollParallax';
 import {Button} from "antd";
 import {Link, withRouter} from "react-router-dom";
-import AutoComplete from "../../components/AutoComplete";
 import {slugify} from "../../services/utils";
 import BannerImage from './BannerImage';
-import algoliasearch from "algoliasearch/lite";
-import Environment from "../../services/Environment";
-import { InstantSearch } from 'react-instantsearch-dom';
 
 const loop = {
   duration: 3000,
   yoyo: true,
   repeat: -1,
 };
-
-const algoliaClient = algoliasearch(Environment.ALGOLIA_APP_ID, Environment.ALGOLIA_PUBLIC_KEY);
-const algoliaQuerySuggestionIndexName = Environment.ALGOLIA_SCHOLARSHIP_QUERY_SUGGESTION_INDEX_NAME;
 
 class Banner extends React.Component {
 
@@ -55,7 +48,6 @@ class Banner extends React.Component {
 
   render() {
     const { className } = this.props;
-    const  { searchQuery } = this.state;
 
     return (
       <div className="home-page-wrapper banner-wrapper" id="banner">
@@ -85,52 +77,21 @@ class Banner extends React.Component {
             <h2 key="h2">
 
               Connecting students <br/> 
-              with scholarships and mentorship
+              with mentorships and scholarships
             </h2>
             <form className="col-sm-12"
                   style={{ height: '300px'}}>
               <div className="row">
-                <div className="col-sm-12 input-field">
-                  <label className="active" id="typeahead-label"
-                         style={{ fontSize: '30px' }}
-                  />
-                  <InstantSearch searchClient={algoliaClient} indexName={algoliaQuerySuggestionIndexName}>
-                    <AutoComplete
-                                placeholder={"Search by school, city, program, ethnicity or more"}
-                                onSuggestionSelected={this.onSearchSuggestionSelected}
-                                value={searchQuery}
-                                keyName={'searchString'}
-                                algoliaPowered={true}/>
-                  </InstantSearch>
-                </div>
-                <div className="col-sm-12">
-                  <p className="mb-0">Sample Searches:{' '}
-                    <Link to="/scholarship/s/engineering">
-                      Engineering</Link>,{' '}
-                    <Link to="/scholarship/s/female">
-                      Female</Link>,{' '}
-                    <Link to="/scholarship/s/ontario">
-                      Ontario</Link>,{' '}
-                    <Link to="/scholarship/s/toronto">
-                      Toronto</Link>,{' '}
-                    <Link to="/scholarship/s/black">
-                      Black</Link> ,{' '}
-                    <Link to="/scholarship/s/medical+school">
-                      Medical School</Link>{' '},
-                    <Link to="/scholarship/s/University+of+Western+Ontario">
-                      University of Western Ontario</Link>
-                  </p>
-                </div>
                 <Button type="primary"
                         className="center-block mt-3">
-                  <Link to="/scholarship">
-                    Find Scholarships
+                  <Link to="/mentorship">
+                    Find Mentors
                   </Link>
                 </Button>
                 <Button type="primary"
                         className="center-block my-3">
-                  <Link to="/start">
-                    Start a Scholarship
+                  <Link to="/scholarship">
+                    Find Scholarships
                   </Link>
                 </Button>
               </div>
