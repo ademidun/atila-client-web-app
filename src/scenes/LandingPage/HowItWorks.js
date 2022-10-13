@@ -7,18 +7,99 @@ import {Currencies} from "../../models/ConstantsPayments";
 
 function HowItWorks({accountType}) {
 
-    if (accountType === "Student") {
-        return (
-            <HowItWorksStudent />
-        );
-    } else {
-        return (
-            <HowItWorksSponsor />
-        )
+    switch (accountType) {
+        case "Mentee":
+            return (
+                <HowItWorksMentee />
+            );
+        case "Student":
+            return (
+                <HowItWorksStudent />
+            );
+    
+        default:
+            return (
+                <HowItWorksSponsor />
+            )
     }
 }
 
 export default HowItWorks;
+
+
+
+const mentorshipPackageExample = "https://docs.google.com/document/d/1kWSgIRZtTG1VfcFghS8ENRS8RtbK-1Env5ecwavQwCA/edit#";
+
+const howItWorksMentee = [
+    {
+        title: <Link to="/mentorship"> Select Mentor </Link>,
+        body: <React.Fragment>
+            Select a mentor to help you with university admissions, getting an internship, immigrating as an international student.
+        </React.Fragment>,
+        // commenting out instead of deleting images because might use them again soon
+        image: "https://i.imgur.com/JiXAi2L.png",
+        // gif: "https://s3.gifyu.com/images/create-account.gif"
+    },
+    {
+        title: "Prepare for Mentor",
+        body: <React.Fragment>
+            Tell your mentor your goals for the session. Mentor prepares a mentorship package with advice for you.
+            <a href={mentorshipPackageExample} target="_blank" rel="noreferrer">Sample mentorship package</a>
+        </React.Fragment>,
+        image: "https://i.imgur.com/FBZWBuV.png",
+        // gif: "https://s3.gifyu.com/images/My-Movie-4.gif"
+
+    },
+    {
+        title: "Meet with Mentor",
+        body: <React.Fragment>
+            Meet with Mentor virtually to go over mentorship package, advice, ask questions and get answers.
+        </React.Fragment>,
+        image: "https://i.imgur.com/S0gu4Vn.png"
+    }
+];
+
+
+export function HowItWorksMentee() {
+
+    return (
+        <div className="container">
+
+            <h1 className="col-sm-12 text-center">
+                <Link to="/mentorship"> How to Get Mentored with Atila </Link>
+            </h1>
+
+            <h2 className="col-sm-12 text-center">
+                1. Select Mentor.{' '}
+                2. Prepare for Mentor.{' '}
+                3. Meet Mentor.
+            </h2>
+
+            <div>
+            <DescriptionsWithScreenshotsList items={howItWorksMentee} />
+            </div>
+
+
+            <h1 className="col-sm-12 text-center">
+                <Link to="/mentorship/about"> Learn more </Link>
+            </h1>
+            
+            <Button type="primary" className="font-size-larger col-12 my-3" style={{fontSize: "25px"}}>
+                <Link to="/register?type=sponsor">
+                    Get Started
+                </Link>
+            </Button>
+            <hr />
+
+            <Button type="secondary" className="font-size-larger col-12 my-3" style={{fontSize: "25px"}}>
+                <Link to="/register?type=mentor">
+                    Become a mentor
+                </Link>
+            </Button>
+
+        </div>
+    )
+}
 
 const howItWorksStudent = [
     {
