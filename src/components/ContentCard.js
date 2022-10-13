@@ -86,8 +86,8 @@ class ContentCard extends React.Component {
 
         let descriptionText = description;
 
-        const PREVIEW_MINIMUM = 75;
-        const PREVIEW_MAXIMUM = 240;
+        const PREVIEW_MINIMUM = 240;
+        const PREVIEW_MAXIMUM = 300;
         const showPreviewButton = description?.length > PREVIEW_MINIMUM;
 
         if (description) {
@@ -101,10 +101,12 @@ class ContentCard extends React.Component {
 
         if (user) {
             authorsComponent = (
-                <div className="bg-light my-3">
-                    <UserProfilePreview userProfile={user} linkProfile={true} />
-                    {contributors && contributors.map(userProfile =>
-                        <ProfilePicPreview userProfile={userProfile} key={userProfile.username} linkProfile={true} />)}
+                <div className="bg-light my-3 py-1" style={type === 'mentor' ? { height:  '75px' } : null}>
+                    <div>
+                        <UserProfilePreview userProfile={user} linkProfile={true} />
+                        {contributors && contributors.map(userProfile =>
+                            <ProfilePicPreview userProfile={userProfile} key={userProfile.username} linkProfile={true} />)}
+                    </div>
                 </div>
             )
         }
@@ -142,7 +144,7 @@ class ContentCard extends React.Component {
                     </div>
                     }
                     <div className='lower-container'>
-                        <div className="title">
+                        <div className="title" style={type === 'mentor' ? { height:  '70px' } : null}>
                         {!slug && url ? 
                         <a href={url} target="_blank" rel="noreferrer">
                                 <h3> {title} </h3>
@@ -154,7 +156,7 @@ class ContentCard extends React.Component {
                         {authorsComponent}
                         {type === "mentor" && 
                         <div>
-                            <Link to={slug} onClick={this.sendAlgoliaAnalyticsEvent}>
+                            <Link to={slug} onClick={this.sendAlgoliaAnalyticsEvent} className='m-1'>
                                 <Button type='primary'>Book Mentor</Button>
                             </Link>
                             {content.schedule_url && 
