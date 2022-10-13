@@ -68,7 +68,7 @@ export function HowItWorksMentee() {
         <div className="container">
 
             <h1 className="col-sm-12 text-center">
-                <Link to="/mentorship"> How to Get Mentored with Atila </Link>
+                <Link to="/mentorship"> How to Get Mentored </Link>
             </h1>
 
             <h2 className="col-sm-12 text-center">
@@ -81,19 +81,15 @@ export function HowItWorksMentee() {
             <DescriptionsWithScreenshotsList items={howItWorksMentee} />
             </div>
 
-
-            <h1 className="col-sm-12 text-center">
-                <Link to="/mentorship/about"> Learn more </Link>
-            </h1>
             
-            <Button type="primary" className="font-size-larger col-12 my-3" style={{fontSize: "25px"}}>
+            <Button type="primary" className="font-size-larger col-12 my-3" style={{fontSize: "25px", height: "50px"}}>
                 <Link to="/register?type=sponsor">
                     Get Started
                 </Link>
             </Button>
             <hr />
 
-            <Button type="secondary" className="font-size-larger col-12 my-3" style={{fontSize: "25px"}}>
+            <Button type="secondary" className="font-size-larger col-12 my-3" style={{fontSize: "25px", height: "50px"}}>
                 <Link to="/register?type=mentor">
                     Become a mentor
                 </Link>
