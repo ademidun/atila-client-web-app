@@ -56,17 +56,17 @@ function UserProfileMentorship(props: UserProfileMentorshipPropTypes) {
   
   return (
     <div>
-      {userProfileLoggedIn && userIdInView === userProfileLoggedIn.user ?
-        <Tabs defaultActiveKey="sessions" transition={false} id="UserProfileViewTabs">
-          <Tab eventKey='sessions' title='Sessions'>
-              <MentorshipSessions />
-          </Tab>
+      {userProfileLoggedIn && ( userIdInView === userProfileLoggedIn.user || userProfileLoggedIn.is_atila_admin)?
+        <Tabs defaultActiveKey="edit" transition={false} id="UserProfileViewTabs">
           <Tab eventKey='edit' title='Edit Mentor Profile'>
               <MentorProfileEdit />
           </Tab>
             <Tab eventKey='schedule' title='Edit Mentor Schedule'>
                 {mentor && <MentorScheduleEdit mentor={mentor} />}
             </Tab>
+          <Tab eventKey='sessions' title='Sessions'>
+              <MentorshipSessions />
+          </Tab>
             <Tab eventKey='view' title='View Mentor Profile'>
                 {mentor && <MentorProfileView mentor={mentor} />}
             </Tab>
