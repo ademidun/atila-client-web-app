@@ -14,6 +14,10 @@ prod: [![Netlify Status](https://api.netlify.com/api/v1/badges/837e9c44-3040-446
 
 staging: [![Netlify Status](https://api.netlify.com/api/v1/badges/ed4f5b21-da47-4094-8e41-89e49a620f55/deploy-status)](https://app.netlify.com/sites/atila-staging/deploys)
 
+## Prerequisites
+
+- [node.js and npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+
 ## Getting Started
 
 `npm install; npm start`
