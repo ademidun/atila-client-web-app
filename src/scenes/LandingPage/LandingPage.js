@@ -12,6 +12,7 @@ import Testimonials from "../../components/Testimonials";
 import { SocialProof } from './SocialProof';
 import EbookLandingBanner from '../Ebook/EbookLandingBanner';
 import ScholarshipFinalists from "../Scholarship/ScholarshipFinalists";
+import MentorshipFAQ from '../../components/Mentorship/MentorshipFAQ';
 
 class LandingPage extends React.Component {
 
@@ -27,6 +28,8 @@ class LandingPage extends React.Component {
                         <Banner/>
                         <hr/>
                         <HowItWorks accountType={"Mentee"}/>
+                        <hr/>
+                        <MentorshipFAQ />
                         <hr/>
                         <HowItWorks accountType={"Student"}/>
                         <hr/>
