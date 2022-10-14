@@ -10,40 +10,54 @@ import MentorshipAPI from '../../../services/MentorshipAPI';
 import UserProfileAPI from '../../../services/UserProfileAPI';
 import { getErrorMessage } from '../../../services/utils';
 import { scholarshipUserProfileSharedFormConfigs, toastNotify } from '../../../models/Utils';
+import { RouteComponentProps, withRouter } from 'react-router';
 
 let autoSaveTimeoutId: any;
-export interface MentorProfileEditPropTypes {
+
+interface RouteParamsProps {
+    username: string,
+    sessionId: string,
+  };
+
+export interface MentorProfileEditPropTypes extends RouteComponentProps<RouteParamsProps>  {
     userProfileLoggedIn?: UserProfile,
 }
 
 function MentorProfileEdit(props: MentorProfileEditPropTypes) {
 
-    const { userProfileLoggedIn } = props;
+    const { match: {params: { username }}, userProfileLoggedIn } = props;
     
     const [mentor, setMentor] = useState<Mentor>();
     const [loadingUI, setLoadingUI] = useState({message: "", type: ""});
     const isMentorset = useRef(false);
 
     const loadMentor = useCallback(
-        () => {
+        async () => {
     
         setLoadingUI({message: "Loading Mentor profile", type: "info"});
-        UserProfileAPI.getUserContent(userProfileLoggedIn?.user, "mentor")
-        .then((res: any) => {
-            const { data } = res;
-            setMentor(data.mentor);
-            isMentorset.current = true;
-        })
-        .catch(error => {
+        try {
+            if (username) {
+                const res = await MentorshipAPI.listMentors(`?username=${username}`);
+                const { data: {results: mentors } } = res;
+                setMentor(mentors[0]);
+                isMentorset.current = true;
+            }
+            else {
+                const res = await UserProfileAPI.getUserContent(userProfileLoggedIn?.user, "mentor");
+                const { data } = res;
+                setMentor(data.mentor);
+                isMentorset.current = true;
+    
+            }
+
+            setLoadingUI({message: "", type: ""});
+        } catch (error) {
             console.log({error});
             setLoadingUI({message: getErrorMessage(error), type: "error"});
-        })
-        .finally(()=> {
-            setLoadingUI({message: "", type: ""});
-        })
+        }
           return ;// code that references a prop
         },
-        [userProfileLoggedIn]
+        [username, userProfileLoggedIn]
       );
 
     const createMentorProfile = () => {
@@ -162,4 +176,4 @@ const mapStateToProps = (state: any) => {
     return { userProfileLoggedIn: state.data.user.loggedInUserProfile };
 };
 
-export default connect(mapStateToProps)(MentorProfileEdit);
+export default withRouter(connect(mapStateToProps)(MentorProfileEdit));
