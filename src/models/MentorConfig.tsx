@@ -8,6 +8,9 @@ export const mentorProfileFormConfig = [
         </label>),
     },
     {
+        keyName: 'linkedin_url',
+    },
+    {
         keyName: 'bio',
         type: 'html_editor',
         placeholder: 'Tell mentees about yourself',
