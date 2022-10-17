@@ -7,6 +7,7 @@ import HelmetSeo, { defaultSeoContent } from '../../components/HelmetSeo';
 import ContentListDisplay from '../../components/ContentListDisplay';
 import { Button } from 'antd';
 import { Link } from 'react-router-dom';
+import { mentorshipDescription } from '../LandingPage/HowItWorks';
 
 function MentorsList() {
 
@@ -50,6 +51,9 @@ function MentorsList() {
       <h1>
         Mentors
       </h1>
+      <h5 className='text-center'>
+      {mentorshipDescription}
+      </h5>
       <div className='text-center m-3'>
         <Link to="/mentorship/about">
           <Button>

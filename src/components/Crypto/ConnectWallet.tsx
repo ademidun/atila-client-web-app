@@ -35,6 +35,9 @@ function ConnectWallet(props: any) {
     const getWallets = useCallback(
         () => {
     
+        if (!userProfileLoggedIn) {
+            return
+        }
         setLoadingWallet("Loading user wallet");
         UserProfileAPI.getUserContent(userProfileLoggedIn.user, "wallets")
         .then(res => {
