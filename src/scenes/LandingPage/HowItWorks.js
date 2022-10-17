@@ -30,11 +30,13 @@ export default HowItWorks;
 
 const mentorshipPackageExample = "https://docs.google.com/document/d/1kWSgIRZtTG1VfcFghS8ENRS8RtbK-1Env5ecwavQwCA/edit#";
 
+export const mentorshipDescription = "Select a mentor to help you with topics like university admissions and getting a job.";
+
 const howItWorksMentee = [
     {
         title: <Link to="/mentorship"> Select Mentor </Link>,
         body: <React.Fragment>
-            Select a mentor to help you with university admissions, getting an internship, immigrating as an international student.
+            {mentorshipDescription}
         </React.Fragment>,
         // commenting out instead of deleting images because might use them again soon
         image: "https://i.imgur.com/JiXAi2L.png",
