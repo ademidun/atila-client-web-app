@@ -55,9 +55,9 @@ export function SearchResultHit(props: any) {
       }
 
       return <div className="SearchResults">
-        {title && <h2 className="text-center">{title}</h2>}
+        {title && searchResults?.hits.length > 0 && <h2 className="text-center">{title}</h2>}
         {isSearchStalled && <Loading title="Loading search results" />}
-        {results}
+        {searchResults?.hits.length > 0 && results}
       </div>
     }
   );
