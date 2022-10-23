@@ -15,8 +15,8 @@ function MentorsList() {
 
   const [mentors, setMentors] = useState<Mentor[]>([]);
   const [loadingUI, setLoadingUI] = useState({message: "", type: ""});
-  const [initialSearchString, setInitialSearchString] = useState("");
-  const [searchString, setSearchString] = useState("");
+  const [initialSearchString] = useState("");
+  const [, setSearchString] = useState("");
   const [searchResult, setSearchResult] = useState<Mentor[]>([]);
 
   const loadMentors = useCallback(
