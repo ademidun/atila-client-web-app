@@ -4,10 +4,11 @@ import { Link } from "react-router-dom";
 
 import tomiwaImage from "./assets/tomiwa.jpg";
 import aaronImage from "./assets/aaron.jpg";
-import hadiImage from "./assets/hadi.jpg";
+
 import { Col, Row } from "antd";
 import HelmetSeo from "../HelmetSeo";
 import About from "../About";
+
 
 const teamMembers = [
   {
@@ -38,17 +39,15 @@ const teamMembers = [
     link2_url: "https://aarondoerfler.github.io/",
   },
   {
-    first_name: "Hadi",
-    last_name: "Al Hakeem",
-    position: "Software",
-    username: "hadi",
-    img_url: hadiImage,
+    first_name: "Matthew",
+    last_name: "Wong",
+    position: "Software and Growth",
+    username: "mwong659",
+    img_url: "https://firebasestorage.googleapis.com/v0/b/atila-prod.appspot.com/o/user-uploads%2Fuser-profile-pictures%2F4188%2Fofm24v3w-Headshot.JPG?alt=media&token=7011e017-ae00-4cce-a962-3761a9dcc834",
     description_1:
-      "Hadi is currently studying Mathematics at the University of Waterloo.",
+      "Matthew is a student at Ivey Business School pursuing a dual degree in Honours Business Administration (HBA) and Computer Science.",
     link_type: "LinkedIn",
-    link_url: "https://www.linkedin.com/in/hadi-al-hakeem-24182819a/",
-    link2_type: "Website",
-    link2_url: "https://hadihakeem.com/",
+    link_url: "https://www.linkedin.com/in/matthewwong122602/"
   },
   {
     first_name: "Eric",
