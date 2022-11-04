@@ -50,6 +50,17 @@ const teamMembers = [
     link_url: "https://www.linkedin.com/in/matthewwong122602/"
   },
   {
+    first_name: "Laura",
+    last_name: "Zhao",
+    position: "Software and Growth",
+    username: "mwong659",
+    img_url: "https://firebasestorage.googleapis.com/v0/b/atila-prod.appspot.com/o/user-uploads%2Fuser-profile-pictures%2F4188%2Fofm24v3w-Headshot.JPG?alt=media&token=7011e017-ae00-4cce-a962-3761a9dcc834",
+    description_1:
+      "Matthew is a student at Ivey Business School pursuing a dual degree in Honours Business Administration (HBA) and Computer Science.",
+    link_type: "LinkedIn",
+    link_url: "https://www.linkedin.com/in/matthewwong122602/"
+  },
+  {
     first_name: "Eric",
     last_name: "Wang",
     position: "Software/Marketing",
