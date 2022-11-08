@@ -52,13 +52,13 @@ const teamMembers = [
   {
     first_name: "Laura",
     last_name: "Zhao",
-    position: "Software and Growth",
-    username: "mwong659",
-    img_url: "https://firebasestorage.googleapis.com/v0/b/atila-prod.appspot.com/o/user-uploads%2Fuser-profile-pictures%2F4188%2Fofm24v3w-Headshot.JPG?alt=media&token=7011e017-ae00-4cce-a962-3761a9dcc834",
+    position: "Software/Design",
+    username: "laurazhao",
+    img_url: "https://firebasestorage.googleapis.com/v0/b/atila-prod.appspot.com/o/user-uploads%2Fuser-profile-pictures%2F4272%2F52t3s9rg-headshot.jpg?alt=media&token=5861775f-2b8e-4503-9cc0-fd7a782bb4e8",
     description_1:
-      "Matthew is a student at Ivey Business School pursuing a dual degree in Honours Business Administration (HBA) and Computer Science.",
+      "Laura is a student at Ivey Business School pursuing a dual degree in Honours Business Administration (HBA) and Computer Science.",
     link_type: "LinkedIn",
-    link_url: "https://www.linkedin.com/in/matthewwong122602/"
+    link_url: "https://www.linkedin.com/in/lauraazhao/"
   },
   {
     first_name: "Eric",
