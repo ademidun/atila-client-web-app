@@ -21,6 +21,8 @@ class FileInput extends React.Component{
 
         const { uploadTask, uploadRef} = FilesAPI.uploadFile({file}, filePath);
 
+        console.log({file});
+
         uploadTask.on(FilesAPI.FIREBASE_STATE_CHANGED,  (snapshot) => {
             const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
 
