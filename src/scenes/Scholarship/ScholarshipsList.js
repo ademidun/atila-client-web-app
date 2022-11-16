@@ -31,7 +31,6 @@ class ScholarshipsList extends React.Component {
         } = props;
 
         const searchString = unSlugify(searchStringRaw);
-        console.log({searchString});
 
         this.state = {
             model: null,
@@ -44,6 +43,7 @@ class ScholarshipsList extends React.Component {
                 sort_by: 'relevance_new'
             },
             searchString,
+            searchStringToDisplay: '',
             initialSearchString: searchString,
             viewAsUserString: '',
             viewAsUserProfile: null,
@@ -317,6 +317,9 @@ class ScholarshipsList extends React.Component {
         if (!equal(scholarshipSearchResults, this.state.scholarshipSearchResults)) {
             this.setState({scholarshipSearchResults});
         }
+        if (this.state.searchStringToDisplay !== this.state.searchString) {
+            this.setState({searchStringToDisplay: this.state.searchString});
+        }
     }
 
     handleSearchQueryChanged = (updatedSearchString) => {
@@ -329,7 +332,7 @@ class ScholarshipsList extends React.Component {
         const { scholarships, scholarshipSearchResults, isLoadingScholarships,
             totalScholarshipsCount, totalFunding,
             errorGettingScholarships, searchPayload,
-            searchString, initialSearchString,
+            searchString, searchStringToDisplay, initialSearchString,
             pageNumber, viewAsUserString, viewAsUserProfile, viewAsUserError, scholarshipsScoreBreakdown} = this.state;
 
         const isUsingAtila = !searchString;
@@ -414,7 +417,7 @@ class ScholarshipsList extends React.Component {
         let dynamicTitle = '';
         if (!Number.isNaN(totalScholarshipsCount) && totalFunding) {
             dynamicTitle = `${totalScholarshipsCount} Scholarship${totalScholarshipsCount === 1 ? '' :'s'}
-             ${searchString ? `for ${toTitleCase(searchString)} ` : ''}found`;
+             ${searchStringToDisplay ? `for ${toTitleCase(searchStringToDisplay)} ` : ''}found`;
             seoContent.title = `${dynamicTitle}${totalFunding !== '$0'? ` and ${totalFunding} in funding` : ''}`;
             seoContent.title += `${searchString ? ` available for ${toTitleCase(searchString)} scholarships` : ''}`;
             seoContent.title += ' - Atila';
