@@ -21,7 +21,12 @@ export class FilesAPI {
         // Notes that not all file types contain a file object, an example is the audio file type.
         let fileKey = file ? `${getRandomString(8)}-${file.name}` : `${getRandomString(8)}`
         const uploadRef = storageRef.child(`user-uploads/${filePath}/${fileKey}`);
-        const uploadTask = uploadRef.put(fileData);
+        let uploadTask;
+        if (file) {
+            uploadTask = uploadRef.put(file);
+        } else {
+            uploadTask = uploadRef.put(fileData);
+        }
 
         return {
             uploadTask,

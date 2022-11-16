@@ -1,4 +1,6 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
+import { mentorshipPackageExample } from '../../scenes/LandingPage/HowItWorks';
 import FAQ, { FAQItem } from '../FAQ';
 
 function MentorshipFAQ() {
@@ -19,11 +21,27 @@ function MentorshipFAQ() {
         },
         {
             question: "How much does it cost?",
-            answer: <>$50. Which includes a 1 hour mentorship session and personalized mentorship notes.</>,
+            answer: <>
+            There are two ways to pay for Atila"
+            <ol>
+                <li><strong>Atila for Schools:</strong> $50/mentorship session and $100/month/school.<br/> 
+                    Schools create a school account which allows students at a given school to receive 
+                    mentorship for free, paid for by the school. 
+                    This also allows the school to manage all the mentorship sessions booked through the school<br/>
+                    <Link to ="demo">Book a Demo to learn more about <strong>Atila for Schools</strong></Link>
+                </li>
+                <li><strong>Individual Account:</strong>$50/mentorship session.<br/> 
+                Students or parents independtly book and pay for mentorship sessions on Atila.
+                </li>
+            </ol>
+
+            </>,
         },
         {
             question: "What are the personalized mentorship notes?",
-            answer: <>The mentor reviews your profile and before the session prepares a document with advice and tips. During the session you can review the notes.</>,
+            answer: <>The mentor reviews your profile and before the session prepares a document with advice and tips. 
+            
+            During the session you can review the notes. <a href={mentorshipPackageExample} target="_blank" rel="noreferrer">Sample mentorship package notes</a></>,
         }
     ];
   return (

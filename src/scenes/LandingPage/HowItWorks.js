@@ -28,7 +28,7 @@ export default HowItWorks;
 
 
 
-const mentorshipPackageExample = "https://docs.google.com/document/d/1kWSgIRZtTG1VfcFghS8ENRS8RtbK-1Env5ecwavQwCA/edit#";
+export const mentorshipPackageExample = "https://docs.google.com/document/d/1kWSgIRZtTG1VfcFghS8ENRS8RtbK-1Env5ecwavQwCA/edit#";
 
 export const mentorshipDescription = "Select a mentor to help you with topics like university admissions and getting a job.";
 
