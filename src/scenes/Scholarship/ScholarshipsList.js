@@ -497,7 +497,7 @@ class ScholarshipsList extends React.Component {
                     </Button>
                 </div>
                 }
-                <SearchAlgolia showScholarshipsOnly={true}
+                <SearchAlgolia searchConfig={({showScholarships: true, showBlogs: false, showMentors: false})}
                                onSearchQueryChanged={this.handleSearchQueryChanged}
                                initialSearch={initialSearchString}
                                onResultsLoaded={this.handleSearchResultsLoaded}

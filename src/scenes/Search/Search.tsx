@@ -11,6 +11,7 @@ import { Radio } from 'antd';
 import aa from 'search-insights';
 import equal from "fast-deep-equal";
 import { RouteComponentProps, useHistory, withRouter } from 'react-router';
+import { SearchConfig } from './SearchConfig';
 
 const algoliaClient = algoliasearch(Environment.ALGOLIA_APP_ID, Environment.ALGOLIA_PUBLIC_KEY);
 
@@ -89,7 +90,7 @@ interface SearchAlgoliaProps extends RouteComponentProps {
   renderSeo: boolean,
   location: any,
   initialSearch?: string,
-  showScholarshipsOnly?: boolean,
+  searchConfig?: SearchConfig,
   onResultsLoaded?: (results: Array<{ items: any, num_items: number }>) => void,
   onSearchQueryChanged?: (searchQuery: any) => void,
 }
@@ -98,7 +99,7 @@ function SearchAlgolia({ className = "p-md-5",
                          renderSeo = true,
                          location,
                          initialSearch = "",
-                         showScholarshipsOnly = false,
+                         searchConfig = {showScholarships: true, showMentors: true, showBlogs: true},
                          onResultsLoaded = () => {},
                          onSearchQueryChanged = () => {},
                        }: SearchAlgoliaProps) {
@@ -162,6 +163,7 @@ function SearchAlgolia({ className = "p-md-5",
 
   const scholarshipIndex = Environment.ALGOLIA_SCHOLARSHIP_INDEX;
   const blogIndex = Environment.ALGOLIA_BLOG_INDEX;
+  const mentorIndex = Environment.ALGOLIA_MENTOR_INDEX;
   const scholarshipConfiguration: any = {};
   if (!showExpiredScholarships) {
     // the deadline is saved in seconds in our index so we have to convert the current date from milliseconds to seconds;
@@ -186,6 +188,7 @@ function SearchAlgolia({ className = "p-md-5",
     }
   }
 
+  const {showScholarships, showMentors, showBlogs} = searchConfig;
   const noScholarhipsShown = results[0].hits.length === 0 || searchState.query?.length === 0
 
   let searchClient = createSearchClient(handleSearchResultsChange)
@@ -193,8 +196,8 @@ function SearchAlgolia({ className = "p-md-5",
     <div className={`Search container ${className}`}>
     {renderSeo && <HelmetSeo content={seoContent} />}
     <InstantSearch searchClient={searchClient}
-                   indexName={scholarshipIndex} 
-                   searchState={searchState} 
+                   indexName={scholarshipIndex}
+                   searchState={searchState}
                    onSearchStateChange={handleSearchStateChange}
                    createURL={createURL}>
         <Configure clickAnalytics />
@@ -202,33 +205,44 @@ function SearchAlgolia({ className = "p-md-5",
                     searchAsYouType={false} 
                     showLoadingIndicator />
         <PoweredBy  className="mb-3" />
+      {showScholarships &&
         <Index indexName={scholarshipIndex}>
           <Configure hitsPerPage={HITS_PER_PAGE} {...scholarshipConfiguration} />
           {!noScholarhipsShown &&
-          <>
-            <Radio.Group
+            <>
+              <Radio.Group
                 className="mb-3"
                 options={showExpiredScholarshipsOptions}
                 onChange={event => setshowExpiredScholarships(event.target.value)}
                 value={showExpiredScholarships}
                 optionType="button"
                 buttonStyle="solid"
-            />
-            <SearchResults title="Scholarships">
-              <Hits hitComponent={SearchResultHitsWithInsights} />
-            </SearchResults>
-            <Pagination  className="my-3" />
-          </>}
+              />
+              <SearchResults title="Scholarships">
+                <Hits hitComponent={SearchResultHitsWithInsights}/>
+              </SearchResults>
+              <Pagination className="my-3"/>
+            </>}
         </Index>
+      }
 
-      {!showScholarshipsOnly &&
-      <Index indexName={blogIndex}>
-        <Configure hitsPerPage={HITS_PER_PAGE}/>
-        <SearchResults title="Blogs">
-          <Hits hitComponent={SearchResultHitsWithInsights}/>
-        </SearchResults>
-        <Pagination className="my-3"/>
-      </Index>
+      {showBlogs &&
+        <Index indexName={blogIndex}>
+          <Configure hitsPerPage={HITS_PER_PAGE}/>
+          <SearchResults title="Blogs">
+            <Hits hitComponent={SearchResultHitsWithInsights}/>
+          </SearchResults>
+          <Pagination className="my-3"/>
+        </Index>
+      }
+
+      {showMentors &&
+        <Index indexName={mentorIndex}>
+          <Configure hitsPerPage={HITS_PER_PAGE}/>
+          <SearchResults title="Mentors">
+            <Hits hitComponent={SearchResultHitsWithInsights}/>
+          </SearchResults>
+        </Index>
       }
 
     </InstantSearch>

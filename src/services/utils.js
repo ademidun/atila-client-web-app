@@ -96,7 +96,7 @@ export function getItemType(item) {
     if (item.hasOwnProperty('deadline')) {
         itemType = 'scholarship'
     }
-    else if (item.hasOwnProperty('mentorship_topics')) {
+    else if (item.hasOwnProperty('mentorship_topics') || item.hasOwnProperty('mentorship_topics_text')) {
         itemType = 'mentor'
     }
     else if (item.hasOwnProperty('starting_comment')) {
