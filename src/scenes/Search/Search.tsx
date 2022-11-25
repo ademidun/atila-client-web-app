@@ -200,7 +200,7 @@ function SearchAlgolia({ className = "p-md-5",
       {!noScholarhipsShown &&
         <>
           <Radio.Group
-            className="mb-3"
+            className="my-3"
             options={showExpiredScholarshipsOptions}
             onChange={event => setshowExpiredScholarships(event.target.value)}
             value={showExpiredScholarships}
@@ -248,7 +248,7 @@ function SearchAlgolia({ className = "p-md-5",
 
       {showInTabs ? 
       
-      <Tabs defaultActiveKey="scholarship" transition={false} id="SearcgViewTabs">
+      <Tabs defaultActiveKey="scholarships" transition={false} id="SearchViewTabs">
         { showScholarships &&
             <Tab eventKey='scholarships' title='Scholarships'>
                 {scholarshipResults}
