@@ -9,6 +9,7 @@ import {SearchResultHit, SearchResults} from './SearchResults';
 import './Search.scss'
 import { Radio } from 'antd';
 import aa from 'search-insights';
+import {Tab, Tabs} from 'react-bootstrap';
 import equal from "fast-deep-equal";
 import { RouteComponentProps, useHistory, withRouter } from 'react-router';
 import { SearchConfig } from './SearchConfig';
@@ -191,7 +192,46 @@ function SearchAlgolia({ className = "p-md-5",
   const {showScholarships, showMentors, showBlogs} = searchConfig;
   const noScholarhipsShown = results[0].hits.length === 0 || searchState.query?.length === 0
 
-  let searchClient = createSearchClient(handleSearchResultsChange)
+  let searchClient = createSearchClient(handleSearchResultsChange);
+
+  const scholarshipResults = (
+    <Index indexName={scholarshipIndex}>
+      <Configure hitsPerPage={HITS_PER_PAGE} {...scholarshipConfiguration} />
+      {!noScholarhipsShown &&
+        <>
+          <Radio.Group
+            className="my-3"
+            options={showExpiredScholarshipsOptions}
+            onChange={event => setshowExpiredScholarships(event.target.value)}
+            value={showExpiredScholarships}
+            optionType="button"
+            buttonStyle="solid"
+          />
+          <SearchResults title="Scholarships">
+            <Hits hitComponent={SearchResultHitsWithInsights}/>
+          </SearchResults>
+          <Pagination className="my-3"/>
+        </>}
+    </Index>);
+
+  const blogResults = (
+    <Index indexName={blogIndex}>
+      <Configure hitsPerPage={HITS_PER_PAGE}/>
+      <SearchResults title="Blogs">
+        <Hits hitComponent={SearchResultHitsWithInsights}/>
+      </SearchResults>
+      <Pagination className="my-3"/>
+    </Index>);
+
+  const mentorResults = (
+    <Index indexName={mentorIndex}>
+      <Configure hitsPerPage={HITS_PER_PAGE}/>
+      <SearchResults title="Mentors">
+        <Hits hitComponent={SearchResultHitsWithInsights}/>
+      </SearchResults>
+    </Index>);
+
+  const showInTabs = showScholarships && showBlogs && showMentors;
   return (
     <div className={`Search container ${className}`}>
     {renderSeo && <HelmetSeo content={seoContent} />}
@@ -205,44 +245,34 @@ function SearchAlgolia({ className = "p-md-5",
                     searchAsYouType={false} 
                     showLoadingIndicator />
         <PoweredBy  className="mb-3" />
-      {showScholarships &&
-        <Index indexName={scholarshipIndex}>
-          <Configure hitsPerPage={HITS_PER_PAGE} {...scholarshipConfiguration} />
-          {!noScholarhipsShown &&
-            <>
-              <Radio.Group
-                className="mb-3"
-                options={showExpiredScholarshipsOptions}
-                onChange={event => setshowExpiredScholarships(event.target.value)}
-                value={showExpiredScholarships}
-                optionType="button"
-                buttonStyle="solid"
-              />
-              <SearchResults title="Scholarships">
-                <Hits hitComponent={SearchResultHitsWithInsights}/>
-              </SearchResults>
-              <Pagination className="my-3"/>
-            </>}
-        </Index>
-      }
 
-      {showBlogs &&
-        <Index indexName={blogIndex}>
-          <Configure hitsPerPage={HITS_PER_PAGE}/>
-          <SearchResults title="Blogs">
-            <Hits hitComponent={SearchResultHitsWithInsights}/>
-          </SearchResults>
-          <Pagination className="my-3"/>
-        </Index>
-      }
+      {showInTabs ? 
+      
+      <Tabs defaultActiveKey="scholarships" transition={false} id="SearchViewTabs">
+        { showScholarships &&
+            <Tab eventKey='scholarships' title='Scholarships'>
+                {scholarshipResults}
+            </Tab>
+        }
+        { showBlogs &&
+            <Tab eventKey='blogs' title='Blogs'>
+                {blogResults}
+            </Tab>
+        }
+        { showMentors &&
+            <Tab eventKey='mentors' title='Mentors'>
+                {mentorResults}
+            </Tab>
+        }
+      </Tabs> : 
 
-      {showMentors &&
-        <Index indexName={mentorIndex}>
-          <Configure hitsPerPage={HITS_PER_PAGE}/>
-          <SearchResults title="Mentors">
-            <Hits hitComponent={SearchResultHitsWithInsights}/>
-          </SearchResults>
-        </Index>
+      <>
+        {showScholarships && scholarshipResults }
+
+        {showBlogs && blogResults }
+
+        {showMentors && mentorResults}
+      </>
       }
 
     </InstantSearch>

@@ -16,7 +16,7 @@ function MentorsList() {
   const [mentors, setMentors] = useState<Mentor[]>([]);
   const [loadingUI, setLoadingUI] = useState({message: "", type: ""});
   const [initialSearchString] = useState("");
-  const [, setSearchString] = useState("");
+  const [searchString, setSearchString] = useState("");
   const [searchResult, setSearchResult] = useState<Mentor[]>([]);
 
   const loadMentors = useCallback(
@@ -86,7 +86,14 @@ function MentorsList() {
                      initialSearch={initialSearchString}
                      onResultsLoaded={onResultsLoaded}
                      renderSeo={false} />
-
+      {searchString && searchResult.length === 0 &&
+        <>
+          <h5 className='text-center'>
+            No Results Found. Showing all Mentors
+          </h5>
+          <hr />
+        </>
+      }
       {searchResult.length === 0 &&
           <ContentListDisplay contentList={mentors}/>
       }
