@@ -1,18 +1,19 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import algoliasearch from 'algoliasearch/lite';
-import { InstantSearch, Hits, PoweredBy, Pagination, SearchBox, Configure, Index, connectHitInsights } from 'react-instantsearch-dom';
+import { InstantSearch, Hits, PoweredBy, Pagination, SearchBox, Configure, Index, connectHitInsights, connectHits } from 'react-instantsearch-dom';
 import 'instantsearch.css/themes/satellite.css'; //algolia instant search styling
 import Environment from '../../services/Environment';
 import qs from 'qs';
 import HelmetSeo from '../../components/HelmetSeo';
 import {SearchResultHit, SearchResults} from './SearchResults';
 import './Search.scss'
-import { Radio } from 'antd';
+import { Radio, Row, Col } from 'antd';
 import aa from 'search-insights';
 import {Tab, Tabs} from 'react-bootstrap';
 import equal from "fast-deep-equal";
 import { RouteComponentProps, useHistory, withRouter } from 'react-router';
 import { SearchConfig } from './SearchConfig';
+import { Hit } from 'react-instantsearch-core';
 
 const algoliaClient = algoliasearch(Environment.ALGOLIA_APP_ID, Environment.ALGOLIA_PUBLIC_KEY);
 
@@ -223,11 +224,28 @@ function SearchAlgolia({ className = "p-md-5",
       <Pagination className="my-3"/>
     </Index>);
 
+  // 1. Create a React component
+  const HitsGridInner =  ({ hits }: { hits: Hit[]}) => (
+    <Row gutter={[12, 12]}>
+      {hits.map(hit => (
+        <Col xs={24} sm={24} md={8}  key={hit.objectID} className="d-flex">
+          <SearchResultHitsWithInsights hit={hit} />
+        </Col>
+      ))}
+    </Row>
+  );
+
+  // 2. Connect the component using the connector
+  const HitsGrid = connectHits(HitsGridInner);
+
+  // 3. Use your connected widget
+  <HitsGrid />
+
   const mentorResults = (
     <Index indexName={mentorIndex}>
       <Configure hitsPerPage={HITS_PER_PAGE}/>
       <SearchResults title="Mentors">
-        <Hits hitComponent={SearchResultHitsWithInsights}/>
+        <HitsGrid />
       </SearchResults>
     </Index>);
 
