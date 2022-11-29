@@ -82,7 +82,7 @@ class ScholarshipCard extends React.Component {
 
     render() {
 
-        const { className, scholarship, viewAsUserProfile, matchScoreBreakdown, isOneColumn } = this.props;
+        const { className, scholarship, viewAsUserProfile, matchScoreBreakdown } = this.props;
         const { showPreview, scholarshipHideStart, scholarshipHideFinish } = this.state;
 
         const { name, description, funding_amount, slug, img_url } = scholarship;
@@ -109,7 +109,7 @@ class ScholarshipCard extends React.Component {
                 <div className={`${className} card shadow my-4`}
                         style={{...scholarshipCardStyle,...interpolatingStyle}} >
                     <div className="row no-gutters d-block">
-                        <div className={`card-img-container ${isOneColumn ? "" : "col-md-4"}`}>
+                        <div className="card-img-container">
                             <img src={img_url}
                                  className="card-img mt-4"
                                  alt={name}
@@ -119,8 +119,8 @@ class ScholarshipCard extends React.Component {
                                      objectFit: "contain"
                                  }} />
                         </div>
-                        <div className={isOneColumn ? null: "col-md-8"}>
-                            <div className="card-body" style={{maxHeight: '500px', overflow: 'auto'}}>
+                        <div className="col-md-8">
+                            <div className="card-body">
                                 <h1 className="card-title text-left">
                                 <Link to={`/scholarship/${slug}`} onClick={this.sendAlgoliaAnalyticsEvent}>
                                         {name}
@@ -146,7 +146,7 @@ class ScholarshipCard extends React.Component {
                                 <button className="btn btn-link" onClick={this.togglePreview} >
                                     {showPreview ? 'Show Less' : 'Show More'}
                                 </button>
-                                {isOneColumn && <br />}
+                                <br />
                                 <ScholarshipShareSaveButtons scholarship={scholarship}
                                                              onHideScholarship={this.onHideScholarship} />
                             </div>
@@ -165,15 +165,13 @@ class ScholarshipCard extends React.Component {
 }
 
 ScholarshipCard.defaultProps = {
-    className: '',
+    className: 'col-md-8 offset-md-2',
     viewAsUserProfile: null,
     matchScoreBreakdown: null,
-    isOneColumn: null,
 };
 
 ScholarshipCard.propTypes = {
     className: PropTypes.string,
-    isOneColumn: PropTypes.bool,
     scholarship: PropTypes.shape({}),
     viewAsUserProfile: PropTypes.shape({}),
     matchScoreBreakdown: PropTypes.shape({}),

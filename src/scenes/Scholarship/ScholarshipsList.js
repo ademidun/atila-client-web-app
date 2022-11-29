@@ -509,7 +509,6 @@ class ScholarshipsList extends React.Component {
                         {scholarships.map( scholarship =>
                             <ScholarshipCard
                                         key={scholarship.id}
-                                        className="col-12"
                                         scholarship={scholarship}
                                         viewAsUserProfile={viewAsUserProfile}
                                         matchScoreBreakdown={scholarshipsScoreBreakdown &&

@@ -22,7 +22,7 @@ export function SearchResultHit(props: any) {
     return (
         <>
             {itemType === "scholarship" ?
-            <ScholarshipCard scholarship={hit} className="col-12" insights={insights}/> :
+            <ScholarshipCard scholarship={hit} insights={insights}/> :
             <ContentCard insights={insights} content={genericItemTransform(hit)}/>}
         </>
 
