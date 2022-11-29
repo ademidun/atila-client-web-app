@@ -108,7 +108,7 @@ function SearchAlgolia({ className = "p-md-5",
 
   const [searchState, setSearchState] = useState(urlToSearchState(location));
   const [showExpiredScholarships, setshowExpiredScholarships] = useState(false);
-  const [results, setResults] = useState([{'hits': []}]);
+  const [results, setResults] = useState<any[]>([{'hits': []}]);
   const { push } = useHistory();
 
   const showExpiredScholarshipsOptions = [
@@ -195,6 +195,20 @@ function SearchAlgolia({ className = "p-md-5",
 
   let searchClient = createSearchClient(handleSearchResultsChange);
 
+  const HitsGridInner =  ({ hits }: { hits: Hit[]}) => (
+    <Row gutter={[12, 12]}>
+      {hits.map(hit => (
+        <Col xs={24} sm={24} md={8}  key={hit.objectID} className="d-flex">
+          <SearchResultHitsWithInsights hit={hit} />
+        </Col>
+      ))}
+    </Row>
+  );
+
+  const HitsGrid = connectHits(HitsGridInner);
+
+  const scholarshipSearchResults = results.find(result => result?.index?.includes('scholarship_index'));
+
   const scholarshipResults = (
     <Index indexName={scholarshipIndex}>
       <Configure hitsPerPage={HITS_PER_PAGE} {...scholarshipConfiguration} />
@@ -215,32 +229,17 @@ function SearchAlgolia({ className = "p-md-5",
         </>}
     </Index>);
 
+const blogSearchResults = results.find(result => result?.index?.includes('blog_index'));
   const blogResults = (
     <Index indexName={blogIndex}>
       <Configure hitsPerPage={HITS_PER_PAGE}/>
       <SearchResults title="Blogs">
-        <Hits hitComponent={SearchResultHitsWithInsights}/>
+      <HitsGrid />
       </SearchResults>
       <Pagination className="my-3"/>
     </Index>);
 
-  // 1. Create a React component
-  const HitsGridInner =  ({ hits }: { hits: Hit[]}) => (
-    <Row gutter={[12, 12]}>
-      {hits.map(hit => (
-        <Col xs={24} sm={24} md={8}  key={hit.objectID} className="d-flex">
-          <SearchResultHitsWithInsights hit={hit} />
-        </Col>
-      ))}
-    </Row>
-  );
-
-  // 2. Connect the component using the connector
-  const HitsGrid = connectHits(HitsGridInner);
-
-  // 3. Use your connected widget
-  <HitsGrid />
-
+const mentorSearchResults = results.find(result => result?.index?.includes('mentor_index'));
   const mentorResults = (
     <Index indexName={mentorIndex}>
       <Configure hitsPerPage={HITS_PER_PAGE}/>
@@ -268,17 +267,17 @@ function SearchAlgolia({ className = "p-md-5",
       
       <Tabs defaultActiveKey="scholarships" transition={false} id="SearchViewTabs">
         { showScholarships &&
-            <Tab eventKey='scholarships' title='Scholarships'>
+            <Tab eventKey='scholarships' title={`Scholarships ${ scholarshipSearchResults ? ' (' + scholarshipSearchResults.nbHits + ')' : ''}`}>
                 {scholarshipResults}
             </Tab>
         }
         { showBlogs &&
-            <Tab eventKey='blogs' title='Blogs'>
+            <Tab eventKey='blogs' title={`Blogs ${ blogSearchResults ? ' (' + blogSearchResults.nbHits + ')' : ''}`}>
                 {blogResults}
             </Tab>
         }
         { showMentors &&
-            <Tab eventKey='mentors' title='Mentors'>
+            <Tab eventKey='mentors' title={`Mentors ${ mentorSearchResults ? ' (' + mentorSearchResults.nbHits + ')' : ''}`}>
                 {mentorResults}
             </Tab>
         }
