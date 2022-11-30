@@ -17,5 +17,4 @@ Scholarship.args = {
     "scholarship": JeremyDiasScholarship,
     "viewAsUserProfile": null,
     "matchScoreBreakdown": null,
-    "isOneColumn": null
 };

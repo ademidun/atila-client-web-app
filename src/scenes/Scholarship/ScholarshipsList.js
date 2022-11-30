@@ -31,7 +31,6 @@ class ScholarshipsList extends React.Component {
         } = props;
 
         const searchString = unSlugify(searchStringRaw);
-        console.log({searchString});
 
         this.state = {
             model: null,
@@ -509,7 +508,6 @@ class ScholarshipsList extends React.Component {
                         {scholarships.map( scholarship =>
                             <ScholarshipCard
                                         key={scholarship.id}
-                                        className="col-12"
                                         scholarship={scholarship}
                                         viewAsUserProfile={viewAsUserProfile}
                                         matchScoreBreakdown={scholarshipsScoreBreakdown &&

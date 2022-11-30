@@ -78,7 +78,7 @@ function CryptoIntro() {
             <Row gutter={[12, 12]}>
                {scholarships.map(scholarship => 
                 <Col xs={24} sm={24} md={12} lg={8} key={scholarship.id}>
-                    <ScholarshipCard scholarship={scholarship} isOneColumn={true}/>
+                    <ScholarshipCard scholarship={scholarship} />
                 </Col>
             )}
             </Row>

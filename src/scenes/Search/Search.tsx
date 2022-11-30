@@ -1,18 +1,19 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import algoliasearch from 'algoliasearch/lite';
-import { InstantSearch, Hits, PoweredBy, Pagination, SearchBox, Configure, Index, connectHitInsights } from 'react-instantsearch-dom';
+import { InstantSearch, Hits, PoweredBy, Pagination, SearchBox, Configure, Index, connectHitInsights, connectHits } from 'react-instantsearch-dom';
 import 'instantsearch.css/themes/satellite.css'; //algolia instant search styling
 import Environment from '../../services/Environment';
 import qs from 'qs';
 import HelmetSeo from '../../components/HelmetSeo';
 import {SearchResultHit, SearchResults} from './SearchResults';
 import './Search.scss'
-import { Radio } from 'antd';
+import { Radio, Row, Col } from 'antd';
 import aa from 'search-insights';
 import {Tab, Tabs} from 'react-bootstrap';
 import equal from "fast-deep-equal";
 import { RouteComponentProps, useHistory, withRouter } from 'react-router';
 import { SearchConfig } from './SearchConfig';
+import { Hit } from 'react-instantsearch-core';
 
 const algoliaClient = algoliasearch(Environment.ALGOLIA_APP_ID, Environment.ALGOLIA_PUBLIC_KEY);
 
@@ -107,7 +108,7 @@ function SearchAlgolia({ className = "p-md-5",
 
   const [searchState, setSearchState] = useState(urlToSearchState(location));
   const [showExpiredScholarships, setshowExpiredScholarships] = useState(false);
-  const [results, setResults] = useState([{'hits': []}]);
+  const [results, setResults] = useState<any[]>([{'hits': []}]);
   const { push } = useHistory();
 
   const showExpiredScholarshipsOptions = [
@@ -194,6 +195,20 @@ function SearchAlgolia({ className = "p-md-5",
 
   let searchClient = createSearchClient(handleSearchResultsChange);
 
+  const HitsGridInner =  ({ hits }: { hits: Hit[]}) => (
+    <Row gutter={[12, 12]}>
+      {hits.map(hit => (
+        <Col xs={24} sm={24} md={8}  key={hit.objectID} className="d-flex">
+          <SearchResultHitsWithInsights hit={hit} />
+        </Col>
+      ))}
+    </Row>
+  );
+
+  const HitsGrid = connectHits(HitsGridInner);
+
+  const scholarshipSearchResults = results.find(result => result?.index?.includes('scholarship_index'));
+
   const scholarshipResults = (
     <Index indexName={scholarshipIndex}>
       <Configure hitsPerPage={HITS_PER_PAGE} {...scholarshipConfiguration} />
@@ -214,20 +229,22 @@ function SearchAlgolia({ className = "p-md-5",
         </>}
     </Index>);
 
+const blogSearchResults = results.find(result => result?.index?.includes('blog_index'));
   const blogResults = (
     <Index indexName={blogIndex}>
       <Configure hitsPerPage={HITS_PER_PAGE}/>
       <SearchResults title="Blogs">
-        <Hits hitComponent={SearchResultHitsWithInsights}/>
+      <HitsGrid />
       </SearchResults>
       <Pagination className="my-3"/>
     </Index>);
 
+const mentorSearchResults = results.find(result => result?.index?.includes('mentor_index'));
   const mentorResults = (
     <Index indexName={mentorIndex}>
       <Configure hitsPerPage={HITS_PER_PAGE}/>
       <SearchResults title="Mentors">
-        <Hits hitComponent={SearchResultHitsWithInsights}/>
+        <HitsGrid />
       </SearchResults>
     </Index>);
 
@@ -250,17 +267,17 @@ function SearchAlgolia({ className = "p-md-5",
       
       <Tabs defaultActiveKey="scholarships" transition={false} id="SearchViewTabs">
         { showScholarships &&
-            <Tab eventKey='scholarships' title='Scholarships'>
+            <Tab eventKey='scholarships' title={`Scholarships ${ scholarshipSearchResults ? ' (' + scholarshipSearchResults.nbHits + ')' : ''}`}>
                 {scholarshipResults}
             </Tab>
         }
         { showBlogs &&
-            <Tab eventKey='blogs' title='Blogs'>
+            <Tab eventKey='blogs' title={`Blogs ${ blogSearchResults ? ' (' + blogSearchResults.nbHits + ')' : ''}`}>
                 {blogResults}
             </Tab>
         }
         { showMentors &&
-            <Tab eventKey='mentors' title='Mentors'>
+            <Tab eventKey='mentors' title={`Mentors ${ mentorSearchResults ? ' (' + mentorSearchResults.nbHits + ')' : ''}`}>
                 {mentorResults}
             </Tab>
         }

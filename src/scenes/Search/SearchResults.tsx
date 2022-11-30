@@ -22,7 +22,7 @@ export function SearchResultHit(props: any) {
     return (
         <>
             {itemType === "scholarship" ?
-            <ScholarshipCard scholarship={hit} className="col-12" insights={insights}/> :
+            <ScholarshipCard scholarship={hit} insights={insights}/> :
             <ContentCard insights={insights} content={genericItemTransform(hit)}/>}
         </>
 
@@ -55,7 +55,7 @@ export function SearchResultHit(props: any) {
       }
 
       return <div className="SearchResults">
-        {title && searchResults?.hits.length > 0 && <h2 className="text-center">{title}</h2>}
+        {title && searchResults?.hits.length > 0 && <h2 className="text-center my-3">{title}</h2>}
         {isSearchStalled && <Loading title="Loading search results" />}
         {searchResults?.hits.length > 0 && results}
       </div>
