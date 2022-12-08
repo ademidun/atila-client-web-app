@@ -9,12 +9,12 @@ import EmbedResponsiveYoutubeVideo from "../LandingPage/LandingPageLiveDemo";
 function Resources(){
 
 
-    const title: string = 'Scholarship Resources';
+    const title: string = 'Mentorship and Scholarship Resources';
     const seoContent = {
         ...defaultSeoContent,
-        image: "https://i.imgur.com/iKX5D9V.jpg",
+        image: "https://i.imgur.com/BNdxiWc.png",
         title,
-        description: 'A list of resources to help students get scholarships.',
+        description: 'Resources to help students and parents with mentorship and scholarships.',
     };
     const presentationLinkId = "1x1V1Bq9y9y69QhjqGgEiiIL4OdYOhzXm7J-iOP4w9Xg";
     const presentationEmbedId = "2PACX-1vTtd3GOECnF_KiNFVkgaQ_6gTLutyoPPfJCVmHqfMZvrE-Bszs2ZMpCPnQRetyBuc5o5_9sCqctcS9x";
@@ -163,7 +163,7 @@ function Resources(){
             <div className="my-3">
               <h3>
                 <strong>
-                  Interested in having Atila talk to your students about scholarships? <Link to="/contact">Contact us</Link>
+                  Interested in having Atila talk to your students about mentorship or scholarships? <Link to="/contact">Contact us</Link>
                 </strong>
               </h3>
             </div>
