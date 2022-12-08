@@ -9,12 +9,12 @@ import EmbedResponsiveYoutubeVideo from "../LandingPage/LandingPageLiveDemo";
 function Resources(){
 
 
-    const title: string = 'Scholarship Resources';
+    const title: string = 'Mentorship and Scholarship Resources';
     const seoContent = {
         ...defaultSeoContent,
-        image: "https://i.imgur.com/iKX5D9V.jpg",
+        image: "https://i.imgur.com/BNdxiWc.png",
         title,
-        description: 'A list of resources to help students get scholarships.',
+        description: 'Resources to help students and parents with mentorship and scholarships.',
     };
     const presentationLinkId = "1x1V1Bq9y9y69QhjqGgEiiIL4OdYOhzXm7J-iOP4w9Xg";
     const presentationEmbedId = "2PACX-1vTtd3GOECnF_KiNFVkgaQ_6gTLutyoPPfJCVmHqfMZvrE-Bszs2ZMpCPnQRetyBuc5o5_9sCqctcS9x";
@@ -143,6 +143,32 @@ function Resources(){
             <h1>{title}</h1>
             <hr/>
             <h2>
+                <a href={`https://youtube.com/watch?v=OJspyAwLCkU`} target="_blank" rel="noopener noreferrer">
+                    Playing Varsity Soccer in University - Video
+                </a>
+            </h2>
+            <EmbedResponsiveYoutubeVideo youtubeVideoId="OJspyAwLCkU" title="How To Get Scholarships for School" />
+            <hr/>
+            <h2>
+                <a href="https://www.canva.com/design/DAFUF5feSy8/dHvqfHar0Z7uDmm0xTFbzg/view" target="_blank" rel="noopener noreferrer">
+                  Playing Varsity Soccer in University - Slides
+                </a>
+            </h2>
+            <div style={{position: "relative", width: "100%",height: 0, paddingTop: "60.0000%",
+            paddingBottom: 0, boxShadow: "0 2px 8px 0 rgba(63,69,81,0.16)", marginTop: "1.6em",
+            marginBottom: "0.9em",
+            overflow: "hidden",
+            borderRadius: "8px", willChange: "transform"}}>
+              <iframe loading="lazy" style={{position: "absolute", width: "100%", height: "100%", top: "0", left: "0", border: "none", padding: "0", margin: "0"}}
+                src="https://www.canva.com/design/DAFUF5feSy8/view?embed" title="Playing Varsity Soccer in University Presentation" 
+                allowFullScreen={true} allow="fullscreen">
+              </iframe>
+            </div>
+            <a href="https://www.canva.com/design/DAFUF5feSy8/view?utm_content=DAFUF5feSy8&amp;utm_campaign=designshare&amp;utm_medium=embeds&amp;utm_source=link" 
+            target="_blank" rel="noreferrer"
+            >Playing Varsity Soccer in University Presentation</a> by Tomiwa Ademidun
+            <hr/>
+            <h2>
                 <a href={`https://youtube.com/watch?v=CbcyPWNFdnY`} target="_blank" rel="noopener noreferrer">
                     How to get Scholarships - Video
                 </a>
@@ -163,7 +189,7 @@ function Resources(){
             <div className="my-3">
               <h3>
                 <strong>
-                  Interested in having Atila talk to your students about scholarships? <Link to="/contact">Contact us</Link>
+                  Interested in having Atila talk to your students about mentorship or scholarships? <Link to="/contact">Contact us</Link>
                 </strong>
               </h3>
             </div>
