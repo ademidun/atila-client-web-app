@@ -76,6 +76,9 @@ class ScholarshipContribution extends React.Component {
             .getSlug(slug)
             .then(res => {
                 const { scholarship, awards, owner_detail } = res.data;
+                if(awards?.length > 0) {
+                    updatedContributor.currency = awards[0].currency
+                }
                 if (scholarship.is_crypto) { // change default contribution currency to ETH for crypto scholarships
                     updatedContributor.currency = ETH.code;
                     updatedContributor.funding_amount = 0.01; //0.1 ETH is a more realistic starting contribution ($25)
