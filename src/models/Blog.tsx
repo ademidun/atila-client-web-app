@@ -10,6 +10,8 @@ export interface Blog {
     slug: string,
     description: string,
     body: ReactElement<any, any> | string,
+    alternate_slugs?: Array<string>,
+    published?: boolean,
     user?: {
         id: number,
         first_name: string,
@@ -17,6 +19,11 @@ export interface Blog {
         last_name: string,
         profile_pic_url: string,
     },
+    body_type?: string,
+    video_url?: string,
+    slides_url?: string| null,
+    metadata?: any,
+    related_items?: any,
     contributors?: Array <any>,
     wallet?: string | null;
     wallet_detail?: Wallet | null;
