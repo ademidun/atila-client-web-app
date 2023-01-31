@@ -20,6 +20,27 @@ function Resources(){
     const presentationEmbedId = "2PACX-1vTtd3GOECnF_KiNFVkgaQ_6gTLutyoPPfJCVmHqfMZvrE-Bszs2ZMpCPnQRetyBuc5o5_9sCqctcS9x";
 
     const studentResourceBlogs: Blog[] = [
+      {
+        "title": "Guide to Playing Varsity Soccer in University",
+        "user": {
+            "first_name": "Tomiwa",
+            "last_name": "Ademidun",
+            "username": "tomiwa",
+            "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-prod.appspot.com/o/user-uploads%2Fuser-profile-pictures%2F1%2Fljy9s5nm-Ezc5Hyf.jpg?alt=media&token=2391816e-c546-4b11-b232-0cc91f9f3547",
+            "id": 1
+        },
+        body: "",
+        "slug": "university-varsity-soccer-guide",
+        "description": "This guide covers what players, parents, coaches and technical directors need to know about playing varsity soccer in university at the NCAA or U Sports level.",
+        "header_image_url": "https://i.imgur.com/N4CN0Al.png",
+        "id": 240,
+        "contributors": [],
+        "alternate_slugs": [],
+        "published": true,
+        "body_type": "html",
+        "video_url": "https://www.youtube.com/watch?v=OJspyAwLCkU",
+        "slides_url": null,
+    },
         {
           id: 155,
           contributors: [
