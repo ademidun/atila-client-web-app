@@ -9,4 +9,11 @@ export interface MentorshipSession {
     notes: string, // mentee can either be the Mentor object or the mentor ID,
     event_scheduled?: true,
     event_details?: Object,
+    discountcode_set?: Array<string>
+}
+
+export interface DiscountCode {
+    id?: string,
+    code?: string,
+    session?: MentorshipSession,
 }

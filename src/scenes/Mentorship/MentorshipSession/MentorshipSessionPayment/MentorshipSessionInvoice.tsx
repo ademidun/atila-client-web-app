@@ -15,6 +15,10 @@ function MentorshipSessionInvoice({session}: ({session: MentorshipSession})) {
   const mentorshipTax =  mentorshipPrice * ATILA_SCHOLARSHIP_FEE_TAX;
   const totalmentorshipCost =  mentorshipPrice + mentorshipTax;
 
+  console.log('MentorshipSessionInvoice', {session});
+  console.log('MentorshipSessionInvoice session.discountcode_set', session.discountcode_set);
+  console.log('MentorshipSessionInvoice session.discountcode_set?.length', session.discountcode_set?.length);
+
   return (
     <div>
         <div className="invoice-box">
@@ -69,12 +73,26 @@ function MentorshipSessionInvoice({session}: ({session: MentorshipSession})) {
 
 					<td>{formatCurrency(mentorshipTax)}</td>
 				</tr>
+                {session.discountcode_set?.length && session.discountcode_set?.length > 0 ?
+                    <>
+                        <tr className="discountCode">
+                            <td>Atila Mentorship Scholarship</td>
 
-				<tr className="total">
-					<td></td>
+                            <td>-{formatCurrency(totalmentorshipCost)}</td>
+                        </tr>
+                    <tr className="total">
+                        <td></td>
 
-					<td>Total: {formatCurrency(totalmentorshipCost)}</td>
-				</tr>
+                        <td>Total: {formatCurrency(0)}</td>
+                    </tr>
+                    </>
+                    :
+                    <tr className="total">
+                        <td></td>
+
+                        <td>Total: {formatCurrency(totalmentorshipCost)}</td>
+                    </tr>
+                }
 			</table>
 		</div>
     </div>

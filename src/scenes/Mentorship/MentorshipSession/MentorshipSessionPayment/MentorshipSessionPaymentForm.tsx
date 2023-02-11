@@ -3,7 +3,7 @@ import { Button, Col, Row } from 'antd';
 import { connect } from 'react-redux';
 import {CardElement, injectStripe, ReactStripeElements} from 'react-stripe-elements';
 import { ATILA_SCHOLARSHIP_FEE_TAX } from '../../../../models/ConstantsPayments';
-import { MentorshipSession } from '../../../../models/MentorshipSession';
+import { DiscountCode, MentorshipSession } from '../../../../models/MentorshipSession';
 import { UserProfile } from '../../../../models/UserProfile.class';
 import MentorshipSesssionAPI from '../../../../services/Mentorship/MentorshipSessionAPI';
 import { formatCurrency, getErrorMessage } from '../../../../services/utils';
@@ -28,7 +28,7 @@ function MentorshipSessionPaymentForm(props: MentorshipSessionPaymentFormProps) 
     const [networkResponse, setNetworkResponse] = useState<NetworkResponse>({title: "", type: null})
     let mentorShipSession = session; // should we just change session to a let?
 
-    const [discountCode, setDiscountCode] = useState({code: ''});
+    const [discountCode, setDiscountCode] = useState<DiscountCode>({code: '', id: ''});
     if (!mentorShipSession?.mentor) {
         return null
     }
@@ -40,9 +40,10 @@ function MentorshipSessionPaymentForm(props: MentorshipSessionPaymentFormProps) 
         event.preventDefault();
         setNetworkResponse({title: "Verifying discount code", type: "loading"});
         try {
-            const {data: verificationResponse} = await MentorshipSesssionAPI.verifyDiscountCode({code: discountCode.code});
+            const {data: verificationResponse} = await MentorshipSesssionAPI.verifyDiscountCode({code: discountCode.code!});
             console.log({verificationResponse});
             setNetworkResponse({title: "Succesfully verified code", type: "success"});
+            setDiscountCode(verificationResponse.discount_code);
         } catch (verifyDiscountCodeError) {
             console.log({verifyDiscountCodeError});
             setNetworkResponse({title: getErrorMessage(verifyDiscountCodeError), type: "error"});
@@ -177,7 +178,7 @@ function MentorshipSessionPaymentForm(props: MentorshipSessionPaymentFormProps) 
                         <Button className="col-12 my-3"
                                     size="large"
                                     style={{height: "auto"}}
-                                    disabled={networkResponse.type==="loading"}
+                                    disabled={!discountCode.code||networkResponse.type==="loading"}
                                     onClick={handleVerifyDiscountCode}>
                             Verify Mentorship Code
                         </Button>
@@ -188,7 +189,8 @@ function MentorshipSessionPaymentForm(props: MentorshipSessionPaymentFormProps) 
                                     style={{height: "auto"}}
                                     disabled={networkResponse.type==="loading"}
                                     onClick={handleSubmit}>
-                                Create Session {formatCurrency(totalPaymentAmount)}
+                                        {/* If there is a discountCode, don't show create Session */}
+                                Create Session {discountCode.id ? '' : formatCurrency(totalPaymentAmount)}
                             </Button>
 
 
@@ -199,7 +201,7 @@ function MentorshipSessionPaymentForm(props: MentorshipSessionPaymentFormProps) 
                 </Col>
 
                 <Col sm={24} md={12}>
-                    <MentorshipSessionInvoice session={session} />
+                    <MentorshipSessionInvoice session={{...session, discountcode_set: discountCode.id ? [discountCode.id]: []}} />
                 </Col>
 
             </Row>
