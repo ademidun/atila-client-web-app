@@ -1,4 +1,4 @@
-import React, { FormEvent, useRef, useState } from 'react';
+import React, { FormEvent, KeyboardEventHandler, useRef, useState } from 'react';
 import { Button, Col, Row } from 'antd';
 import { connect } from 'react-redux';
 import {CardElement, injectStripe, ReactStripeElements} from 'react-stripe-elements';
@@ -27,12 +27,35 @@ function MentorshipSessionPaymentForm(props: MentorshipSessionPaymentFormProps) 
     const [cardHolderEmail, setCardHolderEmail] = useState(userProfileLoggedIn?.email||"");
     const [networkResponse, setNetworkResponse] = useState<NetworkResponse>({title: "", type: null})
     let mentorShipSession = session; // should we just change session to a let?
+
+    const [discountCode, setDiscountCode] = useState({code: ''});
     if (!mentorShipSession?.mentor) {
         return null
     }
 
     const mentorshipTax =  Number.parseFloat(mentorShipSession.mentor.price) * ATILA_SCHOLARSHIP_FEE_TAX;
     const totalPaymentAmount =  Number.parseFloat(mentorShipSession.mentor.price) + mentorshipTax;
+
+    const handleVerifyDiscountCode = async (event: FormEvent) => {
+        event.preventDefault();
+        setNetworkResponse({title: "Verifying discount code", type: "loading"});
+        try {
+            const {data: verificationResponse} = await MentorshipSesssionAPI.verifyDiscountCode({code: discountCode.code});
+            console.log({verificationResponse});
+            setNetworkResponse({title: "Succesfully verified code", type: "success"});
+        } catch (verifyDiscountCodeError) {
+            console.log({verifyDiscountCodeError});
+            setNetworkResponse({title: getErrorMessage(verifyDiscountCodeError), type: "error"});
+        }
+        
+    }
+
+    const onDiscountCodeKeyDown: KeyboardEventHandler<HTMLInputElement> =  (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            handleVerifyDiscountCode(event);
+        }
+    };
 
     const handleSubmit = async (event: FormEvent) => {
         event.preventDefault();
@@ -54,8 +77,8 @@ function MentorshipSessionPaymentForm(props: MentorshipSessionPaymentFormProps) 
             mentorship_session: {id: mentorShipSession.id}
         };
         console.log('cardElementRef.current', cardElementRef.current);
+        setNetworkResponse({title: "Processing payment", type: "loading"});
         try{
-            setNetworkResponse({title: "Processing payment", type: "loading"});
             const {data: clientSecretData} = await PaymentAPI.getClientSecretMentorshipSession(paymentData);
             try {
                 const cardPaymentResult = await stripe!.confirmCardPayment(clientSecretData.client_secret, {
@@ -123,7 +146,7 @@ function MentorshipSessionPaymentForm(props: MentorshipSessionPaymentFormProps) 
                                     onChange={event => (setCardHolderEmail(event.target.value))}
                             />
                         </Col>
-
+                        9zpeci7igfszfaln
                     
                         <Col span={24} className="mb-3">
 
@@ -138,6 +161,27 @@ function MentorshipSessionPaymentForm(props: MentorshipSessionPaymentFormProps) 
                                 Test with: 4000001240000000
                             </p>
                             }
+
+
+                        <Col span={24} className="mb-3">
+                            <input placeholder="Optional: Mentorship Code"
+                                    name="discountCode"
+                                    className="form-control"
+                                    value={discountCode.code}
+                                    onKeyDown={onDiscountCodeKeyDown}
+                                    onChange={event => (setDiscountCode(prevDiscountCode => ({...prevDiscountCode, code: event.target.value})))}
+                            />
+                        </Col>
+
+
+                        <Button className="col-12 my-3"
+                                    size="large"
+                                    style={{height: "auto"}}
+                                    disabled={networkResponse.type==="loading"}
+                                    onClick={handleVerifyDiscountCode}>
+                            Verify Mentorship Code
+                        </Button>
+
                             <Button className="col-12 my-3"
                                     type="primary"
                                     size="large"
