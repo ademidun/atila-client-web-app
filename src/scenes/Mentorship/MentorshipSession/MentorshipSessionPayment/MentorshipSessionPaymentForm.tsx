@@ -1,9 +1,9 @@
-import React, { FormEvent, useRef, useState } from 'react';
+import React, { FormEvent, KeyboardEventHandler, useRef, useState } from 'react';
 import { Button, Col, Row } from 'antd';
 import { connect } from 'react-redux';
 import {CardElement, injectStripe, ReactStripeElements} from 'react-stripe-elements';
 import { ATILA_SCHOLARSHIP_FEE_TAX } from '../../../../models/ConstantsPayments';
-import { MentorshipSession } from '../../../../models/MentorshipSession';
+import { DiscountCode, MentorshipSession } from '../../../../models/MentorshipSession';
 import { UserProfile } from '../../../../models/UserProfile.class';
 import MentorshipSesssionAPI from '../../../../services/Mentorship/MentorshipSessionAPI';
 import { formatCurrency, getErrorMessage } from '../../../../services/utils';
@@ -27,6 +27,8 @@ function MentorshipSessionPaymentForm(props: MentorshipSessionPaymentFormProps) 
     const [cardHolderEmail, setCardHolderEmail] = useState(userProfileLoggedIn?.email||"");
     const [networkResponse, setNetworkResponse] = useState<NetworkResponse>({title: "", type: null})
     let mentorShipSession = session; // should we just change session to a let?
+
+    const [discountCode, setDiscountCode] = useState<DiscountCode>({code: '', id: ''});
     if (!mentorShipSession?.mentor) {
         return null
     }
@@ -34,15 +36,45 @@ function MentorshipSessionPaymentForm(props: MentorshipSessionPaymentFormProps) 
     const mentorshipTax =  Number.parseFloat(mentorShipSession.mentor.price) * ATILA_SCHOLARSHIP_FEE_TAX;
     const totalPaymentAmount =  Number.parseFloat(mentorShipSession.mentor.price) + mentorshipTax;
 
+    const handleVerifyDiscountCode = async (event: FormEvent) => {
+        event.preventDefault();
+        setNetworkResponse({title: "Verifying discount code", type: "loading"});
+        try {
+            const {data: verificationResponse} = await MentorshipSesssionAPI.verifyDiscountCode({code: discountCode.code!});
+            setNetworkResponse({title: "Succesfully verified code", type: "success"});
+            setDiscountCode(verificationResponse.discount_code);
+        } catch (verifyDiscountCodeError) {
+            console.log({verifyDiscountCodeError});
+            setNetworkResponse({title: getErrorMessage(verifyDiscountCodeError), type: "error"});
+        }
+        
+    }
+
+    const onDiscountCodeKeyDown: KeyboardEventHandler<HTMLInputElement> =  (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            handleVerifyDiscountCode(event);
+        }
+    };
+
     const handleSubmit = async (event: FormEvent) => {
         event.preventDefault();
 
         if (!mentorShipSession?.id) {
             setNetworkResponse({title: "Creating mentorship session", type: "loading"});
             const createMentorshipSessionResponse = await MentorshipSesssionAPI
-            .createMentorshipSession({mentee: userProfileLoggedIn!.user, mentor: mentorShipSession.mentor!.id});
+            .createMentorshipSession({mentee: userProfileLoggedIn!.user,
+                 mentor: mentorShipSession.mentor!.id,
+                 discountcode_set: discountCode.id ? [discountCode.id]: []});
             const {data: createdSession} = createMentorshipSessionResponse;
             mentorShipSession = createdSession;
+        }
+        if (mentorShipSession.discountcode_set?.length && mentorShipSession.discountcode_set?.length > 0) {
+
+            mentorShipSession.stripe_payment_intent_id = `discount_${discountCode.id}`;
+            onPaymentComplete(mentorShipSession);
+            setNetworkResponse({title: "Session created succesfully", type: "success"});
+            return
         }
         const billing_details = {
             name: cardHolderName,
@@ -53,9 +85,8 @@ function MentorshipSessionPaymentForm(props: MentorshipSessionPaymentFormProps) 
             billing_details,
             mentorship_session: {id: mentorShipSession.id}
         };
-        console.log('cardElementRef.current', cardElementRef.current);
+        setNetworkResponse({title: "Processing payment", type: "loading"});
         try{
-            setNetworkResponse({title: "Processing payment", type: "loading"});
             const {data: clientSecretData} = await PaymentAPI.getClientSecretMentorshipSession(paymentData);
             try {
                 const cardPaymentResult = await stripe!.confirmCardPayment(clientSecretData.client_secret, {
@@ -123,7 +154,6 @@ function MentorshipSessionPaymentForm(props: MentorshipSessionPaymentFormProps) 
                                     onChange={event => (setCardHolderEmail(event.target.value))}
                             />
                         </Col>
-
                     
                         <Col span={24} className="mb-3">
 
@@ -138,13 +168,35 @@ function MentorshipSessionPaymentForm(props: MentorshipSessionPaymentFormProps) 
                                 Test with: 4000001240000000
                             </p>
                             }
+
+
+                        <Col span={24} className="mb-3">
+                            <input placeholder="Optional: Mentorship Code"
+                                    name="discountCode"
+                                    className="form-control"
+                                    value={discountCode.code}
+                                    onKeyDown={onDiscountCodeKeyDown}
+                                    onChange={event => (setDiscountCode(prevDiscountCode => ({...prevDiscountCode, code: event.target.value})))}
+                            />
+                        </Col>
+
+
+                        <Button className="col-12 my-3"
+                                    size="large"
+                                    style={{height: "auto"}}
+                                    disabled={!discountCode.code||networkResponse.type==="loading"}
+                                    onClick={handleVerifyDiscountCode}>
+                            Verify Mentorship Code
+                        </Button>
+
                             <Button className="col-12 my-3"
                                     type="primary"
                                     size="large"
                                     style={{height: "auto"}}
                                     disabled={networkResponse.type==="loading"}
                                     onClick={handleSubmit}>
-                                Create Session {formatCurrency(totalPaymentAmount)}
+                                        {/* If there is a discountCode, don't show create Session */}
+                                Create Session {discountCode.id ? '' : formatCurrency(totalPaymentAmount)}
                             </Button>
 
 
@@ -155,7 +207,7 @@ function MentorshipSessionPaymentForm(props: MentorshipSessionPaymentFormProps) 
                 </Col>
 
                 <Col sm={24} md={12}>
-                    <MentorshipSessionInvoice session={session} />
+                    <MentorshipSessionInvoice session={{...session, discountcode_set: discountCode.id ? [discountCode.id]: []}} />
                 </Col>
 
             </Row>
