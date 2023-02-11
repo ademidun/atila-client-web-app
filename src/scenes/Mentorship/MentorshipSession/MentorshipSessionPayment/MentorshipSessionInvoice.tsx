@@ -15,10 +15,6 @@ function MentorshipSessionInvoice({session}: ({session: MentorshipSession})) {
   const mentorshipTax =  mentorshipPrice * ATILA_SCHOLARSHIP_FEE_TAX;
   const totalmentorshipCost =  mentorshipPrice + mentorshipTax;
 
-  console.log('MentorshipSessionInvoice', {session});
-  console.log('MentorshipSessionInvoice session.discountcode_set', session.discountcode_set);
-  console.log('MentorshipSessionInvoice session.discountcode_set?.length', session.discountcode_set?.length);
-
   return (
     <div>
         <div className="invoice-box">

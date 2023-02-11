@@ -41,7 +41,6 @@ function MentorshipSessionPaymentForm(props: MentorshipSessionPaymentFormProps) 
         setNetworkResponse({title: "Verifying discount code", type: "loading"});
         try {
             const {data: verificationResponse} = await MentorshipSesssionAPI.verifyDiscountCode({code: discountCode.code!});
-            console.log({verificationResponse});
             setNetworkResponse({title: "Succesfully verified code", type: "success"});
             setDiscountCode(verificationResponse.discount_code);
         } catch (verifyDiscountCodeError) {
@@ -64,9 +63,18 @@ function MentorshipSessionPaymentForm(props: MentorshipSessionPaymentFormProps) 
         if (!mentorShipSession?.id) {
             setNetworkResponse({title: "Creating mentorship session", type: "loading"});
             const createMentorshipSessionResponse = await MentorshipSesssionAPI
-            .createMentorshipSession({mentee: userProfileLoggedIn!.user, mentor: mentorShipSession.mentor!.id});
+            .createMentorshipSession({mentee: userProfileLoggedIn!.user,
+                 mentor: mentorShipSession.mentor!.id,
+                 discountcode_set: discountCode.id ? [discountCode.id]: []});
             const {data: createdSession} = createMentorshipSessionResponse;
             mentorShipSession = createdSession;
+        }
+        if (mentorShipSession.discountcode_set?.length && mentorShipSession.discountcode_set?.length > 0) {
+
+            mentorShipSession.stripe_payment_intent_id = `discount_${discountCode.id}`;
+            onPaymentComplete(mentorShipSession);
+            setNetworkResponse({title: "Session created succesfully", type: "success"});
+            return
         }
         const billing_details = {
             name: cardHolderName,
@@ -77,7 +85,6 @@ function MentorshipSessionPaymentForm(props: MentorshipSessionPaymentFormProps) 
             billing_details,
             mentorship_session: {id: mentorShipSession.id}
         };
-        console.log('cardElementRef.current', cardElementRef.current);
         setNetworkResponse({title: "Processing payment", type: "loading"});
         try{
             const {data: clientSecretData} = await PaymentAPI.getClientSecretMentorshipSession(paymentData);
@@ -147,7 +154,6 @@ function MentorshipSessionPaymentForm(props: MentorshipSessionPaymentFormProps) 
                                     onChange={event => (setCardHolderEmail(event.target.value))}
                             />
                         </Col>
-                        9zpeci7igfszfaln
                     
                         <Col span={24} className="mb-3">
 
