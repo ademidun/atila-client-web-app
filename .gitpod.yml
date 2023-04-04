@@ -1,5 +1,6 @@
 tasks:
-  - init: npm install
+  - before: npm config set '@atila:registry' https://node.bit.dev
+    init: npm install
     command: npm start
 
 ports:
