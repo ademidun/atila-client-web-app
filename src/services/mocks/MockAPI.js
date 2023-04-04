@@ -71,6 +71,19 @@ export class MockAPI {
 
     initializeMocks = () => {
 
+        this.mock.onAny(`${Environment.apiUrl}/login/`).reply(function (config) {
+            console.log({config});
+            return [
+                200,
+                {
+                    id: UserProfileTomiwa.user,
+                    token: 'canbeanythingbecause.itwontbe.makingapirequests',
+                    user_profile: UserProfileTomiwa,
+                    username: UserProfileTomiwa.username
+                },
+              ];
+        })
+
         this.mock.onAny(ContactsAPI.contactsApiQueryUrl).reply(200, ContactsQuery1);
         this.mock.onAny(ContactsAPI.contactsApiQueryStudentClubsUrl).reply(200, ContactsQuery1);
 
