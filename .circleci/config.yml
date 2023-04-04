@@ -18,7 +18,7 @@ jobs:
           command: npm config set '@atila:registry' https://node.bit.dev
       - run:
           name: install-npm-packages
-          command: npm install
+          command: npm install --legacy-peer-deps
       - save_cache:
           key: dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "package.json" }}
           paths:
@@ -43,7 +43,7 @@ jobs:
           key: dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "package.json" }}
       - run:
           name: install-npm-packages
-          command: npm install
+          command: npm install --legacy-peer-deps
       - save_cache:
           key: dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "package.json" }}
           paths:
