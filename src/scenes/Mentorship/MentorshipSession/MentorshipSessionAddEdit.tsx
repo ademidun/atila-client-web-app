@@ -156,12 +156,12 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
 
     const mentorshipSessionSteps = [
         {
-          title: 'Preview',
+          title: 'View',
           content: (session: MentorshipSession)=> 
           <div>
             <div className='text-center'>
               <h1>
-              Preview {session.mentor ? `${TextUtils.dynamicPossessive(session.mentor.user.first_name)}` : "mentor's" } schedule
+              View {session.mentor ? `${TextUtils.dynamicPossessive(session.mentor.user.first_name)}` : "mentor's" } Profile
               </h1>
               <h3 className='text-muted'>
                 You can confirm this time after payment.
@@ -169,7 +169,7 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
             </div>
             <hr/>
 
-            <MentorshipSessionSchedule session={session} onDateAndTimeSelected={handleCalendarEventViewed} />
+            <MentorshipSessionSchedule previewMode={true} session={session} onDateAndTimeSelected={handleCalendarEventViewed} />
           </div>,
           disabled: () => false,
         },

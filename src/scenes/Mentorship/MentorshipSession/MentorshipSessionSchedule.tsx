@@ -10,6 +10,7 @@ const calendlyWidgetScript = 'calendlyWidgetScript';
 const calendarDivId = 'calendarForm';
 
 interface MentorshipSessionScheduleProps {
+  previewMode?: boolean,
   session: MentorshipSession,
   onDateAndTimeSelected: (session: MentorshipSession) => void,
   onEventTypeViewed: (session: MentorshipSession) => void,
@@ -24,7 +25,7 @@ MentorshipSessionSchedule.defaultProps = {
 
 function MentorshipSessionSchedule(props: MentorshipSessionScheduleProps) {
 
-  const { session, session: { mentor }, onDateAndTimeSelected, onEventTypeViewed, onEventScheduled } = props;
+  const { previewMode, session, session: { mentor }, onDateAndTimeSelected, onEventTypeViewed, onEventScheduled } = props;
   const [loadingCalendar, setLoadingCalendar] = useState("Loading calendar");
 
   const [width, setWidth] = useState<number>(window.innerWidth);
@@ -116,6 +117,7 @@ function MentorshipSessionSchedule(props: MentorshipSessionScheduleProps) {
     <div>
   {mentor && 
     <Row gutter={16}>
+      {!previewMode && 
       <Col sm={24} md={12}>
         <div id={calendarDivId} className='card shadow'>
           {mentor.schedule_url ? (
@@ -133,10 +135,10 @@ function MentorshipSessionSchedule(props: MentorshipSessionScheduleProps) {
                   <Cal
                     calLink={mentor.schedule_url.replace(CALCOM_URL, '')}
                     config={{
-                      name: "John Doe",
-                      email: "johndoe@gmail.com",
-                      notes: "Test Meeting",
-                      guests: ["janedoe@gmail.com"],
+                      // name: "John Doe",
+                      // email: "johndoe@gmail.com",
+                      // notes: "Test Meeting",
+                      // guests: ["janedoe@gmail.com"],
                       // theme: "dark",
                     }}
                   />
@@ -157,8 +159,8 @@ function MentorshipSessionSchedule(props: MentorshipSessionScheduleProps) {
             </div>
           )}
         </div>
-      </Col>
-      <Col sm={24} md={12}>
+      </Col>}
+      <Col sm={24} md={{span: 12,  offset: previewMode ? 6: undefined}}>
         <MentorProfileView mentor={mentor} showProfilePic={true} />
       </Col>
     </Row>
