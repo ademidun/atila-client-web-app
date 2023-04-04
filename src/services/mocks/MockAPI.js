@@ -183,11 +183,13 @@ export class MockAPI {
 
             let responseData = MentorsList;
 
-            if (config.url.includes("?slug=calcom")) {
-                responseData = MentorsList = {
+            console.log({config})
+            if (config.url.includes("?username=calcom")) {
+                responseData = {
                     ...MentorsList,
                     results: MentorsList.results.filter(mentor => mentor.schedule_url?.includes('cal.com'))
                 };
+                console.log({responseData})
             }
             return [
               200,
