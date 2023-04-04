@@ -175,6 +175,25 @@ export class MockAPI {
         let calendlyApiUrl = `${ScheduleAPI.calendlyApiUrl}/event_types`
         let scheduleEventTypesUrl = new RegExp(`${calendlyApiUrl}/\\?user=.+`);
         this.mock.onGet(scheduleEventTypesUrl).reply(200, MentorEventTypes);
+
+
+        let mentorsFilter = new RegExp(`${mentorsApiUrl}\\?username=.+`);
+        
+        this.mock.onGet(mentorsFilter).reply(function (config) {
+
+            let responseData = MentorsList;
+
+            if (config.url.includes("?slug=calcom")) {
+                responseData = MentorsList = {
+                    ...MentorsList,
+                    results: MentorsList.results.filter(mentor => mentor.schedule_url?.includes('cal.com'))
+                };
+            }
+            return [
+              200,
+              responseData,
+            ];
+          });
     }
 
     mockApplicationGet = (application = ApplicationFinalistSTEM, status= 200) => {
