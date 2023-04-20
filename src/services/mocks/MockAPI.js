@@ -25,13 +25,13 @@ import UserProfileApplications from './UserProfile/UserProfileApplications.json'
 import MentorEventTypes from './Mentorship/MentorEventTypes.json';
 import CalendlyAccessToken from './Mentorship/CalendlyAccessToken.json';
 import MentorProfile from './Mentorship/MentorProfile.json';
-import MentorsList from './Mentorship/MentorsList.json';
 
 import EssaysPage1 from './Essay/EssaysPage1.json';
 import ApplicationsAPI from '../ApplicationsAPI';
 import AnalyticsService from '../AnalyticsService';
 import { toastNotify } from '../../models/Utils';
 import ScheduleAPI from '../ScheduleAPI';
+import { addMentorshipMock } from './Mentorship/MockAPIMentorship';
 
 var axios = require("axios");
 var MockAdapter = require("axios-mock-adapter");
@@ -70,6 +70,8 @@ export class MockAPI {
     }
 
     initializeMocks = () => {
+
+        this.mock = addMentorshipMock(this.mock)
 
         this.mock.onAny(`${Environment.apiUrl}/login/`).reply(function (config) {
             console.log({config});
@@ -150,9 +152,6 @@ export class MockAPI {
         this.mock.onGet(essayDetailApiUrl).reply(200, {essay: EssaysPage1.results[1]});
         this.mock.onGet(essayRelatedApiUrl).reply(200, EssaysPage1);
 
-        let mentorsApiUrl = `${Environment.apiUrl}/mentorship/mentors/`;
-        this.mock.onGet(mentorsApiUrl).reply(200, MentorsList);
-
         let notionPageUrl = `${NotionService.pageIdUrl}`;
         notionPageUrl = new RegExp(`${notionPageUrl}/.+`);
         this.mock.onGet(notionPageUrl).reply(200, TopScholarNotionPage);
@@ -190,25 +189,6 @@ export class MockAPI {
         this.mock.onGet(scheduleEventTypesUrl).reply(200, MentorEventTypes);
 
 
-        let mentorsFilter = new RegExp(`${mentorsApiUrl}\\?username=.+`);
-        
-        this.mock.onGet(mentorsFilter).reply(function (config) {
-
-            let responseData = MentorsList;
-
-            console.log({config})
-            if (config.url.includes("?username=calcom")) {
-                responseData = {
-                    ...MentorsList,
-                    results: MentorsList.results.filter(mentor => mentor.schedule_url?.includes('cal.com'))
-                };
-                console.log({responseData})
-            }
-            return [
-              200,
-              responseData,
-            ];
-          });
     }
 
     mockApplicationGet = (application = ApplicationFinalistSTEM, status= 200) => {

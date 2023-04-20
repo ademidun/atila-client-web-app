@@ -79,6 +79,7 @@ function MentorshipSessionSchedule(props: MentorshipSessionScheduleProps) {
     };
 
     const handleCalendlyEvent = (e: any) => {
+      console.log({e});
       if (isCalendlyEvent(e)) {
         console.log(e);
         console.log(e.data);
