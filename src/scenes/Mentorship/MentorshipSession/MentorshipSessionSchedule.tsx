@@ -25,7 +25,7 @@ MentorshipSessionSchedule.defaultProps = {
 
 function MentorshipSessionSchedule(props: MentorshipSessionScheduleProps) {
 
-  const { previewMode, session, session: { mentor }, onDateAndTimeSelected, onEventTypeViewed, onEventScheduled } = props;
+  const { previewMode, session, session: { mentor }, onEventTypeViewed, onEventScheduled } = props;
   const [loadingCalendar, setLoadingCalendar] = useState("Loading calendar");
 
   const [width, setWidth] = useState<number>(window.innerWidth);
@@ -78,19 +78,32 @@ function MentorshipSessionSchedule(props: MentorshipSessionScheduleProps) {
              e.data.event.indexOf('calendly') === 0;
     };
 
-    const handleCalendlyEvent = (e: any) => {
-      console.log({e});
+    // TODO move this inside MentorshipSessionSchedule
+    const isCalComEvent = (e: MessageEvent) => {
+      return e.origin === 'https://app.cal.com' && !['__routeChanged', '__dimensionChanged'].includes(e.data.type)
+    };
+
+    const handleCalendarEvent = (e: any) => {
+      if (isCalComEvent(e)) {
+        console.log(e.data.type)
+        console.log({e})
+        
+        if (e.data.type === "linkReady") {
+          // change the page when the date and time is selected
+          setLoadingCalendar("");
+          onEventTypeViewed(session);
+        }
+        else if (e.data.type === 'bookingSuccessful') {
+          onEventScheduled(session, e.data.data);
+        }
+      }
       if (isCalendlyEvent(e)) {
+        console.log(e.data.event);
         console.log(e);
-        console.log(e.data);
         if (e.data.event === "calendly.event_type_viewed") {
           // once the "event_type_viewed" event is emitted, we know the calendar has loadedFd
           setLoadingCalendar("");
           onEventTypeViewed(session);
-        }
-        else if (e.data.event === "calendly.date_and_time_selected") {
-          // change the page when the date and time is selected
-          onDateAndTimeSelected(session);
         }
         else if (e.data.event === "calendly.event_scheduled") {
           // change the page when the event has been scheduled
@@ -102,13 +115,13 @@ function MentorshipSessionSchedule(props: MentorshipSessionScheduleProps) {
     useEffect(() => {
       window.addEventListener(
         'message',
-        handleCalendlyEvent 
+        handleCalendarEvent 
       );
     
       return () => {
         window.removeEventListener(
           'message',
-          handleCalendlyEvent 
+          handleCalendarEvent 
         );
       }
     }, );

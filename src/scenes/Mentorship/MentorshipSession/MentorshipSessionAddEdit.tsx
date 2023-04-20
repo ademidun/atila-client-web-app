@@ -210,7 +210,7 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
             <MentorshipSessionSchedule session={session} onDateAndTimeSelected={handleCalendarEventViewed} 
             onEventScheduled={handleCalendarEventScheduled} />
           </div>,
-          disabled: () => false
+          disabled: () => !mentorshipSession?.stripe_payment_intent_id
         },
         {
           title: 'Prepare',
