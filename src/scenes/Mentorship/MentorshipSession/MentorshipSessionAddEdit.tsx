@@ -210,35 +210,35 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
             <MentorshipSessionSchedule session={session} onDateAndTimeSelected={handleCalendarEventViewed} 
             onEventScheduled={handleCalendarEventScheduled} />
           </div>,
-          disabled: () => !mentorshipSession?.stripe_payment_intent_id
+          disabled: () => !mentorshipSession?.stripe_payment_intent_id || localStorage.getItem('FEATURE_FLAG')
         },
-        {
-          title: 'Prepare',
-          content: (session: MentorshipSession)=> {
-            const sessionIntakeInputConfigs = [
-              {
-                keyName: 'notes',
-                type: 'html_editor',
-                html: () => (<label htmlFor="notes">
-                    Fill notes before your session.<br/> Tip: Copy-paste and edit these notes in a seperate document like {' '}
-                    <a href="https://docs.new" target="_blank" rel="noopener noreferrer">
-                     Google docs</a> then copy-paste them back here.
-                </label>),
-                }
-            ]
-            return (
-              <div>
-                <FormDynamic onUpdateForm={(event: any) =>
-                                            setMentorshipSession({...mentorshipSession, [event.target.name]: event.target.value})}
-                                            model={session}
-                                            inputConfigs=
-                                                {sessionIntakeInputConfigs}
-                                                loggedInUserProfile={{}} />
-              </div>
-            )
-          },
-          disabled: () => !mentorshipSession?.stripe_payment_intent_id
-        },
+        // {
+        //   title: 'Prepare',
+        //   content: (session: MentorshipSession)=> {
+        //     const sessionIntakeInputConfigs = [
+        //       {
+        //         keyName: 'notes',
+        //         type: 'html_editor',
+        //         html: () => (<label htmlFor="notes">
+        //             Fill notes before your session.<br/> Tip: Copy-paste and edit these notes in a seperate document like {' '}
+        //             <a href="https://docs.new" target="_blank" rel="noopener noreferrer">
+        //              Google docs</a> then copy-paste them back here.
+        //         </label>),
+        //         }
+        //     ]
+        //     return (
+        //       <div>
+        //         <FormDynamic onUpdateForm={(event: any) =>
+        //                                     setMentorshipSession({...mentorshipSession, [event.target.name]: event.target.value})}
+        //                                     model={session}
+        //                                     inputConfigs=
+        //                                         {sessionIntakeInputConfigs}
+        //                                         loggedInUserProfile={{}} />
+        //       </div>
+        //     )
+        //   },
+        //   disabled: () => !mentorshipSession?.stripe_payment_intent_id
+        // },
         // { // TODO find way to pull event details to Atila database
         //   title: 'Attend',
         //   content: (session: MentorshipSession)=> <div>
