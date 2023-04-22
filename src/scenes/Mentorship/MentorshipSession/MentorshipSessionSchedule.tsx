@@ -6,6 +6,8 @@ import MentorProfileView from '../../../components/Mentorship/Mentor/MentorProfi
 import { MentorshipSession } from '../../../models/MentorshipSession';
 import Cal from '@calcom/embed-react';
 
+console.log({Cal});
+
 const calendlyWidgetScript = 'calendlyWidgetScript';
 const calendarDivId = 'calendarForm';
 
