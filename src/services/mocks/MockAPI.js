@@ -52,15 +52,7 @@ export class MockAPI {
             return
         }
 
-        else if (Environment.name === "staging") {
-            if (!window.location.host.includes("--atila-staging.netlify.app")) {
-                return
-            } else {
-                console.log("Using mock data due to unique deploy url: '--atila-staging.netlify.app'")
-            }
-        }
-
-        else if (Environment.name === "dev" && atilaMockApiCallsLocalStorageValue !== "true") {
+        else if (atilaMockApiCallsLocalStorageValue !== "true") {
             return
         }
         this.mock = new MockAdapter(axios);
