@@ -3,7 +3,7 @@ version: 2.0
 jobs:
   build:
     working_directory: ~/repository
-    resource_class: large
+    resource_class: xlarge
     docker:
       - image: cimg/node:14.17.6
     steps:
@@ -18,7 +18,7 @@ jobs:
           command: npm config set '@atila:registry' https://node.bit.dev
       - run:
           name: install-npm-packages
-          command: npm install
+          command: npm install --legacy-peer-deps
       - save_cache:
           key: dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "package.json" }}
           paths:
@@ -27,7 +27,7 @@ jobs:
           name: test
           command: npm test
   deploy: # deploy script
-    resource_class: large
+    resource_class: xlarge
     working_directory: ~/repository
     docker:
       - image: cimg/node:14.17.6
@@ -43,14 +43,14 @@ jobs:
           key: dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "package.json" }}
       - run:
           name: install-npm-packages
-          command: npm install
+          command: npm install --legacy-peer-deps
       - save_cache:
           key: dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "package.json" }}
           paths:
             - ./node_modules
       - run: # build react
           name: react-build
-          command: export NODE_OPTIONS=--max_old_space_size=4096 ; npm run build
+          command: export NODE_OPTIONS=--max_old_space_size=8192 ; npm run build
       - run: # todo change -P to default, to deploy to prod on master branch
           name: Deploy Netlify
           command: |

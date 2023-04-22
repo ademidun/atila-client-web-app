@@ -8,6 +8,9 @@ export const mentorProfileFormConfig = [
         </label>),
     },
     {
+        keyName: 'schedule_url',
+    },
+    {
         keyName: 'linkedin_url',
     },
     {

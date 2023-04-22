@@ -77,6 +77,8 @@ if (window.location.host.includes('localhost')) {
     Environment = EnvironmentDev;
 } else if (window.location.host.includes('staging')) {
     Environment = EnvironmentStaging;
+} else if (window.location.host.includes('gitpod.io')) {
+    Environment = EnvironmentStaging;
 } else if (window.location.host.includes('demo')) {
     Environment = EnvironmentDemo;
 }

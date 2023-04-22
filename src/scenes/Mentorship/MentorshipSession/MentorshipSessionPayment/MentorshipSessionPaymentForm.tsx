@@ -38,7 +38,7 @@ function MentorshipSessionPaymentForm(props: MentorshipSessionPaymentFormProps) 
 
     const handleVerifyDiscountCode = async (event: FormEvent) => {
         event.preventDefault();
-        setNetworkResponse({title: "Verifying discount code", type: "loading"});
+        setNetworkResponse({title: "Verifying scholarship code", type: "loading"});
         try {
             const {data: verificationResponse} = await MentorshipSesssionAPI.verifyDiscountCode({code: discountCode.code!});
             setNetworkResponse({title: "Succesfully verified code", type: "success"});
@@ -171,7 +171,7 @@ function MentorshipSessionPaymentForm(props: MentorshipSessionPaymentFormProps) 
 
 
                         <Col span={24} className="mb-3">
-                            <input placeholder="Optional: Mentorship Code"
+                            <input placeholder="Optional: Mentorship Scholarship Code"
                                     name="discountCode"
                                     className="form-control"
                                     value={discountCode.code}
@@ -186,7 +186,7 @@ function MentorshipSessionPaymentForm(props: MentorshipSessionPaymentFormProps) 
                                     style={{height: "auto"}}
                                     disabled={!discountCode.code||networkResponse.type==="loading"}
                                     onClick={handleVerifyDiscountCode}>
-                            Verify Mentorship Code
+                            Verify Mentorship Scholarship Code
                         </Button>
 
                             <Button className="col-12 my-3"

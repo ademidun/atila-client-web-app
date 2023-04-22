@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { Alert, Button, Steps } from 'antd';
 import { MentorshipSession } from '../../../models/MentorshipSession';
 import MentorshipSessionPayment from './MentorshipSessionPayment/MentorshipSessionPayment';
-import FormDynamic from '../../../components/Form/FormDynamic';
 import MentorshipSessionSchedule from './MentorshipSessionSchedule';
 import MentorshipAPI from '../../../services/MentorshipAPI';
 import { getErrorMessage } from '../../../services/utils';
@@ -13,6 +12,7 @@ import HelmetSeo, { defaultSeoContent } from '../../../components/HelmetSeo';
 import { UserProfile } from '../../../models/UserProfile.class';
 import Register from '../../../components/Register';
 import { NetworkResponse, NetworkResponseDisplay } from '../../../components/NetworkResponse';
+import Environment from '../../../services/Environment';
 
 const { Step } = Steps;
 
@@ -156,12 +156,12 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
 
     const mentorshipSessionSteps = [
         {
-          title: 'Preview',
+          title: 'View',
           content: (session: MentorshipSession)=> 
           <div>
             <div className='text-center'>
               <h1>
-              Preview {session.mentor ? `${TextUtils.dynamicPossessive(session.mentor.user.first_name)}` : "mentor's" } schedule
+              View {session.mentor ? `${TextUtils.dynamicPossessive(session.mentor.user.first_name)}` : "mentor's" } Profile
               </h1>
               <h3 className='text-muted'>
                 You can confirm this time after payment.
@@ -169,7 +169,7 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
             </div>
             <hr/>
 
-            <MentorshipSessionSchedule session={session} onDateAndTimeSelected={handleCalendarEventViewed} />
+            <MentorshipSessionSchedule previewMode={true} session={session} onDateAndTimeSelected={handleCalendarEventViewed} />
           </div>,
           disabled: () => false,
         },
@@ -194,7 +194,7 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
             }
             
           </div>,
-          disabled: () => !mentorshipSession?.mentor || !mentorshipSession?.mentor.schedule_url,
+          disabled: () => !mentorshipSession?.mentor,
         },
         {
           title: 'Schedule',
@@ -210,35 +210,37 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
             <MentorshipSessionSchedule session={session} onDateAndTimeSelected={handleCalendarEventViewed} 
             onEventScheduled={handleCalendarEventScheduled} />
           </div>,
-          disabled: () => !mentorshipSession?.stripe_payment_intent_id
+          disabled: () => {
+            return !userProfileLoggedIn?.is_atila_admin && (Environment.name === 'prod' && !mentorshipSession?.stripe_payment_intent_id)
+          }
         },
-        {
-          title: 'Prepare',
-          content: (session: MentorshipSession)=> {
-            const sessionIntakeInputConfigs = [
-              {
-                keyName: 'notes',
-                type: 'html_editor',
-                html: () => (<label htmlFor="notes">
-                    Fill notes before your session.<br/> Tip: Copy-paste and edit these notes in a seperate document like {' '}
-                    <a href="https://docs.new" target="_blank" rel="noopener noreferrer">
-                     Google docs</a> then copy-paste them back here.
-                </label>),
-                }
-            ]
-            return (
-              <div>
-                <FormDynamic onUpdateForm={(event: any) =>
-                                            setMentorshipSession({...mentorshipSession, [event.target.name]: event.target.value})}
-                                            model={session}
-                                            inputConfigs=
-                                                {sessionIntakeInputConfigs}
-                                                loggedInUserProfile={{}} />
-              </div>
-            )
-          },
-          disabled: () => !mentorshipSession?.stripe_payment_intent_id
-        },
+        // {
+        //   title: 'Prepare',
+        //   content: (session: MentorshipSession)=> {
+        //     const sessionIntakeInputConfigs = [
+        //       {
+        //         keyName: 'notes',
+        //         type: 'html_editor',
+        //         html: () => (<label htmlFor="notes">
+        //             Fill notes before your session.<br/> Tip: Copy-paste and edit these notes in a seperate document like {' '}
+        //             <a href="https://docs.new" target="_blank" rel="noopener noreferrer">
+        //              Google docs</a> then copy-paste them back here.
+        //         </label>),
+        //         }
+        //     ]
+        //     return (
+        //       <div>
+        //         <FormDynamic onUpdateForm={(event: any) =>
+        //                                     setMentorshipSession({...mentorshipSession, [event.target.name]: event.target.value})}
+        //                                     model={session}
+        //                                     inputConfigs=
+        //                                         {sessionIntakeInputConfigs}
+        //                                         loggedInUserProfile={{}} />
+        //       </div>
+        //     )
+        //   },
+        //   disabled: () => !mentorshipSession?.stripe_payment_intent_id
+        // },
         // { // TODO find way to pull event details to Atila database
         //   title: 'Attend',
         //   content: (session: MentorshipSession)=> <div>

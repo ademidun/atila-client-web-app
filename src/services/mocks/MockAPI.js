@@ -25,13 +25,13 @@ import UserProfileApplications from './UserProfile/UserProfileApplications.json'
 import MentorEventTypes from './Mentorship/MentorEventTypes.json';
 import CalendlyAccessToken from './Mentorship/CalendlyAccessToken.json';
 import MentorProfile from './Mentorship/MentorProfile.json';
-import MentorsList from './Mentorship/MentorsList.json';
 
 import EssaysPage1 from './Essay/EssaysPage1.json';
 import ApplicationsAPI from '../ApplicationsAPI';
 import AnalyticsService from '../AnalyticsService';
 import { toastNotify } from '../../models/Utils';
 import ScheduleAPI from '../ScheduleAPI';
+import { addMentorshipMock } from './Mentorship/MockAPIMentorship';
 
 var axios = require("axios");
 var MockAdapter = require("axios-mock-adapter");
@@ -52,15 +52,7 @@ export class MockAPI {
             return
         }
 
-        else if (Environment.name === "staging") {
-            if (!window.location.host.includes("--atila-staging.netlify.app")) {
-                return
-            } else {
-                console.log("Using mock data due to unique deploy url: '--atila-staging.netlify.app'")
-            }
-        }
-
-        else if (Environment.name === "dev" && atilaMockApiCallsLocalStorageValue !== "true") {
+        else if (atilaMockApiCallsLocalStorageValue !== "true") {
             return
         }
         this.mock = new MockAdapter(axios);
@@ -70,6 +62,21 @@ export class MockAPI {
     }
 
     initializeMocks = () => {
+
+        this.mock = addMentorshipMock(this.mock)
+
+        this.mock.onAny(`${Environment.apiUrl}/login/`).reply(function (config) {
+            console.log({config});
+            return [
+                200,
+                {
+                    id: UserProfileTomiwa.user,
+                    token: 'canbeanythingbecause.itwontbe.makingapirequests',
+                    user_profile: UserProfileTomiwa,
+                    username: UserProfileTomiwa.username
+                },
+              ];
+        })
 
         this.mock.onAny(ContactsAPI.contactsApiQueryUrl).reply(200, ContactsQuery1);
         this.mock.onAny(ContactsAPI.contactsApiQueryStudentClubsUrl).reply(200, ContactsQuery1);
@@ -137,9 +144,6 @@ export class MockAPI {
         this.mock.onGet(essayDetailApiUrl).reply(200, {essay: EssaysPage1.results[1]});
         this.mock.onGet(essayRelatedApiUrl).reply(200, EssaysPage1);
 
-        let mentorsApiUrl = `${Environment.apiUrl}/mentorship/mentors/`;
-        this.mock.onGet(mentorsApiUrl).reply(200, MentorsList);
-
         let notionPageUrl = `${NotionService.pageIdUrl}`;
         notionPageUrl = new RegExp(`${notionPageUrl}/.+`);
         this.mock.onGet(notionPageUrl).reply(200, TopScholarNotionPage);
@@ -175,6 +179,8 @@ export class MockAPI {
         let calendlyApiUrl = `${ScheduleAPI.calendlyApiUrl}/event_types`
         let scheduleEventTypesUrl = new RegExp(`${calendlyApiUrl}/\\?user=.+`);
         this.mock.onGet(scheduleEventTypesUrl).reply(200, MentorEventTypes);
+
+
     }
 
     mockApplicationGet = (application = ApplicationFinalistSTEM, status= 200) => {
