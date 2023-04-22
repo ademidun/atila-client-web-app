@@ -211,7 +211,7 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
             onEventScheduled={handleCalendarEventScheduled} />
           </div>,
           disabled: () => {
-            return Environment.name === 'prod' && !mentorshipSession?.stripe_payment_intent_id && !localStorage.getItem('FEATURE_FLAG')
+            return !userProfileLoggedIn?.is_atila_admin && (Environment.name === 'prod' && !mentorshipSession?.stripe_payment_intent_id)
           }
         },
         // {
