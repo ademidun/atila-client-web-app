@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { Alert, Button, Steps } from 'antd';
 import { MentorshipSession } from '../../../models/MentorshipSession';
 import MentorshipSessionPayment from './MentorshipSessionPayment/MentorshipSessionPayment';
-import FormDynamic from '../../../components/Form/FormDynamic';
 import MentorshipSessionSchedule from './MentorshipSessionSchedule';
 import MentorshipAPI from '../../../services/MentorshipAPI';
 import { getErrorMessage } from '../../../services/utils';
@@ -13,6 +12,7 @@ import HelmetSeo, { defaultSeoContent } from '../../../components/HelmetSeo';
 import { UserProfile } from '../../../models/UserProfile.class';
 import Register from '../../../components/Register';
 import { NetworkResponse, NetworkResponseDisplay } from '../../../components/NetworkResponse';
+import Environment from '../../../services/Environment';
 
 const { Step } = Steps;
 
@@ -210,7 +210,7 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
             <MentorshipSessionSchedule session={session} onDateAndTimeSelected={handleCalendarEventViewed} 
             onEventScheduled={handleCalendarEventScheduled} />
           </div>,
-          disabled: () => !mentorshipSession?.stripe_payment_intent_id || !!localStorage.getItem('FEATURE_FLAG')
+          disabled: () => !mentorshipSession?.stripe_payment_intent_id || !!localStorage.getItem('FEATURE_FLAG') || Environment.name !== 'prod'
         },
         // {
         //   title: 'Prepare',
