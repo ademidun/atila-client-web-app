@@ -194,7 +194,7 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
             }
             
           </div>,
-          disabled: () => !mentorshipSession?.mentor || !mentorshipSession?.mentor.schedule_url,
+          disabled: () => !mentorshipSession?.mentor,
         },
         {
           title: 'Schedule',
