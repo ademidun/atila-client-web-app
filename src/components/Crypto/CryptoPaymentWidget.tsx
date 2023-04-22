@@ -1,5 +1,5 @@
 import React from 'react'
-import DePayWidgets from '@depay/widgets';
+// import DePayWidgets from '@depay/widgets';
 import { Button } from 'antd';
 import TextUtils from '../../services/utils/TextUtils';
 
@@ -25,39 +25,44 @@ function CryptoPaymentWidget(props: CryptoPaymentWidgetProps) {
 
   const startPayment = async () => {
     
-    await DePayWidgets.Payment({
-      accept:[
-        {
-          blockchain: 'ethereum',
-          amount,
-          token: ETH_BLOCKCHAIN_USDC_TOKEN_ADDRESS,
-          receiver: ATILATECH_PAYMENTS_ADDRESS
-        },
-        {
-          blockchain: 'bsc',
-          amount,
-          token: BSC_BLOCKCHAIN_BUSD_TOKEN_ADDRESS,
-          receiver: ATILATECH_PAYMENTS_ADDRESS
-        }
-      ],
-      critical: (criticalError: any)=> {
-        console.log({criticalError});
-      },
-      error: (error: any)=> {
-        console.log({error});
-      },
-      confirmed: (transaction: any)=> {
-        if (onTransactionConfirmed) {
-          onTransactionConfirmed(transaction);
-        }
+    // await DePayWidgets.Payment({
+    //   accept:[
+    //     {
+    //       blockchain: 'ethereum',
+    //       amount,
+    //       token: ETH_BLOCKCHAIN_USDC_TOKEN_ADDRESS,
+    //       receiver: ATILATECH_PAYMENTS_ADDRESS
+    //     },
+    //     {
+    //       blockchain: 'bsc',
+    //       amount,
+    //       token: BSC_BLOCKCHAIN_BUSD_TOKEN_ADDRESS,
+    //       receiver: ATILATECH_PAYMENTS_ADDRESS
+    //     }
+    //   ],
+    //   critical: (criticalError: any)=> {
+    //     console.log({criticalError});
+    //   },
+    //   error: (error: any)=> {
+    //     console.log({error});
+    //   },
+    //   confirmed: (transaction: any)=> {
+    //     if (onTransactionConfirmed) {
+    //       onTransactionConfirmed(transaction);
+    //     }
         
-      },
-    });
+    //   },
+    // });
   }
   
   return (
     <div>
-      <Button onClick={()=> {startPayment()}} size="large" type="primary" disabled={disabled}>
+      <p>
+        Pay with Crypto is temporarily disabled.
+        Please message @atilatech or info@atila.ca for alternate payment methods
+      </p>
+      <Button onClick={()=> {startPayment()}} size="large" 
+      type="primary" disabled={true}>
          Pay with Crypto{' '}({TextUtils.formatCurrency(amount)} USD)
       </Button>
     </div>
