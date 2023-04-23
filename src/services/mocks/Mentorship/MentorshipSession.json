@@ -46,10 +46,10 @@
     "notes": "\n<h3>What are your goals for this mentorship session?</h3>\n<ul>\n<li></li>\n</ul>\n<h3>What have you already done?</h3>\n<ul>\n<li></li>\n</ul>\n<h3>Anything else you would like to share with the mentor?</h3>\n<ul>\n<li></li>\n</ul>\n<h3>Mentor Notes</h3>\n<ul>\n<li>Mentor's notes here</li>\n</ul>\n",
     "event_scheduled": true,
     "event_details": {
-        "date": "Sun, 23 Apr 2023 11:00:00 GMT",
+        "date": "Sun, 23 Apr 2023 11:30:00 GMT",
         "booking": {
-            "id": 342535,
-            "uid": "dKKN1ivts73fiiBXjBjoyn",
+            "id": 342542,
+            "uid": "f8fpomqEXeNZLdupqeU8Pg",
             "user": {
                 "id": 31212,
                 "name": "Tomiwa Ademidun",
@@ -57,17 +57,17 @@
                 "timeZone": "Europe/Vienna",
                 "username": "tomiwa"
             },
-            "title": "Tomiwa Ademidun and Tomiwa Ademidun",
+            "title": "Mentee Name and Tomiwa Ademidun",
             "status": "ACCEPTED",
-            "endTime": "2023-04-23T11:30:00.000Z",
+            "endTime": "2023-04-23T12:00:00.000Z",
             "location": "integrations:zoom",
             "metadata": {
-                "videoCallUrl": "https://us06web.zoom.us/j/87528138733"
+                "videoCallUrl": "https://us06web.zoom.us/j/87202765674"
             },
             "attendees": [
                 {
-                    "name": "Tomiwa Ademidun",
-                    "email": "tomiademidun+quick@gmail.com",
+                    "name": "Mentee Name",
+                    "email": "tomiademidun+mentee@gmail.com",
                     "timeZone": "Europe/Belgrade"
                 }
             ],
@@ -77,19 +77,19 @@
                 "eventName": "{Scheduler} and {Organiser}"
             },
             "responses": {
-                "name": "Tomiwa Ademidun",
-                "email": "tomiademidun+quick@gmail.com",
+                "name": "Mentee Name",
+                "email": "tomiademidun+mentee@gmail.com",
                 "location": {
                     "value": "integrations:zoom",
                     "optionValue": ""
                 },
-                "what-is-our-meeting-about-": "test"
+                "what-is-our-meeting-about-": "Thins the mentee wants to talk about"
             },
-            "startTime": "2023-04-23T11:00:00.000Z",
+            "startTime": "2023-04-23T11:30:00.000Z",
             "description": "",
             "eventTypeId": 93799,
             "customInputs": {
-                "What is our meeting about?": "test"
+                "What is our meeting about?": "Thins the mentee wants to talk about"
             },
             "rejectionReason": null,
             "seatsReferences": [],
