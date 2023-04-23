@@ -34,7 +34,7 @@ class MentorshipAPI {
         const apiCompletionPromise = request({
             method: 'patch',
             data: {event_details},
-            url: `${MentorshipAPI.mentorshipAPIUrl}/session/${id}/scheduled`,
+            url: `${MentorshipAPI.mentorshipAPIUrl}/sessions/${id}/scheduled`,
         });
 
         return apiCompletionPromise;
