@@ -32,7 +32,7 @@ class MentorshipAPI {
     static sessionScheduled = (id: string, event_details: any) => {
         
         const apiCompletionPromise = request({
-            method: 'patch',
+            method: 'post',
             data: {event_details},
             url: `${MentorshipAPI.mentorshipAPIUrl}/sessions/${id}/scheduled/`,
         });
