@@ -99,7 +99,7 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
     const handleCalendarEventScheduled = (session: MentorshipSession, eventDetails: any) => {
 
       setNetworkResponse({title: "Saving event details.", type: "loading"});
-      MentorshipAPI.patchSession({id: session.id, event_scheduled: true, event_details: eventDetails})
+      MentorshipAPI.sessionScheduled(session.id!, eventDetails)
       .then(res => {
         const { data } = res;
         console.log({data});

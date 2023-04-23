@@ -1,0 +1,320 @@
+{
+    "id": "x2scy5ryg2ottz27",
+    "mentor": {
+        "id": "8pmtx79g20oin70s",
+        "user": {
+            "first_name": "Loic",
+            "last_name": "Tagne",
+            "username": "auto_generated_user_eeezqjao",
+            "profile_pic_url": "https://i.imgur.com/37Gx2tT.jpg",
+            "id": 2171
+        },
+        "sort_priority": 0.0,
+        "schedule_url": "https://cal.com/tomiwa/meeting",
+        "description": "Education: Harvard College (Class of 2023 - Government and Economics); Harvard Law School (Matriculation: Fall 2025)\r\n\r\nAthletics: Harvard Men's Varsity Soccer Team; U14 + U15 Ontario Provincial Team Captain; U15 Canadian National Team Camp;",
+        "bio": "<p>Medicine student at University of Toronto. Varsity basketball team.</p>",
+        "linkedin_url": null,
+        "mentorship_topics": "",
+        "price": "50.00000000",
+        "bio_recording_url": "",
+        "eligible_schools": [],
+        "eligible_programs": [
+            "Medicine"
+        ],
+        "ethnicity": [],
+        "sports": [
+            "Basketball"
+        ],
+        "religion": [],
+        "industries": [],
+        "occupations": [],
+        "other_demographic": [],
+        "activities": [],
+        "heritage": [],
+        "language": [],
+        "disability": [],
+        "citizenship": []
+    },
+    "mentee": {
+        "first_name": "Tomiwa",
+        "last_name": "Ademidun",
+        "username": "tomiwa",
+        "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-prod.appspot.com/o/user-uploads%2Fuser-profile-pictures%2F1%2F4p4yizlo-iUweoBO6_400x400.jpg?alt=media&token=76b8825f-f273-4f56-842b-742661b92404",
+        "id": 1
+    },
+    "stripe_payment_intent_id": "discount_w8yd8bq2p7wttvqy",
+    "notes": "\n<h3>What are your goals for this mentorship session?</h3>\n<ul>\n<li></li>\n</ul>\n<h3>What have you already done?</h3>\n<ul>\n<li></li>\n</ul>\n<h3>Anything else you would like to share with the mentor?</h3>\n<ul>\n<li></li>\n</ul>\n<h3>Mentor Notes</h3>\n<ul>\n<li>Mentor's notes here</li>\n</ul>\n",
+    "event_scheduled": true,
+    "event_details": {
+        "date": "Sun, 23 Apr 2023 11:30:00 GMT",
+        "booking": {
+            "id": 342542,
+            "uid": "f8fpomqEXeNZLdupqeU8Pg",
+            "user": {
+                "id": 31212,
+                "name": "Tomiwa Ademidun",
+                "email": "tomiwa@atila.ca",
+                "timeZone": "Europe/Vienna",
+                "username": "tomiwa"
+            },
+            "title": "Mentee Name and Tomiwa Ademidun",
+            "status": "ACCEPTED",
+            "endTime": "2023-04-23T12:00:00.000Z",
+            "location": "integrations:zoom",
+            "metadata": {
+                "videoCallUrl": "https://us06web.zoom.us/j/87202765674"
+            },
+            "attendees": [
+                {
+                    "name": "Mentee Name",
+                    "email": "tomiademidun+mentee@gmail.com",
+                    "timeZone": "Europe/Belgrade"
+                }
+            ],
+            "eventType": {
+                "slug": "meeting",
+                "timeZone": null,
+                "eventName": "{Scheduler} and {Organiser}"
+            },
+            "responses": {
+                "name": "Mentee Name",
+                "email": "tomiademidun+mentee@gmail.com",
+                "location": {
+                    "value": "integrations:zoom",
+                    "optionValue": ""
+                },
+                "what-is-our-meeting-about-": "Thins the mentee wants to talk about"
+            },
+            "startTime": "2023-04-23T11:30:00.000Z",
+            "description": "",
+            "eventTypeId": 93799,
+            "customInputs": {
+                "What is our meeting about?": "Thins the mentee wants to talk about"
+            },
+            "rejectionReason": null,
+            "seatsReferences": [],
+            "recurringEventId": null,
+            "smsReminderNumber": null,
+            "cancellationReason": null
+        },
+        "confirmed": true,
+        "eventType": {
+            "id": 93799,
+            "team": null,
+            "hosts": [],
+            "owner": {
+                "id": 31212,
+                "name": "Tomiwa Ademidun",
+                "email": "tomiwa@atila.ca",
+                "theme": null,
+                "timeZone": "Europe/Vienna",
+                "username": "tomiwa",
+                "brandColor": "#292929",
+                "hideBranding": false,
+                "darkBrandColor": "#fafafa"
+            },
+            "price": 0,
+            "title": "Meeting",
+            "users": [
+                {
+                    "id": 31212,
+                    "name": "Tomiwa Ademidun",
+                    "email": "tomiwa@atila.ca",
+                    "theme": null,
+                    "timeZone": "Europe/Vienna",
+                    "username": "tomiwa",
+                    "brandColor": "#292929",
+                    "hideBranding": false,
+                    "darkBrandColor": "#fafafa"
+                }
+            ],
+            "length": 30,
+            "userId": 31212,
+            "currency": "usd",
+            "metadata": {
+                "apps": {
+                    "giphy": {
+                        "enabled": false,
+                        "thankYouPage": ""
+                    },
+                    "stripe": {
+                        "price": 0,
+                        "enabled": false,
+                        "currency": "usd"
+                    },
+                    "rainbow": {
+                        "enabled": false,
+                        "blockchainId": 0,
+                        "smartContractAddress": ""
+                    }
+                },
+                "multipleDuration": [
+                    30,
+                    60
+                ],
+                "additionalNotesRequired": false
+            },
+            "timeZone": null,
+            "eventName": "{Scheduler} and {Organiser}",
+            "isDynamic": false,
+            "locations": [
+                {
+                    "type": "integrations:zoom"
+                },
+                {
+                    "type": "phone"
+                },
+                {
+                    "type": "attendeeInPerson"
+                }
+            ],
+            "workflows": [],
+            "description": "",
+            "customInputs": [
+                {
+                    "id": 24286,
+                    "type": "TEXTLONG",
+                    "label": "What is our meeting about?",
+                    "options": null,
+                    "required": true,
+                    "eventTypeId": 93799,
+                    "placeholder": "Please answer this question. I read this before each meeting to prepare for you."
+                }
+            ],
+            "bookingFields": [
+                {
+                    "name": "name",
+                    "type": "name",
+                    "sources": [
+                        {
+                            "id": "default",
+                            "type": "default",
+                            "label": "Default"
+                        }
+                    ],
+                    "editable": "system",
+                    "required": true,
+                    "defaultLabel": "your_name"
+                },
+                {
+                    "name": "email",
+                    "type": "email",
+                    "sources": [
+                        {
+                            "id": "default",
+                            "type": "default",
+                            "label": "Default"
+                        }
+                    ],
+                    "editable": "system",
+                    "required": true,
+                    "defaultLabel": "email_address"
+                },
+                {
+                    "name": "location",
+                    "type": "radioInput",
+                    "sources": [
+                        {
+                            "id": "default",
+                            "type": "default",
+                            "label": "Default"
+                        }
+                    ],
+                    "editable": "system",
+                    "required": false,
+                    "defaultLabel": "location",
+                    "getOptionsAt": "locations",
+                    "optionsInputs": {
+                        "phone": {
+                            "type": "phone",
+                            "required": true,
+                            "placeholder": ""
+                        },
+                        "attendeeInPerson": {
+                            "type": "address",
+                            "required": true,
+                            "placeholder": ""
+                        }
+                    },
+                    "hideWhenJustOneOption": true
+                },
+                {
+                    "name": "what-is-our-meeting-about-",
+                    "type": "textarea",
+                    "label": "What is our meeting about?",
+                    "options": [],
+                    "editable": "user",
+                    "required": true,
+                    "placeholder": "Please answer this question. I read this before each meeting to prepare for you."
+                },
+                {
+                    "name": "notes",
+                    "type": "textarea",
+                    "sources": [
+                        {
+                            "id": "default",
+                            "type": "default",
+                            "label": "Default"
+                        }
+                    ],
+                    "editable": "system-but-optional",
+                    "required": false,
+                    "defaultLabel": "additional_notes",
+                    "defaultPlaceholder": "share_additional_notes"
+                },
+                {
+                    "name": "guests",
+                    "type": "multiemail",
+                    "hidden": false,
+                    "sources": [
+                        {
+                            "id": "default",
+                            "type": "default",
+                            "label": "Default"
+                        }
+                    ],
+                    "editable": "system-but-optional",
+                    "required": false,
+                    "defaultLabel": "additional_guests"
+                },
+                {
+                    "name": "rescheduleReason",
+                    "type": "textarea",
+                    "views": [
+                        {
+                            "id": "reschedule",
+                            "label": "Reschedule View"
+                        }
+                    ],
+                    "sources": [
+                        {
+                            "id": "default",
+                            "type": "default",
+                            "label": "Default"
+                        }
+                    ],
+                    "editable": "system-but-optional",
+                    "required": false,
+                    "defaultLabel": "reschedule_reason",
+                    "defaultPlaceholder": "reschedule_placeholder"
+                }
+            ],
+            "disableGuests": false,
+            "periodEndDate": "Tue Jan 17 2023 23:35:10 GMT+0000 (Coordinated Universal Time)",
+            "recurringEvent": null,
+            "periodStartDate": "Tue Jan 17 2023 23:35:10 GMT+0000 (Coordinated Universal Time)",
+            "seatsPerTimeSlot": null,
+            "seatsShowAttendees": null,
+            "successRedirectUrl": null,
+            "requiresConfirmation": false
+        },
+        "organizer": {
+            "name": "Tomiwa Ademidun",
+            "email": "tomiwa@atila.ca",
+            "timeZone": "Europe/Vienna"
+        }
+    },
+    "discountcode_set": [
+        "w8yd8bq2p7wttvqy"
+    ]
+}

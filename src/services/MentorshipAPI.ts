@@ -29,6 +29,17 @@ class MentorshipAPI {
         return apiCompletionPromise;
     };
 
+    static sessionScheduled = (id: string, event_details: any) => {
+        
+        const apiCompletionPromise = request({
+            method: 'post',
+            data: {event_details},
+            url: `${MentorshipAPI.mentorshipAPIUrl}/sessions/${id}/scheduled/`,
+        });
+
+        return apiCompletionPromise;
+    };
+
     static listMentors = (path='') => {
         const apiCompletionPromise = request({
             method: 'get',
