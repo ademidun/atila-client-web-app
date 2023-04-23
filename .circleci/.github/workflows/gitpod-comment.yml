@@ -1,0 +1,27 @@
+name: Add Gitpod Link to Pull Request Comment
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - reopened
+      - synchronize
+
+jobs:
+  add-gitpod-link-to-comment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add Gitpod Link to Pull Request Comment
+        uses: actions/github-script@v3.2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          script: |
+            const { owner, repo, number } = context.issue;
+            const { data: pullRequest } = await github.pulls.get({ owner, repo, pull_number: number });
+            const { data: comment } = await github.issues.createComment({
+              owner,
+              repo,
+              issue_number: number,
+              body: `A Gitpod workspace has been created for this pull request: ${process.env.workspace_url}`
+            });
