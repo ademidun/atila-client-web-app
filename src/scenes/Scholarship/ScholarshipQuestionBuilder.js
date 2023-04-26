@@ -11,6 +11,7 @@ export const questionTypesLabel = {
     "long_answer": "Long Answer (Over 300 words)",
     "checkbox": "Checkbox",
     "file": "File Upload",
+    "audio": "Voice Recording",
     "multi_select": "Multi-Select",
     "single_select" : "Single-Select",
 };
