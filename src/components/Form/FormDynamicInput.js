@@ -288,7 +288,7 @@ function FormDynamicInput({model, onUpdateForm, inputConfig, loggedInUserProfile
                 }
                 <FileInput title={placeholder} keyName={keyName}
                            onChangeHandler={onUpdateForm}
-                           type="image,pdf"
+                           type="image,pdf,audio"
                            uploadHint={`You can also paste the ${type} url in the text box below`} />
                 <div className="floating my-3">
                     <input placeholder={placeholder}

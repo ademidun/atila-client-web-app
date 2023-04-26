@@ -35,7 +35,7 @@ export interface ScholarshipQuestion {
     options?: string[],
 }
 
-declare const QuestionTypes: ["short_answer", "medium_answer", "long_answer", "checkbox", "file", "multi_select", "single_select"];
+declare const QuestionTypes: ["short_answer", "medium_answer", "long_answer", "checkbox", "file", "audio", "multi_select", "single_select"];
 export declare type QuestionType = typeof QuestionTypes[number];
 
 export class Location {

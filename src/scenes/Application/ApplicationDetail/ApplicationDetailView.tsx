@@ -4,6 +4,7 @@ import { Application } from '../../../models/Application.class'
 import { Scholarship, ScholarshipQuestion } from '../../../models/Scholarship.class'
 import { UserProfile } from '../../../models/UserProfile.class';
 import { joinListGrammatically, prettifyKeys, stripHtml } from '../../../services/utils';
+import AudioPlay from '../../../components/Audio/AudioPlay';
 
 export interface ApplicationDetailViewProps {
     scholarship: Scholarship,
@@ -51,6 +52,16 @@ export function ApplicationResponseDisplay({question, responses, previewMode = f
             responseDisplay = <a href={responses[question.key]} target="_blank"  rel="noopener noreferrer">
                     View File
                 </a> 
+            break;
+        case 'audio':
+            responseDisplay = 
+            <div>
+                <AudioPlay audioUrl={responses[question.key]} />
+                <br/>
+                <a href={responses[question.key]} target="_blank"  rel="noopener noreferrer">
+                    View File
+                </a> 
+            </div>
             break;
         case 'multi_select':
             responseDisplay = joinListGrammatically(responses[question.key])

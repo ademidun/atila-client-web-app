@@ -102,9 +102,15 @@ export class AudioRecord extends React.Component {
         const {audioUrl, recording, saving, stopTimer} = this.state;
 
         if (audioUrl !== '') {
-            return <div style={{display: 'flex', alignItems: 'center'}}>
+            return <div style={{alignItems: 'center'}}>
                 <AudioPlay audioUrl={this.state.audioUrl} />
-                <Button onClick={this.deleteAudioRecording} className='ml-1 mb-2' type="primary" danger shape="circle" icon={<DeleteOutlined/>} />
+                <Button onClick={this.deleteAudioRecording} className='mb-2' type="primary" danger shape="circle" icon={<DeleteOutlined/>} />
+                <br />
+                <p>
+                    <a href={this.state.audioUrl} target="_blank"  rel="noopener noreferrer">
+                        View Recording
+                    </a> 
+                </p>
             </div>;
         } else if (saving) {
             return <Spin />
