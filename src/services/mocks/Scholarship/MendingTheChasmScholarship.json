@@ -4,12 +4,17 @@
         "archived": false,
         "citizenship": [],
         "city": [],
-        "country": [],
-        "criteria_info": "<p><a href=\"https://www.mendingthechasm.ca/\">Mending the Chasm</a> is a firm that is committed to building inclusive cultures from the inside out.&nbsp;</p><p>Everyone deserves to realize and achieve their full potential and possibility. To dream and pursue the path that leads to that dream without having to go deeply into debt. To access benefits and supports that are normally reserved for the privileged few.</p><p>We recognize that transforming culture starts with each of us, as individual leaders, committing to the work of learning, unlearning and relearning so that our practices, postures and principles support the creation of cultures that are inclusive, equitable, accessible and anti-racist. &nbsp;The next best thing each of us can do is to use our power, our privilege, and our platform, to educate our circles of trust around the impact of systemic oppression, advocate for the changes that marginalized and equity-seeking communities need, and facilitate change in all of the spaces we live and move in.</p>",
+        "country": [
+            {
+                "name": "Canada"
+            }
+        ],
+        "criteria_info": "<p><a href=\"https://www.mendingthechasm.ca/\">Mending the Chasm Inc.</a> is a firm that is committed to building inclusive cultures from the inside out.&nbsp;</p><p>Everyone deserves to realize and achieve their full potential and possibility. To dream and pursue the path that leads to that dream without having to go deeply into debt. To access benefits and supports that are normally reserved for the privileged few.</p><p>We recognize that transforming culture starts with each of us, as individual leaders, committing to the work of learning, unlearning and relearning so that our practices, postures and principles support the creation of cultures that are inclusive, equitable, accessible and anti-racist. &nbsp;The next best thing each of us can do is to use our power, our privilege, and our platform, to educate our circles of trust around the impact of systemic oppression, advocate for the changes that marginalized and equity-seeking communities need, and facilitate change in all of the spaces we live and move in.</p>",
+        "currency": "CAD",
         "date_created": "2021-08-04",
-        "date_time_created": "2021-08-04T18:08:47.722372Z",
-        "deadline": "2021-11-08T04:59:00Z",
-        "description": "My firm would like to support student leaders who embody and are actively are working to advance inclusive, equitable and anti-racist principles postures, and practices that result in community and organizational cultures that espouse these values.",
+        "date_time_created": "2021-08-04T18:08:47Z",
+        "deadline": "2021-11-29T04:59:00Z",
+        "description": "Students who are: women, members of a racialized group, have participated in anti-racism initiatives and are actively working towards creating an equitable, diverse and inclusive community.\r\n\r\nEligible racialized groups include, but are not limited to: East-Asian, Indigenous, Black, South-Asian, Latino, Middle Eastern\r\n\r\nStudents must either be currently attending a post-secondary institution or currently in grade 12 with plans to attend a post-secondary institution. Eligible post-secondary institutions are any accredited university, college, trade school or apprenticeship program in Canada. Open to international students.",
         "disability": [],
         "eligible_programs": [],
         "eligible_schools": [],
@@ -25,7 +30,7 @@
         "female_only": true,
         "international_students_eligible": true,
         "form_url": "",
-        "funding_amount": "500.00",
+        "funding_amount": "500.00000000",
         "heritage": [],
         "id": 901,
         "industries": [],
@@ -35,17 +40,17 @@
         "is_editable": false,
         "is_not_available": false,
         "is_payment_accepted": false,
-        "is_winner_selected": false,
+        "is_winner_selected": true,
         "keywords": "East-Asian Indigenous Black South-Asian Latino Middle Eastern Visible Minority female international student",
         "language": [],
         "learn_more_url": "https://www.mendingthechasm.ca/",
-        "learn_more_title": "Mending the Chasm Website",
+        "learn_more_title": "Learn More about Mending the Chasm",
         "metadata": {
-            "base_score": 0
+            "base_score": 0.0007
         },
         "name": "Mending the Chasm Scholarship",
-        "is_finalists_notified": false,
-        "finalists_notified_date": null,
+        "is_finalists_notified": true,
+        "finalists_notified_date": "2022-08-07T19:30:57.633772Z",
         "number_available_scholarships": 1,
         "occupations": [],
         "open_date": "2022-12-31",
@@ -56,7 +61,7 @@
             "first_name": "Leena",
             "last_name": "Sharma Seth",
             "username": "MendingtheChasm",
-            "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-7.appspot.com/o/public%2Fdefault-profile-pic-2021.png?alt=media&token=d6c9d76b-4db2-4e56-89bc-fb51562a6003"
+            "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-7.appspot.com/o/user-profiles%2Fgeneral-data%2Fdefault-profile-pic.png?alt=media&token=455c59f7-3a05-43f1-a79e-89abff1eae57"
         },
         "province": [],
         "published": true,
@@ -70,18 +75,28 @@
                 "question": "What does inclusion, equity and diversity mean to you?"
             },
             {
-                "key": "what-are-some-ways-that-you-are-working-to-build-y",
+                "key": "what-are-some-ways-that-youve-contributed-towards",
                 "type": "long_answer",
-                "question": "What are some ways that you are working to build your anti-racist and inclusive practice?"
+                "question": "What are some ways that you've contributed towards anti-racism initiatives and advocated for inclusion in your community? (Include links if you have any)"
             },
             {
-                "key": "what-are-two-ways-that-you-are-working-actively-to",
+                "key": "what-are-your-goals-and-plans-for-the-future",
                 "type": "long_answer",
-                "question": "What are two ways that you are working actively to facilitate and advocate for inclusion in your community?"
+                "question": "What are your goals and plans for the future?"
+            },
+            {
+                "key": "would-you-be-interested-in-volunteer-or-work-oppor",
+                "type": "checkbox",
+                "question": "Would you be interested in volunteer or work opportunities at Mending the Chasm?"
+            },
+            {
+                "key": "voice-recording-tell-us-about-yourself",
+                "type": "audio",
+                "question": "In a voice recording, tell us about yourself"
             }
         ],
         "sports": [],
-        "updated_at": "2021-08-07T13:22:11.462083Z",
+        "updated_at": "2023-01-30T09:06:17.334852Z",
         "user_profile_questions": [
             {
                 "key": "first_name"
@@ -91,14 +106,79 @@
             },
             {
                 "key": "email"
+            },
+            {
+                "key": "post_secondary_school"
+            },
+            {
+                "key": "ethnicity"
             }
         ],
         "is_blind_applications": false,
+        "is_crypto": false,
         "is_referral_bonus_eligible": false,
-        "collaborators": [],
-        "reddit_url": "https://www.reddit.com/r/atila/comments/ozvwj5/mending_the_chasm_scholarship/",
-        "stripe_payment_intent_id": "pi_3JKoX7Heg0qPyG6k1bm1IdUM"
+        "collaborators": [
+            {
+                "user": 1,
+                "first_name": "Tomiwa",
+                "last_name": "Ademidun",
+                "username": "tomiwa",
+                "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-prod.appspot.com/o/user-uploads%2Fuser-profile-pictures%2F1%2Fljy9s5nm-Ezc5Hyf.jpg?alt=media&token=2391816e-c546-4b11-b232-0cc91f9f3547"
+            },
+            {
+                "user": 1289,
+                "first_name": "Aaron",
+                "last_name": "Doerfler",
+                "username": "aarondoerfler",
+                "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-prod.appspot.com/o/user-uploads%2Fuser-profile-pictures%2F1289%2Fi7aqzlpa-headshotzoom.jpg?alt=media&token=a6071b1c-afd6-43d3-b008-f57e347caa2b"
+            },
+            {
+                "user": 1369,
+                "first_name": "Hadi",
+                "last_name": "Hakeem",
+                "username": "hadi",
+                "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-prod.appspot.com/o/user-uploads%2Fuser-profile-pictures%2F1369%2F2oerkn1k-me%20-%20Imgur.jpg?alt=media&token=86f34bd5-802f-481f-840d-db351c621245"
+            },
+            {
+                "user": 3815,
+                "first_name": "Grace",
+                "last_name": "Liu",
+                "username": "grace0925",
+                "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-7.appspot.com/o/user-profiles%2Fgeneral-data%2Fdefault-profile-pic.png?alt=media&token=455c59f7-3a05-43f1-a79e-89abff1eae57"
+            },
+            {
+                "user": 1816,
+                "first_name": "Lauren",
+                "last_name": "Mercer",
+                "username": "llmercer",
+                "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-prod.appspot.com/o/user-uploads%2Fscholarship-images%2Fedo55xjv-Profile%20Photo.jpg?alt=media&token=1ee1db2a-f81b-4391-ade7-e19265600bda"
+            },
+            {
+                "user": 3533,
+                "first_name": "Reet",
+                "last_name": "Sidhu",
+                "username": "reetksidhu",
+                "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-7.appspot.com/o/user-profiles%2Fgeneral-data%2Fdefault-profile-pic.png?alt=media&token=455c59f7-3a05-43f1-a79e-89abff1eae57"
+            },
+            {
+                "user": 2247,
+                "first_name": "Angelina",
+                "last_name": "Wu",
+                "username": "alona",
+                "profile_pic_url": "https://firebasestorage.googleapis.com/v0/b/atila-prod.appspot.com/o/user-uploads%2Fuser-profile-pictures%2F2247%2Fxitdd3c2-IMG_20210609_122726%20(2).jpg?alt=media&token=bc2b0fed-675e-4f12-ab71-ced200ad85bb"
+            }
+        ],
+        "reddit_url": "https://www.reddit.com/r/atila/comments/ozvwj5/mending_the_chasm_scholarship/"
     },
+    "awards": [
+        {
+            "id": "b8rv34d1gpclquyw",
+            "funding_amount": "500.00000000",
+            "currency": "CAD",
+            "is_crypto": false,
+            "scholarship": 901
+        }
+    ],
     "contributors": [
         {
             "id": "w1hwlojfm8xjcqo5",

@@ -113,7 +113,8 @@ export const SCHOLARSHIP_QUESTIONS_TYPES_TO_FORM_TYPES = {
     "checkbox": "checkbox",
     "file": "file",
     "multi_select": "checkbox_group",
-    "single_select": "radio_group"
+    "single_select": "radio_group",
+    "audio": "audio",
 };
 
 export let DEFAULT_SCHOLARSHIP = {
