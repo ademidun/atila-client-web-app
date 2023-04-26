@@ -73,6 +73,8 @@ class FileInput extends React.Component{
             draggerProps.accept = "image/*"
         } else if (type === "image,pdf") {
             draggerProps.accept = "image/*,application/pdf"
+        } else if (type === "image,pdf,audio") {
+            draggerProps.accept = "image/*,application/pdf,audio/*"
         }
         return (
             <div>
