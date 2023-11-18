@@ -3,7 +3,7 @@ version: 2.0
 jobs:
   build:
     working_directory: ~/repository
-    resource_class: xlarge
+    resource_class: medium
     docker:
       - image: cimg/node:14.17.6
     steps:
