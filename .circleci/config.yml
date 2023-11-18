@@ -27,7 +27,7 @@ jobs:
           name: test
           command: npm test
   deploy: # deploy script
-    resource_class: xlarge
+    resource_class: medium
     working_directory: ~/repository
     docker:
       - image: cimg/node:18.17.0
