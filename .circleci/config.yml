@@ -3,7 +3,7 @@ version: 2.0
 jobs:
   build:
     working_directory: ~/repository
-    resource_class: medium
+    resource_class: large
     docker:
       - image: cimg/node:18.17.0
     steps:
@@ -27,7 +27,7 @@ jobs:
           name: test
           command: npm test
   deploy: # deploy script
-    resource_class: medium
+    resource_class: large
     working_directory: ~/repository
     docker:
       - image: cimg/node:18.17.0
