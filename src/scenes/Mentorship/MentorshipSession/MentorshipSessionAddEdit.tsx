@@ -12,7 +12,6 @@ import HelmetSeo, { defaultSeoContent } from '../../../components/HelmetSeo';
 import { UserProfile } from '../../../models/UserProfile.class';
 import Register from '../../../components/Register';
 import { NetworkResponse, NetworkResponseDisplay } from '../../../components/NetworkResponse';
-import Environment from '../../../services/Environment';
 
 const { Step } = Steps;
 
