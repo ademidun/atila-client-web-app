@@ -3,9 +3,9 @@ version: 2.0
 jobs:
   build:
     working_directory: ~/repository
-    resource_class: xlarge
+    resource_class: large
     docker:
-      - image: cimg/node:14.17.6
+      - image: cimg/node:18.17.0
     steps:
       - checkout
       - run:
@@ -27,10 +27,10 @@ jobs:
           name: test
           command: npm test
   deploy: # deploy script
-    resource_class: xlarge
+    resource_class: large
     working_directory: ~/repository
     docker:
-      - image: cimg/node:14.17.6
+      - image: cimg/node:18.17.0
     steps:
       - checkout
       - run:
@@ -50,7 +50,7 @@ jobs:
             - ./node_modules
       - run: # build react
           name: react-build
-          command: export NODE_OPTIONS=--max_old_space_size=8192 ; npm run build
+          command: export NODE_OPTIONS="--max_old_space_size=8192 --openssl-legacy-provider"; npm run build
       - run: # todo change -P to default, to deploy to prod on master branch
           name: Deploy Netlify
           command: |

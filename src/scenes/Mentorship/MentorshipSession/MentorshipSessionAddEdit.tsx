@@ -12,7 +12,6 @@ import HelmetSeo, { defaultSeoContent } from '../../../components/HelmetSeo';
 import { UserProfile } from '../../../models/UserProfile.class';
 import Register from '../../../components/Register';
 import { NetworkResponse, NetworkResponseDisplay } from '../../../components/NetworkResponse';
-import Environment from '../../../services/Environment';
 
 const { Step } = Steps;
 
@@ -211,7 +210,7 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
             onEventScheduled={handleCalendarEventScheduled} />
           </div>,
           disabled: () => {
-            return !userProfileLoggedIn?.is_atila_admin && (Environment.name === 'prod' && !mentorshipSession?.stripe_payment_intent_id)
+            return !userProfileLoggedIn?.is_atila_admin && (!mentorshipSession?.stripe_payment_intent_id)
           }
         },
         // {
