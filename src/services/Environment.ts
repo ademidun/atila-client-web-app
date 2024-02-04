@@ -73,12 +73,13 @@ export const EnvironmentProd = {
 // set to EnvironmentDev as the default so we can use type hinting and the autocomplete feature
 let Environment = EnvironmentDev;
 
+console.log('window.location.host', window.location.host)
 if (window.location.host.includes('localhost')) {
     Environment = EnvironmentDev;
 } else if (window.location.host.includes('staging')) {
     Environment = EnvironmentStaging;
 } else if (window.location.host.includes('gitpod.io')) {
-    Environment = EnvironmentStaging;
+    Environment = EnvironmentDev;
 } else if (window.location.host.includes('demo')) {
     Environment = EnvironmentDemo;
 }

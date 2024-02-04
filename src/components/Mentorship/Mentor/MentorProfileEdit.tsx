@@ -11,6 +11,7 @@ import UserProfileAPI from '../../../services/UserProfileAPI';
 import { getErrorMessage } from '../../../services/utils';
 import { scholarshipUserProfileSharedFormConfigs, toastNotify } from '../../../models/Utils';
 import { RouteComponentProps, withRouter } from 'react-router';
+import { NetworkResponse, NetworkResponseDisplay } from '../../NetworkResponse';
 
 let autoSaveTimeoutId: any;
 
@@ -28,13 +29,13 @@ function MentorProfileEdit(props: MentorProfileEditPropTypes) {
     const { match: {params: { username }}, userProfileLoggedIn } = props;
     
     const [mentor, setMentor] = useState<Mentor>();
-    const [loadingUI, setLoadingUI] = useState({message: "", type: ""});
+    const [networkResponse, setNetworkResponse] = useState<NetworkResponse>({title: "", type: null})
     const isMentorset = useRef(false);
 
     const loadMentor = useCallback(
         async () => {
     
-        setLoadingUI({message: "Loading Mentor profile", type: "info"});
+        setNetworkResponse({title: "Loading Mentor profile", type: "loading"});
         try {
             if (username) {
                 const res = await MentorshipAPI.listMentors(`?username=${username}`);
@@ -50,10 +51,10 @@ function MentorProfileEdit(props: MentorProfileEditPropTypes) {
     
             }
 
-            setLoadingUI({message: "", type: ""});
+            setNetworkResponse({title: "", type: null});
         } catch (error) {
             console.log({error});
-            setLoadingUI({message: getErrorMessage(error), type: "error"});
+            setNetworkResponse({title: getErrorMessage(error), type: "error"});
         }
           return ;// code that references a prop
         },
@@ -61,18 +62,18 @@ function MentorProfileEdit(props: MentorProfileEditPropTypes) {
       );
 
     const createMentorProfile = () => {
-        setLoadingUI({message: "Creating your Mentor profile", type: "info"});
+        setNetworkResponse({title: "Creating your Mentor profile", type: "loading"});
         MentorshipAPI.createMentor(userProfileLoggedIn?.user!)
         .then((res: any) => {
             const { data } = res;
             setMentor(data);
+            setNetworkResponse({title: "Mentor profile succesfully created!", type: "success"});
         })
         .catch(error => {
             console.log({error});
-            setLoadingUI({message: getErrorMessage(error), type: "error"});
+            setNetworkResponse({title: getErrorMessage(error), type: "error"});
         })
         .finally(()=> {
-            setLoadingUI({message: "", type: ""});
         })
     }
 
@@ -139,10 +140,11 @@ function MentorProfileEdit(props: MentorProfileEditPropTypes) {
   return (
     <div className='m-3'>
         <h1>Edit Mentor Profile</h1>
+        <NetworkResponseDisplay response={networkResponse} />
         {!mentor && 
             <div className='text-center'>
             <h3>You must first create a mentor profile</h3>
-                <Button onClick={createMentorProfile} disabled={!!loadingUI.message} type="primary">
+                <Button onClick={createMentorProfile} disabled={networkResponse.type==='loading'} type="primary">
                     Create Mentor Profile
                 </Button>
             </div>
@@ -167,7 +169,6 @@ function MentorProfileEdit(props: MentorProfileEditPropTypes) {
                                                 loggedInUserProfile={userProfileLoggedIn} />
             </>
         }
-            {loadingUI.message && <Loading isLoading={loadingUI.message} title={loadingUI.message} />}
         </div>
   )
 }
