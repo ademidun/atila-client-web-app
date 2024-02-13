@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Button, message } from 'antd';
 import {connect} from "react-redux";
 import FormDynamic from '../../Form/FormDynamic';
-import Loading from '../../Loading';
 import { Mentor } from '../../../models/Mentor';
 import { mentorProfileFormConfig } from "../../../models/MentorConfig";
 import { UserProfile } from '../../../models/UserProfile.class';
