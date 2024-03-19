@@ -53,9 +53,13 @@ export const MentorProfileView = (props: MentorProfileViewProps) => {
                 <p>
                     {mentor.description}
                 </p>
-                < hr/>
-                <MentorPrices initialPrices={mentor.prices} viewOnly={true} />
-                < hr/>
+                    {mentor.prices && 
+                        <>
+                            < hr/>
+                            <MentorPrices initialPrices={mentor.prices} viewOnly={true} />
+                            < hr/>
+                        </>
+                    }
                 <br/>
                 <ContentBody body={mentor.bio} bodyType="html" />
                 <hr/>
