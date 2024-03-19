@@ -11,6 +11,7 @@ export interface Mentor extends Demographic {
     mentorship_topics: string,
     schedule_url: string,
     price: string, // string because it's a decimal number
+    prices: Array<any>,
 };
 
 

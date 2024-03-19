@@ -162,7 +162,8 @@ function MentorProfileEdit(props: MentorProfileEditPropTypes) {
                                  loggedInUserProfile={userProfileLoggedIn}
                 />
                 < hr/>
-                <MentorPrices initialPrices={mentor.prices} />
+                <MentorPrices initialPrices={mentor.prices} 
+                onPricesChange={(prices: any) => setMentor({ ...mentor, prices })} />
                 < hr/>
 
                 <FormDynamic onUpdateForm={updateForm}
