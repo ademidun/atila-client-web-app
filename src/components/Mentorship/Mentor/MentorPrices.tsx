@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 
-const MentorPrices = ({ initialPrices, onPricesChange }: {initialPrices: any, onPricesChange?: any}) => {
+const MentorPrices = ({ initialPrices, onPricesChange, viewOnly = false }: { initialPrices: any, onPricesChange?: any, viewOnly?: boolean }) => {
   const [prices, setPrices] = useState(initialPrices);
 
   useEffect(() => {
@@ -41,34 +41,53 @@ const MentorPrices = ({ initialPrices, onPricesChange }: {initialPrices: any, on
           {prices.map((price: any, index: any) => (
             <tr key={index}>
               <td>
-                <input
-                  type="text"
-                  value={price.price}
-                  onChange={(e) => handleEditPrice(index, 'price', e.target.value)}
-                />
+                {viewOnly ? (
+                  <span>{price.price}</span>
+                ) : (
+                  <input
+                    type="text"
+                    value={price.price}
+                    style={{ width: '80px' }} // Adjusted width for shorter input
+                    onChange={(e) => handleEditPrice(index, 'price', e.target.value)}
+                  />
+                )}
               </td>
               <td>
-                <input
-                  type="number"
-                  value={price.minutes}
-                  onChange={(e) => handleEditPrice(index, 'minutes', parseInt(e.target.value))}
-                />
+                {viewOnly ? (
+                  <span>{price.minutes}</span>
+                ) : (
+                  <input
+                    type="number"
+                    value={price.minutes}
+                    style={{ width: '60px' }} // Adjusted width for shorter input
+                    onChange={(e) => handleEditPrice(index, 'minutes', parseInt(e.target.value))}
+                  />
+                )}
               </td>
               <td>
-                <input
-                  type="text"
-                  value={price.schedule_url}
-                  onChange={(e) => handleEditPrice(index, 'schedule_url', e.target.value)}
-                />
+                {viewOnly ? (
+                  <span>{price.schedule_url}</span>
+                ) : (
+                  <input
+                    type="text"
+                    value={price.schedule_url}
+                    style={{ width: '300px' }} // Adjusted width for longer input
+                    onChange={(e) => handleEditPrice(index, 'schedule_url', e.target.value)}
+                  />
+                )}
               </td>
               <td>
-                <Button variant="danger" onClick={() => handleRemovePrice(index)}>Remove</Button>
+                {!viewOnly && (
+                  <Button variant="danger" onClick={() => handleRemovePrice(index)}>Remove</Button>
+                )}
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <Button variant="success" onClick={handleAddPrice}>Add Price</Button>
+      {!viewOnly && (
+        <Button variant="success" onClick={handleAddPrice}>Add Price</Button>
+      )}
     </div>
   );
 };
