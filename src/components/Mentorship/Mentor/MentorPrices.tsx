@@ -1,29 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 
-const MentorPrices = ({ initialPrices, onPricesChange, viewOnly = false }: { initialPrices: any, onPricesChange?: any, viewOnly?: boolean }) => {
+const MentorPrices = ({ initialPrices, onPricesSaved, viewOnly = false }: { initialPrices: any, onPricesSaved?: any, viewOnly?: boolean }) => {
   const [prices, setPrices] = useState(initialPrices);
+  const [unsavedChanges, setUnsavedChanges] = useState(false);
 
   useEffect(() => {
-    if (onPricesChange) {
-      onPricesChange(prices);
+    if (unsavedChanges && onPricesSaved) {
+      onPricesSaved(prices);
+      setUnsavedChanges(false);
     }
-  }, [prices, onPricesChange]);
+  }, [prices, onPricesSaved, unsavedChanges]);
 
   const handleAddPrice = () => {
     setPrices([...prices, { price: '', minutes: 0, schedule_url: '' }]);
+    setUnsavedChanges(true);
   };
 
   const handleRemovePrice = (index: any) => {
     const newPrices = [...prices];
     newPrices.splice(index, 1);
     setPrices(newPrices);
+    setUnsavedChanges(true);
   };
 
   const handleEditPrice = (index: any, field: any, value: any) => {
     const newPrices = [...prices];
     newPrices[index][field] = value;
     setPrices(newPrices);
+    setUnsavedChanges(true);
+  };
+
+  const handleSave = () => {
+    if (onPricesSaved) {
+      onPricesSaved(prices);
+      setUnsavedChanges(false);
+    }
   };
 
   return (
@@ -86,7 +98,10 @@ const MentorPrices = ({ initialPrices, onPricesChange, viewOnly = false }: { ini
         </tbody>
       </table>
       {!viewOnly && (
-        <Button variant="success" onClick={handleAddPrice}>Add Price</Button>
+        <div>
+          <Button variant="success" onClick={handleAddPrice}>Add Price</Button>
+          <Button variant="primary" onClick={handleSave} disabled={!unsavedChanges} className='ml-2'>Save</Button>
+        </div>
       )}
     </div>
   );
