@@ -17,6 +17,18 @@
             "bio": "<p>Founder of Atila. ex-Wealthsimple software engineer. Ivey Business School Software engineering and business dual degree. Varsity soccer team (scholarship).</p>",
             "mentorship_topics": "<ul><li>Getting admission into the Ivey Business School software engineering and business dual degree program</li><li>Getting a scholarship to play a varsity sport</li><li>Getting a job at a tech company</li></ul>",
             "price": "50.00000000",
+            "prices": [
+                {
+                    "price": "50.00",
+                    "minutes": 30,
+                    "schedule_url": "https://cal.com/tomiwa1a/30"
+                },
+                {
+                    "price": "75.00",
+                    "minutes": 60,
+                    "schedule_url": "https://cal.com/tomiwa1a/60"
+                }
+            ],
             "schedule_url": "https://calendly.com/tomiwa1a/atila-mentorship",
             "bio_recording_url": "",
             "eligible_schools": [

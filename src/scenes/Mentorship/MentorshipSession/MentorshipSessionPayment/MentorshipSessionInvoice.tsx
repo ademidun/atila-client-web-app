@@ -1,6 +1,6 @@
 import moment from 'moment';
 import React from 'react'
-import { ATILA_SCHOLARSHIP_FEE_TAX } from '../../../../models/ConstantsPayments';
+import { ATILA_MENTORSHIP_FEE, ATILA_SCHOLARSHIP_FEE_TAX } from '../../../../models/ConstantsPayments';
 import { MentorshipSession } from '../../../../models/MentorshipSession';
 import { formatCurrency } from '../../../../services/utils';
 import { ATIlA_LOGO_URL } from '../../../Payment/ScholarshipPayment/Invoice';
@@ -10,10 +10,10 @@ function MentorshipSessionInvoice({session}: ({session: MentorshipSession})) {
 
   const todayString = moment(Date.now()).format('MMMM DD, YYYY');
 
-  
-  const mentorshipPrice = Number.parseFloat(session.mentor?.price || "0");
-  const mentorshipTax =  mentorshipPrice * ATILA_SCHOLARSHIP_FEE_TAX;
-  const totalmentorshipCost =  mentorshipPrice + mentorshipTax;
+  const mentorPrice = Number.parseFloat(session.duration?.price.toString() || "0");
+  const mentorshipFee =  mentorPrice * ATILA_MENTORSHIP_FEE;
+  const mentorshipTax =  (mentorPrice + mentorshipFee) * ATILA_SCHOLARSHIP_FEE_TAX;
+  const totalmentorshipCost =  mentorPrice + mentorshipTax + mentorshipFee;
 
   return (
     <div>
@@ -59,10 +59,15 @@ function MentorshipSessionInvoice({session}: ({session: MentorshipSession})) {
 				</tr>
 
 				<tr className="item">
-					<td>Mentorship</td>
+					<td>Mentorship ({session.duration?.minutes} minutes)</td>
 
-					<td>{formatCurrency(mentorshipPrice)}</td>
+					<td>{formatCurrency(mentorPrice)}</td>
 				</tr>
+
+                <tr className="item">
+                    <td>Atila Fee</td>
+                    <td>{formatCurrency(mentorshipFee)}</td>
+                </tr>
 
 				<tr className="item last">
 					<td>Tax ({(ATILA_SCHOLARSHIP_FEE_TAX * 100).toFixed(0)}%)</td>
