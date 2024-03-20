@@ -67,7 +67,8 @@ function MentorshipSessionPaymentForm(props: MentorshipSessionPaymentFormProps) 
             const createMentorshipSessionResponse = await MentorshipSesssionAPI
             .createMentorshipSession({mentee: userProfileLoggedIn!.user,
                  mentor: mentorShipSession.mentor!.id,
-                 discountcode_set: discountCode.id ? [discountCode.id]: []});
+                 discountcode_set: discountCode.id ? [discountCode.id]: [], 
+                 duration: mentorShipSession.duration});
             const {data: createdSession} = createMentorshipSessionResponse;
             mentorShipSession = createdSession;
         }

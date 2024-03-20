@@ -4,12 +4,12 @@ class MentorshipSesssionAPI {
 
     static mentorshipSesssionAPIUrl = `${Environment.apiUrl}/mentorship/sessions`;
     static mentorshipCodeAPIUrl = `${Environment.apiUrl}/mentorship/codes`;
-    static createMentorshipSession = ({mentor, mentee, discountcode_set}:
-         ({mentor: string, mentee: number, discountcode_set?:Array<string>})) => {
+    static createMentorshipSession = ({mentor, mentee, discountcode_set, duration}:
+         ({mentor: string, mentee: number, discountcode_set?:Array<string>, duration: any})) => {
 
         const apiCompletionPromise = request({
             method: 'post',
-            data: {mentor, mentee, discountcode_set},
+            data: {mentor, mentee, discountcode_set, duration},
             url: `${MentorshipSesssionAPI.mentorshipSesssionAPIUrl}/`,
         });
 
