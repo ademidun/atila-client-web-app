@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from 'antd';
+import { Button, Tag } from 'antd';
 
 const MentorPrices = ({ initialPrices, onPricesSaved, onPriceSelected, viewOnly = false }: { initialPrices: any, onPricesSaved?: any, onPriceSelected?: any, viewOnly?: boolean }) => {
   const [prices, setPrices] = useState(initialPrices);
@@ -47,7 +47,7 @@ const MentorPrices = ({ initialPrices, onPricesSaved, onPriceSelected, viewOnly 
             <tr key={index}>
               <td>
                 {viewOnly ? (
-                  <span>{price.price}</span>
+                  <span>{price.price ? price.price : <Tag color="green">free</Tag> }</span>
                 ) : (
                   <input
                     type="text"
