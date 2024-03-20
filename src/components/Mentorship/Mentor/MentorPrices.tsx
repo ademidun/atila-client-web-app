@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from 'react-bootstrap';
+import { Button } from 'antd';
 
-const MentorPrices = ({ initialPrices, onPricesSaved, viewOnly = false }: { initialPrices: any, onPricesSaved?: any, viewOnly?: boolean }) => {
+const MentorPrices = ({ initialPrices, onPricesSaved, onPriceSelected, viewOnly = false }: { initialPrices: any, onPricesSaved?: any, onPriceSelected?: any, viewOnly?: boolean }) => {
   const [prices, setPrices] = useState(initialPrices);
   const [unsavedChanges, setUnsavedChanges] = useState(false);
 
@@ -30,7 +30,6 @@ const MentorPrices = ({ initialPrices, onPricesSaved, viewOnly = false }: { init
     setPrices(newPrices);
     setUnsavedChanges(true);
   };
-
 
   return (
     <div>
@@ -81,8 +80,10 @@ const MentorPrices = ({ initialPrices, onPricesSaved, viewOnly = false }: { init
                 </td>
               )}
               <td>
-                {!viewOnly && (
-                  <Button variant="danger" onClick={() => handleRemovePrice(index)}>Remove</Button>
+                {viewOnly ? (
+                  <Button type='primary' onClick={() => onPriceSelected && onPriceSelected(price)}>Select Session</Button>
+                ) : (
+                  <Button danger onClick={() => handleRemovePrice(index)}>Remove</Button>
                 )}
               </td>
             </tr>
@@ -91,7 +92,7 @@ const MentorPrices = ({ initialPrices, onPricesSaved, viewOnly = false }: { init
       </table>
       {!viewOnly && (
         <div>
-          <Button variant="success" onClick={handleAddPrice}>Add Price</Button>
+          <Button type='primary' onClick={handleAddPrice}>Add Price</Button>
         </div>
       )}
     </div>
