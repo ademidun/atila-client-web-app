@@ -11,7 +11,7 @@ import { getErrorMessage } from '../../../services/utils';
 import { scholarshipUserProfileSharedFormConfigs, toastNotify } from '../../../models/Utils';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { NetworkResponse, NetworkResponseDisplay } from '../../NetworkResponse';
-import MentorPrices from './MentorPrices';
+import MentorDurations from './MentorDurations';
 
 let autoSaveTimeoutId: any;
 
@@ -162,8 +162,8 @@ function MentorProfileEdit(props: MentorProfileEditPropTypes) {
                                  loggedInUserProfile={userProfileLoggedIn}
                 />
                 < hr/>
-                <MentorPrices initialPrices={mentor.prices} 
-                onPricesSaved={(prices: any) => setMentor({ ...mentor, prices })} />
+                <MentorDurations initialDurations={mentor.prices} 
+                onDurationsSaved={(prices: any) => setMentor({ ...mentor, prices })} />
                 < hr/>
 
                 <FormDynamic onUpdateForm={updateForm}

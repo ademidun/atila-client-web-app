@@ -1,4 +1,4 @@
-import { Mentor } from "./Mentor";
+import { Duration, Mentor } from "./Mentor";
 import { UserProfile } from "./UserProfile.class";
 
 export interface MentorshipSession {
@@ -9,7 +9,8 @@ export interface MentorshipSession {
     notes: string, // mentee can either be the Mentor object or the mentor ID,
     event_scheduled?: true,
     event_details?: Object,
-    discountcode_set?: Array<string>
+    discountcode_set?: Array<string>,
+    duration?: Duration,
 }
 
 export interface DiscountCode {

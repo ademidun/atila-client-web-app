@@ -2,7 +2,7 @@ import React, { FormEvent, KeyboardEventHandler, useRef, useState } from 'react'
 import { Button, Col, Row } from 'antd';
 import { connect } from 'react-redux';
 import {CardElement, injectStripe, ReactStripeElements} from 'react-stripe-elements';
-import { ATILA_SCHOLARSHIP_FEE_TAX } from '../../../../models/ConstantsPayments';
+import { ATILA_MENTORSHIP_FEE, ATILA_SCHOLARSHIP_FEE_TAX } from '../../../../models/ConstantsPayments';
 import { DiscountCode, MentorshipSession } from '../../../../models/MentorshipSession';
 import { UserProfile } from '../../../../models/UserProfile.class';
 import MentorshipSesssionAPI from '../../../../services/Mentorship/MentorshipSessionAPI';
@@ -29,12 +29,14 @@ function MentorshipSessionPaymentForm(props: MentorshipSessionPaymentFormProps) 
     let mentorShipSession = session; // should we just change session to a let?
 
     const [discountCode, setDiscountCode] = useState<DiscountCode>({code: '', id: ''});
-    if (!mentorShipSession?.mentor) {
+    if (!mentorShipSession?.duration) {
         return null
     }
 
-    const mentorshipTax =  Number.parseFloat(mentorShipSession.mentor.price) * ATILA_SCHOLARSHIP_FEE_TAX;
-    const totalPaymentAmount =  Number.parseFloat(mentorShipSession.mentor.price) + mentorshipTax;
+    const mentorPrice = Number.parseFloat(mentorShipSession.duration.price.toString());
+    const mentorshipFee =  mentorPrice * ATILA_MENTORSHIP_FEE;
+    const mentorshipTax =  (mentorPrice + mentorshipFee) * ATILA_SCHOLARSHIP_FEE_TAX;
+    const totalPaymentAmount =  mentorPrice + mentorshipTax + mentorshipFee;
 
     const handleVerifyDiscountCode = async (event: FormEvent) => {
         event.preventDefault();

@@ -5,6 +5,7 @@ import Loading from '../../../components/Loading';
 import MentorProfileView from '../../../components/Mentorship/Mentor/MentorProfileView';
 import { MentorshipSession } from '../../../models/MentorshipSession';
 import Cal from '@calcom/embed-react';
+import MentorDurations from '../../../components/Mentorship/Mentor/MentorDurations';
 
 console.log({Cal});
 
@@ -17,17 +18,19 @@ interface MentorshipSessionScheduleProps {
   onDateAndTimeSelected: (session: MentorshipSession) => void,
   onEventTypeViewed: (session: MentorshipSession) => void,
   onEventScheduled: (session: MentorshipSession, eventData: any) => void,
+  onDurationSelected: (duration: any) => void,
 }
 
 MentorshipSessionSchedule.defaultProps = {
   onDateAndTimeSelected: () => null,
   onEventTypeViewed: () => null,
   onEventScheduled: () => null,
+  onDurationSelected: () => null,
 }
 
 function MentorshipSessionSchedule(props: MentorshipSessionScheduleProps) {
 
-  const { previewMode, session, session: { mentor }, onEventTypeViewed, onEventScheduled } = props;
+  const { previewMode, session, session: { mentor }, onEventTypeViewed, onEventScheduled, onDurationSelected } = props;
   const [loadingCalendar, setLoadingCalendar] = useState("Loading calendar");
 
   const [width, setWidth] = useState<number>(window.innerWidth);
@@ -132,6 +135,7 @@ function MentorshipSessionSchedule(props: MentorshipSessionScheduleProps) {
   return (
     <div>
   {mentor && 
+  <>
     <Row gutter={16}>
       {!previewMode && 
       <Col sm={24} md={12}>
@@ -180,6 +184,15 @@ function MentorshipSessionSchedule(props: MentorshipSessionScheduleProps) {
         <MentorProfileView mentor={mentor} showProfilePic={true} />
       </Col>
     </Row>
+    {previewMode && 
+      <Row gutter={16}>
+        <Col sm={24}  md={{span: 12,  offset: 6}}>
+          <MentorDurations initialDurations={mentor.prices} viewOnly={true} 
+          onDurationSelected={onDurationSelected} />
+        </Col>
+      </Row>
+    }
+  </>
   }
 </div>
 

@@ -3,7 +3,6 @@ import { Mentor } from '../../../models/Mentor';
 import AudioPlay from '../../Audio/AudioPlay';
 import ContentBody from '../../ContentDetail/ContentBody/ContentBody';
 import DemographicsDisplay from '../../DemographicsDisplay';
-import MentorPrices from './MentorPrices';
 
 interface MentorProfileViewProps {
     mentor: Mentor,
@@ -53,13 +52,6 @@ export const MentorProfileView = (props: MentorProfileViewProps) => {
                 <p>
                     {mentor.description}
                 </p>
-                    {mentor.prices && 
-                        <>
-                            < hr/>
-                            <MentorPrices initialPrices={mentor.prices} viewOnly={true} />
-                            < hr/>
-                        </>
-                    }
                 <br/>
                 <ContentBody body={mentor.bio} bodyType="html" />
                 <hr/>

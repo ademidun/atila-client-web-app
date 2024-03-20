@@ -12,6 +12,7 @@ import HelmetSeo, { defaultSeoContent } from '../../../components/HelmetSeo';
 import { UserProfile } from '../../../models/UserProfile.class';
 import Register from '../../../components/Register';
 import { NetworkResponse, NetworkResponseDisplay } from '../../../components/NetworkResponse';
+import { Duration } from '../../../models/Mentor';
 
 const { Step } = Steps;
 
@@ -132,6 +133,16 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
         setNetworkResponse({title: "", type: null});
       })
     }
+
+    const handleDurationSelected = (duration: Duration) => {
+      console.log('handleDurationSelected', {duration});
+      console.log({mentorshipSession});
+      setMentorshipSession({
+        ...mentorshipSession,
+        duration
+      });
+      setCurrentSessionStep(currentSessionStep+1);
+    }
   
     // when the currentSessionStep changes, scroll back to the top of the page
     useEffect(() => {
@@ -168,7 +179,8 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
             </div>
             <hr/>
 
-            <MentorshipSessionSchedule previewMode={true} session={session} onDateAndTimeSelected={handleCalendarEventViewed} />
+            <MentorshipSessionSchedule previewMode={true} session={session} 
+            onDateAndTimeSelected={handleCalendarEventViewed} onDurationSelected={handleDurationSelected} />
           </div>,
           disabled: () => false,
         },
@@ -263,22 +275,14 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
       </div>
 
       <div>
-        {currentSessionStep < mentorshipSessionSteps.length - 1 && (
-          <Button type="primary" className="float-right col-md-6"
-
-          disabled={mentorshipSessionSteps[currentSessionStep + 1].disabled()}
-            onClick={() => setCurrentSessionStep(currentSessionStep + 1)}>
-            Next
-          </Button>
-        )}
         {currentSessionStep > 0 ? (
-          <Button className="float-right col-md-6"
+          <Button className="float-left col-md-6"
             onClick={() => setCurrentSessionStep(currentSessionStep - 1)} >
             Previous
           </Button>
         ): 
         <Link to="/mentorship">
-          <Button className="float-right col-md-6">
+          <Button className="float-left col-md-6">
             View all Mentors
           </Button>
           

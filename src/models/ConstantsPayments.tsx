@@ -64,6 +64,7 @@ Object.freeze(Currencies)
 export const CURRENCY_CODES = Object.values(Currencies).map(currency => currency.code)
 
 export const ATILA_SCHOLARSHIP_FEE = 0.09;
+export const ATILA_MENTORSHIP_FEE = 0.10;
 export const ATILA_SCHOLARSHIP_FEE_TAX = 0.13;
 
 export const CryptoCurrencies = Object.values(Currencies).filter(currency => currency.is_crypto).map(currency => currency.code);
