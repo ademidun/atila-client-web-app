@@ -31,12 +31,6 @@ const MentorPrices = ({ initialPrices, onPricesSaved, viewOnly = false }: { init
     setUnsavedChanges(true);
   };
 
-  const handleSave = () => {
-    if (onPricesSaved) {
-      onPricesSaved(prices);
-      setUnsavedChanges(false);
-    }
-  };
 
   return (
     <div>
@@ -45,7 +39,7 @@ const MentorPrices = ({ initialPrices, onPricesSaved, viewOnly = false }: { init
           <tr>
             <th>Price</th>
             <th>Minutes</th>
-            <th>Schedule URL</th>
+            {!viewOnly && <th>Schedule URL</th>}
             <th>Action</th>
           </tr>
         </thead>
@@ -76,18 +70,16 @@ const MentorPrices = ({ initialPrices, onPricesSaved, viewOnly = false }: { init
                   />
                 )}
               </td>
-              <td>
-                {viewOnly ? (
-                  <span>{price.schedule_url}</span>
-                ) : (
+              {!viewOnly && (
+                <td>
                   <input
                     type="text"
                     value={price.schedule_url}
                     style={{ width: '300px' }} // Adjusted width for longer input
                     onChange={(e) => handleEditPrice(index, 'schedule_url', e.target.value)}
                   />
-                )}
-              </td>
+                </td>
+              )}
               <td>
                 {!viewOnly && (
                   <Button variant="danger" onClick={() => handleRemovePrice(index)}>Remove</Button>
@@ -100,7 +92,6 @@ const MentorPrices = ({ initialPrices, onPricesSaved, viewOnly = false }: { init
       {!viewOnly && (
         <div>
           <Button variant="success" onClick={handleAddPrice}>Add Price</Button>
-          <Button variant="primary" onClick={handleSave} disabled={!unsavedChanges} className='ml-2'>Save</Button>
         </div>
       )}
     </div>
