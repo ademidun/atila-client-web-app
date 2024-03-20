@@ -30,7 +30,7 @@ MentorshipSessionSchedule.defaultProps = {
 
 function MentorshipSessionSchedule(props: MentorshipSessionScheduleProps) {
 
-  const { previewMode, session, session: { mentor }, onEventTypeViewed, onEventScheduled, onDurationSelected } = props;
+  const { previewMode, session, session: { mentor, duration }, onEventTypeViewed, onEventScheduled, onDurationSelected } = props;
   const [loadingCalendar, setLoadingCalendar] = useState("Loading calendar");
 
   const [width, setWidth] = useState<number>(window.innerWidth);
@@ -140,7 +140,7 @@ function MentorshipSessionSchedule(props: MentorshipSessionScheduleProps) {
       {!previewMode && 
       <Col sm={24} md={12}>
         <div id={calendarDivId} className='card shadow'>
-          {mentor.schedule_url ? (
+          {duration?.schedule_url ? (
             <div>
               {loadingCalendar && <Loading title={loadingCalendar} />}
               {session.event_scheduled && (
@@ -151,9 +151,9 @@ function MentorshipSessionSchedule(props: MentorshipSessionScheduleProps) {
                 />
               )}
               <>
-                {mentor.schedule_url.includes(CALCOM_URL) ? (
+                {duration.schedule_url.includes(CALCOM_URL) ? (
                   <Cal
-                    calLink={mentor.schedule_url.replace(CALCOM_URL, '')}
+                    calLink={duration.schedule_url.replace(CALCOM_URL, '')}
                     config={{
                       // name: "John Doe",
                       // email: "johndoe@gmail.com",
@@ -165,7 +165,7 @@ function MentorshipSessionSchedule(props: MentorshipSessionScheduleProps) {
                 ) : (
                   <div 
                     className="calendly-inline-widget"
-                    data-url={mentor.schedule_url}
+                    data-url={duration.schedule_url}
                     style={{ minWidth: isMobile ? '400px' : "550px", height: isMobile ? '650px' : "1000px" }}
                   />
                 )}

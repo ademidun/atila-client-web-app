@@ -117,7 +117,7 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
     const handlePaymentComplete = (session: MentorshipSession) => {
 
       setNetworkResponse({title: "Saving payment confirmation. Don't leave this page.", type: "loading"});
-      MentorshipAPI.patchSession({id: session.id, stripe_payment_intent_id: session.stripe_payment_intent_id})
+      MentorshipAPI.patchSession({id: session.id, stripe_payment_intent_id: session.stripe_payment_intent_id, duration: session.duration})
       .then(res => {
         const { data } = res;
         console.log({data});
