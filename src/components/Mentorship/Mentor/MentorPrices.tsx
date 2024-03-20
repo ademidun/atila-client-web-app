@@ -2,32 +2,32 @@ import React, { useState, useEffect } from 'react';
 import { Button, Tag } from 'antd';
 
 const MentorPrices = ({ initialPrices, onPricesSaved, onPriceSelected, viewOnly = false }: { initialPrices: any, onPricesSaved?: any, onPriceSelected?: any, viewOnly?: boolean }) => {
-  const [prices, setPrices] = useState(initialPrices);
+  const [durations, setDurations] = useState(initialPrices);
   const [unsavedChanges, setUnsavedChanges] = useState(false);
 
   useEffect(() => {
     if (unsavedChanges && onPricesSaved) {
-      onPricesSaved(prices);
+      onPricesSaved(durations);
       setUnsavedChanges(false);
     }
-  }, [prices, onPricesSaved, unsavedChanges]);
+  }, [durations, onPricesSaved, unsavedChanges]);
 
-  const handleAddPrice = () => {
-    setPrices([...prices, { price: '', minutes: 0, schedule_url: '' }]);
+  const handleAddDuration = () => {
+    setDurations([...durations, { price: '', minutes: 0, schedule_url: '' }]);
     setUnsavedChanges(true);
   };
 
-  const handleRemovePrice = (index: any) => {
-    const newPrices = [...prices];
-    newPrices.splice(index, 1);
-    setPrices(newPrices);
+  const handleRemoveDuration = (index: any) => {
+    const newDurations = [...durations];
+    newDurations.splice(index, 1);
+    setDurations(newDurations);
     setUnsavedChanges(true);
   };
 
-  const handleEditPrice = (index: any, field: any, value: any) => {
-    const newPrices = [...prices];
-    newPrices[index][field] = value;
-    setPrices(newPrices);
+  const handleEditDuration = (index: any, field: any, value: any) => {
+    const newDurations = [...durations];
+    newDurations[index][field] = value;
+    setDurations(newDurations);
     setUnsavedChanges(true);
   };
 
@@ -43,29 +43,29 @@ const MentorPrices = ({ initialPrices, onPricesSaved, onPriceSelected, viewOnly 
           </tr>
         </thead>
         <tbody>
-          {prices.map((price: any, index: any) => (
+          {durations.map((duration: any, index: any) => (
             <tr key={index}>
               <td>
                 {viewOnly ? (
-                  <span>{price.price ? price.price : <Tag color="green">free</Tag> }</span>
+                  <span>{duration.price ? duration.price : <Tag color="green">free</Tag> }</span>
                 ) : (
                   <input
                     type="text"
-                    value={price.price}
+                    value={duration.price}
                     style={{ width: '80px' }} // Adjusted width for shorter input
-                    onChange={(e) => handleEditPrice(index, 'price', e.target.value)}
+                    onChange={(e) => handleEditDuration(index, 'price', e.target.value)}
                   />
                 )}
               </td>
               <td>
                 {viewOnly ? (
-                  <span>{price.minutes}</span>
+                  <span>{duration.minutes}</span>
                 ) : (
                   <input
                     type="number"
-                    value={price.minutes}
+                    value={duration.minutes}
                     style={{ width: '60px' }} // Adjusted width for shorter input
-                    onChange={(e) => handleEditPrice(index, 'minutes', parseInt(e.target.value))}
+                    onChange={(e) => handleEditDuration(index, 'minutes', parseInt(e.target.value))}
                   />
                 )}
               </td>
@@ -73,17 +73,17 @@ const MentorPrices = ({ initialPrices, onPricesSaved, onPriceSelected, viewOnly 
                 <td>
                   <input
                     type="text"
-                    value={price.schedule_url}
+                    value={duration.schedule_url}
                     style={{ width: '300px' }} // Adjusted width for longer input
-                    onChange={(e) => handleEditPrice(index, 'schedule_url', e.target.value)}
+                    onChange={(e) => handleEditDuration(index, 'schedule_url', e.target.value)}
                   />
                 </td>
               )}
               <td>
                 {viewOnly ? (
-                  <Button type='primary' onClick={() => onPriceSelected && onPriceSelected(price)}>Select Session</Button>
+                  <Button type='primary' onClick={() => onPriceSelected && onPriceSelected(duration)}>Select Session</Button>
                 ) : (
-                  <Button danger onClick={() => handleRemovePrice(index)}>Remove</Button>
+                  <Button danger onClick={() => handleRemoveDuration(index)}>Remove</Button>
                 )}
               </td>
             </tr>
@@ -92,7 +92,7 @@ const MentorPrices = ({ initialPrices, onPricesSaved, onPriceSelected, viewOnly 
       </table>
       {!viewOnly && (
         <div>
-          <Button type='primary' onClick={handleAddPrice}>Add Price</Button>
+          <Button type='primary' onClick={handleAddDuration}>Add Price</Button>
         </div>
       )}
     </div>
