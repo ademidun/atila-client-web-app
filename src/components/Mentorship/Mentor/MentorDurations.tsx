@@ -47,7 +47,7 @@ const MentorDurations = ({ initialDurations, onDurationsSaved, onDurationSelecte
             <tr key={index}>
               <td>
                 {viewOnly ? (
-                  <span>{!duration.price || Number.parseInt(duration.price) == 0 ? <Tag color="green">free</Tag>  :
+                  <span>{!duration.price || Number.parseInt(duration.price) === 0 ? <Tag color="green">free</Tag>  :
                    `$${duration.price}` }</span>
                 ) : (
                   <input
