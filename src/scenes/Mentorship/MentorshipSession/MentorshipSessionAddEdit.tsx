@@ -263,7 +263,7 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
   return (
     <div className='card shadow m-3 p-3'>
       <HelmetSeo content={seoContent}/>
-      <Steps current={currentSessionStep} onChange={current => setCurrentSessionStep(current)}>
+      <Steps current={currentSessionStep} onChange={current => setCurrentSessionStep(current)} {...({} as any)}>
         {mentorshipSessionSteps.map(item => (
           <Step key={item.title} title={item.title} disabled={item.disabled()} />
         ))}
