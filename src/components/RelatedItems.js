@@ -6,34 +6,35 @@ import Loading from "./Loading";
 import { genericItemTransform, getAlogliaIndexName } from "../services/utils";
 import Environment from '../services/Environment';
 import { useRelatedProducts } from '@algolia/recommend-react';
-import recommend from '@algolia/recommend';
+import { recommendClient } from '@algolia/recommend';
 
-const recommendClient = recommend(Environment.ALGOLIA_APP_ID, Environment.ALGOLIA_PUBLIC_KEY);
+const client = recommendClient(Environment.ALGOLIA_APP_ID, Environment.ALGOLIA_PUBLIC_KEY);
 
-const RelatedProduct = ({recommendation}) => {
+const RelatedProduct = ({ recommendation }) => {
     recommendation = genericItemTransform(recommendation);
     return (
         <ContentCard key={recommendation.slug} content={recommendation} className="mb-3" />
-    )
-}
+    );
+};
 
-const RelatedProducts = ({recommendations}) => {
-    return <>
-        <h3 className="text-center">Related</h3>
-        {recommendations.map(item => (
-            <RelatedProduct recommendation={item} key={item.id} />
-        ))}
-    </>
-}
+const RelatedProducts = ({ recommendations }) => {
+    return (
+        <>
+            <h3 className="text-center">Related</h3>
+            {recommendations.map(item => (
+                <RelatedProduct recommendation={item} key={item.id} />
+            ))}
+        </>
+    );
+};
 
 const RelatedItems = (props) => {
-
     const { recommendations, status } = useRelatedProducts({
-        indexName:  getAlogliaIndexName(props.itemType),
+        indexName: getAlogliaIndexName(props.itemType),
         maxRecommendations: 3,
         objectIDs: [props.id.toString()],
-        recommendClient: recommendClient
-    })
+        recommendClient: client
+    });
 
     if (status !== 'idle') {
         return (
@@ -48,9 +49,9 @@ const RelatedItems = (props) => {
             <div className={`${props.className}`}>
                 <RelatedProducts recommendations={recommendations} />
             </div>
-        )
+        );
     }
-}
+};
 
 RelatedItems.defaultProps = {
     className: ''
