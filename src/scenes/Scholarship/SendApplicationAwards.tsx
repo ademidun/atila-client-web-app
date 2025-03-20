@@ -1,5 +1,5 @@
-import CryptoPaymentForm, { TransactionResponsePayment } from '@atila/web-components-library.ui.crypto-payment-form';
-import CurrencyDisplay from '@atila/web-components-library.ui.currency-display';
+// import CryptoPaymentForm, { TransactionResponsePayment } from '@atila/web-components-library.ui.crypto-payment-form';
+// import CurrencyDisplay from '@atila/web-components-library.ui.currency-display';
 import { Radio, Spin } from 'antd';
 import React, { useState } from 'react'
 import Loading from '../../components/Loading';
@@ -19,7 +19,8 @@ function SendApplicationAwards(props: SendApplicationAwardsProps) {
     const [activeAward, setActiveAward] = useState(awards[0]);
     const [loadingMessage, setLoadingMessage] = useState("");
 
-    const saveSentAward = (transaction: TransactionResponsePayment) => {
+    const saveSentAward = (transaction: any) => {
+    // const saveSentAward = (transaction: TransactionResponsePayment) => {
 
         const transactionData: Transaction = {
             hash: transaction.hash,
@@ -68,16 +69,16 @@ function SendApplicationAwards(props: SendApplicationAwardsProps) {
             </Radio.Group>
 
         <div>
-            <CurrencyDisplay amount={Number.parseFloat(activeAward.funding_amount as string)} inputCurrency={activeAward.currency} />
+            {/* <CurrencyDisplay amount={Number.parseFloat(activeAward.funding_amount as string)} inputCurrency={activeAward.currency} /> */}
             {activeAward.recipient_wallet?.address ? 
             <>
-                <CryptoPaymentForm 
+                {/* <CryptoPaymentForm 
                         className="mt-3"
                         amount={Number.parseFloat(activeAward.funding_amount as string)}
                         currency={activeAward.currency}
                         isTestNet={Environment.name !== "prod"}
                         destinationAddress={activeAward.recipient_wallet?.address}
-                        onSuccess={saveSentAward} /> 
+                        onSuccess={saveSentAward} />  */}
             </>
             :
                 <p>

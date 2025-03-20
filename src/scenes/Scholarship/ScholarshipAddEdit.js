@@ -26,7 +26,7 @@ import Environment from "../../services/Environment";
 import InviteScholarshipCollaborator from "../../components/InviteScholarshipCollaborator";
 import {CAD, CryptoCurrencies, CURRENCY_CODES} from "../../models/ConstantsPayments";
 import { DEFAULT_AWARD } from '../../models/Award';
-import CurrencyDisplay from '@atila/web-components-library.ui.currency-display';
+// import CurrencyDisplay from '@atila/web-components-library.ui.currency-display';
 import { additionalQuestions, scholarshipFormConfigsPage1 } from './ScholarshipAddEditFormConfig';
 import ImportContent from '../../components/ImportContent';
 import { ALL_DEMOGRAPHICS } from '../../models/ConstantsForm';
@@ -614,9 +614,7 @@ class ScholarshipAddEdit extends React.Component{
                  because it will usually be in USD which represents the aggregated value of all the awards after it has been converted */}
                  <Spin tip={isUpdatingScholarship} spinning={isUpdatingScholarship}>
                         <h5>
-                            Total Funding Amount: {CryptoCurrencies.includes(currency) ? 
-                            <CurrencyDisplay amount={totalAwardsAmount} inputCurrency={isAddScholarshipMode ? currency : scholarship.currency} outputCurrency={CAD.code} /> :  
-                            `${formatCurrency(Number.parseFloat(totalAwardsAmount))} ${currency}`}
+                            Total Funding Amount: {`${formatCurrency(totalAwardsAmount)} ${currency}`}
                         </h5>
                  </Spin>
                  {disableEditingAwards && 

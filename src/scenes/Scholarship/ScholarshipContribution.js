@@ -13,7 +13,7 @@ import ScholarshipContributionProfilePictureChooser from "./ScholarshipContribut
 import {isValidEmail} from "../../services/utils";
 import ReferredByInput from "../../components/ReferredByInput";
 import {CryptoCurrencies, Currencies, CURRENCY_CODES, ETH} from "../../models/ConstantsPayments";
-import CurrencyDisplay from '@atila/web-components-library.ui.currency-display';
+// import CurrencyDisplay from '@atila/web-components-library.ui.currency-display';
 import ScholarshipPaymentForm from '../Payment/ScholarshipPayment/ScholarshipPaymentForm';
 
 const { Step } = Steps;
