@@ -16,6 +16,8 @@ import {CryptoCurrencies, Currencies, CURRENCY_CODES, ETH} from "../../models/Co
 // import CurrencyDisplay from '@atila/web-components-library.ui.currency-display';
 import ScholarshipPaymentForm from '../Payment/ScholarshipPayment/ScholarshipPaymentForm';
 
+import TextUtils from '../../services/utils/TextUtils';
+
 const { Step } = Steps;
 
 
@@ -267,7 +269,9 @@ class ScholarshipContribution extends React.Component {
                        onChange={this.updateContributorInfo}/>
 
                 <br />
-                {Currencies[currency].is_crypto && <small className="float-left"><CurrencyDisplay amount={contributor.funding_amount} inputCurrency={currency} /></small>}
+                {Currencies[currency].is_crypto && <small className="float-left">
+                    {TextUtils.formatCurrency(contributor.funding_amount)}
+                    </small>}
                 <br />
                 {renderChangeCurrency}
                 <br />

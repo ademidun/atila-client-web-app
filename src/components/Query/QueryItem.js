@@ -72,14 +72,6 @@ export class QueryItem extends React.Component {
         onUpdateQuery(queryData);
     };
 
-
-    renderSuggestion = suggestion => (
-        <p className="suggestion-item cursor-pointer">
-            {suggestion.value}{' '}
-            <Tag>{suggestion.category}</Tag>
-        </p>
-    );
-
     renderSuggestion = suggestion => (
         <p className="suggestion-item cursor-pointer">
             {suggestion.value}{' '}
