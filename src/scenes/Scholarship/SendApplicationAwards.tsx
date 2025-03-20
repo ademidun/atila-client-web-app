@@ -57,37 +57,41 @@ function SendApplicationAwards(props: SendApplicationAwardsProps) {
         <Loading title={loadingMessage} />
         }
 
-        <Spin spinning={!!loadingMessage} tip={loadingMessage}>
-
-            <Radio.Group defaultValue={activeAward} buttonStyle="solid" onChange={(e) => setActiveAward(e.target.value)} 
-            className="mb-3">
-                {awards.map(award => (
-                    <Radio.Button value={award} key={award.id}>
-                        {award.id}{' '}{award.recipient_wallet?.address && `Wallet: ${award.recipient_wallet?.address}`}
-                    </Radio.Button>
-                ))}
-            </Radio.Group>
-
         <div>
-            {/* <CurrencyDisplay amount={Number.parseFloat(activeAward.funding_amount as string)} inputCurrency={activeAward.currency} /> */}
-            {activeAward.recipient_wallet?.address ? 
-            <>
-                {/* <CryptoPaymentForm 
-                        className="mt-3"
-                        amount={Number.parseFloat(activeAward.funding_amount as string)}
-                        currency={activeAward.currency}
-                        isTestNet={Environment.name !== "prod"}
-                        destinationAddress={activeAward.recipient_wallet?.address}
-                        onSuccess={saveSentAward} />  */}
-            </>
-            :
-                <p>
-                    No recipient wallet found for this award recipient
-                </p>
-            }
-        </div>
+            {loadingMessage ? (
+                <Spin spinning={true} tip={loadingMessage} />
+            ) : (
+                <div>
+                    <Radio.Group defaultValue={activeAward} buttonStyle="solid" onChange={(e) => setActiveAward(e.target.value)} 
+                    className="mb-3">
+                        {awards.map(award => (
+                            <Radio.Button value={award} key={award.id}>
+                                {award.id}{' '}{award.recipient_wallet?.address && `Wallet: ${award.recipient_wallet?.address}`}
+                            </Radio.Button>
+                        ))}
+                    </Radio.Group>
 
-        </Spin>
+                    <div>
+                        {/* <CurrencyDisplay amount={Number.parseFloat(activeAward.funding_amount as string)} inputCurrency={activeAward.currency} /> */}
+                        {activeAward.recipient_wallet?.address ? 
+                        <>
+                            {/* <CryptoPaymentForm 
+                                    className="mt-3"
+                                    amount={Number.parseFloat(activeAward.funding_amount as string)}
+                                    currency={activeAward.currency}
+                                    isTestNet={Environment.name !== "prod"}
+                                    destinationAddress={activeAward.recipient_wallet?.address}
+                                    onSuccess={saveSentAward} />  */}
+                        </>
+                        :
+                            <p>
+                                No recipient wallet found for this award recipient
+                            </p>
+                        }
+                    </div>
+                </div>
+            )}
+        </div>
 
 
 
