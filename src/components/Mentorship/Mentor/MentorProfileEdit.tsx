@@ -24,157 +24,194 @@ export interface MentorProfileEditPropTypes extends RouteComponentProps<RoutePar
     userProfileLoggedIn?: UserProfile,
 }
 
-function MentorProfileEdit(props: MentorProfileEditPropTypes) {
+// Convert to class component to ensure refs property exists
+class MentorProfileEdit extends React.Component<MentorProfileEditPropTypes> {
+    state = {
+        mentor: undefined as Mentor | undefined,
+        networkResponse: {title: "", type: null} as NetworkResponse,
+        isMentorSet: false
+    };
+    autoSaveTimeoutId: any = null;
 
-    const { match: {params: { username }}, userProfileLoggedIn } = props;
-    
-    const [mentor, setMentor] = useState<Mentor>();
-    const [networkResponse, setNetworkResponse] = useState<NetworkResponse>({title: "", type: null})
-    const isMentorset = useRef(false);
+    componentDidMount() {
+        const { userProfileLoggedIn } = this.props;
+        if (userProfileLoggedIn) {
+            this.loadMentor();
+        }
+    }
 
-    const loadMentor = useCallback(
-        async () => {
-    
-        setNetworkResponse({title: "Loading Mentor profile", type: "loading"});
+    componentDidUpdate(prevProps: MentorProfileEditPropTypes) {
+        const { userProfileLoggedIn } = this.props;
+        if (prevProps.userProfileLoggedIn !== userProfileLoggedIn && userProfileLoggedIn) {
+            this.loadMentor();
+        }
+    }
+
+    componentWillUnmount() {
+        if (this.autoSaveTimeoutId) {
+            clearTimeout(this.autoSaveTimeoutId);
+        }
+    }
+
+    loadMentor = async () => {
+        const { match: { params: { username } }, userProfileLoggedIn } = this.props;
+        
+        this.setState({networkResponse: {title: "Loading Mentor profile", type: "loading"}});
+        
         try {
             if (username) {
                 const res = await MentorshipAPI.listMentors(`?username=${username}`);
                 const { data: {results: mentors } } = res;
-                setMentor(mentors[0]);
-                isMentorset.current = true;
+                this.setState({
+                    mentor: mentors[0],
+                    isMentorSet: true,
+                    networkResponse: {title: "", type: null}
+                });
             }
             else {
                 const res = await UserProfileAPI.getUserContent(userProfileLoggedIn?.user, "mentor");
                 const { data } = res;
-                setMentor(data.mentor);
-                isMentorset.current = true;
-    
+                this.setState({
+                    mentor: data.mentor,
+                    isMentorSet: true,
+                    networkResponse: {title: "", type: null}
+                });
             }
-
-            setNetworkResponse({title: "", type: null});
         } catch (error) {
             console.log({error});
-            setNetworkResponse({title: getErrorMessage(error), type: "error"});
+            this.setState({
+                networkResponse: {title: getErrorMessage(error), type: "error"}
+            });
         }
-          return ;// code that references a prop
-        },
-        [username, userProfileLoggedIn]
-      );
+    }
 
-    const createMentorProfile = () => {
-        setNetworkResponse({title: "Creating your Mentor profile", type: "loading"});
+    createMentorProfile = () => {
+        const { userProfileLoggedIn } = this.props;
+        
+        this.setState({networkResponse: {title: "Creating your Mentor profile", type: "loading"}});
+        
         MentorshipAPI.createMentor(userProfileLoggedIn?.user!)
         .then((res: any) => {
             const { data } = res;
-            setMentor(data);
-            setNetworkResponse({title: "Mentor profile succesfully created!", type: "success"});
+            this.setState({
+                mentor: data,
+                networkResponse: {title: "Mentor profile succesfully created!", type: "success"}
+            });
         })
         .catch(error => {
             console.log({error});
-            setNetworkResponse({title: getErrorMessage(error), type: "error"});
-        })
-        .finally(()=> {
-        })
+            this.setState({
+                networkResponse: {title: getErrorMessage(error), type: "error"}
+            });
+        });
     }
 
-    const updateForm = (event: any) => {
-
+    updateForm = (event: any) => {
+        const { mentor } = this.state;
+        
         if (event.stopPropagation) {
             event.stopPropagation();
         }
 
         if (!mentor){
-            return
+            return;
         }
 
         const value = event.target.value;
 
-        let updatedmentor;
+        let updatedMentor;
         let newValue = (mentor as any)[event.target.name];
-            if ( Array.isArray((mentor as any)[event.target.name]) && !Array.isArray(value) ) {
-                newValue.push(value);
-            } else {
-                newValue =value;
-            }
-            updatedmentor = {
-                ...mentor,
-                [event.target.name]: newValue
-            };
+        
+        if (Array.isArray((mentor as any)[event.target.name]) && !Array.isArray(value)) {
+            newValue.push(value);
+        } else {
+            newValue = value;
+        }
+        
+        updatedMentor = {
+            ...mentor,
+            [event.target.name]: newValue
+        };
 
-            setMentor(updatedmentor);
+        this.setState({mentor: updatedMentor}, this.saveChanges);
     };
 
-    useEffect(() => {
-
-        if ( !isMentorset.current ) {
+    saveChanges = () => {
+        const { mentor } = this.state;
+        
+        if (!this.state.isMentorSet) {
             return;
-          }
+        }
 
-        if (autoSaveTimeoutId) {
-            clearTimeout(autoSaveTimeoutId);
+        if (this.autoSaveTimeoutId) {
+            clearTimeout(this.autoSaveTimeoutId);
         }
 
         // Runs 1 second (1000 ms) after the last change
-        autoSaveTimeoutId = setTimeout(() => {
-            
+        this.autoSaveTimeoutId = setTimeout(() => {
             MentorshipAPI
             .patchMentor({mentor: mentor!})
-            .then(res=>{
+            .then(res => {
                 message.success('Mentor Profile successfully saved!');
             })
-            .catch(err=> {
+            .catch(err => {
                 let postError = err.response && err.response.data;
                 postError = JSON.stringify(postError, null, 4);
                 toastNotify(`${postError}`, 'error');
             });
         }, 1000);
-    }, [mentor]);
+    }
 
-    useEffect(() => {
-        if (userProfileLoggedIn) {
-            loadMentor();
+    handleDurationsSaved = (prices: any) => {
+        const { mentor } = this.state;
+        if (mentor) {
+            this.setState({
+                mentor: { ...mentor, prices }
+            }, this.saveChanges);
         }
+    }
+
+    render() {
+        const { userProfileLoggedIn } = this.props;
+        const { mentor, networkResponse } = this.state;
         
-    }, [loadMentor, userProfileLoggedIn]);
+        return (
+            <div className='m-3'>
+                <h1>Edit Mentor Profile</h1>
+                <NetworkResponseDisplay response={networkResponse} />
+                {!mentor && 
+                    <div className='text-center'>
+                    <h3>You must first create a mentor profile</h3>
+                        <Button onClick={this.createMentorProfile} disabled={networkResponse.type==='loading'} type="primary">
+                            Create Mentor Profile
+                        </Button>
+                    </div>
+                }
 
-  return (
-    <div className='m-3'>
-        <h1>Edit Mentor Profile</h1>
-        <NetworkResponseDisplay response={networkResponse} />
-        {!mentor && 
-            <div className='text-center'>
-            <h3>You must first create a mentor profile</h3>
-                <Button onClick={createMentorProfile} disabled={networkResponse.type==='loading'} type="primary">
-                    Create Mentor Profile
-                </Button>
+                {mentor && 
+                    <>
+                    <label>
+                        Changes are automatically saved
+                    </label>
+                        <FormDynamic onUpdateForm={this.updateForm}
+                                    model={mentor}
+                                    inputConfigs={mentorProfileFormConfig}
+                                    loggedInUserProfile={userProfileLoggedIn}
+                        />
+                        <hr/>
+                        <MentorDurations initialDurations={mentor.prices} 
+                            onDurationsSaved={this.handleDurationsSaved} />
+                        <hr/>
+
+                        <FormDynamic onUpdateForm={this.updateForm}
+                                    model={mentor}
+                                    inputConfigs={scholarshipUserProfileSharedFormConfigs}
+                                    loggedInUserProfile={userProfileLoggedIn} />
+                    </>
+                }
             </div>
-            }
-
-        {mentor && 
-            <>
-            <label>
-                Changes are automatically saved
-            </label>
-                <FormDynamic onUpdateForm={updateForm}
-                             model={mentor}
-                             inputConfigs=
-                                 {mentorProfileFormConfig}
-                                 loggedInUserProfile={userProfileLoggedIn}
-                />
-                < hr/>
-                <MentorDurations initialDurations={mentor.prices} 
-                onDurationsSaved={(prices: any) => setMentor({ ...mentor, prices })} />
-                < hr/>
-
-                <FormDynamic onUpdateForm={updateForm}
-                                            model={mentor}
-                                            inputConfigs=
-                                                {scholarshipUserProfileSharedFormConfigs}
-                                                loggedInUserProfile={userProfileLoggedIn} />
-            </>
-        }
-        </div>
-  )
+        );
+    }
 }
 
 const mapStateToProps = (state: any) => {

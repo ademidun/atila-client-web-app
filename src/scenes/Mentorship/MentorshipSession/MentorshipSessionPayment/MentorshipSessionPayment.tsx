@@ -10,20 +10,26 @@ interface MentorshipSessionPaymentFormProps {
   onPaymentComplete: (session: MentorshipSession) => void,
 }
 
-function MentorshipSessionPayment(props: MentorshipSessionPaymentFormProps) {
+// Using class component to ensure refs property exists for Stripe components
+class MentorshipSessionPayment extends React.Component<MentorshipSessionPaymentFormProps> {
+  render() {
+    const { session, onPaymentComplete } = this.props;
 
-  const { session, onPaymentComplete } = props;
-
-  return (
-    <div className='MentorshipSessionPayment'>
-      <StripeProvider apiKey={STRIPE_PUBLIC_KEY} >
-
-      <Elements>
-          <MentorshipSessionPaymentForm session={session} stripe={null} elements={null} onPaymentComplete={onPaymentComplete}  />
-      </Elements>
-      </StripeProvider>
-    </div>
-  )
+    return (
+      <div className='MentorshipSessionPayment'>
+        <StripeProvider apiKey={STRIPE_PUBLIC_KEY}>
+          <Elements>
+            <MentorshipSessionPaymentForm 
+              session={session} 
+              stripe={null} 
+              elements={null} 
+              onPaymentComplete={onPaymentComplete} 
+            />
+          </Elements>
+        </StripeProvider>
+      </div>
+    );
+  }
 }
 
 export default MentorshipSessionPayment

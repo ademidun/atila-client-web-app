@@ -15,64 +15,69 @@ export interface UserProfileMentorshipPropTypes {
   userIdInView: number,
 }
 
-function UserProfileMentorship(props: UserProfileMentorshipPropTypes) {
+// Convert to class component to fix React 18 compatibility issues with Tab components
+class UserProfileMentorship extends React.Component<UserProfileMentorshipPropTypes> {
+  state = {
+    mentor: undefined as Mentor | undefined,
+    loadingUI: {message: "", type: ""}
+  };
 
+  componentDidMount() {
+    const { userIdInView } = this.props;
+    if (userIdInView) {
+      this.loadMentor();
+    }
+  }
 
-  const { userProfileLoggedIn, userIdInView } = props;
+  componentDidUpdate(prevProps: UserProfileMentorshipPropTypes) {
+    if (prevProps.userIdInView !== this.props.userIdInView && this.props.userIdInView) {
+      this.loadMentor();
+    }
+  }
 
-  const [mentor, setMentor] = useState<Mentor>();
-  const [loadingUI, setLoadingUI] = useState({message: "", type: ""});
-
-  const loadMentor = useCallback(
-      () => {
+  loadMentor = () => {
+    const { userIdInView } = this.props;
+    
+    this.setState({loadingUI: {message: "Loading Mentor profile", type: "info"}});
+    UserProfileAPI.getUserContent(userIdInView, "mentor")
+    .then((res: any) => {
+        const { data } = res;
+        this.setState({mentor: data.mentor});
+    })
+    .catch(error => {
+        console.log({error});
+        this.setState({loadingUI: {message: getErrorMessage(error), type: "error"}});
+    })
+    .finally(() => {
+        this.setState({loadingUI: {message: "", type: ""}});
+    });
+  };
   
-      setLoadingUI({message: "Loading Mentor profile", type: "info"});
-      UserProfileAPI.getUserContent(userIdInView, "mentor")
-      .then((res: any) => {
-          const { data } = res;
-          console.log("loadMentor", {res});
-          setMentor(data.mentor);
-          console.log("loadMentor", {res});
-      })
-      .catch(error => {
-          console.log({error});
-          setLoadingUI({message: getErrorMessage(error), type: "error"});
-      })
-      .finally(()=> {
-          setLoadingUI({message: "", type: ""});
-      })
-        return ;// code that references a prop
-      },
-      [userIdInView]
-    );
-  useEffect(() => {
-      if (userIdInView) {
-          loadMentor();
-      }
-      
-  }, [loadMentor, userIdInView]);
-  
-  return (
-    <div>
-      {userProfileLoggedIn && ( userIdInView === userProfileLoggedIn.user || userProfileLoggedIn.is_atila_admin)?
-        <Tabs defaultActiveKey="edit" transition={false} id="UserProfileViewTabs">
-          <Tab eventKey='edit' title='Edit Mentor Profile'>
-              <MentorProfileEdit />
-          </Tab>
+  render() {
+    const { userProfileLoggedIn, userIdInView } = this.props;
+    const { mentor, loadingUI } = this.state;
+    
+    return (
+      <div>
+        {userProfileLoggedIn && (userIdInView === userProfileLoggedIn.user || userProfileLoggedIn.is_atila_admin) ? (
+          <Tabs defaultActiveKey="edit" transition={false} id="UserProfileViewTabs">
+            <Tab eventKey='edit' title='Edit Mentor Profile'>
+                <MentorProfileEdit />
+            </Tab>
             <Tab eventKey='view' title='View Mentor Profile'>
                 {mentor && <MentorProfileView mentor={mentor} />}
             </Tab>
-        </Tabs>
-        :
-        <>
-          {mentor && <MentorProfileView mentor={mentor} />}
-        </>
-      }
+          </Tabs>
+        ) : (
+          <>
+            {mentor && <MentorProfileView mentor={mentor} />}
+          </>
+        )}
 
-
-      {loadingUI.message && <Loading isLoading={loadingUI.message} title={loadingUI.message} />}
-    </div>
-  )
+        {loadingUI.message && <Loading isLoading={loadingUI.message} title={loadingUI.message} />}
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = (state: any) => {

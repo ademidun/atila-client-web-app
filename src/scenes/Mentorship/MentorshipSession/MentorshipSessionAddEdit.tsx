@@ -10,6 +10,7 @@ import TextUtils from '../../../services/utils/TextUtils';
 import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
 import HelmetSeo, { defaultSeoContent } from '../../../components/HelmetSeo';
 import { UserProfile } from '../../../models/UserProfile.class';
+// Import Register as class component
 import Register from '../../../components/Register';
 import { NetworkResponse, NetworkResponseDisplay } from '../../../components/NetworkResponse';
 import { Duration } from '../../../models/Mentor';
@@ -194,12 +195,10 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
               <div>
               <h1>Create an Account or Login to book a session</h1> <br/>
               {/*
-              
-                Assign register props using spread operator
-                Needed to resolve the following error: Type '{ disableRedirect: boolean; }' is not assignable to type 'IntrinsicAttributes & ... 
-              
+                Using React.createElement to avoid JSX compatibility issues
+                This approach ensures we're using the actual component class
               */}
-              <Register {...registerProps} />
+              {React.createElement(Register, registerProps)}
                         
               </div>
             }
