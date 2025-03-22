@@ -17,8 +17,16 @@ import { initialReduxState } from '../../../models/Constants';
 
 const { Step } = Steps;
 
+interface RootState {
+    data: {
+        user: {
+            loggedInUserProfile: UserProfile | null;
+        }
+    }
+}
+
 const MentorshipSessionAddEdit: React.FC = () => {
-    const userProfileLoggedIn = useSelector((state: typeof initialReduxState) => state.data.user.loggedInUserProfile);
+    const userProfileLoggedIn = useSelector((state: RootState) => state.data.user.loggedInUserProfile);
     const location = useLocation();
     const navigate = useNavigate();
     const { mentorUsername, sessionId } = useParams<{ mentorUsername: string; sessionId: string }>();

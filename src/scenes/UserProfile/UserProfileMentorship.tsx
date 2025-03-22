@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import {connect} from "react-redux";
-import {Tab, Tabs} from 'react-bootstrap';
+import { Tabs, Tab } from 'react-bootstrap';
 import MentorProfileEdit from '../../components/Mentorship/Mentor/MentorProfileEdit';
 import MentorProfileView from '../../components/Mentorship/Mentor/MentorProfileView';
 import { UserProfile } from '../../models/UserProfile.class';
@@ -9,79 +9,62 @@ import UserProfileAPI from '../../services/UserProfileAPI';
 import { getErrorMessage } from '../../services/utils';
 import Loading from '../../components/Loading';
 
-
 export interface UserProfileMentorshipPropTypes {
   userProfileLoggedIn?: UserProfile,
   userIdInView: number,
 }
 
-// Convert to class component to fix React 18 compatibility issues with Tab components
-class UserProfileMentorship extends React.Component<UserProfileMentorshipPropTypes> {
-  state = {
-    mentor: undefined as Mentor | undefined,
-    loadingUI: {message: "", type: ""}
-  };
+const UserProfileMentorship: React.FC<UserProfileMentorshipPropTypes> = ({ userProfileLoggedIn, userIdInView }) => {
+  const [mentor, setMentor] = useState<Mentor | undefined>(undefined);
+  const [loadingUI, setLoadingUI] = useState({message: "", type: ""});
+  const [activeKey, setActiveKey] = useState('edit');
 
-  componentDidMount() {
-    const { userIdInView } = this.props;
-    if (userIdInView) {
-      this.loadMentor();
-    }
-  }
-
-  componentDidUpdate(prevProps: UserProfileMentorshipPropTypes) {
-    if (prevProps.userIdInView !== this.props.userIdInView && this.props.userIdInView) {
-      this.loadMentor();
-    }
-  }
-
-  loadMentor = () => {
-    const { userIdInView } = this.props;
+  const loadMentor = useCallback(() => {
+    if (!userIdInView) return;
     
-    this.setState({loadingUI: {message: "Loading Mentor profile", type: "info"}});
+    setLoadingUI({message: "Loading Mentor profile", type: "info"});
     UserProfileAPI.getUserContent(userIdInView, "mentor")
     .then((res: any) => {
         const { data } = res;
-        this.setState({mentor: data.mentor});
+        setMentor(data.mentor);
     })
     .catch(error => {
         console.log({error});
-        this.setState({loadingUI: {message: getErrorMessage(error), type: "error"}});
+        setLoadingUI({message: getErrorMessage(error), type: "error"});
     })
     .finally(() => {
-        this.setState({loadingUI: {message: "", type: ""}});
+        setLoadingUI({message: "", type: ""});
     });
-  };
-  
-  render() {
-    const { userProfileLoggedIn, userIdInView } = this.props;
-    const { mentor, loadingUI } = this.state;
-    
-    return (
-      <div>
-        {userProfileLoggedIn && (userIdInView === userProfileLoggedIn.user || userProfileLoggedIn.is_atila_admin) ? (
-          <Tabs defaultActiveKey="edit" transition={false} id="UserProfileViewTabs">
-            <Tab eventKey='edit' title='Edit Mentor Profile'>
-                <MentorProfileEdit />
-            </Tab>
-            <Tab eventKey='view' title='View Mentor Profile'>
-                {mentor && <MentorProfileView mentor={mentor} />}
-            </Tab>
-          </Tabs>
-        ) : (
-          <>
-            {mentor && <MentorProfileView mentor={mentor} />}
-          </>
-        )}
+  }, [userIdInView]);
 
-        {loadingUI.message && <Loading isLoading={loadingUI.message} title={loadingUI.message} />}
-      </div>
-    );
-  }
+  useEffect(() => {
+    loadMentor();
+  }, [loadMentor]);
+  
+  return (
+    <div>
+      {userProfileLoggedIn && (userIdInView === userProfileLoggedIn.user || userProfileLoggedIn.is_atila_admin) ? (
+        <Tabs activeKey={activeKey} onSelect={(k) => setActiveKey(k || 'edit')} transition={false} id="UserProfileViewTabs">
+          <Tab eventKey='edit' title='Edit Mentor Profile'>
+              <MentorProfileEdit />
+          </Tab>
+          <Tab eventKey='view' title='View Mentor Profile'>
+              {mentor && <MentorProfileView mentor={mentor} />}
+          </Tab>
+        </Tabs>
+      ) : (
+        <>
+          {mentor && <MentorProfileView mentor={mentor} />}
+        </>
+      )}
+
+      {loadingUI.message && <Loading isLoading={loadingUI.message} title={loadingUI.message} />}
+    </div>
+  );
 }
 
-const mapStateToProps = (state: any) => {
-  return { userProfileLoggedIn: state.data.user.loggedInUserProfile };
-};
+const mapStateToProps = (state: any) => ({
+  userProfileLoggedIn: state.data.user.loggedInUserProfile
+});
 
 export default connect(mapStateToProps)(UserProfileMentorship);
