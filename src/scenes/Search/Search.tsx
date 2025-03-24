@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import algoliasearch from 'algoliasearch/lite';
 import { InstantSearch, Hits, PoweredBy, Pagination, SearchBox, Configure, Index, connectHitInsights, connectHits } from 'react-instantsearch-dom';
 import 'instantsearch.css/themes/satellite.css'; //algolia instant search styling
@@ -11,9 +11,14 @@ import { Radio, Row, Col } from 'antd';
 import aa from 'search-insights';
 import {Tab, Tabs} from 'react-bootstrap';
 import equal from "fast-deep-equal";
-import { RouteComponentProps, useHistory, withRouter } from 'react-router';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { SearchConfig } from './SearchConfig';
-import { Hit } from 'react-instantsearch-core';
+import { Hit, BasicDoc } from 'react-instantsearch-core';
+import React from 'react';
+import { HitsGrid } from '../../components/Search/AlgoliaComponents';
+
+// Add this type near the top of the file
+type AnyComponent = any;
 
 const algoliaClient = algoliasearch(Environment.ALGOLIA_APP_ID, Environment.ALGOLIA_PUBLIC_KEY);
 
@@ -87,7 +92,7 @@ const urlToSearchState = ({ search}: { search: any}) => {
 };
 
 
-interface SearchAlgoliaProps extends RouteComponentProps {
+interface SearchAlgoliaProps {
   className: string,
   renderSeo: boolean,
   location: any,
@@ -106,10 +111,12 @@ function SearchAlgolia({ className = "p-md-5",
                          onSearchQueryChanged = () => {},
                        }: SearchAlgoliaProps) {
 
+  const navigate = useNavigate();
+
   const [searchState, setSearchState] = useState(urlToSearchState(location));
   const [showExpiredScholarships, setshowExpiredScholarships] = useState(false);
   const [results, setResults] = useState<any[]>([{'hits': []}]);
-  const { push } = useHistory();
+  const [isLoading, setIsLoading] = useState(false);
 
   const showExpiredScholarshipsOptions = [
     { label: 'Show Expired Scholarships', value: true },
@@ -124,14 +131,17 @@ function SearchAlgolia({ className = "p-md-5",
     clearTimeout(debouncedSetStateRef.current);
 
     debouncedSetStateRef.current = setTimeout(() => {
-      push(searchStateToUrl(updatedSearchState));
-      window.scrollTo(0,0)
+      const searchTerm = updatedSearchState.query;
+      if (searchTerm) {
+        const newUrl = `/search?q=${encodeURIComponent(searchTerm)}`;
+        navigate(newUrl, { replace: true });
+      }
+      setSearchState(updatedSearchState);
+      onSearchQueryChanged(updatedSearchState)
     }, DEBOUNCE_TIME);
 
-    setSearchState(updatedSearchState);
-    onSearchQueryChanged(updatedSearchState)
     },
-    [push, onSearchQueryChanged]
+    [navigate, onSearchQueryChanged]
   );
 
   /**
@@ -195,106 +205,93 @@ function SearchAlgolia({ className = "p-md-5",
 
   let searchClient = createSearchClient(handleSearchResultsChange);
 
-  const HitsGridInner =  ({ hits }: { hits: Hit[]}) => (
-    <Row gutter={[12, 12]}>
-      {hits.map(hit => (
-        <Col xs={24} sm={24} md={8}  key={hit.objectID} className="d-flex">
-          <SearchResultHitsWithInsights hit={hit} />
-        </Col>
-      ))}
-    </Row>
+  interface SearchHit extends Hit<BasicDoc> {
+    title: string;
+    description: string;
+    [key: string]: any; // Allow for dynamic properties from Algolia
+  }
+
+  const HitsGridInner = ({ hits }: { hits: SearchHit[] }) => (
+    <HitsGrid hits={hits} hitComponent={SearchResultHitsWithInsights as any} />
   );
 
-  const HitsGrid = connectHits(HitsGridInner);
+  const ConnectedHitsGrid = connectHits<SearchHit>(HitsGridInner);
 
-  const scholarshipSearchResults = results.find(result => result?.index?.includes('scholarship_index'));
+  // Create wrapper components to handle type assertions
+  const ConfigureWrapper = Configure as React.ComponentType<any>;
+  const SearchResultsWrapper = SearchResults as React.ComponentType<any>;
+  const PaginationWrapper = Pagination as React.ComponentType<any>;
+  const IndexWrapper = Index as React.ComponentType<any>;
+  const TabsWrapper = Tabs as React.ComponentType<any>;
+  const TabWrapper = Tab as React.ComponentType<any>;
 
-  const scholarshipResults = (
-    <Index indexName={scholarshipIndex}>
-      <Configure hitsPerPage={HITS_PER_PAGE} {...scholarshipConfiguration} />
-      {!noScholarhipsShown &&
-        <>
-          <Radio.Group
-            className="my-3"
-            options={showExpiredScholarshipsOptions}
-            onChange={event => setshowExpiredScholarships(event.target.value)}
-            value={showExpiredScholarships}
-            optionType="button"
-            buttonStyle="solid"
-          />
-          <SearchResults title="Scholarships">
-            <Hits hitComponent={SearchResultHitsWithInsights}/>
-          </SearchResults>
-          <Pagination className="my-3"/>
-        </>}
-    </Index>);
+  const scholarshipResults = [
+    React.createElement(Configure as any, { hitsPerPage: HITS_PER_PAGE }),
+    React.createElement(SearchResults as any, { title: "Scholarships" },
+      React.createElement(ConnectedHitsGrid as any)
+    ),
+    React.createElement(Pagination as any, { className: "my-3" })
+  ];
 
-const blogSearchResults = results.find(result => result?.index?.includes('blog_index'));
-  const blogResults = (
-    <Index indexName={blogIndex}>
-      <Configure hitsPerPage={HITS_PER_PAGE}/>
-      <SearchResults title="Blogs">
-      <HitsGrid />
-      </SearchResults>
-      <Pagination className="my-3"/>
-    </Index>);
+  const blogSearchResults = results.find(result => result?.index?.includes('blog_index'));
+  const blogResults = [
+    React.createElement(Configure as any, { hitsPerPage: HITS_PER_PAGE }),
+    React.createElement(SearchResults as any, { title: "Blogs" },
+      React.createElement(ConnectedHitsGrid as any)
+    ),
+    React.createElement(Pagination as any, { className: "my-3" })
+  ];
 
-const mentorSearchResults = results.find(result => result?.index?.includes('mentor_index'));
-  const mentorResults = (
-    <Index indexName={mentorIndex}>
-      <Configure hitsPerPage={HITS_PER_PAGE}/>
-      <SearchResults title="Mentors">
-        <HitsGrid />
-      </SearchResults>
-    </Index>);
+  const mentorSearchResults = results.find(result => result?.index?.includes('mentor_index'));
+  const mentorResults = [
+    React.createElement(Configure as any, { hitsPerPage: HITS_PER_PAGE }),
+    React.createElement(SearchResults as any, { title: "Mentors" },
+      React.createElement(ConnectedHitsGrid as any)
+    )
+  ];
 
   const showInTabs = showScholarships && showBlogs && showMentors;
   return (
     <div className={`Search container ${className}`}>
     {renderSeo && <HelmetSeo content={seoContent} />}
-    <InstantSearch searchClient={searchClient}
-                   indexName={scholarshipIndex}
-                   searchState={searchState}
-                   onSearchStateChange={handleSearchStateChange}
-                   createURL={createURL}>
-        <Configure clickAnalytics />
-        <SearchBox  className="mb-3"
-                    searchAsYouType={false} 
-                    showLoadingIndicator />
-        <PoweredBy  className="mb-3" />
+    {React.createElement(InstantSearch as any, {
+      searchClient,
+      indexName: scholarshipIndex,
+      searchState,
+      onSearchStateChange: handleSearchStateChange,
+      createURL
+    }, [
+      React.createElement(Configure as any, { clickAnalytics: true }),
+      React.createElement(SearchBox as any, {
+        className: "mb-3",
+        searchAsYouType: false,
+        showLoadingIndicator: true
+      }),
+      React.createElement(PoweredBy as any, { className: "mb-3" }),
 
-      {showInTabs ? 
-      
-      <Tabs defaultActiveKey="scholarships" transition={false} id="SearchViewTabs">
-        { showScholarships &&
-            <Tab eventKey='scholarships' title={`Scholarships ${ scholarshipSearchResults ? ' (' + scholarshipSearchResults.nbHits + ')' : ''}`}>
-                {scholarshipResults}
-            </Tab>
-        }
-        { showBlogs &&
-            <Tab eventKey='blogs' title={`Blogs ${ blogSearchResults ? ' (' + blogSearchResults.nbHits + ')' : ''}`}>
-                {blogResults}
-            </Tab>
-        }
-        { showMentors &&
-            <Tab eventKey='mentors' title={`Mentors ${ mentorSearchResults ? ' (' + mentorSearchResults.nbHits + ')' : ''}`}>
-                {mentorResults}
-            </Tab>
-        }
-      </Tabs> : 
-
+      showInTabs ? 
+      React.createElement(Tabs as any, { defaultActiveKey: "scholarships", transition: false, id: "SearchViewTabs" }, [
+        React.createElement(Tab as any, { 
+          eventKey: 'scholarships', 
+          title: `Scholarships ${results[0]?.nbHits ? ` (${results[0].nbHits})` : ''}`
+        }, scholarshipResults),
+        React.createElement(Tab as any, { 
+          eventKey: 'blogs', 
+          title: `Blogs ${blogSearchResults?.nbHits ? ` (${blogSearchResults.nbHits})` : ''}`
+        }, blogResults),
+        React.createElement(Tab as any, { 
+          eventKey: 'mentors', 
+          title: `Mentors ${mentorSearchResults?.nbHits ? ` (${mentorSearchResults.nbHits})` : ''}`
+        }, mentorResults)
+      ]) : 
       <>
-        {showScholarships && scholarshipResults }
-
-        {showBlogs && blogResults }
-
+        {showScholarships && scholarshipResults}
+        {showBlogs && blogResults}
         {showMentors && mentorResults}
       </>
-      }
-
-    </InstantSearch>
+    ])}
     </div>
   )
 }
 
-export default withRouter(SearchAlgolia);
+export default SearchAlgolia;
