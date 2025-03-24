@@ -1,24 +1,21 @@
 import {useCallback, useEffect, useRef, useState} from 'react';
 import algoliasearch from 'algoliasearch/lite';
-import { InstantSearch, Hits, PoweredBy, Pagination, SearchBox, Configure, Index, connectHitInsights, connectHits } from 'react-instantsearch-dom';
+import { InstantSearch, PoweredBy, Pagination, SearchBox, Configure, connectHitInsights, connectHits } from 'react-instantsearch-dom';
 import 'instantsearch.css/themes/satellite.css'; //algolia instant search styling
 import Environment from '../../services/Environment';
 import qs from 'qs';
 import HelmetSeo from '../../components/HelmetSeo';
 import {SearchResultHit, SearchResults} from './SearchResults';
 import './Search.scss'
-import { Radio, Row, Col } from 'antd';
 import aa from 'search-insights';
 import {Tab, Tabs} from 'react-bootstrap';
 import equal from "fast-deep-equal";
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { SearchConfig } from './SearchConfig';
 import { Hit, BasicDoc } from 'react-instantsearch-core';
 import React from 'react';
 import { HitsGrid } from '../../components/Search/AlgoliaComponents';
 
-// Add this type near the top of the file
-type AnyComponent = any;
 
 const algoliaClient = algoliasearch(Environment.ALGOLIA_APP_ID, Environment.ALGOLIA_PUBLIC_KEY);
 
@@ -69,17 +66,6 @@ const createSearchClient = (resultsCB: any) => {
 
 const createURL = (state: any) => `?${qs.stringify(state)}`;
 
-const searchStateToUrl = (searchState: any) =>{
-  const searchStateCopy = Object.assign({}, searchState);
-  // TODO remove hits per page configuration from showing in the url so that the URLs look clean and simple
-  // otherwise, your URL looks like: 
-  // http://localhost:3000/search?query=canada&page=2&configure%5BhitsPerPage%5D=8
-  // http://localhost:3000/search?query=scholarship&page=1&indices%5Bdev_scholarship_index%5D%5Bconfigure%5D%5BhitsPerPage%5D=8&indices%5Bdev_scholarship_index%5D%5Bpage%5D=2&indices%5Bdev_blog_index%5D%5Bconfigure%5D%5BhitsPerPage%5D=8&indices%5Bdev_blog_index%5D%5Bpage%5D=1
-  // Alternate example without encoding: http://localhost:3000/search?query=canada&page=2&configure[hitsPerPage]=8
-  // delete searchStateCopy.indices;
-  const searchStateUrl = searchState ? createURL(searchStateCopy) : '';
-  return searchStateUrl;
-}
 
 const urlToSearchState = ({ search}: { search: any}) => {
   const searchState = qs.parse(search.slice(1));
@@ -114,14 +100,9 @@ function SearchAlgolia({ className = "p-md-5",
   const navigate = useNavigate();
 
   const [searchState, setSearchState] = useState(urlToSearchState(location));
-  const [showExpiredScholarships, setshowExpiredScholarships] = useState(false);
+  const [showExpiredScholarships] = useState(false);
   const [results, setResults] = useState<any[]>([{'hits': []}]);
-  const [isLoading, setIsLoading] = useState(false);
 
-  const showExpiredScholarshipsOptions = [
-    { label: 'Show Expired Scholarships', value: true },
-    { label: 'Hide Expired Scholarships', value: false },
-  ];
 
   const debouncedSetStateRef = useRef<null|any>(null);
 
@@ -174,8 +155,6 @@ function SearchAlgolia({ className = "p-md-5",
   }
 
   const scholarshipIndex = Environment.ALGOLIA_SCHOLARSHIP_INDEX;
-  const blogIndex = Environment.ALGOLIA_BLOG_INDEX;
-  const mentorIndex = Environment.ALGOLIA_MENTOR_INDEX;
   const scholarshipConfiguration: any = {};
   if (!showExpiredScholarships) {
     // the deadline is saved in seconds in our index so we have to convert the current date from milliseconds to seconds;
@@ -201,7 +180,6 @@ function SearchAlgolia({ className = "p-md-5",
   }
 
   const {showScholarships, showMentors, showBlogs} = searchConfig;
-  const noScholarhipsShown = results[0].hits.length === 0 || searchState.query?.length === 0
 
   let searchClient = createSearchClient(handleSearchResultsChange);
 
@@ -218,12 +196,6 @@ function SearchAlgolia({ className = "p-md-5",
   const ConnectedHitsGrid = connectHits<SearchHit>(HitsGridInner);
 
   // Create wrapper components to handle type assertions
-  const ConfigureWrapper = Configure as React.ComponentType<any>;
-  const SearchResultsWrapper = SearchResults as React.ComponentType<any>;
-  const PaginationWrapper = Pagination as React.ComponentType<any>;
-  const IndexWrapper = Index as React.ComponentType<any>;
-  const TabsWrapper = Tabs as React.ComponentType<any>;
-  const TabWrapper = Tab as React.ComponentType<any>;
 
   const scholarshipResults = [
     React.createElement(Configure as any, { hitsPerPage: HITS_PER_PAGE }),
