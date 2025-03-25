@@ -1,3 +1,10 @@
+export const defaultSeoContent = {
+    title: 'Atila - Find and Apply for Scholarships',
+    description: 'Find and apply for scholarships, read student essays and blogs.',
+    image: 'https://i.imgur.com/PMg68If.png',
+    slug: '/'
+};
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
