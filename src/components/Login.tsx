@@ -33,9 +33,9 @@ function Login({ setLoggedInUserProfile }: LoginProps) {
         username: '',
         password: '',
     });
-    const [responseError, setResponseError] = useState(null);
+    const [responseError, setResponseError] = useState<React.ReactNode | null>(null);
     const [isLoadingResponse, setIsLoadingResponse] = useState(false);
-    const [responseOkMessage, setResponseOkMessage] = useState(null);
+    const [responseOkMessage, setResponseOkMessage] = useState<string | null>(null);
     const [forgotPassword, setForgotPassword] = useState(false);
 
     const updateForm = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -184,6 +184,7 @@ function Login({ setLoggedInUserProfile }: LoginProps) {
                         isLoadingResponse={isLoadingResponse}
                         responseError={responseError}
                         responseOkMessage={responseOkMessage} 
+                        loadingTitle="Logging in..."
                     />
                 </div>
             </div>
