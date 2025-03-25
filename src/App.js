@@ -15,6 +15,10 @@ import LogrocketFuzzySanitizer from 'logrocket-fuzzy-search-sanitizer';
 import setupLogRocketReact from "logrocket-react";
 import Environment from "./services/Environment";
 import { MockAPI } from './services/mocks/MockAPI';
+import ContentDetail from './components/ContentDetail/ContentDetail';
+import ContentAddEdit from './components/ContentAddEdit/ContentAddEdit';
+import BlogsApi from './services/BlogsAPI';
+import EssaysApi from './services/EssaysAPI';
 
 import './index.scss';
 import 'antd/dist/antd.css';
@@ -258,6 +262,38 @@ class App extends React.Component {
               <Route path='/clubs' element={<GoogleAnalyticsTracker><ContactsNetwork /></GoogleAnalyticsTracker>} />
               <Route path='/siteMap' element={<GoogleAnalyticsTracker><SiteMap /></GoogleAnalyticsTracker>} />
               <Route path='/j/:referredByUsername?' element={<GoogleAnalyticsTracker><Referral /></GoogleAnalyticsTracker>} />
+              <Route path="/blog/:slug" element={
+                <GoogleAnalyticsTracker>
+                  <ContentDetail contentType="Blog" ContentAPI={BlogsApi} />
+                </GoogleAnalyticsTracker>
+              } />
+              <Route path="/blog/create" element={
+                <GoogleAnalyticsTracker>
+                  <ContentAddEdit contentType="Blog" />
+                </GoogleAnalyticsTracker>
+              } />
+              <Route path="/blog/edit/:slug" element={
+                <GoogleAnalyticsTracker>
+                  <ContentAddEdit contentType="Blog" />
+                </GoogleAnalyticsTracker>
+              } />
+              <Route path="/essay/:slug" element={
+                <GoogleAnalyticsTracker>
+                  <ContentDetail contentType="Essay" ContentAPI={EssaysApi} />
+                </GoogleAnalyticsTracker>
+              } />
+              <Route path="/essay/create" element={
+                <GoogleAnalyticsTracker>
+                  <ContentAddEdit contentType="Essay" />
+                </GoogleAnalyticsTracker>
+              } />
+              <Route path="/essay/edit/:slug" element={
+                <GoogleAnalyticsTracker>
+                  <ContentAddEdit contentType="Essay" />
+                </GoogleAnalyticsTracker>
+              } />
+              <Route path="/blog" element={<Navigate to="/" replace />} />
+              <Route path="/essay" element={<Navigate to="/" replace />} />
             </Routes>
           )}
           <Footer />

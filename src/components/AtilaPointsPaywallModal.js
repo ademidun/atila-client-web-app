@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import { Button, Modal } from 'antd';
 import { connect } from "react-redux";
@@ -9,11 +9,7 @@ function AtilaPointsPaywallModal({ pageViews, userProfile }) {
     const [visible, setVisible] = useState(false);
     const [viewCount, setViewCount] = useState(null);
 
-    useEffect(() => {
-        showModalUsingPageViews();
-    }, []);
-
-    const showModalUsingPageViews = () => {
+    const showModalUsingPageViews = useCallback(() => {
         if (location.pathname === '/blog/atila/what-is-atila') {
             return;
         }
@@ -22,7 +18,11 @@ function AtilaPointsPaywallModal({ pageViews, userProfile }) {
             setViewCount(pageViews.guestPageViews);
             setVisible(pageViews.guestPageViews % 5 === 0);
         }
-    };
+    }, [location.pathname, userProfile, pageViews.guestPageViews]);
+
+    useEffect(() => {
+        showModalUsingPageViews();
+    }, [showModalUsingPageViews]);
 
     const handleOk = () => {
         setVisible(false);
