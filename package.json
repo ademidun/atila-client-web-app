@@ -116,6 +116,7 @@
     "@storybook/react": "^6.3.7",
     "@types/enzyme": "^3.10.11",
     "@types/react": "^18",
+    "@types/react-autosuggest": "^10.1.11",
     "@types/react-dom": "^18",
     "@types/react-instantsearch-dom": "^6.12.2",
     "@types/react-router": "^5.1.18",
