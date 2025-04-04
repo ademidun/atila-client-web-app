@@ -11,7 +11,6 @@ import {FlourishViz} from "../../components/FlourishViz";
 import {updateEbookUserProfile} from "../../redux/actions/user";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
-import {withRouter} from "react-router-dom";
 import {Button} from "antd";
 import {FREE_PREVIEW_EMAIL} from "./EbookPremiumBanner";
 /* eslint-enable no-unused-vars */
@@ -227,4 +226,4 @@ EbookPremiumTabs.propTypes = {
     updateEbookUserProfile: PropTypes.func.isRequired,
 };
 
-export default  withRouter(connect(mapStateToProps, mapDispatchToProps)(EbookPremiumTabs));
+export default  connect(mapStateToProps, mapDispatchToProps)(EbookPremiumTabs);

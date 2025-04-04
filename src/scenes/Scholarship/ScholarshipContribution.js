@@ -1,5 +1,5 @@
 import React from 'react'
-import {Link, withRouter} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
@@ -608,4 +608,4 @@ const mapStateToProps = state => {
     return { userProfile: state.data.user.loggedInUserProfile };
 };
 
-export default withRouter(connect(mapStateToProps)(ScholarshipContribution));
+export default connect(mapStateToProps)(ScholarshipContribution);

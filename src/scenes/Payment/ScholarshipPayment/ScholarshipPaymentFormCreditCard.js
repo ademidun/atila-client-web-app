@@ -3,7 +3,7 @@ import React, { Fragment } from 'react';
 import PropTypes from "prop-types";
 import {CardElement, injectStripe} from 'react-stripe-elements';
 import {Alert, Button, Col, Result, Row, Checkbox} from "antd";
-import {Link, withRouter} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {connect} from "react-redux";
 import {UserProfilePropType} from "../../../models/UserProfile";
 import {updateLoggedInUserProfile} from "../../../redux/actions/user";
@@ -357,6 +357,12 @@ const mapDispatchToProps = {
 const mapStateToProps = state => {
     return { userProfile: state.data.user.loggedInUserProfile };
 };
-export default injectStripe(withRouter(connect(mapStateToProps, mapDispatchToProps)(ScholarshipPaymentFormCreditCard)));
+
+function ScholarshipPaymentFormCreditCardWrapper(props) {
+    const navigate = useNavigate();
+    return <ScholarshipPaymentFormCreditCard {...props} navigate={navigate} />;
+}
+
+export default injectStripe(connect(mapStateToProps, mapDispatchToProps)(ScholarshipPaymentFormCreditCardWrapper));
 
 export const  PremiumCheckoutFormTest = ScholarshipPaymentFormCreditCard;

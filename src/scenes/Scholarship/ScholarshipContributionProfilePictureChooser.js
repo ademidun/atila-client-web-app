@@ -4,7 +4,6 @@ import {
     SCHOLARSHIP_CONTRIBUTOR_PROFILE_PICTURES
 } from "../../models/Scholarship";
 import {Button} from "antd";
-import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 
 class ScholarshipContributionProfilePictureChooser extends React.Component {
@@ -66,4 +65,4 @@ const mapStateToProps = state => {
     return { userProfile: state.data.user.loggedInUserProfile };
 };
 
-export default withRouter(connect(mapStateToProps)(ScholarshipContributionProfilePictureChooser));
+export default connect(mapStateToProps)(ScholarshipContributionProfilePictureChooser);
