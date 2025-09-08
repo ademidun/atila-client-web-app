@@ -52,9 +52,6 @@ const Atlas = loadable(() => import("./scenes/Atlas/Atlas"), {
 const HowToStartAScholarship = loadable(() => import("./scenes/DirectApplicationInfo/HowToStartAScholarship"), {
   fallback: <Loading />,
 });
-const Wiki = loadable(() => import("./scenes/Wiki/Wiki"), {
-  fallback: <Loading />,
-});
 const HowToApplyForScholarships = loadable(() => import("./scenes/DirectApplicationInfo/HowToApplyForScholarships"), {
   fallback: <Loading />,
 });
@@ -76,9 +73,6 @@ const Essay = loadable(() => import("./scenes/Essay/Essay"), {
 const Mentorship = loadable(() => import("./scenes/Mentorship/Mentorship"), {
   fallback: <Loading />,
 });
-const Team = loadable(() => import("./components/Team/Team"), {
-  fallback: <Loading />,
-});
 const Testimonials = loadable(() => import("./components/Testimonials"), {
   fallback: <Loading />,
 });
@@ -89,9 +83,6 @@ const BookDemo = loadable(() => import("./components/BookDemo"), {
   fallback: <Loading />,
 });
 const AtilaPointsRankings = loadable(() => import("./components/AtilaPointsRankings"), {
-  fallback: <Loading />,
-});
-const About = loadable(() => import("./components/About"), {
   fallback: <Loading />,
 });
 const Rubric = loadable(() => import("./components/Rubric"), {
@@ -215,10 +206,6 @@ class App extends React.Component {
                 path='/apply'
                 element={<GoogleAnalyticsTracker><HowToApplyForScholarships /></GoogleAnalyticsTracker>}
               />
-              <Route
-                path='/wiki/:pageId'
-                element={<GoogleAnalyticsTracker><Wiki /></GoogleAnalyticsTracker>}
-              />
               <Route path='/crypto/:action' element={<GoogleAnalyticsTracker><Crypto /></GoogleAnalyticsTracker>} />
               <Route path='/crypto' element={<GoogleAnalyticsTracker><Crypto /></GoogleAnalyticsTracker>} />
               <Route path='/collection/:slug' element={<GoogleAnalyticsTracker><CollectionDetail /></GoogleAnalyticsTracker>} />
@@ -244,9 +231,7 @@ class App extends React.Component {
               <Route path='/demo' element={<GoogleAnalyticsTracker><BookDemo /></GoogleAnalyticsTracker>} />
               <Route path='/schools/premium' element={<GoogleAnalyticsTracker><EbookPremium /></GoogleAnalyticsTracker>} />
               <Route path='/schools' element={<GoogleAnalyticsTracker><Ebook /></GoogleAnalyticsTracker>} />
-              <Route path='/team' element={<GoogleAnalyticsTracker><Team /></GoogleAnalyticsTracker>} />
               <Route path='/testimonials' element={<GoogleAnalyticsTracker><Testimonials /></GoogleAnalyticsTracker>} />
-              <Route path='/about' element={<GoogleAnalyticsTracker><About /></GoogleAnalyticsTracker>} />
               <Route path='/rubric' element={<GoogleAnalyticsTracker><Rubric /></GoogleAnalyticsTracker>} />
               <Route path='/admin/*' element={<GoogleAnalyticsTracker><Admin /></GoogleAnalyticsTracker>} />
               <Route path='/values' element={<GoogleAnalyticsTracker><Values /></GoogleAnalyticsTracker>} />

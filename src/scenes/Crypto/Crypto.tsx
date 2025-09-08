@@ -2,7 +2,7 @@ import React from 'react'
 import { Tabs } from 'antd'
 import HelmetSeo, { defaultSeoContent } from '../../components/HelmetSeo';
 import CryptoIntro from './CryptoIntro';
-import { RouteComponentProps } from 'react-router';
+import { useParams } from 'react-router-dom';
 import "./Crypto.scss";
 import AddBlockChains from './AddBlockChains';
 
@@ -10,9 +10,9 @@ const { TabPane } = Tabs;
 
 interface RouteParams {action: string};
 
-function Crypto(props: RouteComponentProps<RouteParams>) {
-
-    const { action } = props.match.params;
+function Crypto() {
+    
+    const { action } = useParams<{ action: string }>();
 
     const title = "Start and get scholarships using cryptocurrencies";
     const seoContent = {
