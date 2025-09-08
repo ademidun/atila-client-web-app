@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import CKEditor from "@ckeditor/ckeditor5-react";
 import InlineEditor from "@ckeditor/ckeditor5-build-inline";
 import { Helmet } from "react-helmet";
-import { Alert, Button, Popconfirm, Radio, Form, Input, Select } from 'antd';
+import { Alert, Button, Popconfirm, Radio, Form } from 'antd';
 import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
 import TextareaAutosize from 'react-autosize-textarea';
 import { connect } from "react-redux";
@@ -18,7 +18,6 @@ import ButtonModal from "../ButtonModal";
 import FormInputConstants from '../../models/FormInputConstants';
 import LinkContentToWallet from '../Crypto/LinkContentToWallet';
 import ContentBody from '../ContentDetail/ContentBody/ContentBody';
-import UserProfileAPI from '../../services/UserProfileAPI';
 import BlogsApi from '../../services/BlogsAPI';
 import EssaysApi from '../../services/EssaysAPI';
 import './ContentAddEdit.scss';
@@ -88,21 +87,7 @@ function ContentAddEdit({ contentType, userProfile }: ContentAddEditProps) {
 
     const ContentAPI = contentType === 'blog' ? BlogsApi : EssaysApi;
 
-    useEffect(() => {
-        if (location.pathname === `/${contentType}/add`) {
-            setIsAddContentMode(true);
-            setIsLoading(null);
-            if (userProfile) {
-                setContent(prev => ({ ...prev, user: userProfile }));
-            } else {
-                toastNotify(`⚠️ Warning, you must be logged in to add ${contentType}s`);
-            }
-        } else {
-            loadContent();
-        }
-    }, [contentType, location.pathname, userProfile]);
-
-    const loadContent = async () => {
+    const loadContent = useCallback(async () => {
         setIsLoading('Loading content...');
         try {
             const response = await ContentAPI.getSlug(slug);
@@ -128,7 +113,21 @@ function ContentAddEdit({ contentType, userProfile }: ContentAddEditProps) {
         } finally {
             setIsLoading(null);
         }
-    };
+    }, [ContentAPI, form, slug]);
+
+    useEffect(() => {
+        if (location.pathname === `/${contentType}/add`) {
+            setIsAddContentMode(true);
+            setIsLoading(null);
+            if (userProfile) {
+                setContent(prev => ({ ...prev, user: userProfile }));
+            } else {
+                toastNotify(`⚠️ Warning, you must be logged in to add ${contentType}s`);
+            }
+        } else {
+            loadContent();
+        }
+    }, [contentType, location.pathname, userProfile, loadContent]);
 
     const updateForm = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | any) => {
         if (!event || !event.target) {
@@ -568,6 +567,11 @@ function ContentAddEdit({ contentType, userProfile }: ContentAddEditProps) {
                 {contentPostError && (
                     <pre className="text-danger" style={{ whiteSpace: 'pre-wrap' }}>
                         {JSON.stringify(contentPostError, null, 4)}
+                    </pre>
+                )}
+                {contentGetError && (
+                    <pre className="text-danger" style={{ whiteSpace: 'pre-wrap' }}>
+                        {JSON.stringify(contentGetError, null, 4)}
                     </pre>
                 )}
                 {contentActions}

@@ -29,8 +29,8 @@ function HelmetSeo({ content }) {
         : user?.username;
 
     const url = `${window.location.origin}${window.location.pathname}`;
-    const datePublished = new Date(created).toISOString();
-    const dateModified = new Date(updated || created).toISOString();
+    const datePublished = new Date(created || new Date()).toISOString();
+    const dateModified = new Date(updated || created) || new Date().toISOString();
 
     const jsonLd = {
         '@context': 'https://schema.org',

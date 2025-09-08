@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Alert, Button, Form, Select } from 'antd';
 import { connect } from 'react-redux'
-import { Blog } from '../../models/Blog'
 import { Wallet } from '../../models/Wallet.class'
 import Loading from '../Loading';
 import { getErrorMessage } from '../../services/utils';
@@ -17,13 +16,12 @@ interface LinkContentToWalletProps {
     onContentLinked?: (wallet: Wallet) => void;
 }
 
-function LinkContentToWallet({ userProfileLoggedIn, content, contentType, onContentLinked }: LinkContentToWalletProps) {
+function LinkContentToWallet({ userProfileLoggedIn, onContentLinked }: LinkContentToWalletProps) {
     const navigate = useNavigate();
     const [form] = Form.useForm();
     const [wallets, setWallets] = useState<Array<Wallet>>([]);
     const [error, setError] = useState("");
     const [loadingWallet, setLoadingWallet] = useState("");
-    const [contentWallet, setContentWallet] = useState(content?.wallet);
     const [contents, setContents] = useState<any[]>([]);
     const [selectedContent, setSelectedContent] = useState<any>(null);
     const [selectedWallet, setSelectedWallet] = useState<Wallet | null>(null);
@@ -39,12 +37,7 @@ function LinkContentToWallet({ userProfileLoggedIn, content, contentType, onCont
         }
     }, [userProfileLoggedIn]);
 
-    useEffect(() => {
-        getWallets();
-        loadContents();
-    }, [getWallets]);
-
-    const loadContents = async () => {
+    const loadContents = useCallback(async () => {
         try {
             const [blogsResponse, essaysResponse] = await Promise.all([
                 fetch(`/api/blogs/?user=${userProfileLoggedIn?.user}`),
@@ -58,7 +51,12 @@ function LinkContentToWallet({ userProfileLoggedIn, content, contentType, onCont
             console.error('Error loading contents:', error);
             setError(getErrorMessage(error));
         }
-    };
+    },[]);
+
+    useEffect(() => {
+        getWallets();
+        loadContents();
+    }, [getWallets, loadContents]);
 
     const handleContentSelect = (contentId: string) => {
         const content = contents.find(c => c.id === contentId);
