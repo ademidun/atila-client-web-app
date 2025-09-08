@@ -81,7 +81,7 @@ const urlToSearchState = ({ search}: { search: any}) => {
 interface SearchAlgoliaProps {
   className: string,
   renderSeo: boolean,
-  location: any,
+  location?: any,
   initialSearch?: string,
   searchConfig?: SearchConfig,
   onResultsLoaded?: (results: Array<{ items: any, num_items: number }>) => void,
@@ -90,7 +90,7 @@ interface SearchAlgoliaProps {
 
 function SearchAlgolia({ className = "p-md-5",
                          renderSeo = true,
-                         location,
+                         location = "",
                          initialSearch = "",
                          searchConfig = {showScholarships: true, showMentors: true, showBlogs: true},
                          onResultsLoaded = () => {},
