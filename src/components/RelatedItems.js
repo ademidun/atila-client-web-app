@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Card } from 'antd';
@@ -13,11 +13,7 @@ function RelatedItems({ className, id, itemType }) {
 
     const ContentAPI = itemType === 'Essay' ? EssaysApi : BlogsApi;
 
-    useEffect(() => {
-        loadRelatedItems();
-    }, [id]);
-
-    const loadRelatedItems = async () => {
+    const loadRelatedItems = useCallback(async () => {
         try {
             const response = await ContentAPI.relatedItems(id);
             setRelatedItems(response.data.results);
@@ -27,7 +23,11 @@ function RelatedItems({ className, id, itemType }) {
         } finally {
             setLoading(false);
         }
-    };
+    }, [ContentAPI, id]);
+
+    useEffect(() => {
+        loadRelatedItems();
+    }, [loadRelatedItems]);
 
     if (loading) {
         return <Loading title="Loading related items..." />;

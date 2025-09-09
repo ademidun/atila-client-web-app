@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useLocation } from "react-router-dom";
 import { connect } from "react-redux";
 import { MASTER_LIST_WITH_CATEGORY_LABEL, MASTER_LIST_WITH_CATEGORY_LABEL_ADMIN, MASTER_LIST_WITH_CATEGORY_LABEL_USER_PROFILE } from '../../models/ConstantsForm';
 import AutoComplete, { Suggestion } from '../AutoComplete';
@@ -36,8 +35,6 @@ const QueryItem = ({
     loggedInUserProfile,
     queryType = "contact"
 }: QueryItemProps) => {
-    const location = useLocation();
-    const [searchQuery, setSearchQuery] = useState(value);
     const [queryInputType, setQueryInputType] = useState(
         queryKey && queryKey.includes("__") ? customQuery : queryBuilder
     );
@@ -159,7 +156,7 @@ const QueryItem = ({
                 <AutoComplete
                     suggestions={suggestions}
                     placeholder={placeHolder || "Search by school, program, ethnicity, activity, industry, or more"}
-                    value={searchQuery}
+                    value={value}
                     getSuggestionValue={(suggestion: Suggestion) => suggestion.value}
                     renderSuggestion={renderSuggestion}
                     onSuggestionSelected={onSuggestionSelected}

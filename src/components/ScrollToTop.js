@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 //https://github.com/ReactTraining/react-router/issues/2019#issuecomment-299576935
