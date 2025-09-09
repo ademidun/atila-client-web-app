@@ -21,7 +21,6 @@ function HelmetSeo({ content }) {
         user,
         created,
         updated,
-        slug
     } = content;
 
     const author = user?.first_name && user?.last_name

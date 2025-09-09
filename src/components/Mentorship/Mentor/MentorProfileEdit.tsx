@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { Button, message } from 'antd';
+import React, { useCallback, useEffect, useState } from 'react'
+import { Button } from 'antd';
 import { useSelector } from "react-redux";
 import FormDynamic from '../../Form/FormDynamic';
 import { Mentor } from '../../../models/Mentor';
@@ -8,8 +8,8 @@ import { UserProfile } from '../../../models/UserProfile.class';
 import MentorshipAPI from '../../../services/MentorshipAPI';
 import UserProfileAPI from '../../../services/UserProfileAPI';
 import { getErrorMessage } from '../../../services/utils';
-import { scholarshipUserProfileSharedFormConfigs, toastNotify } from '../../../models/Utils';
-import { useNavigate, useParams } from 'react-router-dom';
+import { scholarshipUserProfileSharedFormConfigs } from '../../../models/Utils';
+import { useParams } from 'react-router-dom';
 import { NetworkResponse, NetworkResponseDisplay } from '../../NetworkResponse';
 import MentorDurations from './MentorDurations';
 
@@ -25,7 +25,6 @@ interface RootState {
 
 const MentorProfileEdit: React.FC = () => {
     const userProfileLoggedIn = useSelector((state: RootState) => state.data.user.loggedInUserProfile);
-    const navigate = useNavigate();
     const { mentorUsername } = useParams<{ mentorUsername: string }>();
     
     const [mentor, setMentor] = useState<Mentor | undefined>(undefined);
@@ -33,13 +32,7 @@ const MentorProfileEdit: React.FC = () => {
     const [isMentorSet, setIsMentorSet] = useState(false);
     autoSaveTimeoutId = null;
 
-    useEffect(() => {
-        if (userProfileLoggedIn) {
-            loadMentor();
-        }
-    }, [userProfileLoggedIn]);
-
-    const loadMentor = async () => {
+    const loadMentor = useCallback(async () => {
         setNetworkResponse({title: "Loading Mentor profile", type: "loading"});
         
         try {
@@ -61,7 +54,13 @@ const MentorProfileEdit: React.FC = () => {
             console.log({error});
             setNetworkResponse({title: getErrorMessage(error), type: "error"});
         }
-    }
+    },[userProfileLoggedIn, mentorUsername]);
+
+    useEffect(() => {
+        if (userProfileLoggedIn) {
+            loadMentor();
+        }
+    }, [userProfileLoggedIn, loadMentor]);
 
     const createMentorProfile = () => {
         setNetworkResponse({title: "Creating your Mentor profile", type: "loading"});
