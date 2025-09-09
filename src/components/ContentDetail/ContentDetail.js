@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Link, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -17,11 +17,7 @@ function ContentDetail({ contentType, ContentAPI, userProfile }) {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        loadContent();
-    }, [slug]);
-
-    const loadContent = async () => {
+    const loadContent = useCallback(async () => {
         try {
             const response = await ContentAPI.getSlug(slug);
             const content = response.data.blog || response.data.essay;
@@ -32,7 +28,11 @@ function ContentDetail({ contentType, ContentAPI, userProfile }) {
         } finally {
             setLoading(false);
         }
-    };
+    },[ContentAPI, slug]);
+
+    useEffect(() => {
+        loadContent();
+    }, [slug, loadContent]);
 
     if (loading) {
         return <Loading title="Loading..." />;

@@ -51,7 +51,7 @@ function LinkContentToWallet({ userProfileLoggedIn, onContentLinked }: LinkConte
             console.error('Error loading contents:', error);
             setError(getErrorMessage(error));
         }
-    },[]);
+    },[userProfileLoggedIn?.user]);
 
     useEffect(() => {
         getWallets();
