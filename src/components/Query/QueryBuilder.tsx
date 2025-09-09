@@ -1,21 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useCallback, useEffect, useState } from 'react';
+import { useLocation } from "react-router-dom";
 import { Button, Tag } from 'antd';
 import { CopyOutlined } from "@ant-design/icons";
-import type { CustomIconComponentProps } from "@ant-design/icons/lib/components/Icon";
 import { getRandomString, prettifyKeys, copyToClipboard } from '../../services/utils';
 import { ALL_DEMOGRAPHICS } from '../../models/ConstantsForm';
 import { updateCurrentUserProfileQuery } from '../../redux/actions/query';
 import { connect } from 'react-redux';
-import { convertQueryListToDynamicQuery, DEFAULT_SAMPLE_SEARCHES, getDefaultQueryItem, SampleSearches } from './QueryBuilderHelper';
-import { ConnectedComponent } from 'react-redux';
+import { convertQueryListToDynamicQuery, DEFAULT_SAMPLE_SEARCHES, SampleSearches } from './QueryBuilderHelper';
 import QueryItem from './QueryItem';
 
 interface QueryData {
     [key: string]: string;
 }
 
-interface QueryItem {
+interface QueryItemType {
     id: string;
     queryType: 'and' | 'or';
     queryData: QueryData;
@@ -26,11 +24,11 @@ interface QueryBuilderProps {
     updateQueryPropsOnLoad: boolean;
     sampleSearches: any[];
     queryType: string;
-    currentUserProfileQuery: QueryItem[];
-    updateCurrentUserProfileQuery: (queries: QueryItem[]) => void;
+    currentUserProfileQuery: QueryItemType[];
+    updateCurrentUserProfileQuery: (queries: QueryItemType[]) => void;
 }
 
-const getDefaultQueryItemTyped = (): QueryItem => ({
+const getDefaultQueryItemTyped = (): QueryItemType => ({
     id: getRandomString(8),
     queryType: 'and',
     queryData: {}
@@ -45,17 +43,15 @@ const QueryBuilder: React.FC<QueryBuilderProps> = ({
     updateCurrentUserProfileQuery
 }) => {
     const location = useLocation();
-    const navigate = useNavigate();
-    const [allQueries, setAllQueries] = useState<QueryItem[]>([getDefaultQueryItemTyped()]);
-    const [sampleSearchesState, setSampleSearchesState] = useState(sampleSearches);
+    const [allQueries, setAllQueries] = useState<QueryItemType[]>([getDefaultQueryItemTyped()]);
 
-    const initializeQueryFromUrlString = (): QueryItem[] => {
-        const queries: QueryItem[] = [];
+    const initializeQueryFromUrlString = useCallback((): QueryItemType[] => {
+        const queries: QueryItemType[] = [];
         const params = new URLSearchParams(location.search);
         const validFields = ["all_fields", ...Object.keys(ALL_DEMOGRAPHICS)];
 
         for (let [key, value] of params) {
-            const queryItem: QueryItem = { ...getDefaultQueryItemTyped() };
+            const queryItem: QueryItemType = { ...getDefaultQueryItemTyped() };
             const queryTypes = ["and", "or"] as const;
             
             for (const queryType of queryTypes) {
@@ -73,7 +69,7 @@ const QueryBuilder: React.FC<QueryBuilderProps> = ({
         }
 
         return queries;
-    };
+    },[location.search]);
 
     const convertQueryListToUrl = (): string => {
         let queryUrl = `${window.location.origin}${window.location.pathname}`;
@@ -95,22 +91,6 @@ const QueryBuilder: React.FC<QueryBuilderProps> = ({
         const queryUrl = convertQueryListToUrl();
         copyToClipboard(queryUrl);
     };
-
-    const refreshQuery = () => {
-        const queries = initializeQueryFromUrlString();
-
-        if (queries.length > 0 && Object.keys(queries[0].queryData).length > 0) {
-            setAllQueries(queries);
-        }
-        if (updateQueryPropsOnLoad) {
-            updateQueryProps(queries);
-        }
-    };
-
-    useEffect(() => {
-        refreshQuery();
-        window.scrollTo(0, 0);
-    }, [location.search]);
 
     const addQuery = (queryType: 'and' | 'or') => {
         setAllQueries(prevQueries => {
@@ -157,15 +137,30 @@ const QueryBuilder: React.FC<QueryBuilderProps> = ({
         ));
     };
 
-    const updateQueryProps = (queries: QueryItem[]) => {
+    const updateQueryProps = useCallback((queries: QueryItemType[]) => {
         const dynamicQuery = convertQueryListToDynamicQuery(queries);
         onQueryUpdate(dynamicQuery);
-    };
+    }, [onQueryUpdate]);
+
+    const refreshQuery = useCallback(() => {
+        const queries = initializeQueryFromUrlString();
+
+        if (queries.length > 0 && Object.keys(queries[0].queryData).length > 0) {
+            setAllQueries(queries);
+        }
+        if (updateQueryPropsOnLoad) {
+            updateQueryProps(queries);
+        }
+    },[initializeQueryFromUrlString, updateQueryPropsOnLoad, updateQueryProps]);
+
+    useEffect(() => {
+        refreshQuery();
+        window.scrollTo(0, 0);
+    }, [location.search, refreshQuery]);
 
     const displayQueries = queryType === "userprofile" ? currentUserProfileQuery : allQueries;
     const mostRecentQuery = displayQueries[displayQueries.length - 1];
     const mostRecentQueryHasValue = Object.keys(mostRecentQuery.queryData).length > 0;
-    const CopyIcon = CopyOutlined as unknown as React.FC;
 
     return (
         <div>
@@ -207,7 +202,7 @@ const QueryBuilder: React.FC<QueryBuilderProps> = ({
             </>
             <br />
             <SampleSearches 
-                sampleSearches={sampleSearchesState} 
+                sampleSearches={sampleSearches} 
                 allQueries={displayQueries} 
                 onSearchSelected={handleQueryUpdate} 
             />

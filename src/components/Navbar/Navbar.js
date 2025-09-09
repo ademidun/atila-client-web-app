@@ -16,7 +16,6 @@ import atilaLogo from "../../components/assets/atila-upway-logo-gradient-circle-
 const { SubMenu } = Menu;
 
 function Navbar() {
-    const [menuVisible, setMenuVisible] = useState(false);
     const [showMobileMenu, setShowMobileMenu] = useState(false);
     
     const dispatch = useDispatch();
