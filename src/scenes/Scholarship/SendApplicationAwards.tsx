@@ -1,12 +1,8 @@
 // import CryptoPaymentForm, { TransactionResponsePayment } from '@atila/web-components-library.ui.crypto-payment-form';
 // import CurrencyDisplay from '@atila/web-components-library.ui.currency-display';
-import { Radio, Spin } from 'antd';
-import React, { useState } from 'react'
-import Loading from '../../components/Loading';
+import { Radio } from 'antd';
+import { useState } from 'react'
 import { Award } from '../../models/Award';
-import { Transaction } from '../../models/Transaction';
-import ApplicationsAPI from '../../services/ApplicationsAPI';
-import Environment from '../../services/Environment';
 
 export interface SendApplicationAwardsProps {
     awards: Award[],
@@ -17,35 +13,6 @@ function SendApplicationAwards(props: SendApplicationAwardsProps) {
     const { awards } = props;
 
     const [activeAward, setActiveAward] = useState(awards[0]);
-    const [loadingMessage, setLoadingMessage] = useState("");
-
-    const saveSentAward = (transaction: any) => {
-    // const saveSentAward = (transaction: TransactionResponsePayment) => {
-
-        const transactionData: Transaction = {
-            hash: transaction.hash,
-            destination_amount_number: Number.parseFloat(transaction.destinationAmount as string).toFixed(8),
-            source_address: transaction.from,
-            destination_address: transaction.to,
-            network_chain_id: transaction.network?.chainId,
-            network_name: transaction.network?.name,
-            transaction_fee_hex: transaction.gasPrice?._hex,
-            withdrawn_amount_hex: transaction.value._hex,
-        };
-
-        setLoadingMessage("Saving transaction and sending confirmation email");
-        // TODO: This current implementation will cause errors if the Active award is changed after a payment award has been sent.
-        ApplicationsAPI
-        .sendScholarshipAwardPaymentConfirmation(activeAward.recipient?.id, activeAward.id, transactionData)
-        .then(res => {
-        })
-        .catch(err=> {
-            console.log({err});
-        })
-        .finally(() => {
-            setLoadingMessage("");
-        })
-    }
 
     return (
     <div>
@@ -53,15 +20,8 @@ function SendApplicationAwards(props: SendApplicationAwardsProps) {
             Send Application Award
         </h3>
 
-        {loadingMessage &&
-        <Loading title={loadingMessage} />
-        }
-
         <div>
-            {loadingMessage ? (
-                <Spin spinning={true} tip={loadingMessage} />
-            ) : (
-                <div>
+            <div>
                     <Radio.Group defaultValue={activeAward} buttonStyle="solid" onChange={(e) => setActiveAward(e.target.value)} 
                     className="mb-3">
                         {awards.map(award => (
@@ -90,7 +50,6 @@ function SendApplicationAwards(props: SendApplicationAwardsProps) {
                         }
                     </div>
                 </div>
-            )}
         </div>
 
 

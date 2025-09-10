@@ -24,7 +24,7 @@ import ScholarshipQuestionBuilder, {ScholarshipUserProfileQuestionBuilder} from 
 import ScholarshipPaymentForm from "../Payment/ScholarshipPayment/ScholarshipPaymentForm";
 import Environment from "../../services/Environment";
 import InviteScholarshipCollaborator from "../../components/InviteScholarshipCollaborator";
-import {CAD, CryptoCurrencies, CURRENCY_CODES} from "../../models/ConstantsPayments";
+import {CAD, CURRENCY_CODES} from "../../models/ConstantsPayments";
 import { DEFAULT_AWARD } from '../../models/Award';
 // import CurrencyDisplay from '@atila/web-components-library.ui.currency-display';
 import { additionalQuestions, scholarshipFormConfigsPage1 } from './ScholarshipAddEditFormConfig';

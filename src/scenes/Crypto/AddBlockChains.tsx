@@ -1,6 +1,5 @@
 import React from 'react'
 // import {AddOrSwitchBlockChain} from '@atila/web-components-library.ui.add-or-switch-blockchain'
-import { BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID, BINANCE_SMART_CHAIN_TESTNET_CHAIN_ID } from '../../models/ConstantsPayments';
 
 function AddBlockChains() {
   return (

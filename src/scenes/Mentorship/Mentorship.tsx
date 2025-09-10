@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import MentorshipAbout from './MentorshipAbout';
 import MentorshipSessionAddEdit from './MentorshipSession/MentorshipSessionAddEdit';
 import MentorsList from './MentorsList';
@@ -9,8 +9,6 @@ export interface MentorshipProps {
 }
 
 function Mentorship({ basePath }: MentorshipProps) {
-    const location = useLocation();
-    const currentPath = location.pathname;
 
     return (
         <div>

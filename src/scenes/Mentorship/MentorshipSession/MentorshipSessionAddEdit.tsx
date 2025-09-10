@@ -7,13 +7,12 @@ import MentorshipSessionSchedule from './MentorshipSessionSchedule';
 import MentorshipAPI from '../../../services/MentorshipAPI';
 import { getErrorMessage } from '../../../services/utils';
 import TextUtils from '../../../services/utils/TextUtils';
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import HelmetSeo, { defaultSeoContent } from '../../../components/HelmetSeo';
 import { UserProfile } from '../../../models/UserProfile.class';
 import Register from '../../../components/Register';
 import { NetworkResponse, NetworkResponseDisplay } from '../../../components/NetworkResponse';
 import { Duration } from '../../../models/Mentor';
-import { initialReduxState } from '../../../models/Constants';
 
 const { Step } = Steps;
 
@@ -30,7 +29,6 @@ const MentorshipSessionAddEdit: React.FC = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { mentorUsername, sessionId } = useParams<{ mentorUsername: string; sessionId: string }>();
-    const [isNewSession, setIsNewSession] = useState(false);
 
     const searchParams = new URLSearchParams(location.search);
     const paymentComplete = searchParams.get('paymentComplete');
@@ -152,7 +150,6 @@ const MentorshipSessionAddEdit: React.FC = () => {
   
     useEffect(() => {
         const path = location.pathname;
-        setIsNewSession(path.includes('/new/'));
         if (path.includes('/session/new')) {
             loadMentor(); 
         } else {

@@ -8,8 +8,6 @@ import AddBlockChains from './AddBlockChains';
 
 const { TabPane } = Tabs;
 
-interface RouteParams {action: string};
-
 function Crypto() {
     
     const { action } = useParams<{ action: string }>();
