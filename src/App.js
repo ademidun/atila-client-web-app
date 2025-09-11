@@ -8,7 +8,6 @@ import Loading from "./components/Loading";
 
 import { ToastContainer } from "react-toastify";
 import Navbar from "./components/Navbar/Navbar";
-import GoogleAnalyticsTracker from "./services/GoogleAnalyticsTracker";
 import ScrollToTop from "./components/ScrollToTop";
 import LogRocket from "logrocket";
 import LogrocketFuzzySanitizer from 'logrocket-fuzzy-search-sanitizer';

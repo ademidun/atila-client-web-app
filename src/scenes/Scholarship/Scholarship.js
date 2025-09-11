@@ -1,5 +1,5 @@
 import React from 'react';
-import ScholarshipsList from "./ScholarshipsList";
+import {ScholarshipsListWithRouter} from "./ScholarshipsList";
 import {Routes, Route} from "react-router-dom";
 import ScholarshipDetail from "./ScholarshipDetail";
 import ScholarshipAddEdit from "./ScholarshipAddEdit";
@@ -14,11 +14,11 @@ function Scholarship({ match }) {
             <Route path=":slug/contribute" element={<ScholarshipContribution />} />
             <Route path=":slug/questions" element={<ScholarshipViewQuestions />} />
             <Route path="add" element={<ScholarshipAddEdit />} />
-            <Route path="s/:searchString" element={<ScholarshipsList />} />
-            <Route path="direct" element={<ScholarshipsList />} />
+            <Route path="s/:searchString" element={<ScholarshipsListWithRouter />} />
+            <Route path="direct" element={<ScholarshipsListWithRouter />} />
             <Route path="edit/:slug" element={<ScholarshipAddEdit />} />
             <Route path=":slug" element={<ScholarshipDetail />} />
-            <Route path="/" element={<ScholarshipsList />} />
+            <Route path="/" element={<ScholarshipsListWithRouter />} />
         </Routes>
     );
 }

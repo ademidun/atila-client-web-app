@@ -68,7 +68,7 @@ const createURL = (state: any) => `?${qs.stringify(state)}`;
 
 
 const urlToSearchState = ({ search}: { search: any}) => {
-  const searchState = qs.parse(search.slice(1));
+  const searchState = qs.parse(search.slice && search.slice(1));
   // ?q=<term> should set the same search state as ?query=<term>
   if(searchState.q && !searchState.query) {
     searchState.query = searchState.q;
