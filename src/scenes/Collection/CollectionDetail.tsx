@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { RouteComponentProps } from 'react-router';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import ContentListDisplay from '../../components/ContentListDisplay';
 import HelmetSeo from '../../components/HelmetSeo';
 import Loading from '../../components/Loading';
@@ -8,25 +7,21 @@ import { Collection } from '../../models/Collection'
 import CollectionsAPI from '../../services/CollectionsAPI';
 import { genericItemTransform } from '../../services/utils';
 
-interface CollectionDetailRouteParams {
-    slug: string
-};
-
-export interface CollectionDetailProps extends RouteComponentProps<CollectionDetailRouteParams>  {
+interface CollectionDetailProps {
+    // Add any additional props here if needed
 }
 
 function CollectionDetail(props: CollectionDetailProps) {
-
-  const { match: {params: { slug }} } = props;
+  const { slug } = useParams<{ slug: string }>();
 
   const [collection, setCollection] = useState(new Collection());
   const [loadingCollection, setLoadingCollection] = useState("");
 
-
   const loadCollection = useCallback(
     () => {
+        if (!slug) return;
+        
         const collectionId = slug.split("-").pop() || "";
-
         setLoadingCollection("Loading collection");
 
         CollectionsAPI.get(collectionId)
@@ -46,13 +41,7 @@ function CollectionDetail(props: CollectionDetailProps) {
 
   useEffect(() => {
     loadCollection();
-  
-    return () => {
-      
-    }
   }, [loadCollection]);
-  
-
   
   return (
     <div className="container mt-3 card shadow p-3">

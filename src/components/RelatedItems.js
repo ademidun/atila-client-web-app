@@ -1,65 +1,79 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import { Card } from 'antd';
+import Loading from './Loading';
+import BlogsApi from '../services/BlogsAPI';
+import EssaysApi from '../services/EssaysAPI';
 
-import ContentCard from "./ContentCard";
-import Loading from "./Loading";
-import { genericItemTransform, getAlogliaIndexName } from "../services/utils";
-import Environment from '../services/Environment';
-import { useRelatedProducts } from '@algolia/recommend-react';
-import recommend from '@algolia/recommend';
+function RelatedItems({ className, id, itemType }) {
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [relatedItems, setRelatedItems] = useState([]);
 
-const recommendClient = recommend(Environment.ALGOLIA_APP_ID, Environment.ALGOLIA_PUBLIC_KEY);
+    const ContentAPI = itemType === 'Essay' ? EssaysApi : BlogsApi;
 
-const RelatedProduct = ({recommendation}) => {
-    recommendation = genericItemTransform(recommendation);
-    return (
-        <ContentCard key={recommendation.slug} content={recommendation} className="mb-3" />
-    )
-}
+    const loadRelatedItems = useCallback(async () => {
+        try {
+            const response = await ContentAPI.relatedItems(id);
+            setRelatedItems(response.data.results);
+        } catch (error) {
+            console.error('Error loading related items:', error);
+            setError(error.message);
+        } finally {
+            setLoading(false);
+        }
+    }, [ContentAPI, id]);
 
-const RelatedProducts = ({recommendations}) => {
-    return <>
-        <h3 className="text-center">Related</h3>
-        {recommendations.map(item => (
-            <RelatedProduct recommendation={item} key={item.id} />
-        ))}
-    </>
-}
+    useEffect(() => {
+        loadRelatedItems();
+    }, [loadRelatedItems]);
 
-const RelatedItems = (props) => {
-
-    const { recommendations, status } = useRelatedProducts({
-        indexName:  getAlogliaIndexName(props.itemType),
-        maxRecommendations: 3,
-        objectIDs: [props.id.toString()],
-        recommendClient: recommendClient
-    })
-
-    if (status !== 'idle') {
-        return (
-            <div className={`${props.className}`}>
-                <Loading
-                    isLoading={status !== 'idle'}
-                    title={'Loading Related Items..'} />
-            </div>
-        );
-    } else {
-        return (
-            <div className={`${props.className}`}>
-                <RelatedProducts recommendations={recommendations} />
-            </div>
-        )
+    if (loading) {
+        return <Loading title="Loading related items..." />;
     }
-}
 
-RelatedItems.defaultProps = {
-    className: ''
-};
+    if (error) {
+        return null;
+    }
+
+    if (!relatedItems.length) {
+        return null;
+    }
+
+    return (
+        <div className={className}>
+            <h3>Related {itemType}s</h3>
+            {relatedItems.map(item => (
+                <Card
+                    key={item.id}
+                    className="mb-3"
+                    cover={item.header_image_url && (
+                        <img
+                            alt={item.title}
+                            src={item.header_image_url}
+                            style={{ height: 200, objectFit: 'cover' }}
+                        />
+                    )}
+                >
+                    <Card.Meta
+                        title={
+                            <Link to={`/${itemType.toLowerCase()}/${item.slug}`}>
+                                {item.title}
+                            </Link>
+                        }
+                        description={item.description}
+                    />
+                </Card>
+            ))}
+        </div>
+    );
+}
 
 RelatedItems.propTypes = {
     className: PropTypes.string,
-    itemType: PropTypes.string.isRequired,
-    id: PropTypes.number.isRequired
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    itemType: PropTypes.oneOf(['Blog', 'Essay']).isRequired
 };
 
 export default RelatedItems;

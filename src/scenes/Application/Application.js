@@ -1,13 +1,14 @@
 import React from 'react';
-import {Route, Switch} from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import ApplicationDetail from "./ApplicationDetail";
 
 function Application({ match }) {
+    const basePath = match?.path || '';
     return (
-        <Switch>
-            <Route path={`${match.path}/local/scholarship_:scholarshipID`} component={ApplicationDetail} />
-            <Route path={`${match.path}/:applicationID`} component={ApplicationDetail} />
-        </Switch>
+        <Routes>
+            <Route path={`${basePath}/local/scholarship_:scholarshipID`} element={<ApplicationDetail />} />
+            <Route path={`${basePath}/:applicationID`} element={<ApplicationDetail />} />
+        </Routes>
     );
 }
 

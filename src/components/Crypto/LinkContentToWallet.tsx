@@ -1,158 +1,169 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Alert, Button, Radio } from 'antd';
+import { Alert, Button, Form, Select } from 'antd';
 import { connect } from 'react-redux'
-import { Blog } from '../../models/Blog'
-import { UserProfile } from '../../models/UserProfile.class';
-import { Wallet } from '../../models/Wallet.class';
-import UserProfileAPI from '../../services/UserProfileAPI';
+import { Wallet } from '../../models/Wallet.class'
 import Loading from '../Loading';
 import { getErrorMessage } from '../../services/utils';
-import BlogsApi from '../../services/BlogsAPI';
-import { Application } from '../../models/Application.class';
-import ApplicationsAPI from '../../services/ApplicationsAPI';
+import { useNavigate } from 'react-router-dom';
 import ConnectWallet from './ConnectWallet';
-import { RouteComponentProps, withRouter } from 'react-router';
-import WalletDisplay from './WalletDisplay';
 
-export interface LinkContentToWalletPropTypes extends RouteComponentProps  {
-    content: Blog | Application,
-    contentType: "Blog" | "Application",
-    userProfileLoggedIn: UserProfile,
-    onContentLinked?: (content: Blog | Application) => void, 
+const { Option } = Select;
+
+interface LinkContentToWalletProps {
+    userProfileLoggedIn: any;
+    content?: any;
+    contentType?: string;
+    onContentLinked?: (wallet: Wallet) => void;
 }
 
-const LinkContentToWallet = (props: LinkContentToWalletPropTypes) => {
-
-
-    const { userProfileLoggedIn, content, contentType, onContentLinked } = props;
-    // TODO add class for Wallet
+function LinkContentToWallet({ userProfileLoggedIn, onContentLinked }: LinkContentToWalletProps) {
+    const navigate = useNavigate();
+    const [form] = Form.useForm();
     const [wallets, setWallets] = useState<Array<Wallet>>([]);
     const [error, setError] = useState("");
     const [loadingWallet, setLoadingWallet] = useState("");
-    const [contentWallet, setContentWallet] = useState(content?.wallet);
-    
-    /**
-     * If we weant to pass a function to useEffect we must memoize the function to prevent an infinite loop re-render.
-     * This is because functions change their reference each time a component is re-rendered.
-     * Instead, we only want to rerender when the userProfileLoggedIn.user reference inside the getWallets() function is changed
-     * see: https://stackoverflow.com/a/62601621
-     */
-    const getWallets = useCallback(
-        () => {
-    
-        setLoadingWallet("Loading user wallets");
-        setError("");
-        UserProfileAPI.getUserContent(userProfileLoggedIn?.user, "wallets")
-        .then(res => {
-            const { data: { wallets } } = res;
-            if (wallets) {
-                setWallets(wallets);
-            }
-        })
-        .catch(error => {
-            console.log({error});
+    const [contents, setContents] = useState<any[]>([]);
+    const [selectedContent, setSelectedContent] = useState<any>(null);
+    const [selectedWallet, setSelectedWallet] = useState<Wallet | null>(null);
+
+    const getWallets = useCallback(async () => {
+        try {
+            const response = await fetch(`/api/wallets/?user=${userProfileLoggedIn?.user}`);
+            const data = await response.json();
+            setWallets(data.results);
+        } catch (error) {
+            console.error('Error loading wallets:', error);
             setError(getErrorMessage(error));
-        })
-        .finally(()=> {
-            setLoadingWallet("");
-        })
-          return ;// code that references a prop
-        },
-        [userProfileLoggedIn,]
-      );
-
-    const handleSelectWallet = (event: any) => {
-        if(!content) {
-            return
         }
-        const walletId = event.target.value;
-        if (contentType === "Blog") {
-            linkWalletToBlog(walletId)
-        } else if (contentType === "Application") {
-            linkWalletToApplication(walletId)
-        }
-    }
+    }, [userProfileLoggedIn]);
 
-    const linkWalletToBlog = (walletId: string) => {
-        setLoadingWallet("Linking wallet to your blog");
-        BlogsApi.patch(content.id, {wallet:  walletId})
-        .then(res => {
-            setContentWallet(res.data.wallet);
-            onContentLinked?.(res.data);
-        })
-        .catch(error => {
-            console.log({error});
+    const loadContents = useCallback(async () => {
+        try {
+            const [blogsResponse, essaysResponse] = await Promise.all([
+                fetch(`/api/blogs/?user=${userProfileLoggedIn?.user}`),
+                fetch(`/api/essays/?user=${userProfileLoggedIn?.user}`)
+            ]);
+            
+            const blogs = await blogsResponse.json();
+            const essays = await essaysResponse.json();
+            setContents([...blogs.results, ...essays.results]);
+        } catch (error) {
+            console.error('Error loading contents:', error);
             setError(getErrorMessage(error));
-        })
-        .finally(() => {
-            setLoadingWallet("");
-        })
-    }
-
-
-    const linkWalletToApplication = (walletId: string) => {
-
-        setLoadingWallet("Creating your application and linking the wallet to your application");
-        ApplicationsAPI.getOrCreate({ scholarship: (content as Application).scholarship, user: content.user, wallet: walletId })
-            .then((res: any) => {
-                const { data: { application: newApplication } } = res;
-                setContentWallet(newApplication.wallet);
-                onContentLinked?.(newApplication);
-            })
-            .catch((err: any) => {
-                console.log({ err });
-            })
-            .finally(() => {
-                setLoadingWallet("");
-            })
-    }
-
-    const handleUnlinkWallet = () => {
-        const event = {
-            target: {
-                value: null
-            }
         }
-        handleSelectWallet(event);
-    }
+    },[userProfileLoggedIn?.user]);
 
     useEffect(() => {
         getWallets();
-      }, [getWallets]);
+        loadContents();
+    }, [getWallets, loadContents]);
+
+    const handleContentSelect = (contentId: string) => {
+        const content = contents.find(c => c.id === contentId);
+        setSelectedContent(content || null);
+    };
+
+    const handleWalletSelect = (walletId: string) => {
+        const wallet = wallets.find(w => w.id === walletId);
+        setSelectedWallet(wallet || null);
+    };
+
+    const handleSubmit = async (values: any) => {
+        if (!selectedContent || !selectedWallet) return;
+
+        setLoadingWallet("Linking content to wallet");
+        try {
+            const contentType = selectedContent.hasOwnProperty('essay_source') ? 'essay' : 'blog';
+            const response = await fetch(`/api/${contentType}s/${selectedContent.id}/`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    wallet: selectedWallet.id
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to update content');
+            }
+
+            if (onContentLinked) {
+                onContentLinked(selectedWallet);
+            }
+            navigate(`/${contentType}/${selectedContent.slug}`);
+        } catch (error) {
+            console.error('Error linking content to wallet:', error);
+            setError(getErrorMessage(error));
+        } finally {
+            setLoadingWallet("");
+        }
+    };
+
     return (
-        <div className="my-3">
-            Select a wallet to link to your {contentType.toLowerCase()}:
+        <div className="container mt-5">
+            <h1>Link Content to Wallet</h1>
+            <Form
+                form={form}
+                onFinish={handleSubmit}
+                layout="vertical"
+                className="mt-4"
+            >
+                <Form.Item
+                    label="Select Content"
+                    name="content"
+                    rules={[{ required: true, message: 'Please select content' }]}
+                >
+                    <Select
+                        placeholder="Select content"
+                        onChange={handleContentSelect}
+                        style={{ width: '100%' }}
+                    >
+                        {contents.map(content => (
+                            <Option key={content.id} value={content.id}>
+                                {content.title}
+                            </Option>
+                        ))}
+                    </Select>
+                </Form.Item>
+
+                <Form.Item
+                    label="Select Wallet"
+                    name="wallet"
+                    rules={[{ required: true, message: 'Please select wallet' }]}
+                >
+                    <Select
+                        placeholder="Select wallet"
+                        onChange={handleWalletSelect}
+                        style={{ width: '100%' }}
+                    >
+                        {wallets.map(wallet => (
+                            <Option key={wallet.id} value={wallet.id}>
+                                {wallet.address}
+                            </Option>
+                        ))}
+                    </Select>
+                </Form.Item>
+
+                <Form.Item>
+                    <Button type="primary" htmlType="submit" loading={!!loadingWallet}>
+                        Link Content to Wallet
+                    </Button>
+                </Form.Item>
+            </Form>
             {loadingWallet && <Loading isLoading={loadingWallet} title={loadingWallet} />}
             {error && <Alert type="error" message={error} className="my-3" />}
-            <div>
-                <Radio.Group value={contentWallet || "Select a wallet"} onChange={handleSelectWallet} optionType="button" buttonStyle="solid" disabled={!!loadingWallet}>
-                    {wallets.map(wallet => (
-                        <Radio.Button value={wallet.id} key={wallet.id} className="mb-1">
-                            <WalletDisplay wallet={wallet} />
-                        </Radio.Button>
-                    ))}
-                    <p className="text-muted">Wallet changes are automatically saved</p>
-                </Radio.Group>
-                {wallets?.length === 0 &&
-                <>No wallets found. Connect a wallet below.</>
-                }
-                <hr/>
-                <div>
-                    <h5>Connect a new Wallet</h5>
-                    <ConnectWallet onSaveWallets={(wallets: Array<Wallet>) => setWallets(wallets)} />
-                </div>
+            <div className="mt-4">
+                <h5>Connect a new Wallet</h5>
+                {/* @ts-ignore */}
+                <ConnectWallet onSaveWallets={setWallets} />
             </div>
-            {contentWallet && 
-                <Button onClick={handleUnlinkWallet} disabled={!!loadingWallet} >
-                    Unlink Wallet
-                </Button>
-        }
         </div>
-    )
+    );
 }
 
-const mapStateToProps = (state: any) => {
-    return { userProfileLoggedIn: state.data.user.loggedInUserProfile };
-};
+const mapStateToProps = (state: any) => ({
+    userProfileLoggedIn: state.data.user.loggedInUserProfile
+});
 
-export default withRouter(connect(mapStateToProps)(LinkContentToWallet))
+export default connect(mapStateToProps)(LinkContentToWallet);

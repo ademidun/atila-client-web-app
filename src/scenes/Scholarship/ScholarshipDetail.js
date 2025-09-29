@@ -24,7 +24,7 @@ import { addStyleClasstoTables, openAllLinksInNewTab } from "../../services/util
 import './ScholarshipDetail.scss';
 import $ from "jquery";
 import ContentBody, { CONTENT_BODY_CLASS_NAME } from '../../components/ContentDetail/ContentBody/ContentBody';
-import CurrencyDisplay from '@atila/web-components-library.ui.currency-display';
+// import CurrencyDisplay from '@atila/web-components-library.ui.currency-display';
 import ScholarshipApplyButton from './ScholarshipApplyButton/ScholarshipApplyButton';
 
 class ScholarshipDetail extends React.Component {
@@ -331,7 +331,7 @@ class ScholarshipDetail extends React.Component {
                             <div className="font-weight-bold">
 
                                     <div className="mb-3">
-                                    Total Funding: <CurrencyDisplay amount={scholarship.funding_amount} inputCurrency={scholarship.currency||"CAD"} outputCurrency="USD" />
+                                    {/* Total Funding: <CurrencyDisplay amount={scholarship.funding_amount} inputCurrency={scholarship.currency||"CAD"} outputCurrency="USD" /> */}
                                     </div>
                                     <AwardDetail awards={awards} />
                                     {

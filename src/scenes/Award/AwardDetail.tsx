@@ -1,5 +1,5 @@
 import React from "react";
-import CurrencyDisplay from "@atila/web-components-library.ui.currency-display";
+// import CurrencyDisplay from "@atila/web-components-library.ui.currency-display";
 import { Award } from "../../models/Award";
 
 interface AwardDetailPropTypes {
@@ -14,7 +14,7 @@ function AwardDetail(props: AwardDetailPropTypes){
         (
             <tr key={index}>
             <th scope="row">{index+1}</th>
-            <td><CurrencyDisplay amount={award.funding_amount} inputCurrency={award.currency||"CAD"} outputCurrency="USD" /></td>
+            {/* <td><CurrencyDisplay amount={award.funding_amount} inputCurrency={award.currency||"CAD"} outputCurrency="USD" /></td> */}
             </tr>
         )
     )

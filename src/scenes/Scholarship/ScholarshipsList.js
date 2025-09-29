@@ -10,7 +10,7 @@ import ScholarshipCard from "./ScholarshipCard";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import {connect} from "react-redux";
 import {isCompleteUserProfile} from "../../models/UserProfile";
-import {Link} from "react-router-dom";
+import {Link, useParams, useLocation, useNavigate} from "react-router-dom";
 import ResponseDisplay from "../../components/ResponseDisplay";
 import HelmetSeo, {defaultSeoContent} from "../../components/HelmetSeo";
 import {Alert, Button} from "antd";
@@ -25,10 +25,15 @@ class ScholarshipsList extends React.Component {
     constructor(props) {
         super(props);
 
+        console.log({props});
+        // Props passed in from react-router via the ScholarshipsListWithRouter wrapper
+        // ✅ Access them via props.params, props.location, and props.navigate
+
         const { userProfile,
-            match : { params : { searchString: searchStringRaw } },
+            // match : { params : { searchString: searchStringRaw } },
             location: { pathname },
         } = props;
+        const searchStringRaw = props.params ? props.params.searchString : null;
 
         const searchString = unSlugify(searchStringRaw);
 
@@ -67,7 +72,8 @@ class ScholarshipsList extends React.Component {
         // Store prevSlug in state so we can compare when props change.
         // Clear out previously-loaded data (so we don't render stale stuff).
         const { prevSearchString } = state;
-        const { match : { params : { searchString: searchStringRaw } } } = props;
+        // const { match : { params : { searchString: searchStringRaw } } } = props;
+        const searchStringRaw = props.params ? props.params.searchString : null;
         const searchString = unSlugify(searchStringRaw);
 
         if (searchString !== prevSearchString) {
@@ -531,3 +537,19 @@ const mapStateToProps = state => {
     return { userProfile: state.data.user.loggedInUserProfile };
 };
 export default connect(mapStateToProps)(ScholarshipsList);
+
+// ✅ Wrap your class in a functional component that injects router props
+export function ScholarshipsListWithRouter(props) {
+  const params = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  return (
+    <ScholarshipsList
+      {...props}
+      params={params}
+      location={location}
+      navigate={navigate}
+    />
+  );
+}

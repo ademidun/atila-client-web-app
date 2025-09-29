@@ -3,29 +3,28 @@
  */
 import { Button, List, Tag } from 'antd'
 import React, { useEffect, useRef, useState } from 'react'
-import { RouteComponentProps, withRouter } from 'react-router';
+import { useNavigate, useParams, useLocation } from 'react-router-dom'
 import Environment from '../../../services/Environment'
 import ScheduleAPI from '../../../services/ScheduleAPI';
 // import MentorEventTypes from '../../../services/mocks/Mentorship/MentorEventTypes.json';
 import MentorshipAPI from '../../../services/MentorshipAPI';
 import { Mentor } from '../../../models/Mentor';
+import { UserProfile } from '../../../models/UserProfile.class';
 
 export const CALENDLY_AUTH_URL = `https://auth.calendly.com/oauth/authorize?client_id=${Environment.CALENDLY_CLIENT_ID}&response_type=code&redirect_uri=https://atila.ca/profile`
 
-
-
-
-
-interface RouteParams {pageId: string};
-interface MentorScheduleEditProps extends RouteComponentProps<RouteParams>  {
-  mentor: Mentor
+interface MentorScheduleEditProps {
+    userProfileLoggedIn: UserProfile | null;
+    mentor: Mentor;
 }
 
 const calendarAccessTokenKeyName = 'calendarAccessToken';
-function MentorScheduleEdit(props: MentorScheduleEditProps) {
+const MentorScheduleEdit: React.FC<MentorScheduleEditProps> = ({ userProfileLoggedIn, mentor }) => {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const { mentorUsername } = useParams<{ mentorUsername: string }>();
     
-    const {location: {search}, mentor}  = props;
-
+    const search = location.search;
     const params = new URLSearchParams(search);
 
     console.log('params', params);
@@ -167,4 +166,4 @@ function MentorScheduleEdit(props: MentorScheduleEditProps) {
   )
 }
 
-export default withRouter(MentorScheduleEdit)
+export default MentorScheduleEdit;

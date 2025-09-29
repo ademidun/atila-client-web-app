@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Navigate, Route, Routes } from "react-router-dom";
 import loadable from "@loadable/component";
 import { connect } from "react-redux";
 import LandingPage from "./scenes/LandingPage/LandingPage";
@@ -8,13 +8,16 @@ import Loading from "./components/Loading";
 
 import { ToastContainer } from "react-toastify";
 import Navbar from "./components/Navbar/Navbar";
-import GoogleAnalyticsTracker from "./services/GoogleAnalyticsTracker";
 import ScrollToTop from "./components/ScrollToTop";
 import LogRocket from "logrocket";
 import LogrocketFuzzySanitizer from 'logrocket-fuzzy-search-sanitizer';
 import setupLogRocketReact from "logrocket-react";
 import Environment from "./services/Environment";
 import { MockAPI } from './services/mocks/MockAPI';
+import ContentDetail from './components/ContentDetail/ContentDetail';
+import ContentAddEdit from './components/ContentAddEdit/ContentAddEdit';
+import BlogsApi from './services/BlogsAPI';
+import EssaysApi from './services/EssaysAPI';
 
 import './index.scss';
 import 'antd/dist/antd.css';
@@ -48,9 +51,6 @@ const Atlas = loadable(() => import("./scenes/Atlas/Atlas"), {
 const HowToStartAScholarship = loadable(() => import("./scenes/DirectApplicationInfo/HowToStartAScholarship"), {
   fallback: <Loading />,
 });
-const Wiki = loadable(() => import("./scenes/Wiki/Wiki"), {
-  fallback: <Loading />,
-});
 const HowToApplyForScholarships = loadable(() => import("./scenes/DirectApplicationInfo/HowToApplyForScholarships"), {
   fallback: <Loading />,
 });
@@ -72,9 +72,6 @@ const Essay = loadable(() => import("./scenes/Essay/Essay"), {
 const Mentorship = loadable(() => import("./scenes/Mentorship/Mentorship"), {
   fallback: <Loading />,
 });
-const Team = loadable(() => import("./components/Team/Team"), {
-  fallback: <Loading />,
-});
 const Testimonials = loadable(() => import("./components/Testimonials"), {
   fallback: <Loading />,
 });
@@ -85,9 +82,6 @@ const BookDemo = loadable(() => import("./components/BookDemo"), {
   fallback: <Loading />,
 });
 const AtilaPointsRankings = loadable(() => import("./components/AtilaPointsRankings"), {
-  fallback: <Loading />,
-});
-const About = loadable(() => import("./components/About"), {
   fallback: <Loading />,
 });
 const Rubric = loadable(() => import("./components/Rubric"), {
@@ -182,130 +176,98 @@ class App extends React.Component {
         <div className='App'>
           <ToastContainer />
           <Navbar />
-          {isLoadingLoggedInUserProfile && (
+          
+           {isLoadingLoggedInUserProfile && (
             <Loading loaderType='beat' title='' style={{ width: "auto" }} />
           )}
           {isFinishedLoadingLoggedInUserProfile && (
-            <Switch>
+            <Routes>
               <Route
-                exact
                 path='/'
-                component={GoogleAnalyticsTracker(LandingPage)}
+                element={<LandingPage />}
               />
-              <Route path='/mentorship' component={GoogleAnalyticsTracker(Mentorship)} />
-              <Redirect from="/m/:mentorUsername" to="/mentorship/session/new/:mentorUsername/?j=:mentorUsername" />
-              <Route path='/blog' component={GoogleAnalyticsTracker(Blog)} />
-              <Route path='/essay' component={GoogleAnalyticsTracker(Essay)} />
+              <Route path='/mentorship/*' element={<Mentorship />} />
+              <Route path="/m/:mentorUsername" element={<Navigate to="/mentorship/session/new/:mentorUsername/?j=:mentorUsername" replace />} />
+              <Route path='/blog/*' element={<Blog />} />
+              <Route path='/essay/*' element={<Essay />} />
               <Route
-                path='/scholarship'
-                component={GoogleAnalyticsTracker(Scholarship)}
+                path='/scholarship/*'
+                element={<Scholarship />}
               />
               <Route
-                path='/application'
-                component={GoogleAnalyticsTracker(Application)}
+                path='/application/*'
+                element={<Application />}
               />
               <Route
                 path='/start'
-                component={GoogleAnalyticsTracker(HowToStartAScholarship)}
+                element={<HowToStartAScholarship />}
               />
               <Route
                 path='/apply'
-                component={GoogleAnalyticsTracker(HowToApplyForScholarships)}
+                element={<HowToApplyForScholarships />}
               />
-              <Route
-                path='/wiki/:pageId'
-                component={GoogleAnalyticsTracker(Wiki)}
-              />
-              <Route path='/crypto/:action' component={GoogleAnalyticsTracker(Crypto)} />
-              <Route path='/crypto' component={GoogleAnalyticsTracker(Crypto)} />
-              <Route path='/collection/:slug' component={GoogleAnalyticsTracker(CollectionDetail)} />
-              <Route path='/atlas' component={GoogleAnalyticsTracker(Atlas)} />
+              <Route path='/crypto/:action' element={<Crypto />} />
+              <Route path='/crypto' element={<Crypto />} />
+              <Route path='/collection/:slug' element={<CollectionDetail />} />
+              <Route path='/atlas' element={<Atlas />} />
               <Route
                 path='/search-old'
-                component={GoogleAnalyticsTracker(SearchAtila)}
+                element={<SearchAtila />}
               />
               <Route
                 path='/search'
-                component={GoogleAnalyticsTracker(Search)}
+                element={<Search />}
               />
-              <Redirect from="/s/:query" to="/search?query=:query" />
-              <Redirect from="/s" to="/search" />
-              <Route path='/login' component={GoogleAnalyticsTracker(Login)} />
-              <Route
-                path='/pricing'
-                component={GoogleAnalyticsTracker(Pricing)}
-              />
-              <Route
-                path='/payment'
-                component={GoogleAnalyticsTracker(Payment)}
-              />
-              <Route
-                path='/verify'
-                component={GoogleAnalyticsTracker(VerifyAccount)}
-              />
-              <Route
-                path='/register'
-                component={GoogleAnalyticsTracker(Register)}
-              />
-              <Route
-                path='/profile'
-                component={GoogleAnalyticsTracker(UserProfile)}
-              />
-              <Route
-                path='/high-school'
-                component={GoogleAnalyticsTracker(HighSchool)}
-              />
-              <Route
-                  path='/highschool'
-                  component={GoogleAnalyticsTracker(HighSchool)}
-              />
-              <Route
-                  path='/demo'
-                  component={GoogleAnalyticsTracker(BookDemo)}
-              />
-              <Route
-                  path='/schools/premium'
-                  component={GoogleAnalyticsTracker(EbookPremium)}
-              />
-              <Route
-                path='/schools'
-                component={GoogleAnalyticsTracker(Ebook)}
-              />
-              <Route path='/team' component={GoogleAnalyticsTracker(Team)} />
-              <Route path='/testimonials' component={GoogleAnalyticsTracker(Testimonials)} />
-              <Route path='/about' component={GoogleAnalyticsTracker(About)} />
-              <Route path='/rubric' component={GoogleAnalyticsTracker(Rubric)} />
-              <Route path='/admin' component={GoogleAnalyticsTracker(Admin)} />
-              <Route path='/values' component={GoogleAnalyticsTracker(Values)} />
-              <Route path='/finalists' component={GoogleAnalyticsTracker(FinalistsList)} />
-              <Route path='/rankings' component={GoogleAnalyticsTracker(AtilaPointsRankings)} />
-              <Route path='/resources' component={GoogleAnalyticsTracker(Resources)} />
-              <Redirect from="/student" to="/resources" />
-              <Redirect from="/students" to="/resources" />
-              
-              <Redirect from="/points" to="/blog/tomiwa/atila-points" />
-              <Route
-                path='/terms-and-conditions'
-                component={GoogleAnalyticsTracker(TermsConditions)}
-              />
-              <Route
-                  path='/scholarship-sponsor-agreement'
-                  component={GoogleAnalyticsTracker(ScholarshipSponsorAgreement)}
-              />
-              <Route
-                path='/contact'
-                component={GoogleAnalyticsTracker(ContactUs)}
-              />
-              <Route
-                path='/clubs'
-                component={GoogleAnalyticsTracker(ContactsNetwork)}
-              />
-              <Route
-                path='/siteMap'
-                component={GoogleAnalyticsTracker(SiteMap)}
-              />
-              <Route path='/j/:referredByUsername?' component={GoogleAnalyticsTracker(Referral)} />
-            </Switch>
+              <Route path="/s/:query" element={<Navigate to="/search?query=:query" replace />} />
+              <Route path="/s" element={<Navigate to="/search" replace />} />
+              <Route path='/login' element={<Login />} />
+              <Route path='/pricing' element={<Pricing />} />
+              <Route path='/payment' element={<Payment />} />
+              <Route path='/verify' element={<VerifyAccount />} />
+              <Route path='/register' element={<Register />} />
+              <Route path='/profile/*' element={<UserProfile />} />
+              <Route path='/high-school' element={<HighSchool />} />
+              <Route path='/highschool' element={<HighSchool />} />
+              <Route path='/demo' element={<BookDemo />} />
+              <Route path='/schools/premium' element={<EbookPremium />} />
+              <Route path='/schools' element={<Ebook />} />
+              <Route path='/testimonials' element={<Testimonials />} />
+              <Route path='/rubric' element={<Rubric />} />
+              <Route path='/admin/*' element={<Admin />} />
+              <Route path='/values' element={<Values />} />
+              <Route path='/finalists' element={<FinalistsList />} />
+              <Route path='/rankings' element={<AtilaPointsRankings />} />
+              <Route path='/resources' element={<Resources />} />
+              <Route path="/student" element={<Navigate to="/resources" replace />} />
+              <Route path="/students" element={<Navigate to="/resources" replace />} />
+              <Route path="/points" element={<Navigate to="/blog/tomiwa/atila-points" replace />} />
+              <Route path='/terms-and-conditions' element={<TermsConditions />} />
+              <Route path='/scholarship-sponsor-agreement' element={<ScholarshipSponsorAgreement />} />
+              <Route path='/contact' element={<ContactUs />} />
+              <Route path='/clubs' element={<ContactsNetwork />} />
+              <Route path='/siteMap' element={<SiteMap />} />
+              <Route path='/j/:referredByUsername?' element={<Referral />} />
+              <Route path="/blog/:slug" element={
+                  <ContentDetail contentType="Blog" ContentAPI={BlogsApi} />
+              } />
+              <Route path="/blog/create" element={
+                  <ContentAddEdit contentType="Blog" />
+              } />
+              <Route path="/blog/edit/:slug" element={
+                  <ContentAddEdit contentType="Blog" />
+              } />
+              <Route path="/essay/:slug" element={
+                  <ContentDetail contentType="Essay" ContentAPI={EssaysApi} />
+              } />
+              <Route path="/essay/create" element={
+                  <ContentAddEdit contentType="Essay" />
+              } />
+              <Route path="/essay/edit/:slug" element={
+                  <ContentAddEdit contentType="Essay" />
+              } />
+              <Route path="/blog" element={<Navigate to="/" replace />} />
+              <Route path="/essay" element={<Navigate to="/" replace />} />
+            </Routes>
           )}
           <Footer />
         </div>

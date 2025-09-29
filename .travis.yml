@@ -1,0 +1,34 @@
+language: node_js
+node_js:
+  - "18.17"
+
+cache:
+  directories:
+    - node_modules
+
+install:
+  - sudo npm install -g npm@latest
+  - npm config set '@atila:registry' https://node.bit.dev
+  - npm install --legacy-peer-deps
+
+script:
+  - npm test
+  - export NODE_OPTIONS="--max_old_space_size=8192 --openssl-legacy-provider"
+  - npm run build
+
+deploy:
+  provider: script
+  script: |
+    if [ "$TRAVIS_BRANCH" == "master" ]; then
+        echo 'deploying to prod';
+        ./node_modules/.bin/netlify deploy --dir=./build --prod --site $NETLIFY_SITE_ID_PROD -m "${TRAVIS_BRANCH} ${TRAVIS_COMMIT} ${TRAVIS_PULL_REQUEST}"
+    elif [ "$TRAVIS_BRANCH" == "demo" ]; then
+        echo 'deploying to demo';
+        ./node_modules/.bin/netlify deploy --dir=./build --prod --site $NETLIFY_SITE_ID_DEMO -m "${TRAVIS_BRANCH} ${TRAVIS_COMMIT} ${TRAVIS_PULL_REQUEST}"
+    else
+        echo 'deploying to staging';
+        ./node_modules/.bin/netlify deploy --dir=./build --prod --site $NETLIFY_SITE_ID_STAGING -m "${TRAVIS_BRANCH} ${TRAVIS_COMMIT} ${TRAVIS_PULL_REQUEST}"
+    fi
+  skip_cleanup: true
+  on:
+    all_branches: true

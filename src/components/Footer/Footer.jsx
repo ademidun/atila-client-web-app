@@ -1,7 +1,7 @@
 import React from 'react';
 import {Row, Col, Tag} from 'antd';
 import './Footer.scss';
-import {Link, withRouter} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
   faFacebook,
@@ -16,19 +16,19 @@ import {
     faTiktok
 } from "@fortawesome/free-brands-svg-icons";
 
-const goBack = (event, history) => {
-  event.preventDefault();
-  history.goBack();
-};
+function Footer() {
+  const location = useLocation();
+  const navigate = useNavigate();
 
-function Footer({location, history}) {
+  const goBack = (event) => {
+    event.preventDefault();
+    navigate(-1);
+  };
 
-  const { pathname } = location;
-
-  if(pathname === '/premium') {
+  if(location.pathname === '/premium') {
     return (<div className="center-block" style={{ textAlign: 'center'}}>
       <hr />
-      <button onClick={(event) => goBack(event, history)}
+      <button onClick={goBack}
               className="btn-link btn-text">
         Go Back
       </button>to previous page <br/>
@@ -50,7 +50,7 @@ function Footer({location, history}) {
                     </Link>
                   </div>
                   <div>
-                    <Link to={`/demo`}>
+                    <Link to="/demo">
                           Try Atila{' '}
                       <Tag color="green">new</Tag>
                     </Link>
@@ -251,4 +251,4 @@ function Footer({location, history}) {
   );
 }
 
-export default withRouter(Footer);
+export default Footer;

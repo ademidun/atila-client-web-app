@@ -1,33 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Link, withRouter} from "react-router-dom";
-import {Row, Col} from "antd";
+import { Link, useLocation } from "react-router-dom";
+import { Row, Col } from "antd";
 import ContentCard from "../../components/ContentCard";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
-import {genericItemTransform} from "../../services/utils";
+import { genericItemTransform } from "../../services/utils";
 import ApplicationsAPI from "../../services/ApplicationsAPI";
 import { UserProfileCardsList } from '../UserProfile/UserProfileCard';
 const queryString = require('query-string');
 
-class ScholarshipFinalists extends React.Component {
+function ScholarshipFinalists(props) {
+    const location = useLocation();
 
-    constructor(props) {
-        super(props);
+    const [state, setState] = React.useState({
+        scholarshipFinalistEssays: [],
+        scholarshipFinalistUserProfiles: [],
+        isLoadingScholarshipFinalists: false,
+        errorLoadingScholarshipFinalists: false,
+        scholarships: [],
+        isFilteredByScholarshipID: false,
+    });
 
-        this.state = {
-            scholarshipFinalistEssays: [],
-            scholarshipFinalistUserProfiles: [],
-            isLoadingScholarshipFinalists: false,
-            errorLoadingScholarshipFinalists: false,
-            scholarships: [], // If we are filtering by scholarship id, this var stores the scholarships' info.
-            isFilteredByScholarshipID: false,
-        }
-    }
-    componentDidMount() {
-        const { id, allFinalists, search } = this.props;
+    React.useEffect(() => {
+        const { id, allFinalists, search } = props;
 
-        this.setState({ isLoadingScholarshipFinalists: true });
+        setState(prevState => ({ ...prevState, isLoadingScholarshipFinalists: true }));
 
         let scholarshipFinalistsPromise;
         let isFilteredById = false;
@@ -40,11 +38,11 @@ class ScholarshipFinalists extends React.Component {
             }
         }
 
-        this.setState({ isFilteredByScholarshipID: isFilteredById })
+        setState(prevState => ({ ...prevState, isFilteredByScholarshipID: isFilteredById }));
 
         if (isFilteredById) {
-            const parsedScholarshipIds = parsed.scholarship_id.split(",")
-            scholarshipFinalistsPromise = ApplicationsAPI.filteredFinalists(parsedScholarshipIds)
+            const parsedScholarshipIds = parsed.scholarship_id.split(",");
+            scholarshipFinalistsPromise = ApplicationsAPI.filteredFinalists(parsedScholarshipIds);
         } else if (allFinalists) {
             scholarshipFinalistsPromise = ApplicationsAPI.allFinalists();
         } else {
@@ -53,80 +51,77 @@ class ScholarshipFinalists extends React.Component {
 
         scholarshipFinalistsPromise
             .then(res => {
-                this.setState({
-                        scholarshipFinalistEssays: res.data.finalist_essays,
-                        scholarshipFinalistUserProfiles: res.data.finalist_user_profiles,
-                        scholarships: res.data.scholarships,
-                });
-            });
-
-        scholarshipFinalistsPromise
+                setState(prevState => ({
+                    ...prevState,
+                    scholarshipFinalistEssays: res.data.finalist_essays,
+                    scholarshipFinalistUserProfiles: res.data.finalist_user_profiles,
+                    scholarships: res.data.scholarships,
+                }));
+            })
             .catch(err => {
-                console.log({ err});
+                console.log({ err });
             })
             .finally(() => {
-                this.setState({ isLoadingScholarshipFinalists: false });
+                setState(prevState => ({ ...prevState, isLoadingScholarshipFinalists: false }));
             });
-    }
+    }, [props]);
 
-    render () {
+    const { scholarshipFinalistEssays, scholarshipFinalistUserProfiles, isLoadingScholarshipFinalists,
+        scholarships, isFilteredByScholarshipID } = state;
+    const { className, title, showEssaysFirst } = props;
+    const { pathname } = location;
 
-        const { scholarshipFinalistEssays, scholarshipFinalistUserProfiles, isLoadingScholarshipFinalists,
-            scholarships, isFilteredByScholarshipID  } = this.state;
-        const { className, title, showEssaysFirst, location : { pathname} } = this.props;
+    const finalistsPathname = "/finalists";
 
-        const finalistsPathname = "/finalists";
-
-        if (isLoadingScholarshipFinalists) {
-            return (
-                <div className={`${className}`}>
-                    <Loading
-                        isLoading={isLoadingScholarshipFinalists}
-                        title={'Loading Scholarship Finalists..'} />
-                </div>);
-        }
-
+    if (isLoadingScholarshipFinalists) {
         return (
             <div className={`${className}`}>
-                <h2 className="text-center">
-                    {pathname === finalistsPathname ?
-                        <React.Fragment>
-                            {title}
-                        </React.Fragment>
-                        :
-                        <Link to={finalistsPathname}
-                            target="_blank"
-                            rel='noopener noreferrer'>
-                            {title}
-                        </Link>
-                    }
-                </h2>
-                {showEssaysFirst &&
-                <ScholarshipFinalistEssays title={title}
-                                           scholarshipFinalistEssays={scholarshipFinalistEssays}
-                                           isFiltered={isFilteredByScholarshipID}
-                                           scholarships={scholarships} />
-                }
-                <UserProfileCardsList userProfiles={scholarshipFinalistUserProfiles} />
-                {!showEssaysFirst &&
-                <ScholarshipFinalistEssays title={title}
-                                           scholarshipFinalistEssays={scholarshipFinalistEssays}
-                                           isFiltered={isFilteredByScholarshipID}
-                                           scholarships={scholarships} />
-                }
-
-            </div>
-        );
+                <Loading
+                    isLoading={isLoadingScholarshipFinalists}
+                    title={'Loading Scholarship Finalists..'} />
+            </div>);
     }
+
+    return (
+        <div className={`${className}`}>
+            <h2 className="text-center">
+                {pathname === finalistsPathname ?
+                    <React.Fragment>
+                        {title}
+                    </React.Fragment>
+                    :
+                    <Link to={finalistsPathname}
+                        target="_blank"
+                        rel='noopener noreferrer'>
+                        {title}
+                    </Link>
+                }
+            </h2>
+            {showEssaysFirst &&
+            <ScholarshipFinalistEssays title={title}
+                                       scholarshipFinalistEssays={scholarshipFinalistEssays}
+                                       isFiltered={isFilteredByScholarshipID}
+                                       scholarships={scholarships} />
+            }
+            <UserProfileCardsList userProfiles={scholarshipFinalistUserProfiles} />
+            {!showEssaysFirst &&
+            <ScholarshipFinalistEssays title={title}
+                                       scholarshipFinalistEssays={scholarshipFinalistEssays}
+                                       isFiltered={isFilteredByScholarshipID}
+                                       scholarships={scholarships} />
+            }
+
+        </div>
+    );
 }
 
 export function ScholarshipFinalistEssays({ title, scholarshipFinalistEssays, isFiltered, scholarships }) {
-    let displayTitle =(
-            <h2 > 
-                {title}' Essays 
-                <br/><br/>
-            </h2>
-        )
+    let displayTitle = (
+        <h2>
+            {title}' Essays
+            <br /><br />
+        </h2>
+    );
 
     let essayContent;
     if (scholarshipFinalistEssays.length === 0) {
@@ -134,28 +129,23 @@ export function ScholarshipFinalistEssays({ title, scholarshipFinalistEssays, is
             <React.Fragment>
                 <h3 className="text-center">No published essays to display</h3>
             </React.Fragment>
-        )
+        );
     } else {
-        essayContent = (<Row gutter={[{ xs: 8, sm: 16}, 16]}>
+        essayContent = (<Row gutter={[{ xs: 8, sm: 16 }, 16]}>
             {scholarshipFinalistEssays.map(item => {
-                // set this so getItemType() in genericItemTransform() returns an essay
-                item.essay_source_url="";
+                item.essay_source_url = "";
                 return (
-                    // Use zoom:0.8 as a temporary workaround so that that ScholarshipFinalists doesn't
-                    // take up too much space.
-                    <Col xs={24} md={12} lg={8} style={{zoom:0.9}} key={item.slug}>
+                    <Col xs={24} md={12} lg={8} style={{ zoom: 0.9 }} key={item.slug}>
                         <ContentCard key={item.slug}
                                      content={genericItemTransform(item)}
-                                     customStyle={{height: "850px"}}
+                                     customStyle={{ height: "850px" }}
                                      className="mb-3" />
-                    </Col>)
+                    </Col>);
             })}
-        </Row>)
+        </Row>);
     }
 
-
     if (isFiltered && scholarships.length > 0) {
-        // Get all the scholarship titles as link components
         let scholarshipTitles = scholarships.map((scholarship, idx) => (
             <>
                 <Link to={`/scholarship/${scholarship.slug}`}
@@ -163,11 +153,11 @@ export function ScholarshipFinalistEssays({ title, scholarshipFinalistEssays, is
                     rel='noopener noreferrer'>
                     {scholarship.name}
                 </Link>
-                {idx !== scholarships.length-1 && ', '} {/* Don't put a separator on final title */}
+                {idx !== scholarships.length - 1 && ', '}
             </>
-        ))
+        ));
 
-        displayTitle = <>{displayTitle} for {scholarshipTitles}</>
+        displayTitle = <>{displayTitle} for {scholarshipTitles}</>;
     }
 
     return (
@@ -175,10 +165,8 @@ export function ScholarshipFinalistEssays({ title, scholarshipFinalistEssays, is
             <h3 className="text-center">{displayTitle}</h3>
             {essayContent}
         </React.Fragment>
-    )
-
+    );
 }
-
 
 ScholarshipFinalists.defaultProps = {
     className: '',
@@ -197,4 +185,4 @@ ScholarshipFinalists.propTypes = {
     search: PropTypes.string,
 };
 
-export default withRouter(ScholarshipFinalists);
+export default ScholarshipFinalists;

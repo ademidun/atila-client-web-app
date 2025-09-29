@@ -1,5 +1,5 @@
 import React from 'react'
-import {Link, withRouter} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import ScholarshipsAPI from "../../services/ScholarshipsAPI";
 import Loading from "../../components/Loading";
@@ -13,8 +13,10 @@ import ScholarshipContributionProfilePictureChooser from "./ScholarshipContribut
 import {isValidEmail} from "../../services/utils";
 import ReferredByInput from "../../components/ReferredByInput";
 import {CryptoCurrencies, Currencies, CURRENCY_CODES, ETH} from "../../models/ConstantsPayments";
-import CurrencyDisplay from '@atila/web-components-library.ui.currency-display';
+// import CurrencyDisplay from '@atila/web-components-library.ui.currency-display';
 import ScholarshipPaymentForm from '../Payment/ScholarshipPayment/ScholarshipPaymentForm';
+
+import TextUtils from '../../services/utils/TextUtils';
 
 const { Step } = Steps;
 
@@ -267,7 +269,9 @@ class ScholarshipContribution extends React.Component {
                        onChange={this.updateContributorInfo}/>
 
                 <br />
-                {Currencies[currency].is_crypto && <small className="float-left"><CurrencyDisplay amount={contributor.funding_amount} inputCurrency={currency} /></small>}
+                {Currencies[currency].is_crypto && <small className="float-left">
+                    {TextUtils.formatCurrency(contributor.funding_amount)}
+                    </small>}
                 <br />
                 {renderChangeCurrency}
                 <br />
@@ -604,4 +608,4 @@ const mapStateToProps = state => {
     return { userProfile: state.data.user.loggedInUserProfile };
 };
 
-export default withRouter(connect(mapStateToProps)(ScholarshipContribution));
+export default connect(mapStateToProps)(ScholarshipContribution);

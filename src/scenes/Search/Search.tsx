@@ -1,19 +1,21 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import algoliasearch from 'algoliasearch/lite';
-import { InstantSearch, Hits, PoweredBy, Pagination, SearchBox, Configure, Index, connectHitInsights, connectHits } from 'react-instantsearch-dom';
+import { InstantSearch, PoweredBy, Pagination, SearchBox, Configure, connectHitInsights, connectHits } from 'react-instantsearch-dom';
 import 'instantsearch.css/themes/satellite.css'; //algolia instant search styling
 import Environment from '../../services/Environment';
 import qs from 'qs';
 import HelmetSeo from '../../components/HelmetSeo';
 import {SearchResultHit, SearchResults} from './SearchResults';
 import './Search.scss'
-import { Radio, Row, Col } from 'antd';
 import aa from 'search-insights';
 import {Tab, Tabs} from 'react-bootstrap';
 import equal from "fast-deep-equal";
-import { RouteComponentProps, useHistory, withRouter } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { SearchConfig } from './SearchConfig';
-import { Hit } from 'react-instantsearch-core';
+import { Hit, BasicDoc } from 'react-instantsearch-core';
+import React from 'react';
+import { HitsGrid } from '../../components/Search/AlgoliaComponents';
+
 
 const algoliaClient = algoliasearch(Environment.ALGOLIA_APP_ID, Environment.ALGOLIA_PUBLIC_KEY);
 
@@ -64,20 +66,9 @@ const createSearchClient = (resultsCB: any) => {
 
 const createURL = (state: any) => `?${qs.stringify(state)}`;
 
-const searchStateToUrl = (searchState: any) =>{
-  const searchStateCopy = Object.assign({}, searchState);
-  // TODO remove hits per page configuration from showing in the url so that the URLs look clean and simple
-  // otherwise, your URL looks like: 
-  // http://localhost:3000/search?query=canada&page=2&configure%5BhitsPerPage%5D=8
-  // http://localhost:3000/search?query=scholarship&page=1&indices%5Bdev_scholarship_index%5D%5Bconfigure%5D%5BhitsPerPage%5D=8&indices%5Bdev_scholarship_index%5D%5Bpage%5D=2&indices%5Bdev_blog_index%5D%5Bconfigure%5D%5BhitsPerPage%5D=8&indices%5Bdev_blog_index%5D%5Bpage%5D=1
-  // Alternate example without encoding: http://localhost:3000/search?query=canada&page=2&configure[hitsPerPage]=8
-  // delete searchStateCopy.indices;
-  const searchStateUrl = searchState ? createURL(searchStateCopy) : '';
-  return searchStateUrl;
-}
 
 const urlToSearchState = ({ search}: { search: any}) => {
-  const searchState = qs.parse(search.slice(1));
+  const searchState = qs.parse(search.slice && search.slice(1));
   // ?q=<term> should set the same search state as ?query=<term>
   if(searchState.q && !searchState.query) {
     searchState.query = searchState.q;
@@ -87,10 +78,10 @@ const urlToSearchState = ({ search}: { search: any}) => {
 };
 
 
-interface SearchAlgoliaProps extends RouteComponentProps {
+interface SearchAlgoliaProps {
   className: string,
   renderSeo: boolean,
-  location: any,
+  location?: any,
   initialSearch?: string,
   searchConfig?: SearchConfig,
   onResultsLoaded?: (results: Array<{ items: any, num_items: number }>) => void,
@@ -99,22 +90,19 @@ interface SearchAlgoliaProps extends RouteComponentProps {
 
 function SearchAlgolia({ className = "p-md-5",
                          renderSeo = true,
-                         location,
+                         location = "",
                          initialSearch = "",
                          searchConfig = {showScholarships: true, showMentors: true, showBlogs: true},
                          onResultsLoaded = () => {},
                          onSearchQueryChanged = () => {},
                        }: SearchAlgoliaProps) {
 
-  const [searchState, setSearchState] = useState(urlToSearchState(location));
-  const [showExpiredScholarships, setshowExpiredScholarships] = useState(false);
-  const [results, setResults] = useState<any[]>([{'hits': []}]);
-  const { push } = useHistory();
+  const navigate = useNavigate();
 
-  const showExpiredScholarshipsOptions = [
-    { label: 'Show Expired Scholarships', value: true },
-    { label: 'Hide Expired Scholarships', value: false },
-  ];
+  const [searchState, setSearchState] = useState(urlToSearchState(location));
+  const [showExpiredScholarships] = useState(false);
+  const [results, setResults] = useState<any[]>([{'hits': []}]);
+
 
   const debouncedSetStateRef = useRef<null|any>(null);
 
@@ -124,14 +112,17 @@ function SearchAlgolia({ className = "p-md-5",
     clearTimeout(debouncedSetStateRef.current);
 
     debouncedSetStateRef.current = setTimeout(() => {
-      push(searchStateToUrl(updatedSearchState));
-      window.scrollTo(0,0)
+      const searchTerm = updatedSearchState.query;
+      if (searchTerm) {
+        const newUrl = `/search?q=${encodeURIComponent(searchTerm)}`;
+        navigate(newUrl, { replace: true });
+      }
+      setSearchState(updatedSearchState);
+      onSearchQueryChanged(updatedSearchState)
     }, DEBOUNCE_TIME);
 
-    setSearchState(updatedSearchState);
-    onSearchQueryChanged(updatedSearchState)
     },
-    [push, onSearchQueryChanged]
+    [navigate, onSearchQueryChanged]
   );
 
   /**
@@ -164,8 +155,6 @@ function SearchAlgolia({ className = "p-md-5",
   }
 
   const scholarshipIndex = Environment.ALGOLIA_SCHOLARSHIP_INDEX;
-  const blogIndex = Environment.ALGOLIA_BLOG_INDEX;
-  const mentorIndex = Environment.ALGOLIA_MENTOR_INDEX;
   const scholarshipConfiguration: any = {};
   if (!showExpiredScholarships) {
     // the deadline is saved in seconds in our index so we have to convert the current date from milliseconds to seconds;
@@ -191,110 +180,90 @@ function SearchAlgolia({ className = "p-md-5",
   }
 
   const {showScholarships, showMentors, showBlogs} = searchConfig;
-  const noScholarhipsShown = results[0].hits.length === 0 || searchState.query?.length === 0
 
   let searchClient = createSearchClient(handleSearchResultsChange);
 
-  const HitsGridInner =  ({ hits }: { hits: Hit[]}) => (
-    <Row gutter={[12, 12]}>
-      {hits.map(hit => (
-        <Col xs={24} sm={24} md={8}  key={hit.objectID} className="d-flex">
-          <SearchResultHitsWithInsights hit={hit} />
-        </Col>
-      ))}
-    </Row>
+  interface SearchHit extends Hit<BasicDoc> {
+    title: string;
+    description: string;
+    [key: string]: any; // Allow for dynamic properties from Algolia
+  }
+
+  const HitsGridInner = ({ hits }: { hits: SearchHit[] }) => (
+    <HitsGrid hits={hits} hitComponent={SearchResultHitsWithInsights as any} />
   );
 
-  const HitsGrid = connectHits(HitsGridInner);
+  const ConnectedHitsGrid = connectHits<SearchHit>(HitsGridInner);
 
-  const scholarshipSearchResults = results.find(result => result?.index?.includes('scholarship_index'));
+  // Create wrapper components to handle type assertions
 
-  const scholarshipResults = (
-    <Index indexName={scholarshipIndex}>
-      <Configure hitsPerPage={HITS_PER_PAGE} {...scholarshipConfiguration} />
-      {!noScholarhipsShown &&
-        <>
-          <Radio.Group
-            className="my-3"
-            options={showExpiredScholarshipsOptions}
-            onChange={event => setshowExpiredScholarships(event.target.value)}
-            value={showExpiredScholarships}
-            optionType="button"
-            buttonStyle="solid"
-          />
-          <SearchResults title="Scholarships">
-            <Hits hitComponent={SearchResultHitsWithInsights}/>
-          </SearchResults>
-          <Pagination className="my-3"/>
-        </>}
-    </Index>);
+  const scholarshipResults = [
+    React.createElement(Configure as any, { hitsPerPage: HITS_PER_PAGE }),
+    React.createElement(SearchResults as any, { title: "Scholarships" },
+      React.createElement(ConnectedHitsGrid as any)
+    ),
+    React.createElement(Pagination as any, { className: "my-3" })
+  ];
 
-const blogSearchResults = results.find(result => result?.index?.includes('blog_index'));
-  const blogResults = (
-    <Index indexName={blogIndex}>
-      <Configure hitsPerPage={HITS_PER_PAGE}/>
-      <SearchResults title="Blogs">
-      <HitsGrid />
-      </SearchResults>
-      <Pagination className="my-3"/>
-    </Index>);
+  const blogSearchResults = results.find(result => result?.index?.includes('blog_index'));
+  const blogResults = [
+    React.createElement(Configure as any, { hitsPerPage: HITS_PER_PAGE }),
+    React.createElement(SearchResults as any, { title: "Blogs" },
+      React.createElement(ConnectedHitsGrid as any)
+    ),
+    React.createElement(Pagination as any, { className: "my-3" })
+  ];
 
-const mentorSearchResults = results.find(result => result?.index?.includes('mentor_index'));
-  const mentorResults = (
-    <Index indexName={mentorIndex}>
-      <Configure hitsPerPage={HITS_PER_PAGE}/>
-      <SearchResults title="Mentors">
-        <HitsGrid />
-      </SearchResults>
-    </Index>);
+  const mentorSearchResults = results.find(result => result?.index?.includes('mentor_index'));
+  const mentorResults = [
+    React.createElement(Configure as any, { hitsPerPage: HITS_PER_PAGE }),
+    React.createElement(SearchResults as any, { title: "Mentors" },
+      React.createElement(ConnectedHitsGrid as any)
+    )
+  ];
 
   const showInTabs = showScholarships && showBlogs && showMentors;
   return (
     <div className={`Search container ${className}`}>
     {renderSeo && <HelmetSeo content={seoContent} />}
-    <InstantSearch searchClient={searchClient}
-                   indexName={scholarshipIndex}
-                   searchState={searchState}
-                   onSearchStateChange={handleSearchStateChange}
-                   createURL={createURL}>
-        <Configure clickAnalytics />
-        <SearchBox  className="mb-3"
-                    searchAsYouType={false} 
-                    showLoadingIndicator />
-        <PoweredBy  className="mb-3" />
+    {React.createElement(InstantSearch as any, {
+      searchClient,
+      indexName: scholarshipIndex,
+      searchState,
+      onSearchStateChange: handleSearchStateChange,
+      createURL
+    }, [
+      React.createElement(Configure as any, { clickAnalytics: true }),
+      React.createElement(SearchBox as any, {
+        className: "mb-3",
+        searchAsYouType: false,
+        showLoadingIndicator: true
+      }),
+      React.createElement(PoweredBy as any, { className: "mb-3" }),
 
-      {showInTabs ? 
-      
-      <Tabs defaultActiveKey="scholarships" transition={false} id="SearchViewTabs">
-        { showScholarships &&
-            <Tab eventKey='scholarships' title={`Scholarships ${ scholarshipSearchResults ? ' (' + scholarshipSearchResults.nbHits + ')' : ''}`}>
-                {scholarshipResults}
-            </Tab>
-        }
-        { showBlogs &&
-            <Tab eventKey='blogs' title={`Blogs ${ blogSearchResults ? ' (' + blogSearchResults.nbHits + ')' : ''}`}>
-                {blogResults}
-            </Tab>
-        }
-        { showMentors &&
-            <Tab eventKey='mentors' title={`Mentors ${ mentorSearchResults ? ' (' + mentorSearchResults.nbHits + ')' : ''}`}>
-                {mentorResults}
-            </Tab>
-        }
-      </Tabs> : 
-
+      showInTabs ? 
+      React.createElement(Tabs as any, { defaultActiveKey: "scholarships", transition: false, id: "SearchViewTabs" }, [
+        React.createElement(Tab as any, { 
+          eventKey: 'scholarships', 
+          title: `Scholarships ${results[0]?.nbHits ? ` (${results[0].nbHits})` : ''}`
+        }, scholarshipResults),
+        React.createElement(Tab as any, { 
+          eventKey: 'blogs', 
+          title: `Blogs ${blogSearchResults?.nbHits ? ` (${blogSearchResults.nbHits})` : ''}`
+        }, blogResults),
+        React.createElement(Tab as any, { 
+          eventKey: 'mentors', 
+          title: `Mentors ${mentorSearchResults?.nbHits ? ` (${mentorSearchResults.nbHits})` : ''}`
+        }, mentorResults)
+      ]) : 
       <>
-        {showScholarships && scholarshipResults }
-
-        {showBlogs && blogResults }
-
+        {showScholarships && scholarshipResults}
+        {showBlogs && blogResults}
         {showMentors && mentorResults}
       </>
-      }
-
-    </InstantSearch>
+    ])}
     </div>
   )
 }
 
-export default withRouter(SearchAlgolia);
+export default SearchAlgolia;

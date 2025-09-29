@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import TweenOne from 'rc-tween-one';
 import ScrollParallax from 'rc-scroll-anim/lib/ScrollParallax';
 import {Button} from "antd";
-import {Link, withRouter} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {slugify} from "../../services/utils";
 import BannerImage from './BannerImage';
 
@@ -42,7 +42,7 @@ class Banner extends React.Component {
 
     if (event.key === 'Enter' || event.type === 'click') {
       // the only click event that can trigger updateSearch is when autocomplete item is selected
-      this.props.history.push(`/scholarship/s/${slugify(suggestion.query)}`);
+      this.props.navigate(`/scholarship/s/${slugify(suggestion.query)}`);
     }
   };
 
@@ -82,17 +82,11 @@ class Banner extends React.Component {
             <form className="col-sm-12"
                   style={{ height: '300px'}}>
               <div className="row">
-                <Button type="primary"
-                        className="center-block mt-3">
-                  <Link to="/mentorship">
-                    Find Mentors
-                  </Link>
+                <Button type="primary" className="center-block mt-3">
+                  <Link to="/mentorship">Find Mentors</Link>
                 </Button>
-                <Button type="primary"
-                        className="center-block my-3">
-                  <Link to="/scholarship">
-                    Find Scholarships
-                  </Link>
+                <Button type="primary" className="center-block my-3">
+                  <Link to="/scholarship">Find Scholarships</Link>
                 </Button>
               </div>
             </form>
@@ -106,4 +100,9 @@ class Banner extends React.Component {
   }
 }
 
-export default withRouter(Banner);
+function BannerWrapper(props) {
+    const navigate = useNavigate();
+    return <Banner {...props} navigate={navigate} />;
+}
+
+export default BannerWrapper;

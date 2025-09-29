@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Alert, Button, Steps } from 'antd';
 import { MentorshipSession } from '../../../models/MentorshipSession';
 import MentorshipSessionPayment from './MentorshipSessionPayment/MentorshipSessionPayment';
@@ -7,7 +7,7 @@ import MentorshipSessionSchedule from './MentorshipSessionSchedule';
 import MentorshipAPI from '../../../services/MentorshipAPI';
 import { getErrorMessage } from '../../../services/utils';
 import TextUtils from '../../../services/utils/TextUtils';
-import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import HelmetSeo, { defaultSeoContent } from '../../../components/HelmetSeo';
 import { UserProfile } from '../../../models/UserProfile.class';
 import Register from '../../../components/Register';
@@ -16,74 +16,73 @@ import { Duration } from '../../../models/Mentor';
 
 const { Step } = Steps;
 
-interface CollectionDetailRouteParams {
-  mentorUsername: string,
-  sessionId: string,
-};
-
-export interface MentorshipSessionAddEditProps extends RouteComponentProps<CollectionDetailRouteParams>  {
-  userProfileLoggedIn?: UserProfile,
+interface RootState {
+    data: {
+        user: {
+            loggedInUserProfile: UserProfile | null;
+        }
+    }
 }
 
-export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) => {
+const MentorshipSessionAddEdit: React.FC = () => {
+    const userProfileLoggedIn = useSelector((state: RootState) => state.data.user.loggedInUserProfile);
+    const location = useLocation();
+    const navigate = useNavigate();
+    const { mentorUsername, sessionId } = useParams<{ mentorUsername: string; sessionId: string }>();
 
-
-    const { location: { search }, match: {params: { mentorUsername, sessionId }}, userProfileLoggedIn } = props;
-
-    const searchParams = new URLSearchParams(search);
-
+    const searchParams = new URLSearchParams(location.search);
     const paymentComplete = searchParams.get('paymentComplete');
 
     const [currentSessionStep, setCurrentSessionStep] = useState(0);
     const [mentorshipSession, setMentorshipSession] = useState<MentorshipSession>({notes: ''});
     const [networkResponse, setNetworkResponse] = useState<NetworkResponse>({title: "", type: null})
     const [seoContent, setSeoContent] = useState({
-      ...defaultSeoContent,
-      title: "Book a Mentorship session",
-  })
+        ...defaultSeoContent,
+        title: "Book a Mentorship session",
+    })
   
     const loadMentor = useCallback(
       () => {
-  
-      setNetworkResponse({title: "Loading Mentor profile", type: "loading"});
-      MentorshipAPI.listMentors(`?username=${mentorUsername}`)
-      .then((res: any) => {
-          const { data: {results: mentors } } = res;
-          const mentor = mentors[0];
-          setMentorshipSession(session => ({...session, mentor}))
-          setSeoContent(content => ({...content, title: `Book a mentorship session with ${mentor.user.first_name}`}))
-      })
-      .catch(error => {
-        console.log({error});
-        setNetworkResponse({title: getErrorMessage(error), type: "error"});
-      })
-      .finally(()=> {
-        setNetworkResponse({title: "", type: null});
-      })
-        return ;// code that references a prop
+        if (!mentorUsername) return;
+        
+        setNetworkResponse({title: "Loading Mentor profile", type: "loading"});
+        MentorshipAPI.listMentors(`?username=${mentorUsername}`)
+        .then((res: any) => {
+            const { data: {results: mentors } } = res;
+            const mentor = mentors[0];
+            setMentorshipSession(session => ({...session, mentor}))
+            setSeoContent(content => ({...content, title: `Book a mentorship session with ${mentor.user.first_name}`}))
+        })
+        .catch(error => {
+          console.log({error});
+          setNetworkResponse({title: getErrorMessage(error), type: "error"});
+        })
+        .finally(()=> {
+          setNetworkResponse({title: "", type: null});
+        })
       },
       [mentorUsername]
     );
   
     const loadSession = useCallback(
       () => {
-  
-      setNetworkResponse({title: "Loading session details", type: "loading"});
-      MentorshipAPI.getSession(sessionId)
-      .then((res: any) => {
-          const { data }: { data: MentorshipSession} = res;
-          setMentorshipSession(data)
-          setSeoContent(content => ({...content, title: `Book a mentorship session with ${data.mentor!.user.first_name}`}))
-          setCurrentSessionStep(data.event_scheduled ? 3 : 2);
-      })
-      .catch(error => {
-          console.log({error});
-          setNetworkResponse({title: getErrorMessage(error), type: "error"});
-      })
-      .finally(()=> {
-        setNetworkResponse({title: "", type: null});
-      })
-        return ;// code that references a prop
+        if (!sessionId) return;
+        
+        setNetworkResponse({title: "Loading session details", type: "loading"});
+        MentorshipAPI.getSession(sessionId)
+        .then((res: any) => {
+            const { data }: { data: MentorshipSession} = res;
+            setMentorshipSession(data)
+            setSeoContent(content => ({...content, title: `Book a mentorship session with ${data.mentor!.user.first_name}`}))
+            setCurrentSessionStep(data.event_scheduled ? 3 : 2);
+        })
+        .catch(error => {
+            console.log({error});
+            setNetworkResponse({title: getErrorMessage(error), type: "error"});
+        })
+        .finally(()=> {
+          setNetworkResponse({title: "", type: null});
+        })
       },
       [sessionId]
     );
@@ -123,7 +122,7 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
         console.log({data});
         setMentorshipSession(data);
         setCurrentSessionStep(currentSessionStep+1);
-        props.history.push(`/mentorship/session/${session.id}?paymentComplete=true`);
+        navigate(`/mentorship/session/${session.id}?paymentComplete=true`);
       })
       .catch(error => {
         console.log({error});
@@ -150,61 +149,56 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
     }, [currentSessionStep]);
   
     useEffect(() => {
-      if (props.location.pathname.includes('/session/new')) {
-        loadMentor(); 
-      } else {
-        loadSession();
-      }
-       
-    }, [loadMentor, loadSession, props.location.pathname]);
+        const path = location.pathname;
+        if (path.includes('/session/new')) {
+            loadMentor(); 
+        } else {
+            loadSession();
+        }
+    }, [loadMentor, loadSession, location.pathname]);
 
-    const registerProps = { // make sure all required component's inputs/Props keys&types match
+    const registerProps = {
       disableRedirect: true,
       onRegistrationFinished: () => window.scrollTo(0,0)
-    }
+    } as const;
     
 
     const mentorshipSessionSteps = [
         {
           title: 'View',
-          content: (session: MentorshipSession)=> 
-          <div>
-            <div className='text-center'>
-              <h1>
-              View {session.mentor ? `${TextUtils.dynamicPossessive(session.mentor.user.first_name)}` : "mentor's" } Profile
-              </h1>
-              <h3 className='text-muted'>
-                You can confirm this time after payment.
-              </h3>
-            </div>
-            <hr/>
+          content: (session: MentorshipSession) => (
+            <div>
+              <div className='text-center'>
+                <h1>
+                  View {session.mentor ? `${TextUtils.dynamicPossessive(session.mentor.user.first_name)}` : "mentor's" } Profile
+                </h1>
+                <h3 className='text-muted'>
+                  You can confirm this time after payment.
+                </h3>
+              </div>
+              <hr/>
 
-            <MentorshipSessionSchedule previewMode={true} session={session} 
-            onDateAndTimeSelected={handleCalendarEventViewed} onDurationSelected={handleDurationSelected} />
-          </div>,
+              <MentorshipSessionSchedule previewMode={true} session={session} 
+                onDateAndTimeSelected={handleCalendarEventViewed} 
+                onDurationSelected={handleDurationSelected} />
+            </div>
+          ),
           disabled: () => false,
         },
         {
           title: 'Pay',
-          content: (session: MentorshipSession)=> <div>
-
-            { userProfileLoggedIn ? 
-            <MentorshipSessionPayment session={session} onPaymentComplete={handlePaymentComplete}  /> : 
-
-              <div>
-              <h1>Create an Account or Login to book a session</h1> <br/>
-              {/*
-              
-                Assign register props using spread operator
-                Needed to resolve the following error: Type '{ disableRedirect: boolean; }' is not assignable to type 'IntrinsicAttributes & ... 
-              
-              */}
-              <Register {...registerProps} />
-                        
-              </div>
-            }
-            
-          </div>,
+          content: (session: MentorshipSession) => (
+            <div>
+              {userProfileLoggedIn ? 
+                <MentorshipSessionPayment session={session} onPaymentComplete={handlePaymentComplete} /> : 
+                <div>
+                  <h1>Create an Account or Login to book a session</h1>
+                  <br/>
+                  {React.createElement(Register as any, registerProps)}
+                </div>
+              }
+            </div>
+          ),
           disabled: () => !mentorshipSession?.mentor,
         },
         {
@@ -260,42 +254,39 @@ export const MentorshipSessionAddEdit = (props: MentorshipSessionAddEditProps) =
         //   disabled: () => !mentorshipSession?.stripe_payment_intent_id
         // },
     ];
-  return (
-    <div className='card shadow m-3 p-3'>
-      <HelmetSeo content={seoContent}/>
-      <Steps current={currentSessionStep} onChange={current => setCurrentSessionStep(current)}>
-        {mentorshipSessionSteps.map(item => (
-          <Step key={item.title} title={item.title} disabled={item.disabled()} />
-        ))}
-      </Steps>
 
-      <div className='m-3 p-3'>
-        <NetworkResponseDisplay response={networkResponse} />
-        {mentorshipSessionSteps[currentSessionStep].content(mentorshipSession!)}
-      </div>
+    const handleViewAllMentors = () => {
+      navigate('/mentorship');
+    };
 
-      <div>
-        {currentSessionStep > 0 ? (
-          <Button className="float-left col-md-6"
-            onClick={() => setCurrentSessionStep(currentSessionStep - 1)} >
-            Previous
-          </Button>
-        ): 
-        <Link to="/mentorship">
-          <Button className="float-left col-md-6">
-            View all Mentors
-          </Button>
-          
-        </Link>
-        }
+    return (
+      <div className='card shadow m-3 p-3'>
+        <HelmetSeo content={seoContent}/>
+        <Steps current={currentSessionStep} onChange={current => setCurrentSessionStep(current)} {...({} as any)}>
+          {mentorshipSessionSteps.map(item => (
+            <Step key={item.title} title={item.title} disabled={item.disabled()} />
+          ))}
+        </Steps>
+
+        <div className='m-3 p-3'>
+          <NetworkResponseDisplay response={networkResponse} />
+          {mentorshipSessionSteps[currentSessionStep].content(mentorshipSession!)}
+        </div>
+
+        <div>
+          {currentSessionStep > 0 ? (
+            <Button className="float-left col-md-6"
+              onClick={() => setCurrentSessionStep(currentSessionStep - 1)} >
+              Previous
+            </Button>
+          ): 
+            <Button className="float-left col-md-6" onClick={handleViewAllMentors}>
+              View all Mentors
+            </Button>
+          }
+        </div>
       </div>
-    </div>
-  );
+    );
 }
 
-const mapStateToProps = (state: any) => {
-    return { userProfileLoggedIn: state.data.user.loggedInUserProfile };
-};
-
-const mapDispatchToProps = {}
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MentorshipSessionAddEdit))
+export default MentorshipSessionAddEdit;

@@ -10,6 +10,14 @@ import Loading from '../Loading';
 import WalletDisplay from './WalletDisplay';
 import { ConnectWalletHelperText } from '../../models/ConstantsPayments';
 
+declare global {
+    interface Window {
+        ethereum?: {
+            request: (args: { method: string }) => Promise<string[]>;
+        }
+    }
+}
+
 export interface ConmectWalletPropTypes {
     userProfileLoggedIn?: UserProfile,
     onSaveWallets: (wallets: Array<Wallet>) => void,

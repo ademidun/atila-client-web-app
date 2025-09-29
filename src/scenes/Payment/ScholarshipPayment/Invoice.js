@@ -7,7 +7,7 @@ import {ScholarshipPropType} from "../../../models/Scholarship";
 import {formatCurrency} from "../../../services/utils";
 import './Invoice.scss'
 import {ATILA_SCHOLARSHIP_FEE, ATILA_SCHOLARSHIP_FEE_TAX, Currencies} from "../../../models/ConstantsPayments";
-import CurrencyDisplay from "@atila/web-components-library.ui.currency-display";
+// import CurrencyDisplay from "@atila/web-components-library.ui.currency-display";
 
 // source: https://github.com/sparksuite/simple-html-invoice-template
 export const ATIlA_LOGO_URL = "https://i.imgur.com/Mez2Qdd.png";
@@ -128,7 +128,7 @@ function Invoice({ contributor, scholarship, contributorFundingAmount, cardHolde
                     {Currencies[currency].is_crypto &&
                         <>
                         <br/>
-                        <CurrencyDisplay amount={totalAmount} inputCurrency={currency} />
+                        {/* <CurrencyDisplay amount={totalAmount} inputCurrency={currency} /> */}
                         </>
                     }    
                 </small>

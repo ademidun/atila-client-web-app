@@ -1,69 +1,105 @@
-import {Helmet} from "react-helmet";
+import React from 'react';
 import PropTypes from 'prop-types';
-import React from "react";
-import $ from 'jquery';
+import { Helmet } from 'react-helmet';
 
 export const defaultSeoContent = {
-    title: 'Atila - Connecting students with mentorships and scholarships.',
-    description: 'Connecting students with mentorships and scholarships.',
-    image: 'https://i.imgur.com/DKsQITm.png',
-    slug: ''
+    title: 'Atila - Find and Apply for Scholarships',
+    description: 'Find and apply for scholarships, read student essays and blogs.',
+    image: 'https://i.imgur.com/PMg68If.png',
+    slug: '/'
 };
 
-function HelmetSeo({content}) {
-
-    try {
-        if (process.env.NODE_ENV !=='test' && $) {
-            $('meta[property="og:url"]').attr('content', window.location.href);
-            $('meta[property="og:type"]').attr('content', content.type);
-            $('meta[property="og:description"]').attr('content', content.description);
-            $('meta[property="og:image"]').attr('content', content.image);
-
-
-            $('meta[itemprop="name"]').attr('content', content.title);
-            $('meta[itemprop="description"]').attr('content', content.description);
-            $('meta[itemprop="image"]').attr('content', content.image);
-
-            $('meta[name="twitter:title"]').attr('content', content.title);
-            $('meta[name="twitter:description"]').attr('content', content.description);
-            $('meta[name="twitter:image"]').attr('content', content.image);
-
-        }
+function HelmetSeo({ content }) {
+    if (!content) {
+        return null;
     }
-    catch (e) {
-        console.warn({e});
-    }
+
+    const {
+        title,
+        description,
+        header_image_url,
+        user,
+        created,
+        updated,
+    } = content;
+
+    const author = user?.first_name && user?.last_name
+        ? `${user.first_name} ${user.last_name}`
+        : user?.username;
+
+    const url = `${window.location.origin}${window.location.pathname}`;
+    const datePublished = new Date(created || new Date()).toISOString();
+    const dateModified = new Date(updated || created) || new Date().toISOString();
+
+    const jsonLd = {
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: title,
+        description,
+        image: header_image_url,
+        author: {
+            '@type': 'Person',
+            name: author
+        },
+        publisher: {
+            '@type': 'Organization',
+            name: 'Atila',
+            logo: {
+                '@type': 'ImageObject',
+                url: `${window.location.origin}/logo192.png`
+            }
+        },
+        datePublished,
+        dateModified,
+        url
+    };
 
     return (
         <Helmet>
-            <meta charSet="utf-8" />
-            <title>{content.title} - Atila</title>
-            <meta name="Description" content={content.description} />
+            <title>{title}</title>
+            <meta name="description" content={description} />
 
-            <meta property="og:title" content={content.title} />
-            <meta property="og:url" content={window.location.href} />
-            <meta property="og:type" content={content.type} />
-            <meta property="og:description" content={content.description} />
-            <meta property="og:image" content={content.image} />
-
-            <meta itemProp="name" content={content.title} />
-            <meta itemProp="description" content={content.description} />
-            <meta itemProp="image" content={content.image} />
+            {/* Open Graph / Facebook */}
             <meta property="og:type" content="article" />
+            <meta property="og:url" content={url} />
+            <meta property="og:title" content={title} />
+            <meta property="og:description" content={description} />
+            {header_image_url && <meta property="og:image" content={header_image_url} />}
 
+            {/* Twitter */}
             <meta name="twitter:card" content="summary_large_image" />
-            <meta name="twitter:site" content="@atilatech" />
-            <meta name="twitter:title" content={content.title} />
-            <meta name="twitter:description" content={content.description} />
-            <meta name="twitter:image" content={content.image} />
+            <meta name="twitter:url" content={url} />
+            <meta name="twitter:title" content={title} />
+            <meta name="twitter:description" content={description} />
+            {header_image_url && <meta name="twitter:image" content={header_image_url} />}
 
+            {/* Article specific metadata */}
+            {author && <meta name="author" content={author} />}
+            {created && <meta name="article:published_time" content={datePublished} />}
+            {updated && <meta name="article:modified_time" content={dateModified} />}
+
+            {/* JSON-LD structured data */}
+            <script type="application/ld+json">
+                {JSON.stringify(jsonLd)}
+            </script>
         </Helmet>
-
-    )
+    );
 }
 
 HelmetSeo.propTypes = {
-    content: PropTypes.shape({}).isRequired,
+    content: PropTypes.shape({
+        title: PropTypes.string.isRequired,
+        description: PropTypes.string.isRequired,
+        header_image_url: PropTypes.string,
+        user: PropTypes.shape({
+            first_name: PropTypes.string,
+            last_name: PropTypes.string,
+            username: PropTypes.string
+        }),
+        created: PropTypes.string,
+        updated: PropTypes.string,
+        slug: PropTypes.string
+    })
 };
 
 export default HelmetSeo;

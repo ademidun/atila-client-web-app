@@ -1,22 +1,18 @@
 import React from 'react';
-import BlogsList from "./BlogsList";
-import { Route, Switch } from "react-router-dom";
-import BlogDetail from "./BlogDetail";
-import BlogAddEdit from "./BlogAddEdit";
+import { Routes, Route } from 'react-router-dom';
+import BlogsList from './BlogsList';
+import BlogDetail from './BlogDetail';
+import BlogAddEdit from './BlogAddEdit';
 
-function Blog({ match }) {
-    return (
-        <Switch>
-            <Route path={`${match.path}/add`} component={BlogAddEdit} />
-            <Route path={`${match.path}/edit/:username/:slug`} component={BlogAddEdit} />
-            <Route path={`${match.path}/:username/:slug`} component={BlogDetail} />
-            <Route
-                exact
-                path={match.path}
-                component={BlogsList}
-            />
-        </Switch>
-    );
+function Blog() {
+  return (
+    <Routes>
+      <Route path="add" element={<BlogAddEdit />} />
+      <Route path="edit/:username/:slug" element={<BlogAddEdit />} />
+      <Route path=":username/:slug" element={<BlogDetail />} />
+      <Route index element={<BlogsList />} />
+    </Routes>
+  );
 }
 
 export default Blog;

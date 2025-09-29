@@ -1,13 +1,13 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 /**
  * See: https://overreacted.io/making-setinterval-declarative-with-react-hooks/#just-show-me-the-code
  * See: https://stackoverflow.com/a/53395342/5405197
- * @param {*} callback
- * @param {*} delay
+ * @param callback Function to be called on interval
+ * @param delay Delay in milliseconds
  */
-export function useInterval(callback: any, delay: any) {
-  const savedCallback: React.MutableRefObject<any> = useRef();
+export function useInterval(callback: () => void, delay: number | null) {
+  const savedCallback = useRef<() => void>(callback);
 
   // Remember the latest callback.
   useEffect(() => {
@@ -20,14 +20,14 @@ export function useInterval(callback: any, delay: any) {
       savedCallback.current();
     }
     if (delay !== null) {
-      let id = setInterval(tick, delay);
+      const id = setInterval(tick, delay);
       return () => clearInterval(id);
     }
   }, [delay]);
 }
 /**
  * https://stackoverflow.com/a/34425083/5405197
- * @param url 
+ * @param url Script URL to load
  */
 export const useScript = (url: string) => {
   useEffect(() => {

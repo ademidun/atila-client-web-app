@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { Button, message } from 'antd';
-import {connect} from "react-redux";
+import React, { useCallback, useEffect, useState } from 'react'
+import { Button } from 'antd';
+import { useSelector } from "react-redux";
 import FormDynamic from '../../Form/FormDynamic';
 import { Mentor } from '../../../models/Mentor';
 import { mentorProfileFormConfig } from "../../../models/MentorConfig";
@@ -8,61 +8,63 @@ import { UserProfile } from '../../../models/UserProfile.class';
 import MentorshipAPI from '../../../services/MentorshipAPI';
 import UserProfileAPI from '../../../services/UserProfileAPI';
 import { getErrorMessage } from '../../../services/utils';
-import { scholarshipUserProfileSharedFormConfigs, toastNotify } from '../../../models/Utils';
-import { RouteComponentProps, withRouter } from 'react-router';
+import { scholarshipUserProfileSharedFormConfigs } from '../../../models/Utils';
+import { useParams } from 'react-router-dom';
 import { NetworkResponse, NetworkResponseDisplay } from '../../NetworkResponse';
 import MentorDurations from './MentorDurations';
 
 let autoSaveTimeoutId: any;
 
-interface RouteParamsProps {
-    username: string,
-    sessionId: string,
-  };
-
-export interface MentorProfileEditPropTypes extends RouteComponentProps<RouteParamsProps>  {
-    userProfileLoggedIn?: UserProfile,
+interface RootState {
+    data: {
+        user: {
+            loggedInUserProfile: UserProfile | null;
+        }
+    }
 }
 
-function MentorProfileEdit(props: MentorProfileEditPropTypes) {
-
-    const { match: {params: { username }}, userProfileLoggedIn } = props;
+const MentorProfileEdit: React.FC = () => {
+    const userProfileLoggedIn = useSelector((state: RootState) => state.data.user.loggedInUserProfile);
+    const { mentorUsername } = useParams<{ mentorUsername: string }>();
     
-    const [mentor, setMentor] = useState<Mentor>();
-    const [networkResponse, setNetworkResponse] = useState<NetworkResponse>({title: "", type: null})
-    const isMentorset = useRef(false);
+    const [mentor, setMentor] = useState<Mentor | undefined>(undefined);
+    const [networkResponse, setNetworkResponse] = useState<NetworkResponse>({title: "", type: null} as NetworkResponse);
+    const [isMentorSet, setIsMentorSet] = useState(false);
+    autoSaveTimeoutId = null;
 
-    const loadMentor = useCallback(
-        async () => {
-    
+    const loadMentor = useCallback(async () => {
         setNetworkResponse({title: "Loading Mentor profile", type: "loading"});
+        
         try {
-            if (username) {
-                const res = await MentorshipAPI.listMentors(`?username=${username}`);
+            if (mentorUsername) {
+                const res = await MentorshipAPI.listMentors(`?username=${mentorUsername}`);
                 const { data: {results: mentors } } = res;
                 setMentor(mentors[0]);
-                isMentorset.current = true;
+                setIsMentorSet(true);
+                setNetworkResponse({title: "", type: null});
             }
             else {
                 const res = await UserProfileAPI.getUserContent(userProfileLoggedIn?.user, "mentor");
                 const { data } = res;
                 setMentor(data.mentor);
-                isMentorset.current = true;
-    
+                setIsMentorSet(true);
+                setNetworkResponse({title: "", type: null});
             }
-
-            setNetworkResponse({title: "", type: null});
         } catch (error) {
             console.log({error});
             setNetworkResponse({title: getErrorMessage(error), type: "error"});
         }
-          return ;// code that references a prop
-        },
-        [username, userProfileLoggedIn]
-      );
+    },[userProfileLoggedIn, mentorUsername]);
+
+    useEffect(() => {
+        if (userProfileLoggedIn) {
+            loadMentor();
+        }
+    }, [userProfileLoggedIn, loadMentor]);
 
     const createMentorProfile = () => {
         setNetworkResponse({title: "Creating your Mentor profile", type: "loading"});
+        
         MentorshipAPI.createMentor(userProfileLoggedIn?.user!)
         .then((res: any) => {
             const { data } = res;
@@ -72,43 +74,27 @@ function MentorProfileEdit(props: MentorProfileEditPropTypes) {
         .catch(error => {
             console.log({error});
             setNetworkResponse({title: getErrorMessage(error), type: "error"});
-        })
-        .finally(()=> {
-        })
+        });
     }
 
     const updateForm = (event: any) => {
-
         if (event.stopPropagation) {
             event.stopPropagation();
         }
 
-        if (!mentor){
-            return
-        }
-
-        const value = event.target.value;
-
-        let updatedmentor;
-        let newValue = (mentor as any)[event.target.name];
-            if ( Array.isArray((mentor as any)[event.target.name]) && !Array.isArray(value) ) {
-                newValue.push(value);
-            } else {
-                newValue =value;
-            }
-            updatedmentor = {
-                ...mentor,
-                [event.target.name]: newValue
-            };
-
-            setMentor(updatedmentor);
+        const updatedMentor = {
+            ...mentor,
+            [event.target.name]: event.target.value
+        } as Mentor;
+        
+        setMentor(updatedMentor);
+        saveChanges();
     };
 
-    useEffect(() => {
-
-        if ( !isMentorset.current ) {
+    const saveChanges = () => {
+        if (!isMentorSet) {
             return;
-          }
+        }
 
         if (autoSaveTimeoutId) {
             clearTimeout(autoSaveTimeoutId);
@@ -116,69 +102,63 @@ function MentorProfileEdit(props: MentorProfileEditPropTypes) {
 
         // Runs 1 second (1000 ms) after the last change
         autoSaveTimeoutId = setTimeout(() => {
-            
             MentorshipAPI
             .patchMentor({mentor: mentor!})
-            .then(res=>{
-                message.success('Mentor Profile successfully saved!');
+            .then((res: any) => {
+                const { data } = res;
+                setMentor(data);
             })
-            .catch(err=> {
-                let postError = err.response && err.response.data;
-                postError = JSON.stringify(postError, null, 4);
-                toastNotify(`${postError}`, 'error');
+            .catch(error => {
+                console.log({error});
+                setNetworkResponse({title: getErrorMessage(error), type: "error"});
             });
         }, 1000);
-    }, [mentor]);
+    }
 
-    useEffect(() => {
-        if (userProfileLoggedIn) {
-            loadMentor();
+    const handleDurationsSaved = (prices: any) => {
+        if (mentor) {
+            const updatedMentor = { ...mentor, prices } as Mentor;
+            setMentor(updatedMentor);
+            saveChanges();
         }
-        
-    }, [loadMentor, userProfileLoggedIn]);
+    }
 
-  return (
-    <div className='m-3'>
-        <h1>Edit Mentor Profile</h1>
-        <NetworkResponseDisplay response={networkResponse} />
-        {!mentor && 
-            <div className='text-center'>
-            <h3>You must first create a mentor profile</h3>
-                <Button onClick={createMentorProfile} disabled={networkResponse.type==='loading'} type="primary">
-                    Create Mentor Profile
-                </Button>
-            </div>
+    return (
+        <div className='m-3'>
+            <h1>Edit Mentor Profile</h1>
+            <NetworkResponseDisplay response={networkResponse} />
+            {!mentor && 
+                <div className='text-center'>
+                <h3>You must first create a mentor profile</h3>
+                    <Button onClick={createMentorProfile} disabled={networkResponse.type==='loading'} type="primary">
+                        Create Mentor Profile
+                    </Button>
+                </div>
             }
 
-        {mentor && 
-            <>
-            <label>
-                Changes are automatically saved
-            </label>
-                <FormDynamic onUpdateForm={updateForm}
-                             model={mentor}
-                             inputConfigs=
-                                 {mentorProfileFormConfig}
-                                 loggedInUserProfile={userProfileLoggedIn}
-                />
-                < hr/>
-                <MentorDurations initialDurations={mentor.prices} 
-                onDurationsSaved={(prices: any) => setMentor({ ...mentor, prices })} />
-                < hr/>
+            {mentor && 
+                <>
+                <label>
+                    Changes are automatically saved
+                </label>
+                    <FormDynamic onUpdateForm={updateForm}
+                                model={mentor}
+                                inputConfigs={mentorProfileFormConfig}
+                                loggedInUserProfile={userProfileLoggedIn}
+                    />
+                    <hr/>
+                    <MentorDurations initialDurations={mentor.prices} 
+                        onDurationsSaved={handleDurationsSaved} />
+                    <hr/>
 
-                <FormDynamic onUpdateForm={updateForm}
-                                            model={mentor}
-                                            inputConfigs=
-                                                {scholarshipUserProfileSharedFormConfigs}
-                                                loggedInUserProfile={userProfileLoggedIn} />
-            </>
-        }
+                    <FormDynamic onUpdateForm={updateForm}
+                                model={mentor}
+                                inputConfigs={scholarshipUserProfileSharedFormConfigs}
+                                loggedInUserProfile={userProfileLoggedIn} />
+                </>
+            }
         </div>
-  )
+    );
 }
 
-const mapStateToProps = (state: any) => {
-    return { userProfileLoggedIn: state.data.user.loggedInUserProfile };
-};
-
-export default withRouter(connect(mapStateToProps)(MentorProfileEdit));
+export default MentorProfileEdit;

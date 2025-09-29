@@ -9,3 +9,152 @@
   max-width: 100%;
   max-height: 450px;
 }
+
+.content-detail {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+
+    .content-header {
+        margin-bottom: 2rem;
+        text-align: center;
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+
+        .header-image {
+            width: 100%;
+            max-height: 500px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .meta-info {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+            color: #666;
+            font-size: 1rem;
+
+            .author-info {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+
+                .avatar {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                }
+
+                .author-name {
+                    font-weight: 500;
+                    color: #333;
+                }
+            }
+
+            .date-info {
+                display: flex;
+                gap: 1rem;
+
+                span {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                }
+            }
+
+            .edit-link {
+                color: #1890ff;
+                text-decoration: none;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+
+    .content-main {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .content-footer {
+        margin-top: 4rem;
+        padding-top: 2rem;
+        border-top: 1px solid #dee2e6;
+
+        .related-items {
+            margin-top: 2rem;
+
+            h2 {
+                font-size: 2rem;
+                margin-bottom: 1.5rem;
+                color: #333;
+            }
+        }
+    }
+
+    // Loading state
+    .loading-state {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 400px;
+    }
+
+    // Error state
+    .error-state {
+        text-align: center;
+        padding: 2rem;
+        background-color: #fff1f0;
+        border: 1px solid #ffa39e;
+        border-radius: 4px;
+        margin: 2rem 0;
+
+        h2 {
+            color: #cf1322;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            color: #666;
+        }
+    }
+
+    // Not found state
+    .not-found-state {
+        text-align: center;
+        padding: 4rem 2rem;
+
+        h2 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .home-link {
+            color: #1890ff;
+            text-decoration: none;
+            font-weight: 500;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+}

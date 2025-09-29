@@ -1,102 +1,97 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import UserProfileAPI from "../services/UserProfileAPI";
 import Loading from "./Loading";
 import './LoginRegister.scss';
-import {setLoggedInUserProfile} from "../redux/actions/user";
-import {connect} from "react-redux";
+import { setLoggedInUserProfile } from "../redux/actions/user";
+import { connect } from "react-redux";
 import TermsConditions from "./TermsConditions";
 import { Alert, Select, Modal, Button } from "antd";
-import { Link, withRouter} from "react-router-dom";
-import {forbiddenCharacters, hasForbiddenCharacters} from "../models/Utils";
+import { Link, useNavigate } from "react-router-dom";
+import { forbiddenCharacters, hasForbiddenCharacters } from "../models/Utils";
 import ReferredByInput from './ReferredByInput';
 import { toTitleCase } from '../services/utils';
 import Environment from '../services/Environment';
 import { autoGenerateUser } from '../models/UserProfile.class';
 import { DemoUserMessage } from '../services/DemoUtils';
 
-
 export const LOG_OUT_BEFORE_REGISTERING_HELP_TEXT = "A user is already logged in. Log out to create an account";
 
 // see: https://github.com/ademidun/atila-django/issues/183
-const problematicEmailProviders = ['@hotmail', '@outlook', '@live', '@yahoo']
+const problematicEmailProviders = ['@hotmail', '@outlook', '@live', '@yahoo'];
 
-export function EmailSignUpWarning({warningType="emailProvider"}){
-
+export function EmailSignUpWarning({ warningType = "emailProvider" }) {
     let description = (<>
         We've noticed issues with this email provider blocking Atila emails, we recommend using Gmail if you have one.
-        <br/>
-        A list of email providers that are causing similar issues:{' '} 
+        <br />
+        A list of email providers that are causing similar issues:{' '}
         {problematicEmailProviders.map(emailProvider => toTitleCase(emailProvider.replace("@", ""))).join(', ')}
     </>);
 
     if (warningType === "schoolEmail") {
         description = <>
-         Users have reported issues with their school emails blocking Atila emails, we recommend using your personal email instead of your school email.
-        <br/>
-         If this is a personal email address, you may ignore this message.
-        </>
+            Users have reported issues with their school emails blocking Atila emails, we recommend using your personal email instead of your school email.
+            <br />
+            If this is a personal email address, you may ignore this message.
+        </>;
     }
     description = <p>
-        {description} <br/>
+        {description} <br />
         <Link to="/blog/alona/use-your-personal-email-preferably-gmail-not-your-school-email-when-signing-up-for-an-account-on-atila">Learn more</Link>
-    </p>
+    </p>;
     return (
         <div>
             <Alert
-                message = "Warning: Atila emails may not arrive at the provided email address"
+                message="Warning: Atila emails may not arrive at the provided email address"
                 description={description}
                 type="warning"
                 showIcon
             />
-            
-            <br/>
-            <br/>
+
+            <br />
+            <br />
         </div>
-    )
+    );
 }
 
 export class PasswordShowHide extends React.Component {
-
     constructor(props) {
         super(props);
 
         this.state = {
             showPassword: false,
-        }
+        };
     }
 
     togglePassword = (event) => {
         event.preventDefault();
         const { showPassword } = this.state;
-        this.setState({showPassword: !showPassword})
+        this.setState({ showPassword: !showPassword });
     };
 
-
-    render (){
-
-        const { password, updateForm , placeholder, disabled} = this.props;
+    render() {
+        const { password, updateForm, placeholder, disabled } = this.props;
         const { showPassword } = this.state;
 
         return (
             <div className="w-100 mb-3">
                 <input placeholder={placeholder}
-                       className="col-12 form-control"
-                       name="password"
-                       value={password}
-                       autoComplete="new-password"
-                       type={showPassword? 'text': 'password'}
-                       onChange={updateForm}
-                       disabled={disabled}
+                    className="col-12 form-control"
+                    name="password"
+                    value={password}
+                    autoComplete="new-password"
+                    type={showPassword ? 'text' : 'password'}
+                    onChange={updateForm}
+                    disabled={disabled}
                 />
                 {!disabled &&
-                <div
-                    onClick={this.togglePassword}
-                    className="text-muted font-size-xm cursor-pointer mt-2">
-                                    {showPassword ? 'Hide ' : 'Show '} {placeholder}
-                                </div>
+                    <div
+                        onClick={this.togglePassword}
+                        className="text-muted font-size-xm cursor-pointer mt-2">
+                        {showPassword ? 'Hide ' : 'Show '} {placeholder}
+                    </div>
                 }
-            </div>)
+            </div>);
     }
 }
 
@@ -112,7 +107,6 @@ PasswordShowHide.propTypes = {
     disabled: PropTypes.bool,
 };
 
-
 const defaultAccountType = "student";
 const mentorAccountType = "mentor";
 const menteeAccountType = "mentee";
@@ -127,25 +121,21 @@ const accountTypes = [
     { label: 'Educator (Help students get scholarships)', value: 'teacher' },
 ];
 
-
 function checkValidEmailProviders(email) {
-	for (let domainIndex = 0; domainIndex < problematicEmailProviders.length; domainIndex++) {
-
-		if (email.toLowerCase().search(problematicEmailProviders[domainIndex]) !== -1) {
-			return false;
-		}
-	}
-	return true;
+    for (let domainIndex = 0; domainIndex < problematicEmailProviders.length; domainIndex++) {
+        if (email.toLowerCase().search(problematicEmailProviders[domainIndex]) !== -1) {
+            return false;
+        }
+    }
+    return true;
 }
 
-class Register extends React.Component {
-
-    constructor(props){
-        super(props);
-
+function Register(props) {
+    const navigate = useNavigate();
+    const [state, setState] = useState(() => {
         const {
-            location : { search },
-        } = this.props;
+            location: { search },
+        } = props;
         const params = new URLSearchParams(search);
 
         let nextLocation = params.get('redirect') || '/scholarship';
@@ -155,7 +145,7 @@ class Register extends React.Component {
         let mostRecentlyViewedContentName = localStorage.getItem('mostRecentlyViewedContentName') || '';
         let mostRecentlyViewedContentSlug = localStorage.getItem('mostRecentlyViewedContentSlug') || '';
 
-        if (nextLocation==='/') {
+        if (nextLocation === '/') {
             nextLocation = '/scholarship';
         }
 
@@ -167,7 +157,7 @@ class Register extends React.Component {
             password: '',
         };
 
-        this.state = {
+        return {
             userProfile: {
                 ...defaultUser,
                 referred_by: referredBy,
@@ -186,16 +176,15 @@ class Register extends React.Component {
             isTermsConditionsModalVisible: false,
             formErrors: {},
         };
-    }
+    });
 
-    updateForm = (event) => {
-
+    const updateForm = (event) => {
         if (event.stopPropagation) {
             event.stopPropagation();
         }
-        const userProfile = {...this.state.userProfile};
+        const userProfile = { ...state.userProfile };
 
-        const { formErrors } = this.state;
+        const { formErrors } = state;
 
         let value = event.target.value;
         if (event.target.name === 'username') {
@@ -204,7 +193,7 @@ class Register extends React.Component {
             if (value.includes('@')) {
                 formErrors['username'] = (
                     <p className="text-danger">
-                        '@' symbol not allowed in username. <br/>
+                        '@' symbol not allowed in username. <br />
                         Make sure you're not using your email as your username by accident.
                     </p>);
 
@@ -217,58 +206,51 @@ class Register extends React.Component {
             } else {
                 delete formErrors['username'];
             }
-            this.setState({ formErrors });
+            setState({ ...state, formErrors });
         }
-        
-        
+
         if (event.target.type === 'email') {
             value = value.replace(/\s/g, '');
 
             if (!checkValidEmailProviders(value)) {
-               
                 formErrors['email'] = (
-                    <EmailSignUpWarning warningType="emailProvider"/>
+                    <EmailSignUpWarning warningType="emailProvider" />
                 );
 
             } else if (value.endsWith('.ca')) {
-                // assumes that a user registering with an email ending with '.ca' is a school email (not always true, but a pretty accurate assumption based on user emails in our database)
                 formErrors['email'] = (
-                    <EmailSignUpWarning warningType="schoolEmail"/>
+                    <EmailSignUpWarning warningType="schoolEmail" />
                 );
-                
-            
-            }  else {
+
+            } else {
                 delete formErrors['email'];
             }
-            this.setState({ formErrors });   
+            setState({ ...state, formErrors });
         }
 
-        if (event.target.type==='checkbox'){
-            value = event.target.checked
+        if (event.target.type === 'checkbox') {
+            value = event.target.checked;
         }
         userProfile[event.target.name] = value;
 
-        this.setState({ userProfile });
+        setState({ ...state, userProfile });
     };
 
-    showTermsConditionsModal = (event, showModal) => {
+    const showTermsConditionsModal = (event, showModal) => {
         if (event.preventDefault) {
             event.preventDefault();
         }
-        this.setState({
-            isTermsConditionsModalVisible: showModal,
-        });
+        setState({ ...state, isTermsConditionsModalVisible: showModal });
     };
 
-    submitForm = (event) => {
+    const submitForm = (event) => {
         event.preventDefault();
-        const { setLoggedInUserProfile, disableRedirect, onRegistrationFinished } = this.props;
-        const { userProfile } = this.state;
-        let { nextLocation } = this.state;
+        const { setLoggedInUserProfile, disableRedirect, onRegistrationFinished } = props;
+        const { userProfile } = state;
+        let { nextLocation } = state;
         const { email, username, password, account_type, referred_by, referredByChecked } = userProfile;
 
-        this.setState({ loadingResponse: true});
-        this.setState({ isResponseError: null});
+        setState((prevState) => ({ ...prevState, loadingResponse: true, isResponseError: null }));
 
         let userProfileSendData = {
             first_name: userProfile.first_name,
@@ -277,20 +259,19 @@ class Register extends React.Component {
         };
 
         if (referredByChecked) {
-            userProfileSendData = { ...userProfileSendData, referred_by}
+            userProfileSendData = { ...userProfileSendData, referred_by };
         }
 
-        // If this is a sponsor account type, redirect to the add a scholarship page
         if (nextLocation === '/scholarship') {
             switch (account_type) {
                 case sponsorAccountType:
-                    nextLocation = "/scholarship/add"
+                    nextLocation = "/scholarship/add";
                     break;
                 case mentorAccountType:
-                    nextLocation = "/profile/edit"
+                    nextLocation = "/profile/edit";
                     break;
                 case menteeAccountType:
-                    nextLocation = "/mentorship"
+                    nextLocation = "/mentorship";
                     break;
                 default:
                     break;
@@ -310,19 +291,18 @@ class Register extends React.Component {
                 locationData: null
             })
             .then(res => {
-
-                const { data: { token, user_profile, id }} = res;
+                const { data: { token, user_profile, id } } = res;
                 UserProfileAPI.authenticateRequests(token, id);
                 setLoggedInUserProfile(user_profile);
                 let responseOkMessage = "Registration successful 🙂!";
-                if(!disableRedirect) {
-                    responseOkMessage += " Redirecting..."
+                if (!disableRedirect) {
+                    responseOkMessage += " Redirecting...";
                 }
-                this.setState({ responseOkMessage });
-                if(!disableRedirect) {
-                    this.props.history.push(nextLocation);
+                setState((prevState) => ({ ...prevState, responseOkMessage }));
+                if (!disableRedirect) {
+                    navigate(nextLocation);
                 }
-                onRegistrationFinished(user_profile)
+                onRegistrationFinished(user_profile);
             })
             .catch(err => {
                 if (err.response && err.response.data) {
@@ -339,197 +319,194 @@ class Register extends React.Component {
                             {showContactMessage && contactMessage}
                             {isResponseError.message || isResponseError.error}
                         </p>);
-                    this.setState({ isResponseError });
+                    setState((prevState) => ({ ...prevState, isResponseError }));
 
                 } else {
-                    this.setState({ responseError: contactMessage });
+                    setState((prevState) => ({ ...prevState, responseError: contactMessage }));
                 }
             })
             .finally(() => {
-                this.setState({ loadingResponse: false});
-            })
+                setState((prevState) => ({ ...prevState, loadingResponse: false }));
+            });
     };
 
-    selectReferredByUserProfile = (referredByUserProfile) => {
-        const newUserProfile = { ...this.state.userProfile, referred_by: referredByUserProfile.username }
-        this.setState({userProfile: newUserProfile});
+    const selectReferredByUserProfile = (referredByUserProfile) => {
+        const newUserProfile = { ...state.userProfile, referred_by: referredByUserProfile.username };
+        setState({ ...state, userProfile: newUserProfile });
     };
 
-    render () {
+    const { userProfile, isResponseError, responseOkMessage,
+        loadingResponse, isTermsConditionsModalVisible,
+        formErrors, applyNow,
+        mostRecentlyViewedContentName, nextLocation, mostRecentlyViewedContentSlug } = state;
+    const { first_name, last_name, username, email, password, referred_by,
+        agreeTermsConditions, account_type, referredByChecked } = userProfile;
 
-        const { userProfile, isResponseError, responseOkMessage,
-            loadingResponse, isTermsConditionsModalVisible,
-             formErrors, applyNow,
-              mostRecentlyViewedContentName, nextLocation, mostRecentlyViewedContentSlug } = this.state;
-        const { first_name, last_name, username, email, password, referred_by,
-            agreeTermsConditions, account_type, referredByChecked } = userProfile;
-        
-        const { location: { search }, loggedInUserProfile, className } = this.props;
+    const { location: { search }, loggedInUserProfile, className } = props;
 
-        if (loggedInUserProfile) {
-            return (
-                <div className="container mt-5">
+    if (loggedInUserProfile) {
+        return (
+            <div className="container mt-5">
                 <div className="card shadow p-3">
-                <h1>
-                    {LOG_OUT_BEFORE_REGISTERING_HELP_TEXT}
-                </h1>
+                    <h1>
+                        {LOG_OUT_BEFORE_REGISTERING_HELP_TEXT}
+                    </h1>
                 </div>
             </div>
-            )
-        }
+        );
+    }
 
-        let formErrorsContent = Object.keys(formErrors).map((errorType) => (
-            <div key={errorType}>
-                {formErrors[errorType]}
-            </div>
-        ));
+    let formErrorsContent = Object.keys(formErrors).map((errorType) => (
+        <div key={errorType}>
+            {formErrors[errorType]}
+        </div>
+    ));
 
-        let loginCTA = (                
-            <Link to={`/login${search}`} className="text-center col-12 mb-3">
+    let loginCTA = (
+        <Link to={`/login${search}`} className="text-center col-12 mb-3">
             Already have an account? Login
         </Link>
-        )
+    );
 
-        let redirectInstructions = null;
+    let redirectInstructions = null;
 
-        if (mostRecentlyViewedContentName && nextLocation 
-            && mostRecentlyViewedContentSlug && nextLocation.includes(mostRecentlyViewedContentSlug)) {
-            redirectInstructions = (<h3 className="text-center text-muted">
-                You need an account to {applyNow? "apply for: " : "see: "}
-                <Link to={nextLocation}>{mostRecentlyViewedContentName}</Link>
-                {applyNow? " and track your application status." : null}
-                <br/>
-                {loginCTA}
-            </h3>)
-        }
+    if (mostRecentlyViewedContentName && nextLocation
+        && mostRecentlyViewedContentSlug && nextLocation.includes(mostRecentlyViewedContentSlug)) {
+        redirectInstructions = (<h3 className="text-center text-muted">
+            You need an account to {applyNow ? "apply for: " : "see: "}
+            <Link to={nextLocation}>{mostRecentlyViewedContentName}</Link>
+            {applyNow ? " and track your application status." : null}
+            <br />
+            {loginCTA}
+        </h3>);
+    }
 
-        return (
-            <div className={className}>
-                <div className="card shadow p-3 text-left">
-                    <div>
-                        <h1>Register</h1>
-                        <DemoUserMessage />
-                        {redirectInstructions}
-                        <div className="row p-3 form-group">
-                            {first_name &&
-                                <label>
-                                    First Name
-                                </label>
-                            }
-                            <input placeholder="First Name"
-                                   className="col-12 mb-3 form-control"
-                                   name="first_name"
-                                   value={first_name}
-                                   onChange={this.updateForm}
-                                   required
-                            />
-                            {last_name &&
+    return (
+        <div className={className}>
+            <div className="card shadow p-3 text-left">
+                <div>
+                    <h1>Register</h1>
+                    <DemoUserMessage />
+                    {redirectInstructions}
+                    <div className="row p-3 form-group">
+                        {first_name &&
+                            <label>
+                                First Name
+                            </label>
+                        }
+                        <input placeholder="First Name"
+                            className="col-12 mb-3 form-control"
+                            name="first_name"
+                            value={first_name}
+                            onChange={updateForm}
+                            required
+                        />
+                        {last_name &&
                             <label>
                                 Last Name
                             </label>
-                            }
-                            <input placeholder="Last Name"
-                                   name="last_name"
-                                   className="col-12 mb-3 form-control"
-                                   value={last_name}
-                                   onChange={this.updateForm}
-                                   required
-                            />
-                            {email &&
-                                <label>
-                                    Email
-                                </label>
-                            }
-                            <input placeholder="Email"
-                                   className="col-12 mb-3 form-control"
-                                   type="email"
-                                   name="email"
-                                   value={email}
-                                   autoComplete="email"
-                                   onChange={this.updateForm}
-                                   required
-                            />
-                            {username &&
-                                <label>
-                                    Username
-                                </label>
-                            }
-                            <input placeholder="Username"
-                                   className={"col-12 mb-3 form-control" +
-                                   `${formErrors['username']? ' input-error': ''}`}
-                                   name="username"
-                                   type="username"
-                                   value={username}
-                                   autoComplete="username"
-                                   onChange={this.updateForm}
-                                   required
-                            />
-                            <PasswordShowHide password={password} updateForm={this.updateForm} />
-                            {Environment.name === "prod" && username && password && username === password &&
+                        }
+                        <input placeholder="Last Name"
+                            name="last_name"
+                            className="col-12 mb-3 form-control"
+                            value={last_name}
+                            onChange={updateForm}
+                            required
+                        />
+                        {email &&
+                            <label>
+                                Email
+                            </label>
+                        }
+                        <input placeholder="Email"
+                            className="col-12 mb-3 form-control"
+                            type="email"
+                            name="email"
+                            value={email}
+                            autoComplete="email"
+                            onChange={updateForm}
+                            required
+                        />
+                        {username &&
+                            <label>
+                                Username
+                            </label>
+                        }
+                        <input placeholder="Username"
+                            className={"col-12 mb-3 form-control" +
+                                `${formErrors['username'] ? ' input-error' : ''}`}
+                            name="username"
+                            type="username"
+                            value={username}
+                            autoComplete="username"
+                            onChange={updateForm}
+                            required
+                        />
+                        <PasswordShowHide password={password} updateForm={updateForm} />
+                        {Environment.name === "prod" && username && password && username === password &&
                             <div className="w-100 mb-3">
                                 <Alert
-                                    message = "Warning: Username and password must be different"
+                                    message="Warning: Username and password must be different"
                                     type="warning"
                                     showIcon
                                 />
                             </div>
-                            }
+                        }
 
-                            <label className='mr-3 mb-3'>Did someone refer you to Atila?</label>
-                            <input className={'mb-3'}
-                                   type="checkbox"
-                                   name="referredByChecked"
-                                   checked={referredByChecked}
-                                   onChange={this.updateForm}
+                        <label className='mr-3 mb-3'>Did someone refer you to Atila?</label>
+                        <input className={'mb-3'}
+                            type="checkbox"
+                            name="referredByChecked"
+                            checked={referredByChecked}
+                            onChange={updateForm}
+                        />
+                        {referredByChecked &&
+                            <div className="w-100 my-1">
+                                <ReferredByInput username={referred_by} onSelect={selectReferredByUserProfile} />
+                            </div>
+                        }
+                        <div className="w-100 my-1">
+                            <label>
+                                I am a(n):
+                            </label>
+                            <br />
+                            <Select
+                                value={account_type}
+                                className="col-md-6 col-sm-12 pl-0"
+                                options={accountTypes}
+                                onChange={account_type => setState({ ...state, userProfile: { ...state.userProfile, account_type } })}
                             />
-                            {referredByChecked &&
-                            <div className="w-100 my-1">
-                                <ReferredByInput username={referred_by} onSelect={this.selectReferredByUserProfile} />
-                            </div>
-                            }
-                            <div className="w-100 my-1">
-                                <label>
-                                    I am a(n):
-                                </label>
-                                <br/>
-                                <Select
-                                    value={account_type}
-                                    className="col-md-6 col-sm-12 pl-0" 
-                                    options={accountTypes}
-                                    onChange={account_type => this.setState({userProfile:
-                                                {...this.state.userProfile, account_type}})}
-                                />
-                            </div>
+                        </div>
 
-                            <div className="my-3">
-                                <Modal
-                                    title="Terms and Conditions"
-                                    visible={isTermsConditionsModalVisible}
-                                    onOk={(event)=>this.showTermsConditionsModal(event, false)}
-                                    onCancel={(event)=>this.showTermsConditionsModal(event, false)}
-                                >
-                                    <TermsConditions />
-                                </Modal>
-                                <label htmlFor='agreeTermsConditions' className="mr-3">
-                                    Agree to the{' '}
-                                    <button className="btn-text btn-link p-0"
-                                                         onClick={(event)=>this.showTermsConditionsModal(event, true)}>
+                        <div className="my-3">
+                            <Modal
+                                title="Terms and Conditions"
+                                visible={isTermsConditionsModalVisible}
+                                onOk={(event) => showTermsConditionsModal(event, false)}
+                                onCancel={(event) => showTermsConditionsModal(event, false)}
+                            >
+                                <TermsConditions />
+                            </Modal>
+                            <label htmlFor='agreeTermsConditions' className="mr-3">
+                                Agree to the{' '}
+                                <button className="btn-text btn-link p-0"
+                                    onClick={(event) => showTermsConditionsModal(event, true)}>
                                     terms and conditions
-                                    </button>
-                                </label>
-                                <input placeholder="Agree to the terms and conditions?"
-                                       type="checkbox"
-                                       name='agreeTermsConditions'
-                                       checked={agreeTermsConditions}
-                                       onChange={this.updateForm}
-                                />
-                            </div>
-                            <hr/>
-                            <div className="w-100">
+                                </button>
+                            </label>
+                            <input placeholder="Agree to the terms and conditions?"
+                                type="checkbox"
+                                name='agreeTermsConditions'
+                                checked={agreeTermsConditions}
+                                onChange={updateForm}
+                            />
+                        </div>
+                        <hr />
+                        <div className="w-100">
                             {responseOkMessage &&
-                            <p className="text-success">
-                                {responseOkMessage}
-                            </p>
+                                <p className="text-success">
+                                    {responseOkMessage}
+                                </p>
                             }
                             {
                                 Object.keys(formErrors).length > 0 &&
@@ -537,28 +514,27 @@ class Register extends React.Component {
                             }
 
                             {isResponseError &&
-                             isResponseError
+                                isResponseError
                             }
 
-                            </div>
-                            {loadingResponse &&
-                            <Loading title="Loading Response..." className="center-block my-3"/>}
-                            <Button className="col-12 mb-3 button-cta"
-                                    type="primary"
-                                    onClick={this.submitForm}
-                                    disabled={loadingResponse || !agreeTermsConditions ||
-                                    (Object.keys(formErrors).length > 0 && !formErrors.email)}>
-                                Register
-                            </Button>
-
-                            {loginCTA}
-
                         </div>
+                        {loadingResponse &&
+                            <Loading title="Loading Response..." className="center-block my-3" />}
+                        <Button className="col-12 mb-3 button-cta"
+                            type="primary"
+                            onClick={submitForm}
+                            disabled={loadingResponse || !agreeTermsConditions ||
+                                (Object.keys(formErrors).length > 0 && !formErrors.email)}>
+                            Register
+                        </Button>
+
+                        {loginCTA}
+
                     </div>
                 </div>
             </div>
-        )
-    }
+        </div>
+    );
 }
 
 const mapStateToProps = state => {
@@ -572,7 +548,7 @@ const mapDispatchToProps = {
 Register.defaultProps = {
     disableRedirect: false,
     userProfile: {},
-    onRegistrationFinished: () => {},
+    onRegistrationFinished: () => { },
     className: "container mt-5"
 };
 
@@ -581,7 +557,7 @@ Register.propTypes = {
     onRegistrationFinished: PropTypes.func,
     disableRedirect: PropTypes.bool,
     className: PropTypes.string,
-    userProfile:PropTypes.shape({}),
+    userProfile: PropTypes.shape({}),
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Register));
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

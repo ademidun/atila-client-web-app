@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import { Col, Row, Tag } from "antd";
 import { formatCurrency } from "../../services/utils";
 import { UserProfile } from '../../models/UserProfile.class';
-import { Currencies } from '../../models/ConstantsPayments';
-import CurrencyDisplay from '@atila/web-components-library.ui.currency-display';
+// import { Currencies } from '../../models/ConstantsPayments';
+// import CurrencyDisplay from '@atila/web-components-library.ui.currency-display';
 import { Contributor } from '../../models/Contributor';
 
 interface UserProfileCardProps {
@@ -19,11 +19,7 @@ export function UserProfileCard(props: UserProfileCardProps) {
     {userProfile.funding_amount &&
         <strong>
             <br/>
-            {Currencies[(userProfile as Contributor).currency]?.is_crypto  ?
-            
-            <CurrencyDisplay amount={userProfile.funding_amount} inputCurrency={(userProfile as Contributor).currency} /> :
-            formatCurrency(userProfile.funding_amount, true)
-            }
+            {formatCurrency(userProfile.funding_amount, true)}
         </strong>}
     </>;
 
