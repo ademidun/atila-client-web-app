@@ -2,13 +2,16 @@ import { Button } from 'antd';
 import React from 'react';
 import HelmetSeo, { defaultSeoContent } from '../../components/HelmetSeo';
 import NotionPage from '../../components/Notion/NotionPage';
+import AtlasAPIKeySignup from './AtlasAPIKeySignup';
 import AtlasPayment from './AtlasPayment/AtlasPayment';
 
 function Atlas() {
 
+    const description = "A search engine for crypto and web3."
     const title = "Atila Atlas - A search engine built for crypto";
     const seoContent = {
         ...defaultSeoContent,
+        description,
         title,
     }
   return (
@@ -17,7 +20,7 @@ function Atlas() {
 
       <HelmetSeo content={seoContent} />
         <h1>Atlas</h1>
-        <h3 className="text-center">A search engine for crypto and web3.</h3>
+        <h3 className="text-center">{description}</h3>
 
         <div className="m-3 text-center">
           <Button type="primary" size="large">
@@ -30,7 +33,7 @@ function Atlas() {
           </Button>
 
           <p>
-            You automatically 20 free credits when you Install Atlas
+            Get 20 free credits by installing the Atlas browser extension or receiving it in your email.
           </p>
           
         </div>
@@ -38,6 +41,10 @@ function Atlas() {
         <h1>
           Get API Credits
         </h1>
+
+        <div className="m-3 text-center">
+            <AtlasAPIKeySignup />
+        </div>
 
         <div className="m-3 text-center">
             <AtlasPayment />
